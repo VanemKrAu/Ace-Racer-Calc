@@ -1,5 +1,5 @@
 # Ace-Racer-Calc
-王牌竞速能量计算器
+王牌竞速大招能量计算器
 # 王牌竞速 · 大招能量精密计算器
 
 > **Ace Racer Ultimate Energy Calculator** — 由 Vanem 设定交互逻辑与计算公式，AI 辅助开发。
