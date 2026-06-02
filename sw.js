@@ -1,12 +1,12 @@
-// sw.js - 智能动态缓存版 (Network First)
-const CACHE_NAME = 'calc-dynamic-cache';
+// sw.js - 智能动态缓存过滤版 (Network First)
+const CACHE_NAME = 'calc-dynamic-cache-v3';
 
 // 安装阶段：立即跳过等待，接管网页
 self.addEventListener('install', (e) => {
     self.skipWaiting();
 });
 
-// 激活阶段：立即控制所有终端，并清理可能的旧静态缓存
+// 激活阶段：立即控制所有终端，并清理旧缓存
 self.addEventListener('activate', (e) => {
     e.waitUntil(
         caches.keys().then(cacheNames => {
@@ -24,19 +24,25 @@ self.addEventListener('activate', (e) => {
 
 // 拦截请求核心逻辑：网络优先，缓存兜底
 self.addEventListener('fetch', (e) => {
+    // 【核心修复】：如果不是 GET 请求（比如浏览器插件发送的 POST），直接放行不拦截，彻底解决报错！
+    if (e.request.method !== 'GET') {
+        return; 
+    }
+
     e.respondWith(
         fetch(e.request)
             .then((networkResponse) => {
-                // 如果有网且拉取成功，把最新拉取到的文件悄悄存入缓存
-                // 这样下次断网时，用的就是最新的这个版本
-                const responseClone = networkResponse.clone();
-                caches.open(CACHE_NAME).then((cache) => {
-                    cache.put(e.request, responseClone);
-                });
+                // 只有成功的合法网络请求才存入缓存
+                if (networkResponse && networkResponse.status === 200) {
+                    const responseClone = networkResponse.clone();
+                    caches.open(CACHE_NAME).then((cache) => {
+                        cache.put(e.request, responseClone);[span_3](start_span)[span_3](end_span)
+                    });
+                }
                 return networkResponse;
             })
             .catch(() => {
-                // 如果断网了（fetch 报错），就去缓存里找上一次存下来的文件
+                // 断网时去缓存里捞
                 return caches.match(e.request);
             })
     );
