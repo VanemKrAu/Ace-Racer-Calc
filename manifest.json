@@ -38,36 +38,6 @@
       "form_factor": "narrow"
     },
     {
-      "src": "screenshot-mobile-4.png",
-      "type": "image/png",
-      "sizes": "1440x3200",
-      "form_factor": "narrow"
-    },
-    {
-      "src": "screenshot-mobile-5.png",
-      "type": "image/png",
-      "sizes": "1440x3200",
-      "form_factor": "narrow"
-    },
-    {
-      "src": "screenshot-mobile-6.png",
-      "type": "image/png",
-      "sizes": "1440x3200",
-      "form_factor": "narrow"
-    },
-    {
-      "src": "screenshot-mobile-7.png",
-      "type": "image/png",
-      "sizes": "1440x3200",
-      "form_factor": "narrow"
-    },
-    {
-      "src": "screenshot-mobile-8.png",
-      "type": "image/png",
-      "sizes": "1440x3200",
-      "form_factor": "narrow"
-    },
-    {
       "src": "screenshot-desktop-1.png",
       "type": "image/png",
       "sizes": "2560x1528",
