@@ -1,0 +1,21 @@
+{
+  "name": "王牌竞速一大和循环能量计算器",
+  "short_name": "王牌计算器",
+  "start_url": "index.html",
+  "display": "standalone",
+  "background_color": "#0b0c16",
+  "theme_color": "#00f2fe",
+  "description": "王牌竞速高精度大招能量与循环测算工具",
+  "icons": [
+    {
+      "src": "icon.png",
+      "sizes": "192x192",
+      "type": "image/png"
+    },
+    {
+      "src": "icon.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    }
+  ]
+}
