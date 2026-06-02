@@ -1,14 +1,19 @@
-// sw.js - 仅用于满足 PWA 安装条件的最小化 Service Worker
+// sw.js - 标准的 PWA Service Worker
 self.addEventListener('install', (e) => {
-    console.log('[Service Worker] 已安装');
-    self.skipWaiting();
+    console.log('[Service Worker] 安装成功');
+    self.skipWaiting(); // 强制立即接管控制权
 });
 
 self.addEventListener('activate', (e) => {
-    console.log('[Service Worker] 已激活');
+    console.log('[Service Worker] 激活成功');
+    e.waitUntil(clients.claim()); // 立即控制所有打开的页面
 });
 
 self.addEventListener('fetch', (e) => {
-    // 必须保留 fetch 监听器，这是浏览器判定 PWA 可安装的核心条件！
-    // 这里我们直接放行所有网络请求，不做复杂的离线缓存
+    // 拦截网络请求并直接放行。加上这一句，浏览器才会真正认为你具备离线能力。
+    e.respondWith(
+        fetch(e.request).catch(() => {
+            console.log('[Service Worker] 离线请求失败');
+        })
+    );
 });
