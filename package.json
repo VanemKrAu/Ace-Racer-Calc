@@ -1,0 +1,17 @@
+{
+  "name": "ace-racer-calc",
+  "version": "1.0.0",
+  "description": "王牌竞速高精度大招能量与循环测算工具",
+  "main": "index.html",
+  "scripts": {
+    "dev": "npx serve .",
+    "build": "echo 'No build step required for vanilla HTML'",
+    "lint": "echo 'No linter configured'"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "MIT",
+  "dependencies": {
+    "@vercel/speed-insights": "^1.0.12"
+  }
+}
