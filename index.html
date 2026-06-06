@@ -1,0 +1,2605 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+   <meta charset="UTF-8">
+   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+   <meta name="referrer" content="no-referrer">
+   <title>王牌竞速 - 大招能量精密计算器</title>
+   
+   <meta property="og:title" content="王牌竞速 - 大招能量精密计算器">
+  <meta property="og:description" content="王牌竞速高精度大招能量与循环测算工具">
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://aceracercalc.top/">
+  <meta property="og:image" content="https://aceracercalc.top/icon.png">
+
+
+   <link rel="manifest" href="manifest.json?v=5">
+   <meta name="apple-mobile-web-app-capable" content="yes">
+   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+   <meta name="apple-mobile-web-app-title" content="王牌计算器">
+   <meta name="theme-color" content="#18213d" media="(prefers-color-scheme: dark)">
+   <meta name="theme-color" content="#f0f4f8" media="(prefers-color-scheme: light)">
+   <link rel="icon" type="image/svg+xml" href="icon.svg">
+   <link rel="icon" type="image/png" href="icon.png">
+   <link rel="apple-touch-icon" href="icon.png">
+   
+   <script src="./html2canvas.min.js" async></script>
+   
+   <script>
+     window.si = window.si || function () { (window.siq = window.siq || []).push(arguments); };
+   </script>
+   <script defer src="/_vercel/speed-insights/script.js"></script>
+
+   <script>
+     window.va = window.va || function () { (window.vaq = window.vaq || []).push(arguments); };
+   </script>
+   <script defer src="/_vercel/insights/script.js"></script>
+   
+   <style>
+       :root {
+           --bg-color: rgb(24, 33, 61);
+           --bg-gradient: linear-gradient(135deg, rgb(13, 18, 38) 0%, rgb(24, 33, 61) 50%, rgb(32, 44, 79) 100%);
+           --card-bg: rgba(30, 42, 75, 0.65);
+           --card-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+           --inner-bg: rgba(22, 31, 58, 0.8);
+           --input-bg: rgba(36, 48, 86, 0.8);
+           --box-bg: rgba(20, 28, 54, 0.6);
+           --box-bg-light: rgba(20, 28, 54, 0.4);
+           --border: rgba(125, 145, 195, 0.55);
+           --text-color: #e2e8f0;
+           --text-muted: #8e9aaf;
+           --primary: #00f2fe;
+           --secondary: #9b51e0;
+           --accent: #ff007f;
+           --success: #4cdf8a;
+           --warning: #ffb020;
+           --btn-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+           --dropdown-shadow: 0 4px 20px rgba(0, 0, 0, 0.5);
+           --header-shadow: 0 0 10px rgba(0, 242, 254, 0.4);
+           --divider-shadow: 0 2px 10px rgba(155, 81, 224, 0.2);
+           --focus-ring-primary: 0 0 0 2px rgba(0, 242, 254, 0.2);
+           --focus-ring-secondary: 0 0 0 2px rgba(155, 81, 224, 0.2);
+           --focus-ring-success: 0 0 0 2px rgba(76, 223, 138, 0.2);
+           --nitro-active-bg: rgba(0, 242, 254, 0.08);
+           --ult-active-bg: rgba(155, 81, 224, 0.08);
+           --res-first-bg: linear-gradient(135deg, rgba(28,40,79,0.8) 0%, rgba(37,29,71,0.8) 100%);
+           --res-first-border: rgba(0, 242, 254, 0.6);
+           --res-first-shadow: 0 0 15px rgba(0, 242, 254, 0.15);
+           --res-loop-bg: linear-gradient(135deg, rgba(29,51,69,0.8) 0%, rgba(41,71,87,0.8) 100%);
+           --res-loop-border: rgba(76, 223, 138, 0.6);
+           --res-loop-shadow: 0 0 15px rgba(76, 223, 138, 0.15);
+           --res-err-bg: linear-gradient(135deg, rgba(61,28,39,0.8) 0%, rgba(40,20,27,0.8) 100%);
+           --res-err-border: rgba(255, 0, 127, 0.65);
+           --res-err-shadow: 0 0 15px rgba(255, 0, 127, 0.3);
+           --num-base-color: #fff;
+           --err-num-base: #ff80ab;
+           --toast-bg: linear-gradient(135deg, rgba(29,51,69,0.9) 0%, rgba(41,71,87,0.9) 100%);
+           --toast-border: rgba(76, 223, 138, 0.75);
+           --toast-shadow: 0 4px 15px rgba(76, 223, 138, 0.3);
+           --toast-text: #fff;
+           --limit-badge-bg: rgba(155, 81, 224, 0.15);
+           --limit-badge-border: rgba(155, 81, 224, 0.65);
+           --limit-badge-text: #c47ef5;
+           --img-bg: rgba(22, 31, 58, 0.8);
+           --img-border: rgba(0, 242, 254, 0.6);
+           --img-shadow: 0 8px 24px rgba(0, 242, 254, 0.25);
+           --img-hover-shadow: 0 12px 32px rgba(0, 242, 254, 0.4);
+           --hover-glow-primary: rgba(0, 242, 254, 0.15);
+           --hover-glow-secondary: rgba(155, 81, 224, 0.15);
+           --hover-glow-success: rgba(76, 223, 138, 0.15);
+           --hover-glow-warning: rgba(255, 176, 32, 0.25);
+       }
+
+       body.light-mode {
+           --bg-color: #f0f4f8;
+           --bg-gradient: linear-gradient(135deg, #f8fafc 0%, #e2e8f0 100%);
+           --card-bg: rgba(255, 255, 255, 0.85);
+           --card-shadow: 0 4px 15px rgba(0, 0, 0, 0.04);
+           --inner-bg: #f7fafc;
+           --input-bg: #edf2f7;
+           --box-bg: #edf2f7;
+           --box-bg-light: #f7fafc;
+           --border: #cbd5e0;
+           --text-color: #2d3748;
+           --text-muted: #4a5568;
+           --primary: #007bb5;
+           --secondary: #6b46c1;
+           --accent: #e53e3e;
+           --success: #2f855a;
+           --warning: #dd6b20;
+           --btn-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+           --dropdown-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
+           --header-shadow: 0 0 10px rgba(0, 123, 181, 0.2);
+           --divider-shadow: 0 2px 10px rgba(107, 70, 193, 0.25);
+           --focus-ring-primary: 0 0 0 2px rgba(0, 123, 181, 0.2);
+           --focus-ring-secondary: 0 0 0 2px rgba(107, 70, 193, 0.2);
+           --focus-ring-success: 0 0 0 2px rgba(47, 133, 90, 0.2);
+           --nitro-active-bg: rgba(0, 123, 181, 0.08);
+           --ult-active-bg: rgba(107, 70, 193, 0.08);
+           --res-first-bg: linear-gradient(135deg, rgba(235, 248, 255, 0.85) 0%, rgba(230, 255, 250, 0.85) 100%);
+           --res-first-border: #90cdf4;
+           --res-first-shadow: 0 0 15px rgba(0, 123, 181, 0.1);
+           --res-loop-bg: linear-gradient(135deg, rgba(240, 255, 244, 0.85) 0%, rgba(230, 255, 250, 0.85) 100%);
+           --res-loop-border: #9ae6b4;
+           --res-loop-shadow: 0 0 15px rgba(47, 133, 90, 0.1);
+           --res-err-bg: linear-gradient(135deg, rgba(255, 245, 245, 0.85) 0%, rgba(254, 215, 215, 0.85) 100%);
+           --res-err-border: #feb2b2;
+           --res-err-shadow: 0 0 15px rgba(229, 62, 62, 0.3);
+           --num-base-color: #2d3748;
+           --err-num-base: #742a2a;
+           --toast-bg: linear-gradient(135deg, rgba(240,255,244,0.9) 0%, rgba(230,255,250,0.9) 100%);
+           --toast-border: #9ae6b4;
+           --toast-shadow: 0 4px 15px rgba(47, 133, 90, 0.2);
+           --toast-text: #2f855a;
+           --limit-badge-bg: #faf5ff;
+           --limit-badge-border: #d6bcfa;
+           --limit-badge-text: #6b46c1;
+           --img-bg: #f0f4f8;
+           --img-border: #bee3f8;
+           --img-shadow: 0 8px 24px rgba(0, 123, 181, 0.15);
+           --img-hover-shadow: 0 12px 32px rgba(0, 123, 181, 0.25);
+           --hover-glow-primary: rgba(0, 123, 181, 0.2);
+           --hover-glow-secondary: rgba(107, 70, 193, 0.2);
+           --hover-glow-success: rgba(47, 133, 90, 0.2);
+           --hover-glow-warning: rgba(221, 107, 32, 0.2);
+       }
+
+       * { box-sizing: border-box; margin: 0; padding: 0; font-family: -apple-system, BlinkMacSystemFont, sans-serif; -webkit-tap-highlight-color: transparent; }
+       
+       body { background-color: var(--bg-color); background-image: var(--bg-gradient); background-attachment: fixed; color: var(--text-color); padding: 16px; margin: 0 auto; padding-bottom: 40px; width: 100%; transition: background-image 0.3s, background-color 0.3s, color 0.3s; }
+       .app-container { max-width: 480px; margin: 0 auto; position: relative; }
+       
+       .header { text-align: center; margin-bottom: 20px; padding: 20px 0; background: var(--card-bg); backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px); border-radius: 16px; border: 1px solid var(--border); box-shadow: var(--card-shadow); }
+       .header h1 { font-size: 20px; color: var(--text-color); text-shadow: var(--header-shadow); margin-bottom: 6px; letter-spacing: 1px; }
+       .header p { font-size: 12px; color: var(--primary); font-weight: bold; text-transform: uppercase; }
+
+       .card { background: var(--card-bg); backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px); border-radius: 16px; padding: 20px; margin-bottom: 16px; border: 1px solid var(--border); box-shadow: var(--card-shadow); }
+       .card-title { font-size: 15px; font-weight: bold; margin-bottom: 16px; color: var(--text-color); border-left: 4px solid var(--primary); padding-left: 8px; display: flex; justify-content: space-between; align-items: center; }
+
+       .form-group { margin-bottom: 16px; }
+       .form-label { display: block; font-size: 13px; color: var(--text-muted); margin-bottom: 8px; font-weight: 500; }
+       .input-wrapper { position: relative; display: flex; align-items: center; }
+       .form-control { width: 100%; background: var(--inner-bg); border: 1px solid var(--border); border-radius: 10px; padding: 12px 40px 12px 14px; color: var(--text-color); font-size: 16px; font-weight: bold; }
+       .form-control:focus { outline: none; border-color: var(--primary); box-shadow: var(--focus-ring-primary); }
+       .input-unit { position: absolute; right: 14px; color: var(--text-muted); font-size: 14px; font-weight: bold; }
+
+       .nitro-grid { display: flex; flex-direction: column; gap: 10px; margin-bottom: 12px; }
+       .nitro-item { display: flex; align-items: center; justify-content: space-between; background: var(--inner-bg); padding: 10px 14px; border-radius: 10px; border: 1px solid var(--border); }
+       .nitro-item.selected { border-color: var(--primary); background: var(--nitro-active-bg); }
+       .nitro-left { display: flex; align-items: center; gap: 8px; font-size: 13.5px; font-weight: bold; color: var(--text-color); flex: 1; }
+       .nitro-left input[type="radio"] { width: 16px; height: 16px; accent-color: var(--primary); }
+       .nitro-left label { cursor: pointer; padding: 5px 0; width: 100%; }
+       .nitro-right-input { width: 75px; background: var(--input-bg); border: 1px solid var(--border); border-radius: 6px; padding: 6px 24px 6px 8px; color: var(--text-color); font-size: 13px; font-weight: bold; text-align: center; }
+       .nitro-right-wrapper { position: relative; display: flex; align-items: center; }
+       .nitro-right-unit { position: absolute; right: 8px; font-size: 11px; color: var(--text-muted); font-weight: bold; }
+
+       .empower-list { display: flex; flex-direction: column; gap: 12px; }
+       .empower-item { background: var(--inner-bg); padding: 12px; border-radius: 10px; border: 1px solid var(--border); }
+       .empower-item.active { border-color: var(--secondary); background: var(--ult-active-bg); }
+       .empower-flex { display: flex; align-items: flex-start; }
+       .empower-checkbox-wrapper { margin-right: 12px; margin-top: 2px; }
+       .empower-checkbox-wrapper input { width: 16px; height: 16px; accent-color: var(--secondary); cursor: pointer; }
+       
+       .secondary-list .empower-item.active { border-color: var(--primary); background: var(--nitro-active-bg); }
+       .secondary-list .empower-checkbox-wrapper input { accent-color: var(--primary); }
+       
+       .empower-info { flex: 1; }
+       .empower-info .title { font-size: 13.5px; color: var(--text-color); font-weight: bold; margin-bottom: 4px; cursor: pointer; }
+       .empower-info .desc { font-size: 11.5px; color: var(--text-muted); line-height: 1.4; cursor: pointer; }
+       .empower-sub-options { margin-top: 10px; padding: 10px; background: var(--box-bg); border-radius: 8px; border: 1px solid var(--border); display: flex; flex-direction: column; gap: 8px; }
+       .sub-checkbox-label { display: flex; align-items: center; font-size: 12px; color: var(--text-muted); cursor: pointer; }
+       .sub-checkbox-label input[type="checkbox"] { margin-right: 8px; accent-color: var(--primary); width: 14px; height: 14px; }
+       .empower-limit-tip { text-align: right; font-size: 11px; color: var(--accent); margin-top: 8px; font-weight: bold; }
+
+       .slider-wrapper { background: var(--inner-bg); padding: 12px; border-radius: 10px; border: 1px solid var(--border); }
+       .slider-header { display: flex; justify-content: space-between; font-size: 13px; color: var(--text-muted); margin-bottom: 6px; }
+       
+       .slider-control { width: 100%; accent-color: var(--accent); pointer-events: none; }
+       .slider-control::-webkit-slider-thumb { pointer-events: auto; cursor: grab; }
+       .slider-control::-moz-range-thumb { pointer-events: auto; cursor: grab; }
+       .slider-control:active::-webkit-slider-thumb { cursor: grabbing; }
+       .slider-control:active::-moz-range-thumb { cursor: grabbing; }
+
+       .result-card { background: var(--res-first-bg); border: 1px solid var(--res-first-border); box-shadow: var(--res-first-shadow); text-align: center; margin-bottom: 16px; padding: 20px 14px; backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px); }
+       .result-card-loop { background: var(--res-loop-bg); border: 1px solid var(--res-loop-border); box-shadow: var(--res-loop-shadow); text-align: center; backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px); }
+       .result-card.error-state, .result-card-loop.error-state { background: var(--res-err-bg); border: 1px solid var(--res-err-border); }
+
+       .result-title { font-size: 14px; color: var(--primary); text-transform: uppercase; letter-spacing: 1px; margin-bottom: 8px; font-weight: bold; }
+       .result-card-loop .result-title { color: var(--success); }
+       .result-card.error-state .result-title, .result-card-loop.error-state .result-title { color: var(--accent); }
+
+       .result-num { font-size: 26px; font-weight: 900; background: linear-gradient(90deg, var(--num-base-color), var(--primary)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; color: transparent; margin-bottom: 12px; text-shadow: var(--header-shadow); }
+       .result-card-loop .result-num { background: linear-gradient(90deg, var(--num-base-color), var(--success)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; color: transparent; text-shadow: var(--header-shadow); }
+       .result-card.error-state .result-num, .result-card-loop.error-state .result-num { background: linear-gradient(90deg, var(--err-num-base), var(--accent)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; color: transparent; font-size: 20px; text-shadow: var(--res-err-shadow); }
+       
+       .result-desc { font-size: 12.5px; color: var(--text-color); line-height: 1.6; background: var(--box-bg-light); padding: 10px; border-radius: 8px; border: 1px solid var(--border); text-align: left; margin-bottom: 10px; }
+
+       .row-grid { display: flex; gap: 12px; }
+       .row-grid .form-group { flex: 1; }
+       .section-divider { text-align: center; margin: 36px 0 24px; position: relative; }
+       .section-divider span { background: var(--bg-color); padding: 0 16px; color: var(--secondary); font-weight: 900; font-size: 20px; letter-spacing: 2px; position: relative; z-index: 1; transition: background-color 0.3s; text-shadow: var(--divider-shadow); border-radius: 8px; }
+       .section-divider::before { content: ""; position: absolute; top: 50%; left: 0; right: 0; height: 1px; background: linear-gradient(90deg, transparent, var(--secondary), transparent); }
+       
+       .limit-badge { font-size: 11px; padding: 2px 6px; border-radius: 4px; background: var(--limit-badge-bg); color: var(--limit-badge-text); border: 1px solid var(--limit-badge-border); font-weight: normal; }
+
+       .formula-box { font-size: 11px; color: var(--text-muted); background: var(--box-bg); border: 1px dashed var(--border); padding: 10px; border-radius: 6px; text-align: left; line-height: 1.6; font-family: monospace; word-break: break-all; }
+       .formula-box b { color: var(--primary); }
+       .result-card.error-state .formula-box b { color: var(--accent); }
+       .result-card-loop .formula-box b { color: var(--success); }
+   
+       .bottom-image-wrapper { text-align: center; margin: 30px 0 15px 0; padding: 0 10px; }
+       .bottom-image-wrapper img { max-width: 85%; width: auto; height: auto; border-radius: 24px; box-shadow: var(--img-shadow); border: 1px solid var(--img-border); transition: transform 0.2s ease, box-shadow 0.2s ease; display: inline-block; background-color: var(--img-bg); }
+       .bottom-image-wrapper img:hover { transform: scale(1.01); box-shadow: var(--img-hover-shadow); }
+       .img-caption { font-size: 11px; color: var(--text-muted); margin-top: 8px; letter-spacing: 0.5px; font-weight: 400; transition: color 0.3s; }
+       @media (max-width: 500px) { .bottom-image-wrapper img { max-width: 75%; } }
+       .sponsor-text { font-size: 16px; color: var(--text-color); margin-bottom: 12px; transition: color 0.3s; }
+
+       .top-bar { display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px; position: relative; z-index: 1000; }
+       .dropdown-container { position: relative; }
+       .nav-btn { background: var(--card-bg); border: 1px solid var(--border); color: var(--text-color); padding: 8px 16px; border-radius: 8px; font-size: 13px; font-weight: bold; cursor: pointer; display: flex; align-items: center; gap: 6px; box-shadow: var(--btn-shadow); transition: background 0.3s, background-color 0.3s, border-color 0.3s, box-shadow 0.3s, color 0.3s, transform 0.3s; backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px); }
+       .nav-btn:hover { border-color: var(--primary); box-shadow: 0 4px 12px var(--hover-glow-primary); }
+       .dropdown-menu { position: absolute; top: 100%; margin-top: 8px; background: var(--card-bg); backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px); border: 1px solid var(--border); border-radius: 8px; box-shadow: var(--dropdown-shadow); overflow: hidden; display: none; flex-direction: column; min-width: 140px; }
+       .dropdown-menu.left { left: 0; }
+       .dropdown-menu.right { right: 0; }
+       
+       .dropdown-menu.show { display: flex; animation: fadeInDown 0.2s ease forwards; }
+       .dropdown-option { padding: 12px 16px; font-size: 13px; color: var(--text-color); cursor: pointer; transition: background-color 0.2s; display: flex; align-items: center; gap: 8px; text-decoration: none; }
+       .dropdown-option:hover { background-color: rgba(0, 242, 254, 0.1); color: var(--primary); }
+       @keyframes fadeInDown { from { opacity: 0; transform: translateY(-5px); } to { opacity: 1; transform: translateY(0); } }
+
+       .copy-toast { visibility: hidden; min-width: 220px; background: var(--toast-bg); border: 1px solid var(--toast-border); box-shadow: var(--toast-shadow); color: var(--toast-text); text-align: center; border-radius: 8px; padding: 12px; position: fixed; z-index: 3000; left: 50%; bottom: 30px; transform: translateX(-50%); font-size: 14px; font-weight: bold; opacity: 0; transition: opacity 0.3s, bottom 0.3s; backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px); }
+       .copy-toast.show { visibility: visible; opacity: 1; bottom: 50px; }
+
+       .social-tag { display: inline-flex; align-items: center; gap: 4px; text-decoration: none; color: var(--text-color); background-color: var(--card-bg); border: 1px solid var(--border); margin: 12px 6px 0; padding: 8px 16px; border-radius: 8px; font-size: 13px; font-weight: bold; box-shadow: var(--btn-shadow); transition: background 0.3s, background-color 0.3s, border-color 0.3s, box-shadow 0.3s, color 0.3s, transform 0.3s; backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px); }
+       .social-tag:hover { border-color: var(--primary); color: var(--primary); box-shadow: 0 4px 12px var(--hover-glow-primary); transform: translateY(-2px); }
+
+       .share-btn-group { display: flex; gap: 12px; justify-content: space-between; }
+       .share-btn { flex: 1; padding: 14px 8px; border-radius: 12px; font-size: 13px; font-weight: bold; cursor: pointer; text-align: center; border: 1px solid var(--border); background: var(--inner-bg); color: var(--text-color); transition: background 0.3s, background-color 0.3s, border-color 0.3s, box-shadow 0.3s, color 0.3s, transform 0.3s; display: flex; flex-direction: column; align-items: center; gap: 8px; box-shadow: var(--btn-shadow); }
+       .share-btn .icon { font-size: 22px; }
+       .share-btn.btn-text { border-color: rgba(0, 242, 254, 0.65); color: var(--primary); }
+       .share-btn.btn-image { border-color: rgba(155, 81, 224, 0.65); color: var(--secondary); }
+       .share-btn.btn-link { border-color: rgba(76, 223, 138, 0.65); color: var(--success); }
+       .share-btn.btn-text:hover { background: rgba(0, 242, 254, 0.1); transform: translateY(-2px); box-shadow: 0 6px 15px var(--hover-glow-primary); }
+       .share-btn.btn-image:hover { background: rgba(155, 81, 224, 0.1); transform: translateY(-2px); box-shadow: 0 6px 15px var(--hover-glow-secondary); }
+       .share-btn.btn-link:hover { background: rgba(76, 223, 138, 0.1); transform: translateY(-2px); box-shadow: 0 6px 15px var(--hover-glow-success); }
+       @media (max-width: 360px) { .share-btn-group { flex-direction: column; } }
+
+       #imgLight { display: none; }
+       body.light-mode #imgDark { display: none; }
+       body.light-mode #imgLight { display: inline-block; }
+
+       div.extra-active-nitro { border-color: var(--primary) !important; background: var(--nitro-active-bg) !important; }
+       div.extra-active-ult { border-color: var(--secondary) !important; background: var(--ult-active-bg) !important; }
+       div.extra-active-persec { border-color: var(--success) !important; background: rgba(76, 223, 138, 0.08) !important; }
+       body.light-mode div.extra-active-persec { background: rgba(47, 133, 90, 0.08) !important; }
+
+       span.emoji-fix { background: none !important; -webkit-background-clip: unset !important; background-clip: unset !important; -webkit-text-fill-color: initial !important; color: initial !important; text-shadow: none !important; display: inline-block; }
+
+       #ultThreshold:focus, #extraEfficiency:focus { border-color: var(--success) !important; box-shadow: var(--focus-ring-success) !important; }
+       #valExtraUlt:focus { border-color: var(--secondary) !important; box-shadow: var(--focus-ring-secondary) !important; }
+       #valExtraPerSec:focus { border-color: var(--success) !important; box-shadow: var(--focus-ring-success) !important; }
+
+       input[id^="jiezou_sub_"], input[id^="huaxin_sub_"] { background: var(--input-bg); color: var(--text-color); border: 1px solid var(--border); transition: box-shadow 0.3s; }
+       input[id^="jiezou_sub_"]:focus, input[id^="huaxin_sub_"]:focus { box-shadow: var(--focus-ring-primary) !important; outline: none; border-color: var(--primary) !important; }
+
+       button[onclick="resetAutoCalc()"], button[onclick="resetAutoNitroCount()"] { transition: filter 0.2s, transform 0.2s, background 0.2s, background-color 0.2s, border-color 0.2s, box-shadow 0.2s, color 0.2s; }
+       button[onclick="resetAutoCalc()"]:hover, button[onclick="resetAutoNitroCount()"]:hover { filter: brightness(1.15); transform: translateY(-1px); }
+
+       input[type="number"]::-webkit-outer-spin-button, input[type="number"]::-webkit-inner-spin-button { -webkit-appearance: none !important; margin: 0 !important; }
+       input[type="number"] { -moz-appearance: textfield !important; }
+
+       label, .nav-btn, .dropdown-option, .card-title, .slider-header, .empower-info, .empower-sub-options { user-select: none; -webkit-user-select: none; }
+
+       @media (min-width: 850px) {
+           .app-container { max-width: 1100px; padding: 10px 20px; }
+           .desktop-layout { display: flex; gap: 24px; align-items: flex-start; }
+           .desktop-col { flex: 1; min-width: 0; display: flex; flex-direction: column; }
+           .nitro-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+           .nitro-item { margin-bottom: 0; }
+       }
+
+       .thanks-list { display: flex; justify-content: center; flex-wrap: wrap; gap: 8px; margin-top: 14px; }
+       .thanks-item { display: inline-flex; align-items: center; background-color: var(--inner-bg); border: 1px solid var(--border); padding: 6px 14px; border-radius: 8px; font-size: 12.5px; font-weight: bold; color: var(--text-color); transition: background 0.3s, background-color 0.3s, border-color 0.3s, box-shadow 0.3s, color 0.3s, transform 0.3s; user-select: none; -webkit-user-select: none; }
+       .thanks-item:hover { border-color: var(--secondary); color: var(--secondary); box-shadow: 0 4px 12px var(--hover-glow-secondary); transform: translateY(-2px); }
+       
+       .bug-btn { display: flex; justify-content: center; align-items: center; gap: 8px; width: 100%; background: var(--inner-bg); border: 1px solid var(--warning); color: var(--warning); padding: 12px 16px; border-radius: 10px; font-size: 14px; font-weight: bold; text-decoration: none; transition: background 0.3s, background-color 0.3s, border-color 0.3s, box-shadow 0.3s, color 0.3s, transform 0.3s; box-shadow: var(--btn-shadow); box-sizing: border-box; }
+       .bug-btn:hover { background: rgba(255, 176, 32, 0.1); box-shadow: 0 4px 15px var(--hover-glow-warning); transform: translateY(-2px); }
+       
+.result-card .result-desc { background: rgba(0, 0, 0, 0.2) !important; }
+.result-card .formula-box { background: rgba(0, 0, 0, 0.3) !important; }
+
+.result-card:not(.error-state) .result-desc { border: 1px solid rgba(0, 242, 254, 0.5) !important; }
+.result-card:not(.error-state) .formula-box { border: 1px dashed rgba(0, 242, 254, 0.35) !important; }
+
+.result-card-loop:not(.error-state) .result-desc { border: 1px solid rgba(76, 223, 138, 0.5) !important; }
+.result-card-loop:not(.error-state) .formula-box { border: 1px dashed rgba(76, 223, 138, 0.35) !important; }
+
+.result-card.error-state .result-desc, 
+.result-card-loop.error-state .result-desc { border: 1px solid rgba(255, 0, 127, 0.5) !important; }
+.result-card.error-state .formula-box, 
+.result-card-loop.error-state .formula-box { border: 1px dashed rgba(255, 0, 127, 0.35) !important; }
+
+
+body.light-mode .result-card .result-desc { background: rgba(255, 255, 255, 0.35) !important; }
+body.light-mode .result-card .formula-box { background: rgba(255, 255, 255, 0.5) !important; }
+
+body.light-mode .result-card:not(.error-state) .result-desc { border: 1px solid rgba(0, 123, 181, 0.5) !important; }
+body.light-mode .result-card:not(.error-state) .formula-box { border: 1px dashed rgba(0, 123, 181, 0.35) !important; }
+
+body.light-mode .result-card-loop:not(.error-state) .result-desc { border: 1px solid rgba(47, 133, 90, 0.5) !important; }
+body.light-mode .result-card-loop:not(.error-state) .formula-box { border: 1px dashed rgba(47, 133, 90, 0.35) !important; }
+
+body.light-mode .result-card.error-state .result-desc, 
+body.light-mode .result-card-loop.error-state .result-desc { border: 1px solid rgba(229, 62, 62, 0.5) !important; }
+body.light-mode .result-card.error-state .formula-box, 
+body.light-mode .result-card-loop.error-state .formula-box { border: 1px dashed rgba(229, 62, 62, 0.35) !important; }
+
+   </style>
+   <base target="_blank">
+</head>
+<body>
+   <div class="app-container">
+       <div class="top-bar" data-html2canvas-ignore="true">
+           <div class="dropdown-container">
+               <button id="authorBtn" class="nav-btn" onclick="toggleAuthorMenu()">
+                   <span>☰</span> 菜单
+               </button>
+               <div id="authorMenu" class="dropdown-menu left">
+                   <a href="https://github.com/VanemKrAu/Ace-Racer-Calc" target="_blank" class="dropdown-option">📁 项目地址</a>
+                   <a href="https://i0.hdslb.com/bfs/openplatform/07d46fa9619f7ae4fa275da96d3c34d78e552624.png" target="_blank" class="dropdown-option">👍 支持作者</a>
+                   <div class="dropdown-option" onclick="resetTutorial()">🔄 恢复教程提示</div>
+               </div>
+           </div>
+
+           <div class="dropdown-container">
+               <button id="themeBtn" class="nav-btn" onclick="toggleThemeMenu()">
+                   <span id="themeIcon">💻</span> 主题
+               </button>
+               <div id="themeMenu" class="dropdown-menu right">
+                   <div class="dropdown-option" onclick="selectTheme('light')">☀️ 浅色模式</div>
+                   <div class="dropdown-option" onclick="selectTheme('dark')">🌙 深色模式</div>
+                   <div class="dropdown-option" onclick="selectTheme('system')">💻 跟随系统</div>
+               </div>
+           </div>
+       </div>
+
+       <div id="captureArea">
+           <div class="header">
+               <h1>王牌竞速一大和循环能量计算器</h1>
+               <p>由 Vanem 设定交互逻辑、提供计算公式，AI辅助开发</p>
+           </div>
+           
+           <style>
+               details.tutorial-details summary::-webkit-details-marker {
+                   display: none;
+               }
+               details.tutorial-details[open] summary .dropdown-icon {
+                   transform: rotate(180deg);
+               }
+               @keyframes badgePulse {
+                   0% { opacity: 1; box-shadow: 0 0 0 0 rgba(255, 0, 127, 0.4); }
+                   70% { opacity: 0.8; box-shadow: 0 0 0 4px rgba(255, 0, 127, 0); }
+                   100% { opacity: 1; box-shadow: 0 0 0 0 rgba(255, 0, 127, 0); }
+               }
+           </style>
+
+           <div id="tutorialWrapper" data-html2canvas-ignore="true" style="margin-bottom: 16px; margin-top: -4px;">
+               <details class="tutorial-details" style="background: var(--inner-bg); border: 1.5px solid var(--warning); border-radius: 12px; box-shadow: var(--btn-shadow); transition: background 0.3s, border-color 0.3s, box-shadow 0.3s;">
+                   <summary style="padding: 12px 16px; color: var(--warning); font-size: 14px; font-weight: bold; cursor: pointer; display: flex; align-items: center; justify-content: space-between; list-style: none; user-select: none; outline: none;">
+                       <div style="display: flex; align-items: center; gap: 6px; flex-wrap: wrap;">
+                           <span style="font-size: 16px;">📌</span>
+                           <span>使用前必看 & 注意事项</span>
+                           <span id="updateBadge" style="display: none; background: var(--accent); color: #fff; font-size: 11px; font-weight: bold; padding: 2px 8px; border-radius: 10px; margin-left: 4px; animation: badgePulse 2s infinite;">
+                               🆕 展开查看更新
+                           </span>
+                       </div>
+                       
+                       <div style="display: flex; align-items: center; gap: 10px; flex-shrink: 0;">
+                           <span class="dropdown-icon" style="font-size: 12px; transition: transform 0.3s;">▼</span>
+                           <div style="width: 1px; height: 14px; background: var(--warning); opacity: 0.4;"></div>
+                           <button onclick="event.preventDefault(); event.stopPropagation(); closeTutorial();" style="background: transparent; border: none; color: var(--warning); font-size: 18px; cursor: pointer; opacity: 0.7; transition: opacity 0.2s; padding: 0 4px; display: flex; align-items: center;" onmouseover="this.style.opacity='1'" onmouseout="this.style.opacity='0.7'" title="不再显示">
+                               ×
+                           </button>
+                       </div>
+                   </summary>
+                   
+                   <div style="padding: 4px 16px 16px 16px; text-align: left;">
+                       
+                       <div style="text-align: center; margin-bottom: 14px; margin-top: 4px;">
+                           <div id="tutorialBtnInner" style="display: inline-flex; align-items: center; background: var(--box-bg); border: 1px solid var(--warning); border-radius: 24px; box-shadow: var(--btn-shadow); transition: transform 0.3s, box-shadow 0.3s;">
+                               <a href="https://www.bilibili.com/video/BV14XEc6hEcz" target="_blank" style="padding: 8px 16px; text-decoration: none; color: var(--warning); font-size: 13px; font-weight: bold; display: flex; align-items: center; gap: 6px;">
+                                   <span style="font-size: 16px;">▶️</span> <span>前往观看：网站使用教程</span>
+                               </a>
+                           </div>
+                       </div>
+
+                       <div style="border-top: 2px dashed var(--warning); opacity: 1; padding-top: 12px; margin-top: 4px;">
+                           <div style="font-size: 13px; color: var(--warning); font-weight: bold; margin-bottom: 6px;">注意事项：</div>
+                           <ul id="notesContent" style="font-size: 12px; color: var(--text-muted); line-height: 1.6; padding-left: 18px; margin: 0;">
+                               <li>关于开局立刻获得能量的被动如何填写：开局获得的充能（如MINI JCW被动）和起步基础充能是两个东西！请勿将开局后获得的能量填入起步基础充能中！可以填入“扩展自充能附加模块”中的“绑定到【大招释放】的自充能”中，后在下方仅勾选“对首发有效”选项。</li>
+                               <li>更新计划：网站现在和未来都无计划做出选择预设车辆后一键填写数值的功能，这样会让时效性变差且维护周期大大提高，与网站“无后端运行”、“自由定制”、“可长期运行”的初衷相悖。</li>
+                           </ul>
+                       </div>
+                       
+                   </div>
+               </details>
+           </div>
+
+           <script>
+   function generateHash(str) {
+       var hash = 0;
+       for (var i = 0; i < str.length; i++) {
+           var char = str.charCodeAt(i);
+           hash = ((hash << 5) - hash) + char;
+           hash = hash & hash;
+       }
+       return hash.toString();
+   }
+
+   var notesElement = document.getElementById('notesContent');
+   var currentNotesHash = generateHash(notesElement.innerHTML.trim());
+
+   var savedHash = localStorage.getItem('notesHash');
+   var isHidden = localStorage.getItem('hideTutorial') === 'true';
+   var tutorialWrapper = document.getElementById('tutorialWrapper');
+   var updateBadge = document.getElementById('updateBadge');
+   
+   var detailsElement = document.querySelector('.tutorial-details');
+   var seenUpdateHash = localStorage.getItem('seenUpdateHash');
+
+   if (savedHash !== currentNotesHash) {
+       tutorialWrapper.style.display = 'block';
+       if (savedHash && seenUpdateHash !== currentNotesHash) {
+           updateBadge.style.display = 'inline-block';
+       }
+   } else {
+       if (isHidden) {
+           tutorialWrapper.style.display = 'none';
+       }
+   }
+
+   if (detailsElement) {
+       detailsElement.addEventListener('toggle', function() {
+           if (this.open) {
+               if (updateBadge.style.display !== 'none') {
+                   updateBadge.style.display = 'none';
+                   localStorage.setItem('seenUpdateHash', currentNotesHash);
+               }
+           }
+       });
+   }
+
+   function closeTutorial() {
+       tutorialWrapper.style.display = 'none';
+       localStorage.setItem('hideTutorial', 'true');
+       localStorage.setItem('notesHash', currentNotesHash);
+       localStorage.setItem('seenUpdateHash', currentNotesHash);
+   }
+
+   function resetTutorial() {
+       localStorage.removeItem('hideTutorial');
+       localStorage.removeItem('notesHash');
+       localStorage.removeItem('seenUpdateHash');
+       tutorialWrapper.style.display = 'block';
+       document.getElementById('authorMenu').classList.remove('show');
+       if(typeof showToast === 'function') {
+           showToast("✅ 教程按钮已恢复显示！");
+       }
+   }
+
+   var tutBtn = document.getElementById('tutorialBtnInner');
+   if(tutBtn) {
+       tutBtn.onmouseover = function() {
+           this.style.transform = 'translateY(-2px)';
+           this.style.boxShadow = '0 4px 15px var(--hover-glow-warning)';
+       };
+       tutBtn.onmouseout = function() {
+           this.style.transform = 'translateY(0)';
+           this.style.boxShadow = 'var(--btn-shadow)';
+       };
+   }
+           </script>
+
+           <div class="footer-note" style="text-align: center; margin-bottom: 24px;">
+               <span style="font-size: 12px; color: var(--text-muted);"> * 注：根据游戏底层逻辑，起步基础充能不受任何环境干扰；<br>
+               先机仅受反制影响，不受充能效率影响；氮气充能、辅助充能、赋能充能与专精充能受反制和充能效率双重影响。</span>
+           </div>
+
+           <div class="section-divider"><span>基础属性及赋能调整区</span></div>
+           
+           <div class="desktop-layout">
+               <div class="desktop-col">
+                   <div class="card">
+                       <div class="card-title">全局核心基准充能参数</div>
+                       <div class="row-grid">
+                           <div class="form-group">
+                               <label class="form-label" style="color: var(--success); font-weight: bold;">大招释放能量阈值</label>
+                               <div class="input-wrapper">
+                                   <input type="number" id="ultThreshold" class="form-control" style="color: var(--success); border-color: rgba(76, 223, 138, 0.6);" value="100" min="1" max="100" step="1" oninput="calculate()">
+                                   <span class="input-unit">%</span>
+                               </div>
+                           </div>
+                           <div class="form-group">
+                               <label class="form-label">起步基础充能</label>
+                               <div class="input-wrapper">
+                                   <input type="number" id="startCharge" class="form-control" value="36" step="0.1" oninput="calculate()">
+                                   <span class="input-unit">%</span>
+                               </div>
+                           </div>
+                       </div>
+                       <div class="form-group">
+                           <label class="form-label">单次氮气基础充能基准值 (1×6标称全额威力)</label>
+                           <div class="input-wrapper">
+                               <input type="number" id="baseNitro" class="form-control" value="36" step="0.1" oninput="calculate()">
+                               <span class="input-unit">%</span>
+                           </div>
+                       </div>
+                   </div>
+
+                   <div class="card">
+                       <div class="card-title">氮气规格及单发时长同步</div>
+                       <div class="form-label" style="margin-bottom: 12px; color: var(--primary);">更改任意一项氮气时长，其余规格自动等比同步换算：<br><span style="font-size: 11.5px; color: var(--text-muted); font-weight: normal; line-height: 1.8;">注：车辆详情中显示的默认氮时为1×6氮气，只需修改1×6氮时即可</span></div>
+                       
+                       <div class="nitro-grid">
+                           <div class="nitro-item selected">
+                               <div class="nitro-left">
+                                   <input type="radio" id="r_1x5" name="nitroRadio" value="1x5" checked onchange="handleNitroRadioChange()">
+                                   <label for="r_1x5">1 × 5 氮气</label>
+                               </div>
+                               <div class="nitro-right-wrapper">
+                                   <input type="number" id="time_1x5" class="nitro-right-input" value="5.0" step="0.01" oninput="syncNitroTimes('1x5')">
+                                   <span class="nitro-right-unit">秒</span>
+                               </div>
+                           </div>
+                           <div class="nitro-item">
+                               <div class="nitro-left">
+                                   <input type="radio" id="r_1x6" name="nitroRadio" value="1x6" onchange="handleNitroRadioChange()">
+                                   <label for="r_1x6">1 × 6 氮气</label>
+                               </div>
+                               <div class="nitro-right-wrapper">
+                                   <input type="number" id="time_1x6" class="nitro-right-input" value="6.0" step="0.01" oninput="syncNitroTimes('1x6')">
+                                   <span class="nitro-right-unit">秒</span>
+                               </div>
+                           </div>
+                           <div class="nitro-item">
+                               <div class="nitro-left">
+                                   <input type="radio" id="r_2x2" name="nitroRadio" value="2x2" onchange="handleNitroRadioChange()">
+                                   <label for="r_2x2">2 × 2 氮气</label>
+                               </div>
+                               <div class="nitro-right-wrapper">
+                                   <input type="number" id="time_2x2" class="nitro-right-input" value="2.0" step="0.01" oninput="syncNitroTimes('2x2')">
+                                   <span class="nitro-right-unit">秒</span>
+                               </div>
+                           </div>
+                           <div class="nitro-item">
+                               <div class="nitro-left">
+                                   <input type="radio" id="r_2x3" name="nitroRadio" value="2x3" onchange="handleNitroRadioChange()">
+                                   <label for="r_2x3">2 × 3 氮气</label>
+                               </div>
+                               <div class="nitro-right-wrapper">
+                                   <input type="number" id="time_2x3" class="nitro-right-input" value="2.0" step="0.01" oninput="syncNitroTimes('2x3')">
+                                   <span class="nitro-right-unit">秒</span>
+                               </div>
+                           </div>
+                           <div class="nitro-item">
+                               <div class="nitro-left">
+                                   <input type="radio" id="r_2x25" name="nitroRadio" value="2x25" onchange="handleNitroRadioChange()">
+                                   <label for="r_2x25">2 × 2.5 氮气</label>
+                               </div>
+                               <div class="nitro-right-wrapper">
+                                   <input type="number" id="time_2x25" class="nitro-right-input" value="2.5" step="0.01" oninput="syncNitroTimes('2x25')">
+                                   <span class="nitro-right-unit">秒</span>
+                               </div>
+                           </div>
+                           <div class="nitro-item">
+                               <div class="nitro-left">
+                                   <input type="radio" id="r_3x2" name="nitroRadio" value="3x2" onchange="handleNitroRadioChange()">
+                                   <label for="r_3x2">3 × 2 氮气</label>
+                               </div>
+                               <div class="nitro-right-wrapper">
+                                   <input type="number" id="time_3x2" class="nitro-right-input" value="2.0" step="0.01" oninput="syncNitroTimes('3x2')">
+                                   <span class="nitro-right-unit">秒</span>
+                               </div>
+                           </div>
+                       </div>
+                       
+                       <div class="row-grid" style="margin-top:12px;">
+                           <div class="form-group" style="margin-bottom:0;">
+                               <label class="form-label" style="color: var(--primary);">100%能量大招时长</label>
+                               <div style="font-size:11px; color:var(--success); margin-bottom: 6px;" id="actualUltTimeSpan"></div>
+                               <div class="input-wrapper">
+                                   <input type="number" id="baseUltDuration" class="form-control" value="5.0" step="0.1" oninput="calculate()">
+                                   <span class="input-unit">秒</span>
+                               </div>
+                           </div>
+                           <div style="flex:1; display:flex; align-items:flex-end;">
+                               <div style="width:100%; display: flex; align-items: center; justify-content: space-between; background: var(--inner-bg); padding: 11px; border-radius: 10px; border: 1px solid var(--border);">
+                                   <label style="display: flex; align-items: center; gap: 6px; font-size: 11.5px; color: var(--text-muted); cursor: pointer; width:100%;">
+                                       <input type="checkbox" id="isSpec" checked onchange="calculate(); triggerAutoCalc(currentActiveField);" style="width: 15px; height: 15px; accent-color: var(--primary);"> 专精地图 (基础10%折算)
+                                   </label>
+                               </div>
+                           </div>
+                       </div>
+                   </div>
+
+                   <div class="card">
+                       <div class="card-title">对手反制干扰设定</div>
+                       <div class="slider-wrapper">
+                           <div class="slider-header">
+                               <span>全局实战反制比例 (影响双轨)：</span>
+                               <span id="counterValue" style="color: var(--accent); font-weight: bold;">18%</span>
+                           </div>
+                           <input type="range" id="counterRange" class="slider-control" min="0" max="18" value="18" step="0.5" oninput="updateCounterSlider()">
+                       </div>
+                       <div class="slider-wrapper" style="margin-top: 12px;">
+                           <div class="slider-header">
+                               <span>充能效率降低 (受敌方干扰)：</span>
+                               <span id="debuffValue" style="color: var(--accent); font-weight: bold;">0%</span>
+                           </div>
+                           <input type="range" id="debuffRange" class="slider-control" min="0" max="100" value="0" step="1" oninput="updateDebuffSlider()">
+                       </div>
+                   </div>
+               </div>
+               
+               <div class="desktop-col">
+                   <div class="card">
+                       <div class="card-title">
+                           七大赋能系统矩阵
+                           <span class="limit-badge">主/次各最多选1个</span>
+                       </div>
+
+                       <div style="font-size: 13px; color: var(--secondary); margin-bottom: 10px; font-weight: bold; display: flex; align-items: center; gap: 6px;">
+                           <span style="display: inline-block; width: 4px; height: 14px; background: var(--secondary); border-radius: 2px;"></span> 主要赋能矩阵
+                       </div>
+                       <div class="empower-list" style="margin-bottom: 18px;">
+                           <div class="empower-item" id="item_fusu">
+                               <div class="empower-flex">
+                                   <div class="empower-checkbox-wrapper"><input type="checkbox" class="empower-checkbox" id="chk_fusu" value="fusu" onchange="handleEmpowerChange(this)"></div>
+                                   <label class="empower-info" for="chk_fusu" style="display:block; width:100%;"><div class="title" style="color: var(--secondary);">复苏之泉 (仅循环生效)</div><div class="desc">开大后5秒内每秒提供自充能 <strong>+2.5%</strong>。</div></label>
+                               </div>
+                           </div>
+                           
+                           <div class="empower-item" id="item_yichu">
+                               <div class="empower-flex">
+                                   <div class="empower-checkbox-wrapper"><input type="checkbox" class="empower-checkbox" id="chk_yichu" value="yichu" onchange="handleEmpowerChange(this)"></div>
+                                   <label class="empower-info" for="chk_yichu" style="display:block; width:100%;"><div class="title" style="color: var(--secondary);">拒绝溢出 (全局激活倍率)</div><div class="desc">激活全局充能效率 <strong>+5% (1.05倍)</strong>。</div></label>
+                               </div>
+                           </div>
+                       </div>
+
+                       <div style="font-size: 13px; color: var(--primary); margin-bottom: 10px; font-weight: bold; display: flex; align-items: center; gap: 6px;">
+                           <span style="display: inline-block; width: 4px; height: 14px; background: var(--primary); border-radius: 2px;"></span> 次要赋能矩阵
+                       </div>
+                       <div class="empower-list secondary-list">
+                           <div class="empower-item" id="item_jiezou">
+                               <div class="empower-flex">
+                                   <div class="empower-checkbox-wrapper"><input type="checkbox" class="empower-checkbox" id="chk_jiezou" value="jiezou" onchange="handleEmpowerChange(this)"></div>
+                                   <div class="empower-info">
+                                       <label for="chk_jiezou" style="display:block; width:100%;"><div class="title">节奏赋能 (需手动设定触发次数)</div><div class="desc">每4秒内使用3次涡轮/大招等动作给 <strong>+4%</strong> 能量。</div></label>
+                                       <div class="empower-sub-options" id="jiezou_options" style="display: none;">
+                                           <div style="display: flex; gap: 10px; align-items: center; margin-bottom: 4px;">
+                                               <span style="font-size: 12px; color: var(--text-muted);">首发一大前 预估触发次数:</span>
+                                               <input type="number" id="jiezou_sub_first" value="0" min="0" max="5" style="width: 50px; padding: 2px 5px; border-radius: 4px;" oninput="calculate(); triggerAutoCalc(currentActiveField);"> 次
+                                           </div>
+                                           <div style="display: flex; gap: 10px; align-items: center;">
+                                               <span style="font-size: 12px; color: var(--text-muted);">大招循环内 预估触发次数:</span>
+                                               <input type="number" id="jiezou_sub_loop" value="1" min="0" max="5" style="width: 50px; padding: 2px 5px; border-radius: 4px;" oninput="calculate();"> 次
+                                           </div>
+                                       </div>
+                                   </div>
+                               </div>
+                           </div>
+
+                           <div class="empower-item" id="item_huishou">
+                               <div class="empower-flex">
+                                   <div class="empower-checkbox-wrapper"><input type="checkbox" class="empower-checkbox" id="chk_huishou" value="huishou" onchange="handleEmpowerChange(this)"></div>
+                                   <label class="empower-info" for="chk_huishou" style="display:block; width:100%;"><div class="title">能源回收 (仅循环生效)</div><div class="desc">每次使用大招后立即获得 <strong>+10%</strong> 能量。</div></label>
+                               </div>
+                           </div>
+
+                           <div class="empower-item" id="item_weilai">
+                               <div class="empower-flex">
+                                   <div class="empower-checkbox-wrapper"><input type="checkbox" class="empower-checkbox" id="chk_weilai" value="weilai" onchange="handleEmpowerChange(this)"></div>
+                                   <label class="empower-info" for="chk_weilai" style="display:block; width:100%;"><div class="title">未来视界 (动态降维机制)</div><div class="desc">大招能量达到90%时可以使用大招（阈值强制最高锁为90%）。</div></label>
+                               </div>
+                           </div>
+
+                           <div class="empower-item" id="item_queyi">
+                               <div class="empower-flex">
+                                   <div class="empower-checkbox-wrapper"><input type="checkbox" class="empower-checkbox" id="chk_queyi" value="queyi" onchange="handleEmpowerChange(this)"></div>
+                                   <div class="empower-info">
+                                       <label for="chk_queyi" style="display:block; width:100%;"><div class="title">缺一不可 (剔除首发一大的计算中，仅循环生效)</div><div class="desc">首发一大计时内收益微小已忽略。在大招持续期间提供高额自充。</div></label>
+                                       <div class="empower-sub-options" id="queyi_options" style="display: none;">
+                                           <label class="sub-checkbox-label"><input type="checkbox" id="queyi_sub_self" checked onchange="calculate()"><span>我方是完美阵容 (+0.8%/s)</span></label>
+                                           <label class="sub-checkbox-label"><input type="checkbox" id="queyi_sub_enemy" onchange="calculate()"><span>敌方非完美阵容 (+1.2%/s)</span></label>
+                                       </div>
+                                   </div>
+                               </div>
+                           </div>
+
+                           <div class="empower-item" id="item_huaxin">
+                               <div class="empower-flex">
+                                   <div class="empower-checkbox-wrapper"><input type="checkbox" class="empower-checkbox" id="chk_huaxin" value="huaxin" onchange="handleEmpowerChange(this)"></div>
+                                   <div class="empower-info">
+                                       <label for="chk_huaxin" style="display:block; width:100%;"><div class="title">花信风 (间歇性给能，需手动排期)</div><div class="desc">开局+7%，之后每10秒+7%。大招期间若未踩中10秒节点则收益为0。</div></label>
+                                       <div class="empower-sub-options" id="huaxin_options" style="display: none;">
+                                           <div style="display: flex; gap: 10px; align-items: center; margin-bottom: 4px;">
+                                               <span style="font-size: 12px; color: var(--text-muted);">首发一大前 触发次数:</span>
+                                               <input type="number" id="huaxin_sub_first" value="1" min="0" max="5" style="width: 50px; padding: 2px 5px; border-radius: 4px;" oninput="calculate(); triggerAutoCalc(currentActiveField);">
+                                               <span style="font-size: 12px; color: var(--text-muted);"> 次 (默认1次开局)</span>
+                                           </div>
+                                           <div style="display: flex; gap: 10px; align-items: center;">
+                                               <span style="font-size: 12px; color: var(--text-muted);">大招循环内 触发次数:</span>
+                                               <input type="number" id="huaxin_sub_loop" value="0" min="0" max="5" style="width: 50px; padding: 2px 5px; border-radius: 4px;" oninput="calculate();">
+                                               <span style="font-size: 12px; color: var(--text-muted);"> 次 (求稳填0)</span>
+                                           </div>
+                                       </div>
+                                   </div>
+                               </div>
+                           </div>
+                       </div>
+
+                       <div class="empower-limit-tip" id="empowerTip" style="display: none; margin-top: 12px;">⚠️ 赋能限制：主要赋能和次要赋能各最多只能激活 1 个。</div>
+                   </div>
+
+                   <div class="card">
+                       <div class="card-title">扩展自充能附加模块</div>
+                       
+                       <div style="background: var(--inner-bg); padding: 12px; border-radius: 10px; border: 1px solid var(--border); margin-bottom: 12px;">
+                           <label style="display: flex; align-items: center; gap: 8px; font-size: 13px; color: var(--text-color); cursor: pointer; width: 100%;">
+                               <input type="checkbox" id="hasExtraNitro" onchange="toggleExtraUI(); calculate(); triggerAutoCalc(currentActiveField);" style="width: 16px; height: 16px; accent-color: var(--primary);">
+                               绑定到【单发氮气】的自充能 (受反制与充能效率双重影响)
+                           </label>
+                           
+                           <div id="extraNitroContainer" style="margin-top: 12px; display: none; background: var(--box-bg-light); padding: 12px; border-radius: 8px; border: 1px dashed var(--border);">
+                               <div class="form-group" style="margin-bottom: 12px;">
+                                   <label class="form-label" style="color: var(--primary);">每次释放氮气附加百分比</label>
+                                   <div class="input-wrapper">
+                                       <input type="number" id="valExtraNitro" class="form-control" value="0" min="0" step="0.1" oninput="calculate(); triggerAutoCalc(currentActiveField);">
+                                       <span class="input-unit">%</span>
+                                   </div>
+                               </div>
+                               <div style="display: flex; gap: 16px;">
+                                   <label style="display: flex; align-items: center; gap: 6px; font-size: 12px; color: var(--text-muted); cursor: pointer;">
+                                       <input type="checkbox" id="chkExtraNitroFirst" checked onchange="calculate(); triggerAutoCalc(currentActiveField);" style="width: 14px; height: 14px; accent-color: var(--primary);"> 对首发有效
+                                   </label>
+                                   <label style="display: flex; align-items: center; gap: 6px; font-size: 12px; color: var(--text-muted); cursor: pointer;">
+                                       <input type="checkbox" id="chkExtraNitroLoop" checked onchange="calculate(); triggerAutoCalc(currentActiveField);" style="width: 14px; height: 14px; accent-color: var(--primary);"> 对循环有效
+                                   </label>
+                               </div>
+                           </div>
+                       </div>
+
+                       <div style="background: var(--inner-bg); padding: 12px; border-radius: 10px; border: 1px solid var(--border); margin-bottom: 12px;">
+                           <label style="display: flex; align-items: center; gap: 8px; font-size: 13px; color: var(--text-color); cursor: pointer; width: 100%;">
+                               <input type="checkbox" id="hasExtraUlt" onchange="toggleExtraUI(); calculate(); triggerAutoCalc(currentActiveField);" style="width: 16px; height: 16px; accent-color: var(--secondary);">
+                               绑定到【大招释放】的自充能 (受反制与充能效率双重影响)
+                           </label>
+                           
+                           <div id="extraUltContainer" style="margin-top: 12px; display: none; background: var(--box-bg-light); padding: 12px; border-radius: 8px; border: 1px dashed var(--border);">
+                               <div class="form-group" style="margin-bottom: 12px;">
+                                   <label class="form-label" style="color: var(--secondary);">每次大招周期固定附加百分比</label>
+                                   <div class="input-wrapper">
+                                       <input type="number" id="valExtraUlt" class="form-control" value="0" min="0" step="0.1" oninput="calculate(); triggerAutoCalc(currentActiveField);">
+                                       <span class="input-unit">%</span>
+                                   </div>
+                               </div>
+                               <div style="display: flex; gap: 16px;">
+                                   <label style="display: flex; align-items: center; gap: 6px; font-size: 12px; color: var(--text-muted); cursor: pointer;">
+                                       <input type="checkbox" id="chkExtraUltFirst" onchange="calculate(); triggerAutoCalc(currentActiveField);" style="width: 14px; height: 14px; accent-color: var(--secondary);"> 对首发有效 (如开局特性)
+                                   </label>
+                                   <label style="display: flex; align-items: center; gap: 6px; font-size: 12px; color: var(--text-muted); cursor: pointer;">
+                                       <input type="checkbox" id="chkExtraUltLoop" checked onchange="calculate(); triggerAutoCalc(currentActiveField);" style="width: 14px; height: 14px; accent-color: var(--secondary);"> 对循环有效 (默认生效)
+                                   </label>
+                               </div>
+                           </div>
+                       </div>
+
+                       <div style="background: var(--inner-bg); padding: 12px; border-radius: 10px; border: 1px solid var(--border);">
+                           <label style="display: flex; align-items: center; gap: 8px; font-size: 13px; color: var(--text-color); cursor: pointer; width: 100%;">
+                               <input type="checkbox" id="hasExtraPerSec" onchange="toggleExtraUI(); calculate(); triggerAutoCalc(currentActiveField);" style="width: 16px; height: 16px; accent-color: var(--success);">
+                               绑定到【持续时间】的每秒自充能 (受反制与充能效率双重影响)
+                           </label>
+                           
+                           <div id="extraPerSecContainer" style="margin-top: 12px; display: none; background: var(--box-bg-light); padding: 12px; border-radius: 8px; border: 1px dashed var(--border);">
+                               <div class="form-group" style="margin-bottom: 12px;">
+                                   <label class="form-label" style="color: var(--success);">每秒持续附加百分比 (向下取整计算)</label>
+                                   <div class="input-wrapper">
+                                       <input type="number" id="valExtraPerSec" class="form-control" value="0" min="0" step="0.1" oninput="calculate(); triggerAutoCalc(currentActiveField);">
+                                       <span class="input-unit">%</span>
+                                   </div>
+                               </div>
+                               <div style="display: flex; gap: 16px;">
+                                   <label style="display: flex; align-items: center; gap: 6px; font-size: 12px; color: var(--text-muted); cursor: pointer;">
+                                       <input type="checkbox" id="chkExtraPerSecFirst" checked onchange="calculate(); triggerAutoCalc(currentActiveField);" style="width: 14px; height: 14px; accent-color: var(--success);"> 对首发有效
+                                   </label>
+                                   <label style="display: flex; align-items: center; gap: 6px; font-size: 12px; color: var(--text-muted); cursor: pointer;">
+                                       <input type="checkbox" id="chkExtraPerSecLoop" checked onchange="calculate(); triggerAutoCalc(currentActiveField);" style="width: 14px; height: 14px; accent-color: var(--success);"> 对循环有效
+                                   </label>
+                               </div>
+                           </div>
+                       </div>
+
+                   </div>
+                   
+                   <div class="card">
+                       <div class="card-title">车辆技能附加充能效率</div>
+                       <div class="form-group" style="margin-bottom: 0;">
+                           <label class="form-label" style="color: var(--success);">部分车辆特性的额外充能效率提升</label>
+                           <div class="input-wrapper">
+                               <input type="number" id="extraEfficiency" class="form-control" style="border-color: rgba(76, 223, 138, 0.6);" value="0" min="0" step="1" oninput="calculate(); triggerAutoCalc(currentActiveField);">
+                               <span class="input-unit">%</span>
+                           </div>
+                       </div>
+                   </div>
+               </div>
+           </div>
+
+           <style>
+               @media (max-width: 849px) { .calc-vertical-divider, .calc-horizontal-divider { display: none; } }
+           </style>
+           <div class="calc-horizontal-divider" style="height: 1.5px; background: linear-gradient(90deg, transparent, var(--text-muted), transparent); margin: 30px 0; opacity: 0.6; width: 100%;"></div>
+
+           <div class="desktop-layout">
+               <div class="desktop-col">
+                   <div class="section-divider"><span>首发一大交互测算区</span></div>
+
+                   <div class="card">
+                       <div class="card-title">
+                           智能芯片联动面板
+                           <span class="limit-badge">上限：先机30% | 汇能50%</span>
+                       </div>
+
+                       <div class="form-group" style="margin-bottom: 12px;">
+                           <label class="form-label">释放一大所需氮气个数</label>
+                           <div class="input-wrapper">
+                               <input type="number" id="inputFirstNitroCount" class="form-control" value="1" min="0" step="1" oninput="calculate(); triggerAutoCalc(currentActiveField);">
+                               <span class="input-unit">个</span>
+                           </div>
+                       </div>
+
+                       <div style="height: 1.5px; background: linear-gradient(90deg, transparent, var(--text-muted), transparent); margin: 20px 0; opacity: 0.6; width: 100%;"></div>
+                       
+                       <div style="display: flex; flex-wrap: nowrap; gap: 8px; justify-content: space-between; align-items: center; margin-bottom: 12px; font-size: 12px; background: var(--box-bg); padding: 8px 12px; border-radius: 8px; border: 1px solid var(--border);">
+                           <div id="autoCalcInfo" style="flex: 1; line-height: 1.4; word-break: break-word;"><span style="color:var(--success); font-weight:bold;">▶ 联动就绪</span> (修改一项自动算另一项)</div>
+                           <button onclick="resetAutoCalc()" style="flex: 0 0 auto; max-width: 40%; white-space: normal; line-height: 1.3; text-align: center; background: linear-gradient(90deg, var(--primary), var(--secondary)); color: #fff; border: none; padding: 6px 10px; border-radius: 6px; font-weight: bold; cursor: pointer; box-shadow: var(--btn-shadow);">重置联动</button>
+                       </div>
+                       
+                       <div class="row-grid">
+                           <div class="form-group" style="margin-bottom:0;">
+                               <label class="form-label" id="labelXianji"> 先机</label>
+                               <div class="input-wrapper">
+                                   <input type="number" id="inputXianji" class="form-control" value="0" min="0" max="30" step="0.1" oninput="onFieldInput('xianji')" >
+                                   <span class="input-unit">%</span>
+                               </div>
+                           </div>
+                           <div class="form-group" style="margin-bottom:0;">
+                               <label class="form-label" id="labelHuineng"> 汇能</label>
+                               <div class="input-wrapper">
+                                   <input type="number" id="inputHuineng" class="form-control" value="0" min="0" max="50" step="0.1" oninput="onFieldInput('huineng')" >
+                                   <span class="input-unit">%</span>
+                               </div>
+                           </div>
+                       </div>
+                   </div>
+
+                   <div class="card result-card" id="resultCardFirst">
+                       <div class="result-title">首发大招 (开局一大) 面板评估</div>
+                       <div class="result-num" id="resultValueFirst">--</div>
+                       <div class="result-desc" id="resultDetailFirst">评估当前面板状态...</div>
+                       <div id="formulaDisplayFirst" class="formula-box">运算引擎加载中...</div>
+                   </div>
+               </div>
+
+               <div class="calc-vertical-divider" style="width: 1.5px; background: linear-gradient(180deg, transparent, var(--text-muted), transparent); opacity: 0.5; align-self: stretch; margin: 30px 0;"></div>
+
+               <div class="desktop-col">
+                   <div class="section-divider"><span>后续大招循环测算区</span></div>
+
+                   <div class="card">
+                       <div class="card-title">
+                           大招期间氮气释放次数
+                       </div>
+                       <div style="display: flex; flex-wrap: nowrap; gap: 8px; justify-content: space-between; align-items: center; margin-bottom: 12px; font-size: 12px; background: var(--box-bg); padding: 8px 12px; border-radius: 8px; border: 1px solid var(--border);">
+                           <div id="nitroCountModeInfo" style="flex: 1; line-height: 1.4; word-break: break-word;"><span style="color:var(--success); font-weight:bold;">▶ 自动计算就绪</span> (根据大招时长和氮时计算氮气个数)</div>
+                           <button onclick="resetAutoNitroCount()" style="flex: 0 0 auto; max-width: 40%; white-space: normal; line-height: 1.3; text-align: center; background: linear-gradient(90deg, var(--success), #38a169); color: #fff; border: none; padding: 6px 10px; border-radius: 6px; font-weight: bold; cursor: pointer; box-shadow: var(--btn-shadow);">恢复自动计算</button>
+                       </div>
+                       <div class="form-group" style="margin-bottom:0;">
+                           <label class="form-label">大招内释放氮气个数</label>
+                           <div class="input-wrapper">
+                               <input type="number" id="inputNitroCount" class="form-control" value="0" min="0" step="1" oninput="onNitroCountInput()">
+                               <span class="input-unit">个</span>
+                           </div>
+                       </div>
+                   </div>
+
+                   <div class="card result-card result-card-loop" id="resultCardLoop">
+                       <div class="result-title">后续大招无限循环 底线要求</div>
+                       <div style="font-size: 13px; color: var(--accent); margin-bottom: 8px; font-weight: bold;">先机要求：0% (起步后先机芯片对循环彻底失效)</div>
+                       <div class="result-num" id="resultValueLoop">--</div>
+                       <div class="result-desc" id="resultDetailLoop">等待测算循环状态...</div>
+                       <div id="formulaDisplayLoop" class="formula-box">运算引擎加载中...</div>
+                   </div>
+               </div>
+           </div>
+       </div>
+
+       <div class="section-divider" data-html2canvas-ignore="true"><span>计算数据分享</span></div>
+       <div class="card" data-html2canvas-ignore="true" style="margin-bottom: 24px;">
+           <div class="share-btn-group">
+               <button class="share-btn btn-text" onclick="exportConfigText()">
+                   <span class="icon">📋</span>
+                   <div>复制纯文本</div>
+               </button>
+               <button class="share-btn btn-image" onclick="exportConfigImage()">
+                   <span class="icon">📸</span>
+                   <div>保存长截图</div>
+               </button>
+               <button class="share-btn btn-link" onclick="exportConfigLink()">
+                   <span class="icon">🔗</span>
+                   <div>分享配置链接</div>
+               </button>
+           </div>
+       </div>
+       <div style="height: 1.5px; background: linear-gradient(90deg, transparent, var(--text-muted), transparent); margin: 25px 0; opacity: 0.6; width: 100%;"></div>
+
+         <div class="footer-note" style="margin-top: 20px;">
+           <span style="color: var(--text-muted);">⚠️本项目完全本地运行，不进行任何联网行为，不收集任何隐私数据，请放心使用。<br><br>
+           ⚠️由Vanem开发，个人公益制作，严禁倒卖，付费传播，以及任何形式的商用。更多内容请关注作者主页：</span>
+           <div style="display: flex; justify-content: center; flex-wrap: wrap; margin-top: 4px;">
+                <a href="https://m.bilibili.com/space/1179286584" target="_blank" class="social-tag">📺 B站主页</a>
+                <a href="https://v.douyin.com/AEe8wPEHZp0/" target="_blank" class="social-tag">🎵 抖音主页</a>
+                <a href="https://v.kuaishou.com/JpRc0cK3" target="_blank" class="social-tag">🎥 快手主页</a>
+           </div>
+           
+        <div style="height: 1.5px; background: linear-gradient(90deg, transparent, var(--text-muted), transparent); margin: 25px 0; opacity: 0.6; width: 100%;"></div>
+           
+        <div class="card" data-html2canvas-ignore="true" style="margin-top: 24px; margin-bottom: 0; padding: 16px 20px; text-align: left;">
+           <div class="card-title" style="border-left-color: var(--warning); margin-bottom: 12px;">🐛 BUG反馈与建议</div>
+           <div style="font-size: 12px; color: var(--text-muted); line-height: 1.6; margin-bottom: 16px;">
+               如果您在使用过程中发现任何计算逻辑错误、界面显示异常，或有新的功能建议，欢迎通过 GitHub Issues 提交反馈！
+           </div>
+           <a href="https://github.com/VanemKrAu/Ace-Racer-Calc/issues" target="_blank" class="bug-btn">
+               <span>前往 GitHub 提交 Issue</span>
+               <span style="font-size: 16px;">↗</span>
+           </a>
+        </div>
+           
+        <div style="height: 1.5px; background: linear-gradient(90deg, transparent, var(--text-muted), transparent); margin: 25px 0; opacity: 0.6; width: 100%;"></div>
+           
+        <div class="card" data-html2canvas-ignore="true" style="margin-top: 24px; margin-bottom: 0; padding: 16px 20px; text-align: left;">
+           <div class="card-title" style="border-left-color: var(--secondary); margin-bottom: 12px;">✨ 特别鸣谢</div>
+           <div style="font-size: 12px; color: var(--text-muted); line-height: 1.6; margin-bottom: 16px;">
+               上榜条件（三项满足任一即可）：<br>①在GitHub Issues中提交一次可复现的严重影响正常使用的技术性BUG（有详细操作过程），②提出一次被采纳的新功能建议，③累积打赏超过30元（请将打赏记录发送至我的邮箱 vanemmailbox@qq.com，否则无法统计）。
+           </div>
+           <div class="thanks-list">
+               <span class="thanks-item">清秒</span>
+               <span class="thanks-item">残梦</span>
+               <span class="thanks-item">野马、YT</span>
+               <span class="thanks-item">柏拉图plato</span>
+           </div>
+           <div style="margin-top: 16px; font-size: 12px; color: var(--text-muted); line-height: 1.6; text-align: center;">
+               非常感谢以上车友在网站早期的开发中提供了功能灵感和宝贵的测试数据。<br>
+               如果有更多关于功能的建议或者发现了遗漏的BUG，欢迎随时交流！
+           </div>
+       </div>
+
+       <div style="height: 1.5px; background: linear-gradient(90deg, transparent, var(--text-muted), transparent); margin: 25px 0; opacity: 0.6; width: 100%;"></div>
+
+       <div class="bottom-image-wrapper">
+           <div class="sponsor-text">如果觉得这个工具做的还不错的话，可以通过微信赞赏码来支持我，您的赞赏就是我更新的最大动力，感谢🌹</div>
+           
+           <img id="imgDark" src="https://i0.hdslb.com/bfs/openplatform/07d46fa9619f7ae4fa275da96d3c34d78e552624.png" alt="Dark Mode Image" crossorigin="anonymous">
+           <img id="imgLight" src="https://i0.hdslb.com/bfs/openplatform/0a2da617afc377db4eb2cc9cc3a6fbef73d49013.png" alt="Light Mode Image" crossorigin="anonymous">
+           <div class="img-caption"></div>
+       </div>
+   </div>
+
+   <div id="copyToast" class="copy-toast">操作成功！</div>
+
+   <script>
+       document.addEventListener('wheel', function(e) {
+           if (document.activeElement && document.activeElement.type === 'number') {
+               document.activeElement.blur();
+           }
+       }, { passive: true });
+
+       var isRestoringConfig = false;
+
+       function toggleThemeMenu() {
+           var menu = document.getElementById('themeMenu');
+           document.getElementById('authorMenu').classList.remove('show');
+           menu.classList.toggle('show');
+       }
+
+       function toggleAuthorMenu() {
+           var menu = document.getElementById('authorMenu');
+           document.getElementById('themeMenu').classList.remove('show');
+           menu.classList.toggle('show');
+       }
+
+       window.onclick = function(event) {
+           if (!event.target.closest('#themeBtn') && !event.target.closest('#themeMenu')) {
+               var themeMenu = document.getElementById('themeMenu');
+               if (themeMenu && themeMenu.classList.contains('show')) {
+                   themeMenu.classList.remove('show');
+               }
+           }
+           if (!event.target.closest('#authorBtn') && !event.target.closest('#authorMenu')) {
+               var authorMenu = document.getElementById('authorMenu');
+               if (authorMenu && authorMenu.classList.contains('show')) {
+                   authorMenu.classList.remove('show');
+               }
+           }
+       }
+
+       function applyThemeMode(isLight) {
+           var body = document.body;
+           if (isLight) {
+               body.classList.add('light-mode');
+           } else {
+               body.classList.remove('light-mode');
+           }
+       }
+
+       function updateThemeIcon(mode) {
+           var icon = document.getElementById('themeIcon');
+           if (mode === 'light') {
+               icon.innerText = '☀️';
+           } else if (mode === 'dark') {
+               icon.innerText = '🌙';
+           } else {
+               icon.innerText = '💻';
+           }
+       }
+
+       var systemThemeMql = null;
+
+       function initTheme() {
+           var savedTheme = localStorage.getItem('theme');
+           var isSystemDark = false;
+
+           if (window.matchMedia) {
+               systemThemeMql = window.matchMedia('(prefers-color-scheme: dark)');
+               isSystemDark = systemThemeMql.matches;
+               
+               var themeChangeHandler = function(e) {
+                   if (!localStorage.getItem('theme')) {
+                       applyThemeMode(!e.matches);
+                   }
+               };
+
+               if (systemThemeMql.addEventListener) {
+                   systemThemeMql.addEventListener('change', themeChangeHandler);
+               } else if (systemThemeMql.addListener) {
+                   systemThemeMql.addListener(themeChangeHandler);
+               }
+           }
+
+           if (savedTheme === 'light' || savedTheme === 'dark') {
+               applyThemeMode(savedTheme === 'light');
+               updateThemeIcon(savedTheme);
+           } else {
+               applyThemeMode(!isSystemDark);
+               updateThemeIcon('system');
+           }
+       }
+
+       function selectTheme(mode) {
+           if (mode === 'system') {
+               localStorage.removeItem('theme');
+               var isSystemDark = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches;
+               applyThemeMode(!isSystemDark);
+           } else {
+               localStorage.setItem('theme', mode);
+               applyThemeMode(mode === 'light');
+           }
+           updateThemeIcon(mode);
+           document.getElementById('themeMenu').classList.remove('show');
+       }
+
+       function showToast(message) {
+           var toast = document.getElementById("copyToast");
+           toast.innerText = message;
+           toast.className = "copy-toast show";
+           setTimeout(function() {
+               toast.className = toast.className.replace("show", "");
+           }, 2500);
+       }
+
+       function copyToClipboard(text, successMsg) {
+           var fallbackCopy = function() {
+               var textArea = document.createElement("textarea");
+               textArea.value = text;
+               textArea.style.position = "fixed";
+               textArea.style.left = "-999999px";
+               textArea.style.top = "-999999px";
+               document.body.appendChild(textArea);
+               
+               textArea.focus();
+               textArea.select();
+               textArea.setSelectionRange(0, 999999);
+               
+               try {
+                   var successful = document.execCommand('copy');
+                   if (successful) {
+                       showToast(successMsg);
+                   } else {
+                       showToast("❌ 复制失败，您的浏览器拦截了操作。");
+                   }
+               } catch (error) {
+                   showToast("❌ 复制失败，请尝试截图分享。");
+               } finally {
+                   textArea.remove();
+               }
+           };
+
+           if (navigator.clipboard && window.isSecureContext) {
+               navigator.clipboard.writeText(text).then(function() {
+                   showToast(successMsg);
+               }).catch(function(err) {
+                   fallbackCopy();
+               });
+           } else {
+               fallbackCopy();
+           }
+       }
+
+       function exportConfigText() {
+           var target = document.getElementById('ultThreshold').value || '0';
+           var startCharge = document.getElementById('startCharge').value || '0';
+           var baseNitro = document.getElementById('baseNitro').value || '0';
+           
+           var checkedRadio = document.querySelector('input[name="nitroRadio"]:checked');
+           var nitroType = checkedRadio ? checkedRadio.parentElement.querySelector('label').textContent.trim() : '未知';
+           var nitroVal = checkedRadio ? checkedRadio.value : '1x5';
+           var nitroTime = document.getElementById('time_' + nitroVal).value || '0';
+           
+           var isSpec = document.getElementById('isSpec').checked ? '是' : '否';
+           var counter = document.getElementById('counterRange').value || '0';
+           var debuff = document.getElementById('debuffRange').value || '0';
+           
+           var activeEmpowers = [];
+           var checkedBoxes = document.querySelectorAll('.empower-checkbox:checked');
+           for (var i = 0; i < checkedBoxes.length; i++) {
+               var titleElem = checkedBoxes[i].parentElement.nextElementSibling.querySelector('.title');
+               if(titleElem) {
+                   var titleText = titleElem.textContent || titleElem.innerText || '';
+                   activeEmpowers.push(titleText.trim().split(/\s+/)[0]);
+               }
+           }
+           var empowerStr = activeEmpowers.length > 0 ? activeEmpowers.join(' + ') : '无';
+
+           var valExtraNitro = document.getElementById('hasExtraNitro').checked ? (document.getElementById('valExtraNitro').value || "0") : "0";
+           var valExtraUlt = document.getElementById('hasExtraUlt').checked ? (document.getElementById('valExtraUlt').value || "0") : "0";
+           var valExtraPerSec = document.getElementById('hasExtraPerSec').checked ? (document.getElementById('valExtraPerSec').value || "0") : "0";
+           var extraEfficiency = document.getElementById('extraEfficiency').value || "0";
+
+           var xianji = document.getElementById('inputXianji').value || '0';
+           var huineng = document.getElementById('inputHuineng').value || '0';
+           var firstNitroCount = document.getElementById('inputFirstNitroCount').value || '0';
+           var loopNitroCount = document.getElementById('inputNitroCount').value || '0';
+
+           var resValFirstElem = document.getElementById('resultValueFirst');
+           var resFirst = (resValFirstElem.textContent || resValFirstElem.innerText || '').replace(/✅|❌/g, '').trim();
+           
+           var resValLoopElem = document.getElementById('resultValueLoop');
+           var resLoop = (resValLoopElem.textContent || resValLoopElem.innerText || '').replace(/✅|❌/g, '').trim();
+
+           var text = "🏎️【王牌竞速·大招能量配置单】\n";
+           text += "┈┈┈┈┈┈┈┈┈┈┈┈┈┈\n";
+           text += "🔹 基础充能：阈值" + target + "% | 起步" + startCharge + "% | 专精(" + isSpec + ")\n";
+           text += "🔹 氮气充能：" + baseNitro + "% (" + nitroType + " / " + nitroTime + "秒)\n";
+           text += "🔹 环境影响：反制" + counter + "% | 降效" + debuff + "%\n";
+           text += "🔹 赋能充能：" + empowerStr + "\n";
+           
+           if (parseFloat(valExtraNitro) > 0 || parseFloat(valExtraUlt) > 0 || parseFloat(valExtraPerSec) > 0 || parseFloat(extraEfficiency) !== 0) {
+               text += "🔹 附加充能：额外氮气(" + valExtraNitro + "%) | 额外大招(" + valExtraUlt + "%) | 持续每秒(" + valExtraPerSec + "%) | 充能效率提升(" + extraEfficiency + "%)\n";
+           }
+
+           text += "┈┈┈┈┈┈┈┈┈┈┈┈┈┈\n";
+           text += "▶ 首发：需氮" + firstNitroCount + "个 | 先机" + xianji + "% | 汇能" + huineng + "%\n";
+           text += "▶ 状态：" + (resFirst || '计算中...') + "\n";
+           text += "┈┈┈┈┈┈┈┈┈┈┈┈┈┈\n";
+           text += "▶ 循环：大招内含 " + loopNitroCount + " 个氮气\n";
+           text += "▶ 状态：" + (resLoop || '计算中...') + "\n";
+           text += "🔗 by Vanem - 王牌芯片计算器 - aceracercalc.top";
+
+           copyToClipboard(text, "✅ 文本已复制，快去分享吧！");
+       }
+
+       function exportConfigImage() {
+           if (typeof html2canvas === 'undefined') {
+               showToast("❌ 截图组件未加载，请检查网络或配置！");
+               return;
+           }
+           
+           var originalScrollY = window.scrollY || document.documentElement.scrollTop;
+           window.scrollTo(0, 0);
+           
+           var appContainer = document.querySelector('.app-container');
+           var isLight = document.body.classList.contains('light-mode');
+           var bgColor = isLight ? '#f0f4f8' : '#18213d';
+           
+           var exactWidth = appContainer.getBoundingClientRect().width;
+           if (exactWidth < 380) exactWidth = 480;
+
+           var loaderOverlay = document.createElement('div');
+           loaderOverlay.style.position = 'fixed';
+           loaderOverlay.style.top = '0';
+           loaderOverlay.style.left = '0';
+           loaderOverlay.style.width = '100vw';
+           loaderOverlay.style.height = '100vh';
+           loaderOverlay.style.backgroundColor = bgColor;
+           loaderOverlay.style.zIndex = '10000';
+           loaderOverlay.style.display = 'flex';
+           loaderOverlay.style.flexDirection = 'column';
+           loaderOverlay.style.justifyContent = 'center';
+           loaderOverlay.style.alignItems = 'center';
+           loaderOverlay.innerHTML = '<div style="font-size:40px; margin-bottom:16px;">📸</div><div style="font-size:18px; font-weight:bold; color:'+(isLight?'#007bb5':'#00f2fe')+';">正在生成超清长图...</div><div style="font-size:12px; color:#8e9aaf; margin-top:8px;">(极速渲染引擎运转中，请稍候)</div>';
+           document.body.appendChild(loaderOverlay);
+
+        setTimeout(function() {
+
+        var clone = appContainer.cloneNode(true);
+
+           var origElements = appContainer.querySelectorAll('*');
+           var cloneElements = clone.querySelectorAll('*');
+           for (var i = 0; i < origElements.length; i++) {
+               var origEl = origElements[i];
+               if (origEl.hasAttribute('style')) {
+                   var compStyle = window.getComputedStyle(origEl);
+                   cloneElements[i].style.setProperty('background-color', compStyle.backgroundColor, 'important');
+                   cloneElements[i].style.setProperty('color', compStyle.color, 'important');
+                   cloneElements[i].style.setProperty('border-color', compStyle.borderColor, 'important');
+               }
+               cloneElements[i].style.setProperty('font-family', 'Arial, "Helvetica Neue", Helvetica, sans-serif', 'important');
+               cloneElements[i].style.setProperty('letter-spacing', 'normal', 'important');
+           }
+           clone.style.setProperty('font-family', 'Arial, "Helvetica Neue", Helvetica, sans-serif', 'important');
+
+           var origInputs = appContainer.querySelectorAll('input, select, textarea');
+           var cloneInputs = clone.querySelectorAll('input, select, textarea');
+           
+           for (var i = 0; i < origInputs.length; i++) {
+               var orig = origInputs[i];
+               var cln = cloneInputs[i];
+               
+               if (orig.type === 'checkbox' || orig.type === 'radio') {
+                   if (orig.type === 'radio') {
+                       cln.name = orig.name + '_clone';
+                   }
+                   cln.checked = orig.checked;
+                   if (orig.checked) {
+                       cln.setAttribute('checked', 'checked');
+                   } else {
+                       cln.removeAttribute('checked');
+                   }
+               } else if (orig.type === 'range') {
+                   var rangeVal = parseFloat(orig.value) || 0;
+                   var min = parseFloat(orig.min) || 0;
+                   var max = parseFloat(orig.max) || 100;
+                   var percent = ((rangeVal - min) / (max - min)) * 100;
+                   
+                   var trackDiv = document.createElement('div');
+                   trackDiv.style.width = '100%';
+                   trackDiv.style.height = '6px';
+                   
+                   var emptyTrackColor = isLight ? '#cbd5e0' : 'rgba(100, 120, 180, 0.25)';
+                   var filledTrackColor = isLight ? '#e53e3e' : '#ff007f';
+                   trackDiv.style.background = 'linear-gradient(to right, ' + filledTrackColor + ' ' + percent + '%, ' + emptyTrackColor + ' ' + percent + '%)';
+                   
+                   trackDiv.style.borderRadius = '3px';
+                   trackDiv.style.position = 'relative';
+                   trackDiv.style.margin = '10px 0';
+                   
+                   var thumbDiv = document.createElement('div');
+                   thumbDiv.style.width = '16px';
+                   thumbDiv.style.height = '16px';
+                   thumbDiv.style.background = filledTrackColor;
+                   thumbDiv.style.borderRadius = '50%';
+                   thumbDiv.style.position = 'absolute';
+                   thumbDiv.style.top = '-5px';
+                   thumbDiv.style.left = 'calc(' + percent + '% - 8px)';
+                   
+                   trackDiv.appendChild(thumbDiv);
+                   cln.parentNode.insertBefore(trackDiv, cln);
+                   cln.style.display = 'none';
+               } else {
+                   cln.value = orig.value;
+                   cln.setAttribute('value', orig.value);
+               }
+           }
+
+           var clonedResultNums = clone.querySelectorAll('.result-num');
+           for (var i = 0; i < clonedResultNums.length; i++) {
+               var el = clonedResultNums[i];
+               el.style.background = 'transparent';
+               el.style.webkitBackgroundClip = 'initial';
+               el.style.webkitTextFillColor = 'initial';
+               el.style.textShadow = 'none';
+               
+               var parentCard = el.closest('.result-card, .result-card-loop');
+               var isError = parentCard && parentCard.classList.contains('error-state');
+               var isLoop = parentCard && parentCard.classList.contains('result-card-loop');
+               
+               if (isError) el.style.color = isLight ? '#e53e3e' : '#ff007f';
+               else if (isLoop) el.style.color = isLight ? '#2f855a' : '#4cdf8a';
+               else el.style.color = isLight ? '#007bb5' : '#00f2fe';
+           }
+           
+           var loopInClone = clone.querySelector('#resultCardLoop');
+           if (loopInClone) {
+               var sibling = loopInClone.nextElementSibling;
+               while (sibling) {
+                   var next = sibling.nextElementSibling;
+                   sibling.remove();
+                   sibling = next;
+               }
+               var parent = loopInClone.parentElement;
+               while (parent && parent !== clone) {
+                   var parentSibling = parent.nextElementSibling;
+                   while (parentSibling) {
+                       var nextParentSibling = parentSibling.nextElementSibling;
+                       parentSibling.remove();
+                       parentSibling = nextParentSibling;
+                   }
+                   parent = parent.parentElement;
+               }
+           }
+           
+           var ignoredElements = clone.querySelectorAll('[data-html2canvas-ignore="true"]');
+           for (var i = 0; i < ignoredElements.length; i++) {
+               if (ignoredElements[i].parentNode) {
+                   ignoredElements[i].parentNode.removeChild(ignoredElements[i]);
+               }
+           }
+           
+           var tempWrapper = document.createElement('div');
+           tempWrapper.style.position = 'absolute';
+           tempWrapper.style.left = '0px';
+           tempWrapper.style.top = '0px';
+           tempWrapper.style.zIndex = '9998';
+           tempWrapper.style.width = exactWidth + 'px';
+           tempWrapper.style.backgroundColor = bgColor;
+           
+           document.body.appendChild(tempWrapper);
+           tempWrapper.appendChild(clone);
+           
+           clone.style.width = exactWidth + 'px';
+           clone.style.maxWidth = 'none';
+           clone.style.margin = '0';
+           clone.style.padding = getComputedStyle(appContainer).padding;
+           clone.style.boxSizing = 'border-box';
+           
+           var targetHeight = clone.offsetHeight;
+           
+           var smartScale = 1600 / exactWidth;
+           var hdScale = Math.max(2, Math.min(smartScale, 4));
+           
+           setTimeout(function() {
+               html2canvas(clone, {
+                   backgroundColor: bgColor,
+                   scale: hdScale,
+                   useCORS: true,
+                   allowTaint: false,
+                   logging: false,
+                   width: exactWidth,
+                   height: targetHeight,
+                   windowWidth: exactWidth,
+                   windowHeight: targetHeight,
+                   x: 0,
+                   y: 0,
+                   scrollX: 0,
+                   scrollY: 0
+               }).then(function(canvas) {
+                   cleanup();
+                   
+                   var scaleMultiplier = canvas.width / exactWidth;
+                   var footerHeight = 70 * scaleMultiplier;
+                   
+                   var newCanvas = document.createElement('canvas');
+                   newCanvas.width = canvas.width;
+                   newCanvas.height = canvas.height + footerHeight;
+                   
+                   var ctx = newCanvas.getContext('2d');
+                   ctx.imageSmoothingEnabled = true;
+                   ctx.imageSmoothingQuality = 'high';
+                   
+                   ctx.fillStyle = bgColor;
+                   ctx.fillRect(0, 0, newCanvas.width, newCanvas.height);
+                   ctx.drawImage(canvas, 0, 0);
+                   
+                   ctx.beginPath();
+                   ctx.moveTo(30 * scaleMultiplier, canvas.height + 1);
+                   ctx.lineTo(newCanvas.width - (30 * scaleMultiplier), canvas.height + 1);
+                   ctx.strokeStyle = isLight ? '#cbd5e0' : 'rgba(100, 120, 180, 0.25)';
+                   ctx.lineWidth = 1.5 * scaleMultiplier;
+                   ctx.stroke();
+                   
+                   ctx.fillStyle = isLight ? '#007bb5' : '#00f2fe';
+                   ctx.font = 'bold ' + (22 * scaleMultiplier) + 'px -apple-system, BlinkMacSystemFont, sans-serif';
+                   ctx.textAlign = 'center';
+                   ctx.textBaseline = 'middle';
+                   ctx.fillText('aceracercalc.top', newCanvas.width / 2, canvas.height + (30 * scaleMultiplier));
+                   
+                   ctx.fillStyle = isLight ? '#4a5568' : '#8e9aaf';
+                   ctx.font = (13 * scaleMultiplier) + 'px -apple-system, BlinkMacSystemFont, sans-serif';
+                   ctx.fillText('王牌竞速 · 大招能量精密计算器', newCanvas.width / 2, canvas.height + (52 * scaleMultiplier));
+                   
+                   var link = document.createElement('a');
+                   var dateStr = new Date().toISOString().slice(0,10).replace(/-/g,"");
+                   link.download = '王牌计算器_' + dateStr + '.png';
+                   link.href = newCanvas.toDataURL('image/png', 1.0);
+                   link.click();
+                   
+                   showToast("✅ 高清长图已保存到您的设备！");
+               }).catch(function(err) {
+                   cleanup();
+                   showToast("❌ 生成失败，请重试或更换浏览器。");
+               });
+
+               function cleanup() {
+                   if (tempWrapper.parentNode) document.body.removeChild(tempWrapper);
+                   if (loaderOverlay.parentNode) document.body.removeChild(loaderOverlay);
+                   window.scrollTo(0, originalScrollY);
+               }
+           }, 350);
+           
+       }, 50); 
+
+       }
+
+       function exportConfigLink() {
+           var checkedRadio = document.querySelector('input[name="nitroRadio"]:checked');
+           var nr = checkedRadio ? checkedRadio.value : '1x5';
+           var nd = document.getElementById('time_' + nr).value;
+           
+           var emps = Array.from(document.querySelectorAll('.empower-checkbox:checked')).map(function(cb) { return cb.value; }).join('-');
+
+           var compactArr = [
+               document.getElementById('ultThreshold').value,        
+               document.getElementById('startCharge').value,        
+               document.getElementById('baseNitro').value,          
+               nr,                                                  
+               nd,                                                  
+               document.getElementById('baseUltDuration').value,    
+               document.getElementById('isSpec').checked ? 1 : 0,    
+               document.getElementById('counterRange').value,        
+               document.getElementById('debuffRange').value,        
+               emps || "0",                                          
+               document.getElementById('jiezou_sub_first').value,    
+               document.getElementById('jiezou_sub_loop').value,    
+               document.getElementById('queyi_sub_self').checked ? 1 : 0,  
+               document.getElementById('queyi_sub_enemy').checked ? 1 : 0,
+               document.getElementById('huaxin_sub_first').value,    
+               document.getElementById('huaxin_sub_loop').value,    
+               document.getElementById('hasExtraNitro').checked ? 1 : 0,  
+               document.getElementById('valExtraNitro').value,      
+               document.getElementById('chkExtraNitroFirst').checked ? 1 : 0,
+               document.getElementById('chkExtraNitroLoop').checked ? 1 : 0,  
+               document.getElementById('hasExtraUlt').checked ? 1 : 0,    
+               document.getElementById('valExtraUlt').value,        
+               document.getElementById('chkExtraUltFirst').checked ? 1 : 0,
+               document.getElementById('chkExtraUltLoop').checked ? 1 : 0,  
+               document.getElementById('extraEfficiency').value,    
+               document.getElementById('inputFirstNitroCount').value,
+               document.getElementById('inputXianji').value,        
+               document.getElementById('inputHuineng').value,        
+               isManualNitroCount ? 1 : 0,                          
+               document.getElementById('inputNitroCount').value,
+               document.getElementById('time_1x6').value,            
+               document.getElementById('hasExtraPerSec').checked ? 1 : 0,  
+               document.getElementById('valExtraPerSec').value,          
+               document.getElementById('chkExtraPerSecFirst').checked ? 1 : 0,
+               document.getElementById('chkExtraPerSecLoop').checked ? 1 : 0  
+           ];
+
+           var cfgStr = encodeURIComponent(btoa(compactArr.join('|')));
+           var baseUrl = window.location.origin + window.location.pathname;
+           var shareUrl = baseUrl + '?s=' + cfgStr;
+
+           copyToClipboard(shareUrl, "🔗 短链接已复制，分享给车友可直接打开！");
+       }
+       
+       function loadConfigFromUrl() {
+           var urlParams = new URLSearchParams(window.location.search);
+           if (!urlParams.has('s') && !urlParams.has('cfg')) return false;
+
+           isRestoringConfig = true;
+           var result = false;
+
+           if (urlParams.has('s')) {
+               try {
+                   var safeB64 = urlParams.get('s').replace(/ /g, '+');
+                   var arr = atob(safeB64).split('|');
+                   if (arr.length >= 29) {
+                       var isOldVersion = arr.length === 29;
+                       var offset = isOldVersion ? -1 : 0;
+
+                       document.getElementById('ultThreshold').value = arr[0];
+                       document.getElementById('startCharge').value = arr[1];
+                       document.getElementById('baseNitro').value = arr[2];
+                       
+                       var nr = arr[3];
+                       
+                       if (arr.length >= 31) {
+                           var anchorInput = document.getElementById('time_1x6');
+                           if (anchorInput) {
+                               anchorInput.value = arr[30];
+                               syncNitroTimes('1x6');
+                           }
+                       } else if (!isOldVersion) {
+                           var timeInput = document.getElementById('time_' + nr);
+                           if (timeInput) {
+                               timeInput.value = arr[4];
+                               syncNitroTimes(nr);
+                           }
+                       }
+
+                       var radio = document.getElementById('r_' + nr);
+                       if (radio) {
+                           radio.checked = true;
+                           handleNitroRadioChange(true);
+                       }
+
+                       document.getElementById('baseUltDuration').value = arr[5 + offset];
+                       document.getElementById('isSpec').checked = arr[6 + offset] === '1';
+
+                       document.getElementById('counterRange').value = arr[7 + offset];
+                       document.getElementById('counterValue').innerText = arr[7 + offset] + '%';
+                       document.getElementById('debuffRange').value = arr[8 + offset];
+                       document.getElementById('debuffValue').innerText = arr[8 + offset] + '%';
+
+                       var cbs = document.querySelectorAll('.empower-checkbox');
+                       for (var i = 0; i < cbs.length; i++) { cbs[i].checked = false; }
+                       if (arr[9 + offset] !== "0") {
+                           var emps = arr[9 + offset].split('-');
+                           for (var j = 0; j < emps.length; j++) {
+                               var cb = document.getElementById('chk_' + emps[j]);
+                               if (cb) { cb.checked = true; handleEmpowerChange(cb); }
+                           }
+                       }
+
+                       document.getElementById('jiezou_sub_first').value = arr[10 + offset];
+                       document.getElementById('jiezou_sub_loop').value = arr[11 + offset];
+                       document.getElementById('queyi_sub_self').checked = arr[12 + offset] === '1';
+                       document.getElementById('queyi_sub_enemy').checked = arr[13 + offset] === '1';
+                       document.getElementById('huaxin_sub_first').value = arr[14 + offset];
+                       document.getElementById('huaxin_sub_loop').value = arr[15 + offset];
+
+                       document.getElementById('hasExtraNitro').checked = arr[16 + offset] === '1';
+                       toggleExtraUI();
+                       document.getElementById('valExtraNitro').value = arr[17 + offset];
+                       document.getElementById('chkExtraNitroFirst').checked = arr[18 + offset] === '1';
+                       document.getElementById('chkExtraNitroLoop').checked = arr[19 + offset] === '1';
+
+                       document.getElementById('hasExtraUlt').checked = arr[20 + offset] === '1';
+                       toggleExtraUI();
+                       document.getElementById('valExtraUlt').value = arr[21 + offset];
+                       document.getElementById('chkExtraUltFirst').checked = arr[22 + offset] === '1';
+                       document.getElementById('chkExtraUltLoop').checked = arr[23 + offset] === '1';
+
+                       document.getElementById('extraEfficiency').value = arr[24 + offset];
+                       document.getElementById('inputFirstNitroCount').value = arr[25 + offset];
+                       document.getElementById('inputXianji').value = arr[26 + offset];
+                       document.getElementById('inputHuineng').value = arr[27 + offset];
+
+                       if (arr[28 + offset] === '1') {
+                           isManualNitroCount = true;
+                           document.getElementById('inputNitroCount').value = arr[29 + offset];
+                           updateNitroCountUI();
+                       }
+                       
+                       if (arr.length >= 35) {
+                           document.getElementById('hasExtraPerSec').checked = arr[31] === '1';
+                           toggleExtraUI();
+                           document.getElementById('valExtraPerSec').value = arr[32];
+                           document.getElementById('chkExtraPerSecFirst').checked = arr[33] === '1';
+                           document.getElementById('chkExtraPerSecLoop').checked = arr[34] === '1';
+                       }
+                       
+                       result = true;
+                   }
+               } catch (e) {
+               }
+           } else if (urlParams.has('cfg')) {
+               try {
+                   var safeCfgB64 = urlParams.get('cfg').replace(/ /g, '+');
+                   var config = JSON.parse(decodeURIComponent(atob(safeCfgB64)));
+
+                   if(config.ut !== undefined) document.getElementById('ultThreshold').value = config.ut;
+                   if(config.sc !== undefined) document.getElementById('startCharge').value = config.sc;
+                   if(config.bn !== undefined) document.getElementById('baseNitro').value = config.bn;
+                   if(config.nr) {
+                       var radioObj = document.getElementById('r_' + config.nr);
+                       if (radioObj) radioObj.checked = true;
+                   }
+                   if(config.bud !== undefined) document.getElementById('baseUltDuration').value = config.bud;
+                   if(config.sp !== undefined) document.getElementById('isSpec').checked = config.sp;
+
+                   if(config.cr !== undefined) {
+                       document.getElementById('counterRange').value = config.cr;
+                       document.getElementById('counterValue').innerText = config.cr + '%';
+                   }
+                   if(config.dr !== undefined) {
+                       document.getElementById('debuffRange').value = config.dr;
+                       document.getElementById('debuffValue').innerText = config.dr + '%';
+                   }
+
+                   var allCbs = document.querySelectorAll('.empower-checkbox');
+                   for (var k = 0; k < allCbs.length; k++) { allCbs[k].checked = false; }
+                   if(config.emps) {
+                       for (var m = 0; m < config.emps.length; m++) {
+                           var oldCb = document.getElementById('chk_' + config.emps[m]);
+                           if (oldCb) { oldCb.checked = true; handleEmpowerChange(oldCb); }
+                       }
+                   }
+
+                   if(config.jf !== undefined) document.getElementById('jiezou_sub_first').value = config.jf;
+                   if(config.jl !== undefined) document.getElementById('jiezou_sub_loop').value = config.jl;
+                   if(config.qs !== undefined) document.getElementById('queyi_sub_self').checked = config.qs;
+                   if(config.qe !== undefined) document.getElementById('queyi_sub_enemy').checked = config.qe;
+                   if(config.hf !== undefined) document.getElementById('huaxin_sub_first').value = config.hf;
+                   if(config.hl !== undefined) document.getElementById('huaxin_sub_loop').value = config.hl;
+
+                   if(config.hen !== undefined) { document.getElementById('hasExtraNitro').checked = config.hen; toggleExtraUI(); }
+                   if(config.ven !== undefined) document.getElementById('valExtraNitro').value = config.ven;
+                   if(config.enf !== undefined) document.getElementById('chkExtraNitroFirst').checked = config.enf;
+                   if(config.enl !== undefined) document.getElementById('chkExtraNitroLoop').checked = config.enl;
+
+                   if(config.heu !== undefined) { document.getElementById('hasExtraUlt').checked = config.heu; toggleExtraUI(); }
+                   if(config.veu !== undefined) document.getElementById('valExtraUlt').value = config.veu;
+                   if(config.euf !== undefined) document.getElementById('chkExtraUltFirst').checked = config.euf;
+                   if(config.eul !== undefined) document.getElementById('chkExtraUltLoop').checked = config.eul;
+                   
+                   if(config.hps !== undefined) { document.getElementById('hasExtraPerSec').checked = config.hps; toggleExtraUI(); }
+                   if(config.vps !== undefined) document.getElementById('valExtraPerSec').value = config.vps;
+                   if(config.psf !== undefined) document.getElementById('chkExtraPerSecFirst').checked = config.psf;
+                   if(config.psl !== undefined) document.getElementById('chkExtraPerSecLoop').checked = config.psl;
+
+                   if(config.ee !== undefined) document.getElementById('extraEfficiency').value = config.ee;
+                   
+                   if(config.fnc !== undefined) document.getElementById('inputFirstNitroCount').value = config.fnc;
+                   if(config.xj !== undefined) document.getElementById('inputXianji').value = config.xj;
+                   if(config.hn !== undefined) document.getElementById('inputHuineng').value = config.hn;
+
+                   if(config.mn) {
+                       isManualNitroCount = true;
+                       if(config.nc !== undefined) document.getElementById('inputNitroCount').value = config.nc;
+                       updateNitroCountUI();
+                   }
+
+                   result = true;
+               } catch (e) {
+               }
+           }
+
+           isRestoringConfig = false;
+           return result;
+       }
+
+       var nitroRatios = { '1x5': 1.0, '1x6': 1.2, '2x2': 0.4, '2x3': 0.6, '2x25': 0.5, '3x2': 0.4 };
+       var isManualNitroCount = false;
+
+       function syncNitroTimes(changedId) {
+           var radio = document.getElementById('r_' + changedId);
+           if (radio && !radio.checked) { radio.checked = true; handleNitroRadioChange(); }
+           var changedValue = parseFloat(document.getElementById('time_' + changedId).value) || 0;
+           if (changedValue <= 0) { if (!isRestoringConfig) calculate(); return; }
+           var baseValue = changedValue / nitroRatios[changedId];
+           for (var key in nitroRatios) {
+               if (nitroRatios.hasOwnProperty(key) && key !== changedId) {
+                   document.getElementById('time_' + key).value = parseFloat((baseValue * nitroRatios[key]).toFixed(2));
+               }
+           }
+           if (!isRestoringConfig) calculate();
+       }
+
+       function updateCounterSlider() {
+           document.getElementById('counterValue').innerText = document.getElementById('counterRange').value + '%';
+           if (!isRestoringConfig) { calculate(); triggerAutoCalc(currentActiveField); }
+       }
+
+       function updateDebuffSlider() {
+           document.getElementById('debuffValue').innerText = document.getElementById('debuffRange').value + '%';
+           if (!isRestoringConfig) { calculate(); triggerAutoCalc(currentActiveField); }
+       }
+
+       function toggleExtraUI() {
+           var nitroCb = document.getElementById('hasExtraNitro');
+           document.getElementById('extraNitroContainer').style.display = nitroCb.checked ? 'block' : 'none';
+           if (nitroCb.checked) {
+               nitroCb.parentElement.parentElement.classList.add('extra-active-nitro');
+           } else {
+               nitroCb.parentElement.parentElement.classList.remove('extra-active-nitro');
+           }
+           
+           var ultCb = document.getElementById('hasExtraUlt');
+           document.getElementById('extraUltContainer').style.display = ultCb.checked ? 'block' : 'none';
+           if (ultCb.checked) {
+               ultCb.parentElement.parentElement.classList.add('extra-active-ult');
+           } else {
+               ultCb.parentElement.parentElement.classList.remove('extra-active-ult');
+           }
+           
+           var persecCb = document.getElementById('hasExtraPerSec');
+           if (persecCb) {
+               document.getElementById('extraPerSecContainer').style.display = persecCb.checked ? 'block' : 'none';
+               if (persecCb.checked) {
+                   persecCb.parentElement.parentElement.classList.add('extra-active-persec');
+               } else {
+                   persecCb.parentElement.parentElement.classList.remove('extra-active-persec');
+               }
+           }
+       }
+
+       function handleNitroRadioChange(isInit) {
+           var items = document.querySelectorAll('.nitro-item');
+           for (var i = 0; i < items.length; i++) items[i].classList.remove('selected');
+           var checkedRadio = document.querySelector('input[name="nitroRadio"]:checked');
+           if (checkedRadio) {
+               var parent = checkedRadio.parentElement;
+               while (parent && !parent.classList.contains('nitro-item')) parent = parent.parentElement;
+               if (parent) parent.classList.add('selected');
+           }
+           
+           if (isInit !== true && !isRestoringConfig) {
+               calculate();
+               triggerAutoCalc(currentActiveField);
+           }
+       }
+
+       function handleEmpowerChange(element) {
+           var primaryVals = ['fusu', 'yichu'];
+           var secondaryVals = ['jiezou', 'huishou', 'weilai', 'queyi', 'huaxin'];
+
+           var checkboxes = document.querySelectorAll('.empower-checkbox');
+           var primaryCount = 0;
+           var secondaryCount = 0;
+
+           for (var i = 0; i < checkboxes.length; i++) {
+               if (checkboxes[i].checked) {
+                   if (primaryVals.indexOf(checkboxes[i].value) !== -1) primaryCount++;
+                   else if (secondaryVals.indexOf(checkboxes[i].value) !== -1) secondaryCount++;
+               }
+           }
+
+           var tip = document.getElementById('empowerTip');
+
+           if (primaryCount > 1 || secondaryCount > 1) {
+               element.checked = false;
+               tip.innerText = "⚠️ 赋能限制：主要赋能和次要赋能各最多只能激活 1 个。";
+               tip.style.display = 'block';
+               
+               primaryCount = 0;
+               secondaryCount = 0;
+               for (var i = 0; i < checkboxes.length; i++) {
+                   if (checkboxes[i].checked) {
+                       if (primaryVals.indexOf(checkboxes[i].value) !== -1) primaryCount++;
+                       else if (secondaryVals.indexOf(checkboxes[i].value) !== -1) secondaryCount++;
+                   }
+               }
+           } else {
+               tip.style.display = 'none';
+           }
+
+           for (var j = 0; j < checkboxes.length; j++) {
+               var cb = checkboxes[j];
+               var val = cb.value;
+               var isPrimary = (primaryVals.indexOf(val) !== -1);
+               
+               var item = cb.parentElement;
+               while (item && !item.classList.contains('empower-item')) item = item.parentElement;
+               
+               if (cb.checked) {
+                   if (item) item.classList.add('active');
+               } else {
+                   if (item) item.classList.remove('active');
+               }
+
+               if (!cb.checked) {
+                   if ((isPrimary && primaryCount >= 1) || (!isPrimary && secondaryCount >= 1)) {
+                       cb.disabled = true;
+                       if (item) item.style.opacity = '0.4';
+                   } else {
+                       cb.disabled = false;
+                       if (item) item.style.opacity = '1';
+                   }
+               } else {
+                   cb.disabled = false;
+                   if (item) item.style.opacity = '1';
+               }
+           }
+
+           document.getElementById('queyi_options').style.display = document.getElementById('chk_queyi').checked ? 'flex' : 'none';
+           document.getElementById('jiezou_options').style.display = document.getElementById('chk_jiezou').checked ? 'flex' : 'none';
+           document.getElementById('huaxin_options').style.display = document.getElementById('chk_huaxin').checked ? 'flex' : 'none';
+           
+           if (!isRestoringConfig) {
+               calculate();
+               triggerAutoCalc(currentActiveField);
+           }
+       }
+
+       function onNitroCountInput() {
+           isManualNitroCount = true;
+           updateNitroCountUI();
+           if (!isRestoringConfig) calculate();
+       }
+
+       function resetAutoNitroCount() {
+           isManualNitroCount = false;
+           updateNitroCountUI();
+           if (!isRestoringConfig) calculate();
+       }
+
+       function updateNitroCountUI() {
+           var info = document.getElementById('nitroCountModeInfo');
+           if (!isManualNitroCount) {
+               info.innerHTML = '<span style="color:var(--success); font-weight:bold;">▶ 自动计算就绪</span> (根据大招时长和氮时计算氮气个数)';
+           } else {
+               info.innerHTML = '<span style="color:var(--warning); font-weight:bold;">▶ 手动覆盖中</span> (当前为自由微调，需点重置恢复)';
+           }
+       }
+
+       var autoLinked = true;
+       var currentActiveField = null;
+
+       function onFieldInput(field) {
+           if (autoLinked) {
+               if (currentActiveField === null) currentActiveField = field;
+               if (currentActiveField === field) triggerAutoCalc(field);
+               else { autoLinked = false; updateAutoCalcUI(); }
+           }
+           if (!isRestoringConfig) calculate();
+       }
+
+       function onFieldBlur() {
+           if (autoLinked && currentActiveField !== null) { autoLinked = false; updateAutoCalcUI(); }
+       }
+
+       function resetAutoCalc() {
+           autoLinked = true;
+           currentActiveField = null;
+           document.getElementById('inputXianji').value = "0";
+           document.getElementById('inputHuineng').value = "0";
+           updateAutoCalcUI();
+           if (!isRestoringConfig) calculate();
+       }
+
+       function updateAutoCalcUI() {
+           var info = document.getElementById('autoCalcInfo');
+           if (autoLinked) info.innerHTML = '<span style="color:var(--success); font-weight:bold;">▶ 联动就绪</span> (修改一项自动算另一项)';
+           else info.innerHTML = '<span style="color:var(--warning); font-weight:bold;">▶ 联动锁定</span> (当前为自由微调，需点重置恢复)';
+       }
+
+       function triggerAutoCalc(sourceField) {
+           if (isRestoringConfig || !autoLinked || !sourceField) return;
+           
+           var target = parseFloat(document.getElementById('ultThreshold').value) || 100;
+           var startCharge = parseFloat(document.getElementById('startCharge').value) || 0;
+           var baseNitroInput = parseFloat(document.getElementById('baseNitro').value) || 0;
+           var defenseMult = 1 - ((parseFloat(document.getElementById('counterRange').value) || 0) / 100);
+
+           var activeEmpowers = [];
+           var checkedBoxes = document.querySelectorAll('.empower-checkbox:checked');
+           for (var i = 0; i < checkedBoxes.length; i++) {
+               if (checkedBoxes[i].checked) activeEmpowers.push(checkedBoxes[i].value);
+           }
+
+           if (activeEmpowers.indexOf('weilai') !== -1) {
+               target = Math.min(target, 90);
+           }
+
+           var extraNitroBase = (document.getElementById('hasExtraNitro') && document.getElementById('hasExtraNitro').checked) ? (parseFloat(document.getElementById('valExtraNitro').value) || 0) : 0;
+           var extraNitroFirstVal = (document.getElementById('chkExtraNitroFirst') && document.getElementById('chkExtraNitroFirst').checked) ? extraNitroBase : 0;
+
+           var extraUltBase = (document.getElementById('hasExtraUlt') && document.getElementById('hasExtraUlt').checked) ? (parseFloat(document.getElementById('valExtraUlt').value) || 0) : 0;
+           var extraUltFirstVal = (document.getElementById('chkExtraUltFirst') && document.getElementById('chkExtraUltFirst').checked) ? extraUltBase : 0;
+           
+           var extraPerSecBase = (document.getElementById('hasExtraPerSec') && document.getElementById('hasExtraPerSec').checked) ? (parseFloat(document.getElementById('valExtraPerSec').value) || 0) : 0;
+           var extraPerSecFirstVal = (document.getElementById('chkExtraPerSecFirst') && document.getElementById('chkExtraPerSecFirst').checked) ? extraPerSecBase : 0;
+
+           var extraEfficiency = (parseFloat(document.getElementById('extraEfficiency').value) || 0) / 100;
+           
+           var efficiencyReduce = (parseFloat(document.getElementById('debuffRange').value) || 0) / 100;
+           var efficiencyMult = ((activeEmpowers.indexOf('yichu') !== -1) ? 1.05 : 1.00) + extraEfficiency - efficiencyReduce;
+
+           if (efficiencyMult < 0) efficiencyMult = 0;
+
+           var jiezouFirstCount = (activeEmpowers.indexOf('jiezou') !== -1) ? (parseFloat(document.getElementById('jiezou_sub_first').value) || 0) : 0;
+           var huaxinFirstCount = (activeEmpowers.indexOf('huaxin') !== -1) ? (parseFloat(document.getElementById('huaxin_sub_first').value) || 0) : 0;
+           
+           var checkedRadio = document.querySelector('input[name="nitroRadio"]:checked');
+           var selectedNitroType = checkedRadio ? checkedRadio.value : '1x5';
+           var currentNitroDuration = parseFloat(document.getElementById('time_' + selectedNitroType).value) || 0;
+           
+           var nitroRatioMult = 1.0;
+           if (selectedNitroType === '2x2' || selectedNitroType === '2x3' || selectedNitroType === '2x25') nitroRatioMult = 0.5;
+           else if (selectedNitroType === '3x2') nitroRatioMult = 1/3;
+
+           var currentBaseNitro = baseNitroInput * nitroRatioMult;
+           var specBonus = document.getElementById('isSpec').checked ? (10.0 * nitroRatioMult) : 0;
+
+           var initFixedBase = startCharge + (jiezouFirstCount * 4.0 * defenseMult);
+           var initMultBase = (huaxinFirstCount * 7.0) * defenseMult * efficiencyMult;
+
+           var firstNitrosCount = parseInt(document.getElementById('inputFirstNitroCount').value);
+           if (isNaN(firstNitrosCount) || firstNitrosCount < 0) firstNitrosCount = 0;
+           
+           var firstDuration = firstNitrosCount * currentNitroDuration;
+           var firstPerSecOutput = Math.floor(firstDuration) * extraPerSecFirstVal * defenseMult * efficiencyMult;
+           
+           if (sourceField === 'xianji') {
+               var xianji = parseFloat(document.getElementById('inputXianji').value) || 0;
+               var netFirstUltRemain = target - initFixedBase - initMultBase - (extraUltFirstVal * defenseMult * efficiencyMult) - firstPerSecOutput - (xianji * defenseMult);
+               var reqHuineng = 0;
+               if (currentBaseNitro > 0 && netFirstUltRemain > 0 && efficiencyMult > 0 && firstNitrosCount > 0) {
+                   var neededBaseOutput = netFirstUltRemain / (defenseMult * efficiencyMult);
+                   var neededPerNitro = neededBaseOutput / firstNitrosCount;
+                   reqHuineng = (((neededPerNitro - specBonus - extraNitroFirstVal) / currentBaseNitro) - 1) * 100;
+               } else if (efficiencyMult <= 0 && netFirstUltRemain > 0) {
+                   reqHuineng = 999;
+               }
+               if (reqHuineng < 0) reqHuineng = 0;
+               if (reqHuineng > 50) reqHuineng = 50;
+               reqHuineng = Math.ceil(Number(reqHuineng.toFixed(4)) * 10) / 10;
+               document.getElementById('inputHuineng').value = reqHuineng.toFixed(1);
+           } else if (sourceField === 'huineng') {
+               var huineng = parseFloat(document.getElementById('inputHuineng').value) || 0;
+               var netSingleNitroOutput = (currentBaseNitro * (1 + huineng / 100) + specBonus + extraNitroFirstVal) * defenseMult * efficiencyMult;
+               var firstNitroTotalOutput = firstNitrosCount * netSingleNitroOutput;
+               var netRemainForXianjiFirst = target - initFixedBase - initMultBase - (extraUltFirstVal * defenseMult * efficiencyMult) - firstPerSecOutput - firstNitroTotalOutput;
+               var reqXianji = 0;
+               if (netRemainForXianjiFirst > 0) reqXianji = (netRemainForXianjiFirst / defenseMult);
+               if (reqXianji < 0) reqXianji = 0;
+               if (reqXianji > 30) reqXianji = 30;
+               reqXianji = Math.ceil(Number(reqXianji.toFixed(4)) * 10) / 10;
+               document.getElementById('inputXianji').value = reqXianji.toFixed(1);
+           }
+       }
+
+       function calculate(isInit) {
+           if (isRestoringConfig) return;
+
+           var originalTarget = parseFloat(document.getElementById('ultThreshold').value);
+           if (isNaN(originalTarget) || originalTarget <= 0) originalTarget = 100;
+           var target = originalTarget;
+
+           var startCharge = parseFloat(document.getElementById('startCharge').value) || 0;
+           var baseNitroInput = parseFloat(document.getElementById('baseNitro').value) || 0;
+           var defenseMult = 1 - ((parseFloat(document.getElementById('counterRange').value) || 0) / 100);
+
+           var activeEmpowers = [];
+           var checkedBoxes = document.querySelectorAll('.empower-checkbox:checked');
+           for (var i = 0; i < checkedBoxes.length; i++) {
+               if (checkedBoxes[i].checked) activeEmpowers.push(checkedBoxes[i].value);
+           }
+
+           if (activeEmpowers.indexOf('weilai') !== -1) {
+               target = Math.min(target, 90);
+           }
+
+           var extraNitroBase = (document.getElementById('hasExtraNitro') && document.getElementById('hasExtraNitro').checked) ? (parseFloat(document.getElementById('valExtraNitro').value) || 0) : 0;
+           var extraNitroFirstVal = (document.getElementById('chkExtraNitroFirst') && document.getElementById('chkExtraNitroFirst').checked) ? extraNitroBase : 0;
+           var extraNitroLoopVal = (document.getElementById('chkExtraNitroLoop') && document.getElementById('chkExtraNitroLoop').checked) ? extraNitroBase : 0;
+
+           var extraUltBase = (document.getElementById('hasExtraUlt') && document.getElementById('hasExtraUlt').checked) ? (parseFloat(document.getElementById('valExtraUlt').value) || 0) : 0;
+           var extraUltFirstVal = (document.getElementById('chkExtraUltFirst') && document.getElementById('chkExtraUltFirst').checked) ? extraUltBase : 0;
+           var extraUltLoopVal = (document.getElementById('chkExtraUltLoop') && document.getElementById('chkExtraUltLoop').checked) ? extraUltBase : 0;
+
+           var extraPerSecBase = (document.getElementById('hasExtraPerSec') && document.getElementById('hasExtraPerSec').checked) ? (parseFloat(document.getElementById('valExtraPerSec').value) || 0) : 0;
+           var extraPerSecFirstVal = (document.getElementById('chkExtraPerSecFirst') && document.getElementById('chkExtraPerSecFirst').checked) ? extraPerSecBase : 0;
+           var extraPerSecLoopVal = (document.getElementById('chkExtraPerSecLoop') && document.getElementById('chkExtraPerSecLoop').checked) ? extraPerSecBase : 0;
+
+           var extraEfficiency = (parseFloat(document.getElementById('extraEfficiency').value) || 0) / 100;
+           
+           var efficiencyReduce = (parseFloat(document.getElementById('debuffRange').value) || 0) / 100;
+           var efficiencyMult = ((activeEmpowers.indexOf('yichu') !== -1) ? 1.05 : 1.00) + extraEfficiency - efficiencyReduce;
+
+           if (efficiencyMult < 0) efficiencyMult = 0;
+
+           var baseUltDuration = parseFloat(document.getElementById('baseUltDuration').value) || 0;
+           var actualUltDuration = baseUltDuration * (target / 100);
+           
+           var ultLabel = document.getElementById('actualUltTimeSpan');
+           if (activeEmpowers.indexOf('weilai') !== -1) {
+               if (originalTarget > 90) ultLabel.innerText = "(未来视界触发：门槛降至 90%，实机时长缩放为: " + actualUltDuration.toFixed(2) + " 秒)";
+               else ultLabel.innerText = "(未来视界未叠加：当前阈值已达标，时长缩放为: " + actualUltDuration.toFixed(2) + " 秒)";
+           } else {
+               if (target !== 100) ultLabel.innerText = "(当前阈值 " + target + "%，实机时长缩放为: " + actualUltDuration.toFixed(2) + " 秒)";
+               else ultLabel.innerText = '';
+           }
+
+           var checkedRadio = document.querySelector('input[name="nitroRadio"]:checked');
+           var selectedNitroType = checkedRadio ? checkedRadio.value : '1x5';
+           var currentNitroDuration = 0;
+
+           if (selectedNitroType === '1x5') currentNitroDuration = parseFloat(document.getElementById('time_1x5').value) || 0;
+           else if (selectedNitroType === '1x6') currentNitroDuration = parseFloat(document.getElementById('time_1x6').value) || 0;
+           else if (selectedNitroType === '2x2') currentNitroDuration = parseFloat(document.getElementById('time_2x2').value) || 0;
+           else if (selectedNitroType === '2x3') currentNitroDuration = parseFloat(document.getElementById('time_2x3').value) || 0;
+           else if (selectedNitroType === '2x25') currentNitroDuration = parseFloat(document.getElementById('time_2x25').value) || 0;
+           else if (selectedNitroType === '3x2') currentNitroDuration = parseFloat(document.getElementById('time_3x2').value) || 0;
+
+           var nitroRatioMult = 1.0;
+           if (selectedNitroType === '2x2' || selectedNitroType === '2x3' || selectedNitroType === '2x25') nitroRatioMult = 0.5;
+           else if (selectedNitroType === '3x2') nitroRatioMult = 1/3;
+
+           var currentBaseNitro = baseNitroInput * nitroRatioMult;
+           var specBonus = document.getElementById('isSpec').checked ? (10.0 * nitroRatioMult) : 0;
+
+           var autoNitrosPerUlt = currentNitroDuration > 0 ? Math.floor(actualUltDuration / currentNitroDuration) : 0;
+           var nitrosPerUlt;
+           
+           if (isManualNitroCount) {
+               nitrosPerUlt = parseInt(document.getElementById('inputNitroCount').value);
+               if (isNaN(nitrosPerUlt) || nitrosPerUlt < 0) nitrosPerUlt = 0;
+           } else {
+               nitrosPerUlt = autoNitrosPerUlt;
+               var nitroInputElem = document.getElementById('inputNitroCount');
+               if (nitroInputElem) nitroInputElem.value = nitrosPerUlt;
+           }
+
+           var firstNitrosCount = parseInt(document.getElementById('inputFirstNitroCount').value);
+           if (isNaN(firstNitrosCount) || firstNitrosCount < 0) firstNitrosCount = 0;
+
+           if (isInit === true) return;
+
+           var queyiPerSecond = 0;
+           if (activeEmpowers.indexOf('queyi') !== -1) {
+               if (document.getElementById('queyi_sub_self').checked) queyiPerSecond += 0.8;
+               if (document.getElementById('queyi_sub_enemy').checked) queyiPerSecond += 1.2;
+           }
+           
+           var huaxinFirstCount = (activeEmpowers.indexOf('huaxin') !== -1) ? (parseFloat(document.getElementById('huaxin_sub_first').value) || 0) : 0;
+           var huaxinLoopCount = (activeEmpowers.indexOf('huaxin') !== -1) ? (parseFloat(document.getElementById('huaxin_sub_loop').value) || 0) : 0;
+           
+           var fusuTotalBonus = (activeEmpowers.indexOf('fusu') !== -1) ? (2.5 * 5.0) : 0;
+           var huishouBonus = (activeEmpowers.indexOf('huishou') !== -1) ? 10.0 : 0;
+           
+           var jiezouFirstCount = (activeEmpowers.indexOf('jiezou') !== -1) ? (parseFloat(document.getElementById('jiezou_sub_first').value) || 0) : 0;
+           var jiezouLoopCount = (activeEmpowers.indexOf('jiezou') !== -1) ? (parseFloat(document.getElementById('jiezou_sub_loop').value) || 0) : 0;
+
+           var resCardFirst = document.getElementById('resultCardFirst');
+           var resValFirst = document.getElementById('resultValueFirst');
+           var resDetFirst = document.getElementById('resultDetailFirst');
+           var formulaFirst = document.getElementById('formulaDisplayFirst');
+
+           var resCardLoop = document.getElementById('resultCardLoop');
+           var resValLoop = document.getElementById('resultValueLoop');
+           var resDetLoop = document.getElementById('resultDetailLoop');
+           var formulaLoop = document.getElementById('formulaDisplayLoop');
+           
+           resCardFirst.classList.remove('error-state');
+           resCardLoop.classList.remove('error-state');
+
+           var initFixedBase = startCharge + (jiezouFirstCount * 4.0 * defenseMult);
+           var initMultBase = (huaxinFirstCount * 7.0) * defenseMult * efficiencyMult;
+
+           var xianji = parseFloat(document.getElementById('inputXianji').value) || 0;
+           var huineng = parseFloat(document.getElementById('inputHuineng').value) || 0;
+
+           var netSingleNitroOutputFirst = (currentBaseNitro * (1 + huineng / 100) + specBonus + extraNitroFirstVal) * defenseMult * efficiencyMult;
+           var firstNitroTotalOutput = firstNitrosCount * netSingleNitroOutputFirst;
+           
+           var firstDuration = firstNitrosCount * currentNitroDuration;
+           var firstPerSecOutput = Math.floor(firstDuration) * extraPerSecFirstVal * defenseMult * efficiencyMult;
+           
+           var firstUltTotal = startCharge + (xianji * defenseMult) + initMultBase + (jiezouFirstCount * 4.0 * defenseMult) + firstNitroTotalOutput + firstPerSecOutput;
+
+           var step1_Start = startCharge.toFixed(3);
+           var step2_Xianji = (xianji * defenseMult).toFixed(3);
+           var step3_MultBase = initMultBase.toFixed(3);
+           var step4_Jiezou = (jiezouFirstCount * 4.0 * defenseMult).toFixed(3);
+           var step5_Nitro = firstNitroTotalOutput.toFixed(3);
+
+           var formulaFirstStr = "<b>【首发大招运算解析盒】</b><br>";
+           formulaFirstStr += "及格线目标：<b>" + target + "%</b><br><br>";
+           formulaFirstStr += "① 起步充能 = <b>" + step1_Start + "</b><br>";
+           formulaFirstStr += "② 先机收益：[先机(" + xianji + ")] × (1-反制％)(" + defenseMult + ") = <b>" + step2_Xianji + "</b><br>";
+           formulaFirstStr += "③ 复合增益：[花信风(触发" + huaxinFirstCount + "次×7%)] × (1-反制％) × 充能效率(" + (efficiencyMult*100).toFixed(0) + "%) = <b>" + step3_MultBase + "</b><br>";
+           formulaFirstStr += "④ 节奏自充：[首发触发" + jiezouFirstCount + "次(+4%)] × (1-反制％) = <b>" + step4_Jiezou + "</b><br>";
+           formulaFirstStr += "⑤ 期间氮充：[单发威力(" + netSingleNitroOutputFirst.toFixed(3) + ")] × <b>" + firstNitrosCount + "</b>个 = <b>" + step5_Nitro + "</b><br>";
+           
+           if (extraUltFirstVal > 0) {
+               var step6_ExtraUlt = (extraUltFirstVal * defenseMult * efficiencyMult).toFixed(3);
+               formulaFirstStr += "⑥ 大招固定附加：[设定附加(" + extraUltFirstVal + ")] × (1-反制％) × 充能效率(" + (efficiencyMult*100).toFixed(0) + "%) = <b>" + step6_ExtraUlt + "</b><br>";
+               firstUltTotal += extraUltFirstVal * defenseMult * efficiencyMult;
+           }
+           
+           if (extraPerSecFirstVal > 0) {
+               var step7_ExtraPerSec = firstPerSecOutput.toFixed(3);
+               formulaFirstStr += "⑦ 持续每秒附加：[每秒(" + extraPerSecFirstVal + ") × 整数时长(" + Math.floor(firstDuration) + "s)] × (1-反制％) × 充能效率(" + (efficiencyMult*100).toFixed(0) + "%) = <b>" + step7_ExtraPerSec + "</b><br>";
+           }
+
+           firstUltTotal = Math.floor(firstUltTotal * 1000) / 1000;
+
+           formulaFirstStr += "-------------------------<<br>";
+           formulaFirstStr += "<b>首发核算：" + step1_Start + " + " + step2_Xianji + " + " + step3_MultBase + " + " + step4_Jiezou + " + " + step5_Nitro + (extraUltFirstVal > 0 ? " + " + step6_ExtraUlt : "") + (extraPerSecFirstVal > 0 ? " + " + step7_ExtraPerSec : "") + " = " + firstUltTotal.toFixed(3) + "%</b>";
+           formulaFirst.innerHTML = formulaFirstStr;
+
+           if (firstUltTotal >= target) {
+               resValFirst.innerHTML = "<span class='emoji-fix'>✅</span> 首发达成 (" + firstUltTotal.toFixed(3) + "%)";
+               resDetFirst.innerHTML = "✨ <b>完美起步</b>：总充能已超越目标！";
+           } else {
+               resCardFirst.classList.add('error-state');
+               resValFirst.innerHTML = "<span class='emoji-fix'>❌</span> 首发失败 (" + firstUltTotal.toFixed(3) + "%)";
+               
+               var firstDiff = Math.floor((target - firstUltTotal) * 1000) / 1000;
+               resDetFirst.innerHTML = "⚠️ <b>开局卡壳</b>：距离及格还差 <b>" + firstDiff.toFixed(3) + "%</b>。";
+           }
+
+           var loopFixedEmpowerBase = (queyiPerSecond * Math.floor(actualUltDuration) + fusuTotalBonus + huishouBonus + jiezouLoopCount * 4.0);
+           var loopFixedEmpower = loopFixedEmpowerBase * defenseMult;
+           var loopHuaxinOutput = (huaxinLoopCount * 7.0) * defenseMult * efficiencyMult;
+           var netSingleNitroOutputLoop = (currentBaseNitro * (1 + huineng / 100) + specBonus + extraNitroLoopVal) * defenseMult * efficiencyMult;
+           var loopNitroTotalOutput = nitrosPerUlt * netSingleNitroOutputLoop;
+           var loopExtraUltOutput = extraUltLoopVal * defenseMult * efficiencyMult;
+           var loopPerSecOutput = Math.floor(actualUltDuration) * extraPerSecLoopVal * defenseMult * efficiencyMult;
+           
+           var loopGrandTotal = loopFixedEmpower + loopHuaxinOutput + loopNitroTotalOutput + loopExtraUltOutput + loopPerSecOutput;
+
+           loopGrandTotal = Math.floor(loopGrandTotal * 1000) / 1000;
+
+           var reqHuinengLoop = 0;
+           if (nitrosPerUlt > 0 && efficiencyMult > 0) {
+               var remainForLoopUlt = target - loopFixedEmpower - loopHuaxinOutput - loopExtraUltOutput - loopPerSecOutput;
+               var singleNeeded = remainForLoopUlt / nitrosPerUlt;
+               var baseNeeded = singleNeeded / (defenseMult * efficiencyMult);
+               reqHuinengLoop = (((baseNeeded - specBonus - extraNitroLoopVal) / currentBaseNitro) - 1) * 100;
+           } else {
+               reqHuinengLoop = 999;
+           }
+           
+           reqHuinengLoop = Math.floor(reqHuinengLoop * 1000) / 1000;
+
+           var stepLoop_Empower = loopFixedEmpower.toFixed(3);
+           var stepLoop_Huaxin = loopHuaxinOutput.toFixed(3);
+           var stepLoop_Nitro = loopNitroTotalOutput.toFixed(3);
+           var stepLoop_ExtraUlt = loopExtraUltOutput.toFixed(3);
+
+           var formulaLoopStr = "<b>【大招循环运算解析盒】</b><br>";
+           formulaLoopStr += "大招实机时长 = " + actualUltDuration.toFixed(2) + "秒 (容纳 <b>" + nitrosPerUlt + "</b> 个单次氮气)<br><br>";
+           formulaLoopStr += "① 绝对自充：[缺一(" + (queyiPerSecond * Math.floor(actualUltDuration)).toFixed(2) + ") + 复苏(" + fusuTotalBonus + ") + 回收(" + huishouBonus + ") + 节奏(" + (jiezouLoopCount * 4.0) + ")] × (1-反制％) = <b>" + stepLoop_Empower + "</b><br>";
+           formulaLoopStr += "② 复合自充：[花信风(大招内触发" + huaxinLoopCount + "次×7%)] × (1-反制％) × 充能效率 = <b>" + stepLoop_Huaxin + "</b><br>";
+           formulaLoopStr += "③ 期间氮充：[单发威力(" + (netSingleNitroOutputLoop).toFixed(3) + ")] × <b>" + nitrosPerUlt + "</b>个 = <b>" + stepLoop_Nitro + "</b><br>";
+           if (extraUltLoopVal > 0) {
+               formulaLoopStr += "④ 大招固定附加：[设定附加(" + extraUltLoopVal + ")] × (1-反制％) × 充能效率(" + (efficiencyMult*100).toFixed(0) + "%) = <b>" + stepLoop_ExtraUlt + "</b><br>";
+           }
+           if (extraPerSecLoopVal > 0) {
+               var stepLoop_ExtraPerSec = loopPerSecOutput.toFixed(3);
+               formulaLoopStr += "⑤ 持续每秒附加：[每秒(" + extraPerSecLoopVal + ") × 整数时长(" + Math.floor(actualUltDuration) + "s)] × (1-反制％) × 充能效率(" + (efficiencyMult*100).toFixed(0) + "%) = <b>" + stepLoop_ExtraPerSec + "</b><br>";
+           }
+           formulaLoopStr += "-------------------------<<br>";
+           formulaLoopStr += "<b>循环总产出：" + stepLoop_Empower + " + " + stepLoop_Huaxin + " + " + stepLoop_Nitro + (extraUltLoopVal > 0 ? " + " + stepLoop_ExtraUlt : "") + (extraPerSecLoopVal > 0 ? " + " + stepLoop_ExtraPerSec : "") + " = " + loopGrandTotal.toFixed(3) + "%</b><br>";
+           formulaLoopStr += "<b>及格线判定：当前产出(" + loopGrandTotal.toFixed(3) + "%)  vs  大招阀门(" + target + "%)</b>";
+           formulaLoop.innerHTML = formulaLoopStr;
+
+           if (loopGrandTotal >= target) {
+               resValLoop.innerHTML = "<span class='emoji-fix'>✅</span> 循环跑通 (产出: " + loopGrandTotal.toFixed(3) + "%)";
+               var diff = huineng - reqHuinengLoop;
+               if (diff >= 0) {
+                   resDetLoop.innerHTML = "<span style='color:var(--success);'><span class='emoji-fix'>✅</span> <b>全盘跑通</b>：当前输入的汇能（" + huineng.toFixed(1) + "%）超过循环底线（底线：" + Math.max(0, reqHuinengLoop).toFixed(3) + "%），火力倾泻不断档！</span>";
+               } else {
+                   resDetLoop.innerHTML = "<span style='color:var(--warning);'>⚠️ <b>逻辑异常</b>：虽然满足了阈值，但这应该是极端情况的浮点漂移。</span>";
+               }
+           } else {
+               resCardLoop.classList.add('error-state');
+               if (nitrosPerUlt === 0) {
+                   resValLoop.innerHTML = "<span class='emoji-fix'>❌</span> 循环崩塌 (容纳氮气数为0)";
+                   resDetLoop.innerHTML = "⚠️ <b>致命断层</b>：缩减后的大招期间<b>可放氮气数为 0 个</b>。接力必然溃败！";
+               } else {
+                   var loopDiff = Math.floor((target - loopGrandTotal) * 1000) / 1000;
+                   resValLoop.innerHTML = "<span class='emoji-fix'>❌</span> 循环失败 (缺口: " + loopDiff.toFixed(3) + "%)";
+                   resDetLoop.innerHTML = "⚠️ <b>循环断档</b>：产出未达及格线！要实现连发，汇能至少需要被拉升至 <strong>" + reqHuinengLoop.toFixed(3) + "%</strong>。";
+               }
+           }
+       }
+
+       initTheme();
+
+       function initApp() {
+           updateAutoCalcUI();
+           updateNitroCountUI();
+           
+           var isLoadedFromLink = loadConfigFromUrl();
+           
+           handleNitroRadioChange(true);
+
+           if (isLoadedFromLink) {
+               setTimeout(function(){
+                   showToast("✅ 已成功解析并加载车友分享的配置方案！");
+               }, 800);
+               calculate();
+           } else {
+               calculate(true);
+           }
+       }
+       
+       initApp();
+
+       if ('serviceWorker' in navigator) {
+           window.addEventListener('load', function() {
+               navigator.serviceWorker.register('sw.js').then(function(registration) {
+               }, function(err) {
+               });
+           });
+       }
+   </script>
+
+   <style>
+       .lang-toggle-wrapper {
+           text-align: center;
+           padding: 10px 0 40px;
+           position: relative;
+           z-index: 1000;
+       }
+       .lang-btn {
+           background: var(--card-bg);
+           border: 1px solid var(--primary);
+           color: var(--primary);
+           padding: 10px 24px;
+           border-radius: 12px;
+           font-size: 14px;
+           font-weight: bold;
+           cursor: pointer;
+           box-shadow: var(--btn-shadow);
+           transition: background 0.3s, background-color 0.3s, border-color 0.3s, box-shadow 0.3s, color 0.3s, transform 0.3s;
+           backdrop-filter: blur(8px);
+           display: inline-flex;
+           align-items: center;
+           gap: 8px;
+       }
+       .lang-btn:hover {
+           background: rgba(0, 242, 254, 0.1);
+           box-shadow: 0 4px 15px var(--hover-glow-primary);
+           transform: translateY(-2px);
+       }
+   </style>
+
+   <div class="lang-toggle-wrapper" data-html2canvas-ignore="true">
+       <button id="langToggleBtn" class="lang-btn" onclick="toggleLanguage()">
+           <span>🌐</span> <span id="langBtnText">English / 中文</span>
+       </button>
+   </div>
+
+   <script>
+       const i18n = {
+           "王牌竞速 - 大招能量精密计算器": "Ace Racer - Ult Energy Calculator",
+           "使用前必看 & 注意事项": "Must-Watch & Notes",
+           "前往观看：网站使用教程": "Watch: Website Tutorial",
+           "🆕 展开查看更新": "🆕 Updated! Expand to view",
+           "注意事项：": "Notes:",
+           "菜单": "Menu",
+           "恢复教程提示": "Restore tutorial prompt",
+           "王牌竞速一大和循环能量计算器": "Ace Racer First Ult & Loop Calculator",
+           "王牌竞速 · 大招能量精密计算器": "Ace Racer · Ult Energy Calculator",
+           "由 Vanem 设定交互逻辑、提供计算公式，AI辅助开发": "Logic & Formulas by Vanem, AI Assisted",
+           "* 注：根据游戏底层逻辑，起步基础充能不受任何环境干扰；": "* Note: Base start charge ignores environments;",
+           "先机仅受反制影响，不受充能效率影响；氮气充能、辅助充能、赋能充能与专精充能受反制和充能效率双重影响。": "Xianji is affected only by Counter; Nitro, Assist, Empower, & Spec charges affected by Counter & Efficiency.",
+           "基础属性及赋能调整区": "Base Stats & Empowerment Tweaks",
+           "全局核心基准充能参数": "Global Core Charge Parameters",
+           "大招释放能量阈值": "Ult Energy Threshold",
+           "起步基础充能": "Start Base Charge",
+           "单次氮气基础充能基准值 (1×6标称全额威力)": "Single Nitro Base Charge (1x6 standard)",
+           "氮气规格及单发时长同步": "Nitro Specs & Duration Sync",
+           "更改任意一项氮气时长，其余规格自动等比同步换算：": "Change any duration, others sync automatically:",
+           "注：车辆详情中显示的默认氮时为1×6氮气，只需修改1×6氮时即可": "Note: Default duration in details is usually 1x6 nitro. Just modify 1x6.",
+           "1 × 5 氮气": "1x5 Nitro", "1 × 6 氮气": "1x6 Nitro", "2 × 2 氮气": "2x2 Nitro",
+           "2 × 3 氮气": "2x3 Nitro", "2 × 2.5 氮气": "2x2.5 Nitro", "3 × 2 氮气": "3x2 Nitro",
+           "100%能量大招时长": "100% Energy Ult Duration",
+           "专精地图 (基础10%折算)": "Specialty Map (10% base)",
+           "对手反制干扰设定": "Opponent Counter Settings",
+           "全局实战反制比例 (影响双轨)：": "Global Counter Ratio (Dual-track):",
+           "充能效率降低 (受敌方干扰)：": "Efficiency Reduction (Enemy Interfere):",
+           "七大赋能系统矩阵": "7 Empowerment Matrices",
+           "主/次各最多选1个": "Max 1 per Main/Sub",
+           "主要赋能矩阵": "Main Empowerment",
+           "复苏之泉 (仅循环生效)": "Recovery Spring (Loop only)",
+           "开大后5秒内每秒提供自充能": "Self-charge per sec for 5s after Ult",
+           "拒绝溢出 (全局激活倍率)": "Reject Overflow (Global Multiplier)",
+           "激活全局充能效率": "Activate global charge efficiency",
+           "次要赋能矩阵": "Sub Empowerment",
+           "节奏赋能 (需手动设定触发次数)": "Rhythm (Manual trigger)",
+           "每4秒内使用3次涡轮/大招等动作给": "3 actions (turbo/ult) within 4s grants",
+           "首发一大前 预估触发次数:": "Triggers before 1st Ult:",
+           "大招循环内 预估触发次数:": "Triggers during loop:",
+           "能源回收 (仅循环生效)": "Energy Recovery (Loop only)",
+           "每次使用大招后立即获得": "Immediately grants",
+           "未来视界 (动态降维机制)": "Future Vision (Dynamic threshold)",
+           "大招能量达到90%时可以使用大招（阈值强制最高锁为90%）。": "Ult usable at 90% (Threshold locked to 90%).",
+           "缺一不可 (剔除首发一大的计算中，仅循环生效)": "Indispensable (Loop only, excl. 1st Ult)",
+           "首发一大计时内收益微小已忽略。在大招持续期间提供高额自充。": "High self-charge during Ult. 1st Ult gain is ignored.",
+           "我方是完美阵容 (+0.8%/s)": "Ally Perfect Lineup (+0.8%/s)",
+           "敌方非完美阵容 (+1.2%/s)": "Enemy Imperfect Lineup (+1.2%/s)",
+           "花信风 (间歇性给能，需手动排期)": "Floral Wind (Intermittent, manual)",
+           "开局+7%，之后每10秒+7%。大招期间若未踩中10秒节点则收益为0。": "+7% at start, +7% every 10s. 0 yield if missed during Ult.",
+           "首发一大前 触发次数:": "Triggers before 1st Ult:",
+           "次 (默认1次开局)": " times (default 1)",
+           "大招循环内 触发次数:": "Triggers during loop:",
+           "次 (求稳填0)": " times (0 for safety)",
+           "⚠️ 赋能限制：主要赋能和次要赋能各最多只能激活 1 个。": "⚠️ Limit: Max 1 Main and 1 Sub Empowerment.",
+           "扩展自充能附加模块": "Extended Self-Charge Modules",
+           "绑定到【单发氮气】的自充能 (受反制与充能效率双重影响)": "Self-charge via [Single Nitro] (Affected by Counter & Eff)",
+           "每次释放氮气附加百分比": "Bonus % per nitro",
+           "绑定到【大招释放】的自充能 (受反制与充能效率双重影响)": "Self-charge via [Ult Release] (Affected by Counter & Eff)",
+           "每次大招周期固定附加百分比": "Fixed bonus % per Ult",
+           "绑定到【持续时间】的每秒自充能 (受反制与充能效率双重影响)": "Self-charge via [Duration] (Affected by Counter & Eff)",
+           "每秒持续附加百分比 (向下取整计算)": "Bonus % per sec (Rounded down)",
+           "对首发有效 (如开局特性)": "Applies to 1st Ult (e.g. Start trait)",
+           "对首发有效": "Applies to 1st Ult",
+           "对循环有效 (默认生效)": "Applies to Loop (Default)",
+           "对循环有效": "Applies to Loop",
+           "车辆技能附加充能效率": "Vehicle Skill Bonus Efficiency",
+           "部分车辆特性的额外充能效率提升": "Extra charge efficiency from vehicle traits",
+           "首发一大交互测算区": "First Ult Calculation Area",
+           "智能芯片联动面板": "Smart Chip Linkage",
+           "上限：先机30% | 汇能50%": "Limit: Xianji 30% | Huineng 50%",
+           "释放一大所需氮气个数": "Nitros needed for 1st Ult",
+           "(修改一项自动算另一项)": "(Modify one to auto-calc the other)",
+           "重置联动": "Reset Linkage",
+           "先机": "Ult Xianji",
+           "汇能": "Ult Huineng",
+           "首发大招 (开局一大) 面板评估": "First Ult (Opening) Evaluation",
+           "评估当前面板状态...": "Evaluating current stats...",
+           "运算引擎加载中...": "Loading calculation engine...",
+           "后续大招循环测算区": "Subsequent Ult Loop Area",
+           "大招期间氮气释放次数": "Nitro releases during Ult",
+           "(根据大招时长和氮时计算氮气个数)": "(Calc nitros by Ult & nitro duration)",
+           "恢复自动计算": "Restore Auto-calc",
+           "大招内释放氮气个数": "Nitros per Ult",
+           "后续大招无限循环 底线要求": "Infinite Loop Baseline Requirement",
+           "先机要求：0% (起步后先机芯片对循环彻底失效)": "Xianji req: 0% (Ineffective in loop)",
+           "等待测算循环状态...": "Waiting to calc loop status...",
+           "计算数据分享": "Data Export & Share",
+           "复制纯文本": "Copy Plain Text",
+           "保存长截图": "Save Long Screenshot",
+           "分享配置链接": "Share Link",
+           "⚠️本项目完全本地运行，不进行任何联网行为，不收集任何隐私数据，请放心使用。": "⚠️ Runs fully locally, no network needed, no data collected.",
+           "⚠️由Vanem开发，个人公益制作，严禁倒卖，付费传播，以及任何形式的商用。更多内容请关注作者主页：": "⚠️ Dev by Vanem, non-profit. Resale/commercial use prohibited. Author:",
+           "🐛 BUG反馈与建议": "🐛 Bug Reports & Suggestions",
+           "如果您在使用过程中发现任何计算逻辑错误、界面显示异常，或有新的功能建议，欢迎通过 GitHub Issues 提交反馈！": "If you find logic errors, UI bugs, or have suggestions, submit a GitHub Issue!",
+           "前往 GitHub 提交 Issue": "Submit Issue on GitHub",
+           "✨ 特别鸣谢": "✨ Special Thanks",
+           "上榜条件（三项满足任一即可）：": "Listing conditions (meet any one):",
+           "①在GitHub Issues中提交一次可复现的严重影响正常使用的技术性BUG": "① Submit a reproducible technical bug that seriously affects normal use in GitHub Issues",
+           "（有详细操作过程）": "(with detailed steps)",
+           "②提出一次被采纳的新功能建议": "② Submit a new feature suggestion that is adopted",
+           "③累积打赏超过30元": "③ Accumulate more than 30 RMB in donations",
+           "请将打赏记录发送至我的邮箱": "please send donation records to my email",
+           "否则无法统计": "otherwise it cannot be counted",
+           "非常感谢以上车友在网站早期的开发中提供了功能灵感和宝贵的测试数据。": "Thanks to players above for inspiration and test data.",
+           "如果有更多关于功能的建议或者发现了遗漏的BUG，欢迎随时交流！": "Any suggestions or bug reports are welcome!",
+           "如果觉得这个工具做的还不错的话，可以通过微信赞赏码来支持我，您的赞赏就是我更新的最大动力，感谢🌹": "If you like this tool, you can support via WeChat tipping. Thanks 🌹",
+           "B站主页": "Bilibili", "抖音主页": "Douyin", "快手主页": "Kuaishou",
+           "项目地址": "GitHub Repo", "支持作者": "Support Author", "作者主页": "Author",
+           "主题": "Theme", "浅色模式": "Light Mode", "深色模式": "Dark Mode", "跟随系统": "System Default",
+           "▶ 联动就绪": "▶ Linkage Ready",
+           "▶ 自动计算就绪": "▶ Auto-calc Ready",
+           "▶ 联动锁定": "▶ Linkage Locked",
+           "(当前为自由微调，需点重置恢复)": "(Manual override, click reset to restore)",
+           "▶ 手动覆盖中": "▶ Manual Override",
+           " (未来视界触发：门槛降至 90%，实机时长缩放为: ": " (Future Vision: Threshold 90%, actual scaled to: ",
+           " (未来视界未叠加：当前阈值已达标，时长缩放为: ": " (Future Vision inactive: Threshold met, scaled to: ",
+           " (当前阈值 ": " (Current threshold ",
+           "，实机时长缩放为: ": ", scaled to: ",
+           " 秒)": " s)",
+           "完美起步": "Perfect Start",
+           "：总充能已超越目标！": ": Charge exceeds target!",
+           "开局卡壳": "Start Stalled",
+           "：距离及格还差 ": ": Short of passing by ",
+           "首发达成 (": "1st Ult Achieved (",
+           "首发失败 (": "1st Ult Failed (",
+           "循环跑通 (产出: ": "Loop Completed (Output: ",
+           "✅ 全盘跑通": "Fully Completed",
+           "：当前输入的汇能（": ": Current Huineng input (",
+           "%）超过循环底线（底线：": "%) exceeds loop baseline (Baseline: ",
+           "%），火力倾泻不断档！": "%), continuous firepower!",
+           "逻辑异常": "Logic Anomaly",
+           "：虽然满足了阈值，但这应该是极端情况的浮点漂移。": ": Met threshold, likely float drift.",
+           "❌ 循环崩塌 (容纳氮气数为0)": "❌ Loop Collapsed (0 nitros fit)",
+           "致命断层": "Fatal Gap",
+           "：缩减后的大招期间": ": Reduced Ult fits ",
+           "可放氮气数为 0 个": "0 nitros",
+           "。接力必然溃败！": ". Relay will fail!",
+           "循环失败 (缺口: ": "Loop Failed (Gap: ",
+           "循环断档": "Loop Disconnected",
+           "：产出未达及格线！要实现连发，汇能至少需要被拉升至 ": ": Output missed! Needs Huineng >= ",
+           "【首发大招运算解析盒】": "[First Ult Calc Breakdown]",
+           "及格线目标：": "Passing Target: ",
+           "① 起步充能 = ": "1. Start Charge = ",
+           "② 先机收益：[先机(": "2. Xianji Gain: [Xianji(",
+           ")] × (1-反制％)(": ")] * (1-Counter%)(",
+           "③ 复合增益：[花信风(触发": "3. Compound Buff: [Floral(Triggers ",
+           "次×7%)] × (1-反制％) × 充能效率(": " times*7%)] * (1-Counter%) * Eff(",
+           "④ 节奏自充：[首发触发": "4. Rhythm Charge: [1st Triggers ",
+           "次(+4%)] × (1-反制％) = ": " times(+4%)] * (1-Counter%) = ",
+           "⑤ 期间氮充：[单发威力(": "5. Nitro Charge: [Single Power(",
+           "⑥ 大招固定附加：[设定附加(": "6. Ult Fixed Bonus: [Set Bonus(",
+           "⑦ 持续每秒附加：[每秒(": "7. Per Sec Bonus: [Per sec(",
+           "⑤ 持续每秒附加：[每秒(": "5. Per Sec Bonus: [Per sec(",
+           ") × 整数时长(": ") * Int Duration(",
+           "s)] × (1-反制％) × 充能效率(": "s)] * (1-Counter%) * Eff(",
+           ")] × (1-反制％) × 充能效率(": ")] * (1-Counter%) * Eff(",
+           "首发核算：": "First Ult Calc: ",
+           "【大招循环运算解析盒】": "[Ult Loop Calc Breakdown]",
+           "大招实机时长 = ": "Actual Ult = ",
+           "秒 (容纳 ": "s (fits ",
+           " 个单次氮气)": " single nitros)",
+           "① 绝对自充：[缺一(": "1. Absolute Charge: [Indispensable(",
+           ") + 复苏(": ") + Recovery(",
+           ") + 回收(": ") + Recycle(",
+           ") + 节奏(": ") + Rhythm(",
+           ")] × (1-反制％) = ": ")] * (1-Counter%) = ",
+           "② 复合自充：[花信风(大招内触发": "2. Compound Charge: [Floral(Ult Triggers ",
+           "③ 期间氮充：[单发威力(": "3. Nitro Charge: [Single Power(",
+           "④ 大招固定附加：[设定附加(": "4. Ult Fixed Bonus: [Set Bonus(",
+           "循环总产出：": "Loop Total Output: ",
+           "及格线判定：当前产出(": "Passing Check: Output(",
+           ")  vs  大招阀门(": ") vs Ult Valve(",
+           ")] × ": ")] * ",
+           "🏎️【王牌竞速·大招能量配置单】\n": "🏎️[Ace Racer Config]\n",
+           "┈┈┈┈┈┈┈┈┈┈┈┈┈┈\n": "┈┈┈┈┈┈┈┈┈┈┈┈┈┈\n",
+           "🔹 基础充能：阈值": "🔹 Base Charge: Threshold ",
+           "% | 起步": "% | Start ",
+           "% | 专精(": "% | Specialty(",
+           "🔹 氮气充能：": "🔹 Nitro Charge: ",
+           "🔹 环境影响：反制": "🔹 Environment: Counter ",
+           "% | 降效": "% | Debuff ",
+           "🔹 赋能充能：": "🔹 Empowerment: ",
+           "🔹 附加充能：额外氮气(": "🔹 Extra Charge: Nitro Bonus(",
+           "%) | 额外大招(": "%) | Ult Bonus(",
+           "%) | 持续每秒(": "%) | Per sec(",
+           "%) | 充能效率提升(": "%) | Eff Boost(",
+           "▶ 首发：需氮": "▶ 1st Ult: Needs ",
+           "个 | 先机": " Nitros | Xianji ",
+           "% | 汇能": "% | Huineng ",
+           "▶ 状态：": "▶ Status: ",
+           "计算中...": "Calculating...",
+           "▶ 循环：大招内含 ": "▶ Loop: Ult contains ",
+           " 个氮气\n": " Nitros\n",
+           "🔗 by Vanem - 王牌芯片计算器 - aceracercalc.top": "🔗 by Vanem - Ace Racer Calculator - aceracercalc.top",
+           "是": "Yes", "否": "No", "无": "None",
+           "✅ 文本已复制，快去分享吧！": "✅ Text copied, ready to share!",
+           "❌ 复制失败，您的浏览器拦截了操作。": "❌ Copy failed, intercepted by browser.",
+           "❌ 复制失败，请尝试截图分享。": "❌ Copy failed, try a screenshot.",
+           "❌ 截图组件未加载，请检查网络或配置！": "❌ Screenshot component missing!",
+           "正在生成超清长图...": "Generating HD screenshot...",
+           "(极速渲染引擎运转中，请稍候)": "(Rendering engine running, please wait...)",
+           "✅ 高清长图已保存到您的设备！": "✅ HD image saved to your device!",
+           "❌ 生成失败，请重试或更换浏览器。": "❌ Generation failed, try again.",
+           "🔗 短链接已复制，分享给车友可直接打开！": "🔗 Short link copied, share to open directly!",
+           "✅ 已成功解析并加载车友分享的配置方案！": "✅ Successfully loaded shared config!",
+           "操作成功！": "Operation Successful!",
+           "王牌计算器_": "Ace_Calc_",
+           "能量。": "energy.", "秒)\n": "s)\n",
+           "个 = ": " = ",
+           "次×7%)]": " times*7%)]",
+           "次(+4%)]": " times(+4%)]",
+           "秒": "s", "次": " times", "个": "",
+           "✅ 教程按钮已恢复显示！": "✅ Tutorial button restored!",
+           "未知": "Unknown",
+           "。": ".",
+           "不再显示": "Do not show again",
+           "王牌计算器": "Ace Calc",
+           "次×7%)] × (1-反制％) × 充能效率 = ": " times*7%)] * (1-Counter%) * Eff = ",
+           "关于开局立刻获得能量的被动如何填写：开局获得的充能（如MINI JCW被动）和起步基础充能是两个东西！请勿将开局后获得的能量填入起步基础充能中！可以填入“扩展自充能附加模块”中的“绑定到【大招释放】的自充能”中，后在下方仅勾选“对首发有效”选项。": "How to fill in start-of-game energy passives: Energy gained at the start (e.g., MINI JCW passive) is different from the Start Base Charge! Do not put this energy into the Start Base Charge! You can fill it in the 'Extended Self-Charge Modules' under 'Self-charge via [Ult Release]', and then only check the 'Applies to 1st Ult' option below.",
+           "更新计划：网站现在和未来都无计划做出选择预设车辆后一键填写数值的功能，这样会让时效性变差且维护周期大大提高，与网站“无后端运行”、“自由定制”、“可长期运行”的初衷相悖。": "Update Plan: Currently and in the future, the site has no plans to implement a feature that automatically fills in values by selecting a preset vehicle. This would reduce timeliness and greatly increase the maintenance cycle, contradicting the site's original intention of 'no backend operation,' 'customize freely,' and 'long-term operation'."
+       };
+
+       let sysLang = (navigator.languages && navigator.languages[0]) || navigator.language || 'zh';
+       let currentLang = sysLang.toLowerCase().startsWith('zh') ? 'zh' : 'en';
+       
+       const originalTextsMap = new WeakMap();
+       const sortedKeys = Object.keys(i18n).sort((a, b) => b.length - a.length);
+
+       function translateNode(node) {
+           if (node.nodeType === Node.TEXT_NODE) {
+               let text = node.nodeValue;
+               if (text.trim()) {
+                   if (!originalTextsMap.has(node)) originalTextsMap.set(node, text);
+                   let origText = originalTextsMap.get(node);
+                   if (currentLang === 'en') {
+                       let translated = origText;
+                       sortedKeys.forEach(key => {
+                           if (translated.includes(key)) {
+                               translated = translated.split(key).join(i18n[key]);
+                           }
+                       });
+                       if (node.nodeValue !== translated) node.nodeValue = translated;
+                   } else {
+                       if (node.nodeValue !== origText) node.nodeValue = origText;
+                   }
+               }
+           } else if (node.nodeType === Node.ELEMENT_NODE) {
+               if (['SCRIPT', 'STYLE'].includes(node.tagName) || node.classList.contains('thanks-item')) return;
+               
+               if (node.hasAttribute('title')) {
+                   if (!node.hasAttribute('data-orig-title')) node.setAttribute('data-orig-title', node.getAttribute('title'));
+                   let origTitle = node.getAttribute('data-orig-title');
+                   let translatedTitle = origTitle;
+                   if (currentLang === 'en') {
+                       sortedKeys.forEach(key => {
+                           if (translatedTitle.includes(key)) translatedTitle = translatedTitle.split(key).join(i18n[key]);
+                       });
+                       if (node.getAttribute('title') !== translatedTitle) node.setAttribute('title', translatedTitle);
+                   } else {
+                       if (node.getAttribute('title') !== origTitle) node.setAttribute('title', origTitle);
+                   }
+               }
+               
+               node.childNodes.forEach(translateNode);
+           }
+       }
+
+       const domObserver = new MutationObserver((mutations) => {
+           if (currentLang !== 'en') return;
+           let shouldUpdate = false;
+           for (let m of mutations) {
+               if (m.type === 'characterData' || m.addedNodes.length > 0 || m.type === 'attributes') {
+                   shouldUpdate = true; break;
+               }
+           }
+           if (shouldUpdate) applyTranslation();
+       });
+
+       function applyTranslation() {
+           domObserver.disconnect();
+           
+           translateNode(document.body);
+           
+           let btnText = document.getElementById('langBtnText');
+           if (btnText) btnText.innerText = 'English / 中文';
+           
+           document.documentElement.lang = currentLang === 'en' ? 'en' : 'zh-CN';
+           document.title = currentLang === 'en' ? 'Ace Racer - Ult Energy Calculator' : '王牌竞速 - 大招能量精密计算器';
+           
+           let metaAppTitle = document.querySelector('meta[name="apple-mobile-web-app-title"]');
+           if (metaAppTitle) {
+               metaAppTitle.content = currentLang === 'en' ? 'Ace Calc' : '王牌计算器';
+           }
+           
+           domObserver.takeRecords();
+           domObserver.observe(document.body, { childList: true, subtree: true, characterData: true, attributes: true, attributeFilter: ['title'] });
+       }
+
+       function toggleLanguage() {
+           currentLang = currentLang === 'zh' ? 'en' : 'zh';
+           applyTranslation();
+           if (typeof window.calculate === 'function') {
+               var isInitial = document.getElementById('resultValueFirst').innerText.includes('--');
+               window.calculate(isInitial);
+           }
+       }
+
+       if (typeof window.copyToClipboard === 'function' && !window.copyHooked) {
+           window.copyHooked = true;
+           const originalCopyToClipboard = window.copyToClipboard;
+           window.copyToClipboard = function(text, successMsg) {
+               let finalText = text;
+               if (currentLang === 'en') {
+                   sortedKeys.forEach(key => { finalText = finalText.split(key).join(i18n[key]); });
+               }
+               originalCopyToClipboard(finalText, successMsg);
+           };
+       }
+
+       if (typeof CanvasRenderingContext2D !== 'undefined' && !CanvasRenderingContext2D.prototype.fillHooked) {
+           CanvasRenderingContext2D.prototype.fillHooked = true;
+           const origFillText = CanvasRenderingContext2D.prototype.fillText;
+           CanvasRenderingContext2D.prototype.fillText = function(text, x, y, maxWidth) {
+               let finalTxt = text;
+               if (window.currentLang === 'en' && typeof finalTxt === 'string' && /[\u4e00-\u9fa5]/.test(finalTxt)) {
+                   sortedKeys.forEach(key => { finalTxt = finalTxt.split(key).join(i18n[key]); });
+               }
+               if (maxWidth !== undefined) origFillText.call(this, finalTxt, x, y, maxWidth);
+               else origFillText.call(this, finalTxt, x, y);
+           };
+       }
+
+       applyTranslation();
+   </script>
+</body>
+</html>
