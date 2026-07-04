@@ -1,0 +1,9 @@
+User-agent: *
+Allow: /
+Disallow: /node_modules/
+
+User-agent: Bytespider
+Allow: /
+Crawl-delay: 1
+
+Sitemap: https://aceracercalc.top/sitemap.xml
