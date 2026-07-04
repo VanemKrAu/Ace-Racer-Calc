@@ -2,6 +2,16 @@ User-agent: *
 Allow: /
 Disallow: /node_modules/
 
+User-agent: Baiduspider
+Allow: /
+Crawl-delay: 1
+
+User-agent: Googlebot
+Allow: /
+
+User-agent: Bingbot
+Allow: /
+
 User-agent: Bytespider
 Allow: /
 Crawl-delay: 1
