@@ -911,6 +911,33 @@
                            </div>
                        </div>
                    </div>
+
+                   <div class="card">
+                       <div class="card-title"><span class="zh">自定义触发自充能</span><span class="lang-en">Custom Trigger Self-Charge</span></div>
+                       <div class="form-group" style="margin-bottom: 12px;">
+                           <label class="form-label" style="color: var(--primary);"><span class="zh">每次触发附加百分比 (受反制与充能效率双重影响)</span><span class="lang-en">Bonus % per trigger (Affected by Counter & Eff)</span></label>
+                           <div class="input-wrapper">
+                               <input type="number" id="valCustomTrig" class="form-control" value="0" min="0" step="0.1" oninput="triggerAutoCalc(currentActiveField); calculate();">
+                               <span class="input-unit">%</span>
+                           </div>
+                       </div>
+                       <div class="row-grid" style="margin-bottom: 0;">
+                           <div class="form-group" style="margin-bottom: 0;">
+                               <label class="form-label" style="color: var(--text-muted); font-size: 11.5px;"><span class="zh">首发一大触发次数</span><span class="lang-en">1st Ult Triggers</span></label>
+                               <div class="input-wrapper">
+                                   <input type="number" id="customTrigFirstCount" class="form-control" value="0" min="0" step="1" oninput="triggerAutoCalc(currentActiveField); calculate();">
+                                   <span class="input-unit"><span class="zh">次</span><span class="lang-en"></span></span>
+                               </div>
+                           </div>
+                           <div class="form-group" style="margin-bottom: 0;">
+                               <label class="form-label" style="color: var(--text-muted); font-size: 11.5px;"><span class="zh">循环内触发次数</span><span class="lang-en">Loop Triggers</span></label>
+                               <div class="input-wrapper">
+                                   <input type="number" id="customTrigLoopCount" class="form-control" value="0" min="0" step="1" oninput="calculate();">
+                                   <span class="input-unit"><span class="zh">次</span><span class="lang-en"></span></span>
+                               </div>
+                           </div>
+                       </div>
+                   </div>
                </div>
            </div>
 
@@ -1294,8 +1321,15 @@
            text += _("🔹 环境影响：反制", "🔹 Environment: Counter ") + counter + _("% | 降效", "% | Debuff ") + debuff + "%\n";
            text += _("🔹 赋能充能：", "🔹 Empowerment: ") + empowerStr + "\n";
            
-           if (parseFloat(valExtraNitro) > 0 || isExtraUltActive || parseFloat(valExtraPerSec) > 0 || parseFloat(extraEfficiency) !== 0) {
+           var valCustomTrig = document.getElementById('valCustomTrig').value || "0";
+           var customTrigFirstCount = document.getElementById('customTrigFirstCount').value || "0";
+           var customTrigLoopCount = document.getElementById('customTrigLoopCount').value || "0";
+
+           if (parseFloat(valExtraNitro) > 0 || isExtraUltActive || parseFloat(valExtraPerSec) > 0 || parseFloat(extraEfficiency) !== 0 || parseFloat(valCustomTrig) > 0) {
                text += _("🔹 附加充能：额外氮气(", "🔹 Extra Charge: Nitro Bonus(") + valExtraNitro + _("%) | 额外大招(", "%) | Ult Bonus(") + valExtraUltStr + _("%) | 持续每秒(", "%) | Per sec(") + valExtraPerSec + _("%) | 充能效率提升(", "%) | Eff Boost(") + extraEfficiency + "%)\n";
+           }
+           if (parseFloat(valCustomTrig) > 0) {
+               text += _("🔹 自定义触发自充：每次(", "🔹 Custom Trig: ") + valCustomTrig + _("% × 首发", "% × 1st ") + customTrigFirstCount + _("次 / 循环", " trigs / Loop ") + customTrigLoopCount + _("次\n", " trigs\n");
            }
 
            text += "┈┈┈┈┈┈┈┈┈┈┈┈┈┈\n";
@@ -1593,7 +1627,10 @@
                document.getElementById('hasExtraPerSec').checked ? 1 : 0,  
                document.getElementById('valExtraPerSec').value,          
                document.getElementById('chkExtraPerSecFirst').checked ? 1 : 0,
-               document.getElementById('chkExtraPerSecLoop').checked ? 1 : 0  
+               document.getElementById('chkExtraPerSecLoop').checked ? 1 : 0,  
+               document.getElementById('valCustomTrig').value,          
+               document.getElementById('customTrigFirstCount').value,      
+               document.getElementById('customTrigLoopCount').value        
            ];
 
            var cfgStr = encodeURIComponent(btoa(compactArr.join('|')));
@@ -1706,6 +1743,11 @@
                            document.getElementById('chkExtraPerSecFirst').checked = arr[33] === '1';
                            document.getElementById('chkExtraPerSecLoop').checked = arr[34] === '1';
                        }
+                       if (arr.length >= 38) {
+                           document.getElementById('valCustomTrig').value = arr[35];
+                           document.getElementById('customTrigFirstCount').value = arr[36];
+                           document.getElementById('customTrigLoopCount').value = arr[37];
+                       }
                        
                        result = true;
                    }
@@ -1771,6 +1813,9 @@
                    if(config.psl !== undefined) document.getElementById('chkExtraPerSecLoop').checked = config.psl;
 
                    if(config.ee !== undefined) document.getElementById('extraEfficiency').value = config.ee;
+                   if(config.ctv !== undefined) document.getElementById('valCustomTrig').value = config.ctv;
+                   if(config.ctf !== undefined) document.getElementById('customTrigFirstCount').value = config.ctf;
+                   if(config.ctl !== undefined) document.getElementById('customTrigLoopCount').value = config.ctl;
                    
                    if(config.fnc !== undefined) document.getElementById('inputFirstNitroCount').value = config.fnc;
                    if(config.xj !== undefined) document.getElementById('inputXianji').value = config.xj;
@@ -2008,6 +2053,9 @@
 
            if (efficiencyMult < 0) efficiencyMult = 0;
 
+           var customTrigVal = parseFloat(document.getElementById('valCustomTrig').value) || 0;
+           var customTrigFirstCount = parseInt(document.getElementById('customTrigFirstCount').value) || 0;
+
            var jiezouFirstCount = (activeEmpowers.indexOf('jiezou') !== -1) ? (parseFloat(document.getElementById('jiezou_sub_first').value) || 0) : 0;
            var huaxinFirstCount = (activeEmpowers.indexOf('huaxin') !== -1) ? (parseFloat(document.getElementById('huaxin_sub_first').value) || 0) : 0;
            
@@ -2037,10 +2085,11 @@
                if (document.getElementById('queyi_sub_enemy').checked) queyiPerSecond += 1.2;
            }
            var firstQueyiOutput = Math.floor(firstDuration + 0.000001) * queyiPerSecond * defenseMult;
+           var firstCustomTrigOutput = customTrigVal * customTrigFirstCount * defenseMult * efficiencyMult;
 
            if (sourceField === 'xianji') {
                var xianji = parseFloat(document.getElementById('inputXianji').value) || 0;
-               var netFirstUltRemain = target - initFixedBase - initMultBase - (extraUltFirstVal * defenseMult * efficiencyMult) - firstPerSecOutput - (xianji * defenseMult) - firstQueyiOutput;
+               var netFirstUltRemain = target - initFixedBase - initMultBase - (extraUltFirstVal * defenseMult * efficiencyMult) - firstPerSecOutput - firstCustomTrigOutput - (xianji * defenseMult) - firstQueyiOutput;
                var reqHuineng = 0;
                if (currentBaseNitro > 0 && netFirstUltRemain > 0 && efficiencyMult > 0 && firstNitrosCount > 0) {
                    var neededBaseOutput = netFirstUltRemain / (defenseMult * efficiencyMult);
@@ -2057,7 +2106,7 @@
                var huineng = parseFloat(document.getElementById('inputHuineng').value) || 0;
                var netSingleNitroOutput = (currentBaseNitro * (1 + huineng / 100) + specBonus + extraNitroFirstVal) * defenseMult * efficiencyMult;
                var firstNitroTotalOutput = firstNitrosCount * netSingleNitroOutput;
-               var netRemainForXianjiFirst = target - initFixedBase - initMultBase - (extraUltFirstVal * defenseMult * efficiencyMult) - firstPerSecOutput - firstNitroTotalOutput - firstQueyiOutput;
+               var netRemainForXianjiFirst = target - initFixedBase - initMultBase - (extraUltFirstVal * defenseMult * efficiencyMult) - firstPerSecOutput - firstCustomTrigOutput - firstNitroTotalOutput - firstQueyiOutput;
                var reqXianji = 0;
                if (netRemainForXianjiFirst > 0) reqXianji = (netRemainForXianjiFirst / defenseMult);
                if (reqXianji < 0) reqXianji = 0;
@@ -2106,6 +2155,10 @@
            var efficiencyMult = ((activeEmpowers.indexOf('yichu') !== -1) ? 1.05 : 1.00) + extraEfficiency - efficiencyReduce;
 
            if (efficiencyMult < 0) efficiencyMult = 0;
+
+           var customTrigVal = parseFloat(document.getElementById('valCustomTrig').value) || 0;
+           var customTrigFirstCount = parseInt(document.getElementById('customTrigFirstCount').value) || 0;
+           var customTrigLoopCount = parseInt(document.getElementById('customTrigLoopCount').value) || 0;
 
            var baseUltDuration = parseFloat(document.getElementById('baseUltDuration').value) || 0;
            var actualUltDuration = baseUltDuration * (target / 100);
@@ -2225,10 +2278,17 @@
                formulaFirstStr += _("⑧ 持续每秒附加：[每秒(", "8. Per Sec Bonus: [Per sec(") + extraPerSecFirstVal + _(") × 整数时长(", ") * Int Duration(") + Math.floor(firstDuration + 0.000001) + _("s)] × (1-反制％) × 充能效率(", "s)] * (1-Counter%) * Eff(") + (efficiencyMult*100).toFixed(0) + "%) = <b>" + step8_ExtraPerSec + "</b><br>";
            }
 
+           var firstCustomTrigOutput = customTrigVal * customTrigFirstCount * defenseMult * efficiencyMult;
+           if (customTrigFirstCount > 0) {
+               var step9_CustomTrig = firstCustomTrigOutput.toFixed(3);
+               formulaFirstStr += _("⑨ 自定义触发自充：[触发(", "9. Custom Trigger: [Trig(") + customTrigFirstCount + _("次 × ", " times × ") + customTrigVal + _("%)] × (1-反制％) × 充能效率(", "%)] * (1-Counter%) * Eff(") + (efficiencyMult*100).toFixed(0) + "%) = <b>" + step9_CustomTrig + "</b><br>";
+               firstUltTotal += firstCustomTrigOutput;
+           }
+
            firstUltTotal = Math.floor(firstUltTotal * 1000 + 0.000001) / 1000;
 
            formulaFirstStr += "-------------------------<<br>";
-           formulaFirstStr += "<b>" + _("首发核算：", "First Ult Calc: ") + step1_Start + " + " + step2_Xianji + " + " + step3_MultBase + " + " + step4_Jiezou + " + " + step5_Nitro + (firstQueyiOutput > 0 ? " + " + firstQueyiOutput.toFixed(3) : "") + (extraUltFirstVal > 0 ? " + " + step7_ExtraUlt : "") + (extraPerSecFirstVal > 0 ? " + " + step8_ExtraPerSec : "") + " = " + firstUltTotal.toFixed(3) + "%</b>";
+           formulaFirstStr += "<b>" + _("首发核算：", "First Ult Calc: ") + step1_Start + " + " + step2_Xianji + " + " + step3_MultBase + " + " + step4_Jiezou + " + " + step5_Nitro + (firstQueyiOutput > 0 ? " + " + firstQueyiOutput.toFixed(3) : "") + (extraUltFirstVal > 0 ? " + " + step7_ExtraUlt : "") + (extraPerSecFirstVal > 0 ? " + " + step8_ExtraPerSec : "") + (customTrigFirstCount > 0 ? " + " + step9_CustomTrig : "") + " = " + firstUltTotal.toFixed(3) + "%</b>";
            formulaFirst.innerHTML = formulaFirstStr;
 
            if (firstUltTotal >= target) {
@@ -2249,14 +2309,15 @@
            var loopNitroTotalOutput = nitrosPerUlt * netSingleNitroOutputLoop;
            var loopExtraUltOutput = extraUltLoopVal * defenseMult * efficiencyMult;
            var loopPerSecOutput = Math.floor(actualUltDuration + 0.000001) * extraPerSecLoopVal * defenseMult * efficiencyMult;
+           var loopCustomTrigOutput = customTrigVal * customTrigLoopCount * defenseMult * efficiencyMult;
            
-           var loopGrandTotal = loopFixedEmpower + loopHuaxinOutput + loopNitroTotalOutput + loopExtraUltOutput + loopPerSecOutput;
+           var loopGrandTotal = loopFixedEmpower + loopHuaxinOutput + loopNitroTotalOutput + loopExtraUltOutput + loopPerSecOutput + loopCustomTrigOutput;
 
            loopGrandTotal = Math.floor(loopGrandTotal * 1000 + 0.000001) / 1000;
 
            var reqHuinengLoop = 0;
            if (nitrosPerUlt > 0 && efficiencyMult > 0) {
-               var remainForLoopUlt = target - loopFixedEmpower - loopHuaxinOutput - loopExtraUltOutput - loopPerSecOutput;
+               var remainForLoopUlt = target - loopFixedEmpower - loopHuaxinOutput - loopExtraUltOutput - loopPerSecOutput - loopCustomTrigOutput;
                var singleNeeded = remainForLoopUlt / nitrosPerUlt;
                var baseNeeded = singleNeeded / (defenseMult * efficiencyMult);
                reqHuinengLoop = (((baseNeeded - specBonus - extraNitroLoopVal) / currentBaseNitro) - 1) * 100;
@@ -2283,8 +2344,12 @@
                var stepLoop_ExtraPerSec = loopPerSecOutput.toFixed(3);
                formulaLoopStr += _("⑤ 持续每秒附加：[每秒(", "5. Per Sec Bonus: [Per sec(") + extraPerSecLoopVal + _(") × 整数时长(", ") * Int Duration(") + Math.floor(actualUltDuration + 0.000001) + _("s)] × (1-反制％) × 充能效率(", "s)] * (1-Counter%) * Eff(") + (efficiencyMult*100).toFixed(0) + "%) = <b>" + stepLoop_ExtraPerSec + "</b><br>";
            }
+           if (customTrigLoopCount > 0) {
+               var stepLoop_CustomTrig = loopCustomTrigOutput.toFixed(3);
+               formulaLoopStr += _("⑥ 自定义触发自充：[触发(", "6. Custom Trigger: [Trig(") + customTrigLoopCount + _("次 × ", " times × ") + customTrigVal + _("%)] × (1-反制％) × 充能效率(", "%)] * (1-Counter%) * Eff(") + (efficiencyMult*100).toFixed(0) + "%) = <b>" + stepLoop_CustomTrig + "</b><br>";
+           }
            formulaLoopStr += "-------------------------<<br>";
-           formulaLoopStr += "<b>" + _("循环总产出：", "Loop Total Output: ") + stepLoop_Empower + " + " + stepLoop_Huaxin + " + " + stepLoop_Nitro + (extraUltLoopVal > 0 ? " + " + stepLoop_ExtraUlt : "") + (extraPerSecLoopVal > 0 ? " + " + stepLoop_ExtraPerSec : "") + " = " + loopGrandTotal.toFixed(3) + "%</b><br>";
+           formulaLoopStr += "<b>" + _("循环总产出：", "Loop Total Output: ") + stepLoop_Empower + " + " + stepLoop_Huaxin + " + " + stepLoop_Nitro + (extraUltLoopVal > 0 ? " + " + stepLoop_ExtraUlt : "") + (extraPerSecLoopVal > 0 ? " + " + stepLoop_ExtraPerSec : "") + (customTrigLoopCount > 0 ? " + " + stepLoop_CustomTrig : "") + " = " + loopGrandTotal.toFixed(3) + "%</b><br>";
            formulaLoopStr += "<b>" + _("及格线判定：当前产出(", "Passing Check: Output(") + loopGrandTotal.toFixed(3) + _(")  vs  大招阀门(", ") vs Ult Valve(") + target + "%)</b>";
            formulaLoop.innerHTML = formulaLoopStr;
 
