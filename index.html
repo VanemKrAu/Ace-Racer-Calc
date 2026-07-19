@@ -224,6 +224,14 @@
        .form-control:focus { outline: none; border-color: var(--primary); box-shadow: var(--focus-ring-primary); }
        .input-unit { position: absolute; right: 14px; color: var(--text-muted); font-size: 14px; font-weight: bold; }
 
+
+       /* 竖屏：车辆技能附加充能效率沉底，保持原顺序不变 */
+       @media (max-width: 849px) {
+           #topLayout { display: flex; flex-direction: column; }
+           #topLayout > .desktop-col { display: contents; }
+           .eff-card-mobile { order: 10; }
+       }
+
        .nitro-grid { display: flex; flex-direction: column; gap: 10px; margin-bottom: 12px; }
        .nitro-item { display: flex; align-items: center; justify-content: space-between; background: var(--inner-bg); padding: 10px 14px; border-radius: 10px; border: 1px solid var(--border); }
        .nitro-item.selected { border-color: var(--primary); background: var(--nitro-active-bg); }
@@ -582,7 +590,7 @@
 
            <div class="section-divider"><span><span class="zh">基础属性及赋能调整区</span><span class="lang-en">Base Stats & Empowerment Tweaks</span></span></div>
            
-           <div class="desktop-layout">
+           <div class="desktop-layout" id="topLayout">
                <div class="desktop-col">
                    <div class="card">
                        <div class="card-title"><span class="zh">全局核心基准充能参数</span><span class="lang-en">Global Core Charge Parameters</span></div>
@@ -717,6 +725,18 @@
                            <input type="range" id="debuffRange" class="slider-control" min="0" max="100" value="0" step="1" oninput="updateDebuffSlider()">
                        </div>
                    </div>
+                   
+
+                    <div class="card eff-card-mobile">
+                        <div class="card-title"><span class="zh">车辆技能附加充能效率</span><span class="lang-en">Vehicle Skill Bonus Efficiency</span></div>
+                        <div class="form-group" style="margin-bottom: 0;">
+                            <label class="form-label" style="color: var(--success);"><span class="zh">部分车辆特性的额外充能效率提升</span><span class="lang-en">Extra charge efficiency from vehicle traits</span></label>
+                            <div class="input-wrapper">
+                                <input type="number" id="extraEfficiency" class="form-control" style="border-color: rgba(76, 223, 138, 0.6);" value="0" min="0" step="1" oninput="triggerAutoCalc(currentActiveField); calculate();">
+                                <span class="input-unit">%</span>
+                            </div>
+                        </div>
+                    </div>
                </div>
                
                <div class="desktop-col">
@@ -896,18 +916,6 @@
                                        <input type="checkbox" id="chkExtraPerSecLoop" checked onchange="triggerAutoCalc(currentActiveField); calculate();" style="width: 14px; height: 14px; accent-color: var(--success);"> <span class="zh">对循环有效</span><span class="lang-en">Applies to Loop</span>
                                    </label>
                                </div>
-                           </div>
-                       </div>
-
-                   </div>
-                   
-                   <div class="card">
-                       <div class="card-title"><span class="zh">车辆技能附加充能效率</span><span class="lang-en">Vehicle Skill Bonus Efficiency</span></div>
-                       <div class="form-group" style="margin-bottom: 0;">
-                           <label class="form-label" style="color: var(--success);"><span class="zh">部分车辆特性的额外充能效率提升</span><span class="lang-en">Extra charge efficiency from vehicle traits</span></label>
-                           <div class="input-wrapper">
-                               <input type="number" id="extraEfficiency" class="form-control" style="border-color: rgba(76, 223, 138, 0.6);" value="0" min="0" step="1" oninput="triggerAutoCalc(currentActiveField); calculate();">
-                               <span class="input-unit">%</span>
                            </div>
                        </div>
                    </div>
