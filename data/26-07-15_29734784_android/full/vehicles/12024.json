@@ -1,0 +1,1604 @@
+{
+  "schemaVersion": 2,
+  "versionId": "26-07-15_29734784_android",
+  "generatedAt": "2026-07-16T09:22:34.000Z",
+  "item": {
+    "id": 12024,
+    "name": "丰田 Corolla Sprinter Trueno GT Apex",
+    "manufacturer": "丰田",
+    "quality": "传说",
+    "class": 4,
+    "group": 2,
+    "position": "竞速位",
+    "positionLabel": "竞速位",
+    "racingRole": 1,
+    "racingRoleName": "竞速位",
+    "specialization": "山路",
+    "seasonCode": "S18",
+    "publication": {
+      "state": "released",
+      "releaseTimestamp": 1703779200,
+      "releaseText": "2023-12-29 00:00:00",
+      "releaseMacro": "S18_WEEK5_START"
+    },
+    "summary": "无伤漂移，行云流水",
+    "description": "无伤漂移，行云流水",
+    "tags": [
+      {
+        "id": 6,
+        "text": "自充能",
+        "desc": "技能可以补充大招能量",
+        "color": 1
+      },
+      {
+        "id": 26,
+        "text": "持久",
+        "desc": "大招持续时间长",
+        "color": 1
+      },
+      {
+        "id": 4,
+        "text": "隐身",
+        "desc": "·无视车辆间的碰撞\n·不会被“锁定类”“触碰类”干扰命中",
+        "color": 1
+      }
+    ],
+    "stats": {
+      "speed_limit": 207,
+      "speedup_ratio": 1.02,
+      "charge": {
+        "ace_charge": 2500,
+        "drift_charge_energy_coef": 600,
+        "drift_charge_energy_min": 1200,
+        "drift_charge_energy_max": 6000,
+        "drift_extra_charge": [
+          [
+            1,
+            0
+          ],
+          [
+            2,
+            1800
+          ]
+        ]
+      }
+    },
+    "maxDurability": 100,
+    "levels": [
+      {
+        "id": 12024,
+        "suffix": "0",
+        "rich_text": {
+          "id": 12024,
+          "ace_time_charge_condition": "在山路赛道，使用氮气时获得额外大招充能并在落后第一名超过一定距离时获得速度提升效果",
+          "ace_time_effect": "排水渠过弯可以充能两次",
+          "ace_time_effect_rich_desc": "排水渠过弯可以充能两次",
+          "chip_unlock_tips": "芯片最高生效等级为#fe7ab71#ffffff级",
+          "icon_ace_time_charge_condition": "new_carport_icon_mountainroad",
+          "icon_ace_time_effect": "new_carport_icon_10252",
+          "icon_slipstream": "new_carport_icon_14",
+          "icon_unlock_nitro_2": "new_carport_icon_10252",
+          "icon_unlock_nitro_3": "new_carport_icon_nos_03",
+          "level_title": "原车型",
+          "passive_skill_effect": [
+            "排水渠过弯加速",
+            ""
+          ],
+          "passive_skill_effect_value": [
+            "35公里/小时",
+            ""
+          ],
+          "passive_skill_rich_desc": "\n·平跑速度+20km/h\n·开局后首次撞墙前获得#tips[隐身]效果\n·每次撞墙本局内极速-2km/h\n#acacac（上限叠加至-20km/h）",
+          "slipstream": "跟随在车辆后方将获得尾流，产生持续的氮气充能效果",
+          "special_passive_skill_desc": "\n·平跑速度+20km/h\n·开局后首次撞墙前获得#tips[隐身]效果\n·每次撞墙本局内极速-2km/h\n#acacac（上限叠加至-20km/h）",
+          "special_passive_skill_icon": "new_carport_icon_10253",
+          "special_passive_skill_title": "行云流水",
+          "title_ace_time_charge_condition": "赛道专精",
+          "title_ace_time_effect": "RECU限制解除",
+          "title_slipstream": "空气动力学套件",
+          "title_unlock_nitro_2": "大招强化套件 I",
+          "title_unlock_nitro_3": "竞速级氮气支架",
+          "unlock_nitro_3": "解锁1x6磅，2x3磅，3x2磅氮气",
+          "upgrade_level_icon": "new_carport_icon_10253"
+        },
+        "stats": {
+          "speed_limit": 207,
+          "speedup_ratio": 1.02,
+          "charge": {
+            "ace_charge": 2500,
+            "drift_charge_energy_coef": 600,
+            "drift_charge_energy_min": 1200,
+            "drift_charge_energy_max": 6000,
+            "drift_extra_charge": [
+              [
+                1,
+                0
+              ],
+              [
+                2,
+                1800
+              ]
+            ]
+          }
+        }
+      },
+      {
+        "id": 120243,
+        "suffix": "1",
+        "rich_text": {
+          "id": 120243,
+          "ace_time_charge_condition": "在山路赛道，使用氮气时获得额外大招充能并在落后第一名超过一定距离时获得速度提升效果",
+          "ace_time_effect": "排水渠过弯可以充能两次",
+          "ace_time_effect_rich_desc": "排水渠过弯可以充能两次",
+          "chip_unlock_tips": "芯片最高生效等级为#fe7ab74#ffffff级",
+          "icon_ace_time_charge_condition": "new_carport_icon_mountainroad",
+          "icon_ace_time_effect": "new_carport_icon_10252",
+          "icon_slipstream": "new_carport_icon_14",
+          "icon_unlock_nitro_2": "new_carport_icon_10252",
+          "icon_unlock_nitro_3": "new_carport_icon_nos_03",
+          "is_unlocked_ace_time_charge_condition": 1,
+          "is_unlocked_slipstream": 1,
+          "level_title": "竞速级氮气支架 I",
+          "passive_skill_effect": [
+            "排水渠过弯加速",
+            ""
+          ],
+          "passive_skill_effect_value": [
+            "35公里/小时",
+            ""
+          ],
+          "passive_skill_rich_desc": "\n·平跑速度+20km/h\n·开局后首次撞墙前获得#tips[隐身]效果\n·每次撞墙本局内极速-2km/h\n#acacac（上限叠加至-20km/h）",
+          "slipstream": "跟随在车辆后方将获得尾流，产生持续的氮气充能效果",
+          "special_passive_skill_desc": "\n·平跑速度+20km/h\n·开局后首次撞墙前获得#tips[隐身]效果\n·每次撞墙本局内极速-2km/h\n#acacac（上限叠加至-20km/h）",
+          "special_passive_skill_icon": "new_carport_icon_10253",
+          "special_passive_skill_title": "行云流水",
+          "title_ace_time_charge_condition": "赛道专精",
+          "title_ace_time_effect": "RECU限制解除",
+          "title_slipstream": "空气动力学套件",
+          "title_unlock_nitro_2": "大招强化套件 I",
+          "title_unlock_nitro_3": "竞速级氮气支架",
+          "unlock_nitro_3": "解锁1x6磅，2x3磅，3x2磅氮气",
+          "upgrade_level_icon": "new_carport_icon_nos_03"
+        },
+        "stats": {
+          "speed_limit": 207,
+          "speedup_ratio": 1.02,
+          "charge": {
+            "ace_charge": 2500,
+            "drift_charge_energy_coef": 600,
+            "drift_charge_energy_min": 1200,
+            "drift_charge_energy_max": 6000,
+            "drift_extra_charge": [
+              [
+                1,
+                0
+              ],
+              [
+                2,
+                1800
+              ]
+            ]
+          }
+        }
+      },
+      {
+        "id": 120241,
+        "suffix": "2",
+        "rich_text": {
+          "id": 120241,
+          "ace_time_charge_condition": "在山路赛道，使用氮气时获得额外大招充能并在落后第一名超过一定距离时获得速度提升效果",
+          "ace_time_effect": "排水渠过弯可以充能两次",
+          "ace_time_effect_rich_desc": "排水渠过弯可以充能两次",
+          "chip_unlock_tips": "芯片最高生效等级为#fe7ab72#ffffff级",
+          "icon_ace_time_charge_condition": "new_carport_icon_mountainroad",
+          "icon_ace_time_effect": "new_carport_icon_10252",
+          "icon_slipstream": "new_carport_icon_14",
+          "icon_unlock_nitro_2": "new_carport_icon_10252",
+          "icon_unlock_nitro_3": "new_carport_icon_nos_03",
+          "is_unlocked_slipstream": 1,
+          "level_title": "空气动力学套件",
+          "passive_skill_effect": [
+            "排水渠过弯加速",
+            ""
+          ],
+          "passive_skill_effect_value": [
+            "35公里/小时",
+            ""
+          ],
+          "passive_skill_rich_desc": "\n·平跑速度+20km/h\n·开局后首次撞墙前获得#tips[隐身]效果\n·每次撞墙本局内极速-2km/h\n#acacac（上限叠加至-20km/h）",
+          "slipstream": "跟随在车辆后方将获得尾流，产生持续的氮气充能效果",
+          "special_passive_skill_desc": "\n·平跑速度+20km/h\n·开局后首次撞墙前获得#tips[隐身]效果\n·每次撞墙本局内极速-2km/h\n#acacac（上限叠加至-20km/h）",
+          "special_passive_skill_icon": "new_carport_icon_10253",
+          "special_passive_skill_title": "行云流水",
+          "title_ace_time_charge_condition": "赛道专精",
+          "title_ace_time_effect": "RECU限制解除",
+          "title_slipstream": "空气动力学套件",
+          "title_unlock_nitro_2": "大招强化套件 I",
+          "title_unlock_nitro_3": "竞速级氮气支架",
+          "unlock_nitro_3": "解锁1x6磅，2x3磅，3x2磅氮气",
+          "upgrade_level_icon": "new_carport_icon_14"
+        },
+        "stats": {
+          "speed_limit": 207,
+          "speedup_ratio": 1.02,
+          "charge": {
+            "ace_charge": 2500,
+            "drift_charge_energy_coef": 600,
+            "drift_charge_energy_min": 1200,
+            "drift_charge_energy_max": 6000,
+            "drift_extra_charge": [
+              [
+                1,
+                0
+              ],
+              [
+                2,
+                1800
+              ]
+            ]
+          }
+        }
+      },
+      {
+        "id": 120242,
+        "suffix": "3",
+        "rich_text": {
+          "id": 120242,
+          "ace_time_charge_condition": "在山路赛道，使用氮气时获得额外大招充能并在落后第一名超过一定距离时获得速度提升效果",
+          "ace_time_effect": "排水渠过弯可以充能两次",
+          "ace_time_effect_rich_desc": "排水渠过弯可以充能两次",
+          "chip_unlock_tips": "芯片最高生效等级为#fe7ab73#ffffff级",
+          "icon_ace_time_charge_condition": "new_carport_icon_mountainroad",
+          "icon_ace_time_effect": "new_carport_icon_10252",
+          "icon_slipstream": "new_carport_icon_14",
+          "icon_unlock_nitro_2": "new_carport_icon_10252",
+          "icon_unlock_nitro_3": "new_carport_icon_nos_03",
+          "is_unlocked_ace_time_charge_condition": 1,
+          "is_unlocked_slipstream": 1,
+          "level_title": "赛道专精",
+          "passive_skill_effect": [
+            "排水渠过弯加速",
+            ""
+          ],
+          "passive_skill_effect_value": [
+            "35公里/小时",
+            ""
+          ],
+          "passive_skill_rich_desc": "\n·平跑速度+20km/h\n·开局后首次撞墙前获得#tips[隐身]效果\n·每次撞墙本局内极速-2km/h\n#acacac（上限叠加至-20km/h）",
+          "slipstream": "跟随在车辆后方将获得尾流，产生持续的氮气充能效果",
+          "special_passive_skill_desc": "\n·平跑速度+20km/h\n·开局后首次撞墙前获得#tips[隐身]效果\n·每次撞墙本局内极速-2km/h\n#acacac（上限叠加至-20km/h）",
+          "special_passive_skill_icon": "new_carport_icon_10253",
+          "special_passive_skill_title": "行云流水",
+          "title_ace_time_charge_condition": "赛道专精",
+          "title_ace_time_effect": "RECU限制解除",
+          "title_slipstream": "空气动力学套件",
+          "title_unlock_nitro_2": "大招强化套件 I",
+          "title_unlock_nitro_3": "竞速级氮气支架",
+          "unlock_nitro_3": "解锁1x6磅，2x3磅，3x2磅氮气",
+          "upgrade_level_icon": "new_carport_icon_mountainroad"
+        },
+        "stats": {
+          "speed_limit": 207,
+          "speedup_ratio": 1.02,
+          "charge": {
+            "ace_charge": 2500,
+            "drift_charge_energy_coef": 600,
+            "drift_charge_energy_min": 1200,
+            "drift_charge_energy_max": 6000,
+            "drift_extra_charge": [
+              [
+                1,
+                0
+              ],
+              [
+                2,
+                1800
+              ]
+            ]
+          }
+        }
+      },
+      {
+        "id": 120244,
+        "suffix": "4",
+        "rich_text": {
+          "id": 120244,
+          "ace_time_charge_condition": "在山路赛道，使用氮气时获得额外大招充能并在落后第一名超过一定距离时获得速度提升效果",
+          "ace_time_effect": "排水渠过弯可以充能两次",
+          "ace_time_effect_rich_desc": "排水渠过弯可以充能两次",
+          "chip_unlock_tips": "芯片最高生效等级为#fe7ab75#ffffff级",
+          "icon_ace_time_charge_condition": "new_carport_icon_mountainroad",
+          "icon_ace_time_effect": "new_carport_icon_10252",
+          "icon_slipstream": "new_carport_icon_14",
+          "icon_unlock_nitro_2": "new_carport_icon_10252",
+          "icon_unlock_nitro_3": "new_carport_icon_nos_03",
+          "is_unlocked_ace_time_charge_condition": 1,
+          "is_unlocked_slipstream": 1,
+          "level_title": "大招强化 I",
+          "passive_skill_effect": [
+            "排水渠过弯加速",
+            ""
+          ],
+          "passive_skill_effect_value": [
+            "40公里/小时",
+            ""
+          ],
+          "passive_skill_rich_desc": "\n·平跑速度+20km/h\n·开局后首次撞墙前获得#tips[隐身]效果\n·每次撞墙本局内极速-2km/h\n#acacac（上限叠加至-20km/h）",
+          "slipstream": "跟随在车辆后方将获得尾流，产生持续的氮气充能效果",
+          "special_passive_skill_desc": "\n·平跑速度+20km/h\n·开局后首次撞墙前获得#tips[隐身]效果\n·每次撞墙本局内极速-2km/h\n#acacac（上限叠加至-20km/h）",
+          "special_passive_skill_icon": "new_carport_icon_10253",
+          "special_passive_skill_title": "行云流水",
+          "title_ace_time_charge_condition": "赛道专精",
+          "title_ace_time_effect": "RECU限制解除",
+          "title_slipstream": "空气动力学套件",
+          "title_unlock_nitro_2": "大招强化套件 I",
+          "title_unlock_nitro_3": "竞速级氮气支架",
+          "unlock_nitro_3": "解锁1x6磅，2x3磅，3x2磅氮气",
+          "upgrade_level_icon": "new_carport_icon_10252"
+        },
+        "stats": {
+          "speed_limit": 207,
+          "speedup_ratio": 1.02,
+          "charge": {
+            "ace_charge": 2500,
+            "drift_charge_energy_coef": 600,
+            "drift_charge_energy_min": 1200,
+            "drift_charge_energy_max": 6000,
+            "drift_extra_charge": [
+              [
+                1,
+                0
+              ],
+              [
+                2,
+                1800
+              ]
+            ]
+          }
+        }
+      },
+      {
+        "id": 120245,
+        "suffix": "5",
+        "rich_text": {
+          "id": 120245,
+          "ace_time_charge_condition": "在山路赛道，使用氮气时获得额外大招充能并在落后第一名超过一定距离时获得速度提升效果",
+          "ace_time_effect": "排水渠过弯可以充能两次",
+          "ace_time_effect_rich_desc": "排水渠过弯可以充能两次",
+          "chip_unlock_tips": "芯片最高生效等级为#fe7ab76#ffffff级",
+          "icon_ace_time_charge_condition": "new_carport_icon_mountainroad",
+          "icon_ace_time_effect": "new_carport_icon_10252",
+          "icon_slipstream": "new_carport_icon_14",
+          "icon_unlock_nitro_2": "new_carport_icon_10252",
+          "icon_unlock_nitro_3": "new_carport_icon_nos_03",
+          "is_unlocked_ace_time_charge_condition": 1,
+          "is_unlocked_slipstream": 1,
+          "level_title": "竞速级氮气支架 II",
+          "passive_skill_effect": [
+            "排水渠过弯加速",
+            ""
+          ],
+          "passive_skill_effect_value": [
+            "40公里/小时",
+            ""
+          ],
+          "passive_skill_rich_desc": "\n·平跑速度+20km/h\n·开局后首次撞墙前获得#tips[隐身]效果\n·每次撞墙本局内极速-2km/h\n#acacac（上限叠加至-20km/h）",
+          "slipstream": "跟随在车辆后方将获得尾流，产生持续的氮气充能效果",
+          "special_passive_skill_desc": "\n·平跑速度+20km/h\n·开局后首次撞墙前获得#tips[隐身]效果\n·每次撞墙本局内极速-2km/h\n#acacac（上限叠加至-20km/h）",
+          "special_passive_skill_icon": "new_carport_icon_10253",
+          "special_passive_skill_title": "行云流水",
+          "title_ace_time_charge_condition": "赛道专精",
+          "title_ace_time_effect": "RECU限制解除",
+          "title_slipstream": "空气动力学套件",
+          "title_unlock_nitro_2": "大招强化套件 I",
+          "title_unlock_nitro_3": "竞速级氮气支架",
+          "unlock_nitro_3": "解锁1x6磅，2x3磅，3x2磅氮气",
+          "upgrade_level_icon": "new_carport_icon_nos_03"
+        },
+        "stats": {
+          "speed_limit": 207,
+          "speedup_ratio": 1.02,
+          "charge": {
+            "ace_charge": 2500,
+            "drift_charge_energy_coef": 600,
+            "drift_charge_energy_min": 1200,
+            "drift_charge_energy_max": 6000,
+            "drift_extra_charge": [
+              [
+                1,
+                0
+              ],
+              [
+                2,
+                1800
+              ]
+            ]
+          }
+        }
+      },
+      {
+        "id": 120246,
+        "suffix": "6",
+        "rich_text": {
+          "id": 120246,
+          "ace_time_charge_condition": "在山路赛道，使用氮气时获得额外大招充能并在落后第一名超过一定距离时获得速度提升效果",
+          "ace_time_effect": "排水渠过弯可以充能两次",
+          "ace_time_effect_rich_desc": "排水渠过弯可以充能两次",
+          "chip_unlock_tips": "芯片最高生效等级为#fe7ab77#ffffff级",
+          "icon_ace_time_charge_condition": "new_carport_icon_mountainroad",
+          "icon_ace_time_effect": "new_carport_icon_10252",
+          "icon_slipstream": "new_carport_icon_14",
+          "icon_unlock_nitro_2": "new_carport_icon_10252",
+          "icon_unlock_nitro_3": "new_carport_icon_nos_03",
+          "is_unlocked_ace_time_charge_condition": 1,
+          "is_unlocked_slipstream": 1,
+          "level_title": "大招强化 II",
+          "passive_skill_effect": [
+            "排水渠过弯加速",
+            ""
+          ],
+          "passive_skill_effect_value": [
+            "45公里/小时",
+            ""
+          ],
+          "passive_skill_rich_desc": "\n·平跑速度+20km/h\n·开局后首次撞墙前获得#tips[隐身]效果\n·每次撞墙本局内极速-2km/h\n#acacac（上限叠加至-20km/h）",
+          "slipstream": "跟随在车辆后方将获得尾流，产生持续的氮气充能效果",
+          "special_passive_skill_desc": "\n·平跑速度+20km/h\n·开局后首次撞墙前获得#tips[隐身]效果\n·每次撞墙本局内极速-2km/h\n#acacac（上限叠加至-20km/h）",
+          "special_passive_skill_icon": "new_carport_icon_10253",
+          "special_passive_skill_title": "行云流水",
+          "title_ace_time_charge_condition": "赛道专精",
+          "title_ace_time_effect": "RECU限制解除",
+          "title_slipstream": "空气动力学套件",
+          "title_unlock_nitro_2": "大招强化套件 I",
+          "title_unlock_nitro_3": "竞速级氮气支架",
+          "unlock_nitro_3": "解锁1x6磅，2x3磅，3x2磅氮气",
+          "upgrade_level_icon": "new_carport_icon_10252"
+        },
+        "stats": {
+          "speed_limit": 207.5,
+          "speedup_ratio": 1.02,
+          "charge": {
+            "ace_charge": 2500,
+            "drift_charge_energy_coef": 600,
+            "drift_charge_energy_min": 1200,
+            "drift_charge_energy_max": 6000,
+            "drift_extra_charge": [
+              [
+                1,
+                0
+              ],
+              [
+                2,
+                1800
+              ]
+            ]
+          }
+        }
+      },
+      {
+        "id": 120247,
+        "suffix": "7",
+        "rich_text": {
+          "id": 120247,
+          "ace_time_charge_condition": "在山路赛道，使用氮气时获得额外大招充能并在落后第一名超过一定距离时获得速度提升效果",
+          "ace_time_effect": "排水渠过弯可以充能两次",
+          "ace_time_effect_rich_desc": "排水渠过弯可以充能两次",
+          "chip_unlock_tips": "芯片最高生效等级为#fe7ab78#ffffff级",
+          "icon_ace_time_charge_condition": "new_carport_icon_mountainroad",
+          "icon_ace_time_effect": "new_carport_icon_10252",
+          "icon_slipstream": "new_carport_icon_14",
+          "icon_unlock_nitro_2": "new_carport_icon_10252",
+          "icon_unlock_nitro_3": "new_carport_icon_nos_03",
+          "is_unlocked_ace_time_charge_condition": 1,
+          "is_unlocked_ace_time_effect": 1,
+          "is_unlocked_slipstream": 1,
+          "level_title": "RECU限制解除",
+          "passive_skill_effect": [
+            "排水渠过弯加速",
+            ""
+          ],
+          "passive_skill_effect_value": [
+            "45公里/小时",
+            ""
+          ],
+          "passive_skill_rich_desc": "\n·平跑速度+20km/h\n·开局后首次撞墙前获得#tips[隐身]效果\n·每次撞墙本局内极速-2km/h\n#acacac（上限叠加至-20km/h）",
+          "slipstream": "跟随在车辆后方将获得尾流，产生持续的氮气充能效果",
+          "special_passive_skill_desc": "\n·平跑速度+20km/h\n·开局后首次撞墙前获得#tips[隐身]效果\n·每次撞墙本局内极速-2km/h\n#acacac（上限叠加至-20km/h）",
+          "special_passive_skill_icon": "new_carport_icon_10253",
+          "special_passive_skill_title": "行云流水",
+          "title_ace_time_charge_condition": "赛道专精",
+          "title_ace_time_effect": "RECU限制解除",
+          "title_slipstream": "空气动力学套件",
+          "title_unlock_nitro_2": "大招强化套件 I",
+          "title_unlock_nitro_3": "竞速级氮气支架",
+          "unlock_nitro_3": "解锁1x6磅，2x3磅，3x2磅氮气",
+          "upgrade_level_icon": "new_carport_icon_10252"
+        },
+        "stats": {
+          "speed_limit": 207.5,
+          "speedup_ratio": 1.02,
+          "charge": {
+            "ace_charge": 2500,
+            "drift_charge_energy_coef": 600,
+            "drift_charge_energy_min": 1200,
+            "drift_charge_energy_max": 6000,
+            "drift_extra_charge": [
+              [
+                1,
+                0
+              ],
+              [
+                2,
+                1800
+              ]
+            ]
+          }
+        }
+      },
+      {
+        "id": 120248,
+        "suffix": "8",
+        "rich_text": {
+          "id": 120248,
+          "ace_time_charge_condition": "在山路赛道，使用氮气时获得额外大招充能并在落后第一名超过一定距离时获得速度提升效果",
+          "ace_time_effect": "排水渠过弯可以充能两次",
+          "ace_time_effect_rich_desc": "排水渠过弯可以充能两次",
+          "chip_unlock_tips": "芯片最高生效等级为#fe7ab79#ffffff级",
+          "icon_ace_time_charge_condition": "new_carport_icon_mountainroad",
+          "icon_ace_time_effect": "new_carport_icon_10252",
+          "icon_slipstream": "new_carport_icon_14",
+          "icon_unlock_nitro_2": "new_carport_icon_10252",
+          "icon_unlock_nitro_3": "new_carport_icon_nos_03",
+          "is_unlocked_ace_time_charge_condition": 1,
+          "is_unlocked_ace_time_effect": 1,
+          "is_unlocked_slipstream": 1,
+          "level_title": "大招强化 III",
+          "passive_skill_effect": [
+            "排水渠过弯加速",
+            ""
+          ],
+          "passive_skill_effect_value": [
+            "50公里/小时",
+            ""
+          ],
+          "passive_skill_rich_desc": "\n·平跑速度+20km/h\n·开局后首次撞墙前获得#tips[隐身]效果\n·每次撞墙本局内极速-2km/h\n#acacac（上限叠加至-20km/h）",
+          "slipstream": "跟随在车辆后方将获得尾流，产生持续的氮气充能效果",
+          "special_passive_skill_desc": "\n·平跑速度+20km/h\n·开局后首次撞墙前获得#tips[隐身]效果\n·每次撞墙本局内极速-2km/h\n#acacac（上限叠加至-20km/h）",
+          "special_passive_skill_icon": "new_carport_icon_10253",
+          "special_passive_skill_title": "行云流水",
+          "title_ace_time_charge_condition": "赛道专精",
+          "title_ace_time_effect": "RECU限制解除",
+          "title_slipstream": "空气动力学套件",
+          "title_unlock_nitro_2": "大招强化套件 I",
+          "title_unlock_nitro_3": "竞速级氮气支架",
+          "unlock_nitro_3": "解锁1x6磅，2x3磅，3x2磅氮气",
+          "upgrade_level_icon": "new_carport_icon_10252"
+        },
+        "stats": {
+          "speed_limit": 208,
+          "speedup_ratio": 1.02,
+          "charge": {
+            "ace_charge": 2500,
+            "drift_charge_energy_coef": 600,
+            "drift_charge_energy_min": 1200,
+            "drift_charge_energy_max": 6000,
+            "drift_extra_charge": [
+              [
+                1,
+                0
+              ],
+              [
+                2,
+                1800
+              ]
+            ]
+          }
+        }
+      },
+      {
+        "id": 120249,
+        "suffix": "9",
+        "rich_text": {
+          "id": 120249,
+          "ace_time_charge_condition": "在山路赛道，使用氮气时获得额外大招充能并在落后第一名超过一定距离时获得速度提升效果",
+          "ace_time_effect": "排水渠过弯可以充能两次",
+          "ace_time_effect_rich_desc": "排水渠过弯可以充能两次",
+          "chip_unlock_tips": "芯片最高生效等级为#fe7ab710#ffffff级",
+          "icon_ace_time_charge_condition": "new_carport_icon_mountainroad",
+          "icon_ace_time_effect": "new_carport_icon_10252",
+          "icon_slipstream": "new_carport_icon_14",
+          "icon_unlock_nitro_2": "new_carport_icon_10252",
+          "icon_unlock_nitro_3": "new_carport_icon_nos_03",
+          "is_unlocked_ace_time_charge_condition": 1,
+          "is_unlocked_ace_time_effect": 1,
+          "is_unlocked_slipstream": 1,
+          "level_title": "大招强化 IV",
+          "passive_skill_effect": [
+            "排水渠过弯加速",
+            ""
+          ],
+          "passive_skill_effect_value": [
+            "55公里/小时",
+            ""
+          ],
+          "passive_skill_rich_desc": "\n·平跑速度+20km/h\n·开局后首次撞墙前获得#tips[隐身]效果\n·每次撞墙本局内极速-2km/h\n#acacac（上限叠加至-20km/h）",
+          "slipstream": "跟随在车辆后方将获得尾流，产生持续的氮气充能效果",
+          "special_passive_skill_desc": "\n·平跑速度+20km/h\n·开局后首次撞墙前获得#tips[隐身]效果\n·每次撞墙本局内极速-2km/h\n#acacac（上限叠加至-20km/h）",
+          "special_passive_skill_icon": "new_carport_icon_10253",
+          "special_passive_skill_title": "行云流水",
+          "title_ace_time_charge_condition": "赛道专精",
+          "title_ace_time_effect": "RECU限制解除",
+          "title_slipstream": "空气动力学套件",
+          "title_unlock_nitro_2": "大招强化套件 I",
+          "title_unlock_nitro_3": "竞速级氮气支架",
+          "unlock_nitro_3": "解锁1x6磅，2x3磅，3x2磅氮气",
+          "upgrade_level_icon": "new_carport_icon_10252"
+        },
+        "stats": {
+          "speed_limit": 209,
+          "speedup_ratio": 1.02,
+          "charge": {
+            "ace_charge": 2500,
+            "drift_charge_energy_coef": 600,
+            "drift_charge_energy_min": 1200,
+            "drift_charge_energy_max": 6000,
+            "drift_extra_charge": [
+              [
+                1,
+                0
+              ],
+              [
+                2,
+                1800
+              ]
+            ]
+          }
+        }
+      }
+    ],
+    "skills": {
+      "ultimate": {
+        "id": 14451,
+        "name": "排水渠过弯",
+        "type": "N2O_OFFTAKE",
+        "icon_static": "ui_skill108_04",
+        "icon_big": null,
+        "icon": null,
+        "init_ratio": null,
+        "icons": {
+          "normal": "ui_skill108_03",
+          "disable": "ui_skill108_01",
+          "alt": "ui_skill108_06",
+          "down": "ui_skill108_03",
+          "static": "ui_skill108_04",
+          "big": null
+        },
+        "extra": {
+          "cam_type": "N2O_OFFTAKE",
+          "eff_id": 1,
+          "is_cost_energy": 2,
+          "rally_qte": 2
+        },
+        "value_texts": [
+          {
+            "key": "name",
+            "label": "技能名称",
+            "value": "排水渠过弯"
+          },
+          {
+            "key": "skill_type",
+            "label": "技能类型",
+            "value": "N2O_OFFTAKE"
+          },
+          {
+            "key": "cam_type",
+            "label": "镜头类型",
+            "value": "N2O_OFFTAKE"
+          },
+          {
+            "key": "eff_id",
+            "label": "特效编号",
+            "value": "1"
+          },
+          {
+            "key": "min_charge",
+            "label": "最低充能万分比",
+            "value": "10000"
+          },
+          {
+            "key": "rally_qte",
+            "label": "拉力赛触发qte",
+            "value": "2"
+          }
+        ],
+        "instructions": [
+          {
+            "id": 209301,
+            "accel_action": 2,
+            "accelerate_curve": [
+              [
+                0,
+                0
+              ],
+              [
+                1,
+                12
+              ]
+            ],
+            "attack_show_friend_enemy_filter": [
+              1,
+              2
+            ],
+            "attack_show_role_filter": [
+              1,
+              2,
+              3
+            ],
+            "buff_count": 0,
+            "cost_ratio": 833,
+            "duration": 12,
+            "eff_id": 1,
+            "extra_children": [],
+            "extra_isolate": [],
+            "inst_group": 2,
+            "inst_name": "大招加速",
+            "inst_type": 2,
+            "is_hard_push": 1,
+            "rear_insts": [
+              2808101
+            ],
+            "ref_insts": [
+              209301
+            ],
+            "skill_eff_id": 12282,
+            "sp_ex_speed_limit": 35,
+            "sp_max_ex_speed_limit": 35,
+            "sp_min_ex_speed_limit": 35,
+            "sp_n2o_ace_charge_ratio": 1,
+            "name": "大招加速",
+            "desc": null,
+            "type": 2,
+            "order": null,
+            "value_texts": [
+              {
+                "key": "sp_ex_speed_limit",
+                "label": "极速提升",
+                "value": "35km/h"
+              },
+              {
+                "key": "attack_show_friend_enemy_filter",
+                "label": "敌友筛选",
+                "value": "[1,2]"
+              },
+              {
+                "key": "attack_show_role_filter",
+                "label": "定位筛选",
+                "value": "[1,2,3]"
+              },
+              {
+                "key": "buff_count",
+                "label": "Buff 数量",
+                "value": "0"
+              },
+              {
+                "key": "rear_insts",
+                "label": "后续节点",
+                "value": "[2808101]"
+              },
+              {
+                "key": "extra_children",
+                "label": "子节点",
+                "value": "[]"
+              },
+              {
+                "key": "ref_insts",
+                "label": "引用节点",
+                "value": "[209301]"
+              }
+            ]
+          },
+          {
+            "id": 7800001,
+            "buff_count": 0,
+            "duration": null,
+            "extra_children": [],
+            "extra_isolate": [],
+            "inst_group": 78,
+            "inst_name": "丰田 Corolla Sprinter Trueno GT Apex",
+            "inst_type": 78,
+            "rear_insts": [
+              -1
+            ],
+            "ref_insts": [
+              7800001
+            ],
+            "sp_n2o_ace_charge_ratio": 1,
+            "vehicle_state_eff_ids": [
+              902113,
+              1301401
+            ],
+            "vehicle_state_type": 1,
+            "name": "丰田 Corolla Sprinter Trueno GT Apex",
+            "desc": null,
+            "type": 78,
+            "order": null,
+            "value_texts": [
+              {
+                "key": "buff_count",
+                "label": "Buff 数量",
+                "value": "0"
+              },
+              {
+                "key": "rear_insts",
+                "label": "后续节点",
+                "value": "[-1]"
+              },
+              {
+                "key": "extra_children",
+                "label": "子节点",
+                "value": "[]"
+              },
+              {
+                "key": "ref_insts",
+                "label": "引用节点",
+                "value": "[7800001]"
+              }
+            ]
+          }
+        ]
+      },
+      "sp": null,
+      "passive": [
+        {
+          "id": 50801,
+          "name": "封禁尾流",
+          "type": null,
+          "icon_static": null,
+          "icon_big": null,
+          "icon": null,
+          "init_ratio": null,
+          "icons": {
+            "normal": null,
+            "disable": null,
+            "alt": null,
+            "down": null,
+            "static": null,
+            "big": null
+          },
+          "extra": {
+            "cam_type": null,
+            "eff_id": null,
+            "is_cost_energy": null,
+            "rally_qte": null
+          },
+          "value_texts": [
+            {
+              "key": "name",
+              "label": "技能名称",
+              "value": "封禁尾流"
+            }
+          ],
+          "instructions": [
+            {
+              "id": 2100301,
+              "attack_show_friend_enemy_filter": [
+                1,
+                2
+              ],
+              "attack_show_role_filter": [
+                1,
+                2,
+                3
+              ],
+              "buff_count": 0,
+              "duration": 999,
+              "eff_id": 1,
+              "extra_children": [],
+              "extra_isolate": [],
+              "inst_group": 21001,
+              "inst_name": "封禁尾流",
+              "inst_type": 21,
+              "rear_insts": [],
+              "ref_insts": [
+                2100301
+              ],
+              "skill_eff_id": 21,
+              "slipstream_state": 1,
+              "sp_n2o_ace_charge_ratio": 1,
+              "name": "封禁尾流",
+              "desc": null,
+              "type": 21,
+              "order": null,
+              "value_texts": [
+                {
+                  "key": "attack_show_friend_enemy_filter",
+                  "label": "敌友筛选",
+                  "value": "[1,2]"
+                },
+                {
+                  "key": "attack_show_role_filter",
+                  "label": "定位筛选",
+                  "value": "[1,2,3]"
+                },
+                {
+                  "key": "buff_count",
+                  "label": "Buff 数量",
+                  "value": "0"
+                },
+                {
+                  "key": "rear_insts",
+                  "label": "后续节点",
+                  "value": "[]"
+                },
+                {
+                  "key": "extra_children",
+                  "label": "子节点",
+                  "value": "[]"
+                },
+                {
+                  "key": "ref_insts",
+                  "label": "引用节点",
+                  "value": "[2100301]"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "id": 69701,
+          "name": "行云流水",
+          "type": null,
+          "icon_static": null,
+          "icon_big": null,
+          "icon": null,
+          "init_ratio": null,
+          "icons": {
+            "normal": null,
+            "disable": null,
+            "alt": null,
+            "down": null,
+            "static": null,
+            "big": null
+          },
+          "extra": {
+            "cam_type": null,
+            "eff_id": null,
+            "is_cost_energy": null,
+            "rally_qte": null
+          },
+          "value_texts": [
+            {
+              "key": "name",
+              "label": "技能名称",
+              "value": "行云流水"
+            }
+          ],
+          "instructions": [
+            {
+              "id": 1601001,
+              "attack_show_friend_enemy_filter": [
+                1,
+                2
+              ],
+              "attack_show_role_filter": [
+                1,
+                2,
+                3
+              ],
+              "buff_count": 0,
+              "coll_scenes_instr_ids": [
+                2808202,
+                10107001
+              ],
+              "coll_type_mask": 4,
+              "duration": null,
+              "eff_cd": 0.5,
+              "eff_id": 1,
+              "extra_children": [],
+              "extra_isolate": [
+                2808202,
+                10107001
+              ],
+              "inst_group": 16004,
+              "inst_name": "碰撞",
+              "inst_type": 16,
+              "rear_insts": [
+                -1
+              ],
+              "ref_insts": [
+                144016,
+                1601001,
+                2808202,
+                10107001
+              ],
+              "skill_eff_id": 16,
+              "sp_n2o_ace_charge_ratio": 1,
+              "name": "碰撞",
+              "desc": null,
+              "type": 16,
+              "order": null,
+              "value_texts": [
+                {
+                  "key": "attack_show_friend_enemy_filter",
+                  "label": "敌友筛选",
+                  "value": "[1,2]"
+                },
+                {
+                  "key": "attack_show_role_filter",
+                  "label": "定位筛选",
+                  "value": "[1,2,3]"
+                },
+                {
+                  "key": "buff_count",
+                  "label": "Buff 数量",
+                  "value": "0"
+                },
+                {
+                  "key": "rear_insts",
+                  "label": "后续节点",
+                  "value": "[-1]"
+                },
+                {
+                  "key": "extra_children",
+                  "label": "子节点",
+                  "value": "[]"
+                },
+                {
+                  "key": "ref_insts",
+                  "label": "引用节点",
+                  "value": "[144016,1601001,2808202,10107001]"
+                }
+              ]
+            },
+            {
+              "id": 3403901,
+              "buff_count": 0,
+              "click_ace_ins": [
+                3702801,
+                3702802,
+                10302201
+              ],
+              "duration": null,
+              "extra_children": [],
+              "extra_isolate": [
+                3702801,
+                3702802,
+                10302201
+              ],
+              "inst_group": 34048,
+              "inst_name": "丰田 Corolla Sprinter Trueno GT Apex",
+              "inst_type": 34,
+              "rear_insts": [
+                -1
+              ],
+              "ref_insts": [
+                1002801,
+                3403901,
+                3702801,
+                3702802,
+                10107002,
+                10302201
+              ],
+              "sp_n2o_ace_charge_ratio": 1,
+              "name": "丰田 Corolla Sprinter Trueno GT Apex",
+              "desc": null,
+              "type": 34,
+              "order": null,
+              "value_texts": [
+                {
+                  "key": "buff_count",
+                  "label": "Buff 数量",
+                  "value": "0"
+                },
+                {
+                  "key": "rear_insts",
+                  "label": "后续节点",
+                  "value": "[-1]"
+                },
+                {
+                  "key": "extra_children",
+                  "label": "子节点",
+                  "value": "[]"
+                },
+                {
+                  "key": "ref_insts",
+                  "label": "引用节点",
+                  "value": "[1002801,3403901,3702801,3702802,10107002,10302201]"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "id": 69702,
+          "name": "行云流水",
+          "type": null,
+          "icon_static": null,
+          "icon_big": null,
+          "icon": null,
+          "init_ratio": null,
+          "icons": {
+            "normal": null,
+            "disable": null,
+            "alt": null,
+            "down": null,
+            "static": null,
+            "big": null
+          },
+          "extra": {
+            "cam_type": null,
+            "eff_id": null,
+            "is_cost_energy": null,
+            "rally_qte": null
+          },
+          "value_texts": [
+            {
+              "key": "name",
+              "label": "技能名称",
+              "value": "行云流水"
+            }
+          ],
+          "instructions": [
+            {
+              "id": 1802801,
+              "attack_show_friend_enemy_filter": [
+                1,
+                2
+              ],
+              "attack_show_role_filter": [
+                1,
+                2,
+                3
+              ],
+              "buff_count": 0,
+              "duration": 999,
+              "eff_id": 1,
+              "extra_children": [],
+              "extra_isolate": [],
+              "inst_group": 18,
+              "inst_name": "隐身",
+              "inst_type": 18,
+              "rear_insts": [
+                -1
+              ],
+              "ref_insts": [
+                1802801
+              ],
+              "skill_eff_id": 18,
+              "sp_n2o_ace_charge_ratio": 1,
+              "name": "隐身",
+              "desc": null,
+              "type": 18,
+              "order": null,
+              "value_texts": [
+                {
+                  "key": "attack_show_friend_enemy_filter",
+                  "label": "敌友筛选",
+                  "value": "[1,2]"
+                },
+                {
+                  "key": "attack_show_role_filter",
+                  "label": "定位筛选",
+                  "value": "[1,2,3]"
+                },
+                {
+                  "key": "buff_count",
+                  "label": "Buff 数量",
+                  "value": "0"
+                },
+                {
+                  "key": "rear_insts",
+                  "label": "后续节点",
+                  "value": "[-1]"
+                },
+                {
+                  "key": "extra_children",
+                  "label": "子节点",
+                  "value": "[]"
+                },
+                {
+                  "key": "ref_insts",
+                  "label": "引用节点",
+                  "value": "[1802801]"
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    "skillPanelGroups": {
+      "ultimate": [
+        {
+          "id": "930",
+          "name_rich": {
+            "raw": "极速提升",
+            "html": "极速提升"
+          },
+          "value_rich": {
+            "raw": "35km/h",
+            "html": "35km/h"
+          },
+          "value_text": "35km/h",
+          "instruction_ids": [
+            209301,
+            209305
+          ],
+          "values": []
+        },
+        {
+          "id": "931",
+          "name_rich": {
+            "raw": "加速时长",
+            "html": "加速时长"
+          },
+          "value_rich": {
+            "raw": "12秒",
+            "html": "12秒"
+          },
+          "value_text": "12秒",
+          "instruction_ids": [],
+          "values": []
+        },
+        {
+          "id": "932",
+          "name_rich": {
+            "raw": "漂移自充",
+            "html": "漂移自充"
+          },
+          "value_rich": {
+            "raw": "6%每秒",
+            "html": "6%每秒"
+          },
+          "value_text": "6%每秒",
+          "instruction_ids": [],
+          "values": []
+        },
+        {
+          "id": "933",
+          "name_rich": {
+            "raw": "超车叠速",
+            "html": "超车叠速"
+          },
+          "value_rich": {
+            "raw": "5km/h",
+            "html": "5km/h"
+          },
+          "value_text": "5km/h",
+          "instruction_ids": [],
+          "values": []
+        },
+        {
+          "id": "934",
+          "name_rich": {
+            "raw": "参数 934",
+            "html": "参数 934"
+          },
+          "value_rich": {
+            "raw": "#a9a9a9(上限:20km/h)",
+            "html": "<span class=\"rt-color\" style=\"color: #a9a9a9\">(上限:20km/h)</span>"
+          },
+          "value_text": "#a9a9a9(上限:20km/h)",
+          "instruction_ids": [],
+          "values": []
+        },
+        {
+          "id": "935",
+          "name_rich": {
+            "raw": "结束自充",
+            "html": "结束自充"
+          },
+          "value_rich": {
+            "raw": "33%",
+            "html": "33%"
+          },
+          "value_text": "33%",
+          "instruction_ids": [],
+          "values": []
+        },
+        {
+          "id": "936",
+          "name_rich": {
+            "raw": "耐久损失",
+            "html": "耐久损失"
+          },
+          "value_rich": {
+            "raw": "40点",
+            "html": "40点"
+          },
+          "value_text": "40点",
+          "instruction_ids": [],
+          "values": []
+        },
+        {
+          "id": "20624",
+          "name_rich": {
+            "raw": "加速动力",
+            "html": "加速动力"
+          },
+          "value_rich": {
+            "raw": "极高",
+            "html": "极高"
+          },
+          "value_text": "极高",
+          "instruction_ids": [],
+          "values": []
+        }
+      ],
+      "sp": [],
+      "passive": [],
+      "other": []
+    },
+    "richText": {
+      "id": 12024,
+      "ace_time_charge_condition": "在山路赛道，使用氮气时获得额外大招充能并在落后第一名超过一定距离时获得速度提升效果",
+      "ace_time_effect": "排水渠过弯可以充能两次",
+      "ace_time_effect_rich_desc": "排水渠过弯可以充能两次",
+      "chip_unlock_tips": "芯片最高生效等级为#fe7ab71#ffffff级",
+      "icon_ace_time_charge_condition": "new_carport_icon_mountainroad",
+      "icon_ace_time_effect": "new_carport_icon_10252",
+      "icon_slipstream": "new_carport_icon_14",
+      "icon_unlock_nitro_2": "new_carport_icon_10252",
+      "icon_unlock_nitro_3": "new_carport_icon_nos_03",
+      "level_title": "原车型",
+      "passive_skill_effect": [
+        "排水渠过弯加速",
+        ""
+      ],
+      "passive_skill_effect_value": [
+        "35公里/小时",
+        ""
+      ],
+      "passive_skill_rich_desc": "\n·平跑速度+20km/h\n·开局后首次撞墙前获得#tips[隐身]效果\n·每次撞墙本局内极速-2km/h\n#acacac（上限叠加至-20km/h）",
+      "slipstream": "跟随在车辆后方将获得尾流，产生持续的氮气充能效果",
+      "special_passive_skill_desc": {
+        "raw": "\n·平跑速度+20km/h\n·开局后首次撞墙前获得#tips[隐身]效果\n·每次撞墙本局内极速-2km/h\n#acacac（上限叠加至-20km/h）",
+        "html": "<br/>·平跑速度+20km/h<br/>·开局后首次撞墙前获得<span class=\"rt-tip rt-tip--entry\" data-tip=\"隐身\" data-icon=\"carport_new_skill_illustrate_b2\" data-desc=\"·车辆透明化&#10;·无视车辆间的碰撞&#10;·不会被“锁定类”“触碰类”干扰命中\" style=\"--tip-color:#7eedff\" title=\"·车辆透明化&#10;·无视车辆间的碰撞&#10;·不会被“锁定类”“触碰类”干扰命中\"><span class=\"rt-tip__icon-slot\"></span>隐身</span>效果<br/>·每次撞墙本局内极速-2km/h<br/><span class=\"rt-color\" style=\"color: #acacac\">（上限叠加至-20km/h）</span>"
+      },
+      "special_passive_skill_icon": "new_carport_icon_10253",
+      "special_passive_skill_title": "行云流水",
+      "title_ace_time_charge_condition": "赛道专精",
+      "title_ace_time_effect": "RECU限制解除",
+      "title_slipstream": "空气动力学套件",
+      "title_unlock_nitro_2": "大招强化套件 I",
+      "title_unlock_nitro_3": "竞速级氮气支架",
+      "unlock_nitro_3": "解锁1x6磅，2x3磅，3x2磅氮气",
+      "upgrade_level_icon": "new_carport_icon_10253",
+      "feature_desc": {
+        "raw": "加速推进并大幅提升动力，极速提升#desc[930]，持续12秒。大招期间：\n·处于漂移过程中时每秒自充能6%\n·漂移过程中超越其它车辆将永久提升5km/h极速（上限叠加至20km/h）\n·若大招期间未碰撞，则结束时自充能33%\n·若碰撞4次及以上，则额外损失40点耐久值",
+        "html": "加速推进并大幅提升动力，极速提升<span class=\"rt-desc\">极速提升 35km/h</span>，持续12秒。大招期间：<br/>·处于漂移过程中时每秒自充能6%<br/>·漂移过程中超越其它车辆将永久提升5km/h极速（上限叠加至20km/h）<br/>·若大招期间未碰撞，则结束时自充能33%<br/>·若碰撞4次及以上，则额外损失40点耐久值"
+      },
+      "sp_skill_desc": null,
+      "passive_skill_desc": null,
+      "story_title": "厂商：丰田",
+      "story": {
+        "raw": "丰田 Corolla Sprinter Trueno GT Apex是丰田汽车公司出厂的一款小巧、轻量、经济效益取向的小车。这台车的马力虽小，但车身很轻，在下坡路段有一定的优势，于1983年投入生产线。Trueno意为雷鸣，装有跳灯是它最明显的特点，第四代Trueno叫做80系列，当中分为1.5升的AE85和1.6升的AE86，后者也是最受人追捧的对象。",
+        "html": "丰田 Corolla Sprinter Trueno GT Apex是丰田汽车公司出厂的一款小巧、轻量、经济效益取向的小车。这台车的马力虽小，但车身很轻，在下坡路段有一定的优势，于1983年投入生产线。Trueno意为雷鸣，装有跳灯是它最明显的特点，第四代Trueno叫做80系列，当中分为1.5升的AE85和1.6升的AE86，后者也是最受人追捧的对象。"
+      }
+    },
+    "report": {
+      "title": "王牌速度节赛车检验报告",
+      "sections": [
+        {
+          "title": "基础数据",
+          "items": [
+            {
+              "label": "检测车辆",
+              "value": "丰田 Corolla Sprinter Trueno GT Apex"
+            },
+            {
+              "label": "注册日期",
+              "value": "{}年{}月{}日"
+            },
+            {
+              "label": "车辆类型",
+              "value": "真实阵营"
+            },
+            {
+              "label": "厂商",
+              "value": "丰田"
+            },
+            {
+              "label": "定位",
+              "value": "竞速位"
+            },
+            {
+              "label": "赛道专精",
+              "value": "山路"
+            },
+            {
+              "label": "能源类型",
+              "value": "汽油"
+            },
+            {
+              "label": "驱动方式",
+              "value": "前置后驱"
+            },
+            {
+              "label": "车重",
+              "value": "925kg"
+            }
+          ]
+        },
+        {
+          "title": "芯片模块",
+          "items": [
+            {
+              "label": "芯片写入权限",
+              "value": "已获取"
+            },
+            {
+              "label": "扩展芯片类型",
+              "value": "○○△◇◣V"
+            },
+            {
+              "label": "等级合规检查",
+              "value": "芯片等级未高于RECU等级"
+            }
+          ]
+        },
+        {
+          "title": "外观检验",
+          "items": [
+            {
+              "label": "检验结果",
+              "value": "合格"
+            }
+          ]
+        },
+        {
+          "title": "大招驱动模块",
+          "items": [
+            {
+              "label": "能量控制单元",
+              "value": "五代RECU，工作正常"
+            },
+            {
+              "label": "瑞卡因子稳定器",
+              "value": "工作正常"
+            },
+            {
+              "label": "NOS",
+              "value": "氮氧加速系统已安装"
+            },
+            {
+              "label": "空气动力套件（2级解锁）",
+              "value": "未选装"
+            },
+            {
+              "label": "赛道专精（3级解锁）",
+              "value": "未选装"
+            },
+            {
+              "label": "RECU限制解除（8级解锁）",
+              "value": "未选装"
+            }
+          ]
+        },
+        {
+          "title": "整车判定",
+          "items": [
+            {
+              "label": "检验结果",
+              "value": "合格，可参加速度节赛事"
+            }
+          ]
+        }
+      ]
+    },
+    "story": {
+      "content": "丰田 Corolla Sprinter Trueno GT Apex是丰田汽车公司出厂的一款小巧、轻量、经济效益取向的小车。这台车的马力虽小，但车身很轻，在下坡路段有一定的优势，于1983年投入生产线。Trueno意为雷鸣，装有跳灯是它最明显的特点，第四代Trueno叫做80系列，当中分为1.5升的AE85和1.6升的AE86，后者也是最受人追捧的对象。",
+      "id": 12024,
+      "story_content": "丰田 Corolla Sprinter Trueno GT Apex是丰田汽车公司出厂的一款小巧、轻量、经济效益取向的小车。这台车的马力虽小，但车身很轻，在下坡路段有一定的优势，于1983年投入生产线。Trueno意为雷鸣，装有跳灯是它最明显的特点，第四代Trueno叫做80系列，当中分为1.5升的AE85和1.6升的AE86，后者也是最受人追捧的对象。",
+      "story_title": "厂商：丰田",
+      "vehicle_name": "丰田 Corolla Sprinter Trueno GT Apex"
+    },
+    "obtain": {
+      "tag_img": null,
+      "obtain_type_ids": [
+        5
+      ],
+      "obtain_types": [
+        {
+          "id": 5,
+          "label": "补给箱",
+          "desc": "从速度节补给箱中获取",
+          "icon": "commonnew_supplyconversion"
+        }
+      ]
+    },
+    "restraints": {
+      "id": 12024,
+      "match": [
+        10036,
+        12036,
+        10086,
+        10089,
+        10057,
+        12049,
+        12057
+      ],
+      "be_restraint": [
+        10077,
+        10061,
+        10062,
+        12019,
+        12012,
+        12066
+      ]
+    },
+    "resources": {
+      "icons": {
+        "ace_time_effect": "new_carport_icon_10252",
+        "icon_ace_time_effect": "new_carport_icon_10252",
+        "ace_time_charge_condition": "new_carport_icon_mountainroad",
+        "slipstream": "new_carport_icon_14",
+        "unlock_nitro_2": "new_carport_icon_10252",
+        "unlock_nitro_3": "new_carport_icon_nos_03",
+        "upgrade_level_icon": "new_carport_icon_10253",
+        "special_passive_skill_icon": "new_carport_icon_10253"
+      }
+    },
+    "skins": {
+      "sets": {
+        "local": [
+          {
+            "source": "local",
+            "index": 1
+          },
+          {
+            "source": "local",
+            "index": 2
+          },
+          {
+            "source": "local",
+            "index": 3
+          }
+        ]
+      },
+      "meta": {
+        "1": {
+          "id": 50399,
+          "name": "涂装 空力套件 迅",
+          "desc": "迅-空力套件，专为车辆打造的轻量化宽体套件，释放车辆的极致性能！\n适用车型：#1dd8d0丰田 Corolla Sprinter Trueno GT Apex",
+          "icon_s": "tz_12024_1_s",
+          "icon_m": "tz_12024_1_m",
+          "icon_b": "tz_12024_1_b"
+        },
+        "2": {
+          "id": 50400,
+          "name": "涂装 空力套件 速",
+          "desc": "速-空力套件，充满张力的空气动力学设计，释放车辆的超凡潜力！\n适用车型：#1dd8d0丰田 Corolla Sprinter Trueno GT Apex",
+          "icon_s": "tz_12024_2_s",
+          "icon_m": "tz_12024_2_m",
+          "icon_b": "tz_12024_2_b"
+        },
+        "3": {
+          "id": 50401,
+          "name": "涂装 空力套件 极",
+          "desc": "极-空力套件，全碳打造，极致之选。\n适用车型：#1dd8d0丰田 Corolla Sprinter Trueno GT Apex",
+          "icon_s": "tz_12024_3_s",
+          "icon_m": "tz_12024_3_m",
+          "icon_b": "tz_12024_3_b"
+        }
+      }
+    },
+    "media": {
+      "cover": "/rk-assets/12024_m.png",
+      "coverFallback": "/rk-assets/12024_m.png",
+      "shareImage": {
+        "key": "share_12024",
+        "file": "share_12024.png",
+        "url": "https://h65.gdl.netease.com/web_res_list_20240619/share_12024.webp"
+      },
+      "shareImageAdvance": null,
+      "skillVideo": {
+        "ultimate": {
+          "url": "https://vod.cc.163.com/file/65810176346ed5f97f74944d?source=27&protocol=https",
+          "thumbnail": "table_video_img_12024"
+        },
+        "sp": null
+      }
+    }
+  }
+}

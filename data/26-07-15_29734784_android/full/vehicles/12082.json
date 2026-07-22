@@ -1,0 +1,1626 @@
+{
+  "schemaVersion": 2,
+  "versionId": "26-07-15_29734784_android",
+  "generatedAt": "2026-07-16T09:22:34.000Z",
+  "item": {
+    "id": 12082,
+    "name": "光天使",
+    "manufacturer": "曙光",
+    "quality": "传说",
+    "class": 4,
+    "group": 1,
+    "position": "竞速位",
+    "positionLabel": "竞速位",
+    "racingRole": 1,
+    "racingRoleName": "竞速位",
+    "specialization": "城市",
+    "seasonCode": "S32",
+    "publication": {
+      "state": "released",
+      "releaseTimestamp": 1777564800,
+      "releaseText": "2026-5-1 00:00:00",
+      "releaseMacro": "S32_WEEK7_START"
+    },
+    "summary": "若友方为完美阵容，则友方全体开局就可以使用大招",
+    "description": "若友方为完美阵容，则友方全体开局就可以使用大招",
+    "tags": [
+      {
+        "id": 2,
+        "text": "自动集气",
+        "desc": "技能可以自动获取氮气",
+        "color": 1
+      },
+      {
+        "id": 39,
+        "text": "友方集气",
+        "desc": "为队友提供自动集气",
+        "color": 1
+      },
+      {
+        "id": 131,
+        "text": "追求完美",
+        "desc": "选出完美阵容时获得额外增益",
+        "color": 2
+      },
+      {
+        "id": 29,
+        "text": "友方充能",
+        "desc": "为队友提供大招充能",
+        "color": 1
+      },
+      {
+        "id": 179,
+        "text": "敌方充能",
+        "desc": "为敌方提供大招充能",
+        "color": 4
+      },
+      {
+        "id": 97,
+        "text": "先手",
+        "desc": "适合争夺开局",
+        "color": 1
+      }
+    ],
+    "stats": {
+      "speed_limit": 200,
+      "speedup_ratio": 1.13,
+      "charge": {
+        "ace_charge": 2600,
+        "drift_charge_energy_coef": 600,
+        "drift_charge_energy_min": 1200,
+        "drift_charge_energy_max": 6000,
+        "drift_extra_charge": [
+          [
+            1,
+            0
+          ],
+          [
+            2,
+            1800
+          ]
+        ]
+      }
+    },
+    "maxDurability": 110,
+    "levels": [
+      {
+        "id": 12082,
+        "suffix": "0",
+        "rich_text": {
+          "id": 12082,
+          "ace_time_charge_condition": "在城市赛道，使用氮气时获得额外大招充能并在落后第一名超过一定距离时获得速度提升效果",
+          "ace_time_effect": "光之翼可以充能两次",
+          "ace_time_effect_rich_desc": "42",
+          "chip_unlock_tips": "芯片最高生效等级为#fe7ab71#ffffff级",
+          "icon_ace_time_charge_condition": "new_carport_icon_city",
+          "icon_ace_time_effect": "new_carport_icon_10383",
+          "icon_slipstream": "new_carport_icon_14",
+          "icon_unlock_nitro_2": "new_carport_icon_10383",
+          "icon_unlock_nitro_3": "new_carport_icon_nos_03",
+          "level_title": "原车型",
+          "passive_skill_effect": [
+            "光之翼加速",
+            ""
+          ],
+          "passive_skill_effect_value": [
+            "50公里/小时",
+            ""
+          ],
+          "passive_skill_rich_desc": "42",
+          "slipstream": "跟随在车辆后方将获得尾流，产生持续的氮气充能效果",
+          "special_passive_skill_desc": "开局时获得100%大招能量，若友方为完美阵容则使非竞速位队友也获得100%能量，若敌方也为完美阵容则在开局3秒后使敌方每个定位各1台赛车获得100%能量",
+          "special_passive_skill_icon": "new_carport_icon_10384",
+          "special_passive_skill_title": "照耀众生",
+          "title_ace_time_charge_condition": "赛道专精",
+          "title_ace_time_effect": "RECU限制解除",
+          "title_slipstream": "空气动力学套件",
+          "title_unlock_nitro_2": "大招强化套件 I",
+          "title_unlock_nitro_3": "竞速级氮气支架",
+          "unlock_nitro_3": "解锁1x6磅，2x3磅，3x2磅氮气",
+          "upgrade_level_icon": "new_carport_icon_10384"
+        },
+        "stats": {
+          "speed_limit": 200,
+          "speedup_ratio": 1.13,
+          "charge": {
+            "ace_charge": 2600,
+            "drift_charge_energy_coef": 600,
+            "drift_charge_energy_min": 1200,
+            "drift_charge_energy_max": 6000,
+            "drift_extra_charge": [
+              [
+                1,
+                0
+              ],
+              [
+                2,
+                1800
+              ]
+            ]
+          }
+        }
+      },
+      {
+        "id": 120823,
+        "suffix": "1",
+        "rich_text": {
+          "id": 120823,
+          "ace_time_charge_condition": "在城市赛道，使用氮气时获得额外大招充能并在落后第一名超过一定距离时获得速度提升效果",
+          "ace_time_effect": "光之翼可以充能两次",
+          "ace_time_effect_rich_desc": "42",
+          "chip_unlock_tips": "芯片最高生效等级为#fe7ab74#ffffff级",
+          "icon_ace_time_charge_condition": "new_carport_icon_city",
+          "icon_ace_time_effect": "new_carport_icon_10383",
+          "icon_slipstream": "new_carport_icon_14",
+          "icon_unlock_nitro_2": "new_carport_icon_10383",
+          "icon_unlock_nitro_3": "new_carport_icon_nos_03",
+          "is_unlocked_ace_time_charge_condition": 1,
+          "is_unlocked_slipstream": 1,
+          "level_title": "竞速级氮气支架 I",
+          "passive_skill_effect": [
+            "光之翼加速",
+            ""
+          ],
+          "passive_skill_effect_value": [
+            "50公里/小时",
+            ""
+          ],
+          "passive_skill_rich_desc": "42",
+          "slipstream": "跟随在车辆后方将获得尾流，产生持续的氮气充能效果",
+          "special_passive_skill_desc": "开局时获得100%大招能量，若友方为完美阵容则使非竞速位队友也获得100%能量，若敌方也为完美阵容则在开局3秒后使敌方每个定位各1台赛车获得100%能量",
+          "special_passive_skill_icon": "new_carport_icon_10384",
+          "special_passive_skill_title": "照耀众生",
+          "title_ace_time_charge_condition": "赛道专精",
+          "title_ace_time_effect": "RECU限制解除",
+          "title_slipstream": "空气动力学套件",
+          "title_unlock_nitro_2": "大招强化套件 I",
+          "title_unlock_nitro_3": "竞速级氮气支架",
+          "unlock_nitro_3": "解锁1x6磅，2x3磅，3x2磅氮气",
+          "upgrade_level_icon": "new_carport_icon_nos_03"
+        },
+        "stats": {
+          "speed_limit": 200,
+          "speedup_ratio": 1.13,
+          "charge": {
+            "ace_charge": 2600,
+            "drift_charge_energy_coef": 600,
+            "drift_charge_energy_min": 1200,
+            "drift_charge_energy_max": 6000,
+            "drift_extra_charge": [
+              [
+                1,
+                0
+              ],
+              [
+                2,
+                1800
+              ]
+            ]
+          }
+        }
+      },
+      {
+        "id": 120821,
+        "suffix": "2",
+        "rich_text": {
+          "id": 120821,
+          "ace_time_charge_condition": "在城市赛道，使用氮气时获得额外大招充能并在落后第一名超过一定距离时获得速度提升效果",
+          "ace_time_effect": "光之翼可以充能两次",
+          "ace_time_effect_rich_desc": "42",
+          "chip_unlock_tips": "芯片最高生效等级为#fe7ab72#ffffff级",
+          "icon_ace_time_charge_condition": "new_carport_icon_city",
+          "icon_ace_time_effect": "new_carport_icon_10383",
+          "icon_slipstream": "new_carport_icon_14",
+          "icon_unlock_nitro_2": "new_carport_icon_10383",
+          "icon_unlock_nitro_3": "new_carport_icon_nos_03",
+          "is_unlocked_slipstream": 1,
+          "level_title": "空气动力学套件",
+          "passive_skill_effect": [
+            "光之翼加速",
+            ""
+          ],
+          "passive_skill_effect_value": [
+            "50公里/小时",
+            ""
+          ],
+          "passive_skill_rich_desc": "42",
+          "slipstream": "跟随在车辆后方将获得尾流，产生持续的氮气充能效果",
+          "special_passive_skill_desc": "开局时获得100%大招能量，若友方为完美阵容则使非竞速位队友也获得100%能量，若敌方也为完美阵容则在开局3秒后使敌方每个定位各1台赛车获得100%能量",
+          "special_passive_skill_icon": "new_carport_icon_10384",
+          "special_passive_skill_title": "照耀众生",
+          "title_ace_time_charge_condition": "赛道专精",
+          "title_ace_time_effect": "RECU限制解除",
+          "title_slipstream": "空气动力学套件",
+          "title_unlock_nitro_2": "大招强化套件 I",
+          "title_unlock_nitro_3": "竞速级氮气支架",
+          "unlock_nitro_3": "解锁1x6磅，2x3磅，3x2磅氮气",
+          "upgrade_level_icon": "new_carport_icon_14"
+        },
+        "stats": {
+          "speed_limit": 200,
+          "speedup_ratio": 1.13,
+          "charge": {
+            "ace_charge": 2600,
+            "drift_charge_energy_coef": 600,
+            "drift_charge_energy_min": 1200,
+            "drift_charge_energy_max": 6000,
+            "drift_extra_charge": [
+              [
+                1,
+                0
+              ],
+              [
+                2,
+                1800
+              ]
+            ]
+          }
+        }
+      },
+      {
+        "id": 120822,
+        "suffix": "3",
+        "rich_text": {
+          "id": 120822,
+          "ace_time_charge_condition": "在城市赛道，使用氮气时获得额外大招充能并在落后第一名超过一定距离时获得速度提升效果",
+          "ace_time_effect": "光之翼可以充能两次",
+          "ace_time_effect_rich_desc": "42",
+          "chip_unlock_tips": "芯片最高生效等级为#fe7ab73#ffffff级",
+          "icon_ace_time_charge_condition": "new_carport_icon_city",
+          "icon_ace_time_effect": "new_carport_icon_10383",
+          "icon_slipstream": "new_carport_icon_14",
+          "icon_unlock_nitro_2": "new_carport_icon_10383",
+          "icon_unlock_nitro_3": "new_carport_icon_nos_03",
+          "is_unlocked_ace_time_charge_condition": 1,
+          "is_unlocked_slipstream": 1,
+          "level_title": "赛道专精",
+          "passive_skill_effect": [
+            "光之翼加速",
+            ""
+          ],
+          "passive_skill_effect_value": [
+            "50公里/小时",
+            ""
+          ],
+          "passive_skill_rich_desc": "42",
+          "slipstream": "跟随在车辆后方将获得尾流，产生持续的氮气充能效果",
+          "special_passive_skill_desc": "开局时获得100%大招能量，若友方为完美阵容则使非竞速位队友也获得100%能量，若敌方也为完美阵容则在开局3秒后使敌方每个定位各1台赛车获得100%能量",
+          "special_passive_skill_icon": "new_carport_icon_10384",
+          "special_passive_skill_title": "照耀众生",
+          "title_ace_time_charge_condition": "赛道专精",
+          "title_ace_time_effect": "RECU限制解除",
+          "title_slipstream": "空气动力学套件",
+          "title_unlock_nitro_2": "大招强化套件 I",
+          "title_unlock_nitro_3": "竞速级氮气支架",
+          "unlock_nitro_3": "解锁1x6磅，2x3磅，3x2磅氮气",
+          "upgrade_level_icon": "new_carport_icon_city"
+        },
+        "stats": {
+          "speed_limit": 200,
+          "speedup_ratio": 1.13,
+          "charge": {
+            "ace_charge": 2600,
+            "drift_charge_energy_coef": 600,
+            "drift_charge_energy_min": 1200,
+            "drift_charge_energy_max": 6000,
+            "drift_extra_charge": [
+              [
+                1,
+                0
+              ],
+              [
+                2,
+                1800
+              ]
+            ]
+          }
+        }
+      },
+      {
+        "id": 120824,
+        "suffix": "4",
+        "rich_text": {
+          "id": 120824,
+          "ace_time_charge_condition": "在城市赛道，使用氮气时获得额外大招充能并在落后第一名超过一定距离时获得速度提升效果",
+          "ace_time_effect": "光之翼可以充能两次",
+          "ace_time_effect_rich_desc": "42",
+          "chip_unlock_tips": "芯片最高生效等级为#fe7ab75#ffffff级",
+          "icon_ace_time_charge_condition": "new_carport_icon_city",
+          "icon_ace_time_effect": "new_carport_icon_10383",
+          "icon_slipstream": "new_carport_icon_14",
+          "icon_unlock_nitro_2": "new_carport_icon_10383",
+          "icon_unlock_nitro_3": "new_carport_icon_nos_03",
+          "is_unlocked_ace_time_charge_condition": 1,
+          "is_unlocked_slipstream": 1,
+          "level_title": "大招强化 I",
+          "passive_skill_effect": [
+            "光之翼加速",
+            ""
+          ],
+          "passive_skill_effect_value": [
+            "55公里/小时",
+            ""
+          ],
+          "passive_skill_rich_desc": "42",
+          "slipstream": "跟随在车辆后方将获得尾流，产生持续的氮气充能效果",
+          "special_passive_skill_desc": "开局时获得100%大招能量，若友方为完美阵容则使非竞速位队友也获得100%能量，若敌方也为完美阵容则在开局3秒后使敌方每个定位各1台赛车获得100%能量",
+          "special_passive_skill_icon": "new_carport_icon_10384",
+          "special_passive_skill_title": "照耀众生",
+          "title_ace_time_charge_condition": "赛道专精",
+          "title_ace_time_effect": "RECU限制解除",
+          "title_slipstream": "空气动力学套件",
+          "title_unlock_nitro_2": "大招强化套件 I",
+          "title_unlock_nitro_3": "竞速级氮气支架",
+          "unlock_nitro_3": "解锁1x6磅，2x3磅，3x2磅氮气",
+          "upgrade_level_icon": "new_carport_icon_10383"
+        },
+        "stats": {
+          "speed_limit": 200,
+          "speedup_ratio": 1.13,
+          "charge": {
+            "ace_charge": 2600,
+            "drift_charge_energy_coef": 600,
+            "drift_charge_energy_min": 1200,
+            "drift_charge_energy_max": 6000,
+            "drift_extra_charge": [
+              [
+                1,
+                0
+              ],
+              [
+                2,
+                1800
+              ]
+            ]
+          }
+        }
+      },
+      {
+        "id": 120825,
+        "suffix": "5",
+        "rich_text": {
+          "id": 120825,
+          "ace_time_charge_condition": "在城市赛道，使用氮气时获得额外大招充能并在落后第一名超过一定距离时获得速度提升效果",
+          "ace_time_effect": "光之翼可以充能两次",
+          "ace_time_effect_rich_desc": "42",
+          "chip_unlock_tips": "芯片最高生效等级为#fe7ab76#ffffff级",
+          "icon_ace_time_charge_condition": "new_carport_icon_city",
+          "icon_ace_time_effect": "new_carport_icon_10383",
+          "icon_slipstream": "new_carport_icon_14",
+          "icon_unlock_nitro_2": "new_carport_icon_10383",
+          "icon_unlock_nitro_3": "new_carport_icon_nos_03",
+          "is_unlocked_ace_time_charge_condition": 1,
+          "is_unlocked_slipstream": 1,
+          "level_title": "竞速级氮气支架 II",
+          "passive_skill_effect": [
+            "光之翼加速",
+            ""
+          ],
+          "passive_skill_effect_value": [
+            "55公里/小时",
+            ""
+          ],
+          "passive_skill_rich_desc": "42",
+          "slipstream": "跟随在车辆后方将获得尾流，产生持续的氮气充能效果",
+          "special_passive_skill_desc": "开局时获得100%大招能量，若友方为完美阵容则使非竞速位队友也获得100%能量，若敌方也为完美阵容则在开局3秒后使敌方每个定位各1台赛车获得100%能量",
+          "special_passive_skill_icon": "new_carport_icon_10384",
+          "special_passive_skill_title": "照耀众生",
+          "title_ace_time_charge_condition": "赛道专精",
+          "title_ace_time_effect": "RECU限制解除",
+          "title_slipstream": "空气动力学套件",
+          "title_unlock_nitro_2": "大招强化套件 I",
+          "title_unlock_nitro_3": "竞速级氮气支架",
+          "unlock_nitro_3": "解锁1x6磅，2x3磅，3x2磅氮气",
+          "upgrade_level_icon": "new_carport_icon_nos_03"
+        },
+        "stats": {
+          "speed_limit": 200,
+          "speedup_ratio": 1.13,
+          "charge": {
+            "ace_charge": 2600,
+            "drift_charge_energy_coef": 600,
+            "drift_charge_energy_min": 1200,
+            "drift_charge_energy_max": 6000,
+            "drift_extra_charge": [
+              [
+                1,
+                0
+              ],
+              [
+                2,
+                1800
+              ]
+            ]
+          }
+        }
+      },
+      {
+        "id": 120826,
+        "suffix": "6",
+        "rich_text": {
+          "id": 120826,
+          "ace_time_charge_condition": "在城市赛道，使用氮气时获得额外大招充能并在落后第一名超过一定距离时获得速度提升效果",
+          "ace_time_effect": "光之翼可以充能两次",
+          "ace_time_effect_rich_desc": "42",
+          "chip_unlock_tips": "芯片最高生效等级为#fe7ab77#ffffff级",
+          "icon_ace_time_charge_condition": "new_carport_icon_city",
+          "icon_ace_time_effect": "new_carport_icon_10383",
+          "icon_slipstream": "new_carport_icon_14",
+          "icon_unlock_nitro_2": "new_carport_icon_10383",
+          "icon_unlock_nitro_3": "new_carport_icon_nos_03",
+          "is_unlocked_ace_time_charge_condition": 1,
+          "is_unlocked_slipstream": 1,
+          "level_title": "大招强化 II",
+          "passive_skill_effect": [
+            "光之翼加速",
+            ""
+          ],
+          "passive_skill_effect_value": [
+            "60公里/小时",
+            ""
+          ],
+          "passive_skill_rich_desc": "42",
+          "slipstream": "跟随在车辆后方将获得尾流，产生持续的氮气充能效果",
+          "special_passive_skill_desc": "开局时获得100%大招能量，若友方为完美阵容则使非竞速位队友也获得100%能量，若敌方也为完美阵容则在开局3秒后使敌方每个定位各1台赛车获得100%能量",
+          "special_passive_skill_icon": "new_carport_icon_10384",
+          "special_passive_skill_title": "照耀众生",
+          "title_ace_time_charge_condition": "赛道专精",
+          "title_ace_time_effect": "RECU限制解除",
+          "title_slipstream": "空气动力学套件",
+          "title_unlock_nitro_2": "大招强化套件 I",
+          "title_unlock_nitro_3": "竞速级氮气支架",
+          "unlock_nitro_3": "解锁1x6磅，2x3磅，3x2磅氮气",
+          "upgrade_level_icon": "new_carport_icon_10383"
+        },
+        "stats": {
+          "speed_limit": 200.5,
+          "speedup_ratio": 1.13,
+          "charge": {
+            "ace_charge": 2600,
+            "drift_charge_energy_coef": 600,
+            "drift_charge_energy_min": 1200,
+            "drift_charge_energy_max": 6000,
+            "drift_extra_charge": [
+              [
+                1,
+                0
+              ],
+              [
+                2,
+                1800
+              ]
+            ]
+          }
+        }
+      },
+      {
+        "id": 120827,
+        "suffix": "7",
+        "rich_text": {
+          "id": 120827,
+          "ace_time_charge_condition": "在城市赛道，使用氮气时获得额外大招充能并在落后第一名超过一定距离时获得速度提升效果",
+          "ace_time_effect": "光之翼可以充能两次",
+          "ace_time_effect_rich_desc": "42",
+          "chip_unlock_tips": "芯片最高生效等级为#fe7ab78#ffffff级",
+          "icon_ace_time_charge_condition": "new_carport_icon_city",
+          "icon_ace_time_effect": "new_carport_icon_10383",
+          "icon_slipstream": "new_carport_icon_14",
+          "icon_unlock_nitro_2": "new_carport_icon_10383",
+          "icon_unlock_nitro_3": "new_carport_icon_nos_03",
+          "is_unlocked_ace_time_charge_condition": 1,
+          "is_unlocked_ace_time_effect": 1,
+          "is_unlocked_slipstream": 1,
+          "level_title": "RECU限制解除",
+          "passive_skill_effect": [
+            "光之翼加速",
+            ""
+          ],
+          "passive_skill_effect_value": [
+            "60公里/小时",
+            ""
+          ],
+          "passive_skill_rich_desc": "42",
+          "slipstream": "跟随在车辆后方将获得尾流，产生持续的氮气充能效果",
+          "special_passive_skill_desc": "开局时获得100%大招能量，若友方为完美阵容则使非竞速位队友也获得100%能量，若敌方也为完美阵容则在开局3秒后使敌方每个定位各1台赛车获得100%能量",
+          "special_passive_skill_icon": "new_carport_icon_10384",
+          "special_passive_skill_title": "照耀众生",
+          "title_ace_time_charge_condition": "赛道专精",
+          "title_ace_time_effect": "RECU限制解除",
+          "title_slipstream": "空气动力学套件",
+          "title_unlock_nitro_2": "大招强化套件 I",
+          "title_unlock_nitro_3": "竞速级氮气支架",
+          "unlock_nitro_3": "解锁1x6磅，2x3磅，3x2磅氮气",
+          "upgrade_level_icon": "new_carport_icon_10383"
+        },
+        "stats": {
+          "speed_limit": 200.5,
+          "speedup_ratio": 1.13,
+          "charge": {
+            "ace_charge": 2600,
+            "drift_charge_energy_coef": 600,
+            "drift_charge_energy_min": 1200,
+            "drift_charge_energy_max": 6000,
+            "drift_extra_charge": [
+              [
+                1,
+                0
+              ],
+              [
+                2,
+                1800
+              ]
+            ]
+          }
+        }
+      },
+      {
+        "id": 120828,
+        "suffix": "8",
+        "rich_text": {
+          "id": 120828,
+          "ace_time_charge_condition": "在城市赛道，使用氮气时获得额外大招充能并在落后第一名超过一定距离时获得速度提升效果",
+          "ace_time_effect": "光之翼可以充能两次",
+          "ace_time_effect_rich_desc": "42",
+          "chip_unlock_tips": "芯片最高生效等级为#fe7ab79#ffffff级",
+          "icon_ace_time_charge_condition": "new_carport_icon_city",
+          "icon_ace_time_effect": "new_carport_icon_10383",
+          "icon_slipstream": "new_carport_icon_14",
+          "icon_unlock_nitro_2": "new_carport_icon_10383",
+          "icon_unlock_nitro_3": "new_carport_icon_nos_03",
+          "is_unlocked_ace_time_charge_condition": 1,
+          "is_unlocked_ace_time_effect": 1,
+          "is_unlocked_slipstream": 1,
+          "level_title": "大招强化 III",
+          "passive_skill_effect": [
+            "光之翼加速",
+            ""
+          ],
+          "passive_skill_effect_value": [
+            "65公里/小时",
+            ""
+          ],
+          "passive_skill_rich_desc": "42",
+          "slipstream": "跟随在车辆后方将获得尾流，产生持续的氮气充能效果",
+          "special_passive_skill_desc": "开局时获得100%大招能量，若友方为完美阵容则使非竞速位队友也获得100%能量，若敌方也为完美阵容则在开局3秒后使敌方每个定位各1台赛车获得100%能量",
+          "special_passive_skill_icon": "new_carport_icon_10384",
+          "special_passive_skill_title": "照耀众生",
+          "title_ace_time_charge_condition": "赛道专精",
+          "title_ace_time_effect": "RECU限制解除",
+          "title_slipstream": "空气动力学套件",
+          "title_unlock_nitro_2": "大招强化套件 I",
+          "title_unlock_nitro_3": "竞速级氮气支架",
+          "unlock_nitro_3": "解锁1x6磅，2x3磅，3x2磅氮气",
+          "upgrade_level_icon": "new_carport_icon_10383"
+        },
+        "stats": {
+          "speed_limit": 201,
+          "speedup_ratio": 1.13,
+          "charge": {
+            "ace_charge": 2600,
+            "drift_charge_energy_coef": 600,
+            "drift_charge_energy_min": 1200,
+            "drift_charge_energy_max": 6000,
+            "drift_extra_charge": [
+              [
+                1,
+                0
+              ],
+              [
+                2,
+                1800
+              ]
+            ]
+          }
+        }
+      },
+      {
+        "id": 120829,
+        "suffix": "9",
+        "rich_text": {
+          "id": 120829,
+          "ace_time_charge_condition": "在城市赛道，使用氮气时获得额外大招充能并在落后第一名超过一定距离时获得速度提升效果",
+          "ace_time_effect": "光之翼可以充能两次",
+          "ace_time_effect_rich_desc": "42",
+          "chip_unlock_tips": "芯片最高生效等级为#fe7ab710#ffffff级",
+          "icon_ace_time_charge_condition": "new_carport_icon_city",
+          "icon_ace_time_effect": "new_carport_icon_10383",
+          "icon_slipstream": "new_carport_icon_14",
+          "icon_unlock_nitro_2": "new_carport_icon_10383",
+          "icon_unlock_nitro_3": "new_carport_icon_nos_03",
+          "is_unlocked_ace_time_charge_condition": 1,
+          "is_unlocked_ace_time_effect": 1,
+          "is_unlocked_slipstream": 1,
+          "level_title": "大招强化 IV",
+          "passive_skill_effect": [
+            "光之翼加速",
+            ""
+          ],
+          "passive_skill_effect_value": [
+            "75公里/小时",
+            ""
+          ],
+          "passive_skill_rich_desc": "42",
+          "slipstream": "跟随在车辆后方将获得尾流，产生持续的氮气充能效果",
+          "special_passive_skill_desc": "开局时获得100%大招能量，若友方为完美阵容则使非竞速位队友也获得100%能量，若敌方也为完美阵容则在开局3秒后使敌方每个定位各1台赛车获得100%能量",
+          "special_passive_skill_icon": "new_carport_icon_10384",
+          "special_passive_skill_title": "照耀众生",
+          "title_ace_time_charge_condition": "赛道专精",
+          "title_ace_time_effect": "RECU限制解除",
+          "title_slipstream": "空气动力学套件",
+          "title_unlock_nitro_2": "大招强化套件 I",
+          "title_unlock_nitro_3": "竞速级氮气支架",
+          "unlock_nitro_3": "解锁1x6磅，2x3磅，3x2磅氮气",
+          "upgrade_level_icon": "new_carport_icon_10383"
+        },
+        "stats": {
+          "speed_limit": 202,
+          "speedup_ratio": 1.13,
+          "charge": {
+            "ace_charge": 2600,
+            "drift_charge_energy_coef": 600,
+            "drift_charge_energy_min": 1200,
+            "drift_charge_energy_max": 6000,
+            "drift_extra_charge": [
+              [
+                1,
+                0
+              ],
+              [
+                2,
+                1800
+              ]
+            ]
+          }
+        }
+      }
+    ],
+    "skills": {
+      "ultimate": {
+        "id": 20251,
+        "name": "光之翼",
+        "type": "N2O_LIGHT",
+        "icon_static": "ui_skill178_04",
+        "icon_big": null,
+        "icon": null,
+        "init_ratio": null,
+        "icons": {
+          "normal": "ui_skill178_03",
+          "disable": "ui_skill178_01",
+          "alt": "ui_skill178_06",
+          "down": "ui_skill178_03",
+          "static": "ui_skill178_04",
+          "big": null
+        },
+        "extra": {
+          "cam_type": "N2O_LIGHT",
+          "eff_id": 1,
+          "is_cost_energy": 2,
+          "rally_qte": 2
+        },
+        "value_texts": [
+          {
+            "key": "name",
+            "label": "技能名称",
+            "value": "光之翼"
+          },
+          {
+            "key": "skill_type",
+            "label": "技能类型",
+            "value": "N2O_LIGHT"
+          },
+          {
+            "key": "cam_type",
+            "label": "镜头类型",
+            "value": "N2O_LIGHT"
+          },
+          {
+            "key": "eff_id",
+            "label": "特效编号",
+            "value": "1"
+          },
+          {
+            "key": "min_charge",
+            "label": "最低充能万分比",
+            "value": "10000"
+          },
+          {
+            "key": "rally_qte",
+            "label": "拉力赛触发qte",
+            "value": "2"
+          }
+        ],
+        "instructions": [
+          {
+            "id": 209741,
+            "accel_action": 2,
+            "accelerate_curve": [
+              [
+                0,
+                30
+              ],
+              [
+                165,
+                21.7
+              ],
+              [
+                166,
+                7
+              ],
+              [
+                200,
+                7
+              ]
+            ],
+            "attack_show_friend_enemy_filter": [
+              1,
+              2
+            ],
+            "attack_show_role_filter": [
+              1,
+              2,
+              3
+            ],
+            "buff_count": 0,
+            "cost_ratio": 1250,
+            "duration": 8,
+            "eff_id": 1,
+            "extra_children": [],
+            "extra_isolate": [],
+            "inst_group": 2,
+            "inst_name": "大招加速",
+            "inst_type": 2,
+            "is_hard_push": 1,
+            "rear_insts": [
+              -1
+            ],
+            "ref_insts": [
+              209741
+            ],
+            "skill_eff_id": 12493,
+            "sp_ex_speed_limit": 50,
+            "sp_max_ex_speed_limit": 50,
+            "sp_min_ex_speed_limit": 50,
+            "sp_n2o_ace_charge_ratio": 1,
+            "name": "大招加速",
+            "desc": null,
+            "type": 2,
+            "order": null,
+            "value_texts": [
+              {
+                "key": "sp_ex_speed_limit",
+                "label": "极速提升",
+                "value": "50km/h"
+              },
+              {
+                "key": "attack_show_friend_enemy_filter",
+                "label": "敌友筛选",
+                "value": "[1,2]"
+              },
+              {
+                "key": "attack_show_role_filter",
+                "label": "定位筛选",
+                "value": "[1,2,3]"
+              },
+              {
+                "key": "buff_count",
+                "label": "Buff 数量",
+                "value": "0"
+              },
+              {
+                "key": "rear_insts",
+                "label": "后续节点",
+                "value": "[-1]"
+              },
+              {
+                "key": "extra_children",
+                "label": "子节点",
+                "value": "[]"
+              },
+              {
+                "key": "ref_insts",
+                "label": "引用节点",
+                "value": "[209741]"
+              }
+            ]
+          },
+          {
+            "id": 3801701,
+            "buff_count": 0,
+            "counter_type": 4,
+            "duration": null,
+            "extra_children": [],
+            "extra_isolate": [
+              143017,
+              811501,
+              907443
+            ],
+            "glob_check_eff_ids": [
+              143017,
+              907443,
+              811501
+            ],
+            "glob_check_mode": 1,
+            "glob_check_num": 3,
+            "glob_check_target": 2,
+            "glob_check_type": 1,
+            "inst_group": 38024,
+            "inst_name": "光天使",
+            "inst_type": 38,
+            "rear_insts": [
+              -1
+            ],
+            "ref_insts": [
+              143017,
+              811501,
+              907443,
+              3801701
+            ],
+            "sp_n2o_ace_charge_ratio": 1,
+            "name": "光天使",
+            "desc": null,
+            "type": 38,
+            "order": null,
+            "value_texts": [
+              {
+                "key": "buff_count",
+                "label": "Buff 数量",
+                "value": "0"
+              },
+              {
+                "key": "rear_insts",
+                "label": "后续节点",
+                "value": "[-1]"
+              },
+              {
+                "key": "extra_children",
+                "label": "子节点",
+                "value": "[]"
+              },
+              {
+                "key": "ref_insts",
+                "label": "引用节点",
+                "value": "[143017,811501,907443,3801701]"
+              }
+            ]
+          }
+        ]
+      },
+      "sp": null,
+      "passive": [
+        {
+          "id": 50801,
+          "name": "封禁尾流",
+          "type": null,
+          "icon_static": null,
+          "icon_big": null,
+          "icon": null,
+          "init_ratio": null,
+          "icons": {
+            "normal": null,
+            "disable": null,
+            "alt": null,
+            "down": null,
+            "static": null,
+            "big": null
+          },
+          "extra": {
+            "cam_type": null,
+            "eff_id": null,
+            "is_cost_energy": null,
+            "rally_qte": null
+          },
+          "value_texts": [
+            {
+              "key": "name",
+              "label": "技能名称",
+              "value": "封禁尾流"
+            }
+          ],
+          "instructions": [
+            {
+              "id": 2100301,
+              "attack_show_friend_enemy_filter": [
+                1,
+                2
+              ],
+              "attack_show_role_filter": [
+                1,
+                2,
+                3
+              ],
+              "buff_count": 0,
+              "duration": 999,
+              "eff_id": 1,
+              "extra_children": [],
+              "extra_isolate": [],
+              "inst_group": 21001,
+              "inst_name": "封禁尾流",
+              "inst_type": 21,
+              "rear_insts": [],
+              "ref_insts": [
+                2100301
+              ],
+              "skill_eff_id": 21,
+              "slipstream_state": 1,
+              "sp_n2o_ace_charge_ratio": 1,
+              "name": "封禁尾流",
+              "desc": null,
+              "type": 21,
+              "order": null,
+              "value_texts": [
+                {
+                  "key": "attack_show_friend_enemy_filter",
+                  "label": "敌友筛选",
+                  "value": "[1,2]"
+                },
+                {
+                  "key": "attack_show_role_filter",
+                  "label": "定位筛选",
+                  "value": "[1,2,3]"
+                },
+                {
+                  "key": "buff_count",
+                  "label": "Buff 数量",
+                  "value": "0"
+                },
+                {
+                  "key": "rear_insts",
+                  "label": "后续节点",
+                  "value": "[]"
+                },
+                {
+                  "key": "extra_children",
+                  "label": "子节点",
+                  "value": "[]"
+                },
+                {
+                  "key": "ref_insts",
+                  "label": "引用节点",
+                  "value": "[2100301]"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "id": 77002,
+          "name": "照耀众生",
+          "type": null,
+          "icon_static": null,
+          "icon_big": null,
+          "icon": null,
+          "init_ratio": null,
+          "icons": {
+            "normal": null,
+            "disable": null,
+            "alt": null,
+            "down": null,
+            "static": null,
+            "big": null
+          },
+          "extra": {
+            "cam_type": null,
+            "eff_id": null,
+            "is_cost_energy": null,
+            "rally_qte": null
+          },
+          "value_texts": [
+            {
+              "key": "name",
+              "label": "技能名称",
+              "value": "照耀众生"
+            }
+          ],
+          "instructions": [
+            {
+              "id": 907444,
+              "desc": "大招能量\t+{single_add_energy_percent:.0%}",
+              "attack_show_friend_enemy_filter": [
+                1,
+                2
+              ],
+              "attack_show_role_filter": [
+                1,
+                2,
+                3
+              ],
+              "buff_count": 0,
+              "buff_icon": "new_carport_icon_103_1",
+              "disable_ace_recv_energy_ratio": 1,
+              "duration": 0.1,
+              "extra_children": [],
+              "extra_isolate": [],
+              "inst_group": 9257,
+              "inst_name": "照耀众生充能",
+              "inst_type": 9,
+              "is_positive": 1,
+              "rear_insts": [],
+              "ref_insts": [
+                907444
+              ],
+              "sp_change_type": 2,
+              "sp_n2o_ace_charge_ratio": 1,
+              "sp_same_instr_interval": 1,
+              "sp_single_change_value": 10000,
+              "name": "照耀众生充能",
+              "type": 9,
+              "order": null,
+              "value_texts": [
+                {
+                  "key": "attack_show_friend_enemy_filter",
+                  "label": "敌友筛选",
+                  "value": "[1,2]"
+                },
+                {
+                  "key": "attack_show_role_filter",
+                  "label": "定位筛选",
+                  "value": "[1,2,3]"
+                },
+                {
+                  "key": "buff_count",
+                  "label": "Buff 数量",
+                  "value": "0"
+                },
+                {
+                  "key": "rear_insts",
+                  "label": "后续节点",
+                  "value": "[]"
+                },
+                {
+                  "key": "extra_children",
+                  "label": "子节点",
+                  "value": "[]"
+                },
+                {
+                  "key": "ref_insts",
+                  "label": "引用节点",
+                  "value": "[907444]"
+                }
+              ]
+            },
+            {
+              "id": 2808531,
+              "attack_show_friend_enemy_filter": [
+                1,
+                2
+              ],
+              "attack_show_role_filter": [
+                1,
+                2,
+                3
+              ],
+              "buff_count": 0,
+              "extra_children": [
+                811502,
+                2808532
+              ],
+              "extra_isolate": [],
+              "inst_group": 28,
+              "inst_name": "判断友方是否为完美阵容",
+              "inst_type": 28,
+              "rear_insts": [],
+              "ref_insts": [
+                130108,
+                811502,
+                2808531,
+                2808532
+              ],
+              "sp_n2o_ace_charge_ratio": 1,
+              "status_effect": [
+                [
+                  [
+                    18,
+                    "=",
+                    1,
+                    [],
+                    811502
+                  ]
+                ],
+                [
+                  [
+                    18,
+                    "=",
+                    1,
+                    [],
+                    2808532
+                  ]
+                ]
+              ],
+              "status_effect_type": 1,
+              "name": "判断友方是否为完美阵容",
+              "desc": null,
+              "type": 28,
+              "order": null,
+              "value_texts": [
+                {
+                  "key": "attack_show_friend_enemy_filter",
+                  "label": "敌友筛选",
+                  "value": "[1,2]"
+                },
+                {
+                  "key": "attack_show_role_filter",
+                  "label": "定位筛选",
+                  "value": "[1,2,3]"
+                },
+                {
+                  "key": "buff_count",
+                  "label": "Buff 数量",
+                  "value": "0"
+                },
+                {
+                  "key": "status_effect_type",
+                  "label": "触发效果类型",
+                  "value": "1"
+                },
+                {
+                  "key": "status_effect",
+                  "label": "状态及效果",
+                  "value": "[[[18,\"=\",1,[],811502]],[[18,\"=\",1,[],2808532]]]"
+                },
+                {
+                  "key": "rear_insts",
+                  "label": "后续节点",
+                  "value": "[]"
+                },
+                {
+                  "key": "extra_children",
+                  "label": "子节点",
+                  "value": "[811502,2808532]"
+                },
+                {
+                  "key": "ref_insts",
+                  "label": "引用节点",
+                  "value": "[130108,811502,2808531,2808532]"
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    "skillPanelGroups": {
+      "ultimate": [
+        {
+          "id": "1717",
+          "name_rich": {
+            "raw": "极速提升",
+            "html": "极速提升"
+          },
+          "value_rich": {
+            "raw": "50km/h",
+            "html": "50km/h"
+          },
+          "value_text": "50km/h",
+          "instruction_ids": [
+            209741,
+            209745
+          ],
+          "values": []
+        },
+        {
+          "id": "1718",
+          "name_rich": {
+            "raw": "加速动力",
+            "html": "加速动力"
+          },
+          "value_rich": {
+            "raw": "中",
+            "html": "中"
+          },
+          "value_text": "中",
+          "instruction_ids": [],
+          "values": []
+        },
+        {
+          "id": "1719",
+          "name_rich": {
+            "raw": "加速时长",
+            "html": "加速时长"
+          },
+          "value_rich": {
+            "raw": "8秒",
+            "html": "8秒"
+          },
+          "value_text": "8秒",
+          "instruction_ids": [],
+          "values": []
+        },
+        {
+          "id": "1721",
+          "name_rich": {
+            "raw": "大招计数",
+            "html": "大招计数"
+          },
+          "value_rich": {
+            "raw": "3次",
+            "html": "3次"
+          },
+          "value_text": "3次",
+          "instruction_ids": [],
+          "values": []
+        },
+        {
+          "id": "1722",
+          "name_rich": {
+            "raw": "自动集气",
+            "html": "自动集气"
+          },
+          "value_rich": {
+            "raw": "5000",
+            "html": "5000"
+          },
+          "value_text": "5000",
+          "instruction_ids": [],
+          "values": []
+        },
+        {
+          "id": "1723",
+          "name_rich": {
+            "raw": "极速提升",
+            "html": "极速提升"
+          },
+          "value_rich": {
+            "raw": "6km/h",
+            "html": "6km/h"
+          },
+          "value_text": "6km/h",
+          "instruction_ids": [],
+          "values": []
+        },
+        {
+          "id": "1724",
+          "name_rich": {
+            "raw": "参数 1724",
+            "html": "参数 1724"
+          },
+          "value_rich": {
+            "raw": "#a9a9a9(上限：30km/h)",
+            "html": "<span class=\"rt-color\" style=\"color: #a9a9a9\">(上限：30km/h)</span>"
+          },
+          "value_text": "#a9a9a9(上限：30km/h)",
+          "instruction_ids": [],
+          "values": []
+        },
+        {
+          "id": "1725",
+          "name_rich": {
+            "raw": "命中类型",
+            "html": "命中类型"
+          },
+          "value_rich": {
+            "raw": "#tipsnoicon[锁定类]",
+            "html": "<span class=\"rt-tip rt-tip--entry rt-tip--noicon\" data-tip=\"锁定类\" data-desc=\"·自动锁定范围内的目标&#10;·无法命中具有*隐身*、*无法选中*、*闪避*的敌方\" style=\"--tip-color:#ffd700\" title=\"·自动锁定范围内的目标&#10;·无法命中具有*隐身*、*无法选中*、*闪避*的敌方\">锁定类</span>"
+          },
+          "value_text": "#tipsnoicon[锁定类]",
+          "instruction_ids": [],
+          "values": []
+        }
+      ],
+      "sp": [],
+      "passive": [
+        {
+          "id": "1727",
+          "name_rich": {
+            "raw": "友方充能",
+            "html": "友方充能"
+          },
+          "value_rich": {
+            "raw": "100%",
+            "html": "100%"
+          },
+          "value_text": "100%",
+          "instruction_ids": [],
+          "values": []
+        },
+        {
+          "id": "1728",
+          "name_rich": {
+            "raw": "命中类型",
+            "html": "命中类型"
+          },
+          "value_rich": {
+            "raw": "#tipsnoicon[锁定类]",
+            "html": "<span class=\"rt-tip rt-tip--entry rt-tip--noicon\" data-tip=\"锁定类\" data-desc=\"·自动锁定范围内的目标&#10;·无法命中具有*隐身*、*无法选中*、*闪避*的敌方\" style=\"--tip-color:#ffd700\" title=\"·自动锁定范围内的目标&#10;·无法命中具有*隐身*、*无法选中*、*闪避*的敌方\">锁定类</span>"
+          },
+          "value_text": "#tipsnoicon[锁定类]",
+          "instruction_ids": [],
+          "values": []
+        },
+        {
+          "id": "1729",
+          "name_rich": {
+            "raw": "参数 1729",
+            "html": "参数 1729"
+          },
+          "value_rich": {
+            "raw": "#a9a9a9(非竞速友方、无视隐身)",
+            "html": "<span class=\"rt-color\" style=\"color: #a9a9a9\">(非竞速友方、无视隐身)</span>"
+          },
+          "value_text": "#a9a9a9(非竞速友方、无视隐身)",
+          "instruction_ids": [],
+          "values": []
+        },
+        {
+          "id": "1730",
+          "name_rich": {
+            "raw": "敌方充能",
+            "html": "敌方充能"
+          },
+          "value_rich": {
+            "raw": "100%",
+            "html": "100%"
+          },
+          "value_text": "100%",
+          "instruction_ids": [],
+          "values": []
+        }
+      ],
+      "other": []
+    },
+    "richText": {
+      "id": 12082,
+      "ace_time_charge_condition": "在城市赛道，使用氮气时获得额外大招充能并在落后第一名超过一定距离时获得速度提升效果",
+      "ace_time_effect": "光之翼可以充能两次",
+      "ace_time_effect_rich_desc": "42",
+      "chip_unlock_tips": "芯片最高生效等级为#fe7ab71#ffffff级",
+      "icon_ace_time_charge_condition": "new_carport_icon_city",
+      "icon_ace_time_effect": "new_carport_icon_10383",
+      "icon_slipstream": "new_carport_icon_14",
+      "icon_unlock_nitro_2": "new_carport_icon_10383",
+      "icon_unlock_nitro_3": "new_carport_icon_nos_03",
+      "level_title": "原车型",
+      "passive_skill_effect": [
+        "光之翼加速",
+        ""
+      ],
+      "passive_skill_effect_value": [
+        "50公里/小时",
+        ""
+      ],
+      "passive_skill_rich_desc": "42",
+      "slipstream": "跟随在车辆后方将获得尾流，产生持续的氮气充能效果",
+      "special_passive_skill_desc": {
+        "raw": "开局时获得100%大招能量，若友方为完美阵容则使非竞速位队友也获得100%能量，若敌方也为完美阵容则在开局3秒后使敌方每个定位各1台赛车获得100%能量",
+        "html": "开局时获得100%大招能量，若友方为完美阵容则使非竞速位队友也获得100%能量，若敌方也为完美阵容则在开局3秒后使敌方每个定位各1台赛车获得100%能量"
+      },
+      "special_passive_skill_icon": "new_carport_icon_10384",
+      "special_passive_skill_title": "照耀众生",
+      "title_ace_time_charge_condition": "赛道专精",
+      "title_ace_time_effect": "RECU限制解除",
+      "title_slipstream": "空气动力学套件",
+      "title_unlock_nitro_2": "大招强化套件 I",
+      "title_unlock_nitro_3": "竞速级氮气支架",
+      "unlock_nitro_3": "解锁1x6磅，2x3磅，3x2磅氮气",
+      "upgrade_level_icon": "new_carport_icon_10384",
+      "feature_desc": {
+        "raw": "加速推进，极速提升#desc[1717]，持续8秒。加速期间：\n·敌方全体每累计使用3次大招，则展开光之翼\n·使自身和非竞速位队友获得5000集气量并永久提升6km/h极速（上限叠加至30km/h）。",
+        "html": "加速推进，极速提升<span class=\"rt-desc\">极速提升 50km/h</span>，持续8秒。加速期间：<br/>·敌方全体每累计使用3次大招，则展开光之翼<br/>·使自身和非竞速位队友获得5000集气量并永久提升6km/h极速（上限叠加至30km/h）。"
+      },
+      "sp_skill_desc": null,
+      "passive_skill_desc": null,
+      "story_title": "厂商：曙光",
+      "story": {
+        "raw": "曙光车厂精心打造的赛车光天使，它散发的圣光能够照耀众生，带来希望与力量。在赛道上，光天使可以展开光之翼，不仅照亮前方的道路，还能为队友提供支援，每一次展翅都闪耀着希望的光芒。",
+        "html": "曙光车厂精心打造的赛车光天使，它散发的圣光能够照耀众生，带来希望与力量。在赛道上，光天使可以展开光之翼，不仅照亮前方的道路，还能为队友提供支援，每一次展翅都闪耀着希望的光芒。"
+      }
+    },
+    "report": {
+      "title": "王牌速度节赛车检验报告",
+      "sections": [
+        {
+          "title": "基础数据",
+          "items": [
+            {
+              "label": "检测车辆",
+              "value": "光天使/Angel"
+            },
+            {
+              "label": "注册日期",
+              "value": "{}年{}月{}日"
+            },
+            {
+              "label": "车辆类型",
+              "value": "幻想阵营"
+            },
+            {
+              "label": "厂商",
+              "value": "曙光"
+            },
+            {
+              "label": "定位",
+              "value": "竞速位"
+            },
+            {
+              "label": "赛道专精",
+              "value": "城市"
+            },
+            {
+              "label": "能源类型",
+              "value": "光能"
+            },
+            {
+              "label": "驱动方式",
+              "value": "后置后驱"
+            },
+            {
+              "label": "车重",
+              "value": "1888kg"
+            }
+          ]
+        },
+        {
+          "title": "芯片模块",
+          "items": [
+            {
+              "label": "芯片写入权限",
+              "value": "已获取"
+            },
+            {
+              "label": "扩展芯片类型",
+              "value": "○○◇◣◣V"
+            },
+            {
+              "label": "等级合规检查",
+              "value": "芯片等级未高于RECU等级"
+            }
+          ]
+        },
+        {
+          "title": "外观检验",
+          "items": [
+            {
+              "label": "检验结果",
+              "value": "合格"
+            }
+          ]
+        },
+        {
+          "title": "大招驱动模块",
+          "items": [
+            {
+              "label": "能量控制单元",
+              "value": "五代RECU，工作正常"
+            },
+            {
+              "label": "瑞卡因子稳定器",
+              "value": "工作正常"
+            },
+            {
+              "label": "NOS",
+              "value": "氮氧加速系统已安装"
+            },
+            {
+              "label": "空气动力套件（2级解锁）",
+              "value": "未选装"
+            },
+            {
+              "label": "赛道专精（3级解锁）",
+              "value": "未选装"
+            },
+            {
+              "label": "RECU限制解除（8级解锁）",
+              "value": "未选装"
+            }
+          ]
+        },
+        {
+          "title": "整车判定",
+          "items": [
+            {
+              "label": "检验结果",
+              "value": "合格，可参加速度节赛事"
+            }
+          ]
+        }
+      ]
+    },
+    "story": {
+      "content": "曙光车厂精心打造的赛车光天使，它散发的圣光能够照耀众生，带来希望与力量。在赛道上，光天使可以展开光之翼，不仅照亮前方的道路，还能为队友提供支援，每一次展翅都闪耀着希望的光芒。",
+      "id": 12082,
+      "story_content": "曙光车厂精心打造的赛车光天使，它散发的圣光能够照耀众生，带来希望与力量。在赛道上，光天使可以展开光之翼，不仅照亮前方的道路，还能为队友提供支援，每一次展翅都闪耀着希望的光芒。",
+      "story_title": "厂商：曙光",
+      "vehicle_name": "光天使"
+    },
+    "obtain": {
+      "tag_img": "item_tag_icon_14",
+      "obtain_type_ids": [
+        54
+      ],
+      "obtain_types": [
+        {
+          "id": 54,
+          "label": "王牌补给",
+          "desc": "参与王牌补给获取",
+          "icon": "commonnew_acesupply"
+        }
+      ]
+    },
+    "restraints": {
+      "id": 12082,
+      "match": [
+        10039,
+        10025,
+        12066,
+        12076,
+        12043,
+        12040,
+        12070,
+        10099,
+        10068,
+        10060,
+        12021,
+        12000,
+        12061,
+        12035,
+        10044,
+        12080
+      ],
+      "be_restraint": [
+        12080,
+        12012,
+        12066
+      ]
+    },
+    "resources": {
+      "icons": {
+        "ace_time_effect": "new_carport_icon_10383",
+        "icon_ace_time_effect": "new_carport_icon_10383",
+        "ace_time_charge_condition": "new_carport_icon_city",
+        "slipstream": "new_carport_icon_14",
+        "unlock_nitro_2": "new_carport_icon_10383",
+        "unlock_nitro_3": "new_carport_icon_nos_03",
+        "upgrade_level_icon": "new_carport_icon_10384",
+        "special_passive_skill_icon": "new_carport_icon_10384"
+      }
+    },
+    "skins": {
+      "sets": {
+        "local": [
+          {
+            "source": "local",
+            "index": 1
+          },
+          {
+            "source": "local",
+            "index": 2
+          }
+        ]
+      },
+      "meta": {
+        "1": {
+          "id": 50652,
+          "name": "涂装 堕天使",
+          "desc": "和我一起坠入堕落的深渊吧！\n适用车型：#1dd8d0光天使",
+          "icon_s": "tz_12082_1_s",
+          "icon_m": "tz_12082_1_m",
+          "icon_b": "tz_12082_1_b"
+        },
+        "2": {
+          "id": 50651,
+          "name": "涂装 金天使",
+          "desc": "我是至高无上的天使，正义有我主持。\n适用车型：#1dd8d0光天使",
+          "icon_s": "tz_12082_2_s",
+          "icon_m": "tz_12082_2_m",
+          "icon_b": "tz_12082_2_b"
+        }
+      }
+    },
+    "media": {
+      "cover": "/rk-assets/12082_m.png",
+      "coverFallback": "/rk-assets/12082_m.png",
+      "shareImage": {
+        "key": "share_12082",
+        "file": "share_12082.png",
+        "url": "https://h65.gdl.netease.com/web_res_list_20260422/share_12082.webp"
+      },
+      "shareImageAdvance": null,
+      "skillVideo": {
+        "ultimate": {
+          "url": "https://vod.cc.163.com/file/69e5922474ebf985bfd8dda9?source=27&protocol=https",
+          "thumbnail": "table_video_img_12082"
+        },
+        "sp": null
+      }
+    }
+  }
+}

@@ -1,0 +1,14 @@
+{
+  "schemaVersion": 2,
+  "versionId": "26-07-15_29734784_android",
+  "generatedAt": "2026-07-22T19:22:29.000Z",
+  "total": 1,
+  "items": [
+    {
+      "id": 12099,
+      "name": "百变小鹦",
+      "dataFile": "vehicles/12099.json",
+      "assetDirectory": "assets/百变小鹦_12099"
+    }
+  ]
+}

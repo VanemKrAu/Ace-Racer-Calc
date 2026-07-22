@@ -1,0 +1,1617 @@
+{
+  "schemaVersion": 2,
+  "versionId": "26-07-15_29734784_android",
+  "generatedAt": "2026-07-16T09:22:34.000Z",
+  "item": {
+    "id": 10009,
+    "name": "MINI JCW",
+    "manufacturer": "MINI",
+    "quality": "稀有",
+    "class": 2,
+    "group": 2,
+    "position": "辅助位",
+    "positionLabel": "辅助位",
+    "racingRole": 2,
+    "racingRoleName": "辅助位",
+    "specialization": "城市",
+    "seasonCode": null,
+    "publication": {
+      "state": "released",
+      "releaseTimestamp": 0,
+      "releaseText": "已上线",
+      "releaseMacro": "PAST"
+    },
+    "summary": "缩小全队车型",
+    "description": "缩小全队车型",
+    "tags": [
+      {
+        "id": 52,
+        "text": "友方缩小",
+        "desc": "为友方提供体积缩小效果",
+        "color": 4
+      },
+      {
+        "id": 50,
+        "text": "持续充能",
+        "desc": "为友方提供持续性辅助充能",
+        "color": 1
+      },
+      {
+        "id": 97,
+        "text": "先手",
+        "desc": "适合争夺开局",
+        "color": 1
+      }
+    ],
+    "stats": {
+      "speed_limit": 180.8,
+      "speedup_ratio": 0.95,
+      "charge": {
+        "ace_charge": 3500,
+        "drift_charge_energy_coef": 600,
+        "drift_charge_energy_min": 1200,
+        "drift_charge_energy_max": 6000,
+        "drift_extra_charge": [
+          [
+            1,
+            0
+          ],
+          [
+            2,
+            1800
+          ]
+        ]
+      }
+    },
+    "maxDurability": 75,
+    "levels": [
+      {
+        "id": 10009,
+        "suffix": "0",
+        "rich_text": {
+          "id": 10009,
+          "ace_time_charge_condition": "在城市赛道，使用氮气时获得额外大招充能并在落后第一名超过一定距离时获得速度提升效果",
+          "ace_time_effect": "纳米科技可以充能两次且能量达到70%即可使用",
+          "ace_time_effect_rich_desc": "纳米科技可以充能两次且能量达到70%即可使用",
+          "chip_unlock_tips": "芯片最高生效等级为#fe7ab71#ffffff级",
+          "icon_ace_time_charge_condition": "new_carport_icon_city",
+          "icon_ace_time_effect": "new_carport_icon_10009",
+          "icon_slipstream": "new_carport_icon_14",
+          "icon_unlock_nitro_2": "new_carport_icon_10009",
+          "icon_unlock_nitro_3": "new_carport_icon_nos_03",
+          "level_title": "原车型",
+          "passive_skill_effect": [
+            "纳米科技持续时间",
+            ""
+          ],
+          "passive_skill_effect_value": [
+            "5秒",
+            ""
+          ],
+          "passive_skill_rich_desc": "起步时，立即获得2000集气量和20%充能",
+          "slipstream": "跟随在车辆后方将获得尾流，产生持续的氮气充能效果",
+          "special_passive_skill_desc": "起步时，立即获得2000集气量和20%充能",
+          "special_passive_skill_icon": "new_carport_icon_24",
+          "special_passive_skill_title": "备用能源",
+          "title_ace_time_charge_condition": "赛道专精",
+          "title_ace_time_effect": "RECU限制解除",
+          "title_slipstream": "空气动力学套件",
+          "title_unlock_nitro_2": "大招强化套件 I",
+          "title_unlock_nitro_3": "竞速级氮气支架",
+          "unlock_nitro_3": "解锁1x6磅，2x3磅，3x2磅氮气",
+          "upgrade_level_icon": "new_carport_icon_24"
+        },
+        "stats": {
+          "speed_limit": 180.8,
+          "speedup_ratio": 0.95,
+          "charge": {
+            "ace_charge": 3500,
+            "drift_charge_energy_coef": 600,
+            "drift_charge_energy_min": 1200,
+            "drift_charge_energy_max": 6000,
+            "drift_extra_charge": [
+              [
+                1,
+                0
+              ],
+              [
+                2,
+                1800
+              ]
+            ]
+          }
+        }
+      },
+      {
+        "id": 10409,
+        "suffix": "1",
+        "rich_text": {
+          "id": 10409,
+          "ace_time_charge_condition": "在城市赛道，使用氮气时获得额外大招充能并在落后第一名超过一定距离时获得速度提升效果",
+          "ace_time_effect": "纳米科技可以充能两次且能量达到70%即可使用",
+          "ace_time_effect_rich_desc": "纳米科技可以充能两次且能量达到70%即可使用",
+          "chip_unlock_tips": "芯片最高生效等级为#fe7ab74#ffffff级",
+          "icon_ace_time_charge_condition": "new_carport_icon_city",
+          "icon_ace_time_effect": "new_carport_icon_10009",
+          "icon_slipstream": "new_carport_icon_14",
+          "icon_unlock_nitro_2": "new_carport_icon_10009",
+          "icon_unlock_nitro_3": "new_carport_icon_nos_03",
+          "is_unlocked_ace_time_charge_condition": 1,
+          "is_unlocked_slipstream": 1,
+          "level_title": "竞速级氮气支架 I",
+          "passive_skill_effect": [
+            "纳米科技持续时间",
+            ""
+          ],
+          "passive_skill_effect_value": [
+            "5秒",
+            ""
+          ],
+          "passive_skill_rich_desc": "起步时，立即获得2000集气量和20%充能",
+          "slipstream": "跟随在车辆后方将获得尾流，产生持续的氮气充能效果",
+          "special_passive_skill_desc": "起步时，立即获得2000集气量和20%充能",
+          "special_passive_skill_icon": "new_carport_icon_24",
+          "special_passive_skill_title": "备用能源",
+          "title_ace_time_charge_condition": "赛道专精",
+          "title_ace_time_effect": "RECU限制解除",
+          "title_slipstream": "空气动力学套件",
+          "title_unlock_nitro_2": "大招强化套件 I",
+          "title_unlock_nitro_3": "竞速级氮气支架",
+          "unlock_nitro_3": "解锁1x6磅，2x3磅，3x2磅氮气",
+          "upgrade_level_icon": "new_carport_icon_nos_03"
+        },
+        "stats": {
+          "speed_limit": 180.8,
+          "speedup_ratio": 0.95,
+          "charge": {
+            "ace_charge": 3500,
+            "drift_charge_energy_coef": 600,
+            "drift_charge_energy_min": 1200,
+            "drift_charge_energy_max": 6000,
+            "drift_extra_charge": [
+              [
+                1,
+                0
+              ],
+              [
+                2,
+                1800
+              ]
+            ]
+          }
+        }
+      },
+      {
+        "id": 10209,
+        "suffix": "2",
+        "rich_text": {
+          "id": 10209,
+          "ace_time_charge_condition": "在城市赛道，使用氮气时获得额外大招充能并在落后第一名超过一定距离时获得速度提升效果",
+          "ace_time_effect": "纳米科技可以充能两次且能量达到70%即可使用",
+          "ace_time_effect_rich_desc": "纳米科技可以充能两次且能量达到70%即可使用",
+          "chip_unlock_tips": "芯片最高生效等级为#fe7ab72#ffffff级",
+          "icon_ace_time_charge_condition": "new_carport_icon_city",
+          "icon_ace_time_effect": "new_carport_icon_10009",
+          "icon_slipstream": "new_carport_icon_14",
+          "icon_unlock_nitro_2": "new_carport_icon_10009",
+          "icon_unlock_nitro_3": "new_carport_icon_nos_03",
+          "is_unlocked_slipstream": 1,
+          "level_title": "空气动力学套件",
+          "passive_skill_effect": [
+            "纳米科技持续时间",
+            ""
+          ],
+          "passive_skill_effect_value": [
+            "5秒",
+            ""
+          ],
+          "passive_skill_rich_desc": "起步时，立即获得2000集气量和20%充能",
+          "slipstream": "跟随在车辆后方将获得尾流，产生持续的氮气充能效果",
+          "special_passive_skill_desc": "起步时，立即获得2000集气量和20%充能",
+          "special_passive_skill_icon": "new_carport_icon_24",
+          "special_passive_skill_title": "备用能源",
+          "title_ace_time_charge_condition": "赛道专精",
+          "title_ace_time_effect": "RECU限制解除",
+          "title_slipstream": "空气动力学套件",
+          "title_unlock_nitro_2": "大招强化套件 I",
+          "title_unlock_nitro_3": "竞速级氮气支架",
+          "unlock_nitro_3": "解锁1x6磅，2x3磅，3x2磅氮气",
+          "upgrade_level_icon": "new_carport_icon_14"
+        },
+        "stats": {
+          "speed_limit": 180.8,
+          "speedup_ratio": 0.95,
+          "charge": {
+            "ace_charge": 3500,
+            "drift_charge_energy_coef": 600,
+            "drift_charge_energy_min": 1200,
+            "drift_charge_energy_max": 6000,
+            "drift_extra_charge": [
+              [
+                1,
+                0
+              ],
+              [
+                2,
+                1800
+              ]
+            ]
+          }
+        }
+      },
+      {
+        "id": 10309,
+        "suffix": "3",
+        "rich_text": {
+          "id": 10309,
+          "ace_time_charge_condition": "在城市赛道，使用氮气时获得额外大招充能并在落后第一名超过一定距离时获得速度提升效果",
+          "ace_time_effect": "纳米科技可以充能两次且能量达到70%即可使用",
+          "ace_time_effect_rich_desc": "纳米科技可以充能两次且能量达到70%即可使用",
+          "chip_unlock_tips": "芯片最高生效等级为#fe7ab73#ffffff级",
+          "icon_ace_time_charge_condition": "new_carport_icon_city",
+          "icon_ace_time_effect": "new_carport_icon_10009",
+          "icon_slipstream": "new_carport_icon_14",
+          "icon_unlock_nitro_2": "new_carport_icon_10009",
+          "icon_unlock_nitro_3": "new_carport_icon_nos_03",
+          "is_unlocked_ace_time_charge_condition": 1,
+          "is_unlocked_slipstream": 1,
+          "level_title": "赛道专精",
+          "passive_skill_effect": [
+            "纳米科技持续时间",
+            ""
+          ],
+          "passive_skill_effect_value": [
+            "5秒",
+            ""
+          ],
+          "passive_skill_rich_desc": "起步时，立即获得2000集气量和20%充能",
+          "slipstream": "跟随在车辆后方将获得尾流，产生持续的氮气充能效果",
+          "special_passive_skill_desc": "起步时，立即获得2000集气量和20%充能",
+          "special_passive_skill_icon": "new_carport_icon_24",
+          "special_passive_skill_title": "备用能源",
+          "title_ace_time_charge_condition": "赛道专精",
+          "title_ace_time_effect": "RECU限制解除",
+          "title_slipstream": "空气动力学套件",
+          "title_unlock_nitro_2": "大招强化套件 I",
+          "title_unlock_nitro_3": "竞速级氮气支架",
+          "unlock_nitro_3": "解锁1x6磅，2x3磅，3x2磅氮气",
+          "upgrade_level_icon": "new_carport_icon_city"
+        },
+        "stats": {
+          "speed_limit": 180.8,
+          "speedup_ratio": 0.95,
+          "charge": {
+            "ace_charge": 3500,
+            "drift_charge_energy_coef": 600,
+            "drift_charge_energy_min": 1200,
+            "drift_charge_energy_max": 6000,
+            "drift_extra_charge": [
+              [
+                1,
+                0
+              ],
+              [
+                2,
+                1800
+              ]
+            ]
+          }
+        }
+      },
+      {
+        "id": 10509,
+        "suffix": "4",
+        "rich_text": {
+          "id": 10509,
+          "ace_time_charge_condition": "在城市赛道，使用氮气时获得额外大招充能并在落后第一名超过一定距离时获得速度提升效果",
+          "ace_time_effect": "纳米科技可以充能两次且能量达到70%即可使用",
+          "ace_time_effect_rich_desc": "纳米科技可以充能两次且能量达到70%即可使用",
+          "chip_unlock_tips": "芯片最高生效等级为#fe7ab75#ffffff级",
+          "icon_ace_time_charge_condition": "new_carport_icon_city",
+          "icon_ace_time_effect": "new_carport_icon_10009",
+          "icon_slipstream": "new_carport_icon_14",
+          "icon_unlock_nitro_2": "new_carport_icon_10009",
+          "icon_unlock_nitro_3": "new_carport_icon_nos_03",
+          "is_unlocked_ace_time_charge_condition": 1,
+          "is_unlocked_slipstream": 1,
+          "level_title": "大招强化 I",
+          "passive_skill_effect": [
+            "纳米科技持续时间",
+            ""
+          ],
+          "passive_skill_effect_value": [
+            "5.2秒",
+            ""
+          ],
+          "passive_skill_rich_desc": "起步时，立即获得2000集气量和20%充能",
+          "slipstream": "跟随在车辆后方将获得尾流，产生持续的氮气充能效果",
+          "special_passive_skill_desc": "起步时，立即获得2000集气量和20%充能",
+          "special_passive_skill_icon": "new_carport_icon_24",
+          "special_passive_skill_title": "备用能源",
+          "title_ace_time_charge_condition": "赛道专精",
+          "title_ace_time_effect": "RECU限制解除",
+          "title_slipstream": "空气动力学套件",
+          "title_unlock_nitro_2": "大招强化套件 I",
+          "title_unlock_nitro_3": "竞速级氮气支架",
+          "unlock_nitro_3": "解锁1x6磅，2x3磅，3x2磅氮气",
+          "upgrade_level_icon": "new_carport_icon_10009"
+        },
+        "stats": {
+          "speed_limit": 180.8,
+          "speedup_ratio": 0.95,
+          "charge": {
+            "ace_charge": 3500,
+            "drift_charge_energy_coef": 600,
+            "drift_charge_energy_min": 1200,
+            "drift_charge_energy_max": 6000,
+            "drift_extra_charge": [
+              [
+                1,
+                0
+              ],
+              [
+                2,
+                1800
+              ]
+            ]
+          }
+        }
+      },
+      {
+        "id": 10609,
+        "suffix": "5",
+        "rich_text": {
+          "id": 10609,
+          "ace_time_charge_condition": "在城市赛道，使用氮气时获得额外大招充能并在落后第一名超过一定距离时获得速度提升效果",
+          "ace_time_effect": "纳米科技可以充能两次且能量达到70%即可使用",
+          "ace_time_effect_rich_desc": "纳米科技可以充能两次且能量达到70%即可使用",
+          "chip_unlock_tips": "芯片最高生效等级为#fe7ab76#ffffff级",
+          "icon_ace_time_charge_condition": "new_carport_icon_city",
+          "icon_ace_time_effect": "new_carport_icon_10009",
+          "icon_slipstream": "new_carport_icon_14",
+          "icon_unlock_nitro_2": "new_carport_icon_10009",
+          "icon_unlock_nitro_3": "new_carport_icon_nos_03",
+          "is_unlocked_ace_time_charge_condition": 1,
+          "is_unlocked_slipstream": 1,
+          "level_title": "竞速级氮气支架 II",
+          "passive_skill_effect": [
+            "纳米科技持续时间",
+            ""
+          ],
+          "passive_skill_effect_value": [
+            "5.2秒",
+            ""
+          ],
+          "passive_skill_rich_desc": "起步时，立即获得2000集气量和20%充能",
+          "slipstream": "跟随在车辆后方将获得尾流，产生持续的氮气充能效果",
+          "special_passive_skill_desc": "起步时，立即获得2000集气量和20%充能",
+          "special_passive_skill_icon": "new_carport_icon_24",
+          "special_passive_skill_title": "备用能源",
+          "title_ace_time_charge_condition": "赛道专精",
+          "title_ace_time_effect": "RECU限制解除",
+          "title_slipstream": "空气动力学套件",
+          "title_unlock_nitro_2": "大招强化套件 I",
+          "title_unlock_nitro_3": "竞速级氮气支架",
+          "unlock_nitro_3": "解锁1x6磅，2x3磅，3x2磅氮气",
+          "upgrade_level_icon": "new_carport_icon_nos_03"
+        },
+        "stats": {
+          "speed_limit": 180.8,
+          "speedup_ratio": 0.95,
+          "charge": {
+            "ace_charge": 3500,
+            "drift_charge_energy_coef": 600,
+            "drift_charge_energy_min": 1200,
+            "drift_charge_energy_max": 6000,
+            "drift_extra_charge": [
+              [
+                1,
+                0
+              ],
+              [
+                2,
+                1800
+              ]
+            ]
+          }
+        }
+      },
+      {
+        "id": 10709,
+        "suffix": "6",
+        "rich_text": {
+          "id": 10709,
+          "ace_time_charge_condition": "在城市赛道，使用氮气时获得额外大招充能并在落后第一名超过一定距离时获得速度提升效果",
+          "ace_time_effect": "纳米科技可以充能两次且能量达到70%即可使用",
+          "ace_time_effect_rich_desc": "纳米科技可以充能两次且能量达到70%即可使用",
+          "chip_unlock_tips": "芯片最高生效等级为#fe7ab77#ffffff级",
+          "icon_ace_time_charge_condition": "new_carport_icon_city",
+          "icon_ace_time_effect": "new_carport_icon_10009",
+          "icon_slipstream": "new_carport_icon_14",
+          "icon_unlock_nitro_2": "new_carport_icon_10009",
+          "icon_unlock_nitro_3": "new_carport_icon_nos_03",
+          "is_unlocked_ace_time_charge_condition": 1,
+          "is_unlocked_slipstream": 1,
+          "level_title": "大招强化 II",
+          "passive_skill_effect": [
+            "纳米科技持续时间",
+            ""
+          ],
+          "passive_skill_effect_value": [
+            "5.4秒",
+            ""
+          ],
+          "passive_skill_rich_desc": "起步时，立即获得2000集气量和20%充能",
+          "slipstream": "跟随在车辆后方将获得尾流，产生持续的氮气充能效果",
+          "special_passive_skill_desc": "起步时，立即获得2000集气量和20%充能",
+          "special_passive_skill_icon": "new_carport_icon_24",
+          "special_passive_skill_title": "备用能源",
+          "title_ace_time_charge_condition": "赛道专精",
+          "title_ace_time_effect": "RECU限制解除",
+          "title_slipstream": "空气动力学套件",
+          "title_unlock_nitro_2": "大招强化套件 I",
+          "title_unlock_nitro_3": "竞速级氮气支架",
+          "unlock_nitro_3": "解锁1x6磅，2x3磅，3x2磅氮气",
+          "upgrade_level_icon": "new_carport_icon_10009"
+        },
+        "stats": {
+          "speed_limit": 181.3,
+          "speedup_ratio": 0.95,
+          "charge": {
+            "ace_charge": 3500,
+            "drift_charge_energy_coef": 600,
+            "drift_charge_energy_min": 1200,
+            "drift_charge_energy_max": 6000,
+            "drift_extra_charge": [
+              [
+                1,
+                0
+              ],
+              [
+                2,
+                1800
+              ]
+            ]
+          }
+        }
+      },
+      {
+        "id": 10809,
+        "suffix": "7",
+        "rich_text": {
+          "id": 10809,
+          "ace_time_charge_condition": "在城市赛道，使用氮气时获得额外大招充能并在落后第一名超过一定距离时获得速度提升效果",
+          "ace_time_effect": "纳米科技可以充能两次且能量达到70%即可使用",
+          "ace_time_effect_rich_desc": "纳米科技可以充能两次且能量达到70%即可使用",
+          "chip_unlock_tips": "芯片最高生效等级为#fe7ab78#ffffff级",
+          "icon_ace_time_charge_condition": "new_carport_icon_city",
+          "icon_ace_time_effect": "new_carport_icon_10009",
+          "icon_slipstream": "new_carport_icon_14",
+          "icon_unlock_nitro_2": "new_carport_icon_10009",
+          "icon_unlock_nitro_3": "new_carport_icon_nos_03",
+          "is_unlocked_ace_time_charge_condition": 1,
+          "is_unlocked_ace_time_effect": 1,
+          "is_unlocked_slipstream": 1,
+          "level_title": "RECU限制解除",
+          "passive_skill_effect": [
+            "纳米科技持续时间",
+            ""
+          ],
+          "passive_skill_effect_value": [
+            "5.4秒",
+            ""
+          ],
+          "passive_skill_rich_desc": "起步时，立即获得2000集气量和20%充能",
+          "slipstream": "跟随在车辆后方将获得尾流，产生持续的氮气充能效果",
+          "special_passive_skill_desc": "起步时，立即获得2000集气量和20%充能",
+          "special_passive_skill_icon": "new_carport_icon_24",
+          "special_passive_skill_title": "备用能源",
+          "title_ace_time_charge_condition": "赛道专精",
+          "title_ace_time_effect": "RECU限制解除",
+          "title_slipstream": "空气动力学套件",
+          "title_unlock_nitro_2": "大招强化套件 I",
+          "title_unlock_nitro_3": "竞速级氮气支架",
+          "unlock_nitro_3": "解锁1x6磅，2x3磅，3x2磅氮气",
+          "upgrade_level_icon": "new_carport_icon_10009"
+        },
+        "stats": {
+          "speed_limit": 181.3,
+          "speedup_ratio": 0.95,
+          "charge": {
+            "ace_charge": 3500,
+            "drift_charge_energy_coef": 600,
+            "drift_charge_energy_min": 1200,
+            "drift_charge_energy_max": 6000,
+            "drift_extra_charge": [
+              [
+                1,
+                0
+              ],
+              [
+                2,
+                1800
+              ]
+            ]
+          }
+        }
+      },
+      {
+        "id": 10909,
+        "suffix": "8",
+        "rich_text": {
+          "id": 10909,
+          "ace_time_charge_condition": "在城市赛道，使用氮气时获得额外大招充能并在落后第一名超过一定距离时获得速度提升效果",
+          "ace_time_effect": "纳米科技可以充能两次且能量达到70%即可使用",
+          "ace_time_effect_rich_desc": "纳米科技可以充能两次且能量达到70%即可使用",
+          "chip_unlock_tips": "芯片最高生效等级为#fe7ab79#ffffff级",
+          "icon_ace_time_charge_condition": "new_carport_icon_city",
+          "icon_ace_time_effect": "new_carport_icon_10009",
+          "icon_slipstream": "new_carport_icon_14",
+          "icon_unlock_nitro_2": "new_carport_icon_10009",
+          "icon_unlock_nitro_3": "new_carport_icon_nos_03",
+          "is_unlocked_ace_time_charge_condition": 1,
+          "is_unlocked_ace_time_effect": 1,
+          "is_unlocked_slipstream": 1,
+          "level_title": "大招强化 III",
+          "passive_skill_effect": [
+            "纳米科技持续时间",
+            ""
+          ],
+          "passive_skill_effect_value": [
+            "5.6秒",
+            ""
+          ],
+          "passive_skill_rich_desc": "起步时，立即获得2000集气量和20%充能",
+          "slipstream": "跟随在车辆后方将获得尾流，产生持续的氮气充能效果",
+          "special_passive_skill_desc": "起步时，立即获得2000集气量和20%充能",
+          "special_passive_skill_icon": "new_carport_icon_24",
+          "special_passive_skill_title": "备用能源",
+          "title_ace_time_charge_condition": "赛道专精",
+          "title_ace_time_effect": "RECU限制解除",
+          "title_slipstream": "空气动力学套件",
+          "title_unlock_nitro_2": "大招强化套件 I",
+          "title_unlock_nitro_3": "竞速级氮气支架",
+          "unlock_nitro_3": "解锁1x6磅，2x3磅，3x2磅氮气",
+          "upgrade_level_icon": "new_carport_icon_10009"
+        },
+        "stats": {
+          "speed_limit": 181.8,
+          "speedup_ratio": 0.95,
+          "charge": {
+            "ace_charge": 3500,
+            "drift_charge_energy_coef": 600,
+            "drift_charge_energy_min": 1200,
+            "drift_charge_energy_max": 6000,
+            "drift_extra_charge": [
+              [
+                1,
+                0
+              ],
+              [
+                2,
+                1800
+              ]
+            ]
+          }
+        }
+      },
+      {
+        "id": 11009,
+        "suffix": "9",
+        "rich_text": {
+          "id": 11009,
+          "ace_time_charge_condition": "在城市赛道，使用氮气时获得额外大招充能并在落后第一名超过一定距离时获得速度提升效果",
+          "ace_time_effect": "纳米科技可以充能两次且能量达到70%即可使用",
+          "ace_time_effect_rich_desc": "纳米科技可以充能两次且能量达到70%即可使用",
+          "chip_unlock_tips": "芯片最高生效等级为#fe7ab710#ffffff级",
+          "icon_ace_time_charge_condition": "new_carport_icon_city",
+          "icon_ace_time_effect": "new_carport_icon_10009",
+          "icon_slipstream": "new_carport_icon_14",
+          "icon_unlock_nitro_2": "new_carport_icon_10009",
+          "icon_unlock_nitro_3": "new_carport_icon_nos_03",
+          "is_unlocked_ace_time_charge_condition": 1,
+          "is_unlocked_ace_time_effect": 1,
+          "is_unlocked_slipstream": 1,
+          "level_title": "大招强化 IV",
+          "passive_skill_effect": [
+            "纳米科技持续时间",
+            ""
+          ],
+          "passive_skill_effect_value": [
+            "6秒",
+            ""
+          ],
+          "passive_skill_rich_desc": "起步时，立即获得2000集气量和20%充能",
+          "slipstream": "跟随在车辆后方将获得尾流，产生持续的氮气充能效果",
+          "special_passive_skill_desc": "起步时，立即获得2000集气量和20%充能",
+          "special_passive_skill_icon": "new_carport_icon_24",
+          "special_passive_skill_title": "备用能源",
+          "title_ace_time_charge_condition": "赛道专精",
+          "title_ace_time_effect": "RECU限制解除",
+          "title_slipstream": "空气动力学套件",
+          "title_unlock_nitro_2": "大招强化套件 I",
+          "title_unlock_nitro_3": "竞速级氮气支架",
+          "unlock_nitro_3": "解锁1x6磅，2x3磅，3x2磅氮气",
+          "upgrade_level_icon": "new_carport_icon_10009"
+        },
+        "stats": {
+          "speed_limit": 182.8,
+          "speedup_ratio": 0.95,
+          "charge": {
+            "ace_charge": 3500,
+            "drift_charge_energy_coef": 600,
+            "drift_charge_energy_min": 1200,
+            "drift_charge_energy_max": 6000,
+            "drift_extra_charge": [
+              [
+                1,
+                0
+              ],
+              [
+                2,
+                1800
+              ]
+            ]
+          }
+        }
+      }
+    ],
+    "skills": {
+      "ultimate": {
+        "id": 951,
+        "name": "纳米科技",
+        "type": "SMALL",
+        "icon_static": "ui_skill17_04",
+        "icon_big": null,
+        "icon": null,
+        "init_ratio": null,
+        "icons": {
+          "normal": "ui_skill17_02",
+          "disable": "ui_skill17_01",
+          "alt": "ui_skill17_06",
+          "down": "ui_skill17_02",
+          "static": "ui_skill17_04",
+          "big": null
+        },
+        "extra": {
+          "cam_type": "SMALL",
+          "eff_id": 1,
+          "is_cost_energy": 2,
+          "rally_qte": 2
+        },
+        "value_texts": [
+          {
+            "key": "name",
+            "label": "技能名称",
+            "value": "纳米科技"
+          },
+          {
+            "key": "skill_type",
+            "label": "技能类型",
+            "value": "SMALL"
+          },
+          {
+            "key": "cam_type",
+            "label": "镜头类型",
+            "value": "SMALL"
+          },
+          {
+            "key": "eff_id",
+            "label": "特效编号",
+            "value": "1"
+          },
+          {
+            "key": "min_charge",
+            "label": "最低充能万分比",
+            "value": "10000"
+          },
+          {
+            "key": "rally_qte",
+            "label": "拉力赛触发qte",
+            "value": "2"
+          }
+        ],
+        "instructions": [
+          {
+            "id": 201301,
+            "accel_action": 2,
+            "accelerate_curve": [
+              [
+                0,
+                30
+              ],
+              [
+                165,
+                21.7
+              ],
+              [
+                166,
+                5
+              ],
+              [
+                200,
+                5
+              ]
+            ],
+            "attack_show_friend_enemy_filter": [
+              1,
+              2
+            ],
+            "attack_show_role_filter": [
+              1,
+              2,
+              3
+            ],
+            "buff_count": 0,
+            "cost_ratio": 2000,
+            "duration": 5,
+            "eff_id": 1,
+            "extra_children": [],
+            "extra_isolate": [],
+            "inst_group": 2,
+            "inst_name": "大招加速",
+            "inst_type": 2,
+            "is_hard_push": 1,
+            "rear_insts": [
+              10102501
+            ],
+            "ref_insts": [
+              201301
+            ],
+            "skill_eff_id": 2,
+            "sp_ex_speed_limit": 60,
+            "sp_max_ex_speed_limit": 60,
+            "sp_min_ex_speed_limit": 60,
+            "sp_n2o_ace_charge_ratio": 1,
+            "name": "大招加速",
+            "desc": null,
+            "type": 2,
+            "order": null,
+            "value_texts": [
+              {
+                "key": "duration",
+                "label": "持续时间",
+                "value": "5秒"
+              },
+              {
+                "key": "attack_show_friend_enemy_filter",
+                "label": "敌友筛选",
+                "value": "[1,2]"
+              },
+              {
+                "key": "attack_show_role_filter",
+                "label": "定位筛选",
+                "value": "[1,2,3]"
+              },
+              {
+                "key": "buff_count",
+                "label": "Buff 数量",
+                "value": "0"
+              },
+              {
+                "key": "rear_insts",
+                "label": "后续节点",
+                "value": "[10102501]"
+              },
+              {
+                "key": "extra_children",
+                "label": "子节点",
+                "value": "[]"
+              },
+              {
+                "key": "ref_insts",
+                "label": "引用节点",
+                "value": "[201301]"
+              }
+            ]
+          },
+          {
+            "id": 2600101,
+            "attack_show_friend_enemy_filter": [
+              1,
+              2
+            ],
+            "attack_show_role_filter": [
+              1,
+              2,
+              3
+            ],
+            "buff_count": 0,
+            "duration": 999,
+            "eff_id": 1,
+            "extra_children": [],
+            "extra_isolate": [],
+            "inst_group": 26,
+            "inst_name": "缩小",
+            "inst_type": 26,
+            "minify_scale": 0.6,
+            "rear_insts": [],
+            "ref_insts": [
+              2600101
+            ],
+            "skill_eff_id": 26,
+            "sp_n2o_ace_charge_ratio": 1,
+            "name": "缩小",
+            "desc": null,
+            "type": 26,
+            "order": null,
+            "value_texts": [
+              {
+                "key": "attack_show_friend_enemy_filter",
+                "label": "敌友筛选",
+                "value": "[1,2]"
+              },
+              {
+                "key": "attack_show_role_filter",
+                "label": "定位筛选",
+                "value": "[1,2,3]"
+              },
+              {
+                "key": "buff_count",
+                "label": "Buff 数量",
+                "value": "0"
+              },
+              {
+                "key": "rear_insts",
+                "label": "后续节点",
+                "value": "[]"
+              },
+              {
+                "key": "extra_children",
+                "label": "子节点",
+                "value": "[]"
+              },
+              {
+                "key": "ref_insts",
+                "label": "引用节点",
+                "value": "[2600101]"
+              }
+            ]
+          },
+          {
+            "id": 801801,
+            "attack_show_eff_dur": 2,
+            "attack_show_friend_enemy_filter": [
+              1,
+              2
+            ],
+            "attack_show_keep_dur": 2,
+            "attack_show_role_filter": [
+              1,
+              2,
+              3
+            ],
+            "buff_count": 0,
+            "cd_type": 1,
+            "duration": 0.1,
+            "eff_cd": 0.5,
+            "eff_id": 1,
+            "extra_children": [],
+            "extra_isolate": [],
+            "friend_eff": [
+              55901
+            ],
+            "inst_group": 801,
+            "inst_name": "纳米科技缩小",
+            "inst_type": 8,
+            "lock_camp": 1,
+            "lock_cnt": 5,
+            "lock_dist": [
+              -500,
+              500
+            ],
+            "lock_instr_types2": [
+              26
+            ],
+            "lock_side_dist": [
+              -500,
+              500
+            ],
+            "lock_vertical_dist": [
+              -6000,
+              6000
+            ],
+            "rear_insts": [
+              800901,
+              2804601
+            ],
+            "ref_insts": [
+              801801
+            ],
+            "skill_eff_id": 8,
+            "sp_n2o_ace_charge_ratio": 1,
+            "name": "纳米科技缩小",
+            "desc": null,
+            "type": 8,
+            "order": null,
+            "value_texts": [
+              {
+                "key": "attack_show_friend_enemy_filter",
+                "label": "敌友筛选",
+                "value": "[1,2]"
+              },
+              {
+                "key": "attack_show_role_filter",
+                "label": "定位筛选",
+                "value": "[1,2,3]"
+              },
+              {
+                "key": "buff_count",
+                "label": "Buff 数量",
+                "value": "0"
+              },
+              {
+                "key": "rear_insts",
+                "label": "后续节点",
+                "value": "[800901,2804601]"
+              },
+              {
+                "key": "extra_children",
+                "label": "子节点",
+                "value": "[]"
+              },
+              {
+                "key": "ref_insts",
+                "label": "引用节点",
+                "value": "[801801]"
+              }
+            ]
+          }
+        ]
+      },
+      "sp": null,
+      "passive": [
+        {
+          "id": 51801,
+          "name": "标记辅助车",
+          "type": null,
+          "icon_static": null,
+          "icon_big": null,
+          "icon": null,
+          "init_ratio": null,
+          "icons": {
+            "normal": null,
+            "disable": null,
+            "alt": null,
+            "down": null,
+            "static": null,
+            "big": null
+          },
+          "extra": {
+            "cam_type": null,
+            "eff_id": null,
+            "is_cost_energy": null,
+            "rally_qte": null
+          },
+          "value_texts": [
+            {
+              "key": "name",
+              "label": "技能名称",
+              "value": "标记辅助车"
+            }
+          ],
+          "instructions": [
+            {
+              "id": 10300501,
+              "attack_show_friend_enemy_filter": [
+                1,
+                2
+              ],
+              "attack_show_role_filter": [
+                1,
+                2,
+                3
+              ],
+              "buff_count": 0,
+              "duration": null,
+              "extra_children": [],
+              "extra_isolate": [],
+              "inst_group": 103,
+              "inst_name": "用于标记谁是辅助车",
+              "inst_type": 103,
+              "rear_insts": [],
+              "ref_insts": [
+                10300501
+              ],
+              "sp_n2o_ace_charge_ratio": 1,
+              "name": "用于标记谁是辅助车",
+              "desc": null,
+              "type": 103,
+              "order": null,
+              "value_texts": [
+                {
+                  "key": "attack_show_friend_enemy_filter",
+                  "label": "敌友筛选",
+                  "value": "[1,2]"
+                },
+                {
+                  "key": "attack_show_role_filter",
+                  "label": "定位筛选",
+                  "value": "[1,2,3]"
+                },
+                {
+                  "key": "buff_count",
+                  "label": "Buff 数量",
+                  "value": "0"
+                },
+                {
+                  "key": "rear_insts",
+                  "label": "后续节点",
+                  "value": "[]"
+                },
+                {
+                  "key": "extra_children",
+                  "label": "子节点",
+                  "value": "[]"
+                },
+                {
+                  "key": "ref_insts",
+                  "label": "引用节点",
+                  "value": "[10300501]"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "id": 50801,
+          "name": "封禁尾流",
+          "type": null,
+          "icon_static": null,
+          "icon_big": null,
+          "icon": null,
+          "init_ratio": null,
+          "icons": {
+            "normal": null,
+            "disable": null,
+            "alt": null,
+            "down": null,
+            "static": null,
+            "big": null
+          },
+          "extra": {
+            "cam_type": null,
+            "eff_id": null,
+            "is_cost_energy": null,
+            "rally_qte": null
+          },
+          "value_texts": [
+            {
+              "key": "name",
+              "label": "技能名称",
+              "value": "封禁尾流"
+            }
+          ],
+          "instructions": [
+            {
+              "id": 2100301,
+              "attack_show_friend_enemy_filter": [
+                1,
+                2
+              ],
+              "attack_show_role_filter": [
+                1,
+                2,
+                3
+              ],
+              "buff_count": 0,
+              "duration": 999,
+              "eff_id": 1,
+              "extra_children": [],
+              "extra_isolate": [],
+              "inst_group": 21001,
+              "inst_name": "封禁尾流",
+              "inst_type": 21,
+              "rear_insts": [],
+              "ref_insts": [
+                2100301
+              ],
+              "skill_eff_id": 21,
+              "slipstream_state": 1,
+              "sp_n2o_ace_charge_ratio": 1,
+              "name": "封禁尾流",
+              "desc": null,
+              "type": 21,
+              "order": null,
+              "value_texts": [
+                {
+                  "key": "attack_show_friend_enemy_filter",
+                  "label": "敌友筛选",
+                  "value": "[1,2]"
+                },
+                {
+                  "key": "attack_show_role_filter",
+                  "label": "定位筛选",
+                  "value": "[1,2,3]"
+                },
+                {
+                  "key": "buff_count",
+                  "label": "Buff 数量",
+                  "value": "0"
+                },
+                {
+                  "key": "rear_insts",
+                  "label": "后续节点",
+                  "value": "[]"
+                },
+                {
+                  "key": "extra_children",
+                  "label": "子节点",
+                  "value": "[]"
+                },
+                {
+                  "key": "ref_insts",
+                  "label": "引用节点",
+                  "value": "[2100301]"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "id": 53501,
+          "name": "备用能源",
+          "type": null,
+          "icon_static": null,
+          "icon_big": null,
+          "icon": null,
+          "init_ratio": null,
+          "icons": {
+            "normal": null,
+            "disable": null,
+            "alt": null,
+            "down": null,
+            "static": null,
+            "big": null
+          },
+          "extra": {
+            "cam_type": null,
+            "eff_id": null,
+            "is_cost_energy": null,
+            "rally_qte": null
+          },
+          "value_texts": [
+            {
+              "key": "name",
+              "label": "技能名称",
+              "value": "备用能源"
+            }
+          ],
+          "instructions": [
+            {
+              "id": 902201,
+              "desc": "大招能量\t+{single_add_energy_percent:.0%}",
+              "attack_show_friend_enemy_filter": [
+                1,
+                2
+              ],
+              "attack_show_role_filter": [
+                1,
+                2,
+                3
+              ],
+              "buff_count": 0,
+              "buff_icon": "new_carport_icon_103_1",
+              "duration": 0.1,
+              "extra_children": [],
+              "extra_isolate": [],
+              "inst_group": 9,
+              "inst_name": "大招充能",
+              "inst_type": 9,
+              "is_positive": 1,
+              "rear_insts": [
+                902202
+              ],
+              "ref_insts": [
+                902201
+              ],
+              "sp_change_type": 2,
+              "sp_n2o_ace_charge_ratio": 1,
+              "sp_single_change_value": 2000,
+              "name": "大招充能",
+              "type": 9,
+              "order": null,
+              "value_texts": [
+                {
+                  "key": "attack_show_friend_enemy_filter",
+                  "label": "敌友筛选",
+                  "value": "[1,2]"
+                },
+                {
+                  "key": "attack_show_role_filter",
+                  "label": "定位筛选",
+                  "value": "[1,2,3]"
+                },
+                {
+                  "key": "buff_count",
+                  "label": "Buff 数量",
+                  "value": "0"
+                },
+                {
+                  "key": "rear_insts",
+                  "label": "后续节点",
+                  "value": "[902202]"
+                },
+                {
+                  "key": "extra_children",
+                  "label": "子节点",
+                  "value": "[]"
+                },
+                {
+                  "key": "ref_insts",
+                  "label": "引用节点",
+                  "value": "[902201]"
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    "skillPanelGroups": {
+      "ultimate": [
+        {
+          "id": "362",
+          "name_rich": {
+            "raw": "缩小范围",
+            "html": "缩小范围"
+          },
+          "value_rich": {
+            "raw": "500米",
+            "html": "500米"
+          },
+          "value_text": "500米",
+          "instruction_ids": [],
+          "values": []
+        },
+        {
+          "id": "363",
+          "name_rich": {
+            "raw": "缩小时长",
+            "html": "缩小时长"
+          },
+          "value_rich": {
+            "raw": "5秒",
+            "html": "5秒"
+          },
+          "value_text": "5秒",
+          "instruction_ids": [],
+          "values": []
+        },
+        {
+          "id": "364",
+          "name_rich": {
+            "raw": "充能范围",
+            "html": "充能范围"
+          },
+          "value_rich": {
+            "raw": "50米",
+            "html": "50米"
+          },
+          "value_text": "50米",
+          "instruction_ids": [],
+          "values": []
+        },
+        {
+          "id": "365",
+          "name_rich": {
+            "raw": "友方充能",
+            "html": "友方充能"
+          },
+          "value_rich": {
+            "raw": "15%每秒",
+            "html": "15%每秒"
+          },
+          "value_text": "15%每秒",
+          "instruction_ids": [],
+          "values": []
+        },
+        {
+          "id": "366",
+          "name_rich": {
+            "raw": "极速提升",
+            "html": "极速提升"
+          },
+          "value_rich": {
+            "raw": "60km/h",
+            "html": "60km/h"
+          },
+          "value_text": "60km/h",
+          "instruction_ids": [],
+          "values": []
+        },
+        {
+          "id": "367",
+          "name_rich": {
+            "raw": "持续时间",
+            "html": "持续时间"
+          },
+          "value_rich": {
+            "raw": "5秒",
+            "html": "5秒"
+          },
+          "value_text": "5秒",
+          "instruction_ids": [
+            201301,
+            201310
+          ],
+          "values": []
+        },
+        {
+          "id": "20662",
+          "name_rich": {
+            "raw": "加速动力",
+            "html": "加速动力"
+          },
+          "value_rich": {
+            "raw": "低",
+            "html": "低"
+          },
+          "value_text": "低",
+          "instruction_ids": [],
+          "values": []
+        }
+      ],
+      "sp": [],
+      "passive": [],
+      "other": []
+    },
+    "richText": {
+      "id": 10009,
+      "ace_time_charge_condition": "在城市赛道，使用氮气时获得额外大招充能并在落后第一名超过一定距离时获得速度提升效果",
+      "ace_time_effect": "纳米科技可以充能两次且能量达到70%即可使用",
+      "ace_time_effect_rich_desc": "纳米科技可以充能两次且能量达到70%即可使用",
+      "chip_unlock_tips": "芯片最高生效等级为#fe7ab71#ffffff级",
+      "icon_ace_time_charge_condition": "new_carport_icon_city",
+      "icon_ace_time_effect": "new_carport_icon_10009",
+      "icon_slipstream": "new_carport_icon_14",
+      "icon_unlock_nitro_2": "new_carport_icon_10009",
+      "icon_unlock_nitro_3": "new_carport_icon_nos_03",
+      "level_title": "原车型",
+      "passive_skill_effect": [
+        "纳米科技持续时间",
+        ""
+      ],
+      "passive_skill_effect_value": [
+        "5秒",
+        ""
+      ],
+      "passive_skill_rich_desc": "起步时，立即获得2000集气量和20%充能",
+      "slipstream": "跟随在车辆后方将获得尾流，产生持续的氮气充能效果",
+      "special_passive_skill_desc": {
+        "raw": "起步时，立即获得2000集气量和20%充能",
+        "html": "起步时，立即获得2000集气量和20%充能"
+      },
+      "special_passive_skill_icon": "new_carport_icon_24",
+      "special_passive_skill_title": "备用能源",
+      "title_ace_time_charge_condition": "赛道专精",
+      "title_ace_time_effect": "RECU限制解除",
+      "title_slipstream": "空气动力学套件",
+      "title_unlock_nitro_2": "大招强化套件 I",
+      "title_unlock_nitro_3": "竞速级氮气支架",
+      "unlock_nitro_3": "解锁1x6磅，2x3磅，3x2磅氮气",
+      "upgrade_level_icon": "new_carport_icon_24",
+      "feature_desc": {
+        "raw": "500米范围内全队缩小车型，持续5秒。自身保持加速，并持续为附近50米内的全体非辅助位队友每秒充能15%，持续#desc[367]。车型缩小时，质量并不会减少。",
+        "html": "500米范围内全队缩小车型，持续5秒。自身保持加速，并持续为附近50米内的全体非辅助位队友每秒充能15%，持续<span class=\"rt-desc\">持续时间 5秒</span>。车型缩小时，质量并不会减少。"
+      },
+      "sp_skill_desc": null,
+      "passive_skill_desc": null,
+      "story_title": "厂商：MINI",
+      "story": {
+        "raw": "诞生于1959年的MINI，设计别出一格，而1961年赛车工程师John Cooper将赛车血统注入MINI，使这个性十足的小车成为赛车场上的传奇。MINI JCW在保留MINI经典的风格设计的同时，拥有更多运动元素，里里外外都充满战斗气息。2.0升涡轮增压引擎能够提供不俗的动力，让小小的车身爆发出大大的能量。",
+        "html": "诞生于1959年的MINI，设计别出一格，而1961年赛车工程师John Cooper将赛车血统注入MINI，使这个性十足的小车成为赛车场上的传奇。MINI JCW在保留MINI经典的风格设计的同时，拥有更多运动元素，里里外外都充满战斗气息。2.0升涡轮增压引擎能够提供不俗的动力，让小小的车身爆发出大大的能量。"
+      }
+    },
+    "report": {
+      "title": "王牌速度节赛车检验报告",
+      "sections": [
+        {
+          "title": "基础数据",
+          "items": [
+            {
+              "label": "检测车辆",
+              "value": "MINI JCW"
+            },
+            {
+              "label": "注册日期",
+              "value": "{}年{}月{}日"
+            },
+            {
+              "label": "车辆类型",
+              "value": "真实阵营"
+            },
+            {
+              "label": "厂商",
+              "value": "MINI"
+            },
+            {
+              "label": "定位",
+              "value": "辅助位"
+            },
+            {
+              "label": "赛道专精",
+              "value": "城市"
+            },
+            {
+              "label": "能源类型",
+              "value": "汽油"
+            },
+            {
+              "label": "驱动方式",
+              "value": "前置前驱"
+            },
+            {
+              "label": "车重",
+              "value": "1,330kg"
+            }
+          ]
+        },
+        {
+          "title": "芯片模块",
+          "items": [
+            {
+              "label": "芯片写入权限",
+              "value": "已获取"
+            },
+            {
+              "label": "扩展芯片类型",
+              "value": "○○△△◇V"
+            },
+            {
+              "label": "等级合规检查",
+              "value": "芯片等级未高于RECU等级"
+            }
+          ]
+        },
+        {
+          "title": "外观检验",
+          "items": [
+            {
+              "label": "检验结果",
+              "value": "合格"
+            }
+          ]
+        },
+        {
+          "title": "大招驱动模块",
+          "items": [
+            {
+              "label": "能量控制单元",
+              "value": "五代RECU，工作正常"
+            },
+            {
+              "label": "瑞卡因子稳定器",
+              "value": "工作正常"
+            },
+            {
+              "label": "SC",
+              "value": "超级电容加速系统已安装"
+            },
+            {
+              "label": "空气动力套件（2级解锁）",
+              "value": "未选装"
+            },
+            {
+              "label": "赛道专精（3级解锁）",
+              "value": "未选装"
+            },
+            {
+              "label": "RECU限制解除（8级解锁）",
+              "value": "未选装"
+            }
+          ]
+        },
+        {
+          "title": "整车判定",
+          "items": [
+            {
+              "label": "检验结果",
+              "value": "合格，可参加速度节赛事"
+            }
+          ]
+        }
+      ]
+    },
+    "story": {
+      "content": "诞生于1959年的MINI，设计别出一格，而1961年赛车工程师John Cooper将赛车血统注入MINI，使这个性十足的小车成为赛车场上的传奇。MINI JCW在保留MINI经典的风格设计的同时，拥有更多运动元素，里里外外都充满战斗气息。2.0升涡轮增压引擎能够提供不俗的动力，让小小的车身爆发出大大的能量。",
+      "id": 10009,
+      "story_content": "诞生于1959年的MINI，设计别出一格，而1961年赛车工程师John Cooper将赛车血统注入MINI，使这个性十足的小车成为赛车场上的传奇。MINI JCW在保留MINI经典的风格设计的同时，拥有更多运动元素，里里外外都充满战斗气息。2.0升涡轮增压引擎能够提供不俗的动力，让小小的车身爆发出大大的能量。",
+      "story_title": "厂商：MINI",
+      "vehicle_name": "MINI JCW"
+    },
+    "obtain": {
+      "tag_img": null,
+      "obtain_type_ids": [
+        3,
+        5,
+        60
+      ],
+      "obtain_types": [
+        {
+          "id": 3,
+          "label": "训练计划",
+          "desc": "提升车辆熟练度获取",
+          "icon": "commonnew_proficiencyconversion"
+        },
+        {
+          "id": 5,
+          "label": "补给箱",
+          "desc": "从速度节补给箱中获取",
+          "icon": "commonnew_supplyconversion"
+        },
+        {
+          "id": 60,
+          "label": "赛车学院",
+          "desc": "参与赛车学院获取",
+          "icon": "commonnew_qualifyingl"
+        }
+      ]
+    },
+    "restraints": {
+      "id": 10009,
+      "match": [
+        12019,
+        10065,
+        10083,
+        10026,
+        12048,
+        12053,
+        12068,
+        12091
+      ],
+      "be_restraint": [
+        10070,
+        10060,
+        10039,
+        10012,
+        10025
+      ]
+    },
+    "resources": {
+      "icons": {
+        "ace_time_effect": "new_carport_icon_10009",
+        "icon_ace_time_effect": "new_carport_icon_10009",
+        "ace_time_charge_condition": "new_carport_icon_city",
+        "slipstream": "new_carport_icon_14",
+        "unlock_nitro_2": "new_carport_icon_10009",
+        "unlock_nitro_3": "new_carport_icon_nos_03",
+        "upgrade_level_icon": "new_carport_icon_24",
+        "special_passive_skill_icon": "new_carport_icon_24"
+      }
+    },
+    "skins": {
+      "sets": {
+        "local": [
+          {
+            "source": "local",
+            "index": 1
+          }
+        ]
+      },
+      "meta": {
+        "1": {
+          "id": 50014,
+          "name": "涂装 赛道线条",
+          "desc": "MINI JCW，为赛道而生的小钢炮\n适用车型：#1dd8d0MINI JCW",
+          "icon_s": "tz_10009_1_s",
+          "icon_m": "tz_10009_1_m",
+          "icon_b": "tz_10009_1_b"
+        }
+      }
+    },
+    "media": {
+      "cover": "/rk-assets/10009_m.png",
+      "coverFallback": "/rk-assets/10009_m.png",
+      "shareImage": null,
+      "shareImageAdvance": null,
+      "skillVideo": {
+        "ultimate": {
+          "url": "https://vod.cc.163.com/file/60d2da5ab8a81f8fa07a8c43?source=27&protocol=https",
+          "thumbnail": "table_video_img_10009"
+        },
+        "sp": null
+      }
+    }
+  }
+}

@@ -1,0 +1,1500 @@
+{
+  "schemaVersion": 2,
+  "versionId": "26-07-15_29734784_android",
+  "generatedAt": "2026-07-16T09:22:34.000Z",
+  "item": {
+    "id": 10094,
+    "name": "洛基",
+    "manufacturer": "混沌",
+    "quality": "传说",
+    "class": 4,
+    "group": 1,
+    "position": "干扰位",
+    "positionLabel": "干扰位",
+    "racingRole": 3,
+    "racingRoleName": "干扰位",
+    "specialization": "山路",
+    "seasonCode": "S12",
+    "publication": {
+      "state": "released",
+      "releaseTimestamp": 1669305600,
+      "releaseText": "2022-11-25 00:00:00",
+      "releaseMacro": "S12_OPEN"
+    },
+    "summary": "使敌方车辆的氮气变为减速效果",
+    "description": "使敌方车辆的氮气变为减速效果",
+    "tags": [
+      {
+        "id": 64,
+        "text": "减速",
+        "desc": "降低敌方的极速",
+        "color": 3
+      },
+      {
+        "id": 66,
+        "text": "锁定干扰",
+        "desc": "·自动锁定范围内的目标\n·无法命中具有*隐身*、*无法选中*、*闪避*的敌方",
+        "color": 4
+      },
+      {
+        "id": 88,
+        "text": "克制氮气",
+        "desc": "使敌方的氮气变为减速效果",
+        "color": 2
+      }
+    ],
+    "stats": {
+      "speed_limit": 197,
+      "speedup_ratio": 1.02,
+      "charge": {
+        "ace_charge": 3100,
+        "drift_charge_energy_coef": 600,
+        "drift_charge_energy_min": 1200,
+        "drift_charge_energy_max": 6000,
+        "drift_extra_charge": [
+          [
+            1,
+            0
+          ],
+          [
+            2,
+            1800
+          ]
+        ]
+      }
+    },
+    "maxDurability": 120,
+    "levels": [
+      {
+        "id": 10094,
+        "suffix": "0",
+        "rich_text": {
+          "id": 10094,
+          "ace_time_charge_condition": "在山路赛道，使用氮气时获得额外大招充能并在落后第一名超过一定距离时获得速度提升效果",
+          "ace_time_effect": "骇入可以充能两次并在开局时获得15%大招能量",
+          "ace_time_effect_rich_desc": "骇入可以充能两次并在开局时获得15%大招能量",
+          "chip_unlock_tips": "芯片最高生效等级为#fe7ab71#ffffff级",
+          "icon_ace_time_charge_condition": "new_carport_icon_mountainroad",
+          "icon_ace_time_effect": "new_carport_icon_10182",
+          "icon_slipstream": "new_carport_icon_14",
+          "icon_unlock_nitro_2": "new_carport_icon_10182",
+          "icon_unlock_nitro_3": "new_carport_icon_nos_03",
+          "level_title": "原车型",
+          "passive_skill_effect": [
+            "骇入加速",
+            ""
+          ],
+          "passive_skill_effect_value": [
+            "48公里/小时",
+            ""
+          ],
+          "passive_skill_rich_desc": "开局时对随机一名敌方进行恶作剧，使其首次使用氮气获得的加速效果变为减速效果",
+          "slipstream": "跟随在车辆后方将获得尾流，产生持续的氮气充能效果",
+          "special_passive_skill_desc": "开局时对随机两名敌方进行恶作剧，使其前两次使用氮气获得的加速效果变为减速效果",
+          "special_passive_skill_icon": "new_carport_icon_10183",
+          "special_passive_skill_title": "恶作剧",
+          "title_ace_time_charge_condition": "赛道专精",
+          "title_ace_time_effect": "RECU限制解除",
+          "title_slipstream": "空气动力学套件",
+          "title_unlock_nitro_2": "大招强化套件 I",
+          "title_unlock_nitro_3": "竞速级氮气支架",
+          "unlock_nitro_3": "解锁1x6磅，2x3磅，3x2磅氮气",
+          "upgrade_level_icon": "new_carport_icon_10183"
+        },
+        "stats": {
+          "speed_limit": 197,
+          "speedup_ratio": 1.02,
+          "charge": {
+            "ace_charge": 3100,
+            "drift_charge_energy_coef": 600,
+            "drift_charge_energy_min": 1200,
+            "drift_charge_energy_max": 6000,
+            "drift_extra_charge": [
+              [
+                1,
+                0
+              ],
+              [
+                2,
+                1800
+              ]
+            ]
+          }
+        }
+      },
+      {
+        "id": 10494,
+        "suffix": "1",
+        "rich_text": {
+          "id": 10494,
+          "ace_time_charge_condition": "在山路赛道，使用氮气时获得额外大招充能并在落后第一名超过一定距离时获得速度提升效果",
+          "ace_time_effect": "骇入可以充能两次并在开局时获得15%大招能量",
+          "ace_time_effect_rich_desc": "骇入可以充能两次并在开局时获得15%大招能量",
+          "chip_unlock_tips": "芯片最高生效等级为#fe7ab74#ffffff级",
+          "icon_ace_time_charge_condition": "new_carport_icon_mountainroad",
+          "icon_ace_time_effect": "new_carport_icon_10182",
+          "icon_slipstream": "new_carport_icon_14",
+          "icon_unlock_nitro_2": "new_carport_icon_10182",
+          "icon_unlock_nitro_3": "new_carport_icon_nos_03",
+          "is_unlocked_ace_time_charge_condition": 1,
+          "is_unlocked_slipstream": 1,
+          "level_title": "竞速级氮气支架 I",
+          "passive_skill_effect": [
+            "骇入加速",
+            ""
+          ],
+          "passive_skill_effect_value": [
+            "48公里/小时",
+            ""
+          ],
+          "passive_skill_rich_desc": "开局时对随机一名敌方进行恶作剧，使其首次使用氮气获得的加速效果变为减速效果",
+          "slipstream": "跟随在车辆后方将获得尾流，产生持续的氮气充能效果",
+          "special_passive_skill_desc": "开局时对随机两名敌方进行恶作剧，使其前两次使用氮气获得的加速效果变为减速效果",
+          "special_passive_skill_icon": "new_carport_icon_10183",
+          "special_passive_skill_title": "恶作剧",
+          "title_ace_time_charge_condition": "赛道专精",
+          "title_ace_time_effect": "RECU限制解除",
+          "title_slipstream": "空气动力学套件",
+          "title_unlock_nitro_2": "大招强化套件 I",
+          "title_unlock_nitro_3": "竞速级氮气支架",
+          "unlock_nitro_3": "解锁1x6磅，2x3磅，3x2磅氮气",
+          "upgrade_level_icon": "new_carport_icon_nos_03"
+        },
+        "stats": {
+          "speed_limit": 197,
+          "speedup_ratio": 1.02,
+          "charge": {
+            "ace_charge": 3100,
+            "drift_charge_energy_coef": 600,
+            "drift_charge_energy_min": 1200,
+            "drift_charge_energy_max": 6000,
+            "drift_extra_charge": [
+              [
+                1,
+                0
+              ],
+              [
+                2,
+                1800
+              ]
+            ]
+          }
+        }
+      },
+      {
+        "id": 10294,
+        "suffix": "2",
+        "rich_text": {
+          "id": 10294,
+          "ace_time_charge_condition": "在山路赛道，使用氮气时获得额外大招充能并在落后第一名超过一定距离时获得速度提升效果",
+          "ace_time_effect": "骇入可以充能两次并在开局时获得15%大招能量",
+          "ace_time_effect_rich_desc": "骇入可以充能两次并在开局时获得15%大招能量",
+          "chip_unlock_tips": "芯片最高生效等级为#fe7ab72#ffffff级",
+          "icon_ace_time_charge_condition": "new_carport_icon_mountainroad",
+          "icon_ace_time_effect": "new_carport_icon_10182",
+          "icon_slipstream": "new_carport_icon_14",
+          "icon_unlock_nitro_2": "new_carport_icon_10182",
+          "icon_unlock_nitro_3": "new_carport_icon_nos_03",
+          "is_unlocked_slipstream": 1,
+          "level_title": "空气动力学套件",
+          "passive_skill_effect": [
+            "骇入加速",
+            ""
+          ],
+          "passive_skill_effect_value": [
+            "48公里/小时",
+            ""
+          ],
+          "passive_skill_rich_desc": "开局时对随机一名敌方进行恶作剧，使其首次使用氮气获得的加速效果变为减速效果",
+          "slipstream": "跟随在车辆后方将获得尾流，产生持续的氮气充能效果",
+          "special_passive_skill_desc": "开局时对随机两名敌方进行恶作剧，使其前两次使用氮气获得的加速效果变为减速效果",
+          "special_passive_skill_icon": "new_carport_icon_10183",
+          "special_passive_skill_title": "恶作剧",
+          "title_ace_time_charge_condition": "赛道专精",
+          "title_ace_time_effect": "RECU限制解除",
+          "title_slipstream": "空气动力学套件",
+          "title_unlock_nitro_2": "大招强化套件 I",
+          "title_unlock_nitro_3": "竞速级氮气支架",
+          "unlock_nitro_3": "解锁1x6磅，2x3磅，3x2磅氮气",
+          "upgrade_level_icon": "new_carport_icon_14"
+        },
+        "stats": {
+          "speed_limit": 197,
+          "speedup_ratio": 1.02,
+          "charge": {
+            "ace_charge": 3100,
+            "drift_charge_energy_coef": 600,
+            "drift_charge_energy_min": 1200,
+            "drift_charge_energy_max": 6000,
+            "drift_extra_charge": [
+              [
+                1,
+                0
+              ],
+              [
+                2,
+                1800
+              ]
+            ]
+          }
+        }
+      },
+      {
+        "id": 10394,
+        "suffix": "3",
+        "rich_text": {
+          "id": 10394,
+          "ace_time_charge_condition": "在山路赛道，使用氮气时获得额外大招充能并在落后第一名超过一定距离时获得速度提升效果",
+          "ace_time_effect": "骇入可以充能两次并在开局时获得15%大招能量",
+          "ace_time_effect_rich_desc": "骇入可以充能两次并在开局时获得15%大招能量",
+          "chip_unlock_tips": "芯片最高生效等级为#fe7ab73#ffffff级",
+          "icon_ace_time_charge_condition": "new_carport_icon_mountainroad",
+          "icon_ace_time_effect": "new_carport_icon_10182",
+          "icon_slipstream": "new_carport_icon_14",
+          "icon_unlock_nitro_2": "new_carport_icon_10182",
+          "icon_unlock_nitro_3": "new_carport_icon_nos_03",
+          "is_unlocked_ace_time_charge_condition": 1,
+          "is_unlocked_slipstream": 1,
+          "level_title": "赛道专精",
+          "passive_skill_effect": [
+            "骇入加速",
+            ""
+          ],
+          "passive_skill_effect_value": [
+            "48公里/小时",
+            ""
+          ],
+          "passive_skill_rich_desc": "开局时对随机一名敌方进行恶作剧，使其首次使用氮气获得的加速效果变为减速效果",
+          "slipstream": "跟随在车辆后方将获得尾流，产生持续的氮气充能效果",
+          "special_passive_skill_desc": "开局时对随机两名敌方进行恶作剧，使其前两次使用氮气获得的加速效果变为减速效果",
+          "special_passive_skill_icon": "new_carport_icon_10183",
+          "special_passive_skill_title": "恶作剧",
+          "title_ace_time_charge_condition": "赛道专精",
+          "title_ace_time_effect": "RECU限制解除",
+          "title_slipstream": "空气动力学套件",
+          "title_unlock_nitro_2": "大招强化套件 I",
+          "title_unlock_nitro_3": "竞速级氮气支架",
+          "unlock_nitro_3": "解锁1x6磅，2x3磅，3x2磅氮气",
+          "upgrade_level_icon": "new_carport_icon_mountainroad"
+        },
+        "stats": {
+          "speed_limit": 197,
+          "speedup_ratio": 1.02,
+          "charge": {
+            "ace_charge": 3100,
+            "drift_charge_energy_coef": 600,
+            "drift_charge_energy_min": 1200,
+            "drift_charge_energy_max": 6000,
+            "drift_extra_charge": [
+              [
+                1,
+                0
+              ],
+              [
+                2,
+                1800
+              ]
+            ]
+          }
+        }
+      },
+      {
+        "id": 10594,
+        "suffix": "4",
+        "rich_text": {
+          "id": 10594,
+          "ace_time_charge_condition": "在山路赛道，使用氮气时获得额外大招充能并在落后第一名超过一定距离时获得速度提升效果",
+          "ace_time_effect": "骇入可以充能两次并在开局时获得15%大招能量",
+          "ace_time_effect_rich_desc": "骇入可以充能两次并在开局时获得15%大招能量",
+          "chip_unlock_tips": "芯片最高生效等级为#fe7ab75#ffffff级",
+          "icon_ace_time_charge_condition": "new_carport_icon_mountainroad",
+          "icon_ace_time_effect": "new_carport_icon_10182",
+          "icon_slipstream": "new_carport_icon_14",
+          "icon_unlock_nitro_2": "new_carport_icon_10182",
+          "icon_unlock_nitro_3": "new_carport_icon_nos_03",
+          "is_unlocked_ace_time_charge_condition": 1,
+          "is_unlocked_slipstream": 1,
+          "level_title": "大招强化 I",
+          "passive_skill_effect": [
+            "骇入加速",
+            ""
+          ],
+          "passive_skill_effect_value": [
+            "54公里/小时",
+            ""
+          ],
+          "passive_skill_rich_desc": "开局时对随机一名敌方进行恶作剧，使其首次使用氮气获得的加速效果变为减速效果",
+          "slipstream": "跟随在车辆后方将获得尾流，产生持续的氮气充能效果",
+          "special_passive_skill_desc": "开局时对随机两名敌方进行恶作剧，使其前两次使用氮气获得的加速效果变为减速效果",
+          "special_passive_skill_icon": "new_carport_icon_10183",
+          "special_passive_skill_title": "恶作剧",
+          "title_ace_time_charge_condition": "赛道专精",
+          "title_ace_time_effect": "RECU限制解除",
+          "title_slipstream": "空气动力学套件",
+          "title_unlock_nitro_2": "大招强化套件 I",
+          "title_unlock_nitro_3": "竞速级氮气支架",
+          "unlock_nitro_3": "解锁1x6磅，2x3磅，3x2磅氮气",
+          "upgrade_level_icon": "new_carport_icon_10182"
+        },
+        "stats": {
+          "speed_limit": 197,
+          "speedup_ratio": 1.02,
+          "charge": {
+            "ace_charge": 3100,
+            "drift_charge_energy_coef": 600,
+            "drift_charge_energy_min": 1200,
+            "drift_charge_energy_max": 6000,
+            "drift_extra_charge": [
+              [
+                1,
+                0
+              ],
+              [
+                2,
+                1800
+              ]
+            ]
+          }
+        }
+      },
+      {
+        "id": 10694,
+        "suffix": "5",
+        "rich_text": {
+          "id": 10694,
+          "ace_time_charge_condition": "在山路赛道，使用氮气时获得额外大招充能并在落后第一名超过一定距离时获得速度提升效果",
+          "ace_time_effect": "骇入可以充能两次并在开局时获得15%大招能量",
+          "ace_time_effect_rich_desc": "骇入可以充能两次并在开局时获得15%大招能量",
+          "chip_unlock_tips": "芯片最高生效等级为#fe7ab76#ffffff级",
+          "icon_ace_time_charge_condition": "new_carport_icon_mountainroad",
+          "icon_ace_time_effect": "new_carport_icon_10182",
+          "icon_slipstream": "new_carport_icon_14",
+          "icon_unlock_nitro_2": "new_carport_icon_10182",
+          "icon_unlock_nitro_3": "new_carport_icon_nos_03",
+          "is_unlocked_ace_time_charge_condition": 1,
+          "is_unlocked_slipstream": 1,
+          "level_title": "竞速级氮气支架 II",
+          "passive_skill_effect": [
+            "骇入加速",
+            ""
+          ],
+          "passive_skill_effect_value": [
+            "54公里/小时",
+            ""
+          ],
+          "passive_skill_rich_desc": "开局时对随机一名敌方进行恶作剧，使其首次使用氮气获得的加速效果变为减速效果",
+          "slipstream": "跟随在车辆后方将获得尾流，产生持续的氮气充能效果",
+          "special_passive_skill_desc": "开局时对随机两名敌方进行恶作剧，使其前两次使用氮气获得的加速效果变为减速效果",
+          "special_passive_skill_icon": "new_carport_icon_10183",
+          "special_passive_skill_title": "恶作剧",
+          "title_ace_time_charge_condition": "赛道专精",
+          "title_ace_time_effect": "RECU限制解除",
+          "title_slipstream": "空气动力学套件",
+          "title_unlock_nitro_2": "大招强化套件 I",
+          "title_unlock_nitro_3": "竞速级氮气支架",
+          "unlock_nitro_3": "解锁1x6磅，2x3磅，3x2磅氮气",
+          "upgrade_level_icon": "new_carport_icon_nos_03"
+        },
+        "stats": {
+          "speed_limit": 197,
+          "speedup_ratio": 1.02,
+          "charge": {
+            "ace_charge": 3100,
+            "drift_charge_energy_coef": 600,
+            "drift_charge_energy_min": 1200,
+            "drift_charge_energy_max": 6000,
+            "drift_extra_charge": [
+              [
+                1,
+                0
+              ],
+              [
+                2,
+                1800
+              ]
+            ]
+          }
+        }
+      },
+      {
+        "id": 10794,
+        "suffix": "6",
+        "rich_text": {
+          "id": 10794,
+          "ace_time_charge_condition": "在山路赛道，使用氮气时获得额外大招充能并在落后第一名超过一定距离时获得速度提升效果",
+          "ace_time_effect": "骇入可以充能两次并在开局时获得15%大招能量",
+          "ace_time_effect_rich_desc": "骇入可以充能两次并在开局时获得15%大招能量",
+          "chip_unlock_tips": "芯片最高生效等级为#fe7ab77#ffffff级",
+          "icon_ace_time_charge_condition": "new_carport_icon_mountainroad",
+          "icon_ace_time_effect": "new_carport_icon_10182",
+          "icon_slipstream": "new_carport_icon_14",
+          "icon_unlock_nitro_2": "new_carport_icon_10182",
+          "icon_unlock_nitro_3": "new_carport_icon_nos_03",
+          "is_unlocked_ace_time_charge_condition": 1,
+          "is_unlocked_slipstream": 1,
+          "level_title": "大招强化 II",
+          "passive_skill_effect": [
+            "骇入加速",
+            ""
+          ],
+          "passive_skill_effect_value": [
+            "60公里/小时",
+            ""
+          ],
+          "passive_skill_rich_desc": "开局时对随机一名敌方进行恶作剧，使其首次使用氮气获得的加速效果变为减速效果",
+          "slipstream": "跟随在车辆后方将获得尾流，产生持续的氮气充能效果",
+          "special_passive_skill_desc": "开局时对随机两名敌方进行恶作剧，使其前两次使用氮气获得的加速效果变为减速效果",
+          "special_passive_skill_icon": "new_carport_icon_10183",
+          "special_passive_skill_title": "恶作剧",
+          "title_ace_time_charge_condition": "赛道专精",
+          "title_ace_time_effect": "RECU限制解除",
+          "title_slipstream": "空气动力学套件",
+          "title_unlock_nitro_2": "大招强化套件 I",
+          "title_unlock_nitro_3": "竞速级氮气支架",
+          "unlock_nitro_3": "解锁1x6磅，2x3磅，3x2磅氮气",
+          "upgrade_level_icon": "new_carport_icon_10182"
+        },
+        "stats": {
+          "speed_limit": 197.5,
+          "speedup_ratio": 1.02,
+          "charge": {
+            "ace_charge": 3100,
+            "drift_charge_energy_coef": 600,
+            "drift_charge_energy_min": 1200,
+            "drift_charge_energy_max": 6000,
+            "drift_extra_charge": [
+              [
+                1,
+                0
+              ],
+              [
+                2,
+                1800
+              ]
+            ]
+          }
+        }
+      },
+      {
+        "id": 10894,
+        "suffix": "7",
+        "rich_text": {
+          "id": 10894,
+          "ace_time_charge_condition": "在山路赛道，使用氮气时获得额外大招充能并在落后第一名超过一定距离时获得速度提升效果",
+          "ace_time_effect": "骇入可以充能两次并在开局时获得15%大招能量",
+          "ace_time_effect_rich_desc": "骇入可以充能两次并在开局时获得15%大招能量",
+          "chip_unlock_tips": "芯片最高生效等级为#fe7ab78#ffffff级",
+          "icon_ace_time_charge_condition": "new_carport_icon_mountainroad",
+          "icon_ace_time_effect": "new_carport_icon_10182",
+          "icon_slipstream": "new_carport_icon_14",
+          "icon_unlock_nitro_2": "new_carport_icon_10182",
+          "icon_unlock_nitro_3": "new_carport_icon_nos_03",
+          "is_unlocked_ace_time_charge_condition": 1,
+          "is_unlocked_ace_time_effect": 1,
+          "is_unlocked_slipstream": 1,
+          "level_title": "RECU限制解除",
+          "passive_skill_effect": [
+            "骇入加速",
+            ""
+          ],
+          "passive_skill_effect_value": [
+            "60公里/小时",
+            ""
+          ],
+          "passive_skill_rich_desc": "开局时对随机一名敌方进行恶作剧，使其首次使用氮气获得的加速效果变为减速效果",
+          "slipstream": "跟随在车辆后方将获得尾流，产生持续的氮气充能效果",
+          "special_passive_skill_desc": "开局时对随机两名敌方进行恶作剧，使其前两次使用氮气获得的加速效果变为减速效果",
+          "special_passive_skill_icon": "new_carport_icon_10183",
+          "special_passive_skill_title": "恶作剧",
+          "title_ace_time_charge_condition": "赛道专精",
+          "title_ace_time_effect": "RECU限制解除",
+          "title_slipstream": "空气动力学套件",
+          "title_unlock_nitro_2": "大招强化套件 I",
+          "title_unlock_nitro_3": "竞速级氮气支架",
+          "unlock_nitro_3": "解锁1x6磅，2x3磅，3x2磅氮气",
+          "upgrade_level_icon": "new_carport_icon_10182"
+        },
+        "stats": {
+          "speed_limit": 197.5,
+          "speedup_ratio": 1.02,
+          "charge": {
+            "ace_charge": 3100,
+            "drift_charge_energy_coef": 600,
+            "drift_charge_energy_min": 1200,
+            "drift_charge_energy_max": 6000,
+            "drift_extra_charge": [
+              [
+                1,
+                0
+              ],
+              [
+                2,
+                1800
+              ]
+            ]
+          }
+        }
+      },
+      {
+        "id": 10994,
+        "suffix": "8",
+        "rich_text": {
+          "id": 10994,
+          "ace_time_charge_condition": "在山路赛道，使用氮气时获得额外大招充能并在落后第一名超过一定距离时获得速度提升效果",
+          "ace_time_effect": "骇入可以充能两次并在开局时获得15%大招能量",
+          "ace_time_effect_rich_desc": "骇入可以充能两次并在开局时获得15%大招能量",
+          "chip_unlock_tips": "芯片最高生效等级为#fe7ab79#ffffff级",
+          "icon_ace_time_charge_condition": "new_carport_icon_mountainroad",
+          "icon_ace_time_effect": "new_carport_icon_10182",
+          "icon_slipstream": "new_carport_icon_14",
+          "icon_unlock_nitro_2": "new_carport_icon_10182",
+          "icon_unlock_nitro_3": "new_carport_icon_nos_03",
+          "is_unlocked_ace_time_charge_condition": 1,
+          "is_unlocked_ace_time_effect": 1,
+          "is_unlocked_slipstream": 1,
+          "level_title": "大招强化 III",
+          "passive_skill_effect": [
+            "骇入加速",
+            ""
+          ],
+          "passive_skill_effect_value": [
+            "66公里/小时",
+            ""
+          ],
+          "passive_skill_rich_desc": "开局时对随机一名敌方进行恶作剧，使其首次使用氮气获得的加速效果变为减速效果",
+          "slipstream": "跟随在车辆后方将获得尾流，产生持续的氮气充能效果",
+          "special_passive_skill_desc": "开局时对随机两名敌方进行恶作剧，使其前两次使用氮气获得的加速效果变为减速效果",
+          "special_passive_skill_icon": "new_carport_icon_10183",
+          "special_passive_skill_title": "恶作剧",
+          "title_ace_time_charge_condition": "赛道专精",
+          "title_ace_time_effect": "RECU限制解除",
+          "title_slipstream": "空气动力学套件",
+          "title_unlock_nitro_2": "大招强化套件 I",
+          "title_unlock_nitro_3": "竞速级氮气支架",
+          "unlock_nitro_3": "解锁1x6磅，2x3磅，3x2磅氮气",
+          "upgrade_level_icon": "new_carport_icon_10182"
+        },
+        "stats": {
+          "speed_limit": 198,
+          "speedup_ratio": 1.02,
+          "charge": {
+            "ace_charge": 3100,
+            "drift_charge_energy_coef": 600,
+            "drift_charge_energy_min": 1200,
+            "drift_charge_energy_max": 6000,
+            "drift_extra_charge": [
+              [
+                1,
+                0
+              ],
+              [
+                2,
+                1800
+              ]
+            ]
+          }
+        }
+      },
+      {
+        "id": 11094,
+        "suffix": "9",
+        "rich_text": {
+          "id": 11094,
+          "ace_time_charge_condition": "在山路赛道，使用氮气时获得额外大招充能并在落后第一名超过一定距离时获得速度提升效果",
+          "ace_time_effect": "骇入可以充能两次并在开局时获得15%大招能量",
+          "ace_time_effect_rich_desc": "骇入可以充能两次并在开局时获得15%大招能量",
+          "chip_unlock_tips": "芯片最高生效等级为#fe7ab710#ffffff级",
+          "icon_ace_time_charge_condition": "new_carport_icon_mountainroad",
+          "icon_ace_time_effect": "new_carport_icon_10182",
+          "icon_slipstream": "new_carport_icon_14",
+          "icon_unlock_nitro_2": "new_carport_icon_10182",
+          "icon_unlock_nitro_3": "new_carport_icon_nos_03",
+          "is_unlocked_ace_time_charge_condition": 1,
+          "is_unlocked_ace_time_effect": 1,
+          "is_unlocked_slipstream": 1,
+          "level_title": "大招强化 IV",
+          "passive_skill_effect": [
+            "骇入加速",
+            ""
+          ],
+          "passive_skill_effect_value": [
+            "75公里/小时",
+            ""
+          ],
+          "passive_skill_rich_desc": "开局时对随机一名敌方进行恶作剧，使其首次使用氮气获得的加速效果变为减速效果",
+          "slipstream": "跟随在车辆后方将获得尾流，产生持续的氮气充能效果",
+          "special_passive_skill_desc": "开局时对随机两名敌方进行恶作剧，使其前两次使用氮气获得的加速效果变为减速效果",
+          "special_passive_skill_icon": "new_carport_icon_10183",
+          "special_passive_skill_title": "恶作剧",
+          "title_ace_time_charge_condition": "赛道专精",
+          "title_ace_time_effect": "RECU限制解除",
+          "title_slipstream": "空气动力学套件",
+          "title_unlock_nitro_2": "大招强化套件 I",
+          "title_unlock_nitro_3": "竞速级氮气支架",
+          "unlock_nitro_3": "解锁1x6磅，2x3磅，3x2磅氮气",
+          "upgrade_level_icon": "new_carport_icon_10182"
+        },
+        "stats": {
+          "speed_limit": 199,
+          "speedup_ratio": 1.02,
+          "charge": {
+            "ace_charge": 3100,
+            "drift_charge_energy_coef": 600,
+            "drift_charge_energy_min": 1200,
+            "drift_charge_energy_max": 6000,
+            "drift_extra_charge": [
+              [
+                1,
+                0
+              ],
+              [
+                2,
+                1800
+              ]
+            ]
+          }
+        }
+      }
+    ],
+    "skills": {
+      "ultimate": {
+        "id": 9451,
+        "name": "骇入",
+        "type": "N2O_TRICK",
+        "icon_static": "ui_skill72_04",
+        "icon_big": null,
+        "icon": null,
+        "init_ratio": null,
+        "icons": {
+          "normal": "ui_skill72_03",
+          "disable": "ui_skill72_01",
+          "alt": "ui_skill72_06",
+          "down": "ui_skill72_03",
+          "static": "ui_skill72_04",
+          "big": null
+        },
+        "extra": {
+          "cam_type": "N2O_TRICK",
+          "eff_id": 1,
+          "is_cost_energy": 2,
+          "rally_qte": 2
+        },
+        "value_texts": [
+          {
+            "key": "name",
+            "label": "技能名称",
+            "value": "骇入"
+          },
+          {
+            "key": "skill_type",
+            "label": "技能类型",
+            "value": "N2O_TRICK"
+          },
+          {
+            "key": "cam_type",
+            "label": "镜头类型",
+            "value": "N2O_TRICK"
+          },
+          {
+            "key": "eff_id",
+            "label": "特效编号",
+            "value": "1"
+          },
+          {
+            "key": "min_charge",
+            "label": "最低充能万分比",
+            "value": "10000"
+          },
+          {
+            "key": "rally_qte",
+            "label": "拉力赛触发qte",
+            "value": "2"
+          }
+        ],
+        "instructions": [
+          {
+            "id": 805301,
+            "attack_show_eff_dur": 5,
+            "attack_show_friend_enemy_filter": [
+              1,
+              2
+            ],
+            "attack_show_keep_dur": 5,
+            "attack_show_role_filter": [
+              1,
+              2,
+              3
+            ],
+            "buff_count": 0,
+            "cd_type": 1,
+            "duration": 7,
+            "eff_cd": 8,
+            "eff_id": 1,
+            "enemy_eff": [
+              63402
+            ],
+            "extra_children": [],
+            "extra_isolate": [],
+            "inst_group": 846,
+            "inst_name": "骇入干扰",
+            "inst_type": 8,
+            "lock_camp": 2,
+            "lock_cnt": 5,
+            "lock_dist": [
+              -125,
+              125
+            ],
+            "lock_instr_types2": [
+              18
+            ],
+            "lock_side_dist": [
+              -125,
+              125
+            ],
+            "lock_vertical_dist": [
+              -6000,
+              6000
+            ],
+            "rear_insts": [
+              -1
+            ],
+            "ref_insts": [
+              805301
+            ],
+            "skill_eff_id": 8,
+            "sp_n2o_ace_charge_ratio": 1,
+            "name": "骇入干扰",
+            "desc": null,
+            "type": 8,
+            "order": null,
+            "value_texts": [
+              {
+                "key": "attack_show_friend_enemy_filter",
+                "label": "敌友筛选",
+                "value": "[1,2]"
+              },
+              {
+                "key": "attack_show_role_filter",
+                "label": "定位筛选",
+                "value": "[1,2,3]"
+              },
+              {
+                "key": "buff_count",
+                "label": "Buff 数量",
+                "value": "0"
+              },
+              {
+                "key": "rear_insts",
+                "label": "后续节点",
+                "value": "[-1]"
+              },
+              {
+                "key": "extra_children",
+                "label": "子节点",
+                "value": "[]"
+              },
+              {
+                "key": "ref_insts",
+                "label": "引用节点",
+                "value": "[805301]"
+              }
+            ]
+          },
+          {
+            "id": 206901,
+            "accel_action": 2,
+            "accelerate_curve": [
+              [
+                0,
+                30
+              ],
+              [
+                165,
+                21.7
+              ],
+              [
+                166,
+                7
+              ],
+              [
+                200,
+                6
+              ]
+            ],
+            "attack_show_friend_enemy_filter": [
+              1,
+              2
+            ],
+            "attack_show_role_filter": [
+              1,
+              2,
+              3
+            ],
+            "buff_count": 0,
+            "cost_ratio": 1428,
+            "duration": 7,
+            "eff_id": 1,
+            "extra_children": [],
+            "extra_isolate": [],
+            "inst_group": 2,
+            "inst_name": "大招加速",
+            "inst_type": 2,
+            "is_hard_push": 1,
+            "rear_insts": [
+              -1
+            ],
+            "ref_insts": [
+              206901
+            ],
+            "skill_eff_id": 20414,
+            "sp_ex_speed_limit": 48,
+            "sp_max_ex_speed_limit": 48,
+            "sp_min_ex_speed_limit": 48,
+            "sp_n2o_ace_charge_ratio": 1,
+            "name": "大招加速",
+            "desc": null,
+            "type": 2,
+            "order": null,
+            "value_texts": [
+              {
+                "key": "sp_ex_speed_limit",
+                "label": "自身极速提升",
+                "value": "48km/h"
+              },
+              {
+                "key": "attack_show_friend_enemy_filter",
+                "label": "敌友筛选",
+                "value": "[1,2]"
+              },
+              {
+                "key": "attack_show_role_filter",
+                "label": "定位筛选",
+                "value": "[1,2,3]"
+              },
+              {
+                "key": "buff_count",
+                "label": "Buff 数量",
+                "value": "0"
+              },
+              {
+                "key": "rear_insts",
+                "label": "后续节点",
+                "value": "[-1]"
+              },
+              {
+                "key": "extra_children",
+                "label": "子节点",
+                "value": "[]"
+              },
+              {
+                "key": "ref_insts",
+                "label": "引用节点",
+                "value": "[206901]"
+              }
+            ]
+          }
+        ]
+      },
+      "sp": null,
+      "passive": [
+        {
+          "id": 50801,
+          "name": "封禁尾流",
+          "type": null,
+          "icon_static": null,
+          "icon_big": null,
+          "icon": null,
+          "init_ratio": null,
+          "icons": {
+            "normal": null,
+            "disable": null,
+            "alt": null,
+            "down": null,
+            "static": null,
+            "big": null
+          },
+          "extra": {
+            "cam_type": null,
+            "eff_id": null,
+            "is_cost_energy": null,
+            "rally_qte": null
+          },
+          "value_texts": [
+            {
+              "key": "name",
+              "label": "技能名称",
+              "value": "封禁尾流"
+            }
+          ],
+          "instructions": [
+            {
+              "id": 2100301,
+              "attack_show_friend_enemy_filter": [
+                1,
+                2
+              ],
+              "attack_show_role_filter": [
+                1,
+                2,
+                3
+              ],
+              "buff_count": 0,
+              "duration": 999,
+              "eff_id": 1,
+              "extra_children": [],
+              "extra_isolate": [],
+              "inst_group": 21001,
+              "inst_name": "封禁尾流",
+              "inst_type": 21,
+              "rear_insts": [],
+              "ref_insts": [
+                2100301
+              ],
+              "skill_eff_id": 21,
+              "slipstream_state": 1,
+              "sp_n2o_ace_charge_ratio": 1,
+              "name": "封禁尾流",
+              "desc": null,
+              "type": 21,
+              "order": null,
+              "value_texts": [
+                {
+                  "key": "attack_show_friend_enemy_filter",
+                  "label": "敌友筛选",
+                  "value": "[1,2]"
+                },
+                {
+                  "key": "attack_show_role_filter",
+                  "label": "定位筛选",
+                  "value": "[1,2,3]"
+                },
+                {
+                  "key": "buff_count",
+                  "label": "Buff 数量",
+                  "value": "0"
+                },
+                {
+                  "key": "rear_insts",
+                  "label": "后续节点",
+                  "value": "[]"
+                },
+                {
+                  "key": "extra_children",
+                  "label": "子节点",
+                  "value": "[]"
+                },
+                {
+                  "key": "ref_insts",
+                  "label": "引用节点",
+                  "value": "[2100301]"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "id": 63401,
+          "name": "恶作剧",
+          "type": null,
+          "icon_static": null,
+          "icon_big": null,
+          "icon": null,
+          "init_ratio": null,
+          "icons": {
+            "normal": null,
+            "disable": null,
+            "alt": null,
+            "down": null,
+            "static": null,
+            "big": null
+          },
+          "extra": {
+            "cam_type": null,
+            "eff_id": null,
+            "is_cost_energy": null,
+            "rally_qte": null
+          },
+          "value_texts": [
+            {
+              "key": "name",
+              "label": "技能名称",
+              "value": "恶作剧"
+            }
+          ],
+          "instructions": [
+            {
+              "id": 805302,
+              "attack_show_eff_dur": 5,
+              "attack_show_friend_enemy_filter": [
+                1,
+                2
+              ],
+              "attack_show_keep_dur": 5,
+              "attack_show_role_filter": [
+                1,
+                2,
+                3
+              ],
+              "buff_count": 0,
+              "cd_type": 1,
+              "duration": 0.3,
+              "eff_cd": 1,
+              "eff_id": 1,
+              "enemy_eff": [
+                63402
+              ],
+              "extra_children": [],
+              "extra_isolate": [],
+              "inst_group": 847,
+              "inst_name": "恶作剧干扰",
+              "inst_type": 8,
+              "lock_camp": 2,
+              "lock_cnt": 2,
+              "lock_dist": [
+                -6000,
+                6000
+              ],
+              "lock_instr_types2": [
+                18
+              ],
+              "lock_no_dodge": 1,
+              "lock_no_rebound": 1,
+              "lock_no_reverse": 1,
+              "lock_side_dist": [
+                -6000,
+                6000
+              ],
+              "lock_vertical_dist": [
+                -6000,
+                6000
+              ],
+              "pre_time": 0.1,
+              "rear_insts": [
+                -1
+              ],
+              "ref_insts": [
+                805302
+              ],
+              "skill_eff_id": 20434,
+              "sp_n2o_ace_charge_ratio": 1,
+              "name": "恶作剧干扰",
+              "desc": null,
+              "type": 8,
+              "order": null,
+              "value_texts": [
+                {
+                  "key": "attack_show_friend_enemy_filter",
+                  "label": "敌友筛选",
+                  "value": "[1,2]"
+                },
+                {
+                  "key": "attack_show_role_filter",
+                  "label": "定位筛选",
+                  "value": "[1,2,3]"
+                },
+                {
+                  "key": "buff_count",
+                  "label": "Buff 数量",
+                  "value": "0"
+                },
+                {
+                  "key": "rear_insts",
+                  "label": "后续节点",
+                  "value": "[-1]"
+                },
+                {
+                  "key": "extra_children",
+                  "label": "子节点",
+                  "value": "[]"
+                },
+                {
+                  "key": "ref_insts",
+                  "label": "引用节点",
+                  "value": "[805302]"
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    "skillPanelGroups": {
+      "ultimate": [
+        {
+          "id": "882",
+          "name_rich": {
+            "raw": "自身极速提升",
+            "html": "自身极速提升"
+          },
+          "value_rich": {
+            "raw": "48km/h",
+            "html": "48km/h"
+          },
+          "value_text": "48km/h",
+          "instruction_ids": [
+            206901,
+            206905
+          ],
+          "values": []
+        },
+        {
+          "id": "883",
+          "name_rich": {
+            "raw": "加速持续时长",
+            "html": "加速持续时长"
+          },
+          "value_rich": {
+            "raw": "7秒",
+            "html": "7秒"
+          },
+          "value_text": "7秒",
+          "instruction_ids": [],
+          "values": []
+        },
+        {
+          "id": "885",
+          "name_rich": {
+            "raw": "作用范围",
+            "html": "作用范围"
+          },
+          "value_rich": {
+            "raw": "125米",
+            "html": "125米"
+          },
+          "value_text": "125米",
+          "instruction_ids": [],
+          "values": []
+        },
+        {
+          "id": "886",
+          "name_rich": {
+            "raw": "命中类型",
+            "html": "命中类型"
+          },
+          "value_rich": {
+            "raw": "#tipsnoicon[锁定类]",
+            "html": "<span class=\"rt-tip rt-tip--entry rt-tip--noicon\" data-tip=\"锁定类\" data-desc=\"·自动锁定范围内的目标&#10;·无法命中具有*隐身*、*无法选中*、*闪避*的敌方\" style=\"--tip-color:#ffd700\" title=\"·自动锁定范围内的目标&#10;·无法命中具有*隐身*、*无法选中*、*闪避*的敌方\">锁定类</span>"
+          },
+          "value_text": "#tipsnoicon[锁定类]",
+          "instruction_ids": [],
+          "values": []
+        },
+        {
+          "id": "887",
+          "name_rich": {
+            "raw": "可否净化",
+            "html": "可否净化"
+          },
+          "value_rich": {
+            "raw": "使用氮气前可净化",
+            "html": "使用氮气前可净化"
+          },
+          "value_text": "使用氮气前可净化",
+          "instruction_ids": [],
+          "values": []
+        },
+        {
+          "id": "20626",
+          "name_rich": {
+            "raw": "加速动力",
+            "html": "加速动力"
+          },
+          "value_rich": {
+            "raw": "中",
+            "html": "中"
+          },
+          "value_text": "中",
+          "instruction_ids": [],
+          "values": []
+        }
+      ],
+      "sp": [],
+      "passive": [
+        {
+          "id": "888",
+          "name_rich": {
+            "raw": "命中类型",
+            "html": "命中类型"
+          },
+          "value_rich": {
+            "raw": "#tipsnoicon[锁定类]",
+            "html": "<span class=\"rt-tip rt-tip--entry rt-tip--noicon\" data-tip=\"锁定类\" data-desc=\"·自动锁定范围内的目标&#10;·无法命中具有*隐身*、*无法选中*、*闪避*的敌方\" style=\"--tip-color:#ffd700\" title=\"·自动锁定范围内的目标&#10;·无法命中具有*隐身*、*无法选中*、*闪避*的敌方\">锁定类</span>"
+          },
+          "value_text": "#tipsnoicon[锁定类]",
+          "instruction_ids": [],
+          "values": []
+        }
+      ],
+      "other": []
+    },
+    "richText": {
+      "id": 10094,
+      "ace_time_charge_condition": "在山路赛道，使用氮气时获得额外大招充能并在落后第一名超过一定距离时获得速度提升效果",
+      "ace_time_effect": "骇入可以充能两次并在开局时获得15%大招能量",
+      "ace_time_effect_rich_desc": "骇入可以充能两次并在开局时获得15%大招能量",
+      "chip_unlock_tips": "芯片最高生效等级为#fe7ab71#ffffff级",
+      "icon_ace_time_charge_condition": "new_carport_icon_mountainroad",
+      "icon_ace_time_effect": "new_carport_icon_10182",
+      "icon_slipstream": "new_carport_icon_14",
+      "icon_unlock_nitro_2": "new_carport_icon_10182",
+      "icon_unlock_nitro_3": "new_carport_icon_nos_03",
+      "level_title": "原车型",
+      "passive_skill_effect": [
+        "骇入加速",
+        ""
+      ],
+      "passive_skill_effect_value": [
+        "48公里/小时",
+        ""
+      ],
+      "passive_skill_rich_desc": "开局时对随机一名敌方进行恶作剧，使其首次使用氮气获得的加速效果变为减速效果",
+      "slipstream": "跟随在车辆后方将获得尾流，产生持续的氮气充能效果",
+      "special_passive_skill_desc": {
+        "raw": "开局时对随机两名敌方进行恶作剧，使其前两次使用氮气获得的加速效果变为减速效果",
+        "html": "开局时对随机两名敌方进行恶作剧，使其前两次使用氮气获得的加速效果变为减速效果"
+      },
+      "special_passive_skill_icon": "new_carport_icon_10183",
+      "special_passive_skill_title": "恶作剧",
+      "title_ace_time_charge_condition": "赛道专精",
+      "title_ace_time_effect": "RECU限制解除",
+      "title_slipstream": "空气动力学套件",
+      "title_unlock_nitro_2": "大招强化套件 I",
+      "title_unlock_nitro_3": "竞速级氮气支架",
+      "unlock_nitro_3": "解锁1x6磅，2x3磅，3x2磅氮气",
+      "upgrade_level_icon": "new_carport_icon_10183",
+      "feature_desc": {
+        "raw": "加速推进，极速提升#desc[882]，持续7秒。\n加速期间持续侵入125米范围内敌方车辆的推进系统，使其下两次使用氮气时获得的加速效果变为减速效果。",
+        "html": "加速推进，极速提升<span class=\"rt-desc\">自身极速提升 48km/h</span>，持续7秒。<br/>加速期间持续侵入125米范围内敌方车辆的推进系统，使其下两次使用氮气时获得的加速效果变为减速效果。"
+      },
+      "sp_skill_desc": null,
+      "passive_skill_desc": null,
+      "story_title": "厂商：混沌",
+      "story": {
+        "raw": "洛基是北欧神话中诡计与欺骗的大师，混沌车厂设计的新车洛基贯彻了这一特性。这台车最擅长的便是骇入其他赛车的智能控制系统，留下一串串充满恶趣味的代码，这并不会直接损坏其他车子，但绝对能最大程度上破坏其他驾驶者的驾驶体验。而当他们意识到自己被洛基捉弄，气得直跺脚时，洛基早已打开它强大的推进装置，扬长而去了。",
+        "html": "洛基是北欧神话中诡计与欺骗的大师，混沌车厂设计的新车洛基贯彻了这一特性。这台车最擅长的便是骇入其他赛车的智能控制系统，留下一串串充满恶趣味的代码，这并不会直接损坏其他车子，但绝对能最大程度上破坏其他驾驶者的驾驶体验。而当他们意识到自己被洛基捉弄，气得直跺脚时，洛基早已打开它强大的推进装置，扬长而去了。"
+      }
+    },
+    "report": {
+      "title": "王牌速度节赛车检验报告",
+      "sections": [
+        {
+          "title": "基础数据",
+          "items": [
+            {
+              "label": "检测车辆",
+              "value": "洛基/Loki"
+            },
+            {
+              "label": "注册日期",
+              "value": "{}年{}月{}日"
+            },
+            {
+              "label": "车辆类型",
+              "value": "幻想阵营"
+            },
+            {
+              "label": "厂商",
+              "value": "混沌"
+            },
+            {
+              "label": "定位",
+              "value": "干扰位"
+            },
+            {
+              "label": "赛道专精",
+              "value": "山路"
+            },
+            {
+              "label": "能源类型",
+              "value": "柴油"
+            },
+            {
+              "label": "驱动方式",
+              "value": "后置后驱"
+            },
+            {
+              "label": "骇入模式",
+              "value": "已开启"
+            }
+          ]
+        },
+        {
+          "title": "芯片模块",
+          "items": [
+            {
+              "label": "芯片写入权限",
+              "value": "已获取"
+            },
+            {
+              "label": "扩展芯片类型",
+              "value": "○○◇◣◣V"
+            },
+            {
+              "label": "等级合规检查",
+              "value": "芯片等级未高于RECU等级"
+            }
+          ]
+        },
+        {
+          "title": "外观检验",
+          "items": [
+            {
+              "label": "检验结果",
+              "value": "合格"
+            }
+          ]
+        },
+        {
+          "title": "大招驱动模块",
+          "items": [
+            {
+              "label": "能量控制单元",
+              "value": "四代RECU，工作正常"
+            },
+            {
+              "label": "瑞卡因子稳定器",
+              "value": "工作正常"
+            },
+            {
+              "label": "SC",
+              "value": "超级电容加速系统已安装"
+            },
+            {
+              "label": "空气动力套件（2级解锁）",
+              "value": "未选装"
+            },
+            {
+              "label": "赛道专精（3级解锁）",
+              "value": "未选装"
+            },
+            {
+              "label": "RECU限制解除（8级解锁）",
+              "value": "未选装"
+            }
+          ]
+        },
+        {
+          "title": "整车判定",
+          "items": [
+            {
+              "label": "检验结果",
+              "value": "合格，可参加速度节赛事"
+            }
+          ]
+        }
+      ]
+    },
+    "story": {
+      "content": "洛基是北欧神话中诡计与欺骗的大师，混沌车厂设计的新车洛基贯彻了这一特性。这台车最擅长的便是骇入其他赛车的智能控制系统，留下一串串充满恶趣味的代码，这并不会直接损坏其他车子，但绝对能最大程度上破坏其他驾驶者的驾驶体验。而当他们意识到自己被洛基捉弄，气得直跺脚时，洛基早已打开它强大的推进装置，扬长而去了。",
+      "id": 10094,
+      "story_content": "洛基是北欧神话中诡计与欺骗的大师，混沌车厂设计的新车洛基贯彻了这一特性。这台车最擅长的便是骇入其他赛车的智能控制系统，留下一串串充满恶趣味的代码，这并不会直接损坏其他车子，但绝对能最大程度上破坏其他驾驶者的驾驶体验。而当他们意识到自己被洛基捉弄，气得直跺脚时，洛基早已打开它强大的推进装置，扬长而去了。",
+      "story_title": "厂商：混沌",
+      "vehicle_name": "洛基"
+    },
+    "obtain": {
+      "tag_img": "item_tag_icon_heijin",
+      "obtain_type_ids": [
+        4
+      ],
+      "obtain_types": [
+        {
+          "id": 4,
+          "label": "赛季会员",
+          "desc": "从赛季会员奖励中获取",
+          "icon": "commonnew_passconversion"
+        }
+      ]
+    },
+    "restraints": {
+      "id": 10094,
+      "match": [
+        10018,
+        10063,
+        10095,
+        12003,
+        10087,
+        10036,
+        12096
+      ],
+      "be_restraint": [
+        10078,
+        10070,
+        12079,
+        12087
+      ]
+    },
+    "resources": {
+      "icons": {
+        "ace_time_effect": "new_carport_icon_10182",
+        "icon_ace_time_effect": "new_carport_icon_10182",
+        "ace_time_charge_condition": "new_carport_icon_mountainroad",
+        "slipstream": "new_carport_icon_14",
+        "unlock_nitro_2": "new_carport_icon_10182",
+        "unlock_nitro_3": "new_carport_icon_nos_03",
+        "upgrade_level_icon": "new_carport_icon_10183",
+        "special_passive_skill_icon": "new_carport_icon_10183"
+      }
+    },
+    "skins": {
+      "sets": {
+        "local": [
+          {
+            "source": "local",
+            "index": 1
+          },
+          {
+            "source": "local",
+            "index": 2
+          },
+          {
+            "source": "local",
+            "index": 3
+          }
+        ]
+      },
+      "meta": {
+        "1": {
+          "id": 50250,
+          "name": "涂装 骇客入侵",
+          "desc": "不存在没有漏洞的系统。\n适用车型：#1dd8d0洛基",
+          "icon_s": "tz_10094_1_s",
+          "icon_m": "tz_10094_1_m",
+          "icon_b": "tz_10094_1_b"
+        },
+        "2": {
+          "id": 50308,
+          "name": "涂装 霓彩彝裳",
+          "desc": "穿梭于赛道间，展现彝族文化之美，霓彩彝裳，速度与传统的交融之作！\n适用车型：#1dd8d0洛基",
+          "icon_s": "tz_10094_2_s",
+          "icon_m": "tz_10094_2_m",
+          "icon_b": "tz_10094_2_b"
+        },
+        "3": {
+          "id": 50529,
+          "name": "涂装 春和景明",
+          "desc": "春和景明，波澜不惊~\n适用车型：#1dd8d0洛基",
+          "icon_s": "tz_10094_3_s",
+          "icon_m": "tz_10094_3_m",
+          "icon_b": "tz_10094_3_b"
+        }
+      }
+    },
+    "media": {
+      "cover": "/rk-assets/10094_m.png",
+      "coverFallback": "/rk-assets/10094_m.png",
+      "shareImage": {
+        "key": "share_10094",
+        "file": "share_10094.png",
+        "url": "https://h65.gdl.netease.com/web_res_list_20221109/share_10094.webp"
+      },
+      "shareImageAdvance": null,
+      "skillVideo": {
+        "ultimate": {
+          "url": "https://vod.cc.163.com/file/636c9c68a240f794f8c833ab?source=27&protocol=https",
+          "thumbnail": "table_video_img_10094"
+        },
+        "sp": null
+      }
+    }
+  }
+}

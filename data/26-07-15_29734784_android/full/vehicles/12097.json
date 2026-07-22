@@ -1,0 +1,1718 @@
+{
+  "schemaVersion": 2,
+  "versionId": "26-07-15_29734784_android",
+  "generatedAt": "2026-07-16T09:22:34.000Z",
+  "item": {
+    "id": 12097,
+    "name": "清规·浩然",
+    "manufacturer": "平行世界",
+    "quality": "传说",
+    "class": 4,
+    "group": 1,
+    "position": "干扰位",
+    "positionLabel": "干扰位",
+    "racingRole": 3,
+    "racingRoleName": "干扰位",
+    "specialization": "山路",
+    "seasonCode": "S33",
+    "publication": {
+      "state": "released",
+      "releaseTimestamp": 1782403200,
+      "releaseText": "2026-6-26 00:00:00",
+      "releaseMacro": "S33_WEEK6_START"
+    },
+    "summary": "召唤剑阵，御剑飞行",
+    "description": "召唤剑阵，御剑飞行",
+    "tags": [
+      {
+        "id": 12,
+        "text": "自动巡航",
+        "desc": "·沿预设路线自动行驶\n·通过弯道时会失速\n·不会脱离预设路线",
+        "color": 1
+      },
+      {
+        "id": 72,
+        "text": "放置干扰",
+        "desc": "·目标触碰到放置物时命中\n·不受*混乱*、*反弹*、*闪避*、*隐身*效果影响\n·无法命中具有*无法选中*的敌方",
+        "color": 4
+      },
+      {
+        "id": 83,
+        "text": "干扰集气",
+        "desc": "干扰敌方的集气获取",
+        "color": 3
+      },
+      {
+        "id": 67,
+        "text": "耐久损失",
+        "desc": "使敌方损失耐久",
+        "color": 3
+      },
+      {
+        "id": 183,
+        "text": "削弱闪现",
+        "desc": "降低敌方的闪现距离",
+        "color": 3
+      },
+      {
+        "id": 143,
+        "text": "刷新SP",
+        "desc": "刷新自身或友方的SP技能冷却时间",
+        "color": 1
+      }
+    ],
+    "stats": {
+      "speed_limit": 189,
+      "speedup_ratio": 1.2,
+      "charge": {
+        "ace_charge": 3300,
+        "drift_charge_energy_coef": 600,
+        "drift_charge_energy_min": 1200,
+        "drift_charge_energy_max": 6000,
+        "drift_extra_charge": [
+          [
+            1,
+            0
+          ],
+          [
+            2,
+            1800
+          ]
+        ]
+      }
+    },
+    "maxDurability": 110,
+    "levels": [
+      {
+        "id": 12097,
+        "suffix": "0",
+        "rich_text": {
+          "id": 12097,
+          "ace_time_charge_condition": "在山路赛道，使用氮气时获得额外大招充能并在落后第一名超过一定距离时获得速度提升效果",
+          "ace_time_effect": "浩然剑阵可以充能两次",
+          "ace_time_effect_rich_desc": "42",
+          "chip_unlock_tips": "芯片最高生效等级为#fe7ab71#ffffff级",
+          "icon_ace_time_charge_condition": "new_carport_icon_mountainroad",
+          "icon_ace_time_effect": "new_carport_icon_10398",
+          "icon_slipstream": "new_carport_icon_14",
+          "icon_unlock_nitro_2": "new_carport_icon_10398",
+          "icon_unlock_nitro_3": "new_carport_icon_nos_03",
+          "level_title": "原车型",
+          "passive_skill_effect": [
+            "浩然剑阵加速",
+            ""
+          ],
+          "passive_skill_effect_value": [
+            "40公里/小时",
+            ""
+          ],
+          "passive_skill_rich_desc": "42",
+          "slipstream": "跟随在车辆后方将获得尾流，产生持续的氮气充能效果",
+          "special_passive_skill_desc": "每3次使用大招立即刷新SP技能CD并获得30%大招能量",
+          "special_passive_skill_icon": "new_carport_icon_10399",
+          "special_passive_skill_title": "浩然正气",
+          "title_ace_time_charge_condition": "赛道专精",
+          "title_ace_time_effect": "RECU限制解除",
+          "title_slipstream": "空气动力学套件",
+          "title_unlock_nitro_2": "大招强化套件 I",
+          "title_unlock_nitro_3": "竞速级氮气支架",
+          "unlock_nitro_3": "解锁1x6磅，2x3磅，3x2磅氮气",
+          "upgrade_level_icon": "new_carport_icon_10399"
+        },
+        "stats": {
+          "speed_limit": 189,
+          "speedup_ratio": 1.2,
+          "charge": {
+            "ace_charge": 3300,
+            "drift_charge_energy_coef": 600,
+            "drift_charge_energy_min": 1200,
+            "drift_charge_energy_max": 6000,
+            "drift_extra_charge": [
+              [
+                1,
+                0
+              ],
+              [
+                2,
+                1800
+              ]
+            ]
+          }
+        }
+      },
+      {
+        "id": 120973,
+        "suffix": "1",
+        "rich_text": {
+          "id": 120973,
+          "ace_time_charge_condition": "在山路赛道，使用氮气时获得额外大招充能并在落后第一名超过一定距离时获得速度提升效果",
+          "ace_time_effect": "浩然剑阵可以充能两次",
+          "ace_time_effect_rich_desc": "42",
+          "chip_unlock_tips": "芯片最高生效等级为#fe7ab74#ffffff级",
+          "icon_ace_time_charge_condition": "new_carport_icon_mountainroad",
+          "icon_ace_time_effect": "new_carport_icon_10398",
+          "icon_slipstream": "new_carport_icon_14",
+          "icon_unlock_nitro_2": "new_carport_icon_10398",
+          "icon_unlock_nitro_3": "new_carport_icon_nos_03",
+          "is_unlocked_ace_time_charge_condition": 1,
+          "is_unlocked_slipstream": 1,
+          "level_title": "竞速级氮气支架 I",
+          "passive_skill_effect": [
+            "浩然剑阵加速",
+            ""
+          ],
+          "passive_skill_effect_value": [
+            "40公里/小时",
+            ""
+          ],
+          "passive_skill_rich_desc": "42",
+          "slipstream": "跟随在车辆后方将获得尾流，产生持续的氮气充能效果",
+          "special_passive_skill_desc": "每3次使用大招立即刷新SP技能CD并获得30%大招能量",
+          "special_passive_skill_icon": "new_carport_icon_10399",
+          "special_passive_skill_title": "浩然正气",
+          "title_ace_time_charge_condition": "赛道专精",
+          "title_ace_time_effect": "RECU限制解除",
+          "title_slipstream": "空气动力学套件",
+          "title_unlock_nitro_2": "大招强化套件 I",
+          "title_unlock_nitro_3": "竞速级氮气支架",
+          "unlock_nitro_3": "解锁1x6磅，2x3磅，3x2磅氮气",
+          "upgrade_level_icon": "new_carport_icon_nos_03"
+        },
+        "stats": {
+          "speed_limit": 189,
+          "speedup_ratio": 1.2,
+          "charge": {
+            "ace_charge": 3300,
+            "drift_charge_energy_coef": 600,
+            "drift_charge_energy_min": 1200,
+            "drift_charge_energy_max": 6000,
+            "drift_extra_charge": [
+              [
+                1,
+                0
+              ],
+              [
+                2,
+                1800
+              ]
+            ]
+          }
+        }
+      },
+      {
+        "id": 120971,
+        "suffix": "2",
+        "rich_text": {
+          "id": 120971,
+          "ace_time_charge_condition": "在山路赛道，使用氮气时获得额外大招充能并在落后第一名超过一定距离时获得速度提升效果",
+          "ace_time_effect": "浩然剑阵可以充能两次",
+          "ace_time_effect_rich_desc": "42",
+          "chip_unlock_tips": "芯片最高生效等级为#fe7ab72#ffffff级",
+          "icon_ace_time_charge_condition": "new_carport_icon_mountainroad",
+          "icon_ace_time_effect": "new_carport_icon_10398",
+          "icon_slipstream": "new_carport_icon_14",
+          "icon_unlock_nitro_2": "new_carport_icon_10398",
+          "icon_unlock_nitro_3": "new_carport_icon_nos_03",
+          "is_unlocked_slipstream": 1,
+          "level_title": "空气动力学套件",
+          "passive_skill_effect": [
+            "浩然剑阵加速",
+            ""
+          ],
+          "passive_skill_effect_value": [
+            "40公里/小时",
+            ""
+          ],
+          "passive_skill_rich_desc": "42",
+          "slipstream": "跟随在车辆后方将获得尾流，产生持续的氮气充能效果",
+          "special_passive_skill_desc": "每3次使用大招立即刷新SP技能CD并获得30%大招能量",
+          "special_passive_skill_icon": "new_carport_icon_10399",
+          "special_passive_skill_title": "浩然正气",
+          "title_ace_time_charge_condition": "赛道专精",
+          "title_ace_time_effect": "RECU限制解除",
+          "title_slipstream": "空气动力学套件",
+          "title_unlock_nitro_2": "大招强化套件 I",
+          "title_unlock_nitro_3": "竞速级氮气支架",
+          "unlock_nitro_3": "解锁1x6磅，2x3磅，3x2磅氮气",
+          "upgrade_level_icon": "new_carport_icon_14"
+        },
+        "stats": {
+          "speed_limit": 189,
+          "speedup_ratio": 1.2,
+          "charge": {
+            "ace_charge": 3300,
+            "drift_charge_energy_coef": 600,
+            "drift_charge_energy_min": 1200,
+            "drift_charge_energy_max": 6000,
+            "drift_extra_charge": [
+              [
+                1,
+                0
+              ],
+              [
+                2,
+                1800
+              ]
+            ]
+          }
+        }
+      },
+      {
+        "id": 120972,
+        "suffix": "3",
+        "rich_text": {
+          "id": 120972,
+          "ace_time_charge_condition": "在山路赛道，使用氮气时获得额外大招充能并在落后第一名超过一定距离时获得速度提升效果",
+          "ace_time_effect": "浩然剑阵可以充能两次",
+          "ace_time_effect_rich_desc": "42",
+          "chip_unlock_tips": "芯片最高生效等级为#fe7ab73#ffffff级",
+          "icon_ace_time_charge_condition": "new_carport_icon_mountainroad",
+          "icon_ace_time_effect": "new_carport_icon_10398",
+          "icon_slipstream": "new_carport_icon_14",
+          "icon_unlock_nitro_2": "new_carport_icon_10398",
+          "icon_unlock_nitro_3": "new_carport_icon_nos_03",
+          "is_unlocked_ace_time_charge_condition": 1,
+          "is_unlocked_slipstream": 1,
+          "level_title": "赛道专精",
+          "passive_skill_effect": [
+            "浩然剑阵加速",
+            ""
+          ],
+          "passive_skill_effect_value": [
+            "40公里/小时",
+            ""
+          ],
+          "passive_skill_rich_desc": "42",
+          "slipstream": "跟随在车辆后方将获得尾流，产生持续的氮气充能效果",
+          "special_passive_skill_desc": "每3次使用大招立即刷新SP技能CD并获得30%大招能量",
+          "special_passive_skill_icon": "new_carport_icon_10399",
+          "special_passive_skill_title": "浩然正气",
+          "title_ace_time_charge_condition": "赛道专精",
+          "title_ace_time_effect": "RECU限制解除",
+          "title_slipstream": "空气动力学套件",
+          "title_unlock_nitro_2": "大招强化套件 I",
+          "title_unlock_nitro_3": "竞速级氮气支架",
+          "unlock_nitro_3": "解锁1x6磅，2x3磅，3x2磅氮气",
+          "upgrade_level_icon": "new_carport_icon_mountainroad"
+        },
+        "stats": {
+          "speed_limit": 189,
+          "speedup_ratio": 1.2,
+          "charge": {
+            "ace_charge": 3300,
+            "drift_charge_energy_coef": 600,
+            "drift_charge_energy_min": 1200,
+            "drift_charge_energy_max": 6000,
+            "drift_extra_charge": [
+              [
+                1,
+                0
+              ],
+              [
+                2,
+                1800
+              ]
+            ]
+          }
+        }
+      },
+      {
+        "id": 120974,
+        "suffix": "4",
+        "rich_text": {
+          "id": 120974,
+          "ace_time_charge_condition": "在山路赛道，使用氮气时获得额外大招充能并在落后第一名超过一定距离时获得速度提升效果",
+          "ace_time_effect": "浩然剑阵可以充能两次",
+          "ace_time_effect_rich_desc": "42",
+          "chip_unlock_tips": "芯片最高生效等级为#fe7ab75#ffffff级",
+          "icon_ace_time_charge_condition": "new_carport_icon_mountainroad",
+          "icon_ace_time_effect": "new_carport_icon_10398",
+          "icon_slipstream": "new_carport_icon_14",
+          "icon_unlock_nitro_2": "new_carport_icon_10398",
+          "icon_unlock_nitro_3": "new_carport_icon_nos_03",
+          "is_unlocked_ace_time_charge_condition": 1,
+          "is_unlocked_slipstream": 1,
+          "level_title": "大招强化 I",
+          "passive_skill_effect": [
+            "浩然剑阵加速",
+            ""
+          ],
+          "passive_skill_effect_value": [
+            "45公里/小时",
+            ""
+          ],
+          "passive_skill_rich_desc": "42",
+          "slipstream": "跟随在车辆后方将获得尾流，产生持续的氮气充能效果",
+          "special_passive_skill_desc": "每3次使用大招立即刷新SP技能CD并获得30%大招能量",
+          "special_passive_skill_icon": "new_carport_icon_10399",
+          "special_passive_skill_title": "浩然正气",
+          "title_ace_time_charge_condition": "赛道专精",
+          "title_ace_time_effect": "RECU限制解除",
+          "title_slipstream": "空气动力学套件",
+          "title_unlock_nitro_2": "大招强化套件 I",
+          "title_unlock_nitro_3": "竞速级氮气支架",
+          "unlock_nitro_3": "解锁1x6磅，2x3磅，3x2磅氮气",
+          "upgrade_level_icon": "new_carport_icon_10398"
+        },
+        "stats": {
+          "speed_limit": 189,
+          "speedup_ratio": 1.2,
+          "charge": {
+            "ace_charge": 3300,
+            "drift_charge_energy_coef": 600,
+            "drift_charge_energy_min": 1200,
+            "drift_charge_energy_max": 6000,
+            "drift_extra_charge": [
+              [
+                1,
+                0
+              ],
+              [
+                2,
+                1800
+              ]
+            ]
+          }
+        }
+      },
+      {
+        "id": 120975,
+        "suffix": "5",
+        "rich_text": {
+          "id": 120975,
+          "ace_time_charge_condition": "在山路赛道，使用氮气时获得额外大招充能并在落后第一名超过一定距离时获得速度提升效果",
+          "ace_time_effect": "浩然剑阵可以充能两次",
+          "ace_time_effect_rich_desc": "42",
+          "chip_unlock_tips": "芯片最高生效等级为#fe7ab76#ffffff级",
+          "icon_ace_time_charge_condition": "new_carport_icon_mountainroad",
+          "icon_ace_time_effect": "new_carport_icon_10398",
+          "icon_slipstream": "new_carport_icon_14",
+          "icon_unlock_nitro_2": "new_carport_icon_10398",
+          "icon_unlock_nitro_3": "new_carport_icon_nos_03",
+          "is_unlocked_ace_time_charge_condition": 1,
+          "is_unlocked_slipstream": 1,
+          "level_title": "竞速级氮气支架 II",
+          "passive_skill_effect": [
+            "浩然剑阵加速",
+            ""
+          ],
+          "passive_skill_effect_value": [
+            "45公里/小时",
+            ""
+          ],
+          "passive_skill_rich_desc": "42",
+          "slipstream": "跟随在车辆后方将获得尾流，产生持续的氮气充能效果",
+          "special_passive_skill_desc": "每3次使用大招立即刷新SP技能CD并获得30%大招能量",
+          "special_passive_skill_icon": "new_carport_icon_10399",
+          "special_passive_skill_title": "浩然正气",
+          "title_ace_time_charge_condition": "赛道专精",
+          "title_ace_time_effect": "RECU限制解除",
+          "title_slipstream": "空气动力学套件",
+          "title_unlock_nitro_2": "大招强化套件 I",
+          "title_unlock_nitro_3": "竞速级氮气支架",
+          "unlock_nitro_3": "解锁1x6磅，2x3磅，3x2磅氮气",
+          "upgrade_level_icon": "new_carport_icon_nos_03"
+        },
+        "stats": {
+          "speed_limit": 189,
+          "speedup_ratio": 1.2,
+          "charge": {
+            "ace_charge": 3300,
+            "drift_charge_energy_coef": 600,
+            "drift_charge_energy_min": 1200,
+            "drift_charge_energy_max": 6000,
+            "drift_extra_charge": [
+              [
+                1,
+                0
+              ],
+              [
+                2,
+                1800
+              ]
+            ]
+          }
+        }
+      },
+      {
+        "id": 120976,
+        "suffix": "6",
+        "rich_text": {
+          "id": 120976,
+          "ace_time_charge_condition": "在山路赛道，使用氮气时获得额外大招充能并在落后第一名超过一定距离时获得速度提升效果",
+          "ace_time_effect": "浩然剑阵可以充能两次",
+          "ace_time_effect_rich_desc": "42",
+          "chip_unlock_tips": "芯片最高生效等级为#fe7ab77#ffffff级",
+          "icon_ace_time_charge_condition": "new_carport_icon_mountainroad",
+          "icon_ace_time_effect": "new_carport_icon_10398",
+          "icon_slipstream": "new_carport_icon_14",
+          "icon_unlock_nitro_2": "new_carport_icon_10398",
+          "icon_unlock_nitro_3": "new_carport_icon_nos_03",
+          "is_unlocked_ace_time_charge_condition": 1,
+          "is_unlocked_slipstream": 1,
+          "level_title": "大招强化 II",
+          "passive_skill_effect": [
+            "浩然剑阵加速",
+            ""
+          ],
+          "passive_skill_effect_value": [
+            "50公里/小时",
+            ""
+          ],
+          "passive_skill_rich_desc": "42",
+          "slipstream": "跟随在车辆后方将获得尾流，产生持续的氮气充能效果",
+          "special_passive_skill_desc": "每3次使用大招立即刷新SP技能CD并获得30%大招能量",
+          "special_passive_skill_icon": "new_carport_icon_10399",
+          "special_passive_skill_title": "浩然正气",
+          "title_ace_time_charge_condition": "赛道专精",
+          "title_ace_time_effect": "RECU限制解除",
+          "title_slipstream": "空气动力学套件",
+          "title_unlock_nitro_2": "大招强化套件 I",
+          "title_unlock_nitro_3": "竞速级氮气支架",
+          "unlock_nitro_3": "解锁1x6磅，2x3磅，3x2磅氮气",
+          "upgrade_level_icon": "new_carport_icon_10398"
+        },
+        "stats": {
+          "speed_limit": 189.5,
+          "speedup_ratio": 1.2,
+          "charge": {
+            "ace_charge": 3300,
+            "drift_charge_energy_coef": 600,
+            "drift_charge_energy_min": 1200,
+            "drift_charge_energy_max": 6000,
+            "drift_extra_charge": [
+              [
+                1,
+                0
+              ],
+              [
+                2,
+                1800
+              ]
+            ]
+          }
+        }
+      },
+      {
+        "id": 120977,
+        "suffix": "7",
+        "rich_text": {
+          "id": 120977,
+          "ace_time_charge_condition": "在山路赛道，使用氮气时获得额外大招充能并在落后第一名超过一定距离时获得速度提升效果",
+          "ace_time_effect": "浩然剑阵可以充能两次",
+          "ace_time_effect_rich_desc": "42",
+          "chip_unlock_tips": "芯片最高生效等级为#fe7ab78#ffffff级",
+          "icon_ace_time_charge_condition": "new_carport_icon_mountainroad",
+          "icon_ace_time_effect": "new_carport_icon_10398",
+          "icon_slipstream": "new_carport_icon_14",
+          "icon_unlock_nitro_2": "new_carport_icon_10398",
+          "icon_unlock_nitro_3": "new_carport_icon_nos_03",
+          "is_unlocked_ace_time_charge_condition": 1,
+          "is_unlocked_ace_time_effect": 1,
+          "is_unlocked_slipstream": 1,
+          "level_title": "RECU限制解除",
+          "passive_skill_effect": [
+            "浩然剑阵加速",
+            ""
+          ],
+          "passive_skill_effect_value": [
+            "50公里/小时",
+            ""
+          ],
+          "passive_skill_rich_desc": "42",
+          "slipstream": "跟随在车辆后方将获得尾流，产生持续的氮气充能效果",
+          "special_passive_skill_desc": "每3次使用大招立即刷新SP技能CD并获得30%大招能量",
+          "special_passive_skill_icon": "new_carport_icon_10399",
+          "special_passive_skill_title": "浩然正气",
+          "title_ace_time_charge_condition": "赛道专精",
+          "title_ace_time_effect": "RECU限制解除",
+          "title_slipstream": "空气动力学套件",
+          "title_unlock_nitro_2": "大招强化套件 I",
+          "title_unlock_nitro_3": "竞速级氮气支架",
+          "unlock_nitro_3": "解锁1x6磅，2x3磅，3x2磅氮气",
+          "upgrade_level_icon": "new_carport_icon_10398"
+        },
+        "stats": {
+          "speed_limit": 189.5,
+          "speedup_ratio": 1.2,
+          "charge": {
+            "ace_charge": 3300,
+            "drift_charge_energy_coef": 600,
+            "drift_charge_energy_min": 1200,
+            "drift_charge_energy_max": 6000,
+            "drift_extra_charge": [
+              [
+                1,
+                0
+              ],
+              [
+                2,
+                1800
+              ]
+            ]
+          }
+        }
+      },
+      {
+        "id": 120978,
+        "suffix": "8",
+        "rich_text": {
+          "id": 120978,
+          "ace_time_charge_condition": "在山路赛道，使用氮气时获得额外大招充能并在落后第一名超过一定距离时获得速度提升效果",
+          "ace_time_effect": "浩然剑阵可以充能两次",
+          "ace_time_effect_rich_desc": "42",
+          "chip_unlock_tips": "芯片最高生效等级为#fe7ab79#ffffff级",
+          "icon_ace_time_charge_condition": "new_carport_icon_mountainroad",
+          "icon_ace_time_effect": "new_carport_icon_10398",
+          "icon_slipstream": "new_carport_icon_14",
+          "icon_unlock_nitro_2": "new_carport_icon_10398",
+          "icon_unlock_nitro_3": "new_carport_icon_nos_03",
+          "is_unlocked_ace_time_charge_condition": 1,
+          "is_unlocked_ace_time_effect": 1,
+          "is_unlocked_slipstream": 1,
+          "level_title": "大招强化 III",
+          "passive_skill_effect": [
+            "浩然剑阵加速",
+            ""
+          ],
+          "passive_skill_effect_value": [
+            "55公里/小时",
+            ""
+          ],
+          "passive_skill_rich_desc": "42",
+          "slipstream": "跟随在车辆后方将获得尾流，产生持续的氮气充能效果",
+          "special_passive_skill_desc": "每3次使用大招立即刷新SP技能CD并获得30%大招能量",
+          "special_passive_skill_icon": "new_carport_icon_10399",
+          "special_passive_skill_title": "浩然正气",
+          "title_ace_time_charge_condition": "赛道专精",
+          "title_ace_time_effect": "RECU限制解除",
+          "title_slipstream": "空气动力学套件",
+          "title_unlock_nitro_2": "大招强化套件 I",
+          "title_unlock_nitro_3": "竞速级氮气支架",
+          "unlock_nitro_3": "解锁1x6磅，2x3磅，3x2磅氮气",
+          "upgrade_level_icon": "new_carport_icon_10398"
+        },
+        "stats": {
+          "speed_limit": 190,
+          "speedup_ratio": 1.2,
+          "charge": {
+            "ace_charge": 3300,
+            "drift_charge_energy_coef": 600,
+            "drift_charge_energy_min": 1200,
+            "drift_charge_energy_max": 6000,
+            "drift_extra_charge": [
+              [
+                1,
+                0
+              ],
+              [
+                2,
+                1800
+              ]
+            ]
+          }
+        }
+      },
+      {
+        "id": 120979,
+        "suffix": "9",
+        "rich_text": {
+          "id": 120979,
+          "ace_time_charge_condition": "在山路赛道，使用氮气时获得额外大招充能并在落后第一名超过一定距离时获得速度提升效果",
+          "ace_time_effect": "浩然剑阵可以充能两次",
+          "ace_time_effect_rich_desc": "42",
+          "chip_unlock_tips": "芯片最高生效等级为#fe7ab710#ffffff级",
+          "icon_ace_time_charge_condition": "new_carport_icon_mountainroad",
+          "icon_ace_time_effect": "new_carport_icon_10398",
+          "icon_slipstream": "new_carport_icon_14",
+          "icon_unlock_nitro_2": "new_carport_icon_10398",
+          "icon_unlock_nitro_3": "new_carport_icon_nos_03",
+          "is_unlocked_ace_time_charge_condition": 1,
+          "is_unlocked_ace_time_effect": 1,
+          "is_unlocked_slipstream": 1,
+          "level_title": "大招强化 IV",
+          "passive_skill_effect": [
+            "浩然剑阵加速",
+            ""
+          ],
+          "passive_skill_effect_value": [
+            "60公里/小时",
+            ""
+          ],
+          "passive_skill_rich_desc": "42",
+          "slipstream": "跟随在车辆后方将获得尾流，产生持续的氮气充能效果",
+          "special_passive_skill_desc": "每3次使用大招立即刷新SP技能CD并获得30%大招能量",
+          "special_passive_skill_icon": "new_carport_icon_10399",
+          "special_passive_skill_title": "浩然正气",
+          "title_ace_time_charge_condition": "赛道专精",
+          "title_ace_time_effect": "RECU限制解除",
+          "title_slipstream": "空气动力学套件",
+          "title_unlock_nitro_2": "大招强化套件 I",
+          "title_unlock_nitro_3": "竞速级氮气支架",
+          "unlock_nitro_3": "解锁1x6磅，2x3磅，3x2磅氮气",
+          "upgrade_level_icon": "new_carport_icon_10398"
+        },
+        "stats": {
+          "speed_limit": 191,
+          "speedup_ratio": 1.2,
+          "charge": {
+            "ace_charge": 3300,
+            "drift_charge_energy_coef": 600,
+            "drift_charge_energy_min": 1200,
+            "drift_charge_energy_max": 6000,
+            "drift_extra_charge": [
+              [
+                1,
+                0
+              ],
+              [
+                2,
+                1800
+              ]
+            ]
+          }
+        }
+      }
+    ],
+    "skills": {
+      "ultimate": {
+        "id": 21751,
+        "name": "浩然剑阵",
+        "type": "N2O_SWORD",
+        "icon_static": "ui_skill187_04",
+        "icon_big": null,
+        "icon": null,
+        "init_ratio": null,
+        "icons": {
+          "normal": "ui_skill187_03",
+          "disable": "ui_skill187_01",
+          "alt": "ui_skill187_06",
+          "down": "ui_skill187_03",
+          "static": "ui_skill187_04",
+          "big": null
+        },
+        "extra": {
+          "cam_type": "N2O_SWORD",
+          "eff_id": 1,
+          "is_cost_energy": 2,
+          "rally_qte": 2
+        },
+        "value_texts": [
+          {
+            "key": "name",
+            "label": "技能名称",
+            "value": "浩然剑阵"
+          },
+          {
+            "key": "skill_type",
+            "label": "技能类型",
+            "value": "N2O_SWORD"
+          },
+          {
+            "key": "cam_type",
+            "label": "镜头类型",
+            "value": "N2O_SWORD"
+          },
+          {
+            "key": "eff_id",
+            "label": "特效编号",
+            "value": "1"
+          },
+          {
+            "key": "min_charge",
+            "label": "最低充能万分比",
+            "value": "10000"
+          },
+          {
+            "key": "rally_qte",
+            "label": "拉力赛触发qte",
+            "value": "2"
+          }
+        ],
+        "instructions": [
+          {
+            "id": 209891,
+            "accel_action": 2,
+            "accelerate_curve": [
+              [
+                0,
+                30
+              ],
+              [
+                165,
+                21.7
+              ],
+              [
+                166,
+                7
+              ],
+              [
+                200,
+                7
+              ]
+            ],
+            "attack_show_friend_enemy_filter": [
+              1,
+              2
+            ],
+            "attack_show_role_filter": [
+              1,
+              2,
+              3
+            ],
+            "buff_count": 0,
+            "cost_ratio": 1250,
+            "duration": 8,
+            "eff_id": 1,
+            "extra_children": [],
+            "extra_isolate": [],
+            "inst_group": 2,
+            "inst_name": "大招加速",
+            "inst_type": 2,
+            "is_hard_push": 1,
+            "rear_insts": [
+              -1
+            ],
+            "ref_insts": [
+              209891
+            ],
+            "skill_eff_id": 12504,
+            "sp_ex_speed_limit": 40,
+            "sp_max_ex_speed_limit": 40,
+            "sp_min_ex_speed_limit": 40,
+            "sp_n2o_ace_charge_ratio": 1,
+            "name": "大招加速",
+            "desc": null,
+            "type": 2,
+            "order": null,
+            "value_texts": [
+              {
+                "key": "sp_ex_speed_limit",
+                "label": "极速提升",
+                "value": "40km/h"
+              },
+              {
+                "key": "attack_show_friend_enemy_filter",
+                "label": "敌友筛选",
+                "value": "[1,2]"
+              },
+              {
+                "key": "attack_show_role_filter",
+                "label": "定位筛选",
+                "value": "[1,2,3]"
+              },
+              {
+                "key": "buff_count",
+                "label": "Buff 数量",
+                "value": "0"
+              },
+              {
+                "key": "rear_insts",
+                "label": "后续节点",
+                "value": "[-1]"
+              },
+              {
+                "key": "extra_children",
+                "label": "子节点",
+                "value": "[]"
+              },
+              {
+                "key": "ref_insts",
+                "label": "引用节点",
+                "value": "[209891]"
+              }
+            ]
+          },
+          {
+            "id": 1501801,
+            "attack_show_friend_enemy_filter": [
+              1,
+              2
+            ],
+            "attack_show_role_filter": [
+              1,
+              2,
+              3
+            ],
+            "buff_count": 0,
+            "duration": 0.1,
+            "eff_id": 1,
+            "extra_children": [
+              803731,
+              803732,
+              803733
+            ],
+            "extra_isolate": [],
+            "inst_group": 15,
+            "inst_name": "浩然剑阵随机干扰效果",
+            "inst_type": 15,
+            "random_children": [
+              [
+                803731,
+                34
+              ],
+              [
+                803732,
+                33
+              ],
+              [
+                803733,
+                33
+              ]
+            ],
+            "rear_insts": [],
+            "ref_insts": [
+              803731,
+              803732,
+              803733,
+              1501801
+            ],
+            "skill_eff_id": 15,
+            "sp_n2o_ace_charge_ratio": 1,
+            "name": "浩然剑阵随机干扰效果",
+            "desc": null,
+            "type": 15,
+            "order": null,
+            "value_texts": [
+              {
+                "key": "attack_show_friend_enemy_filter",
+                "label": "敌友筛选",
+                "value": "[1,2]"
+              },
+              {
+                "key": "attack_show_role_filter",
+                "label": "定位筛选",
+                "value": "[1,2,3]"
+              },
+              {
+                "key": "buff_count",
+                "label": "Buff 数量",
+                "value": "0"
+              },
+              {
+                "key": "rear_insts",
+                "label": "后续节点",
+                "value": "[]"
+              },
+              {
+                "key": "extra_children",
+                "label": "子节点",
+                "value": "[803731,803732,803733]"
+              },
+              {
+                "key": "ref_insts",
+                "label": "引用节点",
+                "value": "[803731,803732,803733,1501801]"
+              }
+            ]
+          }
+        ]
+      },
+      "sp": {
+        "id": 21781,
+        "name": "万剑归宗",
+        "type": null,
+        "icon_static": "ui_skill188_04",
+        "icon_big": null,
+        "icon": null,
+        "init_ratio": null,
+        "icons": {
+          "normal": "ui_skill188_03",
+          "disable": "ui_skill188_01",
+          "alt": "ui_skill188_03",
+          "down": "ui_skill188_03",
+          "static": "ui_skill188_04",
+          "big": null
+        },
+        "extra": {
+          "cam_type": null,
+          "eff_id": null,
+          "is_cost_energy": null,
+          "rally_qte": null
+        },
+        "value_texts": [
+          {
+            "key": "name",
+            "label": "技能名称",
+            "value": "万剑归宗"
+          }
+        ],
+        "instructions": [
+          {
+            "id": 400801,
+            "accel_action": 2,
+            "accelerate_curve": [
+              [
+                0,
+                0
+              ],
+              [
+                1,
+                0
+              ]
+            ],
+            "angular_decelerate_curve": [
+              [
+                0,
+                0
+              ],
+              [
+                0.5,
+                0.5
+              ],
+              [
+                1,
+                1
+              ]
+            ],
+            "attack_show_friend_enemy_filter": [
+              1,
+              2
+            ],
+            "attack_show_role_filter": [
+              1,
+              2,
+              3
+            ],
+            "buff_count": 0,
+            "duration": 5,
+            "eff_id": 1,
+            "extra_children": [],
+            "extra_isolate": [],
+            "inst_group": 4,
+            "inst_name": "起飞",
+            "inst_type": 4,
+            "is_hard_push": 1,
+            "navi_strategy": 2,
+            "rear_insts": [
+              -1
+            ],
+            "ref_insts": [
+              400801
+            ],
+            "skill_eff_id": 12505,
+            "sp_jump_height": 4,
+            "sp_jump_speed": 220,
+            "sp_n2o_ace_charge_ratio": 1,
+            "name": "起飞",
+            "desc": null,
+            "type": 4,
+            "order": null,
+            "value_texts": [
+              {
+                "key": "attack_show_friend_enemy_filter",
+                "label": "敌友筛选",
+                "value": "[1,2]"
+              },
+              {
+                "key": "attack_show_role_filter",
+                "label": "定位筛选",
+                "value": "[1,2,3]"
+              },
+              {
+                "key": "buff_count",
+                "label": "Buff 数量",
+                "value": "0"
+              },
+              {
+                "key": "rear_insts",
+                "label": "后续节点",
+                "value": "[-1]"
+              },
+              {
+                "key": "extra_children",
+                "label": "子节点",
+                "value": "[]"
+              },
+              {
+                "key": "ref_insts",
+                "label": "引用节点",
+                "value": "[400801]"
+              }
+            ]
+          },
+          {
+            "id": 143039,
+            "accelerate_curve": [
+              [
+                0,
+                0
+              ],
+              [
+                1,
+                4
+              ]
+            ],
+            "attack_show_friend_enemy_filter": [
+              1,
+              2
+            ],
+            "attack_show_role_filter": [
+              1,
+              2,
+              3
+            ],
+            "buff_count": 0,
+            "duration": 5,
+            "extra_children": [],
+            "extra_isolate": [],
+            "inst_group": 1214,
+            "inst_name": "万剑归宗加速",
+            "inst_type": 1,
+            "rear_insts": [],
+            "ref_insts": [
+              143039
+            ],
+            "sp_ex_speed_limit": 40,
+            "sp_max_ex_speed_limit": 40,
+            "sp_min_ex_speed_limit": 40,
+            "sp_n2o_ace_charge_ratio": 1,
+            "name": "万剑归宗加速",
+            "desc": null,
+            "type": 1,
+            "order": null,
+            "value_texts": [
+              {
+                "key": "attack_show_friend_enemy_filter",
+                "label": "敌友筛选",
+                "value": "[1,2]"
+              },
+              {
+                "key": "attack_show_role_filter",
+                "label": "定位筛选",
+                "value": "[1,2,3]"
+              },
+              {
+                "key": "buff_count",
+                "label": "Buff 数量",
+                "value": "0"
+              },
+              {
+                "key": "rear_insts",
+                "label": "后续节点",
+                "value": "[]"
+              },
+              {
+                "key": "extra_children",
+                "label": "子节点",
+                "value": "[]"
+              },
+              {
+                "key": "ref_insts",
+                "label": "引用节点",
+                "value": "[143039]"
+              }
+            ]
+          }
+        ]
+      },
+      "passive": [
+        {
+          "id": 50801,
+          "name": "封禁尾流",
+          "type": null,
+          "icon_static": null,
+          "icon_big": null,
+          "icon": null,
+          "init_ratio": null,
+          "icons": {
+            "normal": null,
+            "disable": null,
+            "alt": null,
+            "down": null,
+            "static": null,
+            "big": null
+          },
+          "extra": {
+            "cam_type": null,
+            "eff_id": null,
+            "is_cost_energy": null,
+            "rally_qte": null
+          },
+          "value_texts": [
+            {
+              "key": "name",
+              "label": "技能名称",
+              "value": "封禁尾流"
+            }
+          ],
+          "instructions": [
+            {
+              "id": 2100301,
+              "attack_show_friend_enemy_filter": [
+                1,
+                2
+              ],
+              "attack_show_role_filter": [
+                1,
+                2,
+                3
+              ],
+              "buff_count": 0,
+              "duration": 999,
+              "eff_id": 1,
+              "extra_children": [],
+              "extra_isolate": [],
+              "inst_group": 21001,
+              "inst_name": "封禁尾流",
+              "inst_type": 21,
+              "rear_insts": [],
+              "ref_insts": [
+                2100301
+              ],
+              "skill_eff_id": 21,
+              "slipstream_state": 1,
+              "sp_n2o_ace_charge_ratio": 1,
+              "name": "封禁尾流",
+              "desc": null,
+              "type": 21,
+              "order": null,
+              "value_texts": [
+                {
+                  "key": "attack_show_friend_enemy_filter",
+                  "label": "敌友筛选",
+                  "value": "[1,2]"
+                },
+                {
+                  "key": "attack_show_role_filter",
+                  "label": "定位筛选",
+                  "value": "[1,2,3]"
+                },
+                {
+                  "key": "buff_count",
+                  "label": "Buff 数量",
+                  "value": "0"
+                },
+                {
+                  "key": "rear_insts",
+                  "label": "后续节点",
+                  "value": "[]"
+                },
+                {
+                  "key": "extra_children",
+                  "label": "子节点",
+                  "value": "[]"
+                },
+                {
+                  "key": "ref_insts",
+                  "label": "引用节点",
+                  "value": "[2100301]"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "id": 78707,
+          "name": "浩然正气",
+          "type": null,
+          "icon_static": null,
+          "icon_big": null,
+          "icon": null,
+          "init_ratio": null,
+          "icons": {
+            "normal": null,
+            "disable": null,
+            "alt": null,
+            "down": null,
+            "static": null,
+            "big": null
+          },
+          "extra": {
+            "cam_type": null,
+            "eff_id": null,
+            "is_cost_energy": null,
+            "rally_qte": null
+          },
+          "value_texts": [
+            {
+              "key": "name",
+              "label": "技能名称",
+              "value": "浩然正气"
+            }
+          ],
+          "instructions": [
+            {
+              "id": 3706101,
+              "buff_count": 0,
+              "count_eff_ids": [
+                8200201,
+                907451
+              ],
+              "count_mode": 2,
+              "count_num": 3,
+              "count_type": 16,
+              "counter_type": 4,
+              "duration": null,
+              "extra_children": [],
+              "extra_isolate": [
+                907451,
+                8200201
+              ],
+              "inst_group": 37090,
+              "inst_name": "3次大招刷新SP技能CD",
+              "inst_type": 37,
+              "rear_insts": [
+                -1
+              ],
+              "ref_insts": [
+                907451,
+                3706101,
+                8200201
+              ],
+              "sp_n2o_ace_charge_ratio": 1,
+              "name": "3次大招刷新SP技能CD",
+              "desc": null,
+              "type": 37,
+              "order": null,
+              "value_texts": [
+                {
+                  "key": "buff_count",
+                  "label": "Buff 数量",
+                  "value": "0"
+                },
+                {
+                  "key": "rear_insts",
+                  "label": "后续节点",
+                  "value": "[-1]"
+                },
+                {
+                  "key": "extra_children",
+                  "label": "子节点",
+                  "value": "[]"
+                },
+                {
+                  "key": "ref_insts",
+                  "label": "引用节点",
+                  "value": "[907451,3706101,8200201]"
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    "skillPanelGroups": {
+      "ultimate": [
+        {
+          "id": "2019",
+          "name_rich": {
+            "raw": "极速提升",
+            "html": "极速提升"
+          },
+          "value_rich": {
+            "raw": "40km/h",
+            "html": "40km/h"
+          },
+          "value_text": "40km/h",
+          "instruction_ids": [
+            209891,
+            209895
+          ],
+          "values": []
+        },
+        {
+          "id": "2020",
+          "name_rich": {
+            "raw": "加速动力",
+            "html": "加速动力"
+          },
+          "value_rich": {
+            "raw": "中",
+            "html": "中"
+          },
+          "value_text": "中",
+          "instruction_ids": [],
+          "values": []
+        },
+        {
+          "id": "2021",
+          "name_rich": {
+            "raw": "加速时长",
+            "html": "加速时长"
+          },
+          "value_rich": {
+            "raw": "8秒",
+            "html": "8秒"
+          },
+          "value_text": "8秒",
+          "instruction_ids": [],
+          "values": []
+        },
+        {
+          "id": "2023",
+          "name_rich": {
+            "raw": "干扰范围",
+            "html": "干扰范围"
+          },
+          "value_rich": {
+            "raw": "600米",
+            "html": "600米"
+          },
+          "value_text": "600米",
+          "instruction_ids": [],
+          "values": []
+        },
+        {
+          "id": "2024",
+          "name_rich": {
+            "raw": "生成位置",
+            "html": "生成位置"
+          },
+          "value_rich": {
+            "raw": "前方50米",
+            "html": "前方50米"
+          },
+          "value_text": "前方50米",
+          "instruction_ids": [],
+          "values": []
+        },
+        {
+          "id": "2025",
+          "name_rich": {
+            "raw": "触碰宽度",
+            "html": "触碰宽度"
+          },
+          "value_rich": {
+            "raw": "16米",
+            "html": "16米"
+          },
+          "value_text": "16米",
+          "instruction_ids": [],
+          "values": []
+        },
+        {
+          "id": "2026",
+          "name_rich": {
+            "raw": "可否净化",
+            "html": "可否净化"
+          },
+          "value_rich": {
+            "raw": "可净化",
+            "html": "可净化"
+          },
+          "value_text": "可净化",
+          "instruction_ids": [],
+          "values": []
+        }
+      ],
+      "sp": [
+        {
+          "id": "2015",
+          "name_rich": {
+            "raw": "冷却时间",
+            "html": "冷却时间"
+          },
+          "value_rich": {
+            "raw": "15秒",
+            "html": "15秒"
+          },
+          "value_text": "15秒",
+          "instruction_ids": [],
+          "values": []
+        },
+        {
+          "id": "2016",
+          "name_rich": {
+            "raw": "极速提升",
+            "html": "极速提升"
+          },
+          "value_rich": {
+            "raw": "40mk/h",
+            "html": "40mk/h"
+          },
+          "value_text": "40mk/h",
+          "instruction_ids": [],
+          "values": []
+        },
+        {
+          "id": "2017",
+          "name_rich": {
+            "raw": "加速动力",
+            "html": "加速动力"
+          },
+          "value_rich": {
+            "raw": "低",
+            "html": "低"
+          },
+          "value_text": "低",
+          "instruction_ids": [],
+          "values": []
+        },
+        {
+          "id": "2018",
+          "name_rich": {
+            "raw": "加速时长",
+            "html": "加速时长"
+          },
+          "value_rich": {
+            "raw": "5秒",
+            "html": "5秒"
+          },
+          "value_text": "5秒",
+          "instruction_ids": [],
+          "values": []
+        }
+      ],
+      "passive": [],
+      "other": []
+    },
+    "richText": {
+      "id": 12097,
+      "ace_time_charge_condition": "在山路赛道，使用氮气时获得额外大招充能并在落后第一名超过一定距离时获得速度提升效果",
+      "ace_time_effect": "浩然剑阵可以充能两次",
+      "ace_time_effect_rich_desc": "42",
+      "chip_unlock_tips": "芯片最高生效等级为#fe7ab71#ffffff级",
+      "icon_ace_time_charge_condition": "new_carport_icon_mountainroad",
+      "icon_ace_time_effect": "new_carport_icon_10398",
+      "icon_slipstream": "new_carport_icon_14",
+      "icon_unlock_nitro_2": "new_carport_icon_10398",
+      "icon_unlock_nitro_3": "new_carport_icon_nos_03",
+      "level_title": "原车型",
+      "passive_skill_effect": [
+        "浩然剑阵加速",
+        ""
+      ],
+      "passive_skill_effect_value": [
+        "40公里/小时",
+        ""
+      ],
+      "passive_skill_rich_desc": "42",
+      "slipstream": "跟随在车辆后方将获得尾流，产生持续的氮气充能效果",
+      "special_passive_skill_desc": {
+        "raw": "每3次使用大招立即刷新SP技能CD并获得30%大招能量",
+        "html": "每3次使用大招立即刷新SP技能CD并获得30%大招能量"
+      },
+      "special_passive_skill_icon": "new_carport_icon_10399",
+      "special_passive_skill_title": "浩然正气",
+      "title_ace_time_charge_condition": "赛道专精",
+      "title_ace_time_effect": "RECU限制解除",
+      "title_slipstream": "空气动力学套件",
+      "title_unlock_nitro_2": "大招强化套件 I",
+      "title_unlock_nitro_3": "竞速级氮气支架",
+      "unlock_nitro_3": "解锁1x6磅，2x3磅，3x2磅氮气",
+      "upgrade_level_icon": "new_carport_icon_10399",
+      "feature_desc": {
+        "raw": "加速推进，极速提升#desc[2019]，持续8秒。加速开始时在600米范围内敌方全体前方50米随机落下一种持续存在7秒的剑阵：\n·紫电剑阵：触碰后7秒内只能通过漂移获取集气量\n·青冥剑阵：7秒内耐久损失翻倍\n·玉衡剑阵：7秒内闪现距离降低50%。",
+        "html": "加速推进，极速提升<span class=\"rt-desc\">极速提升 40km/h</span>，持续8秒。加速开始时在600米范围内敌方全体前方50米随机落下一种持续存在7秒的剑阵：<br/>·紫电剑阵：触碰后7秒内只能通过漂移获取集气量<br/>·青冥剑阵：7秒内耐久损失翻倍<br/>·玉衡剑阵：7秒内闪现距离降低50%。"
+      },
+      "sp_skill_desc": {
+        "raw": "#acacac冷却时间：15秒#ffffff\n5秒内极速+40km/h并进入御剑飞行状态#tips[自动巡航]，期间过弯不减速。",
+        "html": "<span class=\"rt-color\" style=\"color: #acacac\">冷却时间：15秒</span><br/>5秒内极速+40km/h并进入御剑飞行状态<span class=\"rt-tip rt-tip--entry\" data-tip=\"自动巡航\" data-icon=\"carport_new_skill_illustrate_b4\" data-desc=\"·沿预设路线自动行驶&#10;·通过弯道时会失速&#10;·不会脱离预设路线\" style=\"--tip-color:#7eedff\" title=\"·沿预设路线自动行驶&#10;·通过弯道时会失速&#10;·不会脱离预设路线\"><span class=\"rt-tip__icon-slot\"></span>自动巡航</span>，期间过弯不减速。"
+      },
+      "passive_skill_desc": null,
+      "story_title": "厂商：平行世界",
+      "story": {
+        "raw": "千年前，铸剑宗师以毕生修为锻一柄飞剑\"浩然\"，剑成之日惊雷贯天，剑身却坠入时空裂隙，落入平行世界车厂的量子熔炉中。工程师们惊见剑魂未散，遂以剑为骨、以气为引，将浩然之意融入赛车血脉。车身修长如剑脊，尾翼锋锐似剑锷，引擎轰鸣恍若剑吟。每逢全速疾驰，车身泛起淡青剑气，所过之处风雷相随——世人称其为\"以道驭速，清规不破\"。",
+        "html": "千年前，铸剑宗师以毕生修为锻一柄飞剑\"浩然\"，剑成之日惊雷贯天，剑身却坠入时空裂隙，落入平行世界车厂的量子熔炉中。工程师们惊见剑魂未散，遂以剑为骨、以气为引，将浩然之意融入赛车血脉。车身修长如剑脊，尾翼锋锐似剑锷，引擎轰鸣恍若剑吟。每逢全速疾驰，车身泛起淡青剑气，所过之处风雷相随——世人称其为\"以道驭速，清规不破\"。"
+      }
+    },
+    "report": {
+      "title": "王牌速度节赛车检验报告",
+      "sections": [
+        {
+          "title": "基础数据",
+          "items": [
+            {
+              "label": "检测车辆",
+              "value": "清规·浩然/Sword"
+            },
+            {
+              "label": "注册日期",
+              "value": "{}年{}月{}日"
+            },
+            {
+              "label": "车辆类型",
+              "value": "幻想阵营"
+            },
+            {
+              "label": "厂商",
+              "value": "平行世界"
+            },
+            {
+              "label": "定位",
+              "value": "干扰位"
+            },
+            {
+              "label": "赛道专精",
+              "value": "山路"
+            },
+            {
+              "label": "能源类型",
+              "value": "仙气"
+            },
+            {
+              "label": "驱动方式",
+              "value": "后驱"
+            },
+            {
+              "label": "车重",
+              "value": "30kg"
+            }
+          ]
+        },
+        {
+          "title": "芯片模块",
+          "items": [
+            {
+              "label": "芯片写入权限",
+              "value": "已获取"
+            },
+            {
+              "label": "扩展芯片类型",
+              "value": "○○◇◣◣V"
+            },
+            {
+              "label": "等级合规检查",
+              "value": "芯片等级未高于RECU等级"
+            }
+          ]
+        },
+        {
+          "title": "外观检验",
+          "items": [
+            {
+              "label": "检验结果",
+              "value": "合格"
+            }
+          ]
+        },
+        {
+          "title": "大招驱动模块",
+          "items": [
+            {
+              "label": "能量控制单元",
+              "value": "五代RECU，工作正常"
+            },
+            {
+              "label": "瑞卡因子稳定器",
+              "value": "工作正常"
+            },
+            {
+              "label": "NOS",
+              "value": "氮氧加速系统已安装"
+            },
+            {
+              "label": "空气动力套件（2级解锁）",
+              "value": "未选装"
+            },
+            {
+              "label": "赛道专精（3级解锁）",
+              "value": "未选装"
+            },
+            {
+              "label": "RECU限制解除（8级解锁）",
+              "value": "未选装"
+            }
+          ]
+        },
+        {
+          "title": "整车判定",
+          "items": [
+            {
+              "label": "检验结果",
+              "value": "合格，可参加速度节赛事"
+            }
+          ]
+        }
+      ]
+    },
+    "story": {
+      "content": "千年前，铸剑宗师以毕生修为锻一柄飞剑\"浩然\"，剑成之日惊雷贯天，剑身却坠入时空裂隙，落入平行世界车厂的量子熔炉中。工程师们惊见剑魂未散，遂以剑为骨、以气为引，将浩然之意融入赛车血脉。车身修长如剑脊，尾翼锋锐似剑锷，引擎轰鸣恍若剑吟。每逢全速疾驰，车身泛起淡青剑气，所过之处风雷相随——世人称其为\"以道驭速，清规不破\"。",
+      "id": 12097,
+      "story_content": "千年前，铸剑宗师以毕生修为锻一柄飞剑\"浩然\"，剑成之日惊雷贯天，剑身却坠入时空裂隙，落入平行世界车厂的量子熔炉中。工程师们惊见剑魂未散，遂以剑为骨、以气为引，将浩然之意融入赛车血脉。车身修长如剑脊，尾翼锋锐似剑锷，引擎轰鸣恍若剑吟。每逢全速疾驰，车身泛起淡青剑气，所过之处风雷相随——世人称其为\"以道驭速，清规不破\"。",
+      "story_title": "厂商：平行世界",
+      "vehicle_name": "清规·浩然"
+    },
+    "obtain": {
+      "tag_img": null,
+      "obtain_type_ids": [
+        30
+      ],
+      "obtain_types": [
+        {
+          "id": 30,
+          "label": "限时活动",
+          "desc": "参与限时活动获取",
+          "icon": "commonnew_activityconversion"
+        }
+      ]
+    },
+    "restraints": {
+      "id": 12097,
+      "match": [
+        10020,
+        10099
+      ],
+      "be_restraint": [
+        10038,
+        12051,
+        10077,
+        10045,
+        10065,
+        10005,
+        12009
+      ]
+    },
+    "resources": {
+      "icons": {
+        "ace_time_effect": "new_carport_icon_10398",
+        "icon_ace_time_effect": "new_carport_icon_10398",
+        "ace_time_charge_condition": "new_carport_icon_mountainroad",
+        "slipstream": "new_carport_icon_14",
+        "unlock_nitro_2": "new_carport_icon_10398",
+        "unlock_nitro_3": "new_carport_icon_nos_03",
+        "upgrade_level_icon": "new_carport_icon_10399",
+        "special_passive_skill_icon": "new_carport_icon_10399"
+      }
+    },
+    "skins": {
+      "sets": {
+        "local": [
+          {
+            "source": "local",
+            "index": 1
+          }
+        ]
+      },
+      "meta": {
+        "1": {
+          "id": 50665,
+          "name": "涂装 御剑而行",
+          "desc": "御剑而行，随心而动！\n适用车型：#1dd8d0清规·浩然",
+          "icon_s": "tz_12097_1_s",
+          "icon_m": "tz_12097_1_m",
+          "icon_b": "tz_12097_1_b"
+        },
+        "2": {
+          "id": 50668,
+          "name": "涂装 剑破苍穹",
+          "desc": "以身为剑，破开苍穹，让天地万物都成为你的尾迹！\n适用车型：#1dd8d0清规·浩然",
+          "icon_s": "tz_12097_2_s",
+          "icon_m": "tz_12097_2_m",
+          "icon_b": "tz_12097_2_b"
+        }
+      }
+    },
+    "media": {
+      "cover": "/rk-assets/12097_m.png",
+      "coverFallback": "/rk-assets/12097_m.png",
+      "shareImage": {
+        "key": "share_12097",
+        "file": "share_12097.png",
+        "url": "https://h65.gdl.netease.com/web_res_list_20260610/share_12097.webp"
+      },
+      "shareImageAdvance": null,
+      "skillVideo": {
+        "ultimate": {
+          "url": "https://vod.cc.163.com/file/6a311ad48896cbf7d0bfe5b4?source=27&protocol=https",
+          "thumbnail": "table_video_img_12097"
+        },
+        "sp": {
+          "url": "https://vod.cc.163.com/file/6a311ae62c5fe7a06c016d7d?source=27&protocol=https",
+          "thumbnail": "table_video_img_12097sp"
+        }
+      }
+    }
+  }
+}

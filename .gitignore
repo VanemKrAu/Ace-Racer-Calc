@@ -1,0 +1,17 @@
+# 临时文件
+.agent_tmp/
+.agent_reports/
+*.tmp
+node_modules/
+
+# 技能图标（计算器不调用）
+data/*/full/assets/*/skill-icons/
+data/*/single-*/assets/*/skill-icons/
+
+# 皮肤图片（计算器不调用）
+data/*/full/assets/*/skins/
+data/*/single-*/assets/*/skins/
+
+# 小尺寸车身图（只用 m 尺寸）
+data/*/full/assets/*/body/*_s.png
+data/*/single-*/assets/*/body/*_s.png

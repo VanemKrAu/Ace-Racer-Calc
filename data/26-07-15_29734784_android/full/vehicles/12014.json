@@ -1,0 +1,1704 @@
+{
+  "schemaVersion": 2,
+  "versionId": "26-07-15_29734784_android",
+  "generatedAt": "2026-07-16T09:22:34.000Z",
+  "item": {
+    "id": 12014,
+    "name": "萌星凯蒂",
+    "manufacturer": "平行世界",
+    "quality": "传说",
+    "class": 4,
+    "group": 1,
+    "position": "竞速位",
+    "positionLabel": "竞速位",
+    "racingRole": 1,
+    "racingRoleName": "竞速位",
+    "specialization": "城市",
+    "seasonCode": "S16",
+    "publication": {
+      "state": "released",
+      "releaseTimestamp": 1691856000,
+      "releaseText": "2023-8-13 00:00:00",
+      "releaseMacro": "S16_WEEK3_3DAY_START"
+    },
+    "summary": "为偶数名次的友方车辆施加隐身和充能",
+    "description": "为偶数名次的友方车辆施加隐身和充能",
+    "tags": [
+      {
+        "id": 21,
+        "text": "友方加速",
+        "desc": "提高队友的极速",
+        "color": 1
+      },
+      {
+        "id": 28,
+        "text": "友方隐身",
+        "desc": "为队友提供隐身效果",
+        "color": 1
+      },
+      {
+        "id": 29,
+        "text": "友方充能",
+        "desc": "为队友提供大招充能",
+        "color": 1
+      }
+    ],
+    "stats": {
+      "speed_limit": 194,
+      "speedup_ratio": 1.13,
+      "charge": {
+        "ace_charge": 2700,
+        "drift_charge_energy_coef": 600,
+        "drift_charge_energy_min": 1200,
+        "drift_charge_energy_max": 6000,
+        "drift_extra_charge": [
+          [
+            1,
+            0
+          ],
+          [
+            2,
+            1800
+          ]
+        ]
+      }
+    },
+    "maxDurability": 100,
+    "levels": [
+      {
+        "id": 12014,
+        "suffix": "0",
+        "rich_text": {
+          "id": 12014,
+          "ace_time_charge_condition": "在城市赛道，使用氮气时获得额外大招充能并在落后第一名超过一定距离时获得速度提升效果",
+          "ace_time_effect": "闪耀萌星可以充能两次并在开局时获得20%大招能量",
+          "ace_time_effect_rich_desc": "闪耀萌星可以充能两次并在开局时获得20%大招能量",
+          "chip_unlock_tips": "芯片最高生效等级为#fe7ab71#ffffff级",
+          "icon_ace_time_charge_condition": "new_carport_icon_city",
+          "icon_ace_time_effect": "new_carport_icon_10219",
+          "icon_slipstream": "new_carport_icon_14",
+          "icon_unlock_nitro_2": "new_carport_icon_10219",
+          "icon_unlock_nitro_3": "new_carport_icon_nos_03",
+          "level_title": "原车型",
+          "passive_skill_effect": [
+            "闪耀萌星加速",
+            ""
+          ],
+          "passive_skill_effect_value": [
+            "55公里/小时",
+            ""
+          ],
+          "passive_skill_rich_desc": "将比赛结束倒计时由10秒变为15秒，比赛结束倒计时开始时友方全体极速+50km/h并获得50%大招能量",
+          "slipstream": "跟随在车辆后方将获得尾流，产生持续的氮气充能效果",
+          "special_passive_skill_desc": "将比赛结束倒计时由10秒变为15秒，比赛结束倒计时开始时友方全体极速+50km/h并获得50%大招能量",
+          "special_passive_skill_icon": "new_carport_icon_10220",
+          "special_passive_skill_title": "甜蜜胜利",
+          "title_ace_time_charge_condition": "赛道专精",
+          "title_ace_time_effect": "RECU限制解除",
+          "title_slipstream": "空气动力学套件",
+          "title_unlock_nitro_2": "大招强化套件 I",
+          "title_unlock_nitro_3": "竞速级氮气支架",
+          "unlock_nitro_3": "解锁1x6磅，2x3磅，3x2磅氮气",
+          "upgrade_level_icon": "new_carport_icon_10220"
+        },
+        "stats": {
+          "speed_limit": 194,
+          "speedup_ratio": 1.13,
+          "charge": {
+            "ace_charge": 2700,
+            "drift_charge_energy_coef": 600,
+            "drift_charge_energy_min": 1200,
+            "drift_charge_energy_max": 6000,
+            "drift_extra_charge": [
+              [
+                1,
+                0
+              ],
+              [
+                2,
+                1800
+              ]
+            ]
+          }
+        }
+      },
+      {
+        "id": 120143,
+        "suffix": "1",
+        "rich_text": {
+          "id": 120143,
+          "ace_time_charge_condition": "在城市赛道，使用氮气时获得额外大招充能并在落后第一名超过一定距离时获得速度提升效果",
+          "ace_time_effect": "闪耀萌星可以充能两次并在开局时获得20%大招能量",
+          "ace_time_effect_rich_desc": "闪耀萌星可以充能两次并在开局时获得20%大招能量",
+          "chip_unlock_tips": "芯片最高生效等级为#fe7ab74#ffffff级",
+          "icon_ace_time_charge_condition": "new_carport_icon_city",
+          "icon_ace_time_effect": "new_carport_icon_10219",
+          "icon_slipstream": "new_carport_icon_14",
+          "icon_unlock_nitro_2": "new_carport_icon_10219",
+          "icon_unlock_nitro_3": "new_carport_icon_nos_03",
+          "is_unlocked_ace_time_charge_condition": 1,
+          "is_unlocked_slipstream": 1,
+          "level_title": "竞速级氮气支架 I",
+          "passive_skill_effect": [
+            "闪耀萌星加速",
+            ""
+          ],
+          "passive_skill_effect_value": [
+            "55公里/小时",
+            ""
+          ],
+          "passive_skill_rich_desc": "将比赛结束倒计时由10秒变为15秒，比赛结束倒计时开始时友方全体极速+50km/h并获得50%大招能量",
+          "slipstream": "跟随在车辆后方将获得尾流，产生持续的氮气充能效果",
+          "special_passive_skill_desc": "将比赛结束倒计时由10秒变为15秒，比赛结束倒计时开始时友方全体极速+50km/h并获得50%大招能量",
+          "special_passive_skill_icon": "new_carport_icon_10220",
+          "special_passive_skill_title": "甜蜜胜利",
+          "title_ace_time_charge_condition": "赛道专精",
+          "title_ace_time_effect": "RECU限制解除",
+          "title_slipstream": "空气动力学套件",
+          "title_unlock_nitro_2": "大招强化套件 I",
+          "title_unlock_nitro_3": "竞速级氮气支架",
+          "unlock_nitro_3": "解锁1x6磅，2x3磅，3x2磅氮气",
+          "upgrade_level_icon": "new_carport_icon_nos_03"
+        },
+        "stats": {
+          "speed_limit": 194,
+          "speedup_ratio": 1.13,
+          "charge": {
+            "ace_charge": 2700,
+            "drift_charge_energy_coef": 600,
+            "drift_charge_energy_min": 1200,
+            "drift_charge_energy_max": 6000,
+            "drift_extra_charge": [
+              [
+                1,
+                0
+              ],
+              [
+                2,
+                1800
+              ]
+            ]
+          }
+        }
+      },
+      {
+        "id": 120141,
+        "suffix": "2",
+        "rich_text": {
+          "id": 120141,
+          "ace_time_charge_condition": "在城市赛道，使用氮气时获得额外大招充能并在落后第一名超过一定距离时获得速度提升效果",
+          "ace_time_effect": "闪耀萌星可以充能两次并在开局时获得20%大招能量",
+          "ace_time_effect_rich_desc": "闪耀萌星可以充能两次并在开局时获得20%大招能量",
+          "chip_unlock_tips": "芯片最高生效等级为#fe7ab72#ffffff级",
+          "icon_ace_time_charge_condition": "new_carport_icon_city",
+          "icon_ace_time_effect": "new_carport_icon_10219",
+          "icon_slipstream": "new_carport_icon_14",
+          "icon_unlock_nitro_2": "new_carport_icon_10219",
+          "icon_unlock_nitro_3": "new_carport_icon_nos_03",
+          "is_unlocked_slipstream": 1,
+          "level_title": "空气动力学套件",
+          "passive_skill_effect": [
+            "闪耀萌星加速",
+            ""
+          ],
+          "passive_skill_effect_value": [
+            "55公里/小时",
+            ""
+          ],
+          "passive_skill_rich_desc": "将比赛结束倒计时由10秒变为15秒，比赛结束倒计时开始时友方全体极速+50km/h并获得50%大招能量",
+          "slipstream": "跟随在车辆后方将获得尾流，产生持续的氮气充能效果",
+          "special_passive_skill_desc": "将比赛结束倒计时由10秒变为15秒，比赛结束倒计时开始时友方全体极速+50km/h并获得50%大招能量",
+          "special_passive_skill_icon": "new_carport_icon_10220",
+          "special_passive_skill_title": "甜蜜胜利",
+          "title_ace_time_charge_condition": "赛道专精",
+          "title_ace_time_effect": "RECU限制解除",
+          "title_slipstream": "空气动力学套件",
+          "title_unlock_nitro_2": "大招强化套件 I",
+          "title_unlock_nitro_3": "竞速级氮气支架",
+          "unlock_nitro_3": "解锁1x6磅，2x3磅，3x2磅氮气",
+          "upgrade_level_icon": "new_carport_icon_14"
+        },
+        "stats": {
+          "speed_limit": 194,
+          "speedup_ratio": 1.13,
+          "charge": {
+            "ace_charge": 2700,
+            "drift_charge_energy_coef": 600,
+            "drift_charge_energy_min": 1200,
+            "drift_charge_energy_max": 6000,
+            "drift_extra_charge": [
+              [
+                1,
+                0
+              ],
+              [
+                2,
+                1800
+              ]
+            ]
+          }
+        }
+      },
+      {
+        "id": 120142,
+        "suffix": "3",
+        "rich_text": {
+          "id": 120142,
+          "ace_time_charge_condition": "在城市赛道，使用氮气时获得额外大招充能并在落后第一名超过一定距离时获得速度提升效果",
+          "ace_time_effect": "闪耀萌星可以充能两次并在开局时获得20%大招能量",
+          "ace_time_effect_rich_desc": "闪耀萌星可以充能两次并在开局时获得20%大招能量",
+          "chip_unlock_tips": "芯片最高生效等级为#fe7ab73#ffffff级",
+          "icon_ace_time_charge_condition": "new_carport_icon_city",
+          "icon_ace_time_effect": "new_carport_icon_10219",
+          "icon_slipstream": "new_carport_icon_14",
+          "icon_unlock_nitro_2": "new_carport_icon_10219",
+          "icon_unlock_nitro_3": "new_carport_icon_nos_03",
+          "is_unlocked_ace_time_charge_condition": 1,
+          "is_unlocked_slipstream": 1,
+          "level_title": "赛道专精",
+          "passive_skill_effect": [
+            "闪耀萌星加速",
+            ""
+          ],
+          "passive_skill_effect_value": [
+            "55公里/小时",
+            ""
+          ],
+          "passive_skill_rich_desc": "将比赛结束倒计时由10秒变为15秒，比赛结束倒计时开始时友方全体极速+50km/h并获得50%大招能量",
+          "slipstream": "跟随在车辆后方将获得尾流，产生持续的氮气充能效果",
+          "special_passive_skill_desc": "将比赛结束倒计时由10秒变为15秒，比赛结束倒计时开始时友方全体极速+50km/h并获得50%大招能量",
+          "special_passive_skill_icon": "new_carport_icon_10220",
+          "special_passive_skill_title": "甜蜜胜利",
+          "title_ace_time_charge_condition": "赛道专精",
+          "title_ace_time_effect": "RECU限制解除",
+          "title_slipstream": "空气动力学套件",
+          "title_unlock_nitro_2": "大招强化套件 I",
+          "title_unlock_nitro_3": "竞速级氮气支架",
+          "unlock_nitro_3": "解锁1x6磅，2x3磅，3x2磅氮气",
+          "upgrade_level_icon": "new_carport_icon_city"
+        },
+        "stats": {
+          "speed_limit": 194,
+          "speedup_ratio": 1.13,
+          "charge": {
+            "ace_charge": 2700,
+            "drift_charge_energy_coef": 600,
+            "drift_charge_energy_min": 1200,
+            "drift_charge_energy_max": 6000,
+            "drift_extra_charge": [
+              [
+                1,
+                0
+              ],
+              [
+                2,
+                1800
+              ]
+            ]
+          }
+        }
+      },
+      {
+        "id": 120144,
+        "suffix": "4",
+        "rich_text": {
+          "id": 120144,
+          "ace_time_charge_condition": "在城市赛道，使用氮气时获得额外大招充能并在落后第一名超过一定距离时获得速度提升效果",
+          "ace_time_effect": "闪耀萌星可以充能两次并在开局时获得20%大招能量",
+          "ace_time_effect_rich_desc": "闪耀萌星可以充能两次并在开局时获得20%大招能量",
+          "chip_unlock_tips": "芯片最高生效等级为#fe7ab75#ffffff级",
+          "icon_ace_time_charge_condition": "new_carport_icon_city",
+          "icon_ace_time_effect": "new_carport_icon_10219",
+          "icon_slipstream": "new_carport_icon_14",
+          "icon_unlock_nitro_2": "new_carport_icon_10219",
+          "icon_unlock_nitro_3": "new_carport_icon_nos_03",
+          "is_unlocked_ace_time_charge_condition": 1,
+          "is_unlocked_slipstream": 1,
+          "level_title": "大招强化 I",
+          "passive_skill_effect": [
+            "闪耀萌星加速",
+            ""
+          ],
+          "passive_skill_effect_value": [
+            "60公里/小时",
+            ""
+          ],
+          "passive_skill_rich_desc": "将比赛结束倒计时由10秒变为15秒，比赛结束倒计时开始时友方全体极速+50km/h并获得50%大招能量",
+          "slipstream": "跟随在车辆后方将获得尾流，产生持续的氮气充能效果",
+          "special_passive_skill_desc": "将比赛结束倒计时由10秒变为15秒，比赛结束倒计时开始时友方全体极速+50km/h并获得50%大招能量",
+          "special_passive_skill_icon": "new_carport_icon_10220",
+          "special_passive_skill_title": "甜蜜胜利",
+          "title_ace_time_charge_condition": "赛道专精",
+          "title_ace_time_effect": "RECU限制解除",
+          "title_slipstream": "空气动力学套件",
+          "title_unlock_nitro_2": "大招强化套件 I",
+          "title_unlock_nitro_3": "竞速级氮气支架",
+          "unlock_nitro_3": "解锁1x6磅，2x3磅，3x2磅氮气",
+          "upgrade_level_icon": "new_carport_icon_10219"
+        },
+        "stats": {
+          "speed_limit": 194,
+          "speedup_ratio": 1.13,
+          "charge": {
+            "ace_charge": 2700,
+            "drift_charge_energy_coef": 600,
+            "drift_charge_energy_min": 1200,
+            "drift_charge_energy_max": 6000,
+            "drift_extra_charge": [
+              [
+                1,
+                0
+              ],
+              [
+                2,
+                1800
+              ]
+            ]
+          }
+        }
+      },
+      {
+        "id": 120145,
+        "suffix": "5",
+        "rich_text": {
+          "id": 120145,
+          "ace_time_charge_condition": "在城市赛道，使用氮气时获得额外大招充能并在落后第一名超过一定距离时获得速度提升效果",
+          "ace_time_effect": "闪耀萌星可以充能两次并在开局时获得20%大招能量",
+          "ace_time_effect_rich_desc": "闪耀萌星可以充能两次并在开局时获得20%大招能量",
+          "chip_unlock_tips": "芯片最高生效等级为#fe7ab76#ffffff级",
+          "icon_ace_time_charge_condition": "new_carport_icon_city",
+          "icon_ace_time_effect": "new_carport_icon_10219",
+          "icon_slipstream": "new_carport_icon_14",
+          "icon_unlock_nitro_2": "new_carport_icon_10219",
+          "icon_unlock_nitro_3": "new_carport_icon_nos_03",
+          "is_unlocked_ace_time_charge_condition": 1,
+          "is_unlocked_slipstream": 1,
+          "level_title": "竞速级氮气支架 II",
+          "passive_skill_effect": [
+            "闪耀萌星加速",
+            ""
+          ],
+          "passive_skill_effect_value": [
+            "60公里/小时",
+            ""
+          ],
+          "passive_skill_rich_desc": "将比赛结束倒计时由10秒变为15秒，比赛结束倒计时开始时友方全体极速+50km/h并获得50%大招能量",
+          "slipstream": "跟随在车辆后方将获得尾流，产生持续的氮气充能效果",
+          "special_passive_skill_desc": "将比赛结束倒计时由10秒变为15秒，比赛结束倒计时开始时友方全体极速+50km/h并获得50%大招能量",
+          "special_passive_skill_icon": "new_carport_icon_10220",
+          "special_passive_skill_title": "甜蜜胜利",
+          "title_ace_time_charge_condition": "赛道专精",
+          "title_ace_time_effect": "RECU限制解除",
+          "title_slipstream": "空气动力学套件",
+          "title_unlock_nitro_2": "大招强化套件 I",
+          "title_unlock_nitro_3": "竞速级氮气支架",
+          "unlock_nitro_3": "解锁1x6磅，2x3磅，3x2磅氮气",
+          "upgrade_level_icon": "new_carport_icon_nos_03"
+        },
+        "stats": {
+          "speed_limit": 194,
+          "speedup_ratio": 1.13,
+          "charge": {
+            "ace_charge": 2700,
+            "drift_charge_energy_coef": 600,
+            "drift_charge_energy_min": 1200,
+            "drift_charge_energy_max": 6000,
+            "drift_extra_charge": [
+              [
+                1,
+                0
+              ],
+              [
+                2,
+                1800
+              ]
+            ]
+          }
+        }
+      },
+      {
+        "id": 120146,
+        "suffix": "6",
+        "rich_text": {
+          "id": 120146,
+          "ace_time_charge_condition": "在城市赛道，使用氮气时获得额外大招充能并在落后第一名超过一定距离时获得速度提升效果",
+          "ace_time_effect": "闪耀萌星可以充能两次并在开局时获得20%大招能量",
+          "ace_time_effect_rich_desc": "闪耀萌星可以充能两次并在开局时获得20%大招能量",
+          "chip_unlock_tips": "芯片最高生效等级为#fe7ab77#ffffff级",
+          "icon_ace_time_charge_condition": "new_carport_icon_city",
+          "icon_ace_time_effect": "new_carport_icon_10219",
+          "icon_slipstream": "new_carport_icon_14",
+          "icon_unlock_nitro_2": "new_carport_icon_10219",
+          "icon_unlock_nitro_3": "new_carport_icon_nos_03",
+          "is_unlocked_ace_time_charge_condition": 1,
+          "is_unlocked_slipstream": 1,
+          "level_title": "大招强化 II",
+          "passive_skill_effect": [
+            "闪耀萌星加速",
+            ""
+          ],
+          "passive_skill_effect_value": [
+            "65公里/小时",
+            ""
+          ],
+          "passive_skill_rich_desc": "将比赛结束倒计时由10秒变为15秒，比赛结束倒计时开始时友方全体极速+50km/h并获得50%大招能量",
+          "slipstream": "跟随在车辆后方将获得尾流，产生持续的氮气充能效果",
+          "special_passive_skill_desc": "将比赛结束倒计时由10秒变为15秒，比赛结束倒计时开始时友方全体极速+50km/h并获得50%大招能量",
+          "special_passive_skill_icon": "new_carport_icon_10220",
+          "special_passive_skill_title": "甜蜜胜利",
+          "title_ace_time_charge_condition": "赛道专精",
+          "title_ace_time_effect": "RECU限制解除",
+          "title_slipstream": "空气动力学套件",
+          "title_unlock_nitro_2": "大招强化套件 I",
+          "title_unlock_nitro_3": "竞速级氮气支架",
+          "unlock_nitro_3": "解锁1x6磅，2x3磅，3x2磅氮气",
+          "upgrade_level_icon": "new_carport_icon_10219"
+        },
+        "stats": {
+          "speed_limit": 194.5,
+          "speedup_ratio": 1.13,
+          "charge": {
+            "ace_charge": 2700,
+            "drift_charge_energy_coef": 600,
+            "drift_charge_energy_min": 1200,
+            "drift_charge_energy_max": 6000,
+            "drift_extra_charge": [
+              [
+                1,
+                0
+              ],
+              [
+                2,
+                1800
+              ]
+            ]
+          }
+        }
+      },
+      {
+        "id": 120147,
+        "suffix": "7",
+        "rich_text": {
+          "id": 120147,
+          "ace_time_charge_condition": "在城市赛道，使用氮气时获得额外大招充能并在落后第一名超过一定距离时获得速度提升效果",
+          "ace_time_effect": "闪耀萌星可以充能两次并在开局时获得20%大招能量",
+          "ace_time_effect_rich_desc": "闪耀萌星可以充能两次并在开局时获得20%大招能量",
+          "chip_unlock_tips": "芯片最高生效等级为#fe7ab78#ffffff级",
+          "icon_ace_time_charge_condition": "new_carport_icon_city",
+          "icon_ace_time_effect": "new_carport_icon_10219",
+          "icon_slipstream": "new_carport_icon_14",
+          "icon_unlock_nitro_2": "new_carport_icon_10219",
+          "icon_unlock_nitro_3": "new_carport_icon_nos_03",
+          "is_unlocked_ace_time_charge_condition": 1,
+          "is_unlocked_ace_time_effect": 1,
+          "is_unlocked_slipstream": 1,
+          "level_title": "RECU限制解除",
+          "passive_skill_effect": [
+            "闪耀萌星加速",
+            ""
+          ],
+          "passive_skill_effect_value": [
+            "65公里/小时",
+            ""
+          ],
+          "passive_skill_rich_desc": "将比赛结束倒计时由10秒变为15秒，比赛结束倒计时开始时友方全体极速+50km/h并获得50%大招能量",
+          "slipstream": "跟随在车辆后方将获得尾流，产生持续的氮气充能效果",
+          "special_passive_skill_desc": "将比赛结束倒计时由10秒变为15秒，比赛结束倒计时开始时友方全体极速+50km/h并获得50%大招能量",
+          "special_passive_skill_icon": "new_carport_icon_10220",
+          "special_passive_skill_title": "甜蜜胜利",
+          "title_ace_time_charge_condition": "赛道专精",
+          "title_ace_time_effect": "RECU限制解除",
+          "title_slipstream": "空气动力学套件",
+          "title_unlock_nitro_2": "大招强化套件 I",
+          "title_unlock_nitro_3": "竞速级氮气支架",
+          "unlock_nitro_3": "解锁1x6磅，2x3磅，3x2磅氮气",
+          "upgrade_level_icon": "new_carport_icon_10219"
+        },
+        "stats": {
+          "speed_limit": 194.5,
+          "speedup_ratio": 1.13,
+          "charge": {
+            "ace_charge": 2700,
+            "drift_charge_energy_coef": 600,
+            "drift_charge_energy_min": 1200,
+            "drift_charge_energy_max": 6000,
+            "drift_extra_charge": [
+              [
+                1,
+                0
+              ],
+              [
+                2,
+                1800
+              ]
+            ]
+          }
+        }
+      },
+      {
+        "id": 120148,
+        "suffix": "8",
+        "rich_text": {
+          "id": 120148,
+          "ace_time_charge_condition": "在城市赛道，使用氮气时获得额外大招充能并在落后第一名超过一定距离时获得速度提升效果",
+          "ace_time_effect": "闪耀萌星可以充能两次并在开局时获得20%大招能量",
+          "ace_time_effect_rich_desc": "闪耀萌星可以充能两次并在开局时获得20%大招能量",
+          "chip_unlock_tips": "芯片最高生效等级为#fe7ab79#ffffff级",
+          "icon_ace_time_charge_condition": "new_carport_icon_city",
+          "icon_ace_time_effect": "new_carport_icon_10219",
+          "icon_slipstream": "new_carport_icon_14",
+          "icon_unlock_nitro_2": "new_carport_icon_10219",
+          "icon_unlock_nitro_3": "new_carport_icon_nos_03",
+          "is_unlocked_ace_time_charge_condition": 1,
+          "is_unlocked_ace_time_effect": 1,
+          "is_unlocked_slipstream": 1,
+          "level_title": "大招强化 III",
+          "passive_skill_effect": [
+            "闪耀萌星加速",
+            ""
+          ],
+          "passive_skill_effect_value": [
+            "75公里/小时",
+            ""
+          ],
+          "passive_skill_rich_desc": "将比赛结束倒计时由10秒变为15秒，比赛结束倒计时开始时友方全体极速+50km/h并获得50%大招能量",
+          "slipstream": "跟随在车辆后方将获得尾流，产生持续的氮气充能效果",
+          "special_passive_skill_desc": "将比赛结束倒计时由10秒变为15秒，比赛结束倒计时开始时友方全体极速+50km/h并获得50%大招能量",
+          "special_passive_skill_icon": "new_carport_icon_10220",
+          "special_passive_skill_title": "甜蜜胜利",
+          "title_ace_time_charge_condition": "赛道专精",
+          "title_ace_time_effect": "RECU限制解除",
+          "title_slipstream": "空气动力学套件",
+          "title_unlock_nitro_2": "大招强化套件 I",
+          "title_unlock_nitro_3": "竞速级氮气支架",
+          "unlock_nitro_3": "解锁1x6磅，2x3磅，3x2磅氮气",
+          "upgrade_level_icon": "new_carport_icon_10219"
+        },
+        "stats": {
+          "speed_limit": 195,
+          "speedup_ratio": 1.13,
+          "charge": {
+            "ace_charge": 2700,
+            "drift_charge_energy_coef": 600,
+            "drift_charge_energy_min": 1200,
+            "drift_charge_energy_max": 6000,
+            "drift_extra_charge": [
+              [
+                1,
+                0
+              ],
+              [
+                2,
+                1800
+              ]
+            ]
+          }
+        }
+      },
+      {
+        "id": 120149,
+        "suffix": "9",
+        "rich_text": {
+          "id": 120149,
+          "ace_time_charge_condition": "在城市赛道，使用氮气时获得额外大招充能并在落后第一名超过一定距离时获得速度提升效果",
+          "ace_time_effect": "闪耀萌星可以充能两次并在开局时获得20%大招能量",
+          "ace_time_effect_rich_desc": "闪耀萌星可以充能两次并在开局时获得20%大招能量",
+          "chip_unlock_tips": "芯片最高生效等级为#fe7ab710#ffffff级",
+          "icon_ace_time_charge_condition": "new_carport_icon_city",
+          "icon_ace_time_effect": "new_carport_icon_10219",
+          "icon_slipstream": "new_carport_icon_14",
+          "icon_unlock_nitro_2": "new_carport_icon_10219",
+          "icon_unlock_nitro_3": "new_carport_icon_nos_03",
+          "is_unlocked_ace_time_charge_condition": 1,
+          "is_unlocked_ace_time_effect": 1,
+          "is_unlocked_slipstream": 1,
+          "level_title": "大招强化 IV",
+          "passive_skill_effect": [
+            "闪耀萌星加速",
+            ""
+          ],
+          "passive_skill_effect_value": [
+            "85公里/小时",
+            ""
+          ],
+          "passive_skill_rich_desc": "将比赛结束倒计时由10秒变为15秒，比赛结束倒计时开始时友方全体极速+50km/h并获得50%大招能量",
+          "slipstream": "跟随在车辆后方将获得尾流，产生持续的氮气充能效果",
+          "special_passive_skill_desc": "将比赛结束倒计时由10秒变为15秒，比赛结束倒计时开始时友方全体极速+50km/h并获得50%大招能量",
+          "special_passive_skill_icon": "new_carport_icon_10220",
+          "special_passive_skill_title": "甜蜜胜利",
+          "title_ace_time_charge_condition": "赛道专精",
+          "title_ace_time_effect": "RECU限制解除",
+          "title_slipstream": "空气动力学套件",
+          "title_unlock_nitro_2": "大招强化套件 I",
+          "title_unlock_nitro_3": "竞速级氮气支架",
+          "unlock_nitro_3": "解锁1x6磅，2x3磅，3x2磅氮气",
+          "upgrade_level_icon": "new_carport_icon_10219"
+        },
+        "stats": {
+          "speed_limit": 196,
+          "speedup_ratio": 1.13,
+          "charge": {
+            "ace_charge": 2700,
+            "drift_charge_energy_coef": 600,
+            "drift_charge_energy_min": 1200,
+            "drift_charge_energy_max": 6000,
+            "drift_extra_charge": [
+              [
+                1,
+                0
+              ],
+              [
+                2,
+                1800
+              ]
+            ]
+          }
+        }
+      }
+    ],
+    "skills": {
+      "ultimate": {
+        "id": 13451,
+        "name": "闪耀萌星",
+        "type": "N2O_SPARKLE",
+        "icon_static": "ui_skill90_04",
+        "icon_big": null,
+        "icon": null,
+        "init_ratio": null,
+        "icons": {
+          "normal": "ui_skill90_03",
+          "disable": "ui_skill90_01",
+          "alt": "ui_skill90_06",
+          "down": "ui_skill90_03",
+          "static": "ui_skill90_04",
+          "big": null
+        },
+        "extra": {
+          "cam_type": "N2O_SPARKLE",
+          "eff_id": 1,
+          "is_cost_energy": 2,
+          "rally_qte": 2
+        },
+        "value_texts": [
+          {
+            "key": "name",
+            "label": "技能名称",
+            "value": "闪耀萌星"
+          },
+          {
+            "key": "skill_type",
+            "label": "技能类型",
+            "value": "N2O_SPARKLE"
+          },
+          {
+            "key": "cam_type",
+            "label": "镜头类型",
+            "value": "N2O_SPARKLE"
+          },
+          {
+            "key": "eff_id",
+            "label": "特效编号",
+            "value": "1"
+          },
+          {
+            "key": "min_charge",
+            "label": "最低充能万分比",
+            "value": "10000"
+          },
+          {
+            "key": "rally_qte",
+            "label": "拉力赛触发qte",
+            "value": "2"
+          }
+        ],
+        "instructions": [
+          {
+            "id": 208401,
+            "accel_action": 2,
+            "accelerate_curve": [
+              [
+                0,
+                30
+              ],
+              [
+                165,
+                21.7
+              ],
+              [
+                166,
+                7
+              ],
+              [
+                200,
+                7
+              ]
+            ],
+            "attack_show_friend_enemy_filter": [
+              1,
+              2
+            ],
+            "attack_show_role_filter": [
+              1,
+              2,
+              3
+            ],
+            "buff_count": 0,
+            "cost_ratio": 1428,
+            "duration": 7,
+            "eff_id": 1,
+            "extra_children": [],
+            "extra_isolate": [],
+            "inst_group": 2,
+            "inst_name": "大招加速",
+            "inst_type": 2,
+            "is_hard_push": 1,
+            "rear_insts": [
+              -1
+            ],
+            "ref_insts": [
+              208401
+            ],
+            "skill_eff_id": 12239,
+            "sp_ex_speed_limit": 55,
+            "sp_max_ex_speed_limit": 55,
+            "sp_min_ex_speed_limit": 55,
+            "sp_n2o_ace_charge_ratio": 1,
+            "name": "大招加速",
+            "desc": null,
+            "type": 2,
+            "order": null,
+            "value_texts": [
+              {
+                "key": "sp_ex_speed_limit",
+                "label": "自身极速提升",
+                "value": "55km/h"
+              },
+              {
+                "key": "attack_show_friend_enemy_filter",
+                "label": "敌友筛选",
+                "value": "[1,2]"
+              },
+              {
+                "key": "attack_show_role_filter",
+                "label": "定位筛选",
+                "value": "[1,2,3]"
+              },
+              {
+                "key": "buff_count",
+                "label": "Buff 数量",
+                "value": "0"
+              },
+              {
+                "key": "rear_insts",
+                "label": "后续节点",
+                "value": "[-1]"
+              },
+              {
+                "key": "extra_children",
+                "label": "子节点",
+                "value": "[]"
+              },
+              {
+                "key": "ref_insts",
+                "label": "引用节点",
+                "value": "[208401]"
+              }
+            ]
+          },
+          {
+            "id": 2805402,
+            "attack_show_friend_enemy_filter": [
+              1,
+              2
+            ],
+            "attack_show_role_filter": [
+              1,
+              2,
+              3
+            ],
+            "buff_count": 0,
+            "extra_children": [
+              902108,
+              1502001,
+              1802201
+            ],
+            "extra_isolate": [],
+            "inst_group": 28,
+            "inst_name": "判断是非处于偶数名",
+            "inst_type": 28,
+            "rear_insts": [],
+            "ref_insts": [
+              902108,
+              1502001,
+              1802201,
+              2805402
+            ],
+            "sp_n2o_ace_charge_ratio": 1,
+            "status_effect": [
+              [
+                [
+                  4,
+                  "=",
+                  2,
+                  [],
+                  1802201
+                ]
+              ],
+              [
+                [
+                  4,
+                  "=",
+                  2,
+                  [],
+                  902108
+                ]
+              ],
+              [
+                [
+                  4,
+                  "=",
+                  4,
+                  [],
+                  1802201
+                ]
+              ],
+              [
+                [
+                  4,
+                  "=",
+                  4,
+                  [],
+                  902108
+                ]
+              ],
+              [
+                [
+                  4,
+                  "=",
+                  6,
+                  [],
+                  1802201
+                ]
+              ],
+              [
+                [
+                  4,
+                  "=",
+                  6,
+                  [],
+                  902108
+                ]
+              ],
+              [
+                [
+                  4,
+                  "=",
+                  1,
+                  [],
+                  1502001
+                ]
+              ],
+              [
+                [
+                  4,
+                  "=",
+                  3,
+                  [],
+                  1502001
+                ]
+              ],
+              [
+                [
+                  4,
+                  "=",
+                  5,
+                  [],
+                  1502001
+                ]
+              ]
+            ],
+            "name": "判断是非处于偶数名",
+            "desc": null,
+            "type": 28,
+            "order": null,
+            "value_texts": [
+              {
+                "key": "attack_show_friend_enemy_filter",
+                "label": "敌友筛选",
+                "value": "[1,2]"
+              },
+              {
+                "key": "attack_show_role_filter",
+                "label": "定位筛选",
+                "value": "[1,2,3]"
+              },
+              {
+                "key": "buff_count",
+                "label": "Buff 数量",
+                "value": "0"
+              },
+              {
+                "key": "status_effect",
+                "label": "状态及效果",
+                "value": "[[[4,\"=\",2,[],1802201]],[[4,\"=\",2,[],902108]],[[4,\"=\",4,[],1802201]],[[4,\"=\",4,[],902108]],[[4,\"=\",6,[],1802201]],[[4,\"=\",6,[],902108]],[[4,\"=\",1,[],1502001]],[[4,\"=\",3,[],1502001]],[[4,\"=\",5,[],1502001]]]"
+              },
+              {
+                "key": "rear_insts",
+                "label": "后续节点",
+                "value": "[]"
+              },
+              {
+                "key": "extra_children",
+                "label": "子节点",
+                "value": "[902108,1502001,1802201]"
+              },
+              {
+                "key": "ref_insts",
+                "label": "引用节点",
+                "value": "[902108,1502001,1802201,2805402]"
+              }
+            ]
+          },
+          {
+            "id": 806601,
+            "attack_show_eff_dur": 2,
+            "attack_show_friend_enemy_filter": [
+              1,
+              2
+            ],
+            "attack_show_keep_dur": 2,
+            "attack_show_role_filter": [
+              1,
+              2,
+              3
+            ],
+            "buff_count": 0,
+            "cd_type": 1,
+            "duration": 0.1,
+            "eff_cd": 1,
+            "eff_id": 1,
+            "extra_children": [],
+            "extra_isolate": [],
+            "friend_eff": [
+              68101
+            ],
+            "inst_group": 879,
+            "inst_name": "闪耀状态辅助",
+            "inst_type": 8,
+            "lock_camp": 1,
+            "lock_cnt": 4,
+            "lock_dist": [
+              -6000,
+              6000
+            ],
+            "lock_side_dist": [
+              -6000,
+              6000
+            ],
+            "lock_vertical_dist": [
+              -6000,
+              6000
+            ],
+            "rear_insts": [],
+            "ref_insts": [
+              806601
+            ],
+            "skill_eff_id": 8,
+            "sp_n2o_ace_charge_ratio": 1,
+            "name": "闪耀状态辅助",
+            "desc": null,
+            "type": 8,
+            "order": null,
+            "value_texts": [
+              {
+                "key": "attack_show_friend_enemy_filter",
+                "label": "敌友筛选",
+                "value": "[1,2]"
+              },
+              {
+                "key": "attack_show_role_filter",
+                "label": "定位筛选",
+                "value": "[1,2,3]"
+              },
+              {
+                "key": "buff_count",
+                "label": "Buff 数量",
+                "value": "0"
+              },
+              {
+                "key": "rear_insts",
+                "label": "后续节点",
+                "value": "[]"
+              },
+              {
+                "key": "extra_children",
+                "label": "子节点",
+                "value": "[]"
+              },
+              {
+                "key": "ref_insts",
+                "label": "引用节点",
+                "value": "[806601]"
+              }
+            ]
+          }
+        ]
+      },
+      "sp": null,
+      "passive": [
+        {
+          "id": 50801,
+          "name": "封禁尾流",
+          "type": null,
+          "icon_static": null,
+          "icon_big": null,
+          "icon": null,
+          "init_ratio": null,
+          "icons": {
+            "normal": null,
+            "disable": null,
+            "alt": null,
+            "down": null,
+            "static": null,
+            "big": null
+          },
+          "extra": {
+            "cam_type": null,
+            "eff_id": null,
+            "is_cost_energy": null,
+            "rally_qte": null
+          },
+          "value_texts": [
+            {
+              "key": "name",
+              "label": "技能名称",
+              "value": "封禁尾流"
+            }
+          ],
+          "instructions": [
+            {
+              "id": 2100301,
+              "attack_show_friend_enemy_filter": [
+                1,
+                2
+              ],
+              "attack_show_role_filter": [
+                1,
+                2,
+                3
+              ],
+              "buff_count": 0,
+              "duration": 999,
+              "eff_id": 1,
+              "extra_children": [],
+              "extra_isolate": [],
+              "inst_group": 21001,
+              "inst_name": "封禁尾流",
+              "inst_type": 21,
+              "rear_insts": [],
+              "ref_insts": [
+                2100301
+              ],
+              "skill_eff_id": 21,
+              "slipstream_state": 1,
+              "sp_n2o_ace_charge_ratio": 1,
+              "name": "封禁尾流",
+              "desc": null,
+              "type": 21,
+              "order": null,
+              "value_texts": [
+                {
+                  "key": "attack_show_friend_enemy_filter",
+                  "label": "敌友筛选",
+                  "value": "[1,2]"
+                },
+                {
+                  "key": "attack_show_role_filter",
+                  "label": "定位筛选",
+                  "value": "[1,2,3]"
+                },
+                {
+                  "key": "buff_count",
+                  "label": "Buff 数量",
+                  "value": "0"
+                },
+                {
+                  "key": "rear_insts",
+                  "label": "后续节点",
+                  "value": "[]"
+                },
+                {
+                  "key": "extra_children",
+                  "label": "子节点",
+                  "value": "[]"
+                },
+                {
+                  "key": "ref_insts",
+                  "label": "引用节点",
+                  "value": "[2100301]"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "id": 68102,
+          "name": "甜蜜胜利-改变倒计时",
+          "type": null,
+          "icon_static": null,
+          "icon_big": null,
+          "icon": null,
+          "init_ratio": null,
+          "icons": {
+            "normal": null,
+            "disable": null,
+            "alt": null,
+            "down": null,
+            "static": null,
+            "big": null
+          },
+          "extra": {
+            "cam_type": null,
+            "eff_id": null,
+            "is_cost_energy": null,
+            "rally_qte": null
+          },
+          "value_texts": [
+            {
+              "key": "name",
+              "label": "技能名称",
+              "value": "甜蜜胜利-改变倒计时"
+            }
+          ],
+          "instructions": [
+            {
+              "id": 6400001,
+              "buff_count": 0,
+              "duration": 0.1,
+              "extra_children": [],
+              "extra_isolate": [],
+              "game_over_countdown": 15,
+              "inst_group": 64,
+              "inst_name": "倒计时延长",
+              "inst_type": 64,
+              "rear_insts": [
+                -1
+              ],
+              "ref_insts": [
+                6400001
+              ],
+              "sp_n2o_ace_charge_ratio": 1,
+              "name": "倒计时延长",
+              "desc": null,
+              "type": 64,
+              "order": null,
+              "value_texts": [
+                {
+                  "key": "buff_count",
+                  "label": "Buff 数量",
+                  "value": "0"
+                },
+                {
+                  "key": "rear_insts",
+                  "label": "后续节点",
+                  "value": "[-1]"
+                },
+                {
+                  "key": "extra_children",
+                  "label": "子节点",
+                  "value": "[]"
+                },
+                {
+                  "key": "ref_insts",
+                  "label": "引用节点",
+                  "value": "[6400001]"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "id": 68103,
+          "name": "甜蜜胜利-倒计时加速",
+          "type": null,
+          "icon_static": null,
+          "icon_big": null,
+          "icon": null,
+          "init_ratio": null,
+          "icons": {
+            "normal": null,
+            "disable": null,
+            "alt": null,
+            "down": null,
+            "static": null,
+            "big": null
+          },
+          "extra": {
+            "cam_type": null,
+            "eff_id": null,
+            "is_cost_energy": null,
+            "rally_qte": null
+          },
+          "value_texts": [
+            {
+              "key": "name",
+              "label": "技能名称",
+              "value": "甜蜜胜利-倒计时加速"
+            }
+          ],
+          "instructions": [
+            {
+              "id": 3702101,
+              "buff_count": 0,
+              "count_eff_ids": [
+                806602,
+                904703,
+                134095
+              ],
+              "count_mode": 1,
+              "count_num": 1,
+              "count_type": 7,
+              "duration": null,
+              "extra_children": [],
+              "extra_isolate": [
+                134095,
+                806602,
+                904703
+              ],
+              "inst_group": 37030,
+              "inst_name": "萌星凯蒂",
+              "inst_type": 37,
+              "rear_insts": [
+                -1
+              ],
+              "ref_insts": [
+                134095,
+                806602,
+                904703,
+                3702101
+              ],
+              "sp_n2o_ace_charge_ratio": 1,
+              "name": "萌星凯蒂",
+              "desc": null,
+              "type": 37,
+              "order": null,
+              "value_texts": [
+                {
+                  "key": "buff_count",
+                  "label": "Buff 数量",
+                  "value": "0"
+                },
+                {
+                  "key": "rear_insts",
+                  "label": "后续节点",
+                  "value": "[-1]"
+                },
+                {
+                  "key": "extra_children",
+                  "label": "子节点",
+                  "value": "[]"
+                },
+                {
+                  "key": "ref_insts",
+                  "label": "引用节点",
+                  "value": "[134095,806602,904703,3702101]"
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    "skillPanelGroups": {
+      "ultimate": [
+        {
+          "id": "119",
+          "name_rich": {
+            "raw": "自身极速提升",
+            "html": "自身极速提升"
+          },
+          "value_rich": {
+            "raw": "55km/h",
+            "html": "55km/h"
+          },
+          "value_text": "55km/h",
+          "instruction_ids": [
+            208401,
+            208405
+          ],
+          "values": []
+        },
+        {
+          "id": "120",
+          "name_rich": {
+            "raw": "加速持续时间",
+            "html": "加速持续时间"
+          },
+          "value_rich": {
+            "raw": "7秒",
+            "html": "7秒"
+          },
+          "value_text": "7秒",
+          "instruction_ids": [],
+          "values": []
+        },
+        {
+          "id": "121",
+          "name_rich": {
+            "raw": "闪耀状态持续时间",
+            "html": "闪耀状态持续时间"
+          },
+          "value_rich": {
+            "raw": "7秒",
+            "html": "7秒"
+          },
+          "value_text": "7秒",
+          "instruction_ids": [],
+          "values": []
+        },
+        {
+          "id": "122",
+          "name_rich": {
+            "raw": "闪耀状态大招充能",
+            "html": "闪耀状态大招充能"
+          },
+          "value_rich": {
+            "raw": "4%每秒",
+            "html": "4%每秒"
+          },
+          "value_text": "4%每秒",
+          "instruction_ids": [],
+          "values": []
+        },
+        {
+          "id": "20690",
+          "name_rich": {
+            "raw": "加速动力",
+            "html": "加速动力"
+          },
+          "value_rich": {
+            "raw": "中",
+            "html": "中"
+          },
+          "value_text": "中",
+          "instruction_ids": [],
+          "values": []
+        }
+      ],
+      "sp": [],
+      "passive": [
+        {
+          "id": "123",
+          "name_rich": {
+            "raw": "结束倒计时延长",
+            "html": "结束倒计时延长"
+          },
+          "value_rich": {
+            "raw": "+5秒",
+            "html": "+5秒"
+          },
+          "value_text": "+5秒",
+          "instruction_ids": [],
+          "values": []
+        },
+        {
+          "id": "124",
+          "name_rich": {
+            "raw": "倒计时友方充能",
+            "html": "倒计时友方充能"
+          },
+          "value_rich": {
+            "raw": "50%",
+            "html": "50%"
+          },
+          "value_text": "50%",
+          "instruction_ids": [],
+          "values": []
+        },
+        {
+          "id": "125",
+          "name_rich": {
+            "raw": "友方极速提升",
+            "html": "友方极速提升"
+          },
+          "value_rich": {
+            "raw": "50km/h",
+            "html": "50km/h"
+          },
+          "value_text": "50km/h",
+          "instruction_ids": [],
+          "values": []
+        }
+      ],
+      "other": [
+        {
+          "id": "126",
+          "name_rich": {
+            "raw": "大招充能数",
+            "html": "大招充能数"
+          },
+          "value_rich": {
+            "raw": "+1",
+            "html": "+1"
+          },
+          "value_text": "+1",
+          "instruction_ids": [],
+          "values": []
+        },
+        {
+          "id": "127",
+          "name_rich": {
+            "raw": "额外起步充能",
+            "html": "额外起步充能"
+          },
+          "value_rich": {
+            "raw": "20%",
+            "html": "20%"
+          },
+          "value_text": "20%",
+          "instruction_ids": [],
+          "values": []
+        }
+      ]
+    },
+    "richText": {
+      "id": 12014,
+      "ace_time_charge_condition": "在城市赛道，使用氮气时获得额外大招充能并在落后第一名超过一定距离时获得速度提升效果",
+      "ace_time_effect": "闪耀萌星可以充能两次并在开局时获得20%大招能量",
+      "ace_time_effect_rich_desc": "闪耀萌星可以充能两次并在开局时获得20%大招能量",
+      "chip_unlock_tips": "芯片最高生效等级为#fe7ab71#ffffff级",
+      "icon_ace_time_charge_condition": "new_carport_icon_city",
+      "icon_ace_time_effect": "new_carport_icon_10219",
+      "icon_slipstream": "new_carport_icon_14",
+      "icon_unlock_nitro_2": "new_carport_icon_10219",
+      "icon_unlock_nitro_3": "new_carport_icon_nos_03",
+      "level_title": "原车型",
+      "passive_skill_effect": [
+        "闪耀萌星加速",
+        ""
+      ],
+      "passive_skill_effect_value": [
+        "55公里/小时",
+        ""
+      ],
+      "passive_skill_rich_desc": "将比赛结束倒计时由10秒变为15秒，比赛结束倒计时开始时友方全体极速+50km/h并获得50%大招能量",
+      "slipstream": "跟随在车辆后方将获得尾流，产生持续的氮气充能效果",
+      "special_passive_skill_desc": {
+        "raw": "将比赛结束倒计时由10秒变为15秒，比赛结束倒计时开始时友方全体极速+50km/h并获得50%大招能量",
+        "html": "将比赛结束倒计时由10秒变为15秒，比赛结束倒计时开始时友方全体极速+50km/h并获得50%大招能量"
+      },
+      "special_passive_skill_icon": "new_carport_icon_10220",
+      "special_passive_skill_title": "甜蜜胜利",
+      "title_ace_time_charge_condition": "赛道专精",
+      "title_ace_time_effect": "RECU限制解除",
+      "title_slipstream": "空气动力学套件",
+      "title_unlock_nitro_2": "大招强化套件 I",
+      "title_unlock_nitro_3": "竞速级氮气支架",
+      "unlock_nitro_3": "解锁1x6磅，2x3磅，3x2磅氮气",
+      "upgrade_level_icon": "new_carport_icon_10220",
+      "feature_desc": {
+        "raw": "加速推进，极速提升#desc[119]，持续7秒。开启大招时处于偶数名次的友方车辆将进入持续7秒的#dd9aff闪耀状态#ffffff：\n·获得#tips[隐身]效果\n·每秒自充能4%。开启大招时处于奇数名次的友方车辆将随机获得闪耀状态两种增益中的一种。",
+        "html": "加速推进，极速提升<span class=\"rt-desc\">自身极速提升 55km/h</span>，持续7秒。开启大招时处于偶数名次的友方车辆将进入持续7秒的<span class=\"rt-color\" style=\"color: #dd9aff\">闪耀状态</span>：<br/>·获得<span class=\"rt-tip rt-tip--entry\" data-tip=\"隐身\" data-icon=\"carport_new_skill_illustrate_b2\" data-desc=\"·车辆透明化&#10;·无视车辆间的碰撞&#10;·不会被“锁定类”“触碰类”干扰命中\" style=\"--tip-color:#7eedff\" title=\"·车辆透明化&#10;·无视车辆间的碰撞&#10;·不会被“锁定类”“触碰类”干扰命中\"><span class=\"rt-tip__icon-slot\"></span>隐身</span>效果<br/>·每秒自充能4%。开启大招时处于奇数名次的友方车辆将随机获得闪耀状态两种增益中的一种。"
+      },
+      "sp_skill_desc": null,
+      "passive_skill_desc": null,
+      "story_title": "厂商：平行世界",
+      "story": {
+        "raw": "大明星Hello Kitty登陆速度节啦！这台萌星凯蒂有着白粉的配色和标志性的蝴蝶结，一出场就闪耀着萌的光辉。 将手放在它的车身上，似乎能听到它的心声：“想和速度节的大家成为 朋友！”“想给每一位车手和观众都带去微笑！”是的，它的可爱表里如一。 在萌星凯蒂面前，没有哪位车手会拒绝成为它的朋友，一起度过温暖而快乐的赛车时光。",
+        "html": "大明星Hello Kitty登陆速度节啦！这台萌星凯蒂有着白粉的配色和标志性的蝴蝶结，一出场就闪耀着萌的光辉。 将手放在它的车身上，似乎能听到它的心声：“想和速度节的大家成为 朋友！”“想给每一位车手和观众都带去微笑！”是的，它的可爱表里如一。 在萌星凯蒂面前，没有哪位车手会拒绝成为它的朋友，一起度过温暖而快乐的赛车时光。"
+      }
+    },
+    "report": {
+      "title": "王牌速度节赛车检验报告",
+      "sections": [
+        {
+          "title": "基础数据",
+          "items": [
+            {
+              "label": "检测车辆",
+              "value": "萌星凯蒂"
+            },
+            {
+              "label": "注册日期",
+              "value": "{}年{}月{}日"
+            },
+            {
+              "label": "车辆类型",
+              "value": "幻想阵营"
+            },
+            {
+              "label": "厂商",
+              "value": "平行世界"
+            },
+            {
+              "label": "定位",
+              "value": "竞速位"
+            },
+            {
+              "label": "赛道专精",
+              "value": "城市"
+            },
+            {
+              "label": "能源类型",
+              "value": "汽油"
+            },
+            {
+              "label": "驱动方式",
+              "value": "后置四驱"
+            },
+            {
+              "label": "闪耀状态",
+              "value": "已开启"
+            }
+          ]
+        },
+        {
+          "title": "芯片模块",
+          "items": [
+            {
+              "label": "芯片写入权限",
+              "value": "已获取"
+            },
+            {
+              "label": "扩展芯片类型",
+              "value": "○○△◇◣V"
+            },
+            {
+              "label": "等级合规检查",
+              "value": "芯片等级未高于RECU等级"
+            }
+          ]
+        },
+        {
+          "title": "外观检验",
+          "items": [
+            {
+              "label": "检验结果",
+              "value": "合格"
+            }
+          ]
+        },
+        {
+          "title": "大招驱动模块",
+          "items": [
+            {
+              "label": "能量控制单元",
+              "value": "五代RECU，工作正常"
+            },
+            {
+              "label": "瑞卡因子稳定器",
+              "value": "工作正常"
+            },
+            {
+              "label": "NOS",
+              "value": "氮氧加速系统已安装"
+            },
+            {
+              "label": "空气动力套件（2级解锁）",
+              "value": "未选装"
+            },
+            {
+              "label": "赛道专精（3级解锁）",
+              "value": "未选装"
+            },
+            {
+              "label": "RECU限制解除（8级解锁）",
+              "value": "未选装"
+            }
+          ]
+        },
+        {
+          "title": "整车判定",
+          "items": [
+            {
+              "label": "检验结果",
+              "value": "合格，可参加速度节赛事"
+            }
+          ]
+        }
+      ]
+    },
+    "story": {
+      "content": "大明星Hello Kitty登陆速度节啦！这台萌星凯蒂有着白粉的配色和标志性的蝴蝶结，一出场就闪耀着萌的光辉。 将手放在它的车身上，似乎能听到它的心声：“想和速度节的大家成为 朋友！”“想给每一位车手和观众都带去微笑！”是的，它的可爱表里如一。 在萌星凯蒂面前，没有哪位车手会拒绝成为它的朋友，一起度过温暖而快乐的赛车时光。",
+      "id": 12014,
+      "story_content": "大明星Hello Kitty登陆速度节啦！这台萌星凯蒂有着白粉的配色和标志性的蝴蝶结，一出场就闪耀着萌的光辉。 将手放在它的车身上，似乎能听到它的心声：“想和速度节的大家成为 朋友！”“想给每一位车手和观众都带去微笑！”是的，它的可爱表里如一。 在萌星凯蒂面前，没有哪位车手会拒绝成为它的朋友，一起度过温暖而快乐的赛车时光。",
+      "story_title": "厂商：平行世界",
+      "vehicle_name": "萌星凯蒂"
+    },
+    "obtain": {
+      "tag_img": null,
+      "obtain_type_ids": [
+        65
+      ],
+      "obtain_types": [
+        {
+          "id": 65,
+          "label": "乐园商店",
+          "desc": "在乐园商店使用乐园之星兑换",
+          "icon": "commonnew_lydj"
+        }
+      ]
+    },
+    "restraints": {
+      "id": 12014,
+      "match": [
+        12003,
+        10063,
+        12006,
+        12036
+      ],
+      "be_restraint": [
+        12006
+      ]
+    },
+    "resources": {
+      "icons": {
+        "ace_time_effect": "new_carport_icon_10219",
+        "icon_ace_time_effect": "new_carport_icon_10219",
+        "ace_time_charge_condition": "new_carport_icon_city",
+        "slipstream": "new_carport_icon_14",
+        "unlock_nitro_2": "new_carport_icon_10219",
+        "unlock_nitro_3": "new_carport_icon_nos_03",
+        "upgrade_level_icon": "new_carport_icon_10220",
+        "special_passive_skill_icon": "new_carport_icon_10220"
+      }
+    },
+    "skins": {
+      "sets": {
+        "local": [
+          {
+            "source": "local",
+            "index": 1
+          }
+        ]
+      },
+      "meta": {
+        "1": {
+          "id": 50319,
+          "name": "涂装 相遇彩虹",
+          "desc": "遇见凯蒂，相遇彩虹！\n适用车型：#1dd8d0萌星凯蒂",
+          "icon_s": "tz_12014_1_s",
+          "icon_m": "tz_12014_1_m",
+          "icon_b": "tz_12014_1_b"
+        }
+      }
+    },
+    "media": {
+      "cover": "/rk-assets/12014_m.png",
+      "coverFallback": "/rk-assets/12014_m.png",
+      "shareImage": {
+        "key": "share_12014",
+        "file": "share_12014.png",
+        "url": "https://h65.gdl.netease.com/web_res_list_20230802/share_12014.webp"
+      },
+      "shareImageAdvance": null,
+      "skillVideo": {
+        "ultimate": {
+          "url": "https://vod.cc.163.com/file/64b0bd2dc31a9c0f361155cc?source=27&protocol=https",
+          "thumbnail": "table_video_img_12014"
+        },
+        "sp": null
+      }
+    }
+  }
+}

@@ -1,0 +1,1570 @@
+{
+  "schemaVersion": 2,
+  "versionId": "26-07-15_29734784_android",
+  "generatedAt": "2026-07-16T09:22:34.000Z",
+  "item": {
+    "id": 10093,
+    "name": "寒霜冰魄",
+    "manufacturer": "元素",
+    "quality": "传说",
+    "class": 4,
+    "group": 1,
+    "position": "干扰位",
+    "positionLabel": "干扰位",
+    "racingRole": 3,
+    "racingRoleName": "干扰位",
+    "specialization": "场地",
+    "seasonCode": "S12",
+    "publication": {
+      "state": "released",
+      "releaseTimestamp": 1669305600,
+      "releaseText": "2022-11-25 00:00:00",
+      "releaseMacro": "S12_OPEN"
+    },
+    "summary": "冻结敌方车辆",
+    "description": "冻结敌方车辆",
+    "tags": [
+      {
+        "id": 90,
+        "text": "冻结",
+        "desc": "被冻结的敌方无法移动",
+        "color": 3
+      },
+      {
+        "id": 64,
+        "text": "减速",
+        "desc": "降低敌方的极速",
+        "color": 3
+      },
+      {
+        "id": 91,
+        "text": "驱散",
+        "desc": "使敌方失去额外速度和动力增益",
+        "color": 3
+      },
+      {
+        "id": 72,
+        "text": "放置干扰",
+        "desc": "·目标触碰到放置物时命中\n·不受*混乱*、*反弹*、*闪避*、*隐身*效果影响\n·无法命中具有*无法选中*的敌方",
+        "color": 4
+      },
+      {
+        "id": 6,
+        "text": "自充能",
+        "desc": "技能可以补充大招能量",
+        "color": 1
+      },
+      {
+        "id": 158,
+        "text": "无法闪现",
+        "desc": "使敌方的闪现失效",
+        "color": 3
+      }
+    ],
+    "stats": {
+      "speed_limit": 204,
+      "speedup_ratio": 1.08,
+      "charge": {
+        "ace_charge": 2800,
+        "drift_charge_energy_coef": 600,
+        "drift_charge_energy_min": 1200,
+        "drift_charge_energy_max": 6000,
+        "drift_extra_charge": [
+          [
+            1,
+            0
+          ],
+          [
+            2,
+            1800
+          ]
+        ]
+      }
+    },
+    "maxDurability": 123,
+    "levels": [
+      {
+        "id": 10093,
+        "suffix": "0",
+        "rich_text": {
+          "id": 10093,
+          "ace_time_charge_condition": "在场地赛道，使用氮气时获得额外大招充能并在落后第一名超过一定距离时获得速度提升效果",
+          "ace_time_effect": "雪落寒霜可以充能两次",
+          "ace_time_effect_rich_desc": "雪落寒霜可以充能两次",
+          "chip_unlock_tips": "芯片最高生效等级为#fe7ab71#ffffff级",
+          "icon_ace_time_charge_condition": "new_carport_icon_court",
+          "icon_ace_time_effect": "new_carport_icon_10184",
+          "icon_slipstream": "new_carport_icon_14",
+          "icon_unlock_nitro_2": "new_carport_icon_10184",
+          "icon_unlock_nitro_3": "new_carport_icon_nos_03",
+          "level_title": "原车型",
+          "passive_skill_effect": [
+            "雪落寒霜加速",
+            ""
+          ],
+          "passive_skill_effect_value": [
+            "20公里/小时",
+            ""
+          ],
+          "passive_skill_rich_desc": "敌方车辆每次使用大招时，自充能6%",
+          "slipstream": "跟随在车辆后方将获得尾流，产生持续的氮气充能效果",
+          "special_passive_skill_desc": "敌方车辆每次使用大招时，自充能6%",
+          "special_passive_skill_icon": "new_carport_icon_10185",
+          "special_passive_skill_title": "霜魂",
+          "title_ace_time_charge_condition": "赛道专精",
+          "title_ace_time_effect": "RECU限制解除",
+          "title_slipstream": "空气动力学套件",
+          "title_unlock_nitro_2": "大招强化套件 I",
+          "title_unlock_nitro_3": "竞速级氮气支架",
+          "unlock_nitro_3": "解锁1x6磅，2x3磅，3x2磅氮气",
+          "upgrade_level_icon": "new_carport_icon_10185"
+        },
+        "stats": {
+          "speed_limit": 204,
+          "speedup_ratio": 1.08,
+          "charge": {
+            "ace_charge": 2800,
+            "drift_charge_energy_coef": 600,
+            "drift_charge_energy_min": 1200,
+            "drift_charge_energy_max": 6000,
+            "drift_extra_charge": [
+              [
+                1,
+                0
+              ],
+              [
+                2,
+                1800
+              ]
+            ]
+          }
+        }
+      },
+      {
+        "id": 10493,
+        "suffix": "1",
+        "rich_text": {
+          "id": 10493,
+          "ace_time_charge_condition": "在场地赛道，使用氮气时获得额外大招充能并在落后第一名超过一定距离时获得速度提升效果",
+          "ace_time_effect": "雪落寒霜可以充能两次",
+          "ace_time_effect_rich_desc": "雪落寒霜可以充能两次",
+          "chip_unlock_tips": "芯片最高生效等级为#fe7ab74#ffffff级",
+          "icon_ace_time_charge_condition": "new_carport_icon_court",
+          "icon_ace_time_effect": "new_carport_icon_10184",
+          "icon_slipstream": "new_carport_icon_14",
+          "icon_unlock_nitro_2": "new_carport_icon_10184",
+          "icon_unlock_nitro_3": "new_carport_icon_nos_03",
+          "is_unlocked_ace_time_charge_condition": 1,
+          "is_unlocked_slipstream": 1,
+          "level_title": "竞速级氮气支架 I",
+          "passive_skill_effect": [
+            "雪落寒霜加速",
+            ""
+          ],
+          "passive_skill_effect_value": [
+            "20公里/小时",
+            ""
+          ],
+          "passive_skill_rich_desc": "敌方车辆每次使用大招时，自充能6%",
+          "slipstream": "跟随在车辆后方将获得尾流，产生持续的氮气充能效果",
+          "special_passive_skill_desc": "敌方车辆每次使用大招时，自充能6%",
+          "special_passive_skill_icon": "new_carport_icon_10185",
+          "special_passive_skill_title": "霜魂",
+          "title_ace_time_charge_condition": "赛道专精",
+          "title_ace_time_effect": "RECU限制解除",
+          "title_slipstream": "空气动力学套件",
+          "title_unlock_nitro_2": "大招强化套件 I",
+          "title_unlock_nitro_3": "竞速级氮气支架",
+          "unlock_nitro_3": "解锁1x6磅，2x3磅，3x2磅氮气",
+          "upgrade_level_icon": "new_carport_icon_nos_03"
+        },
+        "stats": {
+          "speed_limit": 204,
+          "speedup_ratio": 1.08,
+          "charge": {
+            "ace_charge": 2800,
+            "drift_charge_energy_coef": 600,
+            "drift_charge_energy_min": 1200,
+            "drift_charge_energy_max": 6000,
+            "drift_extra_charge": [
+              [
+                1,
+                0
+              ],
+              [
+                2,
+                1800
+              ]
+            ]
+          }
+        }
+      },
+      {
+        "id": 10293,
+        "suffix": "2",
+        "rich_text": {
+          "id": 10293,
+          "ace_time_charge_condition": "在场地赛道，使用氮气时获得额外大招充能并在落后第一名超过一定距离时获得速度提升效果",
+          "ace_time_effect": "雪落寒霜可以充能两次",
+          "ace_time_effect_rich_desc": "雪落寒霜可以充能两次",
+          "chip_unlock_tips": "芯片最高生效等级为#fe7ab72#ffffff级",
+          "icon_ace_time_charge_condition": "new_carport_icon_court",
+          "icon_ace_time_effect": "new_carport_icon_10184",
+          "icon_slipstream": "new_carport_icon_14",
+          "icon_unlock_nitro_2": "new_carport_icon_10184",
+          "icon_unlock_nitro_3": "new_carport_icon_nos_03",
+          "is_unlocked_slipstream": 1,
+          "level_title": "空气动力学套件",
+          "passive_skill_effect": [
+            "雪落寒霜加速",
+            ""
+          ],
+          "passive_skill_effect_value": [
+            "20公里/小时",
+            ""
+          ],
+          "passive_skill_rich_desc": "敌方车辆每次使用大招时，自充能6%",
+          "slipstream": "跟随在车辆后方将获得尾流，产生持续的氮气充能效果",
+          "special_passive_skill_desc": "敌方车辆每次使用大招时，自充能6%",
+          "special_passive_skill_icon": "new_carport_icon_10185",
+          "special_passive_skill_title": "霜魂",
+          "title_ace_time_charge_condition": "赛道专精",
+          "title_ace_time_effect": "RECU限制解除",
+          "title_slipstream": "空气动力学套件",
+          "title_unlock_nitro_2": "大招强化套件 I",
+          "title_unlock_nitro_3": "竞速级氮气支架",
+          "unlock_nitro_3": "解锁1x6磅，2x3磅，3x2磅氮气",
+          "upgrade_level_icon": "new_carport_icon_14"
+        },
+        "stats": {
+          "speed_limit": 204,
+          "speedup_ratio": 1.08,
+          "charge": {
+            "ace_charge": 2800,
+            "drift_charge_energy_coef": 600,
+            "drift_charge_energy_min": 1200,
+            "drift_charge_energy_max": 6000,
+            "drift_extra_charge": [
+              [
+                1,
+                0
+              ],
+              [
+                2,
+                1800
+              ]
+            ]
+          }
+        }
+      },
+      {
+        "id": 10393,
+        "suffix": "3",
+        "rich_text": {
+          "id": 10393,
+          "ace_time_charge_condition": "在场地赛道，使用氮气时获得额外大招充能并在落后第一名超过一定距离时获得速度提升效果",
+          "ace_time_effect": "雪落寒霜可以充能两次",
+          "ace_time_effect_rich_desc": "雪落寒霜可以充能两次",
+          "chip_unlock_tips": "芯片最高生效等级为#fe7ab73#ffffff级",
+          "icon_ace_time_charge_condition": "new_carport_icon_court",
+          "icon_ace_time_effect": "new_carport_icon_10184",
+          "icon_slipstream": "new_carport_icon_14",
+          "icon_unlock_nitro_2": "new_carport_icon_10184",
+          "icon_unlock_nitro_3": "new_carport_icon_nos_03",
+          "is_unlocked_ace_time_charge_condition": 1,
+          "is_unlocked_slipstream": 1,
+          "level_title": "赛道专精",
+          "passive_skill_effect": [
+            "雪落寒霜加速",
+            ""
+          ],
+          "passive_skill_effect_value": [
+            "20公里/小时",
+            ""
+          ],
+          "passive_skill_rich_desc": "敌方车辆每次使用大招时，自充能6%",
+          "slipstream": "跟随在车辆后方将获得尾流，产生持续的氮气充能效果",
+          "special_passive_skill_desc": "敌方车辆每次使用大招时，自充能6%",
+          "special_passive_skill_icon": "new_carport_icon_10185",
+          "special_passive_skill_title": "霜魂",
+          "title_ace_time_charge_condition": "赛道专精",
+          "title_ace_time_effect": "RECU限制解除",
+          "title_slipstream": "空气动力学套件",
+          "title_unlock_nitro_2": "大招强化套件 I",
+          "title_unlock_nitro_3": "竞速级氮气支架",
+          "unlock_nitro_3": "解锁1x6磅，2x3磅，3x2磅氮气",
+          "upgrade_level_icon": "new_carport_icon_court"
+        },
+        "stats": {
+          "speed_limit": 204,
+          "speedup_ratio": 1.08,
+          "charge": {
+            "ace_charge": 2800,
+            "drift_charge_energy_coef": 600,
+            "drift_charge_energy_min": 1200,
+            "drift_charge_energy_max": 6000,
+            "drift_extra_charge": [
+              [
+                1,
+                0
+              ],
+              [
+                2,
+                1800
+              ]
+            ]
+          }
+        }
+      },
+      {
+        "id": 10593,
+        "suffix": "4",
+        "rich_text": {
+          "id": 10593,
+          "ace_time_charge_condition": "在场地赛道，使用氮气时获得额外大招充能并在落后第一名超过一定距离时获得速度提升效果",
+          "ace_time_effect": "雪落寒霜可以充能两次",
+          "ace_time_effect_rich_desc": "雪落寒霜可以充能两次",
+          "chip_unlock_tips": "芯片最高生效等级为#fe7ab75#ffffff级",
+          "icon_ace_time_charge_condition": "new_carport_icon_court",
+          "icon_ace_time_effect": "new_carport_icon_10184",
+          "icon_slipstream": "new_carport_icon_14",
+          "icon_unlock_nitro_2": "new_carport_icon_10184",
+          "icon_unlock_nitro_3": "new_carport_icon_nos_03",
+          "is_unlocked_ace_time_charge_condition": 1,
+          "is_unlocked_slipstream": 1,
+          "level_title": "大招强化 I",
+          "passive_skill_effect": [
+            "雪落寒霜加速",
+            ""
+          ],
+          "passive_skill_effect_value": [
+            "23公里/小时",
+            ""
+          ],
+          "passive_skill_rich_desc": "敌方车辆每次使用大招时，自充能6%",
+          "slipstream": "跟随在车辆后方将获得尾流，产生持续的氮气充能效果",
+          "special_passive_skill_desc": "敌方车辆每次使用大招时，自充能6%",
+          "special_passive_skill_icon": "new_carport_icon_10185",
+          "special_passive_skill_title": "霜魂",
+          "title_ace_time_charge_condition": "赛道专精",
+          "title_ace_time_effect": "RECU限制解除",
+          "title_slipstream": "空气动力学套件",
+          "title_unlock_nitro_2": "大招强化套件 I",
+          "title_unlock_nitro_3": "竞速级氮气支架",
+          "unlock_nitro_3": "解锁1x6磅，2x3磅，3x2磅氮气",
+          "upgrade_level_icon": "new_carport_icon_10184"
+        },
+        "stats": {
+          "speed_limit": 204,
+          "speedup_ratio": 1.08,
+          "charge": {
+            "ace_charge": 2800,
+            "drift_charge_energy_coef": 600,
+            "drift_charge_energy_min": 1200,
+            "drift_charge_energy_max": 6000,
+            "drift_extra_charge": [
+              [
+                1,
+                0
+              ],
+              [
+                2,
+                1800
+              ]
+            ]
+          }
+        }
+      },
+      {
+        "id": 10693,
+        "suffix": "5",
+        "rich_text": {
+          "id": 10693,
+          "ace_time_charge_condition": "在场地赛道，使用氮气时获得额外大招充能并在落后第一名超过一定距离时获得速度提升效果",
+          "ace_time_effect": "雪落寒霜可以充能两次",
+          "ace_time_effect_rich_desc": "雪落寒霜可以充能两次",
+          "chip_unlock_tips": "芯片最高生效等级为#fe7ab76#ffffff级",
+          "icon_ace_time_charge_condition": "new_carport_icon_court",
+          "icon_ace_time_effect": "new_carport_icon_10184",
+          "icon_slipstream": "new_carport_icon_14",
+          "icon_unlock_nitro_2": "new_carport_icon_10184",
+          "icon_unlock_nitro_3": "new_carport_icon_nos_03",
+          "is_unlocked_ace_time_charge_condition": 1,
+          "is_unlocked_slipstream": 1,
+          "level_title": "竞速级氮气支架 II",
+          "passive_skill_effect": [
+            "雪落寒霜加速",
+            ""
+          ],
+          "passive_skill_effect_value": [
+            "23公里/小时",
+            ""
+          ],
+          "passive_skill_rich_desc": "敌方车辆每次使用大招时，自充能6%",
+          "slipstream": "跟随在车辆后方将获得尾流，产生持续的氮气充能效果",
+          "special_passive_skill_desc": "敌方车辆每次使用大招时，自充能6%",
+          "special_passive_skill_icon": "new_carport_icon_10185",
+          "special_passive_skill_title": "霜魂",
+          "title_ace_time_charge_condition": "赛道专精",
+          "title_ace_time_effect": "RECU限制解除",
+          "title_slipstream": "空气动力学套件",
+          "title_unlock_nitro_2": "大招强化套件 I",
+          "title_unlock_nitro_3": "竞速级氮气支架",
+          "unlock_nitro_3": "解锁1x6磅，2x3磅，3x2磅氮气",
+          "upgrade_level_icon": "new_carport_icon_nos_03"
+        },
+        "stats": {
+          "speed_limit": 204,
+          "speedup_ratio": 1.08,
+          "charge": {
+            "ace_charge": 2800,
+            "drift_charge_energy_coef": 600,
+            "drift_charge_energy_min": 1200,
+            "drift_charge_energy_max": 6000,
+            "drift_extra_charge": [
+              [
+                1,
+                0
+              ],
+              [
+                2,
+                1800
+              ]
+            ]
+          }
+        }
+      },
+      {
+        "id": 10793,
+        "suffix": "6",
+        "rich_text": {
+          "id": 10793,
+          "ace_time_charge_condition": "在场地赛道，使用氮气时获得额外大招充能并在落后第一名超过一定距离时获得速度提升效果",
+          "ace_time_effect": "雪落寒霜可以充能两次",
+          "ace_time_effect_rich_desc": "雪落寒霜可以充能两次",
+          "chip_unlock_tips": "芯片最高生效等级为#fe7ab77#ffffff级",
+          "icon_ace_time_charge_condition": "new_carport_icon_court",
+          "icon_ace_time_effect": "new_carport_icon_10184",
+          "icon_slipstream": "new_carport_icon_14",
+          "icon_unlock_nitro_2": "new_carport_icon_10184",
+          "icon_unlock_nitro_3": "new_carport_icon_nos_03",
+          "is_unlocked_ace_time_charge_condition": 1,
+          "is_unlocked_slipstream": 1,
+          "level_title": "大招强化 II",
+          "passive_skill_effect": [
+            "雪落寒霜加速",
+            ""
+          ],
+          "passive_skill_effect_value": [
+            "26公里/小时",
+            ""
+          ],
+          "passive_skill_rich_desc": "敌方车辆每次使用大招时，自充能6%",
+          "slipstream": "跟随在车辆后方将获得尾流，产生持续的氮气充能效果",
+          "special_passive_skill_desc": "敌方车辆每次使用大招时，自充能6%",
+          "special_passive_skill_icon": "new_carport_icon_10185",
+          "special_passive_skill_title": "霜魂",
+          "title_ace_time_charge_condition": "赛道专精",
+          "title_ace_time_effect": "RECU限制解除",
+          "title_slipstream": "空气动力学套件",
+          "title_unlock_nitro_2": "大招强化套件 I",
+          "title_unlock_nitro_3": "竞速级氮气支架",
+          "unlock_nitro_3": "解锁1x6磅，2x3磅，3x2磅氮气",
+          "upgrade_level_icon": "new_carport_icon_10184"
+        },
+        "stats": {
+          "speed_limit": 204.5,
+          "speedup_ratio": 1.08,
+          "charge": {
+            "ace_charge": 2800,
+            "drift_charge_energy_coef": 600,
+            "drift_charge_energy_min": 1200,
+            "drift_charge_energy_max": 6000,
+            "drift_extra_charge": [
+              [
+                1,
+                0
+              ],
+              [
+                2,
+                1800
+              ]
+            ]
+          }
+        }
+      },
+      {
+        "id": 10893,
+        "suffix": "7",
+        "rich_text": {
+          "id": 10893,
+          "ace_time_charge_condition": "在场地赛道，使用氮气时获得额外大招充能并在落后第一名超过一定距离时获得速度提升效果",
+          "ace_time_effect": "雪落寒霜可以充能两次",
+          "ace_time_effect_rich_desc": "雪落寒霜可以充能两次",
+          "chip_unlock_tips": "芯片最高生效等级为#fe7ab78#ffffff级",
+          "icon_ace_time_charge_condition": "new_carport_icon_court",
+          "icon_ace_time_effect": "new_carport_icon_10184",
+          "icon_slipstream": "new_carport_icon_14",
+          "icon_unlock_nitro_2": "new_carport_icon_10184",
+          "icon_unlock_nitro_3": "new_carport_icon_nos_03",
+          "is_unlocked_ace_time_charge_condition": 1,
+          "is_unlocked_ace_time_effect": 1,
+          "is_unlocked_slipstream": 1,
+          "level_title": "RECU限制解除",
+          "passive_skill_effect": [
+            "雪落寒霜加速",
+            ""
+          ],
+          "passive_skill_effect_value": [
+            "26公里/小时",
+            ""
+          ],
+          "passive_skill_rich_desc": "敌方车辆每次使用大招时，自充能6%",
+          "slipstream": "跟随在车辆后方将获得尾流，产生持续的氮气充能效果",
+          "special_passive_skill_desc": "敌方车辆每次使用大招时，自充能6%",
+          "special_passive_skill_icon": "new_carport_icon_10185",
+          "special_passive_skill_title": "霜魂",
+          "title_ace_time_charge_condition": "赛道专精",
+          "title_ace_time_effect": "RECU限制解除",
+          "title_slipstream": "空气动力学套件",
+          "title_unlock_nitro_2": "大招强化套件 I",
+          "title_unlock_nitro_3": "竞速级氮气支架",
+          "unlock_nitro_3": "解锁1x6磅，2x3磅，3x2磅氮气",
+          "upgrade_level_icon": "new_carport_icon_10184"
+        },
+        "stats": {
+          "speed_limit": 204.5,
+          "speedup_ratio": 1.08,
+          "charge": {
+            "ace_charge": 2800,
+            "drift_charge_energy_coef": 600,
+            "drift_charge_energy_min": 1200,
+            "drift_charge_energy_max": 6000,
+            "drift_extra_charge": [
+              [
+                1,
+                0
+              ],
+              [
+                2,
+                1800
+              ]
+            ]
+          }
+        }
+      },
+      {
+        "id": 10993,
+        "suffix": "8",
+        "rich_text": {
+          "id": 10993,
+          "ace_time_charge_condition": "在场地赛道，使用氮气时获得额外大招充能并在落后第一名超过一定距离时获得速度提升效果",
+          "ace_time_effect": "雪落寒霜可以充能两次",
+          "ace_time_effect_rich_desc": "雪落寒霜可以充能两次",
+          "chip_unlock_tips": "芯片最高生效等级为#fe7ab79#ffffff级",
+          "icon_ace_time_charge_condition": "new_carport_icon_court",
+          "icon_ace_time_effect": "new_carport_icon_10184",
+          "icon_slipstream": "new_carport_icon_14",
+          "icon_unlock_nitro_2": "new_carport_icon_10184",
+          "icon_unlock_nitro_3": "new_carport_icon_nos_03",
+          "is_unlocked_ace_time_charge_condition": 1,
+          "is_unlocked_ace_time_effect": 1,
+          "is_unlocked_slipstream": 1,
+          "level_title": "大招强化 III",
+          "passive_skill_effect": [
+            "雪落寒霜加速",
+            ""
+          ],
+          "passive_skill_effect_value": [
+            "30公里/小时",
+            ""
+          ],
+          "passive_skill_rich_desc": "敌方车辆每次使用大招时，自充能6%",
+          "slipstream": "跟随在车辆后方将获得尾流，产生持续的氮气充能效果",
+          "special_passive_skill_desc": "敌方车辆每次使用大招时，自充能6%",
+          "special_passive_skill_icon": "new_carport_icon_10185",
+          "special_passive_skill_title": "霜魂",
+          "title_ace_time_charge_condition": "赛道专精",
+          "title_ace_time_effect": "RECU限制解除",
+          "title_slipstream": "空气动力学套件",
+          "title_unlock_nitro_2": "大招强化套件 I",
+          "title_unlock_nitro_3": "竞速级氮气支架",
+          "unlock_nitro_3": "解锁1x6磅，2x3磅，3x2磅氮气",
+          "upgrade_level_icon": "new_carport_icon_10184"
+        },
+        "stats": {
+          "speed_limit": 205,
+          "speedup_ratio": 1.08,
+          "charge": {
+            "ace_charge": 2800,
+            "drift_charge_energy_coef": 600,
+            "drift_charge_energy_min": 1200,
+            "drift_charge_energy_max": 6000,
+            "drift_extra_charge": [
+              [
+                1,
+                0
+              ],
+              [
+                2,
+                1800
+              ]
+            ]
+          }
+        }
+      },
+      {
+        "id": 11093,
+        "suffix": "9",
+        "rich_text": {
+          "id": 11093,
+          "ace_time_charge_condition": "在场地赛道，使用氮气时获得额外大招充能并在落后第一名超过一定距离时获得速度提升效果",
+          "ace_time_effect": "雪落寒霜可以充能两次",
+          "ace_time_effect_rich_desc": "雪落寒霜可以充能两次",
+          "chip_unlock_tips": "芯片最高生效等级为#fe7ab710#ffffff级",
+          "icon_ace_time_charge_condition": "new_carport_icon_court",
+          "icon_ace_time_effect": "new_carport_icon_10184",
+          "icon_slipstream": "new_carport_icon_14",
+          "icon_unlock_nitro_2": "new_carport_icon_10184",
+          "icon_unlock_nitro_3": "new_carport_icon_nos_03",
+          "is_unlocked_ace_time_charge_condition": 1,
+          "is_unlocked_ace_time_effect": 1,
+          "is_unlocked_slipstream": 1,
+          "level_title": "大招强化 IV",
+          "passive_skill_effect": [
+            "雪落寒霜加速",
+            ""
+          ],
+          "passive_skill_effect_value": [
+            "35公里/小时",
+            ""
+          ],
+          "passive_skill_rich_desc": "敌方车辆每次使用大招时，自充能6%",
+          "slipstream": "跟随在车辆后方将获得尾流，产生持续的氮气充能效果",
+          "special_passive_skill_desc": "敌方车辆每次使用大招时，自充能6%",
+          "special_passive_skill_icon": "new_carport_icon_10185",
+          "special_passive_skill_title": "霜魂",
+          "title_ace_time_charge_condition": "赛道专精",
+          "title_ace_time_effect": "RECU限制解除",
+          "title_slipstream": "空气动力学套件",
+          "title_unlock_nitro_2": "大招强化套件 I",
+          "title_unlock_nitro_3": "竞速级氮气支架",
+          "unlock_nitro_3": "解锁1x6磅，2x3磅，3x2磅氮气",
+          "upgrade_level_icon": "new_carport_icon_10184"
+        },
+        "stats": {
+          "speed_limit": 206,
+          "speedup_ratio": 1.08,
+          "charge": {
+            "ace_charge": 2800,
+            "drift_charge_energy_coef": 600,
+            "drift_charge_energy_min": 1200,
+            "drift_charge_energy_max": 6000,
+            "drift_extra_charge": [
+              [
+                1,
+                0
+              ],
+              [
+                2,
+                1800
+              ]
+            ]
+          }
+        }
+      }
+    ],
+    "skills": {
+      "ultimate": {
+        "id": 9351,
+        "name": "雪落寒霜",
+        "type": "N2O_ICE",
+        "icon_static": "ui_skill73_04",
+        "icon_big": null,
+        "icon": null,
+        "init_ratio": null,
+        "icons": {
+          "normal": "ui_skill73_03",
+          "disable": "ui_skill73_01",
+          "alt": "ui_skill73_06",
+          "down": "ui_skill73_03",
+          "static": "ui_skill73_04",
+          "big": null
+        },
+        "extra": {
+          "cam_type": "N2O_ICE",
+          "eff_id": 1,
+          "is_cost_energy": 2,
+          "rally_qte": 2
+        },
+        "value_texts": [
+          {
+            "key": "name",
+            "label": "技能名称",
+            "value": "雪落寒霜"
+          },
+          {
+            "key": "skill_type",
+            "label": "技能类型",
+            "value": "N2O_ICE"
+          },
+          {
+            "key": "cam_type",
+            "label": "镜头类型",
+            "value": "N2O_ICE"
+          },
+          {
+            "key": "eff_id",
+            "label": "特效编号",
+            "value": "1"
+          },
+          {
+            "key": "min_charge",
+            "label": "最低充能万分比",
+            "value": "10000"
+          },
+          {
+            "key": "rally_qte",
+            "label": "拉力赛触发qte",
+            "value": "2"
+          }
+        ],
+        "instructions": [
+          {
+            "id": 803711,
+            "attack_show_eff_dur": 5,
+            "attack_show_friend_enemy_filter": [
+              1,
+              2
+            ],
+            "attack_show_keep_dur": 5,
+            "buff_count": 0,
+            "cd_type": 1,
+            "duration": 0.1,
+            "eff_cd": 2,
+            "eff_id": 1,
+            "enemy_eff": [
+              63301
+            ],
+            "extra_children": [],
+            "extra_isolate": [],
+            "inst_group": 846,
+            "inst_name": "暴风雪锁定",
+            "inst_type": 8,
+            "lock_camp": 2,
+            "lock_cnt": 5,
+            "lock_dist": [
+              -100,
+              100
+            ],
+            "lock_no_dodge": 1,
+            "lock_no_perish_together": 1,
+            "lock_no_rebound": 1,
+            "lock_no_reverse": 1,
+            "lock_no_taunt": 1,
+            "lock_no_transfer": 1,
+            "lock_side_dist": [
+              -100,
+              100
+            ],
+            "lock_vertical_dist": [
+              -6000,
+              6000
+            ],
+            "rear_insts": [],
+            "ref_insts": [
+              803711
+            ],
+            "skill_eff_id": 12113,
+            "sp_n2o_ace_charge_ratio": 1,
+            "name": "暴风雪锁定",
+            "desc": null,
+            "type": 8,
+            "order": null,
+            "value_texts": [
+              {
+                "key": "attack_show_friend_enemy_filter",
+                "label": "敌友筛选",
+                "value": "[1,2]"
+              },
+              {
+                "key": "buff_count",
+                "label": "Buff 数量",
+                "value": "0"
+              },
+              {
+                "key": "rear_insts",
+                "label": "后续节点",
+                "value": "[]"
+              },
+              {
+                "key": "extra_children",
+                "label": "子节点",
+                "value": "[]"
+              },
+              {
+                "key": "ref_insts",
+                "label": "引用节点",
+                "value": "[803711]"
+              }
+            ]
+          },
+          {
+            "id": 206801,
+            "accel_action": 2,
+            "accelerate_curve": [
+              [
+                0,
+                30
+              ],
+              [
+                165,
+                21.7
+              ],
+              [
+                166,
+                7
+              ],
+              [
+                200,
+                6
+              ]
+            ],
+            "attack_show_friend_enemy_filter": [
+              1,
+              2
+            ],
+            "attack_show_role_filter": [
+              1,
+              2,
+              3
+            ],
+            "buff_count": 0,
+            "cost_ratio": 1428,
+            "duration": 7,
+            "eff_id": 1,
+            "extra_children": [],
+            "extra_isolate": [],
+            "inst_group": 2,
+            "inst_name": "大招加速",
+            "inst_type": 2,
+            "is_hard_push": 1,
+            "rear_insts": [
+              -1
+            ],
+            "ref_insts": [
+              206801
+            ],
+            "skill_eff_id": 20413,
+            "sp_ex_speed_limit": 20,
+            "sp_max_ex_speed_limit": 20,
+            "sp_min_ex_speed_limit": 20,
+            "sp_n2o_ace_charge_ratio": 1,
+            "name": "大招加速",
+            "desc": null,
+            "type": 2,
+            "order": null,
+            "value_texts": [
+              {
+                "key": "sp_ex_speed_limit",
+                "label": "自身极速提升",
+                "value": "20km/h"
+              },
+              {
+                "key": "attack_show_friend_enemy_filter",
+                "label": "敌友筛选",
+                "value": "[1,2]"
+              },
+              {
+                "key": "attack_show_role_filter",
+                "label": "定位筛选",
+                "value": "[1,2,3]"
+              },
+              {
+                "key": "buff_count",
+                "label": "Buff 数量",
+                "value": "0"
+              },
+              {
+                "key": "rear_insts",
+                "label": "后续节点",
+                "value": "[-1]"
+              },
+              {
+                "key": "extra_children",
+                "label": "子节点",
+                "value": "[]"
+              },
+              {
+                "key": "ref_insts",
+                "label": "引用节点",
+                "value": "[206801]"
+              }
+            ]
+          }
+        ]
+      },
+      "sp": null,
+      "passive": [
+        {
+          "id": 50801,
+          "name": "封禁尾流",
+          "type": null,
+          "icon_static": null,
+          "icon_big": null,
+          "icon": null,
+          "init_ratio": null,
+          "icons": {
+            "normal": null,
+            "disable": null,
+            "alt": null,
+            "down": null,
+            "static": null,
+            "big": null
+          },
+          "extra": {
+            "cam_type": null,
+            "eff_id": null,
+            "is_cost_energy": null,
+            "rally_qte": null
+          },
+          "value_texts": [
+            {
+              "key": "name",
+              "label": "技能名称",
+              "value": "封禁尾流"
+            }
+          ],
+          "instructions": [
+            {
+              "id": 2100301,
+              "attack_show_friend_enemy_filter": [
+                1,
+                2
+              ],
+              "attack_show_role_filter": [
+                1,
+                2,
+                3
+              ],
+              "buff_count": 0,
+              "duration": 999,
+              "eff_id": 1,
+              "extra_children": [],
+              "extra_isolate": [],
+              "inst_group": 21001,
+              "inst_name": "封禁尾流",
+              "inst_type": 21,
+              "rear_insts": [],
+              "ref_insts": [
+                2100301
+              ],
+              "skill_eff_id": 21,
+              "slipstream_state": 1,
+              "sp_n2o_ace_charge_ratio": 1,
+              "name": "封禁尾流",
+              "desc": null,
+              "type": 21,
+              "order": null,
+              "value_texts": [
+                {
+                  "key": "attack_show_friend_enemy_filter",
+                  "label": "敌友筛选",
+                  "value": "[1,2]"
+                },
+                {
+                  "key": "attack_show_role_filter",
+                  "label": "定位筛选",
+                  "value": "[1,2,3]"
+                },
+                {
+                  "key": "buff_count",
+                  "label": "Buff 数量",
+                  "value": "0"
+                },
+                {
+                  "key": "rear_insts",
+                  "label": "后续节点",
+                  "value": "[]"
+                },
+                {
+                  "key": "extra_children",
+                  "label": "子节点",
+                  "value": "[]"
+                },
+                {
+                  "key": "ref_insts",
+                  "label": "引用节点",
+                  "value": "[2100301]"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "id": 63303,
+          "name": "霜魂",
+          "type": null,
+          "icon_static": null,
+          "icon_big": null,
+          "icon": null,
+          "init_ratio": null,
+          "icons": {
+            "normal": null,
+            "disable": null,
+            "alt": null,
+            "down": null,
+            "static": null,
+            "big": null
+          },
+          "extra": {
+            "cam_type": null,
+            "eff_id": null,
+            "is_cost_energy": null,
+            "rally_qte": null
+          },
+          "value_texts": [
+            {
+              "key": "name",
+              "label": "技能名称",
+              "value": "霜魂"
+            }
+          ],
+          "instructions": [
+            {
+              "id": 3800401,
+              "buff_count": 0,
+              "duration": null,
+              "extra_children": [],
+              "extra_isolate": [
+                906961
+              ],
+              "glob_check_eff_ids": [
+                906961
+              ],
+              "glob_check_mode": 1,
+              "glob_check_num": 1,
+              "glob_check_target": 2,
+              "glob_check_type": 1,
+              "inst_group": 38008,
+              "inst_name": "寒霜冰魄",
+              "inst_type": 38,
+              "rear_insts": [
+                -1
+              ],
+              "ref_insts": [
+                906961,
+                3800401
+              ],
+              "sp_n2o_ace_charge_ratio": 1,
+              "name": "寒霜冰魄",
+              "desc": null,
+              "type": 38,
+              "order": null,
+              "value_texts": [
+                {
+                  "key": "buff_count",
+                  "label": "Buff 数量",
+                  "value": "0"
+                },
+                {
+                  "key": "rear_insts",
+                  "label": "后续节点",
+                  "value": "[-1]"
+                },
+                {
+                  "key": "extra_children",
+                  "label": "子节点",
+                  "value": "[]"
+                },
+                {
+                  "key": "ref_insts",
+                  "label": "引用节点",
+                  "value": "[906961,3800401]"
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    "skillPanelGroups": {
+      "ultimate": [
+        {
+          "id": "871",
+          "name_rich": {
+            "raw": "自身极速提升",
+            "html": "自身极速提升"
+          },
+          "value_rich": {
+            "raw": "20km/h",
+            "html": "20km/h"
+          },
+          "value_text": "20km/h",
+          "instruction_ids": [
+            206801,
+            206805
+          ],
+          "values": []
+        },
+        {
+          "id": "872",
+          "name_rich": {
+            "raw": "加速持续时长",
+            "html": "加速持续时长"
+          },
+          "value_rich": {
+            "raw": "7秒",
+            "html": "7秒"
+          },
+          "value_text": "7秒",
+          "instruction_ids": [],
+          "values": []
+        },
+        {
+          "id": "874",
+          "name_rich": {
+            "raw": "极速降低",
+            "html": "极速降低"
+          },
+          "value_rich": {
+            "raw": "10km/h",
+            "html": "10km/h"
+          },
+          "value_text": "10km/h",
+          "instruction_ids": [],
+          "values": []
+        },
+        {
+          "id": "875",
+          "name_rich": {
+            "raw": "减速时长",
+            "html": "减速时长"
+          },
+          "value_rich": {
+            "raw": "5秒",
+            "html": "5秒"
+          },
+          "value_text": "5秒",
+          "instruction_ids": [],
+          "values": []
+        },
+        {
+          "id": "876",
+          "name_rich": {
+            "raw": "冻结时长",
+            "html": "冻结时长"
+          },
+          "value_rich": {
+            "raw": "1秒",
+            "html": "1秒"
+          },
+          "value_text": "1秒",
+          "instruction_ids": [],
+          "values": []
+        },
+        {
+          "id": "877",
+          "name_rich": {
+            "raw": "作用范围",
+            "html": "作用范围"
+          },
+          "value_rich": {
+            "raw": "100米",
+            "html": "100米"
+          },
+          "value_text": "100米",
+          "instruction_ids": [],
+          "values": []
+        },
+        {
+          "id": "878",
+          "name_rich": {
+            "raw": "生成位置",
+            "html": "生成位置"
+          },
+          "value_rich": {
+            "raw": "前方50米",
+            "html": "前方50米"
+          },
+          "value_text": "前方50米",
+          "instruction_ids": [],
+          "values": []
+        },
+        {
+          "id": "879",
+          "name_rich": {
+            "raw": "存在时长",
+            "html": "存在时长"
+          },
+          "value_rich": {
+            "raw": "6秒",
+            "html": "6秒"
+          },
+          "value_text": "6秒",
+          "instruction_ids": [],
+          "values": []
+        },
+        {
+          "id": "880",
+          "name_rich": {
+            "raw": "命中类型",
+            "html": "命中类型"
+          },
+          "value_rich": {
+            "raw": "#tipsnoicon[放置类]",
+            "html": "<span class=\"rt-tip rt-tip--entry rt-tip--noicon\" data-tip=\"放置类\" data-desc=\"·目标触碰到放置物时命中&#10;·不受*混乱*、*反弹*、*闪避*、*隐身*效果影响&#10;·无法命中具有*无法选中*的敌方\" style=\"--tip-color:#ffd700\" title=\"·目标触碰到放置物时命中&#10;·不受*混乱*、*反弹*、*闪避*、*隐身*效果影响&#10;·无法命中具有*无法选中*的敌方\">放置类</span>"
+          },
+          "value_text": "#tipsnoicon[放置类]",
+          "instruction_ids": [],
+          "values": []
+        },
+        {
+          "id": "881",
+          "name_rich": {
+            "raw": "可否净化",
+            "html": "可否净化"
+          },
+          "value_rich": {
+            "raw": "可净化",
+            "html": "可净化"
+          },
+          "value_text": "可净化",
+          "instruction_ids": [],
+          "values": []
+        },
+        {
+          "id": "20627",
+          "name_rich": {
+            "raw": "加速动力",
+            "html": "加速动力"
+          },
+          "value_rich": {
+            "raw": "中",
+            "html": "中"
+          },
+          "value_text": "中",
+          "instruction_ids": [],
+          "values": []
+        }
+      ],
+      "sp": [],
+      "passive": [],
+      "other": []
+    },
+    "richText": {
+      "id": 10093,
+      "ace_time_charge_condition": "在场地赛道，使用氮气时获得额外大招充能并在落后第一名超过一定距离时获得速度提升效果",
+      "ace_time_effect": "雪落寒霜可以充能两次",
+      "ace_time_effect_rich_desc": "雪落寒霜可以充能两次",
+      "chip_unlock_tips": "芯片最高生效等级为#fe7ab71#ffffff级",
+      "icon_ace_time_charge_condition": "new_carport_icon_court",
+      "icon_ace_time_effect": "new_carport_icon_10184",
+      "icon_slipstream": "new_carport_icon_14",
+      "icon_unlock_nitro_2": "new_carport_icon_10184",
+      "icon_unlock_nitro_3": "new_carport_icon_nos_03",
+      "level_title": "原车型",
+      "passive_skill_effect": [
+        "雪落寒霜加速",
+        ""
+      ],
+      "passive_skill_effect_value": [
+        "20公里/小时",
+        ""
+      ],
+      "passive_skill_rich_desc": "敌方车辆每次使用大招时，自充能6%",
+      "slipstream": "跟随在车辆后方将获得尾流，产生持续的氮气充能效果",
+      "special_passive_skill_desc": {
+        "raw": "敌方车辆每次使用大招时，自充能6%",
+        "html": "敌方车辆每次使用大招时，自充能6%"
+      },
+      "special_passive_skill_icon": "new_carport_icon_10185",
+      "special_passive_skill_title": "霜魂",
+      "title_ace_time_charge_condition": "赛道专精",
+      "title_ace_time_effect": "RECU限制解除",
+      "title_slipstream": "空气动力学套件",
+      "title_unlock_nitro_2": "大招强化套件 I",
+      "title_unlock_nitro_3": "竞速级氮气支架",
+      "unlock_nitro_3": "解锁1x6磅，2x3磅，3x2磅氮气",
+      "upgrade_level_icon": "new_carport_icon_10185",
+      "feature_desc": {
+        "raw": "加速推进并在100米范围内的敌方车辆前方50米处召唤暴风雪：\n·穿越暴风雪的敌方车辆失去全部额外速度和动力增益（涡轮、氮气、大招的基础加速和动力不受影响）\n·被冰霜附着5秒（已被冰霜附着的车辆不会被重复附着）\n·冰霜使敌方车辆减速10km/h且无法#tips[闪现]和#tips[后退]，附着结束时若敌方车辆仍处于前3名则额外被冻结1秒。",
+        "html": "加速推进并在100米范围内的敌方车辆前方50米处召唤暴风雪：<br/>·穿越暴风雪的敌方车辆失去全部额外速度和动力增益（涡轮、氮气、大招的基础加速和动力不受影响）<br/>·被冰霜附着5秒（已被冰霜附着的车辆不会被重复附着）<br/>·冰霜使敌方车辆减速10km/h且无法<span class=\"rt-tip rt-tip--entry\" data-tip=\"闪现\" data-icon=\"carport_new_skill_illustrate_b3\" data-desc=\"·沿赛道预设路线向前快速位移\" style=\"--tip-color:#7eedff\" title=\"·沿赛道预设路线向前快速位移\"><span class=\"rt-tip__icon-slot\"></span>闪现</span>和<span class=\"rt-tip rt-tip--entry\" data-tip=\"后退\" data-icon=\"carport_new_skill_illustrate_r1\" data-desc=\"·沿赛道预设路线向后位移一段距离\" style=\"--tip-color:#ffa8b1\" title=\"·沿赛道预设路线向后位移一段距离\"><span class=\"rt-tip__icon-slot\"></span>后退</span>，附着结束时若敌方车辆仍处于前3名则额外被冻结1秒。"
+      },
+      "sp_skill_desc": null,
+      "passive_skill_desc": null,
+      "story_title": "厂商：元素",
+      "story": {
+        "raw": "元素车厂这次打算给速度节的各位来一点小小的冰之震撼。使用瑞卡因子进行强化的热循环系统，使得寒霜冰魄的车辆外壳始终保持零下50度以下的低温，将周围的水蒸气凝华成冰，让寒霜冰魄从视觉上就散发着阵阵寒气。瑞卡动物园的北极熊先生非常喜欢这台车，他说靠在这台车旁边让他有一种回到家的感觉。",
+        "html": "元素车厂这次打算给速度节的各位来一点小小的冰之震撼。使用瑞卡因子进行强化的热循环系统，使得寒霜冰魄的车辆外壳始终保持零下50度以下的低温，将周围的水蒸气凝华成冰，让寒霜冰魄从视觉上就散发着阵阵寒气。瑞卡动物园的北极熊先生非常喜欢这台车，他说靠在这台车旁边让他有一种回到家的感觉。"
+      }
+    },
+    "report": {
+      "title": "王牌速度节赛车检验报告",
+      "sections": [
+        {
+          "title": "基础数据",
+          "items": [
+            {
+              "label": "检测车辆",
+              "value": "寒霜冰魄/ICE"
+            },
+            {
+              "label": "注册日期",
+              "value": "{}年{}月{}日"
+            },
+            {
+              "label": "车辆类型",
+              "value": "幻想阵营"
+            },
+            {
+              "label": "厂商",
+              "value": "元素"
+            },
+            {
+              "label": "定位",
+              "value": "干扰位"
+            },
+            {
+              "label": "赛道专精",
+              "value": "场地"
+            },
+            {
+              "label": "能源类型",
+              "value": "汽油"
+            },
+            {
+              "label": "驱动方式",
+              "value": "前置四驱"
+            },
+            {
+              "label": "永冻机",
+              "value": "已启动"
+            }
+          ]
+        },
+        {
+          "title": "芯片模块",
+          "items": [
+            {
+              "label": "芯片写入权限",
+              "value": "已获取"
+            },
+            {
+              "label": "扩展芯片类型",
+              "value": "○○◇◣◣V"
+            },
+            {
+              "label": "等级合规检查",
+              "value": "芯片等级未高于RECU等级"
+            }
+          ]
+        },
+        {
+          "title": "外观检验",
+          "items": [
+            {
+              "label": "检验结果",
+              "value": "合格"
+            }
+          ]
+        },
+        {
+          "title": "大招驱动模块",
+          "items": [
+            {
+              "label": "能量控制单元",
+              "value": "五代RECU，工作正常"
+            },
+            {
+              "label": "瑞卡因子稳定器",
+              "value": "工作正常"
+            },
+            {
+              "label": "NOS",
+              "value": "氮氧加速系统已安装"
+            },
+            {
+              "label": "空气动力套件（2级解锁）",
+              "value": "未选装"
+            },
+            {
+              "label": "赛道专精（3级解锁）",
+              "value": "未选装"
+            },
+            {
+              "label": "RECU限制解除（8级解锁）",
+              "value": "未选装"
+            }
+          ]
+        },
+        {
+          "title": "整车判定",
+          "items": [
+            {
+              "label": "检验结果",
+              "value": "合格，可参加速度节赛事"
+            }
+          ]
+        }
+      ]
+    },
+    "story": {
+      "content": "元素车厂这次打算给速度节的各位来一点小小的冰之震撼。使用瑞卡因子进行强化的热循环系统，使得寒霜冰魄的车辆外壳始终保持零下50度以下的低温，将周围的水蒸气凝华成冰，让寒霜冰魄从视觉上就散发着阵阵寒气。瑞卡动物园的北极熊先生非常喜欢这台车，他说靠在这台车旁边让他有一种回到家的感觉。",
+      "id": 10093,
+      "story_content": "元素车厂这次打算给速度节的各位来一点小小的冰之震撼。使用瑞卡因子进行强化的热循环系统，使得寒霜冰魄的车辆外壳始终保持零下50度以下的低温，将周围的水蒸气凝华成冰，让寒霜冰魄从视觉上就散发着阵阵寒气。瑞卡动物园的北极熊先生非常喜欢这台车，他说靠在这台车旁边让他有一种回到家的感觉。",
+      "story_title": "厂商：元素",
+      "vehicle_name": "寒霜冰魄"
+    },
+    "obtain": {
+      "tag_img": "item_tag_icon_manghe",
+      "obtain_type_ids": [
+        54
+      ],
+      "obtain_types": [
+        {
+          "id": 54,
+          "label": "王牌补给",
+          "desc": "参与王牌补给获取",
+          "icon": "commonnew_acesupply"
+        }
+      ]
+    },
+    "restraints": {
+      "id": 10093,
+      "match": [
+        12012,
+        10018,
+        10095,
+        10087,
+        10036,
+        12096
+      ],
+      "be_restraint": [
+        10021,
+        10065,
+        10077,
+        10038,
+        10045,
+        10070,
+        10012,
+        10025,
+        10039,
+        10032,
+        10076,
+        10046,
+        10024,
+        12096
+      ]
+    },
+    "resources": {
+      "icons": {
+        "ace_time_effect": "new_carport_icon_10184",
+        "icon_ace_time_effect": "new_carport_icon_10184",
+        "ace_time_charge_condition": "new_carport_icon_court",
+        "slipstream": "new_carport_icon_14",
+        "unlock_nitro_2": "new_carport_icon_10184",
+        "unlock_nitro_3": "new_carport_icon_nos_03",
+        "upgrade_level_icon": "new_carport_icon_10185",
+        "special_passive_skill_icon": "new_carport_icon_10185"
+      }
+    },
+    "skins": {
+      "sets": {
+        "local": [
+          {
+            "source": "local",
+            "index": 1
+          },
+          {
+            "source": "local",
+            "index": 2
+          },
+          {
+            "source": "local",
+            "index": 3
+          },
+          {
+            "source": "local",
+            "index": 4
+          },
+          {
+            "source": "local",
+            "index": 5
+          },
+          {
+            "source": "local",
+            "index": 6
+          }
+        ]
+      },
+      "meta": {
+        "1": {
+          "id": 50260,
+          "name": "涂装 绝对零度",
+          "desc": "只存在于理论中的温度，它却能无限接近。\n适用车型：#1dd8d0寒霜冰魄",
+          "icon_s": "tz_10093_1_s",
+          "icon_m": "tz_10093_1_m",
+          "icon_b": "tz_10093_1_b"
+        },
+        "2": {
+          "id": 50258,
+          "name": "涂装 冰焰寒霜",
+          "desc": "燃烧灵魂，奏响这首冰与火之歌。\n适用车型：#1dd8d0寒霜冰魄",
+          "icon_s": "tz_10093_2_s",
+          "icon_m": "tz_10093_2_m",
+          "icon_b": "tz_10093_2_b"
+        },
+        "3": {
+          "id": 50314,
+          "name": "涂装 云滇星垂",
+          "desc": "犹如云滇星空中的恒星，闪耀着速度与掌控力的极致光芒！\n适用车型：#1dd8d0寒霜冰魄",
+          "icon_s": "tz_10093_3_s",
+          "icon_m": "tz_10093_3_m",
+          "icon_b": "tz_10093_3_b"
+        },
+        "4": {
+          "id": 50374,
+          "name": "涂装 吕布",
+          "desc": "豹子尾摇穿画戟，雄兵十万脱征衣。\n适用车型：#1dd8d0寒霜冰魄",
+          "icon_s": "tz_10093_4_s",
+          "icon_m": "tz_10093_4_m",
+          "icon_b": "tz_10093_4_b"
+        },
+        "5": {
+          "id": 50479,
+          "name": "涂装 冰淇淋",
+          "desc": "冰冰凉凉，坠入冰淇淋的殿堂！\n适用车型：#1dd8d0寒霜冰魄",
+          "icon_s": "tz_10093_5_s",
+          "icon_m": "tz_10093_5_m",
+          "icon_b": "tz_10093_5_b"
+        },
+        "6": {
+          "id": 50580,
+          "name": "涂装 凌霜傲梅",
+          "desc": "宝剑锋从磨砺出，梅花香自苦寒来。\n适用车型：#1dd8d0寒霜冰魄",
+          "icon_s": "tz_10093_6_s",
+          "icon_m": "tz_10093_6_m",
+          "icon_b": "tz_10093_6_b"
+        }
+      }
+    },
+    "media": {
+      "cover": "/rk-assets/10093_m.png",
+      "coverFallback": "/rk-assets/10093_m.png",
+      "shareImage": {
+        "key": "share_10093",
+        "file": "share_10093.png",
+        "url": "https://h65.gdl.netease.com/web_res_list_20240619/share_10093.webp"
+      },
+      "shareImageAdvance": null,
+      "skillVideo": {
+        "ultimate": {
+          "url": "https://vod.cc.163.com/file/636c9c73e6c041f2578ed998?source=27&protocol=https",
+          "thumbnail": "table_video_img_10093"
+        },
+        "sp": null
+      }
+    }
+  }
+}

@@ -1,0 +1,1755 @@
+{
+  "schemaVersion": 2,
+  "versionId": "26-07-15_29734784_android",
+  "generatedAt": "2026-07-16T09:22:34.000Z",
+  "item": {
+    "id": 12026,
+    "name": "莱肯 HyperSport",
+    "manufacturer": "W Motors",
+    "quality": "传说",
+    "class": 4,
+    "group": 2,
+    "position": "干扰位",
+    "positionLabel": "干扰位",
+    "racingRole": 3,
+    "racingRoleName": "干扰位",
+    "specialization": "城市",
+    "seasonCode": "S19",
+    "publication": {
+      "state": "released",
+      "releaseTimestamp": 1707408000,
+      "releaseText": "2024-2-9 00:00:00",
+      "releaseMacro": "S19_WEEK2_START"
+    },
+    "summary": "强力后追，冻结敌方全体",
+    "description": "强力后追，冻结敌方全体",
+    "tags": [
+      {
+        "id": 112,
+        "text": "后发制人",
+        "desc": "开局30秒后使用大招逆转战局",
+        "color": 2
+      },
+      {
+        "id": 9,
+        "text": "闪现",
+        "desc": "沿赛道预设路线向前快速位移",
+        "color": 1
+      },
+      {
+        "id": 75,
+        "text": "极速吸取",
+        "desc": "吸取敌方的极速",
+        "color": 3
+      },
+      {
+        "id": 90,
+        "text": "冻结",
+        "desc": "被冻结的敌方无法移动",
+        "color": 3
+      },
+      {
+        "id": 6,
+        "text": "自充能",
+        "desc": "技能可以补充大招能量",
+        "color": 1
+      },
+      {
+        "id": 21,
+        "text": "友方加速",
+        "desc": "提高队友的极速",
+        "color": 1
+      }
+    ],
+    "stats": {
+      "speed_limit": 196,
+      "speedup_ratio": 1.16,
+      "charge": {
+        "ace_charge": 2500,
+        "drift_charge_energy_coef": 600,
+        "drift_charge_energy_min": 1200,
+        "drift_charge_energy_max": 6000,
+        "drift_extra_charge": [
+          [
+            1,
+            0
+          ],
+          [
+            2,
+            1800
+          ]
+        ]
+      }
+    },
+    "maxDurability": 125,
+    "levels": [
+      {
+        "id": 12026,
+        "suffix": "0",
+        "rich_text": {
+          "id": 12026,
+          "ace_time_charge_condition": "在城市赛道，使用氮气时获得额外大招充能并在落后第一名超过一定距离时获得速度提升效果",
+          "ace_time_effect": "冰封之心可以充能三次。\n#acacac解锁大招被动：#ffffff\n在开局30秒时额外获得200%大招能量。",
+          "ace_time_effect_rich_desc": "冰封之心可以充能两次，在开局30秒时额外获得100%大招能量",
+          "chip_unlock_tips": "芯片最高生效等级为#fe7ab71#ffffff级",
+          "icon_ace_time_charge_condition": "new_carport_icon_city",
+          "icon_ace_time_effect": "new_carport_icon_10258",
+          "icon_slipstream": "new_carport_icon_14",
+          "icon_unlock_nitro_2": "new_carport_icon_10258",
+          "icon_unlock_nitro_3": "new_carport_icon_nos_03",
+          "level_title": "原车型",
+          "passive_skill_effect": [
+            "冰封之心闪现距离",
+            ""
+          ],
+          "passive_skill_effect_value": [
+            "80米",
+            ""
+          ],
+          "passive_skill_rich_desc": "敌方车辆每次使用大招时，吸取其1.5km/h极速使自身极速+1.5km/h（上限叠加至45km/h，每台敌方车辆最多被吸取10次极速）",
+          "slipstream": "跟随在车辆后方将获得尾流，产生持续的氮气充能效果",
+          "special_passive_skill_desc": "敌方车辆每次使用大招时，吸取其0.5km/h极速使自身极速+0.5km/h（上限叠加至15km/h，每台敌方车辆最多被吸取10次极速）",
+          "special_passive_skill_icon": "new_carport_icon_10259",
+          "special_passive_skill_title": "冰霜侵袭",
+          "title_ace_time_charge_condition": "赛道专精",
+          "title_ace_time_effect": "RECU限制解除",
+          "title_slipstream": "空气动力学套件",
+          "title_unlock_nitro_2": "大招强化套件 I",
+          "title_unlock_nitro_3": "竞速级氮气支架",
+          "unlock_nitro_3": "解锁1x6磅，2x3磅，3x2磅氮气",
+          "upgrade_level_icon": "new_carport_icon_10259"
+        },
+        "stats": {
+          "speed_limit": 196,
+          "speedup_ratio": 1.16,
+          "charge": {
+            "ace_charge": 2500,
+            "drift_charge_energy_coef": 600,
+            "drift_charge_energy_min": 1200,
+            "drift_charge_energy_max": 6000,
+            "drift_extra_charge": [
+              [
+                1,
+                0
+              ],
+              [
+                2,
+                1800
+              ]
+            ]
+          }
+        }
+      },
+      {
+        "id": 120263,
+        "suffix": "1",
+        "rich_text": {
+          "id": 120263,
+          "ace_time_charge_condition": "在城市赛道，使用氮气时获得额外大招充能并在落后第一名超过一定距离时获得速度提升效果",
+          "ace_time_effect": "冰封之心可以充能三次。\n#acacac解锁大招被动：#ffffff\n在开局30秒时额外获得200%大招能量。",
+          "ace_time_effect_rich_desc": "冰封之心可以充能两次，在开局30秒时额外获得100%大招能量",
+          "chip_unlock_tips": "芯片最高生效等级为#fe7ab74#ffffff级",
+          "icon_ace_time_charge_condition": "new_carport_icon_city",
+          "icon_ace_time_effect": "new_carport_icon_10258",
+          "icon_slipstream": "new_carport_icon_14",
+          "icon_unlock_nitro_2": "new_carport_icon_10258",
+          "icon_unlock_nitro_3": "new_carport_icon_nos_03",
+          "is_unlocked_ace_time_charge_condition": 1,
+          "is_unlocked_slipstream": 1,
+          "level_title": "竞速级氮气支架 I",
+          "passive_skill_effect": [
+            "冰封之心闪现距离",
+            ""
+          ],
+          "passive_skill_effect_value": [
+            "80米",
+            ""
+          ],
+          "passive_skill_rich_desc": "敌方车辆每次使用大招时，吸取其1.5km/h极速使自身极速+1.5km/h（上限叠加至45km/h，每台敌方车辆最多被吸取10次极速）",
+          "slipstream": "跟随在车辆后方将获得尾流，产生持续的氮气充能效果",
+          "special_passive_skill_desc": "敌方车辆每次使用大招时，吸取其0.5km/h极速使自身极速+0.5km/h（上限叠加至15km/h，每台敌方车辆最多被吸取10次极速）",
+          "special_passive_skill_icon": "new_carport_icon_10259",
+          "special_passive_skill_title": "冰霜侵袭",
+          "title_ace_time_charge_condition": "赛道专精",
+          "title_ace_time_effect": "RECU限制解除",
+          "title_slipstream": "空气动力学套件",
+          "title_unlock_nitro_2": "大招强化套件 I",
+          "title_unlock_nitro_3": "竞速级氮气支架",
+          "unlock_nitro_3": "解锁1x6磅，2x3磅，3x2磅氮气",
+          "upgrade_level_icon": "new_carport_icon_nos_03"
+        },
+        "stats": {
+          "speed_limit": 196,
+          "speedup_ratio": 1.16,
+          "charge": {
+            "ace_charge": 2500,
+            "drift_charge_energy_coef": 600,
+            "drift_charge_energy_min": 1200,
+            "drift_charge_energy_max": 6000,
+            "drift_extra_charge": [
+              [
+                1,
+                0
+              ],
+              [
+                2,
+                1800
+              ]
+            ]
+          }
+        }
+      },
+      {
+        "id": 120261,
+        "suffix": "2",
+        "rich_text": {
+          "id": 120261,
+          "ace_time_charge_condition": "在城市赛道，使用氮气时获得额外大招充能并在落后第一名超过一定距离时获得速度提升效果",
+          "ace_time_effect": "冰封之心可以充能三次。\n#acacac解锁大招被动：#ffffff\n在开局30秒时额外获得200%大招能量。",
+          "ace_time_effect_rich_desc": "冰封之心可以充能两次，在开局30秒时额外获得100%大招能量",
+          "chip_unlock_tips": "芯片最高生效等级为#fe7ab72#ffffff级",
+          "icon_ace_time_charge_condition": "new_carport_icon_city",
+          "icon_ace_time_effect": "new_carport_icon_10258",
+          "icon_slipstream": "new_carport_icon_14",
+          "icon_unlock_nitro_2": "new_carport_icon_10258",
+          "icon_unlock_nitro_3": "new_carport_icon_nos_03",
+          "is_unlocked_slipstream": 1,
+          "level_title": "空气动力学套件",
+          "passive_skill_effect": [
+            "冰封之心闪现距离",
+            ""
+          ],
+          "passive_skill_effect_value": [
+            "80米",
+            ""
+          ],
+          "passive_skill_rich_desc": "敌方车辆每次使用大招时，吸取其1.5km/h极速使自身极速+1.5km/h（上限叠加至45km/h，每台敌方车辆最多被吸取10次极速）",
+          "slipstream": "跟随在车辆后方将获得尾流，产生持续的氮气充能效果",
+          "special_passive_skill_desc": "敌方车辆每次使用大招时，吸取其0.5km/h极速使自身极速+0.5km/h（上限叠加至15km/h，每台敌方车辆最多被吸取10次极速）",
+          "special_passive_skill_icon": "new_carport_icon_10259",
+          "special_passive_skill_title": "冰霜侵袭",
+          "title_ace_time_charge_condition": "赛道专精",
+          "title_ace_time_effect": "RECU限制解除",
+          "title_slipstream": "空气动力学套件",
+          "title_unlock_nitro_2": "大招强化套件 I",
+          "title_unlock_nitro_3": "竞速级氮气支架",
+          "unlock_nitro_3": "解锁1x6磅，2x3磅，3x2磅氮气",
+          "upgrade_level_icon": "new_carport_icon_14"
+        },
+        "stats": {
+          "speed_limit": 196,
+          "speedup_ratio": 1.16,
+          "charge": {
+            "ace_charge": 2500,
+            "drift_charge_energy_coef": 600,
+            "drift_charge_energy_min": 1200,
+            "drift_charge_energy_max": 6000,
+            "drift_extra_charge": [
+              [
+                1,
+                0
+              ],
+              [
+                2,
+                1800
+              ]
+            ]
+          }
+        }
+      },
+      {
+        "id": 120262,
+        "suffix": "3",
+        "rich_text": {
+          "id": 120262,
+          "ace_time_charge_condition": "在城市赛道，使用氮气时获得额外大招充能并在落后第一名超过一定距离时获得速度提升效果",
+          "ace_time_effect": "冰封之心可以充能三次。\n#acacac解锁大招被动：#ffffff\n在开局30秒时额外获得200%大招能量。",
+          "ace_time_effect_rich_desc": "冰封之心可以充能两次，在开局30秒时额外获得100%大招能量",
+          "chip_unlock_tips": "芯片最高生效等级为#fe7ab73#ffffff级",
+          "icon_ace_time_charge_condition": "new_carport_icon_city",
+          "icon_ace_time_effect": "new_carport_icon_10258",
+          "icon_slipstream": "new_carport_icon_14",
+          "icon_unlock_nitro_2": "new_carport_icon_10258",
+          "icon_unlock_nitro_3": "new_carport_icon_nos_03",
+          "is_unlocked_ace_time_charge_condition": 1,
+          "is_unlocked_slipstream": 1,
+          "level_title": "赛道专精",
+          "passive_skill_effect": [
+            "冰封之心闪现距离",
+            ""
+          ],
+          "passive_skill_effect_value": [
+            "80米",
+            ""
+          ],
+          "passive_skill_rich_desc": "敌方车辆每次使用大招时，吸取其1.5km/h极速使自身极速+1.5km/h（上限叠加至45km/h，每台敌方车辆最多被吸取10次极速）",
+          "slipstream": "跟随在车辆后方将获得尾流，产生持续的氮气充能效果",
+          "special_passive_skill_desc": "敌方车辆每次使用大招时，吸取其0.5km/h极速使自身极速+0.5km/h（上限叠加至15km/h，每台敌方车辆最多被吸取10次极速）",
+          "special_passive_skill_icon": "new_carport_icon_10259",
+          "special_passive_skill_title": "冰霜侵袭",
+          "title_ace_time_charge_condition": "赛道专精",
+          "title_ace_time_effect": "RECU限制解除",
+          "title_slipstream": "空气动力学套件",
+          "title_unlock_nitro_2": "大招强化套件 I",
+          "title_unlock_nitro_3": "竞速级氮气支架",
+          "unlock_nitro_3": "解锁1x6磅，2x3磅，3x2磅氮气",
+          "upgrade_level_icon": "new_carport_icon_city"
+        },
+        "stats": {
+          "speed_limit": 196,
+          "speedup_ratio": 1.16,
+          "charge": {
+            "ace_charge": 2500,
+            "drift_charge_energy_coef": 600,
+            "drift_charge_energy_min": 1200,
+            "drift_charge_energy_max": 6000,
+            "drift_extra_charge": [
+              [
+                1,
+                0
+              ],
+              [
+                2,
+                1800
+              ]
+            ]
+          }
+        }
+      },
+      {
+        "id": 120264,
+        "suffix": "4",
+        "rich_text": {
+          "id": 120264,
+          "ace_time_charge_condition": "在城市赛道，使用氮气时获得额外大招充能并在落后第一名超过一定距离时获得速度提升效果",
+          "ace_time_effect": "冰封之心可以充能三次。\n#acacac解锁大招被动：#ffffff\n在开局30秒时额外获得200%大招能量。",
+          "ace_time_effect_rich_desc": "冰封之心可以充能两次，在开局30秒时额外获得100%大招能量",
+          "chip_unlock_tips": "芯片最高生效等级为#fe7ab75#ffffff级",
+          "icon_ace_time_charge_condition": "new_carport_icon_city",
+          "icon_ace_time_effect": "new_carport_icon_10258",
+          "icon_slipstream": "new_carport_icon_14",
+          "icon_unlock_nitro_2": "new_carport_icon_10258",
+          "icon_unlock_nitro_3": "new_carport_icon_nos_03",
+          "is_unlocked_ace_time_charge_condition": 1,
+          "is_unlocked_slipstream": 1,
+          "level_title": "大招强化 I",
+          "passive_skill_effect": [
+            "冰封之心闪现距离",
+            ""
+          ],
+          "passive_skill_effect_value": [
+            "85米",
+            ""
+          ],
+          "passive_skill_rich_desc": "敌方车辆每次使用大招时，吸取其1.5km/h极速使自身极速+1.5km/h（上限叠加至45km/h，每台敌方车辆最多被吸取10次极速）",
+          "slipstream": "跟随在车辆后方将获得尾流，产生持续的氮气充能效果",
+          "special_passive_skill_desc": "敌方车辆每次使用大招时，吸取其0.5km/h极速使自身极速+0.5km/h（上限叠加至15km/h，每台敌方车辆最多被吸取10次极速）",
+          "special_passive_skill_icon": "new_carport_icon_10259",
+          "special_passive_skill_title": "冰霜侵袭",
+          "title_ace_time_charge_condition": "赛道专精",
+          "title_ace_time_effect": "RECU限制解除",
+          "title_slipstream": "空气动力学套件",
+          "title_unlock_nitro_2": "大招强化套件 I",
+          "title_unlock_nitro_3": "竞速级氮气支架",
+          "unlock_nitro_3": "解锁1x6磅，2x3磅，3x2磅氮气",
+          "upgrade_level_icon": "new_carport_icon_10258"
+        },
+        "stats": {
+          "speed_limit": 196,
+          "speedup_ratio": 1.16,
+          "charge": {
+            "ace_charge": 2500,
+            "drift_charge_energy_coef": 600,
+            "drift_charge_energy_min": 1200,
+            "drift_charge_energy_max": 6000,
+            "drift_extra_charge": [
+              [
+                1,
+                0
+              ],
+              [
+                2,
+                1800
+              ]
+            ]
+          }
+        }
+      },
+      {
+        "id": 120265,
+        "suffix": "5",
+        "rich_text": {
+          "id": 120265,
+          "ace_time_charge_condition": "在城市赛道，使用氮气时获得额外大招充能并在落后第一名超过一定距离时获得速度提升效果",
+          "ace_time_effect": "冰封之心可以充能三次。\n#acacac解锁大招被动：#ffffff\n在开局30秒时额外获得200%大招能量。",
+          "ace_time_effect_rich_desc": "冰封之心可以充能两次，在开局30秒时额外获得100%大招能量",
+          "chip_unlock_tips": "芯片最高生效等级为#fe7ab76#ffffff级",
+          "icon_ace_time_charge_condition": "new_carport_icon_city",
+          "icon_ace_time_effect": "new_carport_icon_10258",
+          "icon_slipstream": "new_carport_icon_14",
+          "icon_unlock_nitro_2": "new_carport_icon_10258",
+          "icon_unlock_nitro_3": "new_carport_icon_nos_03",
+          "is_unlocked_ace_time_charge_condition": 1,
+          "is_unlocked_slipstream": 1,
+          "level_title": "竞速级氮气支架 II",
+          "passive_skill_effect": [
+            "冰封之心闪现距离",
+            ""
+          ],
+          "passive_skill_effect_value": [
+            "85米",
+            ""
+          ],
+          "passive_skill_rich_desc": "敌方车辆每次使用大招时，吸取其1.5km/h极速使自身极速+1.5km/h（上限叠加至45km/h，每台敌方车辆最多被吸取10次极速）",
+          "slipstream": "跟随在车辆后方将获得尾流，产生持续的氮气充能效果",
+          "special_passive_skill_desc": "敌方车辆每次使用大招时，吸取其0.5km/h极速使自身极速+0.5km/h（上限叠加至15km/h，每台敌方车辆最多被吸取10次极速）",
+          "special_passive_skill_icon": "new_carport_icon_10259",
+          "special_passive_skill_title": "冰霜侵袭",
+          "title_ace_time_charge_condition": "赛道专精",
+          "title_ace_time_effect": "RECU限制解除",
+          "title_slipstream": "空气动力学套件",
+          "title_unlock_nitro_2": "大招强化套件 I",
+          "title_unlock_nitro_3": "竞速级氮气支架",
+          "unlock_nitro_3": "解锁1x6磅，2x3磅，3x2磅氮气",
+          "upgrade_level_icon": "new_carport_icon_nos_03"
+        },
+        "stats": {
+          "speed_limit": 196,
+          "speedup_ratio": 1.16,
+          "charge": {
+            "ace_charge": 2500,
+            "drift_charge_energy_coef": 600,
+            "drift_charge_energy_min": 1200,
+            "drift_charge_energy_max": 6000,
+            "drift_extra_charge": [
+              [
+                1,
+                0
+              ],
+              [
+                2,
+                1800
+              ]
+            ]
+          }
+        }
+      },
+      {
+        "id": 120266,
+        "suffix": "6",
+        "rich_text": {
+          "id": 120266,
+          "ace_time_charge_condition": "在城市赛道，使用氮气时获得额外大招充能并在落后第一名超过一定距离时获得速度提升效果",
+          "ace_time_effect": "冰封之心可以充能三次。\n#acacac解锁大招被动：#ffffff\n在开局30秒时额外获得200%大招能量。",
+          "ace_time_effect_rich_desc": "冰封之心可以充能两次，在开局30秒时额外获得100%大招能量",
+          "chip_unlock_tips": "芯片最高生效等级为#fe7ab77#ffffff级",
+          "icon_ace_time_charge_condition": "new_carport_icon_city",
+          "icon_ace_time_effect": "new_carport_icon_10258",
+          "icon_slipstream": "new_carport_icon_14",
+          "icon_unlock_nitro_2": "new_carport_icon_10258",
+          "icon_unlock_nitro_3": "new_carport_icon_nos_03",
+          "is_unlocked_ace_time_charge_condition": 1,
+          "is_unlocked_slipstream": 1,
+          "level_title": "大招强化 II",
+          "passive_skill_effect": [
+            "冰封之心闪现距离",
+            ""
+          ],
+          "passive_skill_effect_value": [
+            "90米",
+            ""
+          ],
+          "passive_skill_rich_desc": "敌方车辆每次使用大招时，吸取其1.5km/h极速使自身极速+1.5km/h（上限叠加至45km/h，每台敌方车辆最多被吸取10次极速）",
+          "slipstream": "跟随在车辆后方将获得尾流，产生持续的氮气充能效果",
+          "special_passive_skill_desc": "敌方车辆每次使用大招时，吸取其0.5km/h极速使自身极速+0.5km/h（上限叠加至15km/h，每台敌方车辆最多被吸取10次极速）",
+          "special_passive_skill_icon": "new_carport_icon_10259",
+          "special_passive_skill_title": "冰霜侵袭",
+          "title_ace_time_charge_condition": "赛道专精",
+          "title_ace_time_effect": "RECU限制解除",
+          "title_slipstream": "空气动力学套件",
+          "title_unlock_nitro_2": "大招强化套件 I",
+          "title_unlock_nitro_3": "竞速级氮气支架",
+          "unlock_nitro_3": "解锁1x6磅，2x3磅，3x2磅氮气",
+          "upgrade_level_icon": "new_carport_icon_10258"
+        },
+        "stats": {
+          "speed_limit": 196.5,
+          "speedup_ratio": 1.16,
+          "charge": {
+            "ace_charge": 2500,
+            "drift_charge_energy_coef": 600,
+            "drift_charge_energy_min": 1200,
+            "drift_charge_energy_max": 6000,
+            "drift_extra_charge": [
+              [
+                1,
+                0
+              ],
+              [
+                2,
+                1800
+              ]
+            ]
+          }
+        }
+      },
+      {
+        "id": 120267,
+        "suffix": "7",
+        "rich_text": {
+          "id": 120267,
+          "ace_time_charge_condition": "在城市赛道，使用氮气时获得额外大招充能并在落后第一名超过一定距离时获得速度提升效果",
+          "ace_time_effect": "冰封之心可以充能三次。\n#acacac解锁大招被动：#ffffff\n在开局30秒时额外获得200%大招能量。",
+          "ace_time_effect_rich_desc": "冰封之心可以充能两次，在开局30秒时额外获得100%大招能量",
+          "chip_unlock_tips": "芯片最高生效等级为#fe7ab78#ffffff级",
+          "icon_ace_time_charge_condition": "new_carport_icon_city",
+          "icon_ace_time_effect": "new_carport_icon_10258",
+          "icon_slipstream": "new_carport_icon_14",
+          "icon_unlock_nitro_2": "new_carport_icon_10258",
+          "icon_unlock_nitro_3": "new_carport_icon_nos_03",
+          "is_unlocked_ace_time_charge_condition": 1,
+          "is_unlocked_ace_time_effect": 1,
+          "is_unlocked_slipstream": 1,
+          "level_title": "RECU限制解除",
+          "passive_skill_effect": [
+            "冰封之心闪现距离",
+            ""
+          ],
+          "passive_skill_effect_value": [
+            "90米",
+            ""
+          ],
+          "passive_skill_rich_desc": "敌方车辆每次使用大招时，吸取其1.5km/h极速使自身极速+1.5km/h（上限叠加至45km/h，每台敌方车辆最多被吸取10次极速）",
+          "slipstream": "跟随在车辆后方将获得尾流，产生持续的氮气充能效果",
+          "special_passive_skill_desc": "敌方车辆每次使用大招时，吸取其0.5km/h极速使自身极速+0.5km/h（上限叠加至15km/h，每台敌方车辆最多被吸取10次极速）",
+          "special_passive_skill_icon": "new_carport_icon_10259",
+          "special_passive_skill_title": "冰霜侵袭",
+          "title_ace_time_charge_condition": "赛道专精",
+          "title_ace_time_effect": "RECU限制解除",
+          "title_slipstream": "空气动力学套件",
+          "title_unlock_nitro_2": "大招强化套件 I",
+          "title_unlock_nitro_3": "竞速级氮气支架",
+          "unlock_nitro_3": "解锁1x6磅，2x3磅，3x2磅氮气",
+          "upgrade_level_icon": "new_carport_icon_10258"
+        },
+        "stats": {
+          "speed_limit": 196.5,
+          "speedup_ratio": 1.16,
+          "charge": {
+            "ace_charge": 2500,
+            "drift_charge_energy_coef": 600,
+            "drift_charge_energy_min": 1200,
+            "drift_charge_energy_max": 6000,
+            "drift_extra_charge": [
+              [
+                1,
+                0
+              ],
+              [
+                2,
+                1800
+              ]
+            ]
+          }
+        }
+      },
+      {
+        "id": 120268,
+        "suffix": "8",
+        "rich_text": {
+          "id": 120268,
+          "ace_time_charge_condition": "在城市赛道，使用氮气时获得额外大招充能并在落后第一名超过一定距离时获得速度提升效果",
+          "ace_time_effect": "冰封之心可以充能三次。\n#acacac解锁大招被动：#ffffff\n在开局30秒时额外获得200%大招能量。",
+          "ace_time_effect_rich_desc": "冰封之心可以充能两次，在开局30秒时额外获得100%大招能量",
+          "chip_unlock_tips": "芯片最高生效等级为#fe7ab79#ffffff级",
+          "icon_ace_time_charge_condition": "new_carport_icon_city",
+          "icon_ace_time_effect": "new_carport_icon_10258",
+          "icon_slipstream": "new_carport_icon_14",
+          "icon_unlock_nitro_2": "new_carport_icon_10258",
+          "icon_unlock_nitro_3": "new_carport_icon_nos_03",
+          "is_unlocked_ace_time_charge_condition": 1,
+          "is_unlocked_ace_time_effect": 1,
+          "is_unlocked_slipstream": 1,
+          "level_title": "大招强化 III",
+          "passive_skill_effect": [
+            "冰封之心闪现距离",
+            ""
+          ],
+          "passive_skill_effect_value": [
+            "95米",
+            ""
+          ],
+          "passive_skill_rich_desc": "敌方车辆每次使用大招时，吸取其1.5km/h极速使自身极速+1.5km/h（上限叠加至45km/h，每台敌方车辆最多被吸取10次极速）",
+          "slipstream": "跟随在车辆后方将获得尾流，产生持续的氮气充能效果",
+          "special_passive_skill_desc": "敌方车辆每次使用大招时，吸取其0.5km/h极速使自身极速+0.5km/h（上限叠加至15km/h，每台敌方车辆最多被吸取10次极速）",
+          "special_passive_skill_icon": "new_carport_icon_10259",
+          "special_passive_skill_title": "冰霜侵袭",
+          "title_ace_time_charge_condition": "赛道专精",
+          "title_ace_time_effect": "RECU限制解除",
+          "title_slipstream": "空气动力学套件",
+          "title_unlock_nitro_2": "大招强化套件 I",
+          "title_unlock_nitro_3": "竞速级氮气支架",
+          "unlock_nitro_3": "解锁1x6磅，2x3磅，3x2磅氮气",
+          "upgrade_level_icon": "new_carport_icon_10258"
+        },
+        "stats": {
+          "speed_limit": 197,
+          "speedup_ratio": 1.16,
+          "charge": {
+            "ace_charge": 2500,
+            "drift_charge_energy_coef": 600,
+            "drift_charge_energy_min": 1200,
+            "drift_charge_energy_max": 6000,
+            "drift_extra_charge": [
+              [
+                1,
+                0
+              ],
+              [
+                2,
+                1800
+              ]
+            ]
+          }
+        }
+      },
+      {
+        "id": 120269,
+        "suffix": "9",
+        "rich_text": {
+          "id": 120269,
+          "ace_time_charge_condition": "在城市赛道，使用氮气时获得额外大招充能并在落后第一名超过一定距离时获得速度提升效果",
+          "ace_time_effect": "冰封之心可以充能三次。\n#acacac解锁大招被动：#ffffff\n在开局30秒时额外获得200%大招能量。",
+          "ace_time_effect_rich_desc": "冰封之心可以充能两次，在开局30秒时额外获得100%大招能量",
+          "chip_unlock_tips": "芯片最高生效等级为#fe7ab710#ffffff级",
+          "icon_ace_time_charge_condition": "new_carport_icon_city",
+          "icon_ace_time_effect": "new_carport_icon_10258",
+          "icon_slipstream": "new_carport_icon_14",
+          "icon_unlock_nitro_2": "new_carport_icon_10258",
+          "icon_unlock_nitro_3": "new_carport_icon_nos_03",
+          "is_unlocked_ace_time_charge_condition": 1,
+          "is_unlocked_ace_time_effect": 1,
+          "is_unlocked_slipstream": 1,
+          "level_title": "大招强化 IV",
+          "passive_skill_effect": [
+            "冰封之心闪现距离",
+            ""
+          ],
+          "passive_skill_effect_value": [
+            "100米",
+            ""
+          ],
+          "passive_skill_rich_desc": "敌方车辆每次使用大招时，吸取其1.5km/h极速使自身极速+1.5km/h（上限叠加至45km/h，每台敌方车辆最多被吸取10次极速）",
+          "slipstream": "跟随在车辆后方将获得尾流，产生持续的氮气充能效果",
+          "special_passive_skill_desc": "敌方车辆每次使用大招时，吸取其0.5km/h极速使自身极速+0.5km/h（上限叠加至15km/h，每台敌方车辆最多被吸取10次极速）",
+          "special_passive_skill_icon": "new_carport_icon_10259",
+          "special_passive_skill_title": "冰霜侵袭",
+          "title_ace_time_charge_condition": "赛道专精",
+          "title_ace_time_effect": "RECU限制解除",
+          "title_slipstream": "空气动力学套件",
+          "title_unlock_nitro_2": "大招强化套件 I",
+          "title_unlock_nitro_3": "竞速级氮气支架",
+          "unlock_nitro_3": "解锁1x6磅，2x3磅，3x2磅氮气",
+          "upgrade_level_icon": "new_carport_icon_10258"
+        },
+        "stats": {
+          "speed_limit": 198,
+          "speedup_ratio": 1.16,
+          "charge": {
+            "ace_charge": 2500,
+            "drift_charge_energy_coef": 600,
+            "drift_charge_energy_min": 1200,
+            "drift_charge_energy_max": 6000,
+            "drift_extra_charge": [
+              [
+                1,
+                0
+              ],
+              [
+                2,
+                1800
+              ]
+            ]
+          }
+        }
+      }
+    ],
+    "skills": {
+      "ultimate": {
+        "id": 14651,
+        "name": "冰封之心",
+        "type": "N2O_FROZEN",
+        "icon_static": "ui_skill112_04",
+        "icon_big": null,
+        "icon": null,
+        "init_ratio": null,
+        "icons": {
+          "normal": "ui_skill112_03",
+          "disable": "ui_skill112_01",
+          "alt": "ui_skill112_06",
+          "down": "ui_skill112_03",
+          "static": "ui_skill112_04",
+          "big": null
+        },
+        "extra": {
+          "cam_type": "N2O_FROZEN",
+          "eff_id": 1,
+          "is_cost_energy": 2,
+          "rally_qte": 2
+        },
+        "value_texts": [
+          {
+            "key": "name",
+            "label": "技能名称",
+            "value": "冰封之心"
+          },
+          {
+            "key": "skill_type",
+            "label": "技能类型",
+            "value": "N2O_FROZEN"
+          },
+          {
+            "key": "cam_type",
+            "label": "镜头类型",
+            "value": "N2O_FROZEN"
+          },
+          {
+            "key": "eff_id",
+            "label": "特效编号",
+            "value": "1"
+          },
+          {
+            "key": "min_charge",
+            "label": "最低充能万分比",
+            "value": "10000"
+          },
+          {
+            "key": "rally_qte",
+            "label": "拉力赛触发qte",
+            "value": "2"
+          }
+        ],
+        "instructions": [
+          {
+            "id": 301601,
+            "attack_show_friend_enemy_filter": [
+              1,
+              2
+            ],
+            "attack_show_role_filter": [
+              1,
+              2,
+              3
+            ],
+            "buff_count": 0,
+            "cam_type": "FLASH",
+            "duration": 0.5,
+            "eff_id": 1,
+            "extra_children": [],
+            "extra_isolate": [],
+            "inst_group": 3,
+            "inst_name": "闪现",
+            "inst_type": 3,
+            "navi_strategy": 2,
+            "rear_insts": [
+              2810101
+            ],
+            "ref_insts": [
+              301601
+            ],
+            "skill_eff_id": 12287,
+            "sp_flash_dist": 80,
+            "sp_n2o_ace_charge_ratio": 1,
+            "name": "闪现",
+            "desc": null,
+            "type": 3,
+            "order": null,
+            "value_texts": [
+              {
+                "key": "sp_flash_dist",
+                "label": "闪现距离",
+                "value": "80米"
+              },
+              {
+                "key": "attack_show_friend_enemy_filter",
+                "label": "敌友筛选",
+                "value": "[1,2]"
+              },
+              {
+                "key": "attack_show_role_filter",
+                "label": "定位筛选",
+                "value": "[1,2,3]"
+              },
+              {
+                "key": "buff_count",
+                "label": "Buff 数量",
+                "value": "0"
+              },
+              {
+                "key": "rear_insts",
+                "label": "后续节点",
+                "value": "[2810101]"
+              },
+              {
+                "key": "extra_children",
+                "label": "子节点",
+                "value": "[]"
+              },
+              {
+                "key": "ref_insts",
+                "label": "引用节点",
+                "value": "[301601]"
+              }
+            ]
+          }
+        ]
+      },
+      "sp": null,
+      "passive": [
+        {
+          "id": 50801,
+          "name": "封禁尾流",
+          "type": null,
+          "icon_static": null,
+          "icon_big": null,
+          "icon": null,
+          "init_ratio": null,
+          "icons": {
+            "normal": null,
+            "disable": null,
+            "alt": null,
+            "down": null,
+            "static": null,
+            "big": null
+          },
+          "extra": {
+            "cam_type": null,
+            "eff_id": null,
+            "is_cost_energy": null,
+            "rally_qte": null
+          },
+          "value_texts": [
+            {
+              "key": "name",
+              "label": "技能名称",
+              "value": "封禁尾流"
+            }
+          ],
+          "instructions": [
+            {
+              "id": 2100301,
+              "attack_show_friend_enemy_filter": [
+                1,
+                2
+              ],
+              "attack_show_role_filter": [
+                1,
+                2,
+                3
+              ],
+              "buff_count": 0,
+              "duration": 999,
+              "eff_id": 1,
+              "extra_children": [],
+              "extra_isolate": [],
+              "inst_group": 21001,
+              "inst_name": "封禁尾流",
+              "inst_type": 21,
+              "rear_insts": [],
+              "ref_insts": [
+                2100301
+              ],
+              "skill_eff_id": 21,
+              "slipstream_state": 1,
+              "sp_n2o_ace_charge_ratio": 1,
+              "name": "封禁尾流",
+              "desc": null,
+              "type": 21,
+              "order": null,
+              "value_texts": [
+                {
+                  "key": "attack_show_friend_enemy_filter",
+                  "label": "敌友筛选",
+                  "value": "[1,2]"
+                },
+                {
+                  "key": "attack_show_role_filter",
+                  "label": "定位筛选",
+                  "value": "[1,2,3]"
+                },
+                {
+                  "key": "buff_count",
+                  "label": "Buff 数量",
+                  "value": "0"
+                },
+                {
+                  "key": "rear_insts",
+                  "label": "后续节点",
+                  "value": "[]"
+                },
+                {
+                  "key": "extra_children",
+                  "label": "子节点",
+                  "value": "[]"
+                },
+                {
+                  "key": "ref_insts",
+                  "label": "引用节点",
+                  "value": "[2100301]"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "id": 69504,
+          "name": "冰封之心-被动",
+          "type": null,
+          "icon_static": null,
+          "icon_big": null,
+          "icon": null,
+          "init_ratio": null,
+          "icons": {
+            "normal": null,
+            "disable": null,
+            "alt": null,
+            "down": null,
+            "static": null,
+            "big": null
+          },
+          "extra": {
+            "cam_type": null,
+            "eff_id": null,
+            "is_cost_energy": null,
+            "rally_qte": null
+          },
+          "value_texts": [
+            {
+              "key": "name",
+              "label": "技能名称",
+              "value": "冰封之心-被动"
+            }
+          ],
+          "instructions": [
+            {
+              "id": 905664,
+              "desc": "冰封",
+              "attack_show_friend_enemy_filter": [
+                1,
+                2
+              ],
+              "attack_show_role_filter": [
+                1,
+                2,
+                3
+              ],
+              "buff_count": 0,
+              "buff_icon": "new_carport_icon_10258b",
+              "duration": 30,
+              "eff_id": 1,
+              "extra_children": [],
+              "extra_isolate": [],
+              "inst_group": 9137,
+              "inst_name": "无法充能",
+              "inst_type": 9,
+              "rear_insts": [
+                906991
+              ],
+              "ref_insts": [
+                905664
+              ],
+              "skill_eff_id": 12286,
+              "sp_change_ratio": 0,
+              "sp_change_type": 2,
+              "sp_n2o_ace_charge_ratio": 1,
+              "name": "无法充能",
+              "type": 9,
+              "order": null,
+              "value_texts": [
+                {
+                  "key": "attack_show_friend_enemy_filter",
+                  "label": "敌友筛选",
+                  "value": "[1,2]"
+                },
+                {
+                  "key": "attack_show_role_filter",
+                  "label": "定位筛选",
+                  "value": "[1,2,3]"
+                },
+                {
+                  "key": "buff_count",
+                  "label": "Buff 数量",
+                  "value": "0"
+                },
+                {
+                  "key": "rear_insts",
+                  "label": "后续节点",
+                  "value": "[906991]"
+                },
+                {
+                  "key": "extra_children",
+                  "label": "子节点",
+                  "value": "[]"
+                },
+                {
+                  "key": "ref_insts",
+                  "label": "引用节点",
+                  "value": "[905664]"
+                }
+              ]
+            },
+            {
+              "id": 1802901,
+              "attack_show_friend_enemy_filter": [
+                1,
+                2
+              ],
+              "attack_show_role_filter": [
+                1,
+                2,
+                3
+              ],
+              "buff_count": 0,
+              "duration": 30,
+              "eff_id": 1,
+              "extra_children": [],
+              "extra_isolate": [],
+              "inst_group": 18,
+              "inst_name": "隐身",
+              "inst_type": 18,
+              "rear_insts": [],
+              "ref_insts": [
+                1802901
+              ],
+              "skill_eff_id": 18,
+              "sp_n2o_ace_charge_ratio": 1,
+              "name": "隐身",
+              "desc": null,
+              "type": 18,
+              "order": null,
+              "value_texts": [
+                {
+                  "key": "attack_show_friend_enemy_filter",
+                  "label": "敌友筛选",
+                  "value": "[1,2]"
+                },
+                {
+                  "key": "attack_show_role_filter",
+                  "label": "定位筛选",
+                  "value": "[1,2,3]"
+                },
+                {
+                  "key": "buff_count",
+                  "label": "Buff 数量",
+                  "value": "0"
+                },
+                {
+                  "key": "rear_insts",
+                  "label": "后续节点",
+                  "value": "[]"
+                },
+                {
+                  "key": "extra_children",
+                  "label": "子节点",
+                  "value": "[]"
+                },
+                {
+                  "key": "ref_insts",
+                  "label": "引用节点",
+                  "value": "[1802901]"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "id": 69506,
+          "name": "冰霜侵袭",
+          "type": null,
+          "icon_static": null,
+          "icon_big": null,
+          "icon": null,
+          "init_ratio": null,
+          "icons": {
+            "normal": null,
+            "disable": null,
+            "alt": null,
+            "down": null,
+            "static": null,
+            "big": null
+          },
+          "extra": {
+            "cam_type": null,
+            "eff_id": null,
+            "is_cost_energy": null,
+            "rally_qte": null
+          },
+          "value_texts": [
+            {
+              "key": "name",
+              "label": "技能名称",
+              "value": "冰霜侵袭"
+            }
+          ],
+          "instructions": [
+            {
+              "id": 3801001,
+              "buff_count": 0,
+              "duration": null,
+              "extra_children": [],
+              "extra_isolate": [
+                135007
+              ],
+              "glob_check_eff_ids": [
+                135007
+              ],
+              "glob_check_mode": 1,
+              "glob_check_num": 1,
+              "glob_check_target": 2,
+              "glob_check_type": 1,
+              "inst_group": 38015,
+              "inst_name": "莱肯 Hypersport",
+              "inst_type": 38,
+              "rear_insts": [
+                -1
+              ],
+              "ref_insts": [
+                135007,
+                3801001
+              ],
+              "sp_n2o_ace_charge_ratio": 1,
+              "name": "莱肯 Hypersport",
+              "desc": null,
+              "type": 38,
+              "order": null,
+              "value_texts": [
+                {
+                  "key": "buff_count",
+                  "label": "Buff 数量",
+                  "value": "0"
+                },
+                {
+                  "key": "rear_insts",
+                  "label": "后续节点",
+                  "value": "[-1]"
+                },
+                {
+                  "key": "extra_children",
+                  "label": "子节点",
+                  "value": "[]"
+                },
+                {
+                  "key": "ref_insts",
+                  "label": "引用节点",
+                  "value": "[135007,3801001]"
+                }
+              ]
+            },
+            {
+              "id": 807304,
+              "attack_show_eff_dur": 5,
+              "attack_show_friend_enemy_filter": [
+                1,
+                2
+              ],
+              "attack_show_keep_dur": 5,
+              "attack_show_role_filter": [
+                1,
+                2,
+                3
+              ],
+              "buff_count": 0,
+              "cd_type": 1,
+              "duration": 0.3,
+              "eff_cd": 1,
+              "eff_id": 1,
+              "enemy_eff": [
+                69507
+              ],
+              "extra_children": [],
+              "extra_isolate": [],
+              "inst_group": 890,
+              "inst_name": "冰霜侵袭极速吸取",
+              "inst_type": 8,
+              "lock_camp": 2,
+              "lock_cnt": 5,
+              "lock_dist": [
+                -6000,
+                6000
+              ],
+              "lock_no_dodge": 1,
+              "lock_no_rebound": 1,
+              "lock_no_reverse": 1,
+              "lock_side_dist": [
+                -6000,
+                6000
+              ],
+              "lock_vertical_dist": [
+                -6000,
+                6000
+              ],
+              "pre_time": 0.1,
+              "rear_insts": [],
+              "ref_insts": [
+                807304
+              ],
+              "skill_eff_id": 8,
+              "sp_n2o_ace_charge_ratio": 1,
+              "name": "冰霜侵袭极速吸取",
+              "desc": null,
+              "type": 8,
+              "order": null,
+              "value_texts": [
+                {
+                  "key": "attack_show_friend_enemy_filter",
+                  "label": "敌友筛选",
+                  "value": "[1,2]"
+                },
+                {
+                  "key": "attack_show_role_filter",
+                  "label": "定位筛选",
+                  "value": "[1,2,3]"
+                },
+                {
+                  "key": "buff_count",
+                  "label": "Buff 数量",
+                  "value": "0"
+                },
+                {
+                  "key": "rear_insts",
+                  "label": "后续节点",
+                  "value": "[]"
+                },
+                {
+                  "key": "extra_children",
+                  "label": "子节点",
+                  "value": "[]"
+                },
+                {
+                  "key": "ref_insts",
+                  "label": "引用节点",
+                  "value": "[807304]"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "id": 69509,
+          "name": "冰封之心-被动",
+          "type": null,
+          "icon_static": null,
+          "icon_big": null,
+          "icon": null,
+          "init_ratio": null,
+          "icons": {
+            "normal": null,
+            "disable": null,
+            "alt": null,
+            "down": null,
+            "static": null,
+            "big": null
+          },
+          "extra": {
+            "cam_type": null,
+            "eff_id": null,
+            "is_cost_energy": null,
+            "rally_qte": null
+          },
+          "value_texts": [
+            {
+              "key": "name",
+              "label": "技能名称",
+              "value": "冰封之心-被动"
+            }
+          ],
+          "instructions": [
+            {
+              "id": 3702501,
+              "buff_count": 0,
+              "count_eff_ids": [
+                4200901
+              ],
+              "count_mode": 1,
+              "count_num": 3,
+              "count_type": 12,
+              "counter_type": 4,
+              "duration": null,
+              "extra_children": [],
+              "extra_isolate": [
+                4200901
+              ],
+              "inst_group": 37037,
+              "inst_name": "莱肯 Hypersport",
+              "inst_type": 37,
+              "rear_insts": [
+                -1
+              ],
+              "ref_insts": [
+                3702501,
+                4200901
+              ],
+              "sp_n2o_ace_charge_ratio": 1,
+              "name": "莱肯 Hypersport",
+              "desc": null,
+              "type": 37,
+              "order": null,
+              "value_texts": [
+                {
+                  "key": "buff_count",
+                  "label": "Buff 数量",
+                  "value": "0"
+                },
+                {
+                  "key": "rear_insts",
+                  "label": "后续节点",
+                  "value": "[-1]"
+                },
+                {
+                  "key": "extra_children",
+                  "label": "子节点",
+                  "value": "[]"
+                },
+                {
+                  "key": "ref_insts",
+                  "label": "引用节点",
+                  "value": "[3702501,4200901]"
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    "skillPanelGroups": {
+      "ultimate": [
+        {
+          "id": "937",
+          "name_rich": {
+            "raw": "闪现距离",
+            "html": "闪现距离"
+          },
+          "value_rich": {
+            "raw": "80米",
+            "html": "80米"
+          },
+          "value_text": "80米",
+          "instruction_ids": [
+            301601,
+            301605
+          ],
+          "values": []
+        },
+        {
+          "id": "938",
+          "name_rich": {
+            "raw": "冻结时长",
+            "html": "冻结时长"
+          },
+          "value_rich": {
+            "raw": "0.6秒",
+            "html": "0.6秒"
+          },
+          "value_text": "0.6秒",
+          "instruction_ids": [],
+          "values": []
+        },
+        {
+          "id": "939",
+          "name_rich": {
+            "raw": "极速吸取",
+            "html": "极速吸取"
+          },
+          "value_rich": {
+            "raw": "15km/h",
+            "html": "15km/h"
+          },
+          "value_text": "15km/h",
+          "instruction_ids": [],
+          "values": []
+        },
+        {
+          "id": "940",
+          "name_rich": {
+            "raw": "参数 940",
+            "html": "参数 940"
+          },
+          "value_rich": {
+            "raw": "#a9a9a9(上限:45km/h)",
+            "html": "<span class=\"rt-color\" style=\"color: #a9a9a9\">(上限:45km/h)</span>"
+          },
+          "value_text": "#a9a9a9(上限:45km/h)",
+          "instruction_ids": [],
+          "values": []
+        },
+        {
+          "id": "941",
+          "name_rich": {
+            "raw": "友方加速",
+            "html": "友方加速"
+          },
+          "value_rich": {
+            "raw": "5km/h",
+            "html": "5km/h"
+          },
+          "value_text": "5km/h",
+          "instruction_ids": [],
+          "values": []
+        },
+        {
+          "id": "943",
+          "name_rich": {
+            "raw": "作用范围",
+            "html": "作用范围"
+          },
+          "value_rich": {
+            "raw": "无限制",
+            "html": "无限制"
+          },
+          "value_text": "无限制",
+          "instruction_ids": [],
+          "values": []
+        },
+        {
+          "id": "944",
+          "name_rich": {
+            "raw": "命中类型",
+            "html": "命中类型"
+          },
+          "value_rich": {
+            "raw": "#tipsnoicon[锁定类]",
+            "html": "<span class=\"rt-tip rt-tip--entry rt-tip--noicon\" data-tip=\"锁定类\" data-desc=\"·自动锁定范围内的目标&#10;·无法命中具有*隐身*、*无法选中*、*闪避*的敌方\" style=\"--tip-color:#ffd700\" title=\"·自动锁定范围内的目标&#10;·无法命中具有*隐身*、*无法选中*、*闪避*的敌方\">锁定类</span>"
+          },
+          "value_text": "#tipsnoicon[锁定类]",
+          "instruction_ids": [],
+          "values": []
+        },
+        {
+          "id": "945",
+          "name_rich": {
+            "raw": "可否净化",
+            "html": "可否净化"
+          },
+          "value_rich": {
+            "raw": "极速吸取不可净化",
+            "html": "极速吸取不可净化"
+          },
+          "value_text": "极速吸取不可净化",
+          "instruction_ids": [],
+          "values": []
+        }
+      ],
+      "sp": [],
+      "passive": [
+        {
+          "id": "946",
+          "name_rich": {
+            "raw": "极速吸取",
+            "html": "极速吸取"
+          },
+          "value_rich": {
+            "raw": "0.5km/h",
+            "html": "0.5km/h"
+          },
+          "value_text": "0.5km/h",
+          "instruction_ids": [],
+          "values": []
+        },
+        {
+          "id": "947",
+          "name_rich": {
+            "raw": "参数 947",
+            "html": "参数 947"
+          },
+          "value_rich": {
+            "raw": "#a9a9a9(加速上限:15km/h)",
+            "html": "<span class=\"rt-color\" style=\"color: #a9a9a9\">(加速上限:15km/h)</span>"
+          },
+          "value_text": "#a9a9a9(加速上限:15km/h)",
+          "instruction_ids": [],
+          "values": []
+        },
+        {
+          "id": "948",
+          "name_rich": {
+            "raw": "命中类型",
+            "html": "命中类型"
+          },
+          "value_rich": {
+            "raw": "#tipsnoicon[锁定类]",
+            "html": "<span class=\"rt-tip rt-tip--entry rt-tip--noicon\" data-tip=\"锁定类\" data-desc=\"·自动锁定范围内的目标&#10;·无法命中具有*隐身*、*无法选中*、*闪避*的敌方\" style=\"--tip-color:#ffd700\" title=\"·自动锁定范围内的目标&#10;·无法命中具有*隐身*、*无法选中*、*闪避*的敌方\">锁定类</span>"
+          },
+          "value_text": "#tipsnoicon[锁定类]",
+          "instruction_ids": [],
+          "values": []
+        }
+      ],
+      "other": []
+    },
+    "richText": {
+      "id": 12026,
+      "ace_time_charge_condition": "在城市赛道，使用氮气时获得额外大招充能并在落后第一名超过一定距离时获得速度提升效果",
+      "ace_time_effect": "冰封之心可以充能三次。\n#acacac解锁大招被动：#ffffff\n在开局30秒时额外获得200%大招能量。",
+      "ace_time_effect_rich_desc": "冰封之心可以充能两次，在开局30秒时额外获得100%大招能量",
+      "chip_unlock_tips": "芯片最高生效等级为#fe7ab71#ffffff级",
+      "icon_ace_time_charge_condition": "new_carport_icon_city",
+      "icon_ace_time_effect": "new_carport_icon_10258",
+      "icon_slipstream": "new_carport_icon_14",
+      "icon_unlock_nitro_2": "new_carport_icon_10258",
+      "icon_unlock_nitro_3": "new_carport_icon_nos_03",
+      "level_title": "原车型",
+      "passive_skill_effect": [
+        "冰封之心闪现距离",
+        ""
+      ],
+      "passive_skill_effect_value": [
+        "80米",
+        ""
+      ],
+      "passive_skill_rich_desc": "敌方车辆每次使用大招时，吸取其1.5km/h极速使自身极速+1.5km/h（上限叠加至45km/h，每台敌方车辆最多被吸取10次极速）",
+      "slipstream": "跟随在车辆后方将获得尾流，产生持续的氮气充能效果",
+      "special_passive_skill_desc": {
+        "raw": "敌方车辆每次使用大招时，吸取其0.5km/h极速使自身极速+0.5km/h（上限叠加至15km/h，每台敌方车辆最多被吸取10次极速）",
+        "html": "敌方车辆每次使用大招时，吸取其0.5km/h极速使自身极速+0.5km/h（上限叠加至15km/h，每台敌方车辆最多被吸取10次极速）"
+      },
+      "special_passive_skill_icon": "new_carport_icon_10259",
+      "special_passive_skill_title": "冰霜侵袭",
+      "title_ace_time_charge_condition": "赛道专精",
+      "title_ace_time_effect": "RECU限制解除",
+      "title_slipstream": "空气动力学套件",
+      "title_unlock_nitro_2": "大招强化套件 I",
+      "title_unlock_nitro_3": "竞速级氮气支架",
+      "unlock_nitro_3": "解锁1x6磅，2x3磅，3x2磅氮气",
+      "upgrade_level_icon": "new_carport_icon_10259",
+      "feature_desc": {
+        "raw": "向前闪现#desc[937]，而后冻结敌方全体0.6秒并从距离最近的敌方车辆处吸取15km/h极速，使自身和队友极速+5km/h。\n#acacac被动：开局前30秒冰封自身，期间无法获得大招能量并进入#tips[隐身]状态，开局30秒时获得100%大招能量，使用3次大招后大招无干扰效果且闪现距离降低50%。",
+        "html": "向前闪现<span class=\"rt-desc\">闪现距离 100米</span>，而后冻结敌方全体0.6秒并从距离最近的敌方车辆处吸取15km/h极速，使自身和队友极速+5km/h。<br/><span class=\"rt-color\" style=\"color: #acacac\">被动：开局前30秒冰封自身，期间无法获得大招能量并进入<span class=\"rt-tip rt-tip--entry\" data-tip=\"隐身\" data-icon=\"carport_new_skill_illustrate_b2\" data-desc=\"·车辆透明化&#10;·无视车辆间的碰撞&#10;·不会被“锁定类”“触碰类”干扰命中\" style=\"--tip-color:#7eedff\" title=\"·车辆透明化&#10;·无视车辆间的碰撞&#10;·不会被“锁定类”“触碰类”干扰命中\"><span class=\"rt-tip__icon-slot\"></span>隐身</span>状态，开局30秒时获得100%大招能量，使用3次大招后大招无干扰效果且闪现距离降低50%。</span>"
+      },
+      "sp_skill_desc": null,
+      "passive_skill_desc": null,
+      "story_title": "厂商：W Motors",
+      "story": {
+        "raw": "莱肯 HyperSport是W Motors生产的第一台超级跑车。这台来自中东的跑车由内而外散发着尊贵奢华的气息，使用大量钛合金和碳纤维材料构成的车身、金线缝制的座椅，以及由220颗钻石组成的前大灯，令人不得不感叹：有钱人玩得真花啊！当然在性能方面，它的实力也不逊色于老牌超跑，385km/h的最高速和2.8秒的百公里加速将会给速度节带来足够的速度与激情。",
+        "html": "莱肯 HyperSport是W Motors生产的第一台超级跑车。这台来自中东的跑车由内而外散发着尊贵奢华的气息，使用大量钛合金和碳纤维材料构成的车身、金线缝制的座椅，以及由220颗钻石组成的前大灯，令人不得不感叹：有钱人玩得真花啊！当然在性能方面，它的实力也不逊色于老牌超跑，385km/h的最高速和2.8秒的百公里加速将会给速度节带来足够的速度与激情。"
+      }
+    },
+    "report": {
+      "title": "王牌速度节赛车检验报告",
+      "sections": [
+        {
+          "title": "基础数据",
+          "items": [
+            {
+              "label": "检测车辆",
+              "value": "W Motors LykanHyperSport"
+            },
+            {
+              "label": "注册日期",
+              "value": "{}年{}月{}日"
+            },
+            {
+              "label": "车辆类型",
+              "value": "真实阵营"
+            },
+            {
+              "label": "厂商",
+              "value": "W Motors"
+            },
+            {
+              "label": "定位",
+              "value": "干扰位"
+            },
+            {
+              "label": "赛道专精",
+              "value": "城市"
+            },
+            {
+              "label": "能源类型",
+              "value": "汽油"
+            },
+            {
+              "label": "驱动方式",
+              "value": "中后置后驱"
+            },
+            {
+              "label": "冰封",
+              "value": "已解除"
+            }
+          ]
+        },
+        {
+          "title": "芯片模块",
+          "items": [
+            {
+              "label": "芯片写入权限",
+              "value": "已获取"
+            },
+            {
+              "label": "扩展芯片类型",
+              "value": "○○△◣◣V"
+            },
+            {
+              "label": "等级合规检查",
+              "value": "芯片等级未高于RECU等级"
+            }
+          ]
+        },
+        {
+          "title": "外观检验",
+          "items": [
+            {
+              "label": "检验结果",
+              "value": "合格"
+            }
+          ]
+        },
+        {
+          "title": "大招驱动模块",
+          "items": [
+            {
+              "label": "能量控制单元",
+              "value": "五代RECU，工作正常"
+            },
+            {
+              "label": "瑞卡因子稳定器",
+              "value": "工作正常"
+            },
+            {
+              "label": "NOS",
+              "value": "氮氧加速系统已安装"
+            },
+            {
+              "label": "空气动力套件（2级解锁）",
+              "value": "未选装"
+            },
+            {
+              "label": "赛道专精（3级解锁）",
+              "value": "未选装"
+            },
+            {
+              "label": "RECU限制解除（8级解锁）",
+              "value": "未选装"
+            }
+          ]
+        },
+        {
+          "title": "整车判定",
+          "items": [
+            {
+              "label": "检验结果",
+              "value": "合格，可参加速度节赛事"
+            }
+          ]
+        }
+      ]
+    },
+    "story": {
+      "content": "莱肯 HyperSport是W Motors生产的第一台超级跑车。这台来自中东的跑车由内而外散发着尊贵奢华的气息，使用大量钛合金和碳纤维材料构成的车身、金线缝制的座椅，以及由220颗钻石组成的前大灯，令人不得不感叹：有钱人玩得真花啊！当然在性能方面，它的实力也不逊色于老牌超跑，385km/h的最高速和2.8秒的百公里加速将会给速度节带来足够的速度与激情。",
+      "id": 12026,
+      "story_content": "莱肯 HyperSport是W Motors生产的第一台超级跑车。这台来自中东的跑车由内而外散发着尊贵奢华的气息，使用大量钛合金和碳纤维材料构成的车身、金线缝制的座椅，以及由220颗钻石组成的前大灯，令人不得不感叹：有钱人玩得真花啊！当然在性能方面，它的实力也不逊色于老牌超跑，385km/h的最高速和2.8秒的百公里加速将会给速度节带来足够的速度与激情。",
+      "story_title": "厂商：W Motors",
+      "vehicle_name": "莱肯 HyperSport"
+    },
+    "obtain": {
+      "tag_img": "item_tag_icon_xishizhenbao",
+      "obtain_type_ids": [
+        59
+      ],
+      "obtain_types": [
+        {
+          "id": 59,
+          "label": "珍宝阁",
+          "desc": "参与珍宝阁获取",
+          "icon": "commonnew_shopconversion"
+        }
+      ]
+    },
+    "restraints": {
+      "id": 12026,
+      "match": [
+        12036,
+        10057,
+        10086,
+        10089
+      ],
+      "be_restraint": [
+        10078,
+        10087,
+        12061
+      ]
+    },
+    "resources": {
+      "icons": {
+        "ace_time_effect": "new_carport_icon_10258",
+        "icon_ace_time_effect": "new_carport_icon_10258",
+        "ace_time_charge_condition": "new_carport_icon_city",
+        "slipstream": "new_carport_icon_14",
+        "unlock_nitro_2": "new_carport_icon_10258",
+        "unlock_nitro_3": "new_carport_icon_nos_03",
+        "upgrade_level_icon": "new_carport_icon_10259",
+        "special_passive_skill_icon": "new_carport_icon_10259"
+      }
+    },
+    "skins": {
+      "sets": {
+        "local": [
+          {
+            "source": "local",
+            "index": 1
+          },
+          {
+            "source": "local",
+            "index": 2
+          },
+          {
+            "source": "local",
+            "index": 3
+          }
+        ]
+      },
+      "meta": {
+        "1": {
+          "id": 50407,
+          "name": "涂装 空力套件 超",
+          "desc": "超-空力套件，围绕车辆核心空气动力学曲线，强化操控手感，在赛场上助车手一臂之力！\n适用车型：#1dd8d0莱肯 HyperSport",
+          "icon_s": "tz_12026_1_s",
+          "icon_m": "tz_12026_1_m",
+          "icon_b": "tz_12026_1_b"
+        },
+        "2": {
+          "id": 50408,
+          "name": "涂装 空力套件 闪",
+          "desc": "闪-空力套件，终极莱肯，赛场之星，闪耀全球！\n适用车型：#1dd8d0莱肯 HyperSport",
+          "icon_s": "tz_12026_2_s",
+          "icon_m": "tz_12026_2_m",
+          "icon_b": "tz_12026_2_b"
+        },
+        "3": {
+          "id": 50409,
+          "name": "涂装 空力套件 至高",
+          "desc": "至高-空力套件，全碳打造，无上之选。\n适用车型：#1dd8d0莱肯 HyperSport",
+          "icon_s": "tz_12026_3_s",
+          "icon_m": "tz_12026_3_m",
+          "icon_b": "tz_12026_3_b"
+        }
+      }
+    },
+    "media": {
+      "cover": "/rk-assets/12026_m.png",
+      "coverFallback": "/rk-assets/12026_m.png",
+      "shareImage": {
+        "key": "share_12026",
+        "file": "share_12026.png",
+        "url": "https://h65.gdl.netease.com/web_res_list_20240619/share_12026.webp"
+      },
+      "shareImageAdvance": null,
+      "skillVideo": {
+        "ultimate": {
+          "url": "https://vod.cc.163.com/file/65aa3294b0e5a479dd2e5354?source=27&protocol=https",
+          "thumbnail": "table_video_img_12026"
+        },
+        "sp": null
+      }
+    }
+  }
+}

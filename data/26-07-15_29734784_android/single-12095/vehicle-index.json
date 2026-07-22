@@ -1,0 +1,14 @@
+{
+  "schemaVersion": 2,
+  "versionId": "26-07-15_29734784_android",
+  "generatedAt": "2026-07-16T09:22:13.000Z",
+  "total": 1,
+  "items": [
+    {
+      "id": 12095,
+      "name": "布加迪 Bolide",
+      "dataFile": "vehicles/12095.json",
+      "assetDirectory": "assets/布加迪 Bolide_12095"
+    }
+  ]
+}

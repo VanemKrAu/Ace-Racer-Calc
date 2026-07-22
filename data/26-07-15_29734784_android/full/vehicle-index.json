@@ -1,0 +1,1136 @@
+{
+  "schemaVersion": 2,
+  "versionId": "26-07-15_29734784_android",
+  "generatedAt": "2026-07-16T09:22:34.000Z",
+  "total": 188,
+  "items": [
+    {
+      "id": 10000,
+      "name": "保时捷 911 GT2 RS",
+      "dataFile": "vehicles/10000.json",
+      "assetDirectory": "assets/保时捷 911 GT2 RS_10000"
+    },
+    {
+      "id": 10001,
+      "name": "福特 Focus RS",
+      "dataFile": "vehicles/10001.json",
+      "assetDirectory": "assets/福特 Focus RS_10001"
+    },
+    {
+      "id": 10002,
+      "name": "宝马 M4 Racing",
+      "dataFile": "vehicles/10002.json",
+      "assetDirectory": "assets/宝马 M4 Racing_10002"
+    },
+    {
+      "id": 10003,
+      "name": "宝马 M8 GTE",
+      "dataFile": "vehicles/10003.json",
+      "assetDirectory": "assets/宝马 M8 GTE_10003"
+    },
+    {
+      "id": 10004,
+      "name": "宝马 X5",
+      "dataFile": "vehicles/10004.json",
+      "assetDirectory": "assets/宝马 X5_10004"
+    },
+    {
+      "id": 10005,
+      "name": "福特 Mustang",
+      "dataFile": "vehicles/10005.json",
+      "assetDirectory": "assets/福特 Mustang_10005"
+    },
+    {
+      "id": 10006,
+      "name": "宝马 i8",
+      "dataFile": "vehicles/10006.json",
+      "assetDirectory": "assets/宝马 i8_10006"
+    },
+    {
+      "id": 10009,
+      "name": "MINI JCW",
+      "dataFile": "vehicles/10009.json",
+      "assetDirectory": "assets/MINI JCW_10009"
+    },
+    {
+      "id": 10010,
+      "name": "布加迪 LVN",
+      "dataFile": "vehicles/10010.json",
+      "assetDirectory": "assets/布加迪 LVN_10010"
+    },
+    {
+      "id": 10011,
+      "name": "蔚来 EP9",
+      "dataFile": "vehicles/10011.json",
+      "assetDirectory": "assets/蔚来 EP9_10011"
+    },
+    {
+      "id": 10012,
+      "name": "领克03 TCR",
+      "dataFile": "vehicles/10012.json",
+      "assetDirectory": "assets/领克03 TCR_10012"
+    },
+    {
+      "id": 10013,
+      "name": "福特 F150",
+      "dataFile": "vehicles/10013.json",
+      "assetDirectory": "assets/福特 F150_10013"
+    },
+    {
+      "id": 10014,
+      "name": "MG6 XPOWER TCR",
+      "dataFile": "vehicles/10014.json",
+      "assetDirectory": "assets/MG6 XPOWER TCR_10014"
+    },
+    {
+      "id": 10015,
+      "name": "大众 Beetle",
+      "dataFile": "vehicles/10015.json",
+      "assetDirectory": "assets/大众 Beetle_10015"
+    },
+    {
+      "id": 10016,
+      "name": "MINI Buggy",
+      "dataFile": "vehicles/10016.json",
+      "assetDirectory": "assets/MINI Buggy_10016"
+    },
+    {
+      "id": 10017,
+      "name": "福特 GT",
+      "dataFile": "vehicles/10017.json",
+      "assetDirectory": "assets/福特 GT_10017"
+    },
+    {
+      "id": 10018,
+      "name": "比亚迪 汉",
+      "dataFile": "vehicles/10018.json",
+      "assetDirectory": "assets/比亚迪 汉_10018"
+    },
+    {
+      "id": 10020,
+      "name": "大众 ID.R",
+      "dataFile": "vehicles/10020.json",
+      "assetDirectory": "assets/大众 ID.R_10020"
+    },
+    {
+      "id": 10021,
+      "name": "战神",
+      "dataFile": "vehicles/10021.json",
+      "assetDirectory": "assets/战神_10021"
+    },
+    {
+      "id": 10022,
+      "name": "神剑号",
+      "dataFile": "vehicles/10022.json",
+      "assetDirectory": "assets/神剑号_10022"
+    },
+    {
+      "id": 10023,
+      "name": "风神",
+      "dataFile": "vehicles/10023.json",
+      "assetDirectory": "assets/风神_10023"
+    },
+    {
+      "id": 10024,
+      "name": "燃烧太阳",
+      "dataFile": "vehicles/10024.json",
+      "assetDirectory": "assets/燃烧太阳_10024"
+    },
+    {
+      "id": 10025,
+      "name": "干扰者",
+      "dataFile": "vehicles/10025.json",
+      "assetDirectory": "assets/干扰者_10025"
+    },
+    {
+      "id": 10026,
+      "name": "禅",
+      "dataFile": "vehicles/10026.json",
+      "assetDirectory": "assets/禅_10026"
+    },
+    {
+      "id": 10027,
+      "name": "法拉第",
+      "dataFile": "vehicles/10027.json",
+      "assetDirectory": "assets/法拉第_10027"
+    },
+    {
+      "id": 10028,
+      "name": "以太",
+      "dataFile": "vehicles/10028.json",
+      "assetDirectory": "assets/以太_10028"
+    },
+    {
+      "id": 10029,
+      "name": "杂耍者",
+      "dataFile": "vehicles/10029.json",
+      "assetDirectory": "assets/杂耍者_10029"
+    },
+    {
+      "id": 10030,
+      "name": "阿斯顿马丁 Vanquish",
+      "dataFile": "vehicles/10030.json",
+      "assetDirectory": "assets/阿斯顿马丁 Vanquish_10030"
+    },
+    {
+      "id": 10031,
+      "name": "阿斯顿马丁 DB11",
+      "dataFile": "vehicles/10031.json",
+      "assetDirectory": "assets/阿斯顿马丁 DB11_10031"
+    },
+    {
+      "id": 10032,
+      "name": "泰坦",
+      "dataFile": "vehicles/10032.json",
+      "assetDirectory": "assets/泰坦_10032"
+    },
+    {
+      "id": 10033,
+      "name": "迈凯伦 P1",
+      "dataFile": "vehicles/10033.json",
+      "assetDirectory": "assets/迈凯伦 P1_10033"
+    },
+    {
+      "id": 10034,
+      "name": "特异点",
+      "dataFile": "vehicles/10034.json",
+      "assetDirectory": "assets/特异点_10034"
+    },
+    {
+      "id": 10035,
+      "name": "刹那",
+      "dataFile": "vehicles/10035.json",
+      "assetDirectory": "assets/刹那_10035"
+    },
+    {
+      "id": 10036,
+      "name": "催化剂",
+      "dataFile": "vehicles/10036.json",
+      "assetDirectory": "assets/催化剂_10036"
+    },
+    {
+      "id": 10038,
+      "name": "日产 GT-R NISMO",
+      "dataFile": "vehicles/10038.json",
+      "assetDirectory": "assets/日产 GT-R NISMO_10038"
+    },
+    {
+      "id": 10039,
+      "name": "莲花 GT430",
+      "dataFile": "vehicles/10039.json",
+      "assetDirectory": "assets/莲花 GT430_10039"
+    },
+    {
+      "id": 10040,
+      "name": "侧翼刀锋",
+      "dataFile": "vehicles/10040.json",
+      "assetDirectory": "assets/侧翼刀锋_10040"
+    },
+    {
+      "id": 10041,
+      "name": "路虎卫士",
+      "dataFile": "vehicles/10041.json",
+      "assetDirectory": "assets/路虎卫士_10041"
+    },
+    {
+      "id": 10042,
+      "name": "帕加尼 Huayra",
+      "dataFile": "vehicles/10042.json",
+      "assetDirectory": "assets/帕加尼 Huayra_10042"
+    },
+    {
+      "id": 10043,
+      "name": "玛莎拉蒂 Levante",
+      "dataFile": "vehicles/10043.json",
+      "assetDirectory": "assets/玛莎拉蒂 Levante_10043"
+    },
+    {
+      "id": 10044,
+      "name": "魔鬼鱼",
+      "dataFile": "vehicles/10044.json",
+      "assetDirectory": "assets/魔鬼鱼_10044"
+    },
+    {
+      "id": 10045,
+      "name": "英菲尼迪 Prototype",
+      "dataFile": "vehicles/10045.json",
+      "assetDirectory": "assets/英菲尼迪 Prototype_10045"
+    },
+    {
+      "id": 10046,
+      "name": "柯尼塞格 Jesko",
+      "dataFile": "vehicles/10046.json",
+      "assetDirectory": "assets/柯尼塞格 Jesko_10046"
+    },
+    {
+      "id": 10047,
+      "name": "闪灵",
+      "dataFile": "vehicles/10047.json",
+      "assetDirectory": "assets/闪灵_10047"
+    },
+    {
+      "id": 10048,
+      "name": "过载先锋",
+      "dataFile": "vehicles/10048.json",
+      "assetDirectory": "assets/过载先锋_10048"
+    },
+    {
+      "id": 10049,
+      "name": "火箭狐",
+      "dataFile": "vehicles/10049.json",
+      "assetDirectory": "assets/火箭狐_10049"
+    },
+    {
+      "id": 10050,
+      "name": "柯尼塞格 Regera",
+      "dataFile": "vehicles/10050.json",
+      "assetDirectory": "assets/柯尼塞格 Regera_10050"
+    },
+    {
+      "id": 10051,
+      "name": "小鹏 P7",
+      "dataFile": "vehicles/10051.json",
+      "assetDirectory": "assets/小鹏 P7_10051"
+    },
+    {
+      "id": 10052,
+      "name": "暗夜魅影",
+      "dataFile": "vehicles/10052.json",
+      "assetDirectory": "assets/暗夜魅影_10052"
+    },
+    {
+      "id": 10053,
+      "name": "五菱宏光 MINI EV",
+      "dataFile": "vehicles/10053.json",
+      "assetDirectory": "assets/五菱宏光 MINI EV_10053"
+    },
+    {
+      "id": 10054,
+      "name": "坦克 300",
+      "dataFile": "vehicles/10054.json",
+      "assetDirectory": "assets/坦克 300_10054"
+    },
+    {
+      "id": 10055,
+      "name": "保时捷 Macan S",
+      "dataFile": "vehicles/10055.json",
+      "assetDirectory": "assets/保时捷 Macan S_10055"
+    },
+    {
+      "id": 10056,
+      "name": "保时捷 935",
+      "dataFile": "vehicles/10056.json",
+      "assetDirectory": "assets/保时捷 935_10056"
+    },
+    {
+      "id": 10057,
+      "name": "平行巡洋舰",
+      "dataFile": "vehicles/10057.json",
+      "assetDirectory": "assets/平行巡洋舰_10057"
+    },
+    {
+      "id": 10058,
+      "name": "猫眠梦",
+      "dataFile": "vehicles/10058.json",
+      "assetDirectory": "assets/猫眠梦_10058"
+    },
+    {
+      "id": 10059,
+      "name": "布加迪 Chiron",
+      "dataFile": "vehicles/10059.json",
+      "assetDirectory": "assets/布加迪 Chiron_10059"
+    },
+    {
+      "id": 10060,
+      "name": "哈迪斯",
+      "dataFile": "vehicles/10060.json",
+      "assetDirectory": "assets/哈迪斯_10060"
+    },
+    {
+      "id": 10061,
+      "name": "逮虾货运",
+      "dataFile": "vehicles/10061.json",
+      "assetDirectory": "assets/逮虾货运_10061"
+    },
+    {
+      "id": 10062,
+      "name": "道奇 Charger SRT Hellcat",
+      "dataFile": "vehicles/10062.json",
+      "assetDirectory": "assets/道奇 Charger SRT Hellcat_10062"
+    },
+    {
+      "id": 10063,
+      "name": "奥迪 TT RS",
+      "dataFile": "vehicles/10063.json",
+      "assetDirectory": "assets/奥迪 TT RS_10063"
+    },
+    {
+      "id": 10064,
+      "name": "布加迪 Divo",
+      "dataFile": "vehicles/10064.json",
+      "assetDirectory": "assets/布加迪 Divo_10064"
+    },
+    {
+      "id": 10065,
+      "name": "道奇 Challenger SRT 392",
+      "dataFile": "vehicles/10065.json",
+      "assetDirectory": "assets/道奇 Challenger SRT 392_10065"
+    },
+    {
+      "id": 10066,
+      "name": "圣骑士",
+      "dataFile": "vehicles/10066.json",
+      "assetDirectory": "assets/圣骑士_10066"
+    },
+    {
+      "id": 10067,
+      "name": "玛莎拉蒂 Alfieri",
+      "dataFile": "vehicles/10067.json",
+      "assetDirectory": "assets/玛莎拉蒂 Alfieri_10067"
+    },
+    {
+      "id": 10068,
+      "name": "空间漫游虎",
+      "dataFile": "vehicles/10068.json",
+      "assetDirectory": "assets/空间漫游虎_10068"
+    },
+    {
+      "id": 10069,
+      "name": "逐浪",
+      "dataFile": "vehicles/10069.json",
+      "assetDirectory": "assets/逐浪_10069"
+    },
+    {
+      "id": 10070,
+      "name": "机械咆哮虎",
+      "dataFile": "vehicles/10070.json",
+      "assetDirectory": "assets/机械咆哮虎_10070"
+    },
+    {
+      "id": 10071,
+      "name": "迈凯伦 600LT",
+      "dataFile": "vehicles/10071.json",
+      "assetDirectory": "assets/迈凯伦 600LT_10071"
+    },
+    {
+      "id": 10072,
+      "name": "摇尾萌萌虎",
+      "dataFile": "vehicles/10072.json",
+      "assetDirectory": "assets/摇尾萌萌虎_10072"
+    },
+    {
+      "id": 10073,
+      "name": "迈凯伦 720S",
+      "dataFile": "vehicles/10073.json",
+      "assetDirectory": "assets/迈凯伦 720S_10073"
+    },
+    {
+      "id": 10074,
+      "name": "一汽-大众 GOLF GTI",
+      "dataFile": "vehicles/10074.json",
+      "assetDirectory": "assets/一汽-大众 GOLF GTI_10074"
+    },
+    {
+      "id": 10075,
+      "name": "穿梭师",
+      "dataFile": "vehicles/10075.json",
+      "assetDirectory": "assets/穿梭师_10075"
+    },
+    {
+      "id": 10076,
+      "name": "维纳斯",
+      "dataFile": "vehicles/10076.json",
+      "assetDirectory": "assets/维纳斯_10076"
+    },
+    {
+      "id": 10077,
+      "name": "星际探路者",
+      "dataFile": "vehicles/10077.json",
+      "assetDirectory": "assets/星际探路者_10077"
+    },
+    {
+      "id": 10078,
+      "name": "复仇者",
+      "dataFile": "vehicles/10078.json",
+      "assetDirectory": "assets/复仇者_10078"
+    },
+    {
+      "id": 10079,
+      "name": "终极·异形",
+      "dataFile": "vehicles/10079.json",
+      "assetDirectory": "assets/终极·异形_10079"
+    },
+    {
+      "id": 10080,
+      "name": "沙滩漫步者",
+      "dataFile": "vehicles/10080.json",
+      "assetDirectory": "assets/沙滩漫步者_10080"
+    },
+    {
+      "id": 10081,
+      "name": "雪佛兰 Camaro ZL1",
+      "dataFile": "vehicles/10081.json",
+      "assetDirectory": "assets/雪佛兰 Camaro ZL1_10081"
+    },
+    {
+      "id": 10082,
+      "name": "隐匿猎手",
+      "dataFile": "vehicles/10082.json",
+      "assetDirectory": "assets/隐匿猎手_10082"
+    },
+    {
+      "id": 10083,
+      "name": "梅赛德斯-AMG GT Black Series",
+      "dataFile": "vehicles/10083.json",
+      "assetDirectory": "assets/梅赛德斯-AMG GT Black Series_10083"
+    },
+    {
+      "id": 10084,
+      "name": "梅赛德斯-奔驰 Silver Arrow",
+      "dataFile": "vehicles/10084.json",
+      "assetDirectory": "assets/梅赛德斯-奔驰 Silver Arrow_10084"
+    },
+    {
+      "id": 10085,
+      "name": "记录官",
+      "dataFile": "vehicles/10085.json",
+      "assetDirectory": "assets/记录官_10085"
+    },
+    {
+      "id": 10086,
+      "name": "梅赛德斯-AMG G 63",
+      "dataFile": "vehicles/10086.json",
+      "assetDirectory": "assets/梅赛德斯-AMG G 63_10086"
+    },
+    {
+      "id": 10087,
+      "name": "先驱者",
+      "dataFile": "vehicles/10087.json",
+      "assetDirectory": "assets/先驱者_10087"
+    },
+    {
+      "id": 10088,
+      "name": "奥迪 RS7 Sportback",
+      "dataFile": "vehicles/10088.json",
+      "assetDirectory": "assets/奥迪 RS7 Sportback_10088"
+    },
+    {
+      "id": 10089,
+      "name": "AITO 问界 M5 EV",
+      "dataFile": "vehicles/10089.json",
+      "assetDirectory": "assets/AITO 问界 M5 EV_10089"
+    },
+    {
+      "id": 10090,
+      "name": "王牌方程式",
+      "dataFile": "vehicles/10090.json",
+      "assetDirectory": "assets/王牌方程式_10090"
+    },
+    {
+      "id": 10091,
+      "name": "开拓铁铲",
+      "dataFile": "vehicles/10091.json",
+      "assetDirectory": "assets/开拓铁铲_10091"
+    },
+    {
+      "id": 10092,
+      "name": "承重钢轮",
+      "dataFile": "vehicles/10092.json",
+      "assetDirectory": "assets/承重钢轮_10092"
+    },
+    {
+      "id": 10093,
+      "name": "寒霜冰魄",
+      "dataFile": "vehicles/10093.json",
+      "assetDirectory": "assets/寒霜冰魄_10093"
+    },
+    {
+      "id": 10094,
+      "name": "洛基",
+      "dataFile": "vehicles/10094.json",
+      "assetDirectory": "assets/洛基_10094"
+    },
+    {
+      "id": 10095,
+      "name": "极狐阿尔法S 全新HI版",
+      "dataFile": "vehicles/10095.json",
+      "assetDirectory": "assets/极狐阿尔法S 全新HI版_10095"
+    },
+    {
+      "id": 10096,
+      "name": "极狐 GT",
+      "dataFile": "vehicles/10096.json",
+      "assetDirectory": "assets/极狐 GT_10096"
+    },
+    {
+      "id": 10097,
+      "name": "保时捷 918 Spyder",
+      "dataFile": "vehicles/10097.json",
+      "assetDirectory": "assets/保时捷 918 Spyder_10097"
+    },
+    {
+      "id": 10098,
+      "name": "春风 450SR",
+      "dataFile": "vehicles/10098.json",
+      "assetDirectory": "assets/春风 450SR_10098"
+    },
+    {
+      "id": 10099,
+      "name": "月宫圣使",
+      "dataFile": "vehicles/10099.json",
+      "assetDirectory": "assets/月宫圣使_10099"
+    },
+    {
+      "id": 12000,
+      "name": "雪佛兰 Corvette ZR1",
+      "dataFile": "vehicles/12000.json",
+      "assetDirectory": "assets/雪佛兰 Corvette ZR1_12000"
+    },
+    {
+      "id": 12001,
+      "name": "绿箭骑士",
+      "dataFile": "vehicles/12001.json",
+      "assetDirectory": "assets/绿箭骑士_12001"
+    },
+    {
+      "id": 12002,
+      "name": "月宫舞灵",
+      "dataFile": "vehicles/12002.json",
+      "assetDirectory": "assets/月宫舞灵_12002"
+    },
+    {
+      "id": 12003,
+      "name": "爱玛 晴天",
+      "dataFile": "vehicles/12003.json",
+      "assetDirectory": "assets/爱玛 晴天_12003"
+    },
+    {
+      "id": 12004,
+      "name": "玉麒麟",
+      "dataFile": "vehicles/12004.json",
+      "assetDirectory": "assets/玉麒麟_12004"
+    },
+    {
+      "id": 12005,
+      "name": "路虎 Range Rover Evoque",
+      "dataFile": "vehicles/12005.json",
+      "assetDirectory": "assets/路虎 Range Rover Evoque_12005"
+    },
+    {
+      "id": 12006,
+      "name": "烛龙",
+      "dataFile": "vehicles/12006.json",
+      "assetDirectory": "assets/烛龙_12006"
+    },
+    {
+      "id": 12007,
+      "name": "莲花 Evija",
+      "dataFile": "vehicles/12007.json",
+      "assetDirectory": "assets/莲花 Evija_12007"
+    },
+    {
+      "id": 12008,
+      "name": "幻蝶",
+      "dataFile": "vehicles/12008.json",
+      "assetDirectory": "assets/幻蝶_12008"
+    },
+    {
+      "id": 12009,
+      "name": "鹤羽",
+      "dataFile": "vehicles/12009.json",
+      "assetDirectory": "assets/鹤羽_12009"
+    },
+    {
+      "id": 12010,
+      "name": "兰博基尼 Aventador SVJ",
+      "dataFile": "vehicles/12010.json",
+      "assetDirectory": "assets/兰博基尼 Aventador SVJ_12010"
+    },
+    {
+      "id": 12011,
+      "name": "比亚迪 海豹",
+      "dataFile": "vehicles/12011.json",
+      "assetDirectory": "assets/比亚迪 海豹_12011"
+    },
+    {
+      "id": 12012,
+      "name": "宙斯",
+      "dataFile": "vehicles/12012.json",
+      "assetDirectory": "assets/宙斯_12012"
+    },
+    {
+      "id": 12013,
+      "name": "赵云",
+      "dataFile": "vehicles/12013.json",
+      "assetDirectory": "assets/赵云_12013"
+    },
+    {
+      "id": 12014,
+      "name": "萌星凯蒂",
+      "dataFile": "vehicles/12014.json",
+      "assetDirectory": "assets/萌星凯蒂_12014"
+    },
+    {
+      "id": 12015,
+      "name": "黑魔龙",
+      "dataFile": "vehicles/12015.json",
+      "assetDirectory": "assets/黑魔龙_12015"
+    },
+    {
+      "id": 12016,
+      "name": "凯蒂号",
+      "dataFile": "vehicles/12016.json",
+      "assetDirectory": "assets/凯蒂号_12016"
+    },
+    {
+      "id": 12017,
+      "name": "超音速",
+      "dataFile": "vehicles/12017.json",
+      "assetDirectory": "assets/超音速_12017"
+    },
+    {
+      "id": 12018,
+      "name": "果冻",
+      "dataFile": "vehicles/12018.json",
+      "assetDirectory": "assets/果冻_12018"
+    },
+    {
+      "id": 12019,
+      "name": "奥迪 R8 Spyder V10",
+      "dataFile": "vehicles/12019.json",
+      "assetDirectory": "assets/奥迪 R8 Spyder V10_12019"
+    },
+    {
+      "id": 12020,
+      "name": "张飞",
+      "dataFile": "vehicles/12020.json",
+      "assetDirectory": "assets/张飞_12020"
+    },
+    {
+      "id": 12021,
+      "name": "梅赛德斯-奔驰 Biome",
+      "dataFile": "vehicles/12021.json",
+      "assetDirectory": "assets/梅赛德斯-奔驰 Biome_12021"
+    },
+    {
+      "id": 12022,
+      "name": "捷豹 F-TYPE SVR Convertible",
+      "dataFile": "vehicles/12022.json",
+      "assetDirectory": "assets/捷豹 F-TYPE SVR Convertible_12022"
+    },
+    {
+      "id": 12023,
+      "name": "星穹幻音",
+      "dataFile": "vehicles/12023.json",
+      "assetDirectory": "assets/星穹幻音_12023"
+    },
+    {
+      "id": 12024,
+      "name": "丰田 Corolla Sprinter Trueno GT Apex",
+      "dataFile": "vehicles/12024.json",
+      "assetDirectory": "assets/丰田 Corolla Sprinter Trueno GT Apex_12024"
+    },
+    {
+      "id": 12025,
+      "name": "兰博基尼 Huracán STO",
+      "dataFile": "vehicles/12025.json",
+      "assetDirectory": "assets/兰博基尼 Huracán STO_12025"
+    },
+    {
+      "id": 12026,
+      "name": "莱肯 HyperSport",
+      "dataFile": "vehicles/12026.json",
+      "assetDirectory": "assets/莱肯 HyperSport_12026"
+    },
+    {
+      "id": 12027,
+      "name": "招财福鼠",
+      "dataFile": "vehicles/12027.json",
+      "assetDirectory": "assets/招财福鼠_12027"
+    },
+    {
+      "id": 12028,
+      "name": "爱玛 造梦师",
+      "dataFile": "vehicles/12028.json",
+      "assetDirectory": "assets/爱玛 造梦师_12028"
+    },
+    {
+      "id": 12029,
+      "name": "王牌速面",
+      "dataFile": "vehicles/12029.json",
+      "assetDirectory": "assets/王牌速面_12029"
+    },
+    {
+      "id": 12030,
+      "name": "醒觉之羽",
+      "dataFile": "vehicles/12030.json",
+      "assetDirectory": "assets/醒觉之羽_12030"
+    },
+    {
+      "id": 12031,
+      "name": "王牌方程式 EVO",
+      "dataFile": "vehicles/12031.json",
+      "assetDirectory": "assets/王牌方程式 EVO_12031"
+    },
+    {
+      "id": 12032,
+      "name": "影豹R·ABT联名版",
+      "dataFile": "vehicles/12032.json",
+      "assetDirectory": "assets/影豹R·ABT联名版_12032"
+    },
+    {
+      "id": 12033,
+      "name": "团子",
+      "dataFile": "vehicles/12033.json",
+      "assetDirectory": "assets/团子_12033"
+    },
+    {
+      "id": 12034,
+      "name": "法拉利 812 Competizione",
+      "dataFile": "vehicles/12034.json",
+      "assetDirectory": "assets/法拉利 812 Competizione_12034"
+    },
+    {
+      "id": 12035,
+      "name": "饿龙传说",
+      "dataFile": "vehicles/12035.json",
+      "assetDirectory": "assets/饿龙传说_12035"
+    },
+    {
+      "id": 12036,
+      "name": "游龙惊鸿",
+      "dataFile": "vehicles/12036.json",
+      "assetDirectory": "assets/游龙惊鸿_12036"
+    },
+    {
+      "id": 12037,
+      "name": "梅赛德斯-AMG C 63 S Coupe",
+      "dataFile": "vehicles/12037.json",
+      "assetDirectory": "assets/梅赛德斯-AMG C 63 S Coupe_12037"
+    },
+    {
+      "id": 12038,
+      "name": "保时捷 911 Turbo S",
+      "dataFile": "vehicles/12038.json",
+      "assetDirectory": "assets/保时捷 911 Turbo S_12038"
+    },
+    {
+      "id": 12039,
+      "name": "蛋仔出击",
+      "dataFile": "vehicles/12039.json",
+      "assetDirectory": "assets/蛋仔出击_12039"
+    },
+    {
+      "id": 12040,
+      "name": "隐刺",
+      "dataFile": "vehicles/12040.json",
+      "assetDirectory": "assets/隐刺_12040"
+    },
+    {
+      "id": 12041,
+      "name": "阿斯顿马丁 Valkyrie AMR Pro",
+      "dataFile": "vehicles/12041.json",
+      "assetDirectory": "assets/阿斯顿马丁 Valkyrie AMR Pro_12041"
+    },
+    {
+      "id": 12042,
+      "name": "迈凯伦 Senna",
+      "dataFile": "vehicles/12042.json",
+      "assetDirectory": "assets/迈凯伦 Senna_12042"
+    },
+    {
+      "id": 12043,
+      "name": "仰望U8",
+      "dataFile": "vehicles/12043.json",
+      "assetDirectory": "assets/仰望U8_12043"
+    },
+    {
+      "id": 12044,
+      "name": "道奇 Viper ACR",
+      "dataFile": "vehicles/12044.json",
+      "assetDirectory": "assets/道奇 Viper ACR_12044"
+    },
+    {
+      "id": 12045,
+      "name": "宝马 M4 CSL",
+      "dataFile": "vehicles/12045.json",
+      "assetDirectory": "assets/宝马 M4 CSL_12045"
+    },
+    {
+      "id": 12046,
+      "name": "狂飙",
+      "dataFile": "vehicles/12046.json",
+      "assetDirectory": "assets/狂飙_12046"
+    },
+    {
+      "id": 12047,
+      "name": "混沌",
+      "dataFile": "vehicles/12047.json",
+      "assetDirectory": "assets/混沌_12047"
+    },
+    {
+      "id": 12048,
+      "name": "兰博基尼 Aventador J",
+      "dataFile": "vehicles/12048.json",
+      "assetDirectory": "assets/兰博基尼 Aventador J_12048"
+    },
+    {
+      "id": 12049,
+      "name": "保时捷 Panamera Turbo S",
+      "dataFile": "vehicles/12049.json",
+      "assetDirectory": "assets/保时捷 Panamera Turbo S_12049"
+    },
+    {
+      "id": 12051,
+      "name": "兰博基尼 Veneno",
+      "dataFile": "vehicles/12051.json",
+      "assetDirectory": "assets/兰博基尼 Veneno_12051"
+    },
+    {
+      "id": 12052,
+      "name": "关羽",
+      "dataFile": "vehicles/12052.json",
+      "assetDirectory": "assets/关羽_12052"
+    },
+    {
+      "id": 12053,
+      "name": "黑曼巴",
+      "dataFile": "vehicles/12053.json",
+      "assetDirectory": "assets/黑曼巴_12053"
+    },
+    {
+      "id": 12054,
+      "name": "筋斗云",
+      "dataFile": "vehicles/12054.json",
+      "assetDirectory": "assets/筋斗云_12054"
+    },
+    {
+      "id": 12055,
+      "name": "腾势N7",
+      "dataFile": "vehicles/12055.json",
+      "assetDirectory": "assets/腾势N7_12055"
+    },
+    {
+      "id": 12056,
+      "name": "泡泡旅行者",
+      "dataFile": "vehicles/12056.json",
+      "assetDirectory": "assets/泡泡旅行者_12056"
+    },
+    {
+      "id": 12057,
+      "name": "茶韵行者",
+      "dataFile": "vehicles/12057.json",
+      "assetDirectory": "assets/茶韵行者_12057"
+    },
+    {
+      "id": 12058,
+      "name": "奥迪 RS 6 Avant",
+      "dataFile": "vehicles/12058.json",
+      "assetDirectory": "assets/奥迪 RS 6 Avant_12058"
+    },
+    {
+      "id": 12059,
+      "name": "仰望U9",
+      "dataFile": "vehicles/12059.json",
+      "assetDirectory": "assets/仰望U9_12059"
+    },
+    {
+      "id": 12060,
+      "name": "乐道L60",
+      "dataFile": "vehicles/12060.json",
+      "assetDirectory": "assets/乐道L60_12060"
+    },
+    {
+      "id": 12061,
+      "name": "竹叶青",
+      "dataFile": "vehicles/12061.json",
+      "assetDirectory": "assets/竹叶青_12061"
+    },
+    {
+      "id": 12062,
+      "name": "狄安娜",
+      "dataFile": "vehicles/12062.json",
+      "assetDirectory": "assets/狄安娜_12062"
+    },
+    {
+      "id": 12063,
+      "name": "阿波罗",
+      "dataFile": "vehicles/12063.json",
+      "assetDirectory": "assets/阿波罗_12063"
+    },
+    {
+      "id": 12064,
+      "name": "极氪007",
+      "dataFile": "vehicles/12064.json",
+      "assetDirectory": "assets/极氪007_12064"
+    },
+    {
+      "id": 12065,
+      "name": "讴歌 NSX",
+      "dataFile": "vehicles/12065.json",
+      "assetDirectory": "assets/讴歌 NSX_12065"
+    },
+    {
+      "id": 12066,
+      "name": "地狱火",
+      "dataFile": "vehicles/12066.json",
+      "assetDirectory": "assets/地狱火_12066"
+    },
+    {
+      "id": 12067,
+      "name": "奥迪 RS 3",
+      "dataFile": "vehicles/12067.json",
+      "assetDirectory": "assets/奥迪 RS 3_12067"
+    },
+    {
+      "id": 12068,
+      "name": "柯尼塞格 One:1",
+      "dataFile": "vehicles/12068.json",
+      "assetDirectory": "assets/柯尼塞格 One_1_12068"
+    },
+    {
+      "id": 12069,
+      "name": "雪佛兰 Corvette C8",
+      "dataFile": "vehicles/12069.json",
+      "assetDirectory": "assets/雪佛兰 Corvette C8_12069"
+    },
+    {
+      "id": 12070,
+      "name": "波塞冬",
+      "dataFile": "vehicles/12070.json",
+      "assetDirectory": "assets/波塞冬_12070"
+    },
+    {
+      "id": 12071,
+      "name": "风行者",
+      "dataFile": "vehicles/12071.json",
+      "assetDirectory": "assets/风行者_12071"
+    },
+    {
+      "id": 12072,
+      "name": "坚盾",
+      "dataFile": "vehicles/12072.json",
+      "assetDirectory": "assets/坚盾_12072"
+    },
+    {
+      "id": 12073,
+      "name": "法拉利 LaFerrari",
+      "dataFile": "vehicles/12073.json",
+      "assetDirectory": "assets/法拉利 LaFerrari_12073"
+    },
+    {
+      "id": 12074,
+      "name": "大买特买号",
+      "dataFile": "vehicles/12074.json",
+      "assetDirectory": "assets/大买特买号_12074"
+    },
+    {
+      "id": 12075,
+      "name": "宾利 Flying Spur Mulliner",
+      "dataFile": "vehicles/12075.json",
+      "assetDirectory": "assets/宾利 Flying Spur Mulliner_12075"
+    },
+    {
+      "id": 12076,
+      "name": "魔王",
+      "dataFile": "vehicles/12076.json",
+      "assetDirectory": "assets/魔王_12076"
+    },
+    {
+      "id": 12077,
+      "name": "逐风青骥",
+      "dataFile": "vehicles/12077.json",
+      "assetDirectory": "assets/逐风青骥_12077"
+    },
+    {
+      "id": 12078,
+      "name": "踏雪白驹",
+      "dataFile": "vehicles/12078.json",
+      "assetDirectory": "assets/踏雪白驹_12078"
+    },
+    {
+      "id": 12079,
+      "name": "兰博基尼 Revuelto",
+      "dataFile": "vehicles/12079.json",
+      "assetDirectory": "assets/兰博基尼 Revuelto_12079"
+    },
+    {
+      "id": 12080,
+      "name": "保时捷 Taycan Turbo S",
+      "dataFile": "vehicles/12080.json",
+      "assetDirectory": "assets/保时捷 Taycan Turbo S_12080"
+    },
+    {
+      "id": 12081,
+      "name": "幻海之汐",
+      "dataFile": "vehicles/12081.json",
+      "assetDirectory": "assets/幻海之汐_12081"
+    },
+    {
+      "id": 12082,
+      "name": "光天使",
+      "dataFile": "vehicles/12082.json",
+      "assetDirectory": "assets/光天使_12082"
+    },
+    {
+      "id": 12084,
+      "name": "蔚来ET9",
+      "dataFile": "vehicles/12084.json",
+      "assetDirectory": "assets/蔚来ET9_12084"
+    },
+    {
+      "id": 12087,
+      "name": "逍遥",
+      "dataFile": "vehicles/12087.json",
+      "assetDirectory": "assets/逍遥_12087"
+    },
+    {
+      "id": 12088,
+      "name": "真的好马",
+      "dataFile": "vehicles/12088.json",
+      "assetDirectory": "assets/真的好马_12088"
+    },
+    {
+      "id": 12091,
+      "name": "兰博基尼 Sesto Elemento",
+      "dataFile": "vehicles/12091.json",
+      "assetDirectory": "assets/兰博基尼 Sesto Elemento_12091"
+    },
+    {
+      "id": 12092,
+      "name": "方程豹 豹8",
+      "dataFile": "vehicles/12092.json",
+      "assetDirectory": "assets/方程豹 豹8_12092"
+    },
+    {
+      "id": 12093,
+      "name": "莲花 Evija X",
+      "dataFile": "vehicles/12093.json",
+      "assetDirectory": "assets/莲花 Evija X_12093"
+    },
+    {
+      "id": 12095,
+      "name": "布加迪 Bolide",
+      "dataFile": "vehicles/12095.json",
+      "assetDirectory": "assets/布加迪 Bolide_12095"
+    },
+    {
+      "id": 12096,
+      "name": "本田 Civic Type R",
+      "dataFile": "vehicles/12096.json",
+      "assetDirectory": "assets/本田 Civic Type R_12096"
+    },
+    {
+      "id": 12097,
+      "name": "清规·浩然",
+      "dataFile": "vehicles/12097.json",
+      "assetDirectory": "assets/清规·浩然_12097"
+    },
+    {
+      "id": 12098,
+      "name": "布加迪 Veyron",
+      "dataFile": "vehicles/12098.json",
+      "assetDirectory": "assets/布加迪 Veyron_12098"
+    }
+  ]
+}

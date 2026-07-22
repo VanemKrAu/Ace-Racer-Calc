@@ -1,0 +1,35 @@
+{
+  "schemaVersion": 2,
+  "versionId": "26-07-15_29734784_android",
+  "generatedAt": "2026-07-22T19:22:29.000Z",
+  "mode": "single",
+  "base": null,
+  "since": null,
+  "filters": {
+    "publicOnly": true,
+    "naturalReleaseOnly": true,
+    "placeholdersExcluded": true,
+    "manualIncludesExcluded": true,
+    "detailAccessRequired": true
+  },
+  "data": {
+    "vehicleCount": 1,
+    "vehicleIds": [
+      12099
+    ],
+    "vehicles": [
+      {
+        "id": 12099,
+        "name": "百变小鹦"
+      }
+    ],
+    "vehiclesSha256": "f22e21a114edea4436f6b0cebff62862b7f3fc8dfee373ce5e7bed6fd47faf77",
+    "vehiclesFileSha256": "8ed2caa7bdbbcd76ad380dcbcf563bec0757448a7a9d5f79fdc3d82b625263c1",
+    "delta": null
+  },
+  "assets": {
+    "skipped": false,
+    "fileCount": 11,
+    "missingCount": 0
+  }
+}

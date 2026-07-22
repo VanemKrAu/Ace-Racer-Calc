@@ -1,0 +1,1832 @@
+{
+  "schemaVersion": 2,
+  "versionId": "26-07-15_29734784_android",
+  "generatedAt": "2026-07-16T09:22:34.000Z",
+  "item": {
+    "id": 12076,
+    "name": "魔王",
+    "manufacturer": "深渊",
+    "quality": "传说",
+    "class": 4,
+    "group": 1,
+    "position": "干扰位",
+    "positionLabel": "干扰位",
+    "racingRole": 3,
+    "racingRoleName": "干扰位",
+    "specialization": "山路",
+    "seasonCode": "S31",
+    "publication": {
+      "state": "released",
+      "releaseTimestamp": 1768492800,
+      "releaseText": "2026-1-16 00:00:00",
+      "releaseMacro": "S31_OPEN"
+    },
+    "summary": "切换不同深渊魔器，获得不同附加效果",
+    "description": "切换不同深渊魔器，获得不同附加效果",
+    "tags": [
+      {
+        "id": 172,
+        "text": "切换魔器",
+        "desc": "更换魔王装备的魔器种类",
+        "color": 2
+      },
+      {
+        "id": 84,
+        "text": "集气损失",
+        "desc": "使敌方损失集气量",
+        "color": 3
+      },
+      {
+        "id": 71,
+        "text": "能量损失",
+        "desc": "使敌方损失大招能量",
+        "color": 3
+      },
+      {
+        "id": 6,
+        "text": "自充能",
+        "desc": "技能可以补充大招能量",
+        "color": 1
+      },
+      {
+        "id": 155,
+        "text": "必定命中",
+        "desc": "·使原命中类型必定命中目标\n·不受*无法选中*、*隐身*、*闪避*、*反弹*、*转移干扰*效果影响\n·仍会被*混乱*、*嘲讽*修改命中目标",
+        "color": 3
+      },
+      {
+        "id": 2,
+        "text": "自动集气",
+        "desc": "技能可以自动获取氮气",
+        "color": 1
+      }
+    ],
+    "stats": {
+      "speed_limit": 193,
+      "speedup_ratio": 1.09,
+      "charge": {
+        "ace_charge": 3400,
+        "drift_charge_energy_coef": 600,
+        "drift_charge_energy_min": 1200,
+        "drift_charge_energy_max": 6000,
+        "drift_extra_charge": [
+          [
+            1,
+            0
+          ],
+          [
+            2,
+            1800
+          ]
+        ]
+      }
+    },
+    "maxDurability": 100,
+    "levels": [
+      {
+        "id": 12076,
+        "suffix": "0",
+        "rich_text": {
+          "id": 12076,
+          "ace_time_charge_condition": "在山路赛道，使用氮气时获得额外大招充能并在落后第一名超过一定距离时获得速度提升效果",
+          "ace_time_effect": "深渊魔器可以充能两次",
+          "ace_time_effect_rich_desc": "42",
+          "chip_unlock_tips": "芯片最高生效等级为#fe7ab71#ffffff级",
+          "icon_ace_time_charge_condition": "new_carport_icon_mountainroad",
+          "icon_ace_time_effect": "new_carport_icon_10354",
+          "icon_slipstream": "new_carport_icon_14",
+          "icon_unlock_nitro_2": "new_carport_icon_10354",
+          "icon_unlock_nitro_3": "new_carport_icon_nos_03",
+          "level_title": "原车型",
+          "passive_skill_effect": [
+            "深渊魔器加速",
+            ""
+          ],
+          "passive_skill_effect_value": [
+            "35公里/小时",
+            ""
+          ],
+          "passive_skill_rich_desc": "42",
+          "slipstream": "跟随在车辆后方将获得尾流，产生持续的氮气充能效果",
+          "special_passive_skill_desc": "开局时随机装备一种魔器并获取对应增益效果：\n·狂魔镰使自身干扰效果#tips[必定命中]范围内敌方目标\n·三叉戟使自身干扰效果可以命中三个敌方目标\n·瘟疫剑使自身干扰效果翻倍\n·索魂刀使自身干扰范围翻倍",
+          "special_passive_skill_icon": "new_carport_icon_10360",
+          "special_passive_skill_title": "附魔",
+          "title_ace_time_charge_condition": "赛道专精",
+          "title_ace_time_effect": "RECU限制解除",
+          "title_slipstream": "空气动力学套件",
+          "title_unlock_nitro_2": "大招强化套件 I",
+          "title_unlock_nitro_3": "竞速级氮气支架",
+          "unlock_nitro_3": "解锁1x6磅，2x3磅，3x2磅氮气",
+          "upgrade_level_icon": "new_carport_icon_10360"
+        },
+        "stats": {
+          "speed_limit": 193,
+          "speedup_ratio": 1.09,
+          "charge": {
+            "ace_charge": 3400,
+            "drift_charge_energy_coef": 600,
+            "drift_charge_energy_min": 1200,
+            "drift_charge_energy_max": 6000,
+            "drift_extra_charge": [
+              [
+                1,
+                0
+              ],
+              [
+                2,
+                1800
+              ]
+            ]
+          }
+        }
+      },
+      {
+        "id": 120763,
+        "suffix": "1",
+        "rich_text": {
+          "id": 120763,
+          "ace_time_charge_condition": "在山路赛道，使用氮气时获得额外大招充能并在落后第一名超过一定距离时获得速度提升效果",
+          "ace_time_effect": "深渊魔器可以充能两次",
+          "ace_time_effect_rich_desc": "42",
+          "chip_unlock_tips": "芯片最高生效等级为#fe7ab74#ffffff级",
+          "icon_ace_time_charge_condition": "new_carport_icon_mountainroad",
+          "icon_ace_time_effect": "new_carport_icon_10354",
+          "icon_slipstream": "new_carport_icon_14",
+          "icon_unlock_nitro_2": "new_carport_icon_10354",
+          "icon_unlock_nitro_3": "new_carport_icon_nos_03",
+          "is_unlocked_ace_time_charge_condition": 1,
+          "is_unlocked_slipstream": 1,
+          "level_title": "竞速级氮气支架 I",
+          "passive_skill_effect": [
+            "深渊魔器加速",
+            ""
+          ],
+          "passive_skill_effect_value": [
+            "35公里/小时",
+            ""
+          ],
+          "passive_skill_rich_desc": "42",
+          "slipstream": "跟随在车辆后方将获得尾流，产生持续的氮气充能效果",
+          "special_passive_skill_desc": "开局时随机装备一种魔器并获取对应增益效果：\n·狂魔镰使自身干扰效果#tips[必定命中]范围内敌方目标\n·三叉戟使自身干扰效果可以命中三个敌方目标\n·瘟疫剑使自身干扰效果翻倍\n·索魂刀使自身干扰范围翻倍",
+          "special_passive_skill_icon": "new_carport_icon_10360",
+          "special_passive_skill_title": "附魔",
+          "title_ace_time_charge_condition": "赛道专精",
+          "title_ace_time_effect": "RECU限制解除",
+          "title_slipstream": "空气动力学套件",
+          "title_unlock_nitro_2": "大招强化套件 I",
+          "title_unlock_nitro_3": "竞速级氮气支架",
+          "unlock_nitro_3": "解锁1x6磅，2x3磅，3x2磅氮气",
+          "upgrade_level_icon": "new_carport_icon_nos_03"
+        },
+        "stats": {
+          "speed_limit": 193,
+          "speedup_ratio": 1.09,
+          "charge": {
+            "ace_charge": 3400,
+            "drift_charge_energy_coef": 600,
+            "drift_charge_energy_min": 1200,
+            "drift_charge_energy_max": 6000,
+            "drift_extra_charge": [
+              [
+                1,
+                0
+              ],
+              [
+                2,
+                1800
+              ]
+            ]
+          }
+        }
+      },
+      {
+        "id": 120761,
+        "suffix": "2",
+        "rich_text": {
+          "id": 120761,
+          "ace_time_charge_condition": "在山路赛道，使用氮气时获得额外大招充能并在落后第一名超过一定距离时获得速度提升效果",
+          "ace_time_effect": "深渊魔器可以充能两次",
+          "ace_time_effect_rich_desc": "42",
+          "chip_unlock_tips": "芯片最高生效等级为#fe7ab72#ffffff级",
+          "icon_ace_time_charge_condition": "new_carport_icon_mountainroad",
+          "icon_ace_time_effect": "new_carport_icon_10354",
+          "icon_slipstream": "new_carport_icon_14",
+          "icon_unlock_nitro_2": "new_carport_icon_10354",
+          "icon_unlock_nitro_3": "new_carport_icon_nos_03",
+          "is_unlocked_slipstream": 1,
+          "level_title": "空气动力学套件",
+          "passive_skill_effect": [
+            "深渊魔器加速",
+            ""
+          ],
+          "passive_skill_effect_value": [
+            "35公里/小时",
+            ""
+          ],
+          "passive_skill_rich_desc": "42",
+          "slipstream": "跟随在车辆后方将获得尾流，产生持续的氮气充能效果",
+          "special_passive_skill_desc": "开局时随机装备一种魔器并获取对应增益效果：\n·狂魔镰使自身干扰效果#tips[必定命中]范围内敌方目标\n·三叉戟使自身干扰效果可以命中三个敌方目标\n·瘟疫剑使自身干扰效果翻倍\n·索魂刀使自身干扰范围翻倍",
+          "special_passive_skill_icon": "new_carport_icon_10360",
+          "special_passive_skill_title": "附魔",
+          "title_ace_time_charge_condition": "赛道专精",
+          "title_ace_time_effect": "RECU限制解除",
+          "title_slipstream": "空气动力学套件",
+          "title_unlock_nitro_2": "大招强化套件 I",
+          "title_unlock_nitro_3": "竞速级氮气支架",
+          "unlock_nitro_3": "解锁1x6磅，2x3磅，3x2磅氮气",
+          "upgrade_level_icon": "new_carport_icon_14"
+        },
+        "stats": {
+          "speed_limit": 193,
+          "speedup_ratio": 1.09,
+          "charge": {
+            "ace_charge": 3400,
+            "drift_charge_energy_coef": 600,
+            "drift_charge_energy_min": 1200,
+            "drift_charge_energy_max": 6000,
+            "drift_extra_charge": [
+              [
+                1,
+                0
+              ],
+              [
+                2,
+                1800
+              ]
+            ]
+          }
+        }
+      },
+      {
+        "id": 120762,
+        "suffix": "3",
+        "rich_text": {
+          "id": 120762,
+          "ace_time_charge_condition": "在山路赛道，使用氮气时获得额外大招充能并在落后第一名超过一定距离时获得速度提升效果",
+          "ace_time_effect": "深渊魔器可以充能两次",
+          "ace_time_effect_rich_desc": "42",
+          "chip_unlock_tips": "芯片最高生效等级为#fe7ab73#ffffff级",
+          "icon_ace_time_charge_condition": "new_carport_icon_mountainroad",
+          "icon_ace_time_effect": "new_carport_icon_10354",
+          "icon_slipstream": "new_carport_icon_14",
+          "icon_unlock_nitro_2": "new_carport_icon_10354",
+          "icon_unlock_nitro_3": "new_carport_icon_nos_03",
+          "is_unlocked_ace_time_charge_condition": 1,
+          "is_unlocked_slipstream": 1,
+          "level_title": "赛道专精",
+          "passive_skill_effect": [
+            "深渊魔器加速",
+            ""
+          ],
+          "passive_skill_effect_value": [
+            "35公里/小时",
+            ""
+          ],
+          "passive_skill_rich_desc": "42",
+          "slipstream": "跟随在车辆后方将获得尾流，产生持续的氮气充能效果",
+          "special_passive_skill_desc": "开局时随机装备一种魔器并获取对应增益效果：\n·狂魔镰使自身干扰效果#tips[必定命中]范围内敌方目标\n·三叉戟使自身干扰效果可以命中三个敌方目标\n·瘟疫剑使自身干扰效果翻倍\n·索魂刀使自身干扰范围翻倍",
+          "special_passive_skill_icon": "new_carport_icon_10360",
+          "special_passive_skill_title": "附魔",
+          "title_ace_time_charge_condition": "赛道专精",
+          "title_ace_time_effect": "RECU限制解除",
+          "title_slipstream": "空气动力学套件",
+          "title_unlock_nitro_2": "大招强化套件 I",
+          "title_unlock_nitro_3": "竞速级氮气支架",
+          "unlock_nitro_3": "解锁1x6磅，2x3磅，3x2磅氮气",
+          "upgrade_level_icon": "new_carport_icon_mountainroad"
+        },
+        "stats": {
+          "speed_limit": 193,
+          "speedup_ratio": 1.09,
+          "charge": {
+            "ace_charge": 3400,
+            "drift_charge_energy_coef": 600,
+            "drift_charge_energy_min": 1200,
+            "drift_charge_energy_max": 6000,
+            "drift_extra_charge": [
+              [
+                1,
+                0
+              ],
+              [
+                2,
+                1800
+              ]
+            ]
+          }
+        }
+      },
+      {
+        "id": 120764,
+        "suffix": "4",
+        "rich_text": {
+          "id": 120764,
+          "ace_time_charge_condition": "在山路赛道，使用氮气时获得额外大招充能并在落后第一名超过一定距离时获得速度提升效果",
+          "ace_time_effect": "深渊魔器可以充能两次",
+          "ace_time_effect_rich_desc": "42",
+          "chip_unlock_tips": "芯片最高生效等级为#fe7ab75#ffffff级",
+          "icon_ace_time_charge_condition": "new_carport_icon_mountainroad",
+          "icon_ace_time_effect": "new_carport_icon_10354",
+          "icon_slipstream": "new_carport_icon_14",
+          "icon_unlock_nitro_2": "new_carport_icon_10354",
+          "icon_unlock_nitro_3": "new_carport_icon_nos_03",
+          "is_unlocked_ace_time_charge_condition": 1,
+          "is_unlocked_slipstream": 1,
+          "level_title": "大招强化 I",
+          "passive_skill_effect": [
+            "深渊魔器加速",
+            ""
+          ],
+          "passive_skill_effect_value": [
+            "40公里/小时",
+            ""
+          ],
+          "passive_skill_rich_desc": "42",
+          "slipstream": "跟随在车辆后方将获得尾流，产生持续的氮气充能效果",
+          "special_passive_skill_desc": "开局时随机装备一种魔器并获取对应增益效果：\n·狂魔镰使自身干扰效果#tips[必定命中]范围内敌方目标\n·三叉戟使自身干扰效果可以命中三个敌方目标\n·瘟疫剑使自身干扰效果翻倍\n·索魂刀使自身干扰范围翻倍",
+          "special_passive_skill_icon": "new_carport_icon_10360",
+          "special_passive_skill_title": "附魔",
+          "title_ace_time_charge_condition": "赛道专精",
+          "title_ace_time_effect": "RECU限制解除",
+          "title_slipstream": "空气动力学套件",
+          "title_unlock_nitro_2": "大招强化套件 I",
+          "title_unlock_nitro_3": "竞速级氮气支架",
+          "unlock_nitro_3": "解锁1x6磅，2x3磅，3x2磅氮气",
+          "upgrade_level_icon": "new_carport_icon_10354"
+        },
+        "stats": {
+          "speed_limit": 193,
+          "speedup_ratio": 1.09,
+          "charge": {
+            "ace_charge": 3400,
+            "drift_charge_energy_coef": 600,
+            "drift_charge_energy_min": 1200,
+            "drift_charge_energy_max": 6000,
+            "drift_extra_charge": [
+              [
+                1,
+                0
+              ],
+              [
+                2,
+                1800
+              ]
+            ]
+          }
+        }
+      },
+      {
+        "id": 120765,
+        "suffix": "5",
+        "rich_text": {
+          "id": 120765,
+          "ace_time_charge_condition": "在山路赛道，使用氮气时获得额外大招充能并在落后第一名超过一定距离时获得速度提升效果",
+          "ace_time_effect": "深渊魔器可以充能两次",
+          "ace_time_effect_rich_desc": "42",
+          "chip_unlock_tips": "芯片最高生效等级为#fe7ab76#ffffff级",
+          "icon_ace_time_charge_condition": "new_carport_icon_mountainroad",
+          "icon_ace_time_effect": "new_carport_icon_10354",
+          "icon_slipstream": "new_carport_icon_14",
+          "icon_unlock_nitro_2": "new_carport_icon_10354",
+          "icon_unlock_nitro_3": "new_carport_icon_nos_03",
+          "is_unlocked_ace_time_charge_condition": 1,
+          "is_unlocked_slipstream": 1,
+          "level_title": "竞速级氮气支架 II",
+          "passive_skill_effect": [
+            "深渊魔器加速",
+            ""
+          ],
+          "passive_skill_effect_value": [
+            "40公里/小时",
+            ""
+          ],
+          "passive_skill_rich_desc": "42",
+          "slipstream": "跟随在车辆后方将获得尾流，产生持续的氮气充能效果",
+          "special_passive_skill_desc": "开局时随机装备一种魔器并获取对应增益效果：\n·狂魔镰使自身干扰效果#tips[必定命中]范围内敌方目标\n·三叉戟使自身干扰效果可以命中三个敌方目标\n·瘟疫剑使自身干扰效果翻倍\n·索魂刀使自身干扰范围翻倍",
+          "special_passive_skill_icon": "new_carport_icon_10360",
+          "special_passive_skill_title": "附魔",
+          "title_ace_time_charge_condition": "赛道专精",
+          "title_ace_time_effect": "RECU限制解除",
+          "title_slipstream": "空气动力学套件",
+          "title_unlock_nitro_2": "大招强化套件 I",
+          "title_unlock_nitro_3": "竞速级氮气支架",
+          "unlock_nitro_3": "解锁1x6磅，2x3磅，3x2磅氮气",
+          "upgrade_level_icon": "new_carport_icon_nos_03"
+        },
+        "stats": {
+          "speed_limit": 193,
+          "speedup_ratio": 1.09,
+          "charge": {
+            "ace_charge": 3400,
+            "drift_charge_energy_coef": 600,
+            "drift_charge_energy_min": 1200,
+            "drift_charge_energy_max": 6000,
+            "drift_extra_charge": [
+              [
+                1,
+                0
+              ],
+              [
+                2,
+                1800
+              ]
+            ]
+          }
+        }
+      },
+      {
+        "id": 120766,
+        "suffix": "6",
+        "rich_text": {
+          "id": 120766,
+          "ace_time_charge_condition": "在山路赛道，使用氮气时获得额外大招充能并在落后第一名超过一定距离时获得速度提升效果",
+          "ace_time_effect": "深渊魔器可以充能两次",
+          "ace_time_effect_rich_desc": "42",
+          "chip_unlock_tips": "芯片最高生效等级为#fe7ab77#ffffff级",
+          "icon_ace_time_charge_condition": "new_carport_icon_mountainroad",
+          "icon_ace_time_effect": "new_carport_icon_10354",
+          "icon_slipstream": "new_carport_icon_14",
+          "icon_unlock_nitro_2": "new_carport_icon_10354",
+          "icon_unlock_nitro_3": "new_carport_icon_nos_03",
+          "is_unlocked_ace_time_charge_condition": 1,
+          "is_unlocked_slipstream": 1,
+          "level_title": "大招强化 II",
+          "passive_skill_effect": [
+            "深渊魔器加速",
+            ""
+          ],
+          "passive_skill_effect_value": [
+            "45公里/小时",
+            ""
+          ],
+          "passive_skill_rich_desc": "42",
+          "slipstream": "跟随在车辆后方将获得尾流，产生持续的氮气充能效果",
+          "special_passive_skill_desc": "开局时随机装备一种魔器并获取对应增益效果：\n·狂魔镰使自身干扰效果#tips[必定命中]范围内敌方目标\n·三叉戟使自身干扰效果可以命中三个敌方目标\n·瘟疫剑使自身干扰效果翻倍\n·索魂刀使自身干扰范围翻倍",
+          "special_passive_skill_icon": "new_carport_icon_10360",
+          "special_passive_skill_title": "附魔",
+          "title_ace_time_charge_condition": "赛道专精",
+          "title_ace_time_effect": "RECU限制解除",
+          "title_slipstream": "空气动力学套件",
+          "title_unlock_nitro_2": "大招强化套件 I",
+          "title_unlock_nitro_3": "竞速级氮气支架",
+          "unlock_nitro_3": "解锁1x6磅，2x3磅，3x2磅氮气",
+          "upgrade_level_icon": "new_carport_icon_10354"
+        },
+        "stats": {
+          "speed_limit": 193.5,
+          "speedup_ratio": 1.09,
+          "charge": {
+            "ace_charge": 3400,
+            "drift_charge_energy_coef": 600,
+            "drift_charge_energy_min": 1200,
+            "drift_charge_energy_max": 6000,
+            "drift_extra_charge": [
+              [
+                1,
+                0
+              ],
+              [
+                2,
+                1800
+              ]
+            ]
+          }
+        }
+      },
+      {
+        "id": 120767,
+        "suffix": "7",
+        "rich_text": {
+          "id": 120767,
+          "ace_time_charge_condition": "在山路赛道，使用氮气时获得额外大招充能并在落后第一名超过一定距离时获得速度提升效果",
+          "ace_time_effect": "深渊魔器可以充能两次",
+          "ace_time_effect_rich_desc": "42",
+          "chip_unlock_tips": "芯片最高生效等级为#fe7ab78#ffffff级",
+          "icon_ace_time_charge_condition": "new_carport_icon_mountainroad",
+          "icon_ace_time_effect": "new_carport_icon_10354",
+          "icon_slipstream": "new_carport_icon_14",
+          "icon_unlock_nitro_2": "new_carport_icon_10354",
+          "icon_unlock_nitro_3": "new_carport_icon_nos_03",
+          "is_unlocked_ace_time_charge_condition": 1,
+          "is_unlocked_ace_time_effect": 1,
+          "is_unlocked_slipstream": 1,
+          "level_title": "RECU限制解除",
+          "passive_skill_effect": [
+            "深渊魔器加速",
+            ""
+          ],
+          "passive_skill_effect_value": [
+            "45公里/小时",
+            ""
+          ],
+          "passive_skill_rich_desc": "42",
+          "slipstream": "跟随在车辆后方将获得尾流，产生持续的氮气充能效果",
+          "special_passive_skill_desc": "开局时随机装备一种魔器并获取对应增益效果：\n·狂魔镰使自身干扰效果#tips[必定命中]范围内敌方目标\n·三叉戟使自身干扰效果可以命中三个敌方目标\n·瘟疫剑使自身干扰效果翻倍\n·索魂刀使自身干扰范围翻倍",
+          "special_passive_skill_icon": "new_carport_icon_10360",
+          "special_passive_skill_title": "附魔",
+          "title_ace_time_charge_condition": "赛道专精",
+          "title_ace_time_effect": "RECU限制解除",
+          "title_slipstream": "空气动力学套件",
+          "title_unlock_nitro_2": "大招强化套件 I",
+          "title_unlock_nitro_3": "竞速级氮气支架",
+          "unlock_nitro_3": "解锁1x6磅，2x3磅，3x2磅氮气",
+          "upgrade_level_icon": "new_carport_icon_10354"
+        },
+        "stats": {
+          "speed_limit": 193.5,
+          "speedup_ratio": 1.09,
+          "charge": {
+            "ace_charge": 3400,
+            "drift_charge_energy_coef": 600,
+            "drift_charge_energy_min": 1200,
+            "drift_charge_energy_max": 6000,
+            "drift_extra_charge": [
+              [
+                1,
+                0
+              ],
+              [
+                2,
+                1800
+              ]
+            ]
+          }
+        }
+      },
+      {
+        "id": 120768,
+        "suffix": "8",
+        "rich_text": {
+          "id": 120768,
+          "ace_time_charge_condition": "在山路赛道，使用氮气时获得额外大招充能并在落后第一名超过一定距离时获得速度提升效果",
+          "ace_time_effect": "深渊魔器可以充能两次",
+          "ace_time_effect_rich_desc": "42",
+          "chip_unlock_tips": "芯片最高生效等级为#fe7ab79#ffffff级",
+          "icon_ace_time_charge_condition": "new_carport_icon_mountainroad",
+          "icon_ace_time_effect": "new_carport_icon_10354",
+          "icon_slipstream": "new_carport_icon_14",
+          "icon_unlock_nitro_2": "new_carport_icon_10354",
+          "icon_unlock_nitro_3": "new_carport_icon_nos_03",
+          "is_unlocked_ace_time_charge_condition": 1,
+          "is_unlocked_ace_time_effect": 1,
+          "is_unlocked_slipstream": 1,
+          "level_title": "大招强化 III",
+          "passive_skill_effect": [
+            "深渊魔器加速",
+            ""
+          ],
+          "passive_skill_effect_value": [
+            "50公里/小时",
+            ""
+          ],
+          "passive_skill_rich_desc": "42",
+          "slipstream": "跟随在车辆后方将获得尾流，产生持续的氮气充能效果",
+          "special_passive_skill_desc": "开局时随机装备一种魔器并获取对应增益效果：\n·狂魔镰使自身干扰效果#tips[必定命中]范围内敌方目标\n·三叉戟使自身干扰效果可以命中三个敌方目标\n·瘟疫剑使自身干扰效果翻倍\n·索魂刀使自身干扰范围翻倍",
+          "special_passive_skill_icon": "new_carport_icon_10360",
+          "special_passive_skill_title": "附魔",
+          "title_ace_time_charge_condition": "赛道专精",
+          "title_ace_time_effect": "RECU限制解除",
+          "title_slipstream": "空气动力学套件",
+          "title_unlock_nitro_2": "大招强化套件 I",
+          "title_unlock_nitro_3": "竞速级氮气支架",
+          "unlock_nitro_3": "解锁1x6磅，2x3磅，3x2磅氮气",
+          "upgrade_level_icon": "new_carport_icon_10354"
+        },
+        "stats": {
+          "speed_limit": 194,
+          "speedup_ratio": 1.09,
+          "charge": {
+            "ace_charge": 3400,
+            "drift_charge_energy_coef": 600,
+            "drift_charge_energy_min": 1200,
+            "drift_charge_energy_max": 6000,
+            "drift_extra_charge": [
+              [
+                1,
+                0
+              ],
+              [
+                2,
+                1800
+              ]
+            ]
+          }
+        }
+      },
+      {
+        "id": 120769,
+        "suffix": "9",
+        "rich_text": {
+          "id": 120769,
+          "ace_time_charge_condition": "在山路赛道，使用氮气时获得额外大招充能并在落后第一名超过一定距离时获得速度提升效果",
+          "ace_time_effect": "深渊魔器可以充能两次",
+          "ace_time_effect_rich_desc": "42",
+          "chip_unlock_tips": "芯片最高生效等级为#fe7ab710#ffffff级",
+          "icon_ace_time_charge_condition": "new_carport_icon_mountainroad",
+          "icon_ace_time_effect": "new_carport_icon_10354",
+          "icon_slipstream": "new_carport_icon_14",
+          "icon_unlock_nitro_2": "new_carport_icon_10354",
+          "icon_unlock_nitro_3": "new_carport_icon_nos_03",
+          "is_unlocked_ace_time_charge_condition": 1,
+          "is_unlocked_ace_time_effect": 1,
+          "is_unlocked_slipstream": 1,
+          "level_title": "大招强化 IV",
+          "passive_skill_effect": [
+            "深渊魔器加速",
+            ""
+          ],
+          "passive_skill_effect_value": [
+            "55公里/小时",
+            ""
+          ],
+          "passive_skill_rich_desc": "42",
+          "slipstream": "跟随在车辆后方将获得尾流，产生持续的氮气充能效果",
+          "special_passive_skill_desc": "开局时随机装备一种魔器并获取对应增益效果：\n·狂魔镰使自身干扰效果#tips[必定命中]范围内敌方目标\n·三叉戟使自身干扰效果可以命中三个敌方目标\n·瘟疫剑使自身干扰效果翻倍\n·索魂刀使自身干扰范围翻倍",
+          "special_passive_skill_icon": "new_carport_icon_10360",
+          "special_passive_skill_title": "附魔",
+          "title_ace_time_charge_condition": "赛道专精",
+          "title_ace_time_effect": "RECU限制解除",
+          "title_slipstream": "空气动力学套件",
+          "title_unlock_nitro_2": "大招强化套件 I",
+          "title_unlock_nitro_3": "竞速级氮气支架",
+          "unlock_nitro_3": "解锁1x6磅，2x3磅，3x2磅氮气",
+          "upgrade_level_icon": "new_carport_icon_10354"
+        },
+        "stats": {
+          "speed_limit": 195,
+          "speedup_ratio": 1.09,
+          "charge": {
+            "ace_charge": 3400,
+            "drift_charge_energy_coef": 600,
+            "drift_charge_energy_min": 1200,
+            "drift_charge_energy_max": 6000,
+            "drift_extra_charge": [
+              [
+                1,
+                0
+              ],
+              [
+                2,
+                1800
+              ]
+            ]
+          }
+        }
+      }
+    ],
+    "skills": {
+      "ultimate": {
+        "id": 19651,
+        "name": "深渊魔器",
+        "type": "N2O_DEMON",
+        "icon_static": "ui_skill165_04",
+        "icon_big": null,
+        "icon": null,
+        "init_ratio": null,
+        "icons": {
+          "normal": "ui_skill165_03",
+          "disable": "ui_skill165_01",
+          "alt": "ui_skill165_06",
+          "down": "ui_skill165_03",
+          "static": "ui_skill165_04",
+          "big": null
+        },
+        "extra": {
+          "cam_type": "N2O_DEMON",
+          "eff_id": 1,
+          "is_cost_energy": 2,
+          "rally_qte": 2
+        },
+        "value_texts": [
+          {
+            "key": "name",
+            "label": "技能名称",
+            "value": "深渊魔器"
+          },
+          {
+            "key": "skill_type",
+            "label": "技能类型",
+            "value": "N2O_DEMON"
+          },
+          {
+            "key": "cam_type",
+            "label": "镜头类型",
+            "value": "N2O_DEMON"
+          },
+          {
+            "key": "eff_id",
+            "label": "特效编号",
+            "value": "1"
+          },
+          {
+            "key": "min_charge",
+            "label": "最低充能万分比",
+            "value": "10000"
+          },
+          {
+            "key": "rally_qte",
+            "label": "拉力赛触发qte",
+            "value": "2"
+          }
+        ],
+        "instructions": [
+          {
+            "id": 209671,
+            "accel_action": 2,
+            "accelerate_curve": [
+              [
+                0,
+                30
+              ],
+              [
+                165,
+                21.7
+              ],
+              [
+                166,
+                6
+              ],
+              [
+                200,
+                6
+              ]
+            ],
+            "attack_show_friend_enemy_filter": [
+              1,
+              2
+            ],
+            "attack_show_role_filter": [
+              1,
+              2,
+              3
+            ],
+            "buff_count": 0,
+            "cost_ratio": 1428,
+            "duration": 7,
+            "eff_id": 1,
+            "extra_children": [],
+            "extra_isolate": [],
+            "inst_group": 2,
+            "inst_name": "大招加速",
+            "inst_type": 2,
+            "is_hard_push": 1,
+            "rear_insts": [
+              -1
+            ],
+            "ref_insts": [
+              209671
+            ],
+            "skill_eff_id": 12454,
+            "sp_ex_speed_limit": 35,
+            "sp_max_ex_speed_limit": 35,
+            "sp_min_ex_speed_limit": 35,
+            "sp_n2o_ace_charge_ratio": 1,
+            "name": "大招加速",
+            "desc": null,
+            "type": 2,
+            "order": null,
+            "value_texts": [
+              {
+                "key": "sp_ex_speed_limit",
+                "label": "极速提升",
+                "value": "35km/h"
+              },
+              {
+                "key": "attack_show_friend_enemy_filter",
+                "label": "敌友筛选",
+                "value": "[1,2]"
+              },
+              {
+                "key": "attack_show_role_filter",
+                "label": "定位筛选",
+                "value": "[1,2,3]"
+              },
+              {
+                "key": "buff_count",
+                "label": "Buff 数量",
+                "value": "0"
+              },
+              {
+                "key": "rear_insts",
+                "label": "后续节点",
+                "value": "[-1]"
+              },
+              {
+                "key": "extra_children",
+                "label": "子节点",
+                "value": "[]"
+              },
+              {
+                "key": "ref_insts",
+                "label": "引用节点",
+                "value": "[209671]"
+              }
+            ]
+          },
+          {
+            "id": 2810301,
+            "attack_show_friend_enemy_filter": [
+              1,
+              2
+            ],
+            "attack_show_role_filter": [
+              1,
+              2,
+              3
+            ],
+            "buff_count": 0,
+            "extra_children": [
+              143011,
+              810901,
+              810902,
+              810903,
+              810904,
+              907000,
+              907323,
+              1003601
+            ],
+            "extra_isolate": [],
+            "inst_group": 28,
+            "inst_name": "判断当前魔器",
+            "inst_type": 28,
+            "rear_insts": [],
+            "ref_insts": [
+              143011,
+              810901,
+              810902,
+              810903,
+              810904,
+              907000,
+              907323,
+              1003601,
+              2810301
+            ],
+            "sp_n2o_ace_charge_ratio": 1,
+            "status_effect": [
+              [
+                [
+                  3,
+                  "=",
+                  11700005,
+                  [
+                    0
+                  ],
+                  907000
+                ]
+              ],
+              [
+                [
+                  3,
+                  "=",
+                  11700005,
+                  [
+                    0
+                  ],
+                  810901
+                ]
+              ],
+              [
+                [
+                  3,
+                  "=",
+                  10303801,
+                  [
+                    0
+                  ],
+                  1003601
+                ]
+              ],
+              [
+                [
+                  3,
+                  "=",
+                  10303801,
+                  [
+                    0
+                  ],
+                  810902
+                ]
+              ],
+              [
+                [
+                  3,
+                  "=",
+                  10303802,
+                  [
+                    0
+                  ],
+                  143011
+                ]
+              ],
+              [
+                [
+                  3,
+                  "=",
+                  10303802,
+                  [
+                    0
+                  ],
+                  810903
+                ]
+              ],
+              [
+                [
+                  3,
+                  "=",
+                  10303803,
+                  [
+                    0
+                  ],
+                  907323
+                ]
+              ],
+              [
+                [
+                  3,
+                  "=",
+                  10303803,
+                  [
+                    0
+                  ],
+                  810904
+                ]
+              ]
+            ],
+            "status_effect_type": 1,
+            "name": "判断当前魔器",
+            "desc": null,
+            "type": 28,
+            "order": null,
+            "value_texts": [
+              {
+                "key": "attack_show_friend_enemy_filter",
+                "label": "敌友筛选",
+                "value": "[1,2]"
+              },
+              {
+                "key": "attack_show_role_filter",
+                "label": "定位筛选",
+                "value": "[1,2,3]"
+              },
+              {
+                "key": "buff_count",
+                "label": "Buff 数量",
+                "value": "0"
+              },
+              {
+                "key": "status_effect_type",
+                "label": "触发效果类型",
+                "value": "1"
+              },
+              {
+                "key": "status_effect",
+                "label": "状态及效果",
+                "value": "[[[3,\"=\",11700005,[0],907000]],[[3,\"=\",11700005,[0],810901]],[[3,\"=\",10303801,[0],1003601]],[[3,\"=\",10303801,[0],810902]],[[3,\"=\",10303802,[0],143011]],[[3,\"=\",10303802,[0],810903]],[[3,\"=\",10303803,[0],907323]],[[3,\"=\",10303803,[0],810904]]]"
+              },
+              {
+                "key": "rear_insts",
+                "label": "后续节点",
+                "value": "[]"
+              },
+              {
+                "key": "extra_children",
+                "label": "子节点",
+                "value": "[143011,810901,810902,810903,810904,907000,907323,1003601]"
+              },
+              {
+                "key": "ref_insts",
+                "label": "引用节点",
+                "value": "[143011,810901,810902,810903,810904,907000,907323,1003601,2810301]"
+              }
+            ]
+          }
+        ]
+      },
+      "sp": {
+        "id": 19681,
+        "name": "魔器切换",
+        "type": null,
+        "icon_static": "ui_skill166_04",
+        "icon_big": null,
+        "icon": null,
+        "init_ratio": null,
+        "icons": {
+          "normal": "ui_skill166_03",
+          "disable": "ui_skill166_01",
+          "alt": "ui_skill166_03",
+          "down": "ui_skill166_03",
+          "static": "ui_skill166_04",
+          "big": null
+        },
+        "extra": {
+          "cam_type": null,
+          "eff_id": null,
+          "is_cost_energy": null,
+          "rally_qte": null
+        },
+        "value_texts": [
+          {
+            "key": "name",
+            "label": "技能名称",
+            "value": "魔器切换"
+          }
+        ],
+        "instructions": [
+          {
+            "id": 2810302,
+            "attack_show_friend_enemy_filter": [
+              1,
+              2
+            ],
+            "attack_show_role_filter": [
+              1,
+              2,
+              3
+            ],
+            "buff_count": 0,
+            "extra_children": [
+              10109401,
+              10109402,
+              10109403,
+              10109404
+            ],
+            "extra_isolate": [],
+            "inst_group": 28,
+            "inst_name": "魔器切换",
+            "inst_type": 28,
+            "rear_insts": [
+              -1
+            ],
+            "ref_insts": [
+              2810302,
+              10109401,
+              10109402,
+              10109403,
+              10109404
+            ],
+            "sp_n2o_ace_charge_ratio": 1,
+            "status_effect": [
+              [
+                [
+                  3,
+                  "=",
+                  11700005,
+                  [
+                    0
+                  ],
+                  10109401
+                ]
+              ],
+              [
+                [
+                  3,
+                  "=",
+                  10303801,
+                  [
+                    0
+                  ],
+                  10109402
+                ]
+              ],
+              [
+                [
+                  3,
+                  "=",
+                  10303802,
+                  [
+                    0
+                  ],
+                  10109403
+                ]
+              ],
+              [
+                [
+                  3,
+                  "=",
+                  10303803,
+                  [
+                    0
+                  ],
+                  10109404
+                ]
+              ]
+            ],
+            "name": "魔器切换",
+            "desc": null,
+            "type": 28,
+            "order": null,
+            "value_texts": [
+              {
+                "key": "attack_show_friend_enemy_filter",
+                "label": "敌友筛选",
+                "value": "[1,2]"
+              },
+              {
+                "key": "attack_show_role_filter",
+                "label": "定位筛选",
+                "value": "[1,2,3]"
+              },
+              {
+                "key": "buff_count",
+                "label": "Buff 数量",
+                "value": "0"
+              },
+              {
+                "key": "status_effect",
+                "label": "状态及效果",
+                "value": "[[[3,\"=\",11700005,[0],10109401]],[[3,\"=\",10303801,[0],10109402]],[[3,\"=\",10303802,[0],10109403]],[[3,\"=\",10303803,[0],10109404]]]"
+              },
+              {
+                "key": "rear_insts",
+                "label": "后续节点",
+                "value": "[-1]"
+              },
+              {
+                "key": "extra_children",
+                "label": "子节点",
+                "value": "[10109401,10109402,10109403,10109404]"
+              },
+              {
+                "key": "ref_insts",
+                "label": "引用节点",
+                "value": "[2810302,10109401,10109402,10109403,10109404]"
+              }
+            ]
+          }
+        ]
+      },
+      "passive": [
+        {
+          "id": 50801,
+          "name": "封禁尾流",
+          "type": null,
+          "icon_static": null,
+          "icon_big": null,
+          "icon": null,
+          "init_ratio": null,
+          "icons": {
+            "normal": null,
+            "disable": null,
+            "alt": null,
+            "down": null,
+            "static": null,
+            "big": null
+          },
+          "extra": {
+            "cam_type": null,
+            "eff_id": null,
+            "is_cost_energy": null,
+            "rally_qte": null
+          },
+          "value_texts": [
+            {
+              "key": "name",
+              "label": "技能名称",
+              "value": "封禁尾流"
+            }
+          ],
+          "instructions": [
+            {
+              "id": 2100301,
+              "attack_show_friend_enemy_filter": [
+                1,
+                2
+              ],
+              "attack_show_role_filter": [
+                1,
+                2,
+                3
+              ],
+              "buff_count": 0,
+              "duration": 999,
+              "eff_id": 1,
+              "extra_children": [],
+              "extra_isolate": [],
+              "inst_group": 21001,
+              "inst_name": "封禁尾流",
+              "inst_type": 21,
+              "rear_insts": [],
+              "ref_insts": [
+                2100301
+              ],
+              "skill_eff_id": 21,
+              "slipstream_state": 1,
+              "sp_n2o_ace_charge_ratio": 1,
+              "name": "封禁尾流",
+              "desc": null,
+              "type": 21,
+              "order": null,
+              "value_texts": [
+                {
+                  "key": "attack_show_friend_enemy_filter",
+                  "label": "敌友筛选",
+                  "value": "[1,2]"
+                },
+                {
+                  "key": "attack_show_role_filter",
+                  "label": "定位筛选",
+                  "value": "[1,2,3]"
+                },
+                {
+                  "key": "buff_count",
+                  "label": "Buff 数量",
+                  "value": "0"
+                },
+                {
+                  "key": "rear_insts",
+                  "label": "后续节点",
+                  "value": "[]"
+                },
+                {
+                  "key": "extra_children",
+                  "label": "子节点",
+                  "value": "[]"
+                },
+                {
+                  "key": "ref_insts",
+                  "label": "引用节点",
+                  "value": "[2100301]"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "id": 76103,
+          "name": "附魔",
+          "type": null,
+          "icon_static": null,
+          "icon_big": null,
+          "icon": null,
+          "init_ratio": null,
+          "icons": {
+            "normal": null,
+            "disable": null,
+            "alt": null,
+            "down": null,
+            "static": null,
+            "big": null
+          },
+          "extra": {
+            "cam_type": null,
+            "eff_id": null,
+            "is_cost_energy": null,
+            "rally_qte": null
+          },
+          "value_texts": [
+            {
+              "key": "name",
+              "label": "技能名称",
+              "value": "附魔"
+            }
+          ],
+          "instructions": [
+            {
+              "id": 1501401,
+              "attack_show_friend_enemy_filter": [
+                1,
+                2
+              ],
+              "attack_show_role_filter": [
+                1,
+                2,
+                3
+              ],
+              "buff_count": 0,
+              "duration": 0.1,
+              "eff_id": 1,
+              "extra_children": [
+                10303801,
+                10303802,
+                10303803,
+                11700005
+              ],
+              "extra_isolate": [],
+              "inst_group": 15,
+              "inst_name": "深渊魔器附魔",
+              "inst_type": 15,
+              "random_children": [
+                [
+                  11700005,
+                  25
+                ],
+                [
+                  10303801,
+                  25
+                ],
+                [
+                  10303802,
+                  25
+                ],
+                [
+                  10303803,
+                  25
+                ]
+              ],
+              "rear_insts": [],
+              "ref_insts": [
+                1501401,
+                10303801,
+                10303802,
+                10303803,
+                11700005
+              ],
+              "skill_eff_id": 15,
+              "sp_n2o_ace_charge_ratio": 1,
+              "name": "深渊魔器附魔",
+              "desc": null,
+              "type": 15,
+              "order": null,
+              "value_texts": [
+                {
+                  "key": "attack_show_friend_enemy_filter",
+                  "label": "敌友筛选",
+                  "value": "[1,2]"
+                },
+                {
+                  "key": "attack_show_role_filter",
+                  "label": "定位筛选",
+                  "value": "[1,2,3]"
+                },
+                {
+                  "key": "buff_count",
+                  "label": "Buff 数量",
+                  "value": "0"
+                },
+                {
+                  "key": "rear_insts",
+                  "label": "后续节点",
+                  "value": "[]"
+                },
+                {
+                  "key": "extra_children",
+                  "label": "子节点",
+                  "value": "[10303801,10303802,10303803,11700005]"
+                },
+                {
+                  "key": "ref_insts",
+                  "label": "引用节点",
+                  "value": "[1501401,10303801,10303802,10303803,11700005]"
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    "skillPanelGroups": {
+      "ultimate": [
+        {
+          "id": "1613",
+          "name_rich": {
+            "raw": "极速提升",
+            "html": "极速提升"
+          },
+          "value_rich": {
+            "raw": "35km/h",
+            "html": "35km/h"
+          },
+          "value_text": "35km/h",
+          "instruction_ids": [
+            209671,
+            209675
+          ],
+          "values": []
+        },
+        {
+          "id": "1614",
+          "name_rich": {
+            "raw": "加速时长",
+            "html": "加速时长"
+          },
+          "value_rich": {
+            "raw": "7秒",
+            "html": "7秒"
+          },
+          "value_text": "7秒",
+          "instruction_ids": [],
+          "values": []
+        },
+        {
+          "id": "1616",
+          "name_rich": {
+            "raw": "作用范围",
+            "html": "作用范围"
+          },
+          "value_rich": {
+            "raw": "350米",
+            "html": "350米"
+          },
+          "value_text": "350米",
+          "instruction_ids": [],
+          "values": []
+        },
+        {
+          "id": "1617",
+          "name_rich": {
+            "raw": "命中类型",
+            "html": "命中类型"
+          },
+          "value_rich": {
+            "raw": "#tipsnoicon[锁定类]",
+            "html": "<span class=\"rt-tip rt-tip--entry rt-tip--noicon\" data-tip=\"锁定类\" data-desc=\"·自动锁定范围内的目标&#10;·无法命中具有*隐身*、*无法选中*、*闪避*的敌方\" style=\"--tip-color:#ffd700\" title=\"·自动锁定范围内的目标&#10;·无法命中具有*隐身*、*无法选中*、*闪避*的敌方\">锁定类</span>"
+          },
+          "value_text": "#tipsnoicon[锁定类]",
+          "instruction_ids": [],
+          "values": []
+        },
+        {
+          "id": "1618",
+          "name_rich": {
+            "raw": "集气损失",
+            "html": "集气损失"
+          },
+          "value_rich": {
+            "raw": "2500",
+            "html": "2500"
+          },
+          "value_text": "2500",
+          "instruction_ids": [],
+          "values": []
+        },
+        {
+          "id": "1619",
+          "name_rich": {
+            "raw": "能量损失",
+            "html": "能量损失"
+          },
+          "value_rich": {
+            "raw": "25%",
+            "html": "25%"
+          },
+          "value_text": "25%",
+          "instruction_ids": [],
+          "values": []
+        },
+        {
+          "id": "1621",
+          "name_rich": {
+            "raw": "大招充能",
+            "html": "大招充能"
+          },
+          "value_rich": {
+            "raw": "50%",
+            "html": "50%"
+          },
+          "value_text": "50%",
+          "instruction_ids": [],
+          "values": []
+        },
+        {
+          "id": "1622",
+          "name_rich": {
+            "raw": "参数 1622",
+            "html": "参数 1622"
+          },
+          "value_rich": {
+            "raw": "#a9a9a9(狂魔镰)",
+            "html": "<span class=\"rt-color\" style=\"color: #a9a9a9\">(狂魔镰)</span>"
+          },
+          "value_text": "#a9a9a9(狂魔镰)",
+          "instruction_ids": [],
+          "values": []
+        },
+        {
+          "id": "1623",
+          "name_rich": {
+            "raw": "耐久恢复",
+            "html": "耐久恢复"
+          },
+          "value_rich": {
+            "raw": "15",
+            "html": "15"
+          },
+          "value_text": "15",
+          "instruction_ids": [],
+          "values": []
+        },
+        {
+          "id": "1625",
+          "name_rich": {
+            "raw": "额外极速",
+            "html": "额外极速"
+          },
+          "value_rich": {
+            "raw": "25km/h",
+            "html": "25km/h"
+          },
+          "value_text": "25km/h",
+          "instruction_ids": [],
+          "values": []
+        },
+        {
+          "id": "1627",
+          "name_rich": {
+            "raw": "自动集气",
+            "html": "自动集气"
+          },
+          "value_rich": {
+            "raw": "10000",
+            "html": "10000"
+          },
+          "value_text": "10000",
+          "instruction_ids": [],
+          "values": []
+        },
+        {
+          "id": "1628",
+          "name_rich": {
+            "raw": "染色时长",
+            "html": "染色时长"
+          },
+          "value_rich": {
+            "raw": "5秒",
+            "html": "5秒"
+          },
+          "value_text": "5秒",
+          "instruction_ids": [],
+          "values": []
+        },
+        {
+          "id": "20572",
+          "name_rich": {
+            "raw": "加速动力",
+            "html": "加速动力"
+          },
+          "value_rich": {
+            "raw": "中",
+            "html": "中"
+          },
+          "value_text": "中",
+          "instruction_ids": [],
+          "values": []
+        }
+      ],
+      "sp": [
+        {
+          "id": "1612",
+          "name_rich": {
+            "raw": "冷却时间",
+            "html": "冷却时间"
+          },
+          "value_rich": {
+            "raw": "1秒",
+            "html": "1秒"
+          },
+          "value_text": "1秒",
+          "instruction_ids": [],
+          "values": []
+        }
+      ],
+      "passive": [],
+      "other": []
+    },
+    "richText": {
+      "id": 12076,
+      "ace_time_charge_condition": "在山路赛道，使用氮气时获得额外大招充能并在落后第一名超过一定距离时获得速度提升效果",
+      "ace_time_effect": "深渊魔器可以充能两次",
+      "ace_time_effect_rich_desc": "42",
+      "chip_unlock_tips": "芯片最高生效等级为#fe7ab71#ffffff级",
+      "icon_ace_time_charge_condition": "new_carport_icon_mountainroad",
+      "icon_ace_time_effect": "new_carport_icon_10354",
+      "icon_slipstream": "new_carport_icon_14",
+      "icon_unlock_nitro_2": "new_carport_icon_10354",
+      "icon_unlock_nitro_3": "new_carport_icon_nos_03",
+      "level_title": "原车型",
+      "passive_skill_effect": [
+        "深渊魔器加速",
+        ""
+      ],
+      "passive_skill_effect_value": [
+        "35公里/小时",
+        ""
+      ],
+      "passive_skill_rich_desc": "42",
+      "slipstream": "跟随在车辆后方将获得尾流，产生持续的氮气充能效果",
+      "special_passive_skill_desc": {
+        "raw": "开局时随机装备一种魔器并获取对应增益效果：\n·狂魔镰使自身干扰效果#tips[必定命中]范围内敌方目标\n·三叉戟使自身干扰效果可以命中三个敌方目标\n·瘟疫剑使自身干扰效果翻倍\n·索魂刀使自身干扰范围翻倍",
+        "html": "开局时随机装备一种魔器并获取对应增益效果：<br/>·狂魔镰使自身干扰效果<span class=\"rt-tip rt-tip--entry\" data-tip=\"必定命中\" data-icon=\"carport_new_skill_illustrate_y10\" data-desc=\"·使原命中类型必定命中目标&#10;·不受*无法选中*、*隐身*、*闪避*、*反弹*、*转移干扰*效果影响&#10;·仍会被*混乱*、*嘲讽*修改命中目标\" style=\"--tip-color:#ffa8b1\" title=\"·使原命中类型必定命中目标&#10;·不受*无法选中*、*隐身*、*闪避*、*反弹*、*转移干扰*效果影响&#10;·仍会被*混乱*、*嘲讽*修改命中目标\"><span class=\"rt-tip__icon-slot\"></span>必定命中</span>范围内敌方目标<br/>·三叉戟使自身干扰效果可以命中三个敌方目标<br/>·瘟疫剑使自身干扰效果翻倍<br/>·索魂刀使自身干扰范围翻倍"
+      },
+      "special_passive_skill_icon": "new_carport_icon_10360",
+      "special_passive_skill_title": "附魔",
+      "title_ace_time_charge_condition": "赛道专精",
+      "title_ace_time_effect": "RECU限制解除",
+      "title_slipstream": "空气动力学套件",
+      "title_unlock_nitro_2": "大招强化套件 I",
+      "title_unlock_nitro_3": "竞速级氮气支架",
+      "unlock_nitro_3": "解锁1x6磅，2x3磅，3x2磅氮气",
+      "upgrade_level_icon": "new_carport_icon_10360",
+      "feature_desc": {
+        "raw": "加速推进，极速提升#desc[1613]，持续7秒。大招开始时使用深渊魔器攻击敌方，使350米范围内随机一名敌方损失25%大招能量和2500集气量，自身则根据装备魔器获得增益：\n·狂魔镰-自充能50%\n·三叉戟-恢复15点耐久值并#tips[净化]自身\n·瘟疫剑-7秒内极速+25km/h\n·索魂刀-获得10000集气量并将涡轮和氮气染色5秒（涡轮、氮气变为紫色）。",
+        "html": "加速推进，极速提升<span class=\"rt-desc\">极速提升 35km/h</span>，持续7秒。大招开始时使用深渊魔器攻击敌方，使350米范围内随机一名敌方损失25%大招能量和2500集气量，自身则根据装备魔器获得增益：<br/>·狂魔镰-自充能50%<br/>·三叉戟-恢复15点耐久值并<span class=\"rt-tip rt-tip--entry\" data-tip=\"净化\" data-icon=\"carport_new_skill_illustrate_b9\" data-desc=\"·解除持续性的负面效果\" style=\"--tip-color:#7eedff\" title=\"·解除持续性的负面效果\"><span class=\"rt-tip__icon-slot\"></span>净化</span>自身<br/>·瘟疫剑-7秒内极速+25km/h<br/>·索魂刀-获得10000集气量并将涡轮和氮气染色5秒（涡轮、氮气变为紫色）。"
+      },
+      "sp_skill_desc": {
+        "raw": "#acacac冷却时间：1秒#ffffff\n按狂魔镰、三叉戟、瘟疫剑、索魂刀的顺序对魔器进行一次切换。",
+        "html": "<span class=\"rt-color\" style=\"color: #acacac\">冷却时间：1秒</span><br/>按狂魔镰、三叉戟、瘟疫剑、索魂刀的顺序对魔器进行一次切换。"
+      },
+      "passive_skill_desc": null,
+      "story_title": "厂商：深渊",
+      "story": {
+        "raw": "在深渊车厂的暗黑车间中，诞生了一台令人闻风丧胆的邪恶战车——魔王，一台蕴含着无尽黑暗力量的移动堡垒。\n魔王最令人畏惧的是它所携带的四把魔器，每一把都拥有强大的力量，足以撕裂一切阻挡在它面前的敌人：\n狂魔镰：蕴含着黑暗能量，轻而易举将敌人撕成碎片。\n三叉戟：深渊的象征，三个尖端分别代表着痛苦、恐惧和绝望。\n瘟疫剑：散发着腐朽的气息，释放出致命的瘟疫，瞬间将敌人化为灰烬。\n索魂刀：如幽灵般无形，能够精准地切割敌人的灵魂，将敌人的灵魂从身体中抽出。",
+        "html": "在深渊车厂的暗黑车间中，诞生了一台令人闻风丧胆的邪恶战车——魔王，一台蕴含着无尽黑暗力量的移动堡垒。<br/>魔王最令人畏惧的是它所携带的四把魔器，每一把都拥有强大的力量，足以撕裂一切阻挡在它面前的敌人：<br/>狂魔镰：蕴含着黑暗能量，轻而易举将敌人撕成碎片。<br/>三叉戟：深渊的象征，三个尖端分别代表着痛苦、恐惧和绝望。<br/>瘟疫剑：散发着腐朽的气息，释放出致命的瘟疫，瞬间将敌人化为灰烬。<br/>索魂刀：如幽灵般无形，能够精准地切割敌人的灵魂，将敌人的灵魂从身体中抽出。"
+      }
+    },
+    "report": {
+      "title": "王牌速度节赛车检验报告",
+      "sections": [
+        {
+          "title": "基础数据",
+          "items": [
+            {
+              "label": "检测车辆",
+              "value": "魔王/Demon"
+            },
+            {
+              "label": "注册日期",
+              "value": "{}年{}月{}日"
+            },
+            {
+              "label": "车辆类型",
+              "value": "幻想阵营"
+            },
+            {
+              "label": "厂商",
+              "value": "深渊"
+            },
+            {
+              "label": "定位",
+              "value": "干扰位"
+            },
+            {
+              "label": "赛道专精",
+              "value": "山路"
+            },
+            {
+              "label": "能源类型",
+              "value": "魔能"
+            },
+            {
+              "label": "驱动方式",
+              "value": "后置四驱"
+            },
+            {
+              "label": "车重",
+              "value": "1240kg"
+            }
+          ]
+        },
+        {
+          "title": "芯片模块",
+          "items": [
+            {
+              "label": "芯片写入权限",
+              "value": "已获取"
+            },
+            {
+              "label": "扩展芯片类型",
+              "value": "○○◇◣◣V"
+            },
+            {
+              "label": "等级合规检查",
+              "value": "芯片等级未高于RECU等级"
+            }
+          ]
+        },
+        {
+          "title": "外观检验",
+          "items": [
+            {
+              "label": "检验结果",
+              "value": "合格"
+            }
+          ]
+        },
+        {
+          "title": "大招驱动模块",
+          "items": [
+            {
+              "label": "能量控制单元",
+              "value": "五代RECU，工作正常"
+            },
+            {
+              "label": "瑞卡因子稳定器",
+              "value": "工作正常"
+            },
+            {
+              "label": "NOS",
+              "value": "氮氧加速系统已安装"
+            },
+            {
+              "label": "空气动力套件（2级解锁）",
+              "value": "未选装"
+            },
+            {
+              "label": "赛道专精（3级解锁）",
+              "value": "未选装"
+            },
+            {
+              "label": "RECU限制解除（8级解锁）",
+              "value": "未选装"
+            }
+          ]
+        },
+        {
+          "title": "整车判定",
+          "items": [
+            {
+              "label": "检验结果",
+              "value": "合格，可参加速度节赛事"
+            }
+          ]
+        }
+      ]
+    },
+    "story": {
+      "content": "在深渊车厂的暗黑车间中，诞生了一台令人闻风丧胆的邪恶战车——魔王，一台蕴含着无尽黑暗力量的移动堡垒。\n魔王最令人畏惧的是它所携带的四把魔器，每一把都拥有强大的力量，足以撕裂一切阻挡在它面前的敌人：\n狂魔镰：蕴含着黑暗能量，轻而易举将敌人撕成碎片。\n三叉戟：深渊的象征，三个尖端分别代表着痛苦、恐惧和绝望。\n瘟疫剑：散发着腐朽的气息，释放出致命的瘟疫，瞬间将敌人化为灰烬。\n索魂刀：如幽灵般无形，能够精准地切割敌人的灵魂，将敌人的灵魂从身体中抽出。",
+      "id": 12076,
+      "story_content": "在深渊车厂的暗黑车间中，诞生了一台令人闻风丧胆的邪恶战车——魔王，一台蕴含着无尽黑暗力量的移动堡垒。\n魔王最令人畏惧的是它所携带的四把魔器，每一把都拥有强大的力量，足以撕裂一切阻挡在它面前的敌人：\n狂魔镰：蕴含着黑暗能量，轻而易举将敌人撕成碎片。\n三叉戟：深渊的象征，三个尖端分别代表着痛苦、恐惧和绝望。\n瘟疫剑：散发着腐朽的气息，释放出致命的瘟疫，瞬间将敌人化为灰烬。\n索魂刀：如幽灵般无形，能够精准地切割敌人的灵魂，将敌人的灵魂从身体中抽出。",
+      "story_title": "厂商：深渊",
+      "vehicle_name": "魔王"
+    },
+    "obtain": {
+      "tag_img": "item_tag_icon_14",
+      "obtain_type_ids": [
+        54
+      ],
+      "obtain_types": [
+        {
+          "id": 54,
+          "label": "王牌补给",
+          "desc": "参与王牌补给获取",
+          "icon": "commonnew_acesupply"
+        }
+      ]
+    },
+    "restraints": {
+      "id": 12076,
+      "match": [
+        12082,
+        12057,
+        10036,
+        10072,
+        12084
+      ],
+      "be_restraint": [
+        12023,
+        10070
+      ]
+    },
+    "resources": {
+      "icons": {
+        "ace_time_effect": "new_carport_icon_10354",
+        "icon_ace_time_effect": "new_carport_icon_10354",
+        "ace_time_charge_condition": "new_carport_icon_mountainroad",
+        "slipstream": "new_carport_icon_14",
+        "unlock_nitro_2": "new_carport_icon_10354",
+        "unlock_nitro_3": "new_carport_icon_nos_03",
+        "upgrade_level_icon": "new_carport_icon_10360",
+        "special_passive_skill_icon": "new_carport_icon_10360"
+      }
+    },
+    "skins": {
+      "sets": {
+        "local": [
+          {
+            "source": "local",
+            "index": 1
+          }
+        ]
+      },
+      "meta": {
+        "1": {
+          "id": 50586,
+          "name": "涂装 诡闪魔",
+          "desc": "诡异闪烁的暗夜魔王！\n适用车型：#1dd8d0魔王",
+          "icon_s": "tz_12076_1_s",
+          "icon_m": "tz_12076_1_m",
+          "icon_b": "tz_12076_1_b"
+        }
+      }
+    },
+    "media": {
+      "cover": "/rk-assets/12076_m.png",
+      "coverFallback": "/rk-assets/12076_m.png",
+      "shareImage": {
+        "key": "share_12076",
+        "file": "share_12076.png",
+        "url": "https://h65.gdl.netease.com/web_res_list_20260107/share_12076.webp"
+      },
+      "shareImageAdvance": null,
+      "skillVideo": {
+        "ultimate": {
+          "url": "https://vod.cc.163.com/file/695e37ba863e5a473ba84241?source=27&protocol=https",
+          "thumbnail": "table_video_img_12076"
+        },
+        "sp": {
+          "url": "https://vod.cc.163.com/file/6965b5b2863e5a473bdaed56?source=27&protocol=https",
+          "thumbnail": "table_video_img_12076"
+        }
+      }
+    }
+  }
+}

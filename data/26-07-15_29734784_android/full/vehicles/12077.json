@@ -1,0 +1,1620 @@
+{
+  "schemaVersion": 2,
+  "versionId": "26-07-15_29734784_android",
+  "generatedAt": "2026-07-16T09:22:34.000Z",
+  "item": {
+    "id": 12077,
+    "name": "逐风青骥",
+    "manufacturer": "进化",
+    "quality": "传说",
+    "class": 4,
+    "group": 1,
+    "position": "天平位",
+    "positionLabel": "天平位（竞速）",
+    "racingRole": 1,
+    "racingRoleName": "竞速位",
+    "specialization": "山路",
+    "seasonCode": "S31",
+    "publication": {
+      "state": "released",
+      "releaseTimestamp": 1770307200,
+      "releaseText": "2026-2-6 00:00:00",
+      "releaseMacro": "S31_WEEK4_START"
+    },
+    "summary": "召唤龙卷风击飞敌方，超车触发多重效果",
+    "description": "召唤龙卷风击飞敌方，超车触发多重效果",
+    "tags": [
+      {
+        "id": 62,
+        "text": "封禁氮气",
+        "desc": "被封禁的敌方无法使用氮气",
+        "color": 3
+      },
+      {
+        "id": 68,
+        "text": "触碰干扰",
+        "desc": "·自身或技能效果触碰到敌方时命中\n·不受*混乱*、*反弹*、*闪避*效果影响\n·无法命中具有*隐身*、*无法选中*的敌方",
+        "color": 4
+      },
+      {
+        "id": 35,
+        "text": "充能提升",
+        "desc": "技能会额外提升充能效率",
+        "color": 1
+      },
+      {
+        "id": 85,
+        "text": "无视隐身",
+        "desc": "锁定类、触碰类干扰可以额外命中隐身的敌方",
+        "color": 2
+      },
+      {
+        "id": 66,
+        "text": "锁定干扰",
+        "desc": "·自动锁定范围内的目标\n·无法命中具有*隐身*、*无法选中*、*闪避*的敌方",
+        "color": 4
+      },
+      {
+        "id": 57,
+        "text": "击飞",
+        "desc": "被击飞的敌人无法漂移",
+        "color": 4
+      }
+    ],
+    "stats": {
+      "speed_limit": 198,
+      "speedup_ratio": 1.08,
+      "charge": {
+        "ace_charge": 3500,
+        "drift_charge_energy_coef": 600,
+        "drift_charge_energy_min": 1200,
+        "drift_charge_energy_max": 6000,
+        "drift_extra_charge": [
+          [
+            1,
+            0
+          ],
+          [
+            2,
+            1800
+          ]
+        ]
+      }
+    },
+    "maxDurability": 105,
+    "levels": [
+      {
+        "id": 12077,
+        "suffix": "0",
+        "rich_text": {
+          "id": 12077,
+          "ace_time_charge_condition": "在山路赛道，使用氮气时获得额外大招充能并在落后第一名超过一定距离时获得速度提升效果",
+          "ace_time_effect": "破风斩可以充能两次",
+          "ace_time_effect_rich_desc": "42",
+          "chip_unlock_tips": "芯片最高生效等级为#fe7ab71#ffffff级",
+          "icon_ace_time_charge_condition": "new_carport_icon_mountainroad",
+          "icon_ace_time_effect": "new_carport_icon_10366",
+          "icon_slipstream": "new_carport_icon_14",
+          "icon_unlock_nitro_2": "new_carport_icon_10366",
+          "icon_unlock_nitro_3": "new_carport_icon_nos_03",
+          "level_title": "原车型",
+          "passive_skill_effect": [
+            "破风斩加速",
+            ""
+          ],
+          "passive_skill_effect_value": [
+            "50公里/小时",
+            ""
+          ],
+          "passive_skill_rich_desc": "42",
+          "slipstream": "跟随在车辆后方将获得尾流，产生持续的氮气充能效果",
+          "special_passive_skill_desc": "开局时召唤龙卷风环绕随机敌方，龙卷风在环绕8秒后击飞敌方8米，并传递给另一名敌方（若无法传递，则继续环绕）",
+          "special_passive_skill_icon": "new_carport_icon_10367",
+          "special_passive_skill_title": "风之息",
+          "title_ace_time_charge_condition": "赛道专精",
+          "title_ace_time_effect": "RECU限制解除",
+          "title_slipstream": "空气动力学套件",
+          "title_unlock_nitro_2": "大招强化套件 I",
+          "title_unlock_nitro_3": "竞速级氮气支架",
+          "unlock_nitro_3": "解锁1x6磅，2x3磅，3x2磅氮气",
+          "upgrade_level_icon": "new_carport_icon_10367"
+        },
+        "stats": {
+          "speed_limit": 198,
+          "speedup_ratio": 1.08,
+          "charge": {
+            "ace_charge": 3500,
+            "drift_charge_energy_coef": 600,
+            "drift_charge_energy_min": 1200,
+            "drift_charge_energy_max": 6000,
+            "drift_extra_charge": [
+              [
+                1,
+                0
+              ],
+              [
+                2,
+                1800
+              ]
+            ]
+          }
+        }
+      },
+      {
+        "id": 120773,
+        "suffix": "1",
+        "rich_text": {
+          "id": 120773,
+          "ace_time_charge_condition": "在山路赛道，使用氮气时获得额外大招充能并在落后第一名超过一定距离时获得速度提升效果",
+          "ace_time_effect": "破风斩可以充能两次",
+          "ace_time_effect_rich_desc": "42",
+          "chip_unlock_tips": "芯片最高生效等级为#fe7ab74#ffffff级",
+          "icon_ace_time_charge_condition": "new_carport_icon_mountainroad",
+          "icon_ace_time_effect": "new_carport_icon_10366",
+          "icon_slipstream": "new_carport_icon_14",
+          "icon_unlock_nitro_2": "new_carport_icon_10366",
+          "icon_unlock_nitro_3": "new_carport_icon_nos_03",
+          "is_unlocked_ace_time_charge_condition": 1,
+          "is_unlocked_slipstream": 1,
+          "level_title": "竞速级氮气支架 I",
+          "passive_skill_effect": [
+            "破风斩加速",
+            ""
+          ],
+          "passive_skill_effect_value": [
+            "50公里/小时",
+            ""
+          ],
+          "passive_skill_rich_desc": "42",
+          "slipstream": "跟随在车辆后方将获得尾流，产生持续的氮气充能效果",
+          "special_passive_skill_desc": "开局时召唤龙卷风环绕随机敌方，龙卷风在环绕8秒后击飞敌方8米，并传递给另一名敌方（若无法传递，则继续环绕）",
+          "special_passive_skill_icon": "new_carport_icon_10367",
+          "special_passive_skill_title": "风之息",
+          "title_ace_time_charge_condition": "赛道专精",
+          "title_ace_time_effect": "RECU限制解除",
+          "title_slipstream": "空气动力学套件",
+          "title_unlock_nitro_2": "大招强化套件 I",
+          "title_unlock_nitro_3": "竞速级氮气支架",
+          "unlock_nitro_3": "解锁1x6磅，2x3磅，3x2磅氮气",
+          "upgrade_level_icon": "new_carport_icon_nos_03"
+        },
+        "stats": {
+          "speed_limit": 198,
+          "speedup_ratio": 1.08,
+          "charge": {
+            "ace_charge": 3500,
+            "drift_charge_energy_coef": 600,
+            "drift_charge_energy_min": 1200,
+            "drift_charge_energy_max": 6000,
+            "drift_extra_charge": [
+              [
+                1,
+                0
+              ],
+              [
+                2,
+                1800
+              ]
+            ]
+          }
+        }
+      },
+      {
+        "id": 120771,
+        "suffix": "2",
+        "rich_text": {
+          "id": 120771,
+          "ace_time_charge_condition": "在山路赛道，使用氮气时获得额外大招充能并在落后第一名超过一定距离时获得速度提升效果",
+          "ace_time_effect": "破风斩可以充能两次",
+          "ace_time_effect_rich_desc": "42",
+          "chip_unlock_tips": "芯片最高生效等级为#fe7ab72#ffffff级",
+          "icon_ace_time_charge_condition": "new_carport_icon_mountainroad",
+          "icon_ace_time_effect": "new_carport_icon_10366",
+          "icon_slipstream": "new_carport_icon_14",
+          "icon_unlock_nitro_2": "new_carport_icon_10366",
+          "icon_unlock_nitro_3": "new_carport_icon_nos_03",
+          "is_unlocked_slipstream": 1,
+          "level_title": "空气动力学套件",
+          "passive_skill_effect": [
+            "破风斩加速",
+            ""
+          ],
+          "passive_skill_effect_value": [
+            "50公里/小时",
+            ""
+          ],
+          "passive_skill_rich_desc": "42",
+          "slipstream": "跟随在车辆后方将获得尾流，产生持续的氮气充能效果",
+          "special_passive_skill_desc": "开局时召唤龙卷风环绕随机敌方，龙卷风在环绕8秒后击飞敌方8米，并传递给另一名敌方（若无法传递，则继续环绕）",
+          "special_passive_skill_icon": "new_carport_icon_10367",
+          "special_passive_skill_title": "风之息",
+          "title_ace_time_charge_condition": "赛道专精",
+          "title_ace_time_effect": "RECU限制解除",
+          "title_slipstream": "空气动力学套件",
+          "title_unlock_nitro_2": "大招强化套件 I",
+          "title_unlock_nitro_3": "竞速级氮气支架",
+          "unlock_nitro_3": "解锁1x6磅，2x3磅，3x2磅氮气",
+          "upgrade_level_icon": "new_carport_icon_14"
+        },
+        "stats": {
+          "speed_limit": 198,
+          "speedup_ratio": 1.08,
+          "charge": {
+            "ace_charge": 3500,
+            "drift_charge_energy_coef": 600,
+            "drift_charge_energy_min": 1200,
+            "drift_charge_energy_max": 6000,
+            "drift_extra_charge": [
+              [
+                1,
+                0
+              ],
+              [
+                2,
+                1800
+              ]
+            ]
+          }
+        }
+      },
+      {
+        "id": 120772,
+        "suffix": "3",
+        "rich_text": {
+          "id": 120772,
+          "ace_time_charge_condition": "在山路赛道，使用氮气时获得额外大招充能并在落后第一名超过一定距离时获得速度提升效果",
+          "ace_time_effect": "破风斩可以充能两次",
+          "ace_time_effect_rich_desc": "42",
+          "chip_unlock_tips": "芯片最高生效等级为#fe7ab73#ffffff级",
+          "icon_ace_time_charge_condition": "new_carport_icon_mountainroad",
+          "icon_ace_time_effect": "new_carport_icon_10366",
+          "icon_slipstream": "new_carport_icon_14",
+          "icon_unlock_nitro_2": "new_carport_icon_10366",
+          "icon_unlock_nitro_3": "new_carport_icon_nos_03",
+          "is_unlocked_ace_time_charge_condition": 1,
+          "is_unlocked_slipstream": 1,
+          "level_title": "赛道专精",
+          "passive_skill_effect": [
+            "破风斩加速",
+            ""
+          ],
+          "passive_skill_effect_value": [
+            "50公里/小时",
+            ""
+          ],
+          "passive_skill_rich_desc": "42",
+          "slipstream": "跟随在车辆后方将获得尾流，产生持续的氮气充能效果",
+          "special_passive_skill_desc": "开局时召唤龙卷风环绕随机敌方，龙卷风在环绕8秒后击飞敌方8米，并传递给另一名敌方（若无法传递，则继续环绕）",
+          "special_passive_skill_icon": "new_carport_icon_10367",
+          "special_passive_skill_title": "风之息",
+          "title_ace_time_charge_condition": "赛道专精",
+          "title_ace_time_effect": "RECU限制解除",
+          "title_slipstream": "空气动力学套件",
+          "title_unlock_nitro_2": "大招强化套件 I",
+          "title_unlock_nitro_3": "竞速级氮气支架",
+          "unlock_nitro_3": "解锁1x6磅，2x3磅，3x2磅氮气",
+          "upgrade_level_icon": "new_carport_icon_mountainroad"
+        },
+        "stats": {
+          "speed_limit": 198,
+          "speedup_ratio": 1.08,
+          "charge": {
+            "ace_charge": 3500,
+            "drift_charge_energy_coef": 600,
+            "drift_charge_energy_min": 1200,
+            "drift_charge_energy_max": 6000,
+            "drift_extra_charge": [
+              [
+                1,
+                0
+              ],
+              [
+                2,
+                1800
+              ]
+            ]
+          }
+        }
+      },
+      {
+        "id": 120774,
+        "suffix": "4",
+        "rich_text": {
+          "id": 120774,
+          "ace_time_charge_condition": "在山路赛道，使用氮气时获得额外大招充能并在落后第一名超过一定距离时获得速度提升效果",
+          "ace_time_effect": "破风斩可以充能两次",
+          "ace_time_effect_rich_desc": "42",
+          "chip_unlock_tips": "芯片最高生效等级为#fe7ab75#ffffff级",
+          "icon_ace_time_charge_condition": "new_carport_icon_mountainroad",
+          "icon_ace_time_effect": "new_carport_icon_10366",
+          "icon_slipstream": "new_carport_icon_14",
+          "icon_unlock_nitro_2": "new_carport_icon_10366",
+          "icon_unlock_nitro_3": "new_carport_icon_nos_03",
+          "is_unlocked_ace_time_charge_condition": 1,
+          "is_unlocked_slipstream": 1,
+          "level_title": "大招强化 I",
+          "passive_skill_effect": [
+            "破风斩加速",
+            ""
+          ],
+          "passive_skill_effect_value": [
+            "55公里/小时",
+            ""
+          ],
+          "passive_skill_rich_desc": "42",
+          "slipstream": "跟随在车辆后方将获得尾流，产生持续的氮气充能效果",
+          "special_passive_skill_desc": "开局时召唤龙卷风环绕随机敌方，龙卷风在环绕8秒后击飞敌方8米，并传递给另一名敌方（若无法传递，则继续环绕）",
+          "special_passive_skill_icon": "new_carport_icon_10367",
+          "special_passive_skill_title": "风之息",
+          "title_ace_time_charge_condition": "赛道专精",
+          "title_ace_time_effect": "RECU限制解除",
+          "title_slipstream": "空气动力学套件",
+          "title_unlock_nitro_2": "大招强化套件 I",
+          "title_unlock_nitro_3": "竞速级氮气支架",
+          "unlock_nitro_3": "解锁1x6磅，2x3磅，3x2磅氮气",
+          "upgrade_level_icon": "new_carport_icon_10366"
+        },
+        "stats": {
+          "speed_limit": 198,
+          "speedup_ratio": 1.08,
+          "charge": {
+            "ace_charge": 3500,
+            "drift_charge_energy_coef": 600,
+            "drift_charge_energy_min": 1200,
+            "drift_charge_energy_max": 6000,
+            "drift_extra_charge": [
+              [
+                1,
+                0
+              ],
+              [
+                2,
+                1800
+              ]
+            ]
+          }
+        }
+      },
+      {
+        "id": 120775,
+        "suffix": "5",
+        "rich_text": {
+          "id": 120775,
+          "ace_time_charge_condition": "在山路赛道，使用氮气时获得额外大招充能并在落后第一名超过一定距离时获得速度提升效果",
+          "ace_time_effect": "破风斩可以充能两次",
+          "ace_time_effect_rich_desc": "42",
+          "chip_unlock_tips": "芯片最高生效等级为#fe7ab76#ffffff级",
+          "icon_ace_time_charge_condition": "new_carport_icon_mountainroad",
+          "icon_ace_time_effect": "new_carport_icon_10366",
+          "icon_slipstream": "new_carport_icon_14",
+          "icon_unlock_nitro_2": "new_carport_icon_10366",
+          "icon_unlock_nitro_3": "new_carport_icon_nos_03",
+          "is_unlocked_ace_time_charge_condition": 1,
+          "is_unlocked_slipstream": 1,
+          "level_title": "竞速级氮气支架 II",
+          "passive_skill_effect": [
+            "破风斩加速",
+            ""
+          ],
+          "passive_skill_effect_value": [
+            "55公里/小时",
+            ""
+          ],
+          "passive_skill_rich_desc": "42",
+          "slipstream": "跟随在车辆后方将获得尾流，产生持续的氮气充能效果",
+          "special_passive_skill_desc": "开局时召唤龙卷风环绕随机敌方，龙卷风在环绕8秒后击飞敌方8米，并传递给另一名敌方（若无法传递，则继续环绕）",
+          "special_passive_skill_icon": "new_carport_icon_10367",
+          "special_passive_skill_title": "风之息",
+          "title_ace_time_charge_condition": "赛道专精",
+          "title_ace_time_effect": "RECU限制解除",
+          "title_slipstream": "空气动力学套件",
+          "title_unlock_nitro_2": "大招强化套件 I",
+          "title_unlock_nitro_3": "竞速级氮气支架",
+          "unlock_nitro_3": "解锁1x6磅，2x3磅，3x2磅氮气",
+          "upgrade_level_icon": "new_carport_icon_nos_03"
+        },
+        "stats": {
+          "speed_limit": 198,
+          "speedup_ratio": 1.08,
+          "charge": {
+            "ace_charge": 3500,
+            "drift_charge_energy_coef": 600,
+            "drift_charge_energy_min": 1200,
+            "drift_charge_energy_max": 6000,
+            "drift_extra_charge": [
+              [
+                1,
+                0
+              ],
+              [
+                2,
+                1800
+              ]
+            ]
+          }
+        }
+      },
+      {
+        "id": 120776,
+        "suffix": "6",
+        "rich_text": {
+          "id": 120776,
+          "ace_time_charge_condition": "在山路赛道，使用氮气时获得额外大招充能并在落后第一名超过一定距离时获得速度提升效果",
+          "ace_time_effect": "破风斩可以充能两次",
+          "ace_time_effect_rich_desc": "42",
+          "chip_unlock_tips": "芯片最高生效等级为#fe7ab77#ffffff级",
+          "icon_ace_time_charge_condition": "new_carport_icon_mountainroad",
+          "icon_ace_time_effect": "new_carport_icon_10366",
+          "icon_slipstream": "new_carport_icon_14",
+          "icon_unlock_nitro_2": "new_carport_icon_10366",
+          "icon_unlock_nitro_3": "new_carport_icon_nos_03",
+          "is_unlocked_ace_time_charge_condition": 1,
+          "is_unlocked_slipstream": 1,
+          "level_title": "大招强化 II",
+          "passive_skill_effect": [
+            "破风斩加速",
+            ""
+          ],
+          "passive_skill_effect_value": [
+            "60公里/小时",
+            ""
+          ],
+          "passive_skill_rich_desc": "42",
+          "slipstream": "跟随在车辆后方将获得尾流，产生持续的氮气充能效果",
+          "special_passive_skill_desc": "开局时召唤龙卷风环绕随机敌方，龙卷风在环绕8秒后击飞敌方8米，并传递给另一名敌方（若无法传递，则继续环绕）",
+          "special_passive_skill_icon": "new_carport_icon_10367",
+          "special_passive_skill_title": "风之息",
+          "title_ace_time_charge_condition": "赛道专精",
+          "title_ace_time_effect": "RECU限制解除",
+          "title_slipstream": "空气动力学套件",
+          "title_unlock_nitro_2": "大招强化套件 I",
+          "title_unlock_nitro_3": "竞速级氮气支架",
+          "unlock_nitro_3": "解锁1x6磅，2x3磅，3x2磅氮气",
+          "upgrade_level_icon": "new_carport_icon_10366"
+        },
+        "stats": {
+          "speed_limit": 198.5,
+          "speedup_ratio": 1.08,
+          "charge": {
+            "ace_charge": 3500,
+            "drift_charge_energy_coef": 600,
+            "drift_charge_energy_min": 1200,
+            "drift_charge_energy_max": 6000,
+            "drift_extra_charge": [
+              [
+                1,
+                0
+              ],
+              [
+                2,
+                1800
+              ]
+            ]
+          }
+        }
+      },
+      {
+        "id": 120777,
+        "suffix": "7",
+        "rich_text": {
+          "id": 120777,
+          "ace_time_charge_condition": "在山路赛道，使用氮气时获得额外大招充能并在落后第一名超过一定距离时获得速度提升效果",
+          "ace_time_effect": "破风斩可以充能两次",
+          "ace_time_effect_rich_desc": "42",
+          "chip_unlock_tips": "芯片最高生效等级为#fe7ab78#ffffff级",
+          "icon_ace_time_charge_condition": "new_carport_icon_mountainroad",
+          "icon_ace_time_effect": "new_carport_icon_10366",
+          "icon_slipstream": "new_carport_icon_14",
+          "icon_unlock_nitro_2": "new_carport_icon_10366",
+          "icon_unlock_nitro_3": "new_carport_icon_nos_03",
+          "is_unlocked_ace_time_charge_condition": 1,
+          "is_unlocked_ace_time_effect": 1,
+          "is_unlocked_slipstream": 1,
+          "level_title": "RECU限制解除",
+          "passive_skill_effect": [
+            "破风斩加速",
+            ""
+          ],
+          "passive_skill_effect_value": [
+            "60公里/小时",
+            ""
+          ],
+          "passive_skill_rich_desc": "42",
+          "slipstream": "跟随在车辆后方将获得尾流，产生持续的氮气充能效果",
+          "special_passive_skill_desc": "开局时召唤龙卷风环绕随机敌方，龙卷风在环绕8秒后击飞敌方8米，并传递给另一名敌方（若无法传递，则继续环绕）",
+          "special_passive_skill_icon": "new_carport_icon_10367",
+          "special_passive_skill_title": "风之息",
+          "title_ace_time_charge_condition": "赛道专精",
+          "title_ace_time_effect": "RECU限制解除",
+          "title_slipstream": "空气动力学套件",
+          "title_unlock_nitro_2": "大招强化套件 I",
+          "title_unlock_nitro_3": "竞速级氮气支架",
+          "unlock_nitro_3": "解锁1x6磅，2x3磅，3x2磅氮气",
+          "upgrade_level_icon": "new_carport_icon_10366"
+        },
+        "stats": {
+          "speed_limit": 198.5,
+          "speedup_ratio": 1.08,
+          "charge": {
+            "ace_charge": 3500,
+            "drift_charge_energy_coef": 600,
+            "drift_charge_energy_min": 1200,
+            "drift_charge_energy_max": 6000,
+            "drift_extra_charge": [
+              [
+                1,
+                0
+              ],
+              [
+                2,
+                1800
+              ]
+            ]
+          }
+        }
+      },
+      {
+        "id": 120778,
+        "suffix": "8",
+        "rich_text": {
+          "id": 120778,
+          "ace_time_charge_condition": "在山路赛道，使用氮气时获得额外大招充能并在落后第一名超过一定距离时获得速度提升效果",
+          "ace_time_effect": "破风斩可以充能两次",
+          "ace_time_effect_rich_desc": "42",
+          "chip_unlock_tips": "芯片最高生效等级为#fe7ab79#ffffff级",
+          "icon_ace_time_charge_condition": "new_carport_icon_mountainroad",
+          "icon_ace_time_effect": "new_carport_icon_10366",
+          "icon_slipstream": "new_carport_icon_14",
+          "icon_unlock_nitro_2": "new_carport_icon_10366",
+          "icon_unlock_nitro_3": "new_carport_icon_nos_03",
+          "is_unlocked_ace_time_charge_condition": 1,
+          "is_unlocked_ace_time_effect": 1,
+          "is_unlocked_slipstream": 1,
+          "level_title": "大招强化 III",
+          "passive_skill_effect": [
+            "破风斩加速",
+            ""
+          ],
+          "passive_skill_effect_value": [
+            "65公里/小时",
+            ""
+          ],
+          "passive_skill_rich_desc": "42",
+          "slipstream": "跟随在车辆后方将获得尾流，产生持续的氮气充能效果",
+          "special_passive_skill_desc": "开局时召唤龙卷风环绕随机敌方，龙卷风在环绕8秒后击飞敌方8米，并传递给另一名敌方（若无法传递，则继续环绕）",
+          "special_passive_skill_icon": "new_carport_icon_10367",
+          "special_passive_skill_title": "风之息",
+          "title_ace_time_charge_condition": "赛道专精",
+          "title_ace_time_effect": "RECU限制解除",
+          "title_slipstream": "空气动力学套件",
+          "title_unlock_nitro_2": "大招强化套件 I",
+          "title_unlock_nitro_3": "竞速级氮气支架",
+          "unlock_nitro_3": "解锁1x6磅，2x3磅，3x2磅氮气",
+          "upgrade_level_icon": "new_carport_icon_10366"
+        },
+        "stats": {
+          "speed_limit": 199,
+          "speedup_ratio": 1.08,
+          "charge": {
+            "ace_charge": 3500,
+            "drift_charge_energy_coef": 600,
+            "drift_charge_energy_min": 1200,
+            "drift_charge_energy_max": 6000,
+            "drift_extra_charge": [
+              [
+                1,
+                0
+              ],
+              [
+                2,
+                1800
+              ]
+            ]
+          }
+        }
+      },
+      {
+        "id": 120779,
+        "suffix": "9",
+        "rich_text": {
+          "id": 120779,
+          "ace_time_charge_condition": "在山路赛道，使用氮气时获得额外大招充能并在落后第一名超过一定距离时获得速度提升效果",
+          "ace_time_effect": "破风斩可以充能两次",
+          "ace_time_effect_rich_desc": "42",
+          "chip_unlock_tips": "芯片最高生效等级为#fe7ab710#ffffff级",
+          "icon_ace_time_charge_condition": "new_carport_icon_mountainroad",
+          "icon_ace_time_effect": "new_carport_icon_10366",
+          "icon_slipstream": "new_carport_icon_14",
+          "icon_unlock_nitro_2": "new_carport_icon_10366",
+          "icon_unlock_nitro_3": "new_carport_icon_nos_03",
+          "is_unlocked_ace_time_charge_condition": 1,
+          "is_unlocked_ace_time_effect": 1,
+          "is_unlocked_slipstream": 1,
+          "level_title": "大招强化 IV",
+          "passive_skill_effect": [
+            "破风斩加速",
+            ""
+          ],
+          "passive_skill_effect_value": [
+            "70公里/小时",
+            ""
+          ],
+          "passive_skill_rich_desc": "42",
+          "slipstream": "跟随在车辆后方将获得尾流，产生持续的氮气充能效果",
+          "special_passive_skill_desc": "开局时召唤龙卷风环绕随机敌方，龙卷风在环绕8秒后击飞敌方8米，并传递给另一名敌方（若无法传递，则继续环绕）",
+          "special_passive_skill_icon": "new_carport_icon_10367",
+          "special_passive_skill_title": "风之息",
+          "title_ace_time_charge_condition": "赛道专精",
+          "title_ace_time_effect": "RECU限制解除",
+          "title_slipstream": "空气动力学套件",
+          "title_unlock_nitro_2": "大招强化套件 I",
+          "title_unlock_nitro_3": "竞速级氮气支架",
+          "unlock_nitro_3": "解锁1x6磅，2x3磅，3x2磅氮气",
+          "upgrade_level_icon": "new_carport_icon_10366"
+        },
+        "stats": {
+          "speed_limit": 200,
+          "speedup_ratio": 1.08,
+          "charge": {
+            "ace_charge": 3500,
+            "drift_charge_energy_coef": 600,
+            "drift_charge_energy_min": 1200,
+            "drift_charge_energy_max": 6000,
+            "drift_extra_charge": [
+              [
+                1,
+                0
+              ],
+              [
+                2,
+                1800
+              ]
+            ]
+          }
+        }
+      }
+    ],
+    "skills": {
+      "ultimate": {
+        "id": 19751,
+        "name": "破风斩",
+        "type": "N2O_BREAKING",
+        "icon_static": "ui_skill170_04",
+        "icon_big": null,
+        "icon": null,
+        "init_ratio": null,
+        "icons": {
+          "normal": "ui_skill170_03",
+          "disable": "ui_skill170_01",
+          "alt": "ui_skill170_06",
+          "down": "ui_skill170_03",
+          "static": "ui_skill170_04",
+          "big": null
+        },
+        "extra": {
+          "cam_type": "N2O_BREAKING",
+          "eff_id": 1,
+          "is_cost_energy": 2,
+          "rally_qte": 2
+        },
+        "value_texts": [
+          {
+            "key": "name",
+            "label": "技能名称",
+            "value": "破风斩"
+          },
+          {
+            "key": "skill_type",
+            "label": "技能类型",
+            "value": "N2O_BREAKING"
+          },
+          {
+            "key": "cam_type",
+            "label": "镜头类型",
+            "value": "N2O_BREAKING"
+          },
+          {
+            "key": "eff_id",
+            "label": "特效编号",
+            "value": "1"
+          },
+          {
+            "key": "min_charge",
+            "label": "最低充能万分比",
+            "value": "10000"
+          },
+          {
+            "key": "rally_qte",
+            "label": "拉力赛触发qte",
+            "value": "2"
+          }
+        ],
+        "instructions": [
+          {
+            "id": 209681,
+            "accel_action": 2,
+            "accelerate_curve": [
+              [
+                0,
+                30
+              ],
+              [
+                165,
+                21.7
+              ],
+              [
+                166,
+                7
+              ],
+              [
+                200,
+                7
+              ]
+            ],
+            "attack_show_friend_enemy_filter": [
+              1,
+              2
+            ],
+            "attack_show_role_filter": [
+              1,
+              2,
+              3
+            ],
+            "buff_count": 0,
+            "cost_ratio": 1428,
+            "duration": 7,
+            "eff_id": 1,
+            "extra_children": [],
+            "extra_isolate": [],
+            "inst_group": 2,
+            "inst_name": "大招加速",
+            "inst_type": 2,
+            "is_hard_push": 1,
+            "rear_insts": [
+              10111401
+            ],
+            "ref_insts": [
+              209681
+            ],
+            "skill_eff_id": 12472,
+            "sp_ex_speed_limit": 50,
+            "sp_max_ex_speed_limit": 50,
+            "sp_min_ex_speed_limit": 50,
+            "sp_n2o_ace_charge_ratio": 1,
+            "name": "大招加速",
+            "desc": null,
+            "type": 2,
+            "order": null,
+            "value_texts": [
+              {
+                "key": "sp_ex_speed_limit",
+                "label": "极速提升",
+                "value": "50km/h"
+              },
+              {
+                "key": "attack_show_friend_enemy_filter",
+                "label": "敌友筛选",
+                "value": "[1,2]"
+              },
+              {
+                "key": "attack_show_role_filter",
+                "label": "定位筛选",
+                "value": "[1,2,3]"
+              },
+              {
+                "key": "buff_count",
+                "label": "Buff 数量",
+                "value": "0"
+              },
+              {
+                "key": "rear_insts",
+                "label": "后续节点",
+                "value": "[10111401]"
+              },
+              {
+                "key": "extra_children",
+                "label": "子节点",
+                "value": "[]"
+              },
+              {
+                "key": "ref_insts",
+                "label": "引用节点",
+                "value": "[209681]"
+              }
+            ]
+          },
+          {
+            "id": 1301801,
+            "attack_show_friend_enemy_filter": [
+              1,
+              2
+            ],
+            "attack_show_role_filter": [
+              1,
+              2,
+              3
+            ],
+            "buff_count": 0,
+            "cd_type": 1,
+            "duration": 999,
+            "eff_cd": 3,
+            "eff_id": 1,
+            "extra_children": [],
+            "extra_isolate": [
+              811003,
+              905672,
+              10111401
+            ],
+            "inst_group": 13,
+            "inst_name": "超车",
+            "inst_type": 13,
+            "overtake_enemy_eff_ids": [
+              905672,
+              811003,
+              10111401
+            ],
+            "overtake_enemy_target_effs": [
+              76203
+            ],
+            "rear_insts": [
+              -1
+            ],
+            "ref_insts": [
+              811003,
+              905672,
+              1301801,
+              10111401
+            ],
+            "skill_eff_id": 13,
+            "sp_n2o_ace_charge_ratio": 1,
+            "name": "超车",
+            "desc": null,
+            "type": 13,
+            "order": null,
+            "value_texts": [
+              {
+                "key": "attack_show_friend_enemy_filter",
+                "label": "敌友筛选",
+                "value": "[1,2]"
+              },
+              {
+                "key": "attack_show_role_filter",
+                "label": "定位筛选",
+                "value": "[1,2,3]"
+              },
+              {
+                "key": "buff_count",
+                "label": "Buff 数量",
+                "value": "0"
+              },
+              {
+                "key": "rear_insts",
+                "label": "后续节点",
+                "value": "[-1]"
+              },
+              {
+                "key": "extra_children",
+                "label": "子节点",
+                "value": "[]"
+              },
+              {
+                "key": "ref_insts",
+                "label": "引用节点",
+                "value": "[811003,905672,1301801,10111401]"
+              }
+            ]
+          }
+        ]
+      },
+      "sp": null,
+      "passive": [
+        {
+          "id": 50801,
+          "name": "封禁尾流",
+          "type": null,
+          "icon_static": null,
+          "icon_big": null,
+          "icon": null,
+          "init_ratio": null,
+          "icons": {
+            "normal": null,
+            "disable": null,
+            "alt": null,
+            "down": null,
+            "static": null,
+            "big": null
+          },
+          "extra": {
+            "cam_type": null,
+            "eff_id": null,
+            "is_cost_energy": null,
+            "rally_qte": null
+          },
+          "value_texts": [
+            {
+              "key": "name",
+              "label": "技能名称",
+              "value": "封禁尾流"
+            }
+          ],
+          "instructions": [
+            {
+              "id": 2100301,
+              "attack_show_friend_enemy_filter": [
+                1,
+                2
+              ],
+              "attack_show_role_filter": [
+                1,
+                2,
+                3
+              ],
+              "buff_count": 0,
+              "duration": 999,
+              "eff_id": 1,
+              "extra_children": [],
+              "extra_isolate": [],
+              "inst_group": 21001,
+              "inst_name": "封禁尾流",
+              "inst_type": 21,
+              "rear_insts": [],
+              "ref_insts": [
+                2100301
+              ],
+              "skill_eff_id": 21,
+              "slipstream_state": 1,
+              "sp_n2o_ace_charge_ratio": 1,
+              "name": "封禁尾流",
+              "desc": null,
+              "type": 21,
+              "order": null,
+              "value_texts": [
+                {
+                  "key": "attack_show_friend_enemy_filter",
+                  "label": "敌友筛选",
+                  "value": "[1,2]"
+                },
+                {
+                  "key": "attack_show_role_filter",
+                  "label": "定位筛选",
+                  "value": "[1,2,3]"
+                },
+                {
+                  "key": "buff_count",
+                  "label": "Buff 数量",
+                  "value": "0"
+                },
+                {
+                  "key": "rear_insts",
+                  "label": "后续节点",
+                  "value": "[]"
+                },
+                {
+                  "key": "extra_children",
+                  "label": "子节点",
+                  "value": "[]"
+                },
+                {
+                  "key": "ref_insts",
+                  "label": "引用节点",
+                  "value": "[2100301]"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "id": 76201,
+          "name": "风之息",
+          "type": null,
+          "icon_static": null,
+          "icon_big": null,
+          "icon": null,
+          "init_ratio": null,
+          "icons": {
+            "normal": null,
+            "disable": null,
+            "alt": null,
+            "down": null,
+            "static": null,
+            "big": null
+          },
+          "extra": {
+            "cam_type": null,
+            "eff_id": null,
+            "is_cost_energy": null,
+            "rally_qte": null
+          },
+          "value_texts": [
+            {
+              "key": "name",
+              "label": "技能名称",
+              "value": "风之息"
+            }
+          ],
+          "instructions": [
+            {
+              "id": 811001,
+              "attack_show_eff_dur": 5,
+              "attack_show_friend_enemy_filter": [
+                1,
+                2
+              ],
+              "attack_show_keep_dur": 5,
+              "attack_show_role_filter": [
+                1,
+                2,
+                3
+              ],
+              "buff_count": 0,
+              "cd_type": 1,
+              "eff_cd": 1,
+              "enemy_eff": [
+                76202
+              ],
+              "extra_children": [],
+              "extra_isolate": [],
+              "inst_group": 8058,
+              "inst_name": "风之息干扰",
+              "inst_type": 8,
+              "lock_camp": 2,
+              "lock_cnt": 1,
+              "lock_dist": [
+                -6000,
+                6000
+              ],
+              "lock_no_dodge": 1,
+              "lock_no_rebound": 1,
+              "lock_no_reverse": 1,
+              "lock_side_dist": [
+                -6000,
+                6000
+              ],
+              "lock_vertical_dist": [
+                -6000,
+                6000
+              ],
+              "rear_insts": [
+                -1
+              ],
+              "ref_insts": [
+                811001
+              ],
+              "sp_n2o_ace_charge_ratio": 1,
+              "name": "风之息干扰",
+              "desc": null,
+              "type": 8,
+              "order": null,
+              "value_texts": [
+                {
+                  "key": "attack_show_friend_enemy_filter",
+                  "label": "敌友筛选",
+                  "value": "[1,2]"
+                },
+                {
+                  "key": "attack_show_role_filter",
+                  "label": "定位筛选",
+                  "value": "[1,2,3]"
+                },
+                {
+                  "key": "buff_count",
+                  "label": "Buff 数量",
+                  "value": "0"
+                },
+                {
+                  "key": "rear_insts",
+                  "label": "后续节点",
+                  "value": "[-1]"
+                },
+                {
+                  "key": "extra_children",
+                  "label": "子节点",
+                  "value": "[]"
+                },
+                {
+                  "key": "ref_insts",
+                  "label": "引用节点",
+                  "value": "[811001]"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "id": 76205,
+          "name": "破风斩-额外加速",
+          "type": null,
+          "icon_static": null,
+          "icon_big": null,
+          "icon": null,
+          "init_ratio": null,
+          "icons": {
+            "normal": null,
+            "disable": null,
+            "alt": null,
+            "down": null,
+            "static": null,
+            "big": null
+          },
+          "extra": {
+            "cam_type": null,
+            "eff_id": null,
+            "is_cost_energy": null,
+            "rally_qte": null
+          },
+          "value_texts": [
+            {
+              "key": "name",
+              "label": "技能名称",
+              "value": "破风斩-额外加速"
+            }
+          ],
+          "instructions": [
+            {
+              "id": 3406001,
+              "buff_count": 0,
+              "click_ace_ins": [
+                143032
+              ],
+              "duration": null,
+              "extra_children": [],
+              "extra_isolate": [
+                143032
+              ],
+              "inst_group": 34074,
+              "inst_name": "逐风青骥",
+              "inst_type": 34,
+              "rear_insts": [
+                -1
+              ],
+              "ref_insts": [
+                143032,
+                3406001
+              ],
+              "sp_n2o_ace_charge_ratio": 1,
+              "name": "逐风青骥",
+              "desc": null,
+              "type": 34,
+              "order": null,
+              "value_texts": [
+                {
+                  "key": "buff_count",
+                  "label": "Buff 数量",
+                  "value": "0"
+                },
+                {
+                  "key": "rear_insts",
+                  "label": "后续节点",
+                  "value": "[-1]"
+                },
+                {
+                  "key": "extra_children",
+                  "label": "子节点",
+                  "value": "[]"
+                },
+                {
+                  "key": "ref_insts",
+                  "label": "引用节点",
+                  "value": "[143032,3406001]"
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    "skillPanelGroups": {
+      "ultimate": [
+        {
+          "id": "1638",
+          "name_rich": {
+            "raw": "极速提升",
+            "html": "极速提升"
+          },
+          "value_rich": {
+            "raw": "50km/h",
+            "html": "50km/h"
+          },
+          "value_text": "50km/h",
+          "instruction_ids": [
+            209681,
+            209685
+          ],
+          "values": []
+        },
+        {
+          "id": "1639",
+          "name_rich": {
+            "raw": "加速时长",
+            "html": "加速时长"
+          },
+          "value_rich": {
+            "raw": "7秒",
+            "html": "7秒"
+          },
+          "value_text": "7秒",
+          "instruction_ids": [],
+          "values": []
+        },
+        {
+          "id": "1640",
+          "name_rich": {
+            "raw": "额外极速",
+            "html": "额外极速"
+          },
+          "value_rich": {
+            "raw": "20km/h",
+            "html": "20km/h"
+          },
+          "value_text": "20km/h",
+          "instruction_ids": [],
+          "values": []
+        },
+        {
+          "id": "1642",
+          "name_rich": {
+            "raw": "充能提升",
+            "html": "充能提升"
+          },
+          "value_rich": {
+            "raw": "2%",
+            "html": "2%"
+          },
+          "value_text": "2%",
+          "instruction_ids": [],
+          "values": []
+        },
+        {
+          "id": "1643",
+          "name_rich": {
+            "raw": "参数 1643",
+            "html": "参数 1643"
+          },
+          "value_rich": {
+            "raw": "#a9a9a9(友方全体)",
+            "html": "<span class=\"rt-color\" style=\"color: #a9a9a9\">(友方全体)</span>"
+          },
+          "value_text": "#a9a9a9(友方全体)",
+          "instruction_ids": [],
+          "values": []
+        },
+        {
+          "id": "1644",
+          "name_rich": {
+            "raw": "封禁氮气",
+            "html": "封禁氮气"
+          },
+          "value_rich": {
+            "raw": "3秒",
+            "html": "3秒"
+          },
+          "value_text": "3秒",
+          "instruction_ids": [],
+          "values": []
+        },
+        {
+          "id": "1646",
+          "name_rich": {
+            "raw": "命中类型",
+            "html": "命中类型"
+          },
+          "value_rich": {
+            "raw": "#tipsnoicon[触碰类]",
+            "html": "<span class=\"rt-tip rt-tip--entry rt-tip--noicon\" data-tip=\"触碰类\" data-desc=\"·自身或技能效果触碰到敌方时命中&#10;·不受*混乱*、*反弹*、*闪避*效果影响&#10;·无法命中具有*隐身*、*无法选中*的敌方\" style=\"--tip-color:#ffd700\" title=\"·自身或技能效果触碰到敌方时命中&#10;·不受*混乱*、*反弹*、*闪避*效果影响&#10;·无法命中具有*隐身*、*无法选中*的敌方\">触碰类</span>"
+          },
+          "value_text": "#tipsnoicon[触碰类]",
+          "instruction_ids": [],
+          "values": []
+        },
+        {
+          "id": "20570",
+          "name_rich": {
+            "raw": "加速动力",
+            "html": "加速动力"
+          },
+          "value_rich": {
+            "raw": "中",
+            "html": "中"
+          },
+          "value_text": "中",
+          "instruction_ids": [],
+          "values": []
+        }
+      ],
+      "sp": [],
+      "passive": [
+        {
+          "id": "1688",
+          "name_rich": {
+            "raw": "环绕时长",
+            "html": "环绕时长"
+          },
+          "value_rich": {
+            "raw": "8秒",
+            "html": "8秒"
+          },
+          "value_text": "8秒",
+          "instruction_ids": [],
+          "values": []
+        },
+        {
+          "id": "1689",
+          "name_rich": {
+            "raw": "击飞高度",
+            "html": "击飞高度"
+          },
+          "value_rich": {
+            "raw": "8米",
+            "html": "8米"
+          },
+          "value_text": "8米",
+          "instruction_ids": [],
+          "values": []
+        },
+        {
+          "id": "1690",
+          "name_rich": {
+            "raw": "命中类型",
+            "html": "命中类型"
+          },
+          "value_rich": {
+            "raw": "#tipsnoicon[锁定类]",
+            "html": "<span class=\"rt-tip rt-tip--entry rt-tip--noicon\" data-tip=\"锁定类\" data-desc=\"·自动锁定范围内的目标&#10;·无法命中具有*隐身*、*无法选中*、*闪避*的敌方\" style=\"--tip-color:#ffd700\" title=\"·自动锁定范围内的目标&#10;·无法命中具有*隐身*、*无法选中*、*闪避*的敌方\">锁定类</span>"
+          },
+          "value_text": "#tipsnoicon[锁定类]",
+          "instruction_ids": [],
+          "values": []
+        },
+        {
+          "id": "1691",
+          "name_rich": {
+            "raw": "参数 1691",
+            "html": "参数 1691"
+          },
+          "value_rich": {
+            "raw": "#acacac(传递时无视隐身、反弹、嘲讽、闪避、转移）",
+            "html": "<span class=\"rt-color\" style=\"color: #acacac\">(传递时无视隐身、反弹、嘲讽、闪避、转移）</span>"
+          },
+          "value_text": "#acacac(传递时无视隐身、反弹、嘲讽、闪避、转移）",
+          "instruction_ids": [],
+          "values": []
+        }
+      ],
+      "other": []
+    },
+    "richText": {
+      "id": 12077,
+      "ace_time_charge_condition": "在山路赛道，使用氮气时获得额外大招充能并在落后第一名超过一定距离时获得速度提升效果",
+      "ace_time_effect": "破风斩可以充能两次",
+      "ace_time_effect_rich_desc": "42",
+      "chip_unlock_tips": "芯片最高生效等级为#fe7ab71#ffffff级",
+      "icon_ace_time_charge_condition": "new_carport_icon_mountainroad",
+      "icon_ace_time_effect": "new_carport_icon_10366",
+      "icon_slipstream": "new_carport_icon_14",
+      "icon_unlock_nitro_2": "new_carport_icon_10366",
+      "icon_unlock_nitro_3": "new_carport_icon_nos_03",
+      "level_title": "原车型",
+      "passive_skill_effect": [
+        "破风斩加速",
+        ""
+      ],
+      "passive_skill_effect_value": [
+        "50公里/小时",
+        ""
+      ],
+      "passive_skill_rich_desc": "42",
+      "slipstream": "跟随在车辆后方将获得尾流，产生持续的氮气充能效果",
+      "special_passive_skill_desc": {
+        "raw": "开局时召唤龙卷风环绕随机敌方，龙卷风在环绕8秒后击飞敌方8米，并传递给另一名敌方（若无法传递，则继续环绕）",
+        "html": "开局时召唤龙卷风环绕随机敌方，龙卷风在环绕8秒后击飞敌方8米，并传递给另一名敌方（若无法传递，则继续环绕）"
+      },
+      "special_passive_skill_icon": "new_carport_icon_10367",
+      "special_passive_skill_title": "风之息",
+      "title_ace_time_charge_condition": "赛道专精",
+      "title_ace_time_effect": "RECU限制解除",
+      "title_slipstream": "空气动力学套件",
+      "title_unlock_nitro_2": "大招强化套件 I",
+      "title_unlock_nitro_3": "竞速级氮气支架",
+      "unlock_nitro_3": "解锁1x6磅，2x3磅，3x2磅氮气",
+      "upgrade_level_icon": "new_carport_icon_10367",
+      "feature_desc": {
+        "raw": "加速推进，极速提升#desc[1638]，持续7秒。加速期间：\n·首次超越敌方车辆前极速额外+20km/h\n·每次超越敌方车辆时使友方全体#tips[充能效率]提升2%\n·被超越的敌方3秒内封禁氮气\n·若超越的是被龙卷风环绕的敌方车辆，则使龙卷风提前结束环绕、击飞敌方并继续传递。",
+        "html": "加速推进，极速提升<span class=\"rt-desc\">极速提升 50km/h</span>，持续7秒。加速期间：<br/>·首次超越敌方车辆前极速额外+20km/h<br/>·每次超越敌方车辆时使友方全体<span class=\"rt-tip rt-tip--entry\" data-tip=\"充能效率\" data-icon=\"carport_new_skill_illustrate_y5\" data-desc=\"·影响车辆从所有方式获得的大招充能\" style=\"--tip-color:#ffd700\" title=\"·影响车辆从所有方式获得的大招充能\"><span class=\"rt-tip__icon-slot\"></span>充能效率</span>提升2%<br/>·被超越的敌方3秒内封禁氮气<br/>·若超越的是被龙卷风环绕的敌方车辆，则使龙卷风提前结束环绕、击飞敌方并继续传递。"
+      },
+      "sp_skill_desc": null,
+      "passive_skill_desc": null,
+      "story_title": "厂商：进化",
+      "story": {
+        "raw": "在进化车厂的精心打造下，马年限定赛车逐风青骥横空出世，它是速度与优雅完美融合。流线型的车身设计在阳光下闪耀着灵动的光芒，仿佛随时准备破风而行。其动力系统经过特殊调校，搭载高性能引擎，瞬间爆发力惊人，傲视群雄。",
+        "html": "在进化车厂的精心打造下，马年限定赛车逐风青骥横空出世，它是速度与优雅完美融合。流线型的车身设计在阳光下闪耀着灵动的光芒，仿佛随时准备破风而行。其动力系统经过特殊调校，搭载高性能引擎，瞬间爆发力惊人，傲视群雄。"
+      }
+    },
+    "report": {
+      "title": "王牌速度节赛车检验报告",
+      "sections": [
+        {
+          "title": "基础数据",
+          "items": [
+            {
+              "label": "检测车辆",
+              "value": "逐风青骥/Cyan Horse"
+            },
+            {
+              "label": "注册日期",
+              "value": "{}年{}月{}日"
+            },
+            {
+              "label": "车辆类型",
+              "value": "幻想阵营"
+            },
+            {
+              "label": "厂商",
+              "value": "进化"
+            },
+            {
+              "label": "定位",
+              "value": "天平位"
+            },
+            {
+              "label": "赛道专精",
+              "value": "山路"
+            },
+            {
+              "label": "能源类型",
+              "value": "汽油"
+            },
+            {
+              "label": "驱动方式",
+              "value": "前置四驱"
+            },
+            {
+              "label": "车重",
+              "value": "1310kg"
+            }
+          ]
+        },
+        {
+          "title": "芯片模块",
+          "items": [
+            {
+              "label": "芯片写入权限",
+              "value": "已获取"
+            },
+            {
+              "label": "扩展芯片类型",
+              "value": "○○△△◇V"
+            },
+            {
+              "label": "等级合规检查",
+              "value": "芯片等级未高于RECU等级"
+            }
+          ]
+        },
+        {
+          "title": "外观检验",
+          "items": [
+            {
+              "label": "检验结果",
+              "value": "合格"
+            }
+          ]
+        },
+        {
+          "title": "大招驱动模块",
+          "items": [
+            {
+              "label": "能量控制单元",
+              "value": "五代RECU，工作正常"
+            },
+            {
+              "label": "瑞卡因子稳定器",
+              "value": "工作正常"
+            },
+            {
+              "label": "NOS",
+              "value": "氮氧加速系统已安装"
+            },
+            {
+              "label": "空气动力套件（2级解锁）",
+              "value": "未选装"
+            },
+            {
+              "label": "赛道专精（3级解锁）",
+              "value": "未选装"
+            },
+            {
+              "label": "RECU限制解除（8级解锁）",
+              "value": "未选装"
+            }
+          ]
+        },
+        {
+          "title": "整车判定",
+          "items": [
+            {
+              "label": "检验结果",
+              "value": "合格，可参加速度节赛事"
+            }
+          ]
+        }
+      ]
+    },
+    "story": {
+      "content": "在进化车厂的精心打造下，马年限定赛车逐风青骥横空出世，它是速度与优雅完美融合。流线型的车身设计在阳光下闪耀着灵动的光芒，仿佛随时准备破风而行。其动力系统经过特殊调校，搭载高性能引擎，瞬间爆发力惊人，傲视群雄。",
+      "id": 12077,
+      "story_content": "在进化车厂的精心打造下，马年限定赛车逐风青骥横空出世，它是速度与优雅完美融合。流线型的车身设计在阳光下闪耀着灵动的光芒，仿佛随时准备破风而行。其动力系统经过特殊调校，搭载高性能引擎，瞬间爆发力惊人，傲视群雄。",
+      "story_title": "厂商：进化",
+      "vehicle_name": "逐风青骥"
+    },
+    "obtain": {
+      "tag_img": "item_tag_icon_34",
+      "obtain_type_ids": [
+        54
+      ],
+      "obtain_types": [
+        {
+          "id": 54,
+          "label": "王牌补给",
+          "desc": "参与王牌补给获取",
+          "icon": "commonnew_acesupply"
+        }
+      ]
+    },
+    "restraints": {
+      "id": 12077,
+      "match": [],
+      "be_restraint": [
+        12023
+      ]
+    },
+    "resources": {
+      "icons": {
+        "ace_time_effect": "new_carport_icon_10366",
+        "icon_ace_time_effect": "new_carport_icon_10366",
+        "ace_time_charge_condition": "new_carport_icon_mountainroad",
+        "slipstream": "new_carport_icon_14",
+        "unlock_nitro_2": "new_carport_icon_10366",
+        "unlock_nitro_3": "new_carport_icon_nos_03",
+        "upgrade_level_icon": "new_carport_icon_10367",
+        "special_passive_skill_icon": "new_carport_icon_10367"
+      }
+    },
+    "skins": {
+      "sets": {
+        "local": [
+          {
+            "source": "local",
+            "index": 1
+          }
+        ]
+      },
+      "meta": {
+        "1": {
+          "id": 50636,
+          "name": "涂装 火驹",
+          "desc": "火焰之坐骑，释放炙热之力！\n适用车型：#1dd8d0逐风青骥",
+          "icon_s": "tz_12077_1_s",
+          "icon_m": "tz_12077_1_m",
+          "icon_b": "tz_12077_1_b"
+        }
+      }
+    },
+    "media": {
+      "cover": "/rk-assets/12077_m.png",
+      "coverFallback": "/rk-assets/12077_m.png",
+      "shareImage": {
+        "key": "share_12077",
+        "file": "share_12077.png",
+        "url": "https://h65.gdl.netease.com/web_res_list_20260114/share_12077.webp"
+      },
+      "shareImageAdvance": null,
+      "skillVideo": {
+        "ultimate": {
+          "url": "https://vod.cc.163.com/file/6979b055863e5a473beee3ed?source=27&protocol=https",
+          "thumbnail": "table_video_img_12077"
+        },
+        "sp": null
+      }
+    }
+  }
+}

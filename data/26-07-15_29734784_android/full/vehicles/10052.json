@@ -1,0 +1,1861 @@
+{
+  "schemaVersion": 2,
+  "versionId": "26-07-15_29734784_android",
+  "generatedAt": "2026-07-16T09:22:34.000Z",
+  "item": {
+    "id": 10052,
+    "name": "暗夜魅影",
+    "manufacturer": "深渊",
+    "quality": "传说",
+    "class": 4,
+    "group": 1,
+    "position": "干扰位",
+    "positionLabel": "干扰位",
+    "racingRole": 3,
+    "racingRoleName": "干扰位",
+    "specialization": "山路",
+    "seasonCode": "S3",
+    "publication": {
+      "state": "released",
+      "releaseTimestamp": 1633017600,
+      "releaseText": "2021-10-01 00:00:00",
+      "releaseMacro": "S3_OPEN"
+    },
+    "summary": "干扰敌方车辆的视线",
+    "description": "干扰敌方车辆的视线",
+    "tags": [
+      {
+        "id": 74,
+        "text": "遮挡视线",
+        "desc": "遮挡敌方的画面视野",
+        "color": 3
+      },
+      {
+        "id": 71,
+        "text": "能量损失",
+        "desc": "使敌方损失大招能量",
+        "color": 3
+      },
+      {
+        "id": 37,
+        "text": "净化",
+        "desc": "解除持续性的负面效果",
+        "color": 1
+      },
+      {
+        "id": 66,
+        "text": "锁定干扰",
+        "desc": "·自动锁定范围内的目标\n·无法命中具有*隐身*、*无法选中*、*闪避*的敌方",
+        "color": 4
+      },
+      {
+        "id": 64,
+        "text": "减速",
+        "desc": "降低敌方的极速",
+        "color": 3
+      }
+    ],
+    "stats": {
+      "speed_limit": 197,
+      "speedup_ratio": 1.12,
+      "charge": {
+        "ace_charge": 2800,
+        "drift_charge_energy_coef": 620,
+        "drift_charge_energy_min": 1240,
+        "drift_charge_energy_max": 6200,
+        "drift_extra_charge": [
+          [
+            1,
+            0
+          ],
+          [
+            2,
+            1800
+          ]
+        ]
+      }
+    },
+    "maxDurability": 100,
+    "levels": [
+      {
+        "id": 10052,
+        "suffix": "0",
+        "rich_text": {
+          "id": 10052,
+          "ace_time_charge_condition": "在山路赛道，使用氮气时获得额外大招充能并在落后第一名超过一定距离时获得速度提升效果",
+          "ace_time_effect": "漆黑魅影可以充能两次",
+          "ace_time_effect_rich_desc": "漆黑魅影可以充能两次",
+          "chip_unlock_tips": "芯片最高生效等级为#fe7ab71#ffffff级",
+          "icon_ace_time_charge_condition": "new_carport_icon_mountainroad",
+          "icon_ace_time_effect": "new_carport_icon_10100",
+          "icon_slipstream": "new_carport_icon_14",
+          "icon_unlock_nitro_2": "new_carport_icon_10100",
+          "icon_unlock_nitro_3": "new_carport_icon_nos_03",
+          "level_title": "原车型",
+          "passive_skill_effect": [
+            "漆黑魅影持续时间",
+            "漆黑魅影加速"
+          ],
+          "passive_skill_effect_value": [
+            "5秒",
+            "40公里/小时"
+          ],
+          "passive_skill_rich_desc": "开局5秒后，每次超越或被超越时获得800集气量并#tips[净化]自身负面效果。",
+          "slipstream": "跟随在车辆后方将获得尾流，产生持续的氮气充能效果",
+          "special_passive_skill_desc": "开局5秒后，每次超越或被超越时获得800集气量并#tips[净化]自身负面效果；敌方非辅助车辆的非辅助充能降低18%，漆黑魅影和暗能造成的干扰效果无法被净化",
+          "special_passive_skill_icon": "new_carport_icon_10096",
+          "special_passive_skill_title": "暗能",
+          "title_ace_time_charge_condition": "赛道专精",
+          "title_ace_time_effect": "RECU限制解除",
+          "title_slipstream": "空气动力学套件",
+          "title_unlock_nitro_2": "大招强化套件 I",
+          "title_unlock_nitro_3": "竞速级氮气支架",
+          "unlock_nitro_3": "解锁1x6磅，2x3磅，3x2磅氮气",
+          "upgrade_level_icon": "new_carport_icon_10096"
+        },
+        "stats": {
+          "speed_limit": 197,
+          "speedup_ratio": 1.12,
+          "charge": {
+            "ace_charge": 2800,
+            "drift_charge_energy_coef": 620,
+            "drift_charge_energy_min": 1240,
+            "drift_charge_energy_max": 6200,
+            "drift_extra_charge": [
+              [
+                1,
+                0
+              ],
+              [
+                2,
+                1800
+              ]
+            ]
+          }
+        }
+      },
+      {
+        "id": 10452,
+        "suffix": "1",
+        "rich_text": {
+          "id": 10452,
+          "ace_time_charge_condition": "在山路赛道，使用氮气时获得额外大招充能并在落后第一名超过一定距离时获得速度提升效果",
+          "ace_time_effect": "漆黑魅影可以充能两次",
+          "ace_time_effect_rich_desc": "漆黑魅影可以充能两次",
+          "chip_unlock_tips": "芯片最高生效等级为#fe7ab74#ffffff级",
+          "icon_ace_time_charge_condition": "new_carport_icon_mountainroad",
+          "icon_ace_time_effect": "new_carport_icon_10100",
+          "icon_slipstream": "new_carport_icon_14",
+          "icon_unlock_nitro_2": "new_carport_icon_10100",
+          "icon_unlock_nitro_3": "new_carport_icon_nos_03",
+          "is_unlocked_ace_time_charge_condition": 1,
+          "is_unlocked_slipstream": 1,
+          "level_title": "竞速级氮气支架 I",
+          "passive_skill_effect": [
+            "漆黑魅影持续时间",
+            "漆黑魅影加速"
+          ],
+          "passive_skill_effect_value": [
+            "5秒",
+            "40公里/小时"
+          ],
+          "passive_skill_rich_desc": "开局5秒后，每次超越或被超越时获得800集气量并#tips[净化]自身负面效果。",
+          "slipstream": "跟随在车辆后方将获得尾流，产生持续的氮气充能效果",
+          "special_passive_skill_desc": "开局5秒后，每次超越或被超越时获得800集气量并#tips[净化]自身负面效果；敌方非辅助车辆的非辅助充能降低18%，漆黑魅影和暗能造成的干扰效果无法被净化",
+          "special_passive_skill_icon": "new_carport_icon_10096",
+          "special_passive_skill_title": "暗能",
+          "title_ace_time_charge_condition": "赛道专精",
+          "title_ace_time_effect": "RECU限制解除",
+          "title_slipstream": "空气动力学套件",
+          "title_unlock_nitro_2": "大招强化套件 I",
+          "title_unlock_nitro_3": "竞速级氮气支架",
+          "unlock_nitro_3": "解锁1x6磅，2x3磅，3x2磅氮气",
+          "upgrade_level_icon": "new_carport_icon_nos_03"
+        },
+        "stats": {
+          "speed_limit": 197,
+          "speedup_ratio": 1.12,
+          "charge": {
+            "ace_charge": 2800,
+            "drift_charge_energy_coef": 620,
+            "drift_charge_energy_min": 1240,
+            "drift_charge_energy_max": 6200,
+            "drift_extra_charge": [
+              [
+                1,
+                0
+              ],
+              [
+                2,
+                1800
+              ]
+            ]
+          }
+        }
+      },
+      {
+        "id": 10252,
+        "suffix": "2",
+        "rich_text": {
+          "id": 10252,
+          "ace_time_charge_condition": "在山路赛道，使用氮气时获得额外大招充能并在落后第一名超过一定距离时获得速度提升效果",
+          "ace_time_effect": "漆黑魅影可以充能两次",
+          "ace_time_effect_rich_desc": "漆黑魅影可以充能两次",
+          "chip_unlock_tips": "芯片最高生效等级为#fe7ab72#ffffff级",
+          "icon_ace_time_charge_condition": "new_carport_icon_mountainroad",
+          "icon_ace_time_effect": "new_carport_icon_10100",
+          "icon_slipstream": "new_carport_icon_14",
+          "icon_unlock_nitro_2": "new_carport_icon_10100",
+          "icon_unlock_nitro_3": "new_carport_icon_nos_03",
+          "is_unlocked_slipstream": 1,
+          "level_title": "空气动力学套件",
+          "passive_skill_effect": [
+            "漆黑魅影持续时间",
+            "漆黑魅影加速"
+          ],
+          "passive_skill_effect_value": [
+            "5秒",
+            "40公里/小时"
+          ],
+          "passive_skill_rich_desc": "开局5秒后，每次超越或被超越时获得800集气量并#tips[净化]自身负面效果。",
+          "slipstream": "跟随在车辆后方将获得尾流，产生持续的氮气充能效果",
+          "special_passive_skill_desc": "开局5秒后，每次超越或被超越时获得800集气量并#tips[净化]自身负面效果；敌方非辅助车辆的非辅助充能降低18%，漆黑魅影和暗能造成的干扰效果无法被净化",
+          "special_passive_skill_icon": "new_carport_icon_10096",
+          "special_passive_skill_title": "暗能",
+          "title_ace_time_charge_condition": "赛道专精",
+          "title_ace_time_effect": "RECU限制解除",
+          "title_slipstream": "空气动力学套件",
+          "title_unlock_nitro_2": "大招强化套件 I",
+          "title_unlock_nitro_3": "竞速级氮气支架",
+          "unlock_nitro_3": "解锁1x6磅，2x3磅，3x2磅氮气",
+          "upgrade_level_icon": "new_carport_icon_14"
+        },
+        "stats": {
+          "speed_limit": 197,
+          "speedup_ratio": 1.12,
+          "charge": {
+            "ace_charge": 2800,
+            "drift_charge_energy_coef": 620,
+            "drift_charge_energy_min": 1240,
+            "drift_charge_energy_max": 6200,
+            "drift_extra_charge": [
+              [
+                1,
+                0
+              ],
+              [
+                2,
+                1800
+              ]
+            ]
+          }
+        }
+      },
+      {
+        "id": 10352,
+        "suffix": "3",
+        "rich_text": {
+          "id": 10352,
+          "ace_time_charge_condition": "在山路赛道，使用氮气时获得额外大招充能并在落后第一名超过一定距离时获得速度提升效果",
+          "ace_time_effect": "漆黑魅影可以充能两次",
+          "ace_time_effect_rich_desc": "漆黑魅影可以充能两次",
+          "chip_unlock_tips": "芯片最高生效等级为#fe7ab73#ffffff级",
+          "icon_ace_time_charge_condition": "new_carport_icon_mountainroad",
+          "icon_ace_time_effect": "new_carport_icon_10100",
+          "icon_slipstream": "new_carport_icon_14",
+          "icon_unlock_nitro_2": "new_carport_icon_10100",
+          "icon_unlock_nitro_3": "new_carport_icon_nos_03",
+          "is_unlocked_ace_time_charge_condition": 1,
+          "is_unlocked_slipstream": 1,
+          "level_title": "赛道专精",
+          "passive_skill_effect": [
+            "漆黑魅影持续时间",
+            "漆黑魅影加速"
+          ],
+          "passive_skill_effect_value": [
+            "5秒",
+            "40公里/小时"
+          ],
+          "passive_skill_rich_desc": "开局5秒后，每次超越或被超越时获得800集气量并#tips[净化]自身负面效果。",
+          "slipstream": "跟随在车辆后方将获得尾流，产生持续的氮气充能效果",
+          "special_passive_skill_desc": "开局5秒后，每次超越或被超越时获得800集气量并#tips[净化]自身负面效果；敌方非辅助车辆的非辅助充能降低18%，漆黑魅影和暗能造成的干扰效果无法被净化",
+          "special_passive_skill_icon": "new_carport_icon_10096",
+          "special_passive_skill_title": "暗能",
+          "title_ace_time_charge_condition": "赛道专精",
+          "title_ace_time_effect": "RECU限制解除",
+          "title_slipstream": "空气动力学套件",
+          "title_unlock_nitro_2": "大招强化套件 I",
+          "title_unlock_nitro_3": "竞速级氮气支架",
+          "unlock_nitro_3": "解锁1x6磅，2x3磅，3x2磅氮气",
+          "upgrade_level_icon": "new_carport_icon_mountainroad"
+        },
+        "stats": {
+          "speed_limit": 197,
+          "speedup_ratio": 1.12,
+          "charge": {
+            "ace_charge": 2800,
+            "drift_charge_energy_coef": 620,
+            "drift_charge_energy_min": 1240,
+            "drift_charge_energy_max": 6200,
+            "drift_extra_charge": [
+              [
+                1,
+                0
+              ],
+              [
+                2,
+                1800
+              ]
+            ]
+          }
+        }
+      },
+      {
+        "id": 10552,
+        "suffix": "4",
+        "rich_text": {
+          "id": 10552,
+          "ace_time_charge_condition": "在山路赛道，使用氮气时获得额外大招充能并在落后第一名超过一定距离时获得速度提升效果",
+          "ace_time_effect": "漆黑魅影可以充能两次",
+          "ace_time_effect_rich_desc": "漆黑魅影可以充能两次",
+          "chip_unlock_tips": "芯片最高生效等级为#fe7ab75#ffffff级",
+          "icon_ace_time_charge_condition": "new_carport_icon_mountainroad",
+          "icon_ace_time_effect": "new_carport_icon_10100",
+          "icon_slipstream": "new_carport_icon_14",
+          "icon_unlock_nitro_2": "new_carport_icon_10100",
+          "icon_unlock_nitro_3": "new_carport_icon_nos_03",
+          "is_unlocked_ace_time_charge_condition": 1,
+          "is_unlocked_slipstream": 1,
+          "level_title": "大招强化 I",
+          "passive_skill_effect": [
+            "漆黑魅影持续时间",
+            "漆黑魅影加速"
+          ],
+          "passive_skill_effect_value": [
+            "6秒",
+            "40公里/小时"
+          ],
+          "passive_skill_rich_desc": "开局5秒后，每次超越或被超越时获得800集气量并#tips[净化]自身负面效果。",
+          "slipstream": "跟随在车辆后方将获得尾流，产生持续的氮气充能效果",
+          "special_passive_skill_desc": "开局5秒后，每次超越或被超越时获得800集气量并#tips[净化]自身负面效果；敌方非辅助车辆的非辅助充能降低18%，漆黑魅影和暗能造成的干扰效果无法被净化",
+          "special_passive_skill_icon": "new_carport_icon_10096",
+          "special_passive_skill_title": "暗能",
+          "title_ace_time_charge_condition": "赛道专精",
+          "title_ace_time_effect": "RECU限制解除",
+          "title_slipstream": "空气动力学套件",
+          "title_unlock_nitro_2": "大招强化套件 I",
+          "title_unlock_nitro_3": "竞速级氮气支架",
+          "unlock_nitro_3": "解锁1x6磅，2x3磅，3x2磅氮气",
+          "upgrade_level_icon": "new_carport_icon_10100"
+        },
+        "stats": {
+          "speed_limit": 197,
+          "speedup_ratio": 1.12,
+          "charge": {
+            "ace_charge": 2800,
+            "drift_charge_energy_coef": 620,
+            "drift_charge_energy_min": 1240,
+            "drift_charge_energy_max": 6200,
+            "drift_extra_charge": [
+              [
+                1,
+                0
+              ],
+              [
+                2,
+                1800
+              ]
+            ]
+          }
+        }
+      },
+      {
+        "id": 10652,
+        "suffix": "5",
+        "rich_text": {
+          "id": 10652,
+          "ace_time_charge_condition": "在山路赛道，使用氮气时获得额外大招充能并在落后第一名超过一定距离时获得速度提升效果",
+          "ace_time_effect": "漆黑魅影可以充能两次",
+          "ace_time_effect_rich_desc": "漆黑魅影可以充能两次",
+          "chip_unlock_tips": "芯片最高生效等级为#fe7ab76#ffffff级",
+          "icon_ace_time_charge_condition": "new_carport_icon_mountainroad",
+          "icon_ace_time_effect": "new_carport_icon_10100",
+          "icon_slipstream": "new_carport_icon_14",
+          "icon_unlock_nitro_2": "new_carport_icon_10100",
+          "icon_unlock_nitro_3": "new_carport_icon_nos_03",
+          "is_unlocked_ace_time_charge_condition": 1,
+          "is_unlocked_slipstream": 1,
+          "level_title": "竞速级氮气支架 II",
+          "passive_skill_effect": [
+            "漆黑魅影持续时间",
+            "漆黑魅影加速"
+          ],
+          "passive_skill_effect_value": [
+            "6秒",
+            "40公里/小时"
+          ],
+          "passive_skill_rich_desc": "开局5秒后，每次超越或被超越时获得800集气量并#tips[净化]自身负面效果。",
+          "slipstream": "跟随在车辆后方将获得尾流，产生持续的氮气充能效果",
+          "special_passive_skill_desc": "开局5秒后，每次超越或被超越时获得800集气量并#tips[净化]自身负面效果；敌方非辅助车辆的非辅助充能降低18%，漆黑魅影和暗能造成的干扰效果无法被净化",
+          "special_passive_skill_icon": "new_carport_icon_10096",
+          "special_passive_skill_title": "暗能",
+          "title_ace_time_charge_condition": "赛道专精",
+          "title_ace_time_effect": "RECU限制解除",
+          "title_slipstream": "空气动力学套件",
+          "title_unlock_nitro_2": "大招强化套件 I",
+          "title_unlock_nitro_3": "竞速级氮气支架",
+          "unlock_nitro_3": "解锁1x6磅，2x3磅，3x2磅氮气",
+          "upgrade_level_icon": "new_carport_icon_nos_03"
+        },
+        "stats": {
+          "speed_limit": 197,
+          "speedup_ratio": 1.12,
+          "charge": {
+            "ace_charge": 2800,
+            "drift_charge_energy_coef": 620,
+            "drift_charge_energy_min": 1240,
+            "drift_charge_energy_max": 6200,
+            "drift_extra_charge": [
+              [
+                1,
+                0
+              ],
+              [
+                2,
+                1800
+              ]
+            ]
+          }
+        }
+      },
+      {
+        "id": 10752,
+        "suffix": "6",
+        "rich_text": {
+          "id": 10752,
+          "ace_time_charge_condition": "在山路赛道，使用氮气时获得额外大招充能并在落后第一名超过一定距离时获得速度提升效果",
+          "ace_time_effect": "漆黑魅影可以充能两次",
+          "ace_time_effect_rich_desc": "漆黑魅影可以充能两次",
+          "chip_unlock_tips": "芯片最高生效等级为#fe7ab77#ffffff级",
+          "icon_ace_time_charge_condition": "new_carport_icon_mountainroad",
+          "icon_ace_time_effect": "new_carport_icon_10100",
+          "icon_slipstream": "new_carport_icon_14",
+          "icon_unlock_nitro_2": "new_carport_icon_10100",
+          "icon_unlock_nitro_3": "new_carport_icon_nos_03",
+          "is_unlocked_ace_time_charge_condition": 1,
+          "is_unlocked_slipstream": 1,
+          "level_title": "大招强化 II",
+          "passive_skill_effect": [
+            "漆黑魅影持续时间",
+            "漆黑魅影加速"
+          ],
+          "passive_skill_effect_value": [
+            "6秒",
+            "42公里/小时"
+          ],
+          "passive_skill_rich_desc": "开局5秒后，每次超越或被超越时获得800集气量并#tips[净化]自身负面效果。",
+          "slipstream": "跟随在车辆后方将获得尾流，产生持续的氮气充能效果",
+          "special_passive_skill_desc": "开局5秒后，每次超越或被超越时获得800集气量并#tips[净化]自身负面效果；敌方非辅助车辆的非辅助充能降低18%，漆黑魅影和暗能造成的干扰效果无法被净化",
+          "special_passive_skill_icon": "new_carport_icon_10096",
+          "special_passive_skill_title": "暗能",
+          "title_ace_time_charge_condition": "赛道专精",
+          "title_ace_time_effect": "RECU限制解除",
+          "title_slipstream": "空气动力学套件",
+          "title_unlock_nitro_2": "大招强化套件 I",
+          "title_unlock_nitro_3": "竞速级氮气支架",
+          "unlock_nitro_3": "解锁1x6磅，2x3磅，3x2磅氮气",
+          "upgrade_level_icon": "new_carport_icon_10100"
+        },
+        "stats": {
+          "speed_limit": 197.5,
+          "speedup_ratio": 1.12,
+          "charge": {
+            "ace_charge": 2800,
+            "drift_charge_energy_coef": 620,
+            "drift_charge_energy_min": 1240,
+            "drift_charge_energy_max": 6200,
+            "drift_extra_charge": [
+              [
+                1,
+                0
+              ],
+              [
+                2,
+                1800
+              ]
+            ]
+          }
+        }
+      },
+      {
+        "id": 10852,
+        "suffix": "7",
+        "rich_text": {
+          "id": 10852,
+          "ace_time_charge_condition": "在山路赛道，使用氮气时获得额外大招充能并在落后第一名超过一定距离时获得速度提升效果",
+          "ace_time_effect": "漆黑魅影可以充能两次",
+          "ace_time_effect_rich_desc": "漆黑魅影可以充能两次",
+          "chip_unlock_tips": "芯片最高生效等级为#fe7ab78#ffffff级",
+          "icon_ace_time_charge_condition": "new_carport_icon_mountainroad",
+          "icon_ace_time_effect": "new_carport_icon_10100",
+          "icon_slipstream": "new_carport_icon_14",
+          "icon_unlock_nitro_2": "new_carport_icon_10100",
+          "icon_unlock_nitro_3": "new_carport_icon_nos_03",
+          "is_unlocked_ace_time_charge_condition": 1,
+          "is_unlocked_ace_time_effect": 1,
+          "is_unlocked_slipstream": 1,
+          "level_title": "RECU限制解除",
+          "passive_skill_effect": [
+            "漆黑魅影持续时间",
+            "漆黑魅影加速"
+          ],
+          "passive_skill_effect_value": [
+            "7秒",
+            "42公里/小时"
+          ],
+          "passive_skill_rich_desc": "开局5秒后，每次超越或被超越时获得800集气量并#tips[净化]自身负面效果。",
+          "slipstream": "跟随在车辆后方将获得尾流，产生持续的氮气充能效果",
+          "special_passive_skill_desc": "开局5秒后，每次超越或被超越时获得800集气量并#tips[净化]自身负面效果；敌方非辅助车辆的非辅助充能降低18%，漆黑魅影和暗能造成的干扰效果无法被净化",
+          "special_passive_skill_icon": "new_carport_icon_10096",
+          "special_passive_skill_title": "暗能",
+          "title_ace_time_charge_condition": "赛道专精",
+          "title_ace_time_effect": "RECU限制解除",
+          "title_slipstream": "空气动力学套件",
+          "title_unlock_nitro_2": "大招强化套件 I",
+          "title_unlock_nitro_3": "竞速级氮气支架",
+          "unlock_nitro_3": "解锁1x6磅，2x3磅，3x2磅氮气",
+          "upgrade_level_icon": "new_carport_icon_10100"
+        },
+        "stats": {
+          "speed_limit": 197.5,
+          "speedup_ratio": 1.12,
+          "charge": {
+            "ace_charge": 2800,
+            "drift_charge_energy_coef": 620,
+            "drift_charge_energy_min": 1240,
+            "drift_charge_energy_max": 6200,
+            "drift_extra_charge": [
+              [
+                1,
+                0
+              ],
+              [
+                2,
+                1800
+              ]
+            ]
+          }
+        }
+      },
+      {
+        "id": 10952,
+        "suffix": "8",
+        "rich_text": {
+          "id": 10952,
+          "ace_time_charge_condition": "在山路赛道，使用氮气时获得额外大招充能并在落后第一名超过一定距离时获得速度提升效果",
+          "ace_time_effect": "漆黑魅影可以充能两次",
+          "ace_time_effect_rich_desc": "漆黑魅影可以充能两次",
+          "chip_unlock_tips": "芯片最高生效等级为#fe7ab79#ffffff级",
+          "icon_ace_time_charge_condition": "new_carport_icon_mountainroad",
+          "icon_ace_time_effect": "new_carport_icon_10100",
+          "icon_slipstream": "new_carport_icon_14",
+          "icon_unlock_nitro_2": "new_carport_icon_10100",
+          "icon_unlock_nitro_3": "new_carport_icon_nos_03",
+          "is_unlocked_ace_time_charge_condition": 1,
+          "is_unlocked_ace_time_effect": 1,
+          "is_unlocked_slipstream": 1,
+          "level_title": "大招强化 III",
+          "passive_skill_effect": [
+            "漆黑魅影持续时间",
+            "漆黑魅影加速"
+          ],
+          "passive_skill_effect_value": [
+            "7秒",
+            "45公里/小时"
+          ],
+          "passive_skill_rich_desc": "开局5秒后，每次超越或被超越时获得800集气量并#tips[净化]自身负面效果。",
+          "slipstream": "跟随在车辆后方将获得尾流，产生持续的氮气充能效果",
+          "special_passive_skill_desc": "开局5秒后，每次超越或被超越时获得800集气量并#tips[净化]自身负面效果；敌方非辅助车辆的非辅助充能降低18%，漆黑魅影和暗能造成的干扰效果无法被净化",
+          "special_passive_skill_icon": "new_carport_icon_10096",
+          "special_passive_skill_title": "暗能",
+          "title_ace_time_charge_condition": "赛道专精",
+          "title_ace_time_effect": "RECU限制解除",
+          "title_slipstream": "空气动力学套件",
+          "title_unlock_nitro_2": "大招强化套件 I",
+          "title_unlock_nitro_3": "竞速级氮气支架",
+          "unlock_nitro_3": "解锁1x6磅，2x3磅，3x2磅氮气",
+          "upgrade_level_icon": "new_carport_icon_10100"
+        },
+        "stats": {
+          "speed_limit": 198,
+          "speedup_ratio": 1.12,
+          "charge": {
+            "ace_charge": 2800,
+            "drift_charge_energy_coef": 620,
+            "drift_charge_energy_min": 1240,
+            "drift_charge_energy_max": 6200,
+            "drift_extra_charge": [
+              [
+                1,
+                0
+              ],
+              [
+                2,
+                1800
+              ]
+            ]
+          }
+        }
+      },
+      {
+        "id": 11052,
+        "suffix": "9",
+        "rich_text": {
+          "id": 11052,
+          "ace_time_charge_condition": "在山路赛道，使用氮气时获得额外大招充能并在落后第一名超过一定距离时获得速度提升效果",
+          "ace_time_effect": "漆黑魅影可以充能两次",
+          "ace_time_effect_rich_desc": "漆黑魅影可以充能两次",
+          "chip_unlock_tips": "芯片最高生效等级为#fe7ab710#ffffff级",
+          "icon_ace_time_charge_condition": "new_carport_icon_mountainroad",
+          "icon_ace_time_effect": "new_carport_icon_10100",
+          "icon_slipstream": "new_carport_icon_14",
+          "icon_unlock_nitro_2": "new_carport_icon_10100",
+          "icon_unlock_nitro_3": "new_carport_icon_nos_03",
+          "is_unlocked_ace_time_charge_condition": 1,
+          "is_unlocked_ace_time_effect": 1,
+          "is_unlocked_slipstream": 1,
+          "level_title": "大招强化 IV",
+          "passive_skill_effect": [
+            "漆黑魅影持续时间",
+            "漆黑魅影加速"
+          ],
+          "passive_skill_effect_value": [
+            "8秒",
+            "45公里/小时"
+          ],
+          "passive_skill_rich_desc": "开局5秒后，每次超越或被超越时获得800集气量并#tips[净化]自身负面效果。",
+          "slipstream": "跟随在车辆后方将获得尾流，产生持续的氮气充能效果",
+          "special_passive_skill_desc": "开局5秒后，每次超越或被超越时获得800集气量并#tips[净化]自身负面效果；敌方非辅助车辆的非辅助充能降低18%，漆黑魅影和暗能造成的干扰效果无法被净化",
+          "special_passive_skill_icon": "new_carport_icon_10096",
+          "special_passive_skill_title": "暗能",
+          "title_ace_time_charge_condition": "赛道专精",
+          "title_ace_time_effect": "RECU限制解除",
+          "title_slipstream": "空气动力学套件",
+          "title_unlock_nitro_2": "大招强化套件 I",
+          "title_unlock_nitro_3": "竞速级氮气支架",
+          "unlock_nitro_3": "解锁1x6磅，2x3磅，3x2磅氮气",
+          "upgrade_level_icon": "new_carport_icon_10100"
+        },
+        "stats": {
+          "speed_limit": 199,
+          "speedup_ratio": 1.12,
+          "charge": {
+            "ace_charge": 2800,
+            "drift_charge_energy_coef": 620,
+            "drift_charge_energy_min": 1240,
+            "drift_charge_energy_max": 6200,
+            "drift_extra_charge": [
+              [
+                1,
+                0
+              ],
+              [
+                2,
+                1800
+              ]
+            ]
+          }
+        }
+      }
+    ],
+    "skills": {
+      "ultimate": {
+        "id": 5251,
+        "name": "漆黑魅影",
+        "type": "N2O_NIGHT",
+        "icon_static": "ui_skill31_04",
+        "icon_big": null,
+        "icon": null,
+        "init_ratio": null,
+        "icons": {
+          "normal": "ui_skill31_03",
+          "disable": "ui_skill31_01",
+          "alt": "ui_skill31_06",
+          "down": "ui_skill31_03",
+          "static": "ui_skill31_04",
+          "big": null
+        },
+        "extra": {
+          "cam_type": "N2O_NIGHT",
+          "eff_id": 1,
+          "is_cost_energy": 2,
+          "rally_qte": 2
+        },
+        "value_texts": [
+          {
+            "key": "name",
+            "label": "技能名称",
+            "value": "漆黑魅影"
+          },
+          {
+            "key": "skill_type",
+            "label": "技能类型",
+            "value": "N2O_NIGHT"
+          },
+          {
+            "key": "cam_type",
+            "label": "镜头类型",
+            "value": "N2O_NIGHT"
+          },
+          {
+            "key": "eff_id",
+            "label": "特效编号",
+            "value": "1"
+          },
+          {
+            "key": "min_charge",
+            "label": "最低充能万分比",
+            "value": "10000"
+          },
+          {
+            "key": "rally_qte",
+            "label": "拉力赛触发qte",
+            "value": "2"
+          }
+        ],
+        "instructions": [
+          {
+            "id": 802001,
+            "attack_show_eff_dur": 2,
+            "attack_show_friend_enemy_filter": [
+              1,
+              2
+            ],
+            "attack_show_keep_dur": 2,
+            "attack_show_role_filter": [
+              1,
+              2,
+              3
+            ],
+            "buff_count": 0,
+            "cd_type": 1,
+            "duration": 999,
+            "eff_cd": 5,
+            "eff_id": 1,
+            "enemy_eff": [
+              56201,
+              56211
+            ],
+            "extra_children": [],
+            "extra_isolate": [],
+            "inst_group": 802,
+            "inst_name": "魅影",
+            "inst_type": 8,
+            "lock_camp": 2,
+            "lock_cnt": 5,
+            "lock_dist": [
+              -5000,
+              0
+            ],
+            "lock_instr_types2": [
+              18
+            ],
+            "lock_side_dist": [
+              -5000,
+              5000
+            ],
+            "lock_vertical_dist": [
+              -6000,
+              6000
+            ],
+            "rear_insts": [],
+            "ref_insts": [
+              802001
+            ],
+            "skill_eff_id": 8,
+            "sp_n2o_ace_charge_ratio": 1,
+            "name": "魅影",
+            "desc": null,
+            "type": 8,
+            "order": null,
+            "value_texts": [
+              {
+                "key": "attack_show_friend_enemy_filter",
+                "label": "敌友筛选",
+                "value": "[1,2]"
+              },
+              {
+                "key": "attack_show_role_filter",
+                "label": "定位筛选",
+                "value": "[1,2,3]"
+              },
+              {
+                "key": "buff_count",
+                "label": "Buff 数量",
+                "value": "0"
+              },
+              {
+                "key": "rear_insts",
+                "label": "后续节点",
+                "value": "[]"
+              },
+              {
+                "key": "extra_children",
+                "label": "子节点",
+                "value": "[]"
+              },
+              {
+                "key": "ref_insts",
+                "label": "引用节点",
+                "value": "[802001]"
+              }
+            ]
+          },
+          {
+            "id": 1300501,
+            "attack_show_friend_enemy_filter": [
+              1,
+              2
+            ],
+            "attack_show_role_filter": [
+              1,
+              2,
+              3
+            ],
+            "buff_count": 0,
+            "cd_type": 1,
+            "duration": 999,
+            "eff_cd": 0.5,
+            "eff_id": 1,
+            "extra_children": [],
+            "extra_isolate": [
+              141001
+            ],
+            "inst_group": 13,
+            "inst_name": "超车",
+            "inst_type": 13,
+            "overtake_enemy_eff_ids": [
+              141001
+            ],
+            "overtake_friend_eff_ids": [
+              141001
+            ],
+            "overtaken_eff_ids": [
+              141001
+            ],
+            "rear_insts": [
+              -1
+            ],
+            "ref_insts": [
+              141001,
+              1300501
+            ],
+            "skill_eff_id": 13,
+            "sp_n2o_ace_charge_ratio": 1,
+            "name": "超车",
+            "desc": null,
+            "type": 13,
+            "order": null,
+            "value_texts": [
+              {
+                "key": "attack_show_friend_enemy_filter",
+                "label": "敌友筛选",
+                "value": "[1,2]"
+              },
+              {
+                "key": "attack_show_role_filter",
+                "label": "定位筛选",
+                "value": "[1,2,3]"
+              },
+              {
+                "key": "buff_count",
+                "label": "Buff 数量",
+                "value": "0"
+              },
+              {
+                "key": "rear_insts",
+                "label": "后续节点",
+                "value": "[-1]"
+              },
+              {
+                "key": "extra_children",
+                "label": "子节点",
+                "value": "[]"
+              },
+              {
+                "key": "ref_insts",
+                "label": "引用节点",
+                "value": "[141001,1300501]"
+              }
+            ]
+          },
+          {
+            "id": 203101,
+            "accel_action": 2,
+            "accelerate_curve": [
+              [
+                0,
+                30
+              ],
+              [
+                165,
+                21.7
+              ],
+              [
+                166,
+                5
+              ],
+              [
+                200,
+                5
+              ]
+            ],
+            "attack_show_friend_enemy_filter": [
+              1,
+              2
+            ],
+            "attack_show_role_filter": [
+              1,
+              2,
+              3
+            ],
+            "buff_count": 0,
+            "cost_ratio": 2000,
+            "duration": 5,
+            "eff_id": 1,
+            "extra_children": [],
+            "extra_isolate": [],
+            "inst_group": 2,
+            "inst_name": "大招加速",
+            "inst_type": 2,
+            "is_hard_push": 1,
+            "rear_insts": [
+              -1
+            ],
+            "ref_insts": [
+              203101
+            ],
+            "skill_eff_id": 12011,
+            "sp_ex_speed_limit": 40,
+            "sp_max_ex_speed_limit": 40,
+            "sp_min_ex_speed_limit": 40,
+            "sp_n2o_ace_charge_ratio": 1,
+            "name": "大招加速",
+            "desc": null,
+            "type": 2,
+            "order": null,
+            "value_texts": [
+              {
+                "key": "sp_ex_speed_limit",
+                "label": "自身极速提升",
+                "value": "40km/h"
+              },
+              {
+                "key": "duration",
+                "label": "自身加速时长",
+                "value": "5秒"
+              },
+              {
+                "key": "attack_show_friend_enemy_filter",
+                "label": "敌友筛选",
+                "value": "[1,2]"
+              },
+              {
+                "key": "attack_show_role_filter",
+                "label": "定位筛选",
+                "value": "[1,2,3]"
+              },
+              {
+                "key": "buff_count",
+                "label": "Buff 数量",
+                "value": "0"
+              },
+              {
+                "key": "rear_insts",
+                "label": "后续节点",
+                "value": "[-1]"
+              },
+              {
+                "key": "extra_children",
+                "label": "子节点",
+                "value": "[]"
+              },
+              {
+                "key": "ref_insts",
+                "label": "引用节点",
+                "value": "[203101]"
+              }
+            ]
+          }
+        ]
+      },
+      "sp": null,
+      "passive": [
+        {
+          "id": 50801,
+          "name": "封禁尾流",
+          "type": null,
+          "icon_static": null,
+          "icon_big": null,
+          "icon": null,
+          "init_ratio": null,
+          "icons": {
+            "normal": null,
+            "disable": null,
+            "alt": null,
+            "down": null,
+            "static": null,
+            "big": null
+          },
+          "extra": {
+            "cam_type": null,
+            "eff_id": null,
+            "is_cost_energy": null,
+            "rally_qte": null
+          },
+          "value_texts": [
+            {
+              "key": "name",
+              "label": "技能名称",
+              "value": "封禁尾流"
+            }
+          ],
+          "instructions": [
+            {
+              "id": 2100301,
+              "attack_show_friend_enemy_filter": [
+                1,
+                2
+              ],
+              "attack_show_role_filter": [
+                1,
+                2,
+                3
+              ],
+              "buff_count": 0,
+              "duration": 999,
+              "eff_id": 1,
+              "extra_children": [],
+              "extra_isolate": [],
+              "inst_group": 21001,
+              "inst_name": "封禁尾流",
+              "inst_type": 21,
+              "rear_insts": [],
+              "ref_insts": [
+                2100301
+              ],
+              "skill_eff_id": 21,
+              "slipstream_state": 1,
+              "sp_n2o_ace_charge_ratio": 1,
+              "name": "封禁尾流",
+              "desc": null,
+              "type": 21,
+              "order": null,
+              "value_texts": [
+                {
+                  "key": "attack_show_friend_enemy_filter",
+                  "label": "敌友筛选",
+                  "value": "[1,2]"
+                },
+                {
+                  "key": "attack_show_role_filter",
+                  "label": "定位筛选",
+                  "value": "[1,2,3]"
+                },
+                {
+                  "key": "buff_count",
+                  "label": "Buff 数量",
+                  "value": "0"
+                },
+                {
+                  "key": "rear_insts",
+                  "label": "后续节点",
+                  "value": "[]"
+                },
+                {
+                  "key": "extra_children",
+                  "label": "子节点",
+                  "value": "[]"
+                },
+                {
+                  "key": "ref_insts",
+                  "label": "引用节点",
+                  "value": "[2100301]"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "id": 57101,
+          "name": "暗能",
+          "type": null,
+          "icon_static": null,
+          "icon_big": null,
+          "icon": null,
+          "init_ratio": null,
+          "icons": {
+            "normal": null,
+            "disable": null,
+            "alt": null,
+            "down": null,
+            "static": null,
+            "big": null
+          },
+          "extra": {
+            "cam_type": null,
+            "eff_id": null,
+            "is_cost_energy": null,
+            "rally_qte": null
+          },
+          "value_texts": [
+            {
+              "key": "name",
+              "label": "技能名称",
+              "value": "暗能"
+            }
+          ],
+          "instructions": [
+            {
+              "id": 130034,
+              "accelerate_curve": [
+                [
+                  0,
+                  0
+                ],
+                [
+                  1,
+                  0
+                ]
+              ],
+              "attack_show_friend_enemy_filter": [
+                1,
+                2
+              ],
+              "attack_show_role_filter": [
+                1,
+                2,
+                3
+              ],
+              "buff_count": 0,
+              "duration": 5,
+              "extra_children": [],
+              "extra_isolate": [],
+              "inst_group": 1001,
+              "inst_name": "起步cd",
+              "inst_type": 1,
+              "rear_insts": [
+                1300701
+              ],
+              "ref_insts": [
+                130034
+              ],
+              "sp_n2o_ace_charge_ratio": 1,
+              "name": "起步cd",
+              "desc": null,
+              "type": 1,
+              "order": null,
+              "value_texts": [
+                {
+                  "key": "attack_show_friend_enemy_filter",
+                  "label": "敌友筛选",
+                  "value": "[1,2]"
+                },
+                {
+                  "key": "attack_show_role_filter",
+                  "label": "定位筛选",
+                  "value": "[1,2,3]"
+                },
+                {
+                  "key": "buff_count",
+                  "label": "Buff 数量",
+                  "value": "0"
+                },
+                {
+                  "key": "rear_insts",
+                  "label": "后续节点",
+                  "value": "[1300701]"
+                },
+                {
+                  "key": "extra_children",
+                  "label": "子节点",
+                  "value": "[]"
+                },
+                {
+                  "key": "ref_insts",
+                  "label": "引用节点",
+                  "value": "[130034]"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "id": 57102,
+          "name": "暗能-干扰",
+          "type": null,
+          "icon_static": null,
+          "icon_big": null,
+          "icon": null,
+          "init_ratio": null,
+          "icons": {
+            "normal": null,
+            "disable": null,
+            "alt": null,
+            "down": null,
+            "static": null,
+            "big": null
+          },
+          "extra": {
+            "cam_type": null,
+            "eff_id": null,
+            "is_cost_energy": null,
+            "rally_qte": null
+          },
+          "value_texts": [
+            {
+              "key": "name",
+              "label": "技能名称",
+              "value": "暗能-干扰"
+            }
+          ],
+          "instructions": [
+            {
+              "id": 802008,
+              "attack_show_eff_dur": 2,
+              "attack_show_friend_enemy_filter": [
+                1,
+                2
+              ],
+              "attack_show_keep_dur": 2,
+              "attack_show_role_filter": [
+                1,
+                2,
+                3
+              ],
+              "buff_count": 0,
+              "cd_type": 1,
+              "duration": 0.2,
+              "eff_cd": 0.5,
+              "eff_id": 1,
+              "enemy_eff": [
+                57103
+              ],
+              "extra_children": [],
+              "extra_isolate": [],
+              "inst_group": 802,
+              "inst_name": "暗能-干扰效果",
+              "inst_type": 8,
+              "lock_camp": 2,
+              "lock_cnt": 5,
+              "lock_dist": [
+                -5000,
+                5000
+              ],
+              "lock_no_dodge": 1,
+              "lock_no_reverse": 1,
+              "lock_roles": [
+                1,
+                3
+              ],
+              "lock_side_dist": [
+                -5000,
+                5000
+              ],
+              "lock_vertical_dist": [
+                -6000,
+                6000
+              ],
+              "pre_time": 0.1,
+              "rear_insts": [
+                -1
+              ],
+              "ref_insts": [
+                802008
+              ],
+              "skill_eff_id": 8,
+              "sp_n2o_ace_charge_ratio": 1,
+              "name": "暗能-干扰效果",
+              "desc": null,
+              "type": 8,
+              "order": null,
+              "value_texts": [
+                {
+                  "key": "attack_show_friend_enemy_filter",
+                  "label": "敌友筛选",
+                  "value": "[1,2]"
+                },
+                {
+                  "key": "attack_show_role_filter",
+                  "label": "定位筛选",
+                  "value": "[1,2,3]"
+                },
+                {
+                  "key": "buff_count",
+                  "label": "Buff 数量",
+                  "value": "0"
+                },
+                {
+                  "key": "rear_insts",
+                  "label": "后续节点",
+                  "value": "[-1]"
+                },
+                {
+                  "key": "extra_children",
+                  "label": "子节点",
+                  "value": "[]"
+                },
+                {
+                  "key": "ref_insts",
+                  "label": "引用节点",
+                  "value": "[802008]"
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    "skillPanelGroups": {
+      "ultimate": [
+        {
+          "id": "1585",
+          "name_rich": {
+            "raw": "自身极速提升",
+            "html": "自身极速提升"
+          },
+          "value_rich": {
+            "raw": "40km/h",
+            "html": "40km/h"
+          },
+          "value_text": "40km/h",
+          "instruction_ids": [
+            203101,
+            203106
+          ],
+          "values": []
+        },
+        {
+          "id": "1586",
+          "name_rich": {
+            "raw": "自身加速时长",
+            "html": "自身加速时长"
+          },
+          "value_rich": {
+            "raw": "5秒",
+            "html": "5秒"
+          },
+          "value_text": "5秒",
+          "instruction_ids": [
+            203101,
+            203106
+          ],
+          "values": []
+        },
+        {
+          "id": "1587",
+          "name_rich": {
+            "raw": "超车极速叠加",
+            "html": "超车极速叠加"
+          },
+          "value_rich": {
+            "raw": "+2km/h",
+            "html": "+2km/h"
+          },
+          "value_text": "+2km/h",
+          "instruction_ids": [],
+          "values": []
+        },
+        {
+          "id": "1588",
+          "name_rich": {
+            "raw": "参数 1588",
+            "html": "参数 1588"
+          },
+          "value_rich": {
+            "raw": "#a9a9a9(上限：20km/h)",
+            "html": "<span class=\"rt-color\" style=\"color: #a9a9a9\">(上限：20km/h)</span>"
+          },
+          "value_text": "#a9a9a9(上限：20km/h)",
+          "instruction_ids": [],
+          "values": []
+        },
+        {
+          "id": "1590",
+          "name_rich": {
+            "raw": "持续时间",
+            "html": "持续时间"
+          },
+          "value_rich": {
+            "raw": "5秒",
+            "html": "5秒"
+          },
+          "value_text": "5秒",
+          "instruction_ids": [
+            140001,
+            140004
+          ],
+          "values": []
+        },
+        {
+          "id": "1591",
+          "name_rich": {
+            "raw": "极速降低",
+            "html": "极速降低"
+          },
+          "value_rich": {
+            "raw": "25km/h",
+            "html": "25km/h"
+          },
+          "value_text": "25km/h",
+          "instruction_ids": [],
+          "values": []
+        },
+        {
+          "id": "1592",
+          "name_rich": {
+            "raw": "碰撞扣能",
+            "html": "碰撞扣能"
+          },
+          "value_rich": {
+            "raw": "15/10%",
+            "html": "15/10%"
+          },
+          "value_text": "15/10%",
+          "instruction_ids": [],
+          "values": []
+        },
+        {
+          "id": "1594",
+          "name_rich": {
+            "raw": "作用范围",
+            "html": "作用范围"
+          },
+          "value_rich": {
+            "raw": "向前无限制",
+            "html": "向前无限制"
+          },
+          "value_text": "向前无限制",
+          "instruction_ids": [],
+          "values": []
+        },
+        {
+          "id": "1595",
+          "name_rich": {
+            "raw": "命中类型",
+            "html": "命中类型"
+          },
+          "value_rich": {
+            "raw": "#tipsnoicon[锁定类]",
+            "html": "<span class=\"rt-tip rt-tip--entry rt-tip--noicon\" data-tip=\"锁定类\" data-desc=\"·自动锁定范围内的目标&#10;·无法命中具有*隐身*、*无法选中*、*闪避*的敌方\" style=\"--tip-color:#ffd700\" title=\"·自动锁定范围内的目标&#10;·无法命中具有*隐身*、*无法选中*、*闪避*的敌方\">锁定类</span>"
+          },
+          "value_text": "#tipsnoicon[锁定类]",
+          "instruction_ids": [],
+          "values": []
+        },
+        {
+          "id": "1597",
+          "name_rich": {
+            "raw": "可否净化",
+            "html": "可否净化"
+          },
+          "value_rich": {
+            "raw": "不可净化",
+            "html": "不可净化"
+          },
+          "value_text": "不可净化",
+          "instruction_ids": [],
+          "values": []
+        },
+        {
+          "id": "20575",
+          "name_rich": {
+            "raw": "加速动力",
+            "html": "加速动力"
+          },
+          "value_rich": {
+            "raw": "低",
+            "html": "低"
+          },
+          "value_text": "低",
+          "instruction_ids": [],
+          "values": []
+        }
+      ],
+      "sp": [],
+      "passive": [
+        {
+          "id": "1692",
+          "name_rich": {
+            "raw": "可否净化",
+            "html": "可否净化"
+          },
+          "value_rich": {
+            "raw": "不可净化",
+            "html": "不可净化"
+          },
+          "value_text": "不可净化",
+          "instruction_ids": [],
+          "values": []
+        },
+        {
+          "id": "1693",
+          "name_rich": {
+            "raw": "命中类型",
+            "html": "命中类型"
+          },
+          "value_rich": {
+            "raw": "#tipsnoicon[直接命中]",
+            "html": "<span class=\"rt-tip rt-tip--entry rt-tip--noicon\" data-tip=\"直接命中\" data-desc=\"·直接命中目标，除非目标处于*无法选中*状态\" style=\"--tip-color:#ffd700\" title=\"·直接命中目标，除非目标处于*无法选中*状态\">直接命中</span>"
+          },
+          "value_text": "#tipsnoicon[直接命中]",
+          "instruction_ids": [],
+          "values": []
+        },
+        {
+          "id": "1694",
+          "name_rich": {
+            "raw": "参数 1694",
+            "html": "参数 1694"
+          },
+          "value_rich": {
+            "raw": "#a9a9a9(非辅助位)",
+            "html": "<span class=\"rt-color\" style=\"color: #a9a9a9\">(非辅助位)</span>"
+          },
+          "value_text": "#a9a9a9(非辅助位)",
+          "instruction_ids": [],
+          "values": []
+        },
+        {
+          "id": "1695",
+          "name_rich": {
+            "raw": "充能降低",
+            "html": "充能降低"
+          },
+          "value_rich": {
+            "raw": "18%",
+            "html": "18%"
+          },
+          "value_text": "18%",
+          "instruction_ids": [],
+          "values": []
+        }
+      ],
+      "other": []
+    },
+    "richText": {
+      "id": 10052,
+      "ace_time_charge_condition": "在山路赛道，使用氮气时获得额外大招充能并在落后第一名超过一定距离时获得速度提升效果",
+      "ace_time_effect": "漆黑魅影可以充能两次",
+      "ace_time_effect_rich_desc": "漆黑魅影可以充能两次",
+      "chip_unlock_tips": "芯片最高生效等级为#fe7ab71#ffffff级",
+      "icon_ace_time_charge_condition": "new_carport_icon_mountainroad",
+      "icon_ace_time_effect": "new_carport_icon_10100",
+      "icon_slipstream": "new_carport_icon_14",
+      "icon_unlock_nitro_2": "new_carport_icon_10100",
+      "icon_unlock_nitro_3": "new_carport_icon_nos_03",
+      "level_title": "原车型",
+      "passive_skill_effect": [
+        "漆黑魅影持续时间",
+        "漆黑魅影加速"
+      ],
+      "passive_skill_effect_value": [
+        "5秒",
+        "40公里/小时"
+      ],
+      "passive_skill_rich_desc": "开局5秒后，每次超越或被超越时获得800集气量并#tips[净化]自身负面效果。",
+      "slipstream": "跟随在车辆后方将获得尾流，产生持续的氮气充能效果",
+      "special_passive_skill_desc": {
+        "raw": "开局5秒后，每次超越或被超越时获得800集气量并#tips[净化]自身负面效果；敌方非辅助车辆的非辅助充能降低18%，漆黑魅影和暗能造成的干扰效果无法被净化",
+        "html": "开局5秒后，每次超越或被超越时获得800集气量并<span class=\"rt-tip rt-tip--entry\" data-tip=\"净化\" data-icon=\"carport_new_skill_illustrate_b9\" data-desc=\"·解除持续性的负面效果\" style=\"--tip-color:#7eedff\" title=\"·解除持续性的负面效果\"><span class=\"rt-tip__icon-slot\"></span>净化</span>自身负面效果；敌方非辅助车辆的非辅助充能降低18%，漆黑魅影和暗能造成的干扰效果无法被净化"
+      },
+      "special_passive_skill_icon": "new_carport_icon_10096",
+      "special_passive_skill_title": "暗能",
+      "title_ace_time_charge_condition": "赛道专精",
+      "title_ace_time_effect": "RECU限制解除",
+      "title_slipstream": "空气动力学套件",
+      "title_unlock_nitro_2": "大招强化套件 I",
+      "title_unlock_nitro_3": "竞速级氮气支架",
+      "unlock_nitro_3": "解锁1x6磅，2x3磅，3x2磅氮气",
+      "upgrade_level_icon": "new_carport_icon_10096",
+      "feature_desc": {
+        "raw": "加速推进，并持续使前方敌方车辆进入#dd9aff魅影状态#ffffff：\n·减速25km/h且视线会被黑影干扰\n·每次碰撞会损失大招能量\n·视线干扰会随着进入魅影状态次数的增加而减弱。\n加速期间每次超越或被超越时，自身本局内极速+2km/h（上限叠加至20km/h）。",
+        "html": "加速推进，并持续使前方敌方车辆进入<span class=\"rt-color\" style=\"color: #dd9aff\">魅影状态</span>：<br/>·减速25km/h且视线会被黑影干扰<br/>·每次碰撞会损失大招能量<br/>·视线干扰会随着进入魅影状态次数的增加而减弱。<br/>加速期间每次超越或被超越时，自身本局内极速+2km/h（上限叠加至20km/h）。"
+      },
+      "sp_skill_desc": null,
+      "passive_skill_desc": null,
+      "story_title": "厂商：深渊",
+      "story": {
+        "raw": "22比21，暗夜魅影惊险地保住了参加速度节的资格。暗夜魅影出战速度节的第一场就获得了广泛的关注，它也没有辜负观众们的期望，宛若一道漆黑的魅影穿梭在赛场上，帮助车队拿下了优胜。但很快有对手对于暗夜魅影遮挡对手视线的干扰方式是否符合速度节规定提出了质疑，最终经过速度节委员会的投票才得以继续参赛，但生产商深渊仍被要求给暗夜魅影加装限制器，以避免可能发生的赛场混乱。",
+        "html": "22比21，暗夜魅影惊险地保住了参加速度节的资格。暗夜魅影出战速度节的第一场就获得了广泛的关注，它也没有辜负观众们的期望，宛若一道漆黑的魅影穿梭在赛场上，帮助车队拿下了优胜。但很快有对手对于暗夜魅影遮挡对手视线的干扰方式是否符合速度节规定提出了质疑，最终经过速度节委员会的投票才得以继续参赛，但生产商深渊仍被要求给暗夜魅影加装限制器，以避免可能发生的赛场混乱。"
+      }
+    },
+    "report": {
+      "title": "王牌速度节赛车检验报告",
+      "sections": [
+        {
+          "title": "基础数据",
+          "items": [
+            {
+              "label": "检测车辆",
+              "value": "暗夜魅影/Phantom"
+            },
+            {
+              "label": "注册日期",
+              "value": "{}年{}月{}日"
+            },
+            {
+              "label": "车辆类型",
+              "value": "幻想阵营"
+            },
+            {
+              "label": "厂商",
+              "value": "深渊"
+            },
+            {
+              "label": "定位",
+              "value": "干扰位"
+            },
+            {
+              "label": "赛道专精",
+              "value": "山路"
+            },
+            {
+              "label": "能源类型",
+              "value": "汽油"
+            },
+            {
+              "label": "驱动方式",
+              "value": "中置四驱"
+            },
+            {
+              "label": "变形装置",
+              "value": "已装配"
+            }
+          ]
+        },
+        {
+          "title": "芯片模块",
+          "items": [
+            {
+              "label": "芯片写入权限",
+              "value": "已获取"
+            },
+            {
+              "label": "扩展芯片类型",
+              "value": "○○△◇◇V"
+            },
+            {
+              "label": "等级合规检查",
+              "value": "芯片等级未高于RECU等级"
+            }
+          ]
+        },
+        {
+          "title": "外观检验",
+          "items": [
+            {
+              "label": "检验结果",
+              "value": "合格"
+            }
+          ]
+        },
+        {
+          "title": "大招驱动模块",
+          "items": [
+            {
+              "label": "能量控制单元",
+              "value": "五代RECU，工作正常"
+            },
+            {
+              "label": "瑞卡因子稳定器",
+              "value": "工作正常"
+            },
+            {
+              "label": "NOS",
+              "value": "氮氧加速系统已安装"
+            },
+            {
+              "label": "空气动力套件（2级解锁）",
+              "value": "未选装"
+            },
+            {
+              "label": "赛道专精（3级解锁）",
+              "value": "未选装"
+            },
+            {
+              "label": "RECU限制解除（8级解锁）",
+              "value": "未选装"
+            }
+          ]
+        },
+        {
+          "title": "整车判定",
+          "items": [
+            {
+              "label": "检验结果",
+              "value": "合格，可参加速度节赛事"
+            }
+          ]
+        }
+      ]
+    },
+    "story": {
+      "content": "22比21，暗夜魅影惊险地保住了参加速度节的资格。暗夜魅影出战速度节的第一场就获得了广泛的关注，它也没有辜负观众们的期望，宛若一道漆黑的魅影穿梭在赛场上，帮助车队拿下了优胜。但很快有对手对于暗夜魅影遮挡对手视线的干扰方式是否符合速度节规定提出了质疑，最终经过速度节委员会的投票才得以继续参赛，但生产商深渊仍被要求给暗夜魅影加装限制器，以避免可能发生的赛场混乱。",
+      "id": 10052,
+      "story_content": "22比21，暗夜魅影惊险地保住了参加速度节的资格。暗夜魅影出战速度节的第一场就获得了广泛的关注，它也没有辜负观众们的期望，宛若一道漆黑的魅影穿梭在赛场上，帮助车队拿下了优胜。但很快有对手对于暗夜魅影遮挡对手视线的干扰方式是否符合速度节规定提出了质疑，最终经过速度节委员会的投票才得以继续参赛，但生产商深渊仍被要求给暗夜魅影加装限制器，以避免可能发生的赛场混乱。",
+      "story_title": "厂商：深渊",
+      "vehicle_name": "暗夜魅影"
+    },
+    "obtain": {
+      "tag_img": "item_tag_icon_manghe",
+      "obtain_type_ids": [
+        54
+      ],
+      "obtain_types": [
+        {
+          "id": 54,
+          "label": "王牌补给",
+          "desc": "参与王牌补给获取",
+          "icon": "commonnew_acesupply"
+        }
+      ]
+    },
+    "restraints": {
+      "id": 10052,
+      "match": [
+        10041,
+        10016,
+        12012,
+        12096
+      ],
+      "be_restraint": [
+        10078,
+        10044,
+        12057,
+        12031
+      ]
+    },
+    "resources": {
+      "icons": {
+        "ace_time_effect": "new_carport_icon_10100",
+        "icon_ace_time_effect": "new_carport_icon_10100",
+        "ace_time_charge_condition": "new_carport_icon_mountainroad",
+        "slipstream": "new_carport_icon_14",
+        "unlock_nitro_2": "new_carport_icon_10100",
+        "unlock_nitro_3": "new_carport_icon_nos_03",
+        "upgrade_level_icon": "new_carport_icon_10096",
+        "special_passive_skill_icon": "new_carport_icon_10096"
+      }
+    },
+    "skins": {
+      "sets": {
+        "local": [
+          {
+            "source": "local",
+            "index": 1
+          },
+          {
+            "source": "local",
+            "index": 2
+          },
+          {
+            "source": "local",
+            "index": 3
+          },
+          {
+            "source": "local",
+            "index": 4
+          },
+          {
+            "source": "local",
+            "index": 5
+          },
+          {
+            "source": "local",
+            "index": 6
+          },
+          {
+            "source": "local",
+            "index": 7
+          }
+        ]
+      },
+      "meta": {
+        "1": {
+          "id": 50136,
+          "name": "涂装 爆裂熔岩",
+          "desc": "炽热的岩浆喷涌而出，在烟幕中留下千万条火红的划痕\n适用车型：#1dd8d0暗夜魅影",
+          "icon_s": "tz_10052_1_s",
+          "icon_m": "tz_10052_1_m",
+          "icon_b": "tz_10052_1_b"
+        },
+        "2": {
+          "id": 50139,
+          "name": "涂装 蜻蜓点水",
+          "desc": "它轻盈的来了，正如它轻盈的超越你\n适用车型：#1dd8d0暗夜魅影",
+          "icon_s": "tz_10052_2_s",
+          "icon_m": "tz_10052_2_m",
+          "icon_b": "tz_10052_2_b"
+        },
+        "3": {
+          "id": 50082,
+          "name": "涂装 飞逝极光",
+          "desc": "欧若拉女神在夜幕里翩翩起舞，用曼妙的舞步描绘着只属于此刻的浪漫\n适用车型：#1dd8d0暗夜魅影",
+          "icon_s": "tz_10052_3_s",
+          "icon_m": "tz_10052_3_m",
+          "icon_b": "tz_10052_3_b"
+        },
+        "4": {
+          "id": 50152,
+          "name": "涂装 腾云驾雾",
+          "desc": "祥云腾飞，吉祥如意\n适用车型：#1dd8d0暗夜魅影",
+          "icon_s": "tz_10052_4_s",
+          "icon_m": "tz_10052_4_m",
+          "icon_b": "tz_10052_4_b"
+        },
+        "5": {
+          "id": 50436,
+          "name": "涂装 深渊堕歌",
+          "desc": "光与暗，宿命中无可避免的对决。信仰化作力量，星辰指引方向。\n适用车型：#1dd8d0暗夜魅影",
+          "icon_s": "tz_10052_5_s",
+          "icon_m": "tz_10052_5_m",
+          "icon_b": "tz_10052_5_b"
+        },
+        "6": {
+          "id": 50414,
+          "name": "涂装 空力套件 影",
+          "desc": "终结白炽的黑暗，只有一抹暗影隐存。\n适用车型：#1dd8d0暗夜魅影",
+          "icon_s": "tz_10052_6_s",
+          "icon_m": "tz_10052_6_m",
+          "icon_b": "tz_10052_6_b"
+        },
+        "7": {
+          "id": 50591,
+          "name": "涂装 即刻出发 魅影！",
+          "desc": "现在就出发，驾驶超绝暗夜魅影！\n适用车型：#1dd8d0暗夜魅影",
+          "icon_s": "tz_10052_7_s",
+          "icon_m": "tz_10052_7_m",
+          "icon_b": "tz_10052_7_b"
+        }
+      }
+    },
+    "media": {
+      "cover": "/rk-assets/10052_m.png",
+      "coverFallback": "/rk-assets/10052_m.png",
+      "shareImage": {
+        "key": "share_10052",
+        "file": "share_10052.png",
+        "url": "https://h65.gdl.netease.com/web_res_list_20220816/share_10052.webp"
+      },
+      "shareImageAdvance": null,
+      "skillVideo": {
+        "ultimate": {
+          "url": "https://vod.cc.163.com/file/61512ce675882ab49552d74b?source=27&protocol=https",
+          "thumbnail": "table_video_img_10052"
+        },
+        "sp": null
+      }
+    }
+  }
+}

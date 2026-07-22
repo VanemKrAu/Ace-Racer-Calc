@@ -1,0 +1,1551 @@
+{
+  "schemaVersion": 2,
+  "versionId": "26-07-15_29734784_android",
+  "generatedAt": "2026-07-16T09:22:34.000Z",
+  "item": {
+    "id": 10006,
+    "name": "宝马 i8",
+    "manufacturer": "宝马",
+    "quality": "史诗",
+    "class": 3,
+    "group": 2,
+    "position": "干扰位",
+    "positionLabel": "干扰位",
+    "racingRole": 3,
+    "racingRoleName": "干扰位",
+    "specialization": "山路",
+    "seasonCode": null,
+    "publication": {
+      "state": "released",
+      "releaseTimestamp": 0,
+      "releaseText": "已上线",
+      "releaseMacro": "PAST"
+    },
+    "summary": "释放电场扰乱敌方车辆",
+    "description": "释放电场扰乱敌方车辆",
+    "tags": [
+      {
+        "id": 71,
+        "text": "能量损失",
+        "desc": "使敌方损失大招能量",
+        "color": 3
+      },
+      {
+        "id": 64,
+        "text": "减速",
+        "desc": "降低敌方的极速",
+        "color": 3
+      },
+      {
+        "id": 26,
+        "text": "持久",
+        "desc": "大招持续时间长",
+        "color": 1
+      },
+      {
+        "id": 66,
+        "text": "锁定干扰",
+        "desc": "·自动锁定范围内的目标\n·无法命中具有*隐身*、*无法选中*、*闪避*的敌方",
+        "color": 4
+      },
+      {
+        "id": 105,
+        "text": "漂移强化",
+        "desc": "拥有特殊强化的漂移手感",
+        "color": 1
+      },
+      {
+        "id": 25,
+        "text": "集气无阈值",
+        "desc": "在漂移状态下集满一管氮气后，无需退出漂移即可继续集气和使用氮气",
+        "color": 1
+      }
+    ],
+    "stats": {
+      "speed_limit": 179.5,
+      "speedup_ratio": 1.021,
+      "charge": {
+        "ace_charge": 2700,
+        "drift_charge_energy_coef": 600,
+        "drift_charge_energy_min": 1200,
+        "drift_charge_energy_max": 6000,
+        "drift_extra_charge": [
+          [
+            1,
+            0
+          ],
+          [
+            2,
+            1800
+          ]
+        ]
+      }
+    },
+    "maxDurability": 100,
+    "levels": [
+      {
+        "id": 10006,
+        "suffix": "0",
+        "rich_text": {
+          "id": 10006,
+          "ace_time_charge_condition": "在山路赛道，使用氮气时获得额外大招充能并在落后第一名超过一定距离时获得速度提升效果",
+          "ace_time_effect": "提高干扰频率并在比赛开始时获得30%大招能量",
+          "ace_time_effect_rich_desc": "提高干扰频率并在比赛开始时获得30%大招能量",
+          "chip_unlock_tips": "芯片最高生效等级为#fe7ab71#ffffff级",
+          "icon_ace_time_charge_condition": "new_carport_icon_mountainroad",
+          "icon_ace_time_effect": "new_carport_icon_10006",
+          "icon_slipstream": "new_carport_icon_14",
+          "icon_unlock_nitro_2": "new_carport_icon_10006",
+          "icon_unlock_nitro_3": "new_carport_icon_nos_03",
+          "level_title": "原车型",
+          "passive_skill_effect": [
+            "电动力场对附近车辆的干扰",
+            ""
+          ],
+          "passive_skill_effect_value": [
+            "-8公里/小时",
+            ""
+          ],
+          "passive_skill_rich_desc": "开局10秒后，处于第3名及以后名次时，极速+8km/h",
+          "slipstream": "跟随在车辆后方将获得尾流，产生持续的氮气充能效果",
+          "special_passive_skill_desc": "开局10秒后，处于第3名及以后名次时，极速+16km/h",
+          "special_passive_skill_icon": "new_carport_icon_10064",
+          "special_passive_skill_title": "极限追击",
+          "title_ace_time_charge_condition": "赛道专精",
+          "title_ace_time_effect": "RECU限制解除",
+          "title_slipstream": "空气动力学套件",
+          "title_unlock_nitro_2": "大招强化套件 I",
+          "title_unlock_nitro_3": "竞速级氮气支架",
+          "unlock_nitro_3": "解锁1x6磅，2x3磅，3x2磅氮气",
+          "upgrade_level_icon": "new_carport_icon_10064"
+        },
+        "stats": {
+          "speed_limit": 179.5,
+          "speedup_ratio": 1.021,
+          "charge": {
+            "ace_charge": 2700,
+            "drift_charge_energy_coef": 600,
+            "drift_charge_energy_min": 1200,
+            "drift_charge_energy_max": 6000,
+            "drift_extra_charge": [
+              [
+                1,
+                0
+              ],
+              [
+                2,
+                1800
+              ]
+            ]
+          }
+        }
+      },
+      {
+        "id": 10406,
+        "suffix": "1",
+        "rich_text": {
+          "id": 10406,
+          "ace_time_charge_condition": "在山路赛道，使用氮气时获得额外大招充能并在落后第一名超过一定距离时获得速度提升效果",
+          "ace_time_effect": "提高干扰频率并在比赛开始时获得30%大招能量",
+          "ace_time_effect_rich_desc": "提高干扰频率并在比赛开始时获得30%大招能量",
+          "chip_unlock_tips": "芯片最高生效等级为#fe7ab74#ffffff级",
+          "icon_ace_time_charge_condition": "new_carport_icon_mountainroad",
+          "icon_ace_time_effect": "new_carport_icon_10006",
+          "icon_slipstream": "new_carport_icon_14",
+          "icon_unlock_nitro_2": "new_carport_icon_10006",
+          "icon_unlock_nitro_3": "new_carport_icon_nos_03",
+          "is_unlocked_ace_time_charge_condition": 1,
+          "is_unlocked_slipstream": 1,
+          "level_title": "竞速级氮气支架 I",
+          "passive_skill_effect": [
+            "电动力场对附近车辆的干扰",
+            ""
+          ],
+          "passive_skill_effect_value": [
+            "-8公里/小时",
+            ""
+          ],
+          "passive_skill_rich_desc": "开局10秒后，处于第3名及以后名次时，极速+8km/h",
+          "slipstream": "跟随在车辆后方将获得尾流，产生持续的氮气充能效果",
+          "special_passive_skill_desc": "开局10秒后，处于第3名及以后名次时，极速+16km/h",
+          "special_passive_skill_icon": "new_carport_icon_10064",
+          "special_passive_skill_title": "极限追击",
+          "title_ace_time_charge_condition": "赛道专精",
+          "title_ace_time_effect": "RECU限制解除",
+          "title_slipstream": "空气动力学套件",
+          "title_unlock_nitro_2": "大招强化套件 I",
+          "title_unlock_nitro_3": "竞速级氮气支架",
+          "unlock_nitro_3": "解锁1x6磅，2x3磅，3x2磅氮气",
+          "upgrade_level_icon": "new_carport_icon_nos_03"
+        },
+        "stats": {
+          "speed_limit": 179.5,
+          "speedup_ratio": 1.021,
+          "charge": {
+            "ace_charge": 2700,
+            "drift_charge_energy_coef": 600,
+            "drift_charge_energy_min": 1200,
+            "drift_charge_energy_max": 6000,
+            "drift_extra_charge": [
+              [
+                1,
+                0
+              ],
+              [
+                2,
+                1800
+              ]
+            ]
+          }
+        }
+      },
+      {
+        "id": 10206,
+        "suffix": "2",
+        "rich_text": {
+          "id": 10206,
+          "ace_time_charge_condition": "在山路赛道，使用氮气时获得额外大招充能并在落后第一名超过一定距离时获得速度提升效果",
+          "ace_time_effect": "提高干扰频率并在比赛开始时获得30%大招能量",
+          "ace_time_effect_rich_desc": "提高干扰频率并在比赛开始时获得30%大招能量",
+          "chip_unlock_tips": "芯片最高生效等级为#fe7ab72#ffffff级",
+          "icon_ace_time_charge_condition": "new_carport_icon_mountainroad",
+          "icon_ace_time_effect": "new_carport_icon_10006",
+          "icon_slipstream": "new_carport_icon_14",
+          "icon_unlock_nitro_2": "new_carport_icon_10006",
+          "icon_unlock_nitro_3": "new_carport_icon_nos_03",
+          "is_unlocked_slipstream": 1,
+          "level_title": "空气动力学套件",
+          "passive_skill_effect": [
+            "电动力场对附近车辆的干扰",
+            ""
+          ],
+          "passive_skill_effect_value": [
+            "-8公里/小时",
+            ""
+          ],
+          "passive_skill_rich_desc": "开局10秒后，处于第3名及以后名次时，极速+8km/h",
+          "slipstream": "跟随在车辆后方将获得尾流，产生持续的氮气充能效果",
+          "special_passive_skill_desc": "开局10秒后，处于第3名及以后名次时，极速+16km/h",
+          "special_passive_skill_icon": "new_carport_icon_10064",
+          "special_passive_skill_title": "极限追击",
+          "title_ace_time_charge_condition": "赛道专精",
+          "title_ace_time_effect": "RECU限制解除",
+          "title_slipstream": "空气动力学套件",
+          "title_unlock_nitro_2": "大招强化套件 I",
+          "title_unlock_nitro_3": "竞速级氮气支架",
+          "unlock_nitro_3": "解锁1x6磅，2x3磅，3x2磅氮气",
+          "upgrade_level_icon": "new_carport_icon_14"
+        },
+        "stats": {
+          "speed_limit": 179.5,
+          "speedup_ratio": 1.021,
+          "charge": {
+            "ace_charge": 2700,
+            "drift_charge_energy_coef": 600,
+            "drift_charge_energy_min": 1200,
+            "drift_charge_energy_max": 6000,
+            "drift_extra_charge": [
+              [
+                1,
+                0
+              ],
+              [
+                2,
+                1800
+              ]
+            ]
+          }
+        }
+      },
+      {
+        "id": 10306,
+        "suffix": "3",
+        "rich_text": {
+          "id": 10306,
+          "ace_time_charge_condition": "在山路赛道，使用氮气时获得额外大招充能并在落后第一名超过一定距离时获得速度提升效果",
+          "ace_time_effect": "提高干扰频率并在比赛开始时获得30%大招能量",
+          "ace_time_effect_rich_desc": "提高干扰频率并在比赛开始时获得30%大招能量",
+          "chip_unlock_tips": "芯片最高生效等级为#fe7ab73#ffffff级",
+          "icon_ace_time_charge_condition": "new_carport_icon_mountainroad",
+          "icon_ace_time_effect": "new_carport_icon_10006",
+          "icon_slipstream": "new_carport_icon_14",
+          "icon_unlock_nitro_2": "new_carport_icon_10006",
+          "icon_unlock_nitro_3": "new_carport_icon_nos_03",
+          "is_unlocked_ace_time_charge_condition": 1,
+          "is_unlocked_slipstream": 1,
+          "level_title": "赛道专精",
+          "passive_skill_effect": [
+            "电动力场对附近车辆的干扰",
+            ""
+          ],
+          "passive_skill_effect_value": [
+            "-8公里/小时",
+            ""
+          ],
+          "passive_skill_rich_desc": "开局10秒后，处于第3名及以后名次时，极速+8km/h",
+          "slipstream": "跟随在车辆后方将获得尾流，产生持续的氮气充能效果",
+          "special_passive_skill_desc": "开局10秒后，处于第3名及以后名次时，极速+16km/h",
+          "special_passive_skill_icon": "new_carport_icon_10064",
+          "special_passive_skill_title": "极限追击",
+          "title_ace_time_charge_condition": "赛道专精",
+          "title_ace_time_effect": "RECU限制解除",
+          "title_slipstream": "空气动力学套件",
+          "title_unlock_nitro_2": "大招强化套件 I",
+          "title_unlock_nitro_3": "竞速级氮气支架",
+          "unlock_nitro_3": "解锁1x6磅，2x3磅，3x2磅氮气",
+          "upgrade_level_icon": "new_carport_icon_mountainroad"
+        },
+        "stats": {
+          "speed_limit": 179.5,
+          "speedup_ratio": 1.021,
+          "charge": {
+            "ace_charge": 2700,
+            "drift_charge_energy_coef": 600,
+            "drift_charge_energy_min": 1200,
+            "drift_charge_energy_max": 6000,
+            "drift_extra_charge": [
+              [
+                1,
+                0
+              ],
+              [
+                2,
+                1800
+              ]
+            ]
+          }
+        }
+      },
+      {
+        "id": 10506,
+        "suffix": "4",
+        "rich_text": {
+          "id": 10506,
+          "ace_time_charge_condition": "在山路赛道，使用氮气时获得额外大招充能并在落后第一名超过一定距离时获得速度提升效果",
+          "ace_time_effect": "提高干扰频率并在比赛开始时获得30%大招能量",
+          "ace_time_effect_rich_desc": "提高干扰频率并在比赛开始时获得30%大招能量",
+          "chip_unlock_tips": "芯片最高生效等级为#fe7ab75#ffffff级",
+          "icon_ace_time_charge_condition": "new_carport_icon_mountainroad",
+          "icon_ace_time_effect": "new_carport_icon_10006",
+          "icon_slipstream": "new_carport_icon_14",
+          "icon_unlock_nitro_2": "new_carport_icon_10006",
+          "icon_unlock_nitro_3": "new_carport_icon_nos_03",
+          "is_unlocked_ace_time_charge_condition": 1,
+          "is_unlocked_slipstream": 1,
+          "level_title": "大招强化 I",
+          "passive_skill_effect": [
+            "电动力场对附近车辆的干扰",
+            ""
+          ],
+          "passive_skill_effect_value": [
+            "-9公里/小时",
+            ""
+          ],
+          "passive_skill_rich_desc": "开局10秒后，处于第3名及以后名次时，极速+8km/h",
+          "slipstream": "跟随在车辆后方将获得尾流，产生持续的氮气充能效果",
+          "special_passive_skill_desc": "开局10秒后，处于第3名及以后名次时，极速+16km/h",
+          "special_passive_skill_icon": "new_carport_icon_10064",
+          "special_passive_skill_title": "极限追击",
+          "title_ace_time_charge_condition": "赛道专精",
+          "title_ace_time_effect": "RECU限制解除",
+          "title_slipstream": "空气动力学套件",
+          "title_unlock_nitro_2": "大招强化套件 I",
+          "title_unlock_nitro_3": "竞速级氮气支架",
+          "unlock_nitro_3": "解锁1x6磅，2x3磅，3x2磅氮气",
+          "upgrade_level_icon": "new_carport_icon_10006"
+        },
+        "stats": {
+          "speed_limit": 179.5,
+          "speedup_ratio": 1.021,
+          "charge": {
+            "ace_charge": 2700,
+            "drift_charge_energy_coef": 600,
+            "drift_charge_energy_min": 1200,
+            "drift_charge_energy_max": 6000,
+            "drift_extra_charge": [
+              [
+                1,
+                0
+              ],
+              [
+                2,
+                1800
+              ]
+            ]
+          }
+        }
+      },
+      {
+        "id": 10606,
+        "suffix": "5",
+        "rich_text": {
+          "id": 10606,
+          "ace_time_charge_condition": "在山路赛道，使用氮气时获得额外大招充能并在落后第一名超过一定距离时获得速度提升效果",
+          "ace_time_effect": "提高干扰频率并在比赛开始时获得30%大招能量",
+          "ace_time_effect_rich_desc": "提高干扰频率并在比赛开始时获得30%大招能量",
+          "chip_unlock_tips": "芯片最高生效等级为#fe7ab76#ffffff级",
+          "icon_ace_time_charge_condition": "new_carport_icon_mountainroad",
+          "icon_ace_time_effect": "new_carport_icon_10006",
+          "icon_slipstream": "new_carport_icon_14",
+          "icon_unlock_nitro_2": "new_carport_icon_10006",
+          "icon_unlock_nitro_3": "new_carport_icon_nos_03",
+          "is_unlocked_ace_time_charge_condition": 1,
+          "is_unlocked_slipstream": 1,
+          "level_title": "竞速级氮气支架 II",
+          "passive_skill_effect": [
+            "电动力场对附近车辆的干扰",
+            ""
+          ],
+          "passive_skill_effect_value": [
+            "-9公里/小时",
+            ""
+          ],
+          "passive_skill_rich_desc": "开局10秒后，处于第3名及以后名次时，极速+8km/h",
+          "slipstream": "跟随在车辆后方将获得尾流，产生持续的氮气充能效果",
+          "special_passive_skill_desc": "开局10秒后，处于第3名及以后名次时，极速+16km/h",
+          "special_passive_skill_icon": "new_carport_icon_10064",
+          "special_passive_skill_title": "极限追击",
+          "title_ace_time_charge_condition": "赛道专精",
+          "title_ace_time_effect": "RECU限制解除",
+          "title_slipstream": "空气动力学套件",
+          "title_unlock_nitro_2": "大招强化套件 I",
+          "title_unlock_nitro_3": "竞速级氮气支架",
+          "unlock_nitro_3": "解锁1x6磅，2x3磅，3x2磅氮气",
+          "upgrade_level_icon": "new_carport_icon_nos_03"
+        },
+        "stats": {
+          "speed_limit": 179.5,
+          "speedup_ratio": 1.021,
+          "charge": {
+            "ace_charge": 2700,
+            "drift_charge_energy_coef": 600,
+            "drift_charge_energy_min": 1200,
+            "drift_charge_energy_max": 6000,
+            "drift_extra_charge": [
+              [
+                1,
+                0
+              ],
+              [
+                2,
+                1800
+              ]
+            ]
+          }
+        }
+      },
+      {
+        "id": 10706,
+        "suffix": "6",
+        "rich_text": {
+          "id": 10706,
+          "ace_time_charge_condition": "在山路赛道，使用氮气时获得额外大招充能并在落后第一名超过一定距离时获得速度提升效果",
+          "ace_time_effect": "提高干扰频率并在比赛开始时获得30%大招能量",
+          "ace_time_effect_rich_desc": "提高干扰频率并在比赛开始时获得30%大招能量",
+          "chip_unlock_tips": "芯片最高生效等级为#fe7ab77#ffffff级",
+          "icon_ace_time_charge_condition": "new_carport_icon_mountainroad",
+          "icon_ace_time_effect": "new_carport_icon_10006",
+          "icon_slipstream": "new_carport_icon_14",
+          "icon_unlock_nitro_2": "new_carport_icon_10006",
+          "icon_unlock_nitro_3": "new_carport_icon_nos_03",
+          "is_unlocked_ace_time_charge_condition": 1,
+          "is_unlocked_slipstream": 1,
+          "level_title": "大招强化 II",
+          "passive_skill_effect": [
+            "电动力场对附近车辆的干扰",
+            ""
+          ],
+          "passive_skill_effect_value": [
+            "-10公里/小时",
+            ""
+          ],
+          "passive_skill_rich_desc": "开局10秒后，处于第3名及以后名次时，极速+8km/h",
+          "slipstream": "跟随在车辆后方将获得尾流，产生持续的氮气充能效果",
+          "special_passive_skill_desc": "开局10秒后，处于第3名及以后名次时，极速+16km/h",
+          "special_passive_skill_icon": "new_carport_icon_10064",
+          "special_passive_skill_title": "极限追击",
+          "title_ace_time_charge_condition": "赛道专精",
+          "title_ace_time_effect": "RECU限制解除",
+          "title_slipstream": "空气动力学套件",
+          "title_unlock_nitro_2": "大招强化套件 I",
+          "title_unlock_nitro_3": "竞速级氮气支架",
+          "unlock_nitro_3": "解锁1x6磅，2x3磅，3x2磅氮气",
+          "upgrade_level_icon": "new_carport_icon_10006"
+        },
+        "stats": {
+          "speed_limit": 180,
+          "speedup_ratio": 1.021,
+          "charge": {
+            "ace_charge": 2700,
+            "drift_charge_energy_coef": 600,
+            "drift_charge_energy_min": 1200,
+            "drift_charge_energy_max": 6000,
+            "drift_extra_charge": [
+              [
+                1,
+                0
+              ],
+              [
+                2,
+                1800
+              ]
+            ]
+          }
+        }
+      },
+      {
+        "id": 10806,
+        "suffix": "7",
+        "rich_text": {
+          "id": 10806,
+          "ace_time_charge_condition": "在山路赛道，使用氮气时获得额外大招充能并在落后第一名超过一定距离时获得速度提升效果",
+          "ace_time_effect": "提高干扰频率并在比赛开始时获得30%大招能量",
+          "ace_time_effect_rich_desc": "提高干扰频率并在比赛开始时获得30%大招能量",
+          "chip_unlock_tips": "芯片最高生效等级为#fe7ab78#ffffff级",
+          "icon_ace_time_charge_condition": "new_carport_icon_mountainroad",
+          "icon_ace_time_effect": "new_carport_icon_10006",
+          "icon_slipstream": "new_carport_icon_14",
+          "icon_unlock_nitro_2": "new_carport_icon_10006",
+          "icon_unlock_nitro_3": "new_carport_icon_nos_03",
+          "is_unlocked_ace_time_charge_condition": 1,
+          "is_unlocked_ace_time_effect": 1,
+          "is_unlocked_slipstream": 1,
+          "level_title": "RECU限制解除",
+          "passive_skill_effect": [
+            "电动力场对附近车辆的干扰",
+            ""
+          ],
+          "passive_skill_effect_value": [
+            "-10公里/小时",
+            ""
+          ],
+          "passive_skill_rich_desc": "开局10秒后，处于第3名及以后名次时，极速+8km/h",
+          "slipstream": "跟随在车辆后方将获得尾流，产生持续的氮气充能效果",
+          "special_passive_skill_desc": "开局10秒后，处于第3名及以后名次时，极速+16km/h",
+          "special_passive_skill_icon": "new_carport_icon_10064",
+          "special_passive_skill_title": "极限追击",
+          "title_ace_time_charge_condition": "赛道专精",
+          "title_ace_time_effect": "RECU限制解除",
+          "title_slipstream": "空气动力学套件",
+          "title_unlock_nitro_2": "大招强化套件 I",
+          "title_unlock_nitro_3": "竞速级氮气支架",
+          "unlock_nitro_3": "解锁1x6磅，2x3磅，3x2磅氮气",
+          "upgrade_level_icon": "new_carport_icon_10006"
+        },
+        "stats": {
+          "speed_limit": 180,
+          "speedup_ratio": 1.021,
+          "charge": {
+            "ace_charge": 2700,
+            "drift_charge_energy_coef": 600,
+            "drift_charge_energy_min": 1200,
+            "drift_charge_energy_max": 6000,
+            "drift_extra_charge": [
+              [
+                1,
+                0
+              ],
+              [
+                2,
+                1800
+              ]
+            ]
+          }
+        }
+      },
+      {
+        "id": 10906,
+        "suffix": "8",
+        "rich_text": {
+          "id": 10906,
+          "ace_time_charge_condition": "在山路赛道，使用氮气时获得额外大招充能并在落后第一名超过一定距离时获得速度提升效果",
+          "ace_time_effect": "提高干扰频率并在比赛开始时获得30%大招能量",
+          "ace_time_effect_rich_desc": "提高干扰频率并在比赛开始时获得30%大招能量",
+          "chip_unlock_tips": "芯片最高生效等级为#fe7ab79#ffffff级",
+          "icon_ace_time_charge_condition": "new_carport_icon_mountainroad",
+          "icon_ace_time_effect": "new_carport_icon_10006",
+          "icon_slipstream": "new_carport_icon_14",
+          "icon_unlock_nitro_2": "new_carport_icon_10006",
+          "icon_unlock_nitro_3": "new_carport_icon_nos_03",
+          "is_unlocked_ace_time_charge_condition": 1,
+          "is_unlocked_ace_time_effect": 1,
+          "is_unlocked_slipstream": 1,
+          "level_title": "大招强化 III",
+          "passive_skill_effect": [
+            "电动力场对附近车辆的干扰",
+            ""
+          ],
+          "passive_skill_effect_value": [
+            "-11公里/小时",
+            ""
+          ],
+          "passive_skill_rich_desc": "开局10秒后，处于第3名及以后名次时，极速+8km/h",
+          "slipstream": "跟随在车辆后方将获得尾流，产生持续的氮气充能效果",
+          "special_passive_skill_desc": "开局10秒后，处于第3名及以后名次时，极速+16km/h",
+          "special_passive_skill_icon": "new_carport_icon_10064",
+          "special_passive_skill_title": "极限追击",
+          "title_ace_time_charge_condition": "赛道专精",
+          "title_ace_time_effect": "RECU限制解除",
+          "title_slipstream": "空气动力学套件",
+          "title_unlock_nitro_2": "大招强化套件 I",
+          "title_unlock_nitro_3": "竞速级氮气支架",
+          "unlock_nitro_3": "解锁1x6磅，2x3磅，3x2磅氮气",
+          "upgrade_level_icon": "new_carport_icon_10006"
+        },
+        "stats": {
+          "speed_limit": 180.5,
+          "speedup_ratio": 1.021,
+          "charge": {
+            "ace_charge": 2700,
+            "drift_charge_energy_coef": 600,
+            "drift_charge_energy_min": 1200,
+            "drift_charge_energy_max": 6000,
+            "drift_extra_charge": [
+              [
+                1,
+                0
+              ],
+              [
+                2,
+                1800
+              ]
+            ]
+          }
+        }
+      },
+      {
+        "id": 11006,
+        "suffix": "9",
+        "rich_text": {
+          "id": 11006,
+          "ace_time_charge_condition": "在山路赛道，使用氮气时获得额外大招充能并在落后第一名超过一定距离时获得速度提升效果",
+          "ace_time_effect": "提高干扰频率并在比赛开始时获得30%大招能量",
+          "ace_time_effect_rich_desc": "提高干扰频率并在比赛开始时获得30%大招能量",
+          "chip_unlock_tips": "芯片最高生效等级为#fe7ab710#ffffff级",
+          "icon_ace_time_charge_condition": "new_carport_icon_mountainroad",
+          "icon_ace_time_effect": "new_carport_icon_10006",
+          "icon_slipstream": "new_carport_icon_14",
+          "icon_unlock_nitro_2": "new_carport_icon_10006",
+          "icon_unlock_nitro_3": "new_carport_icon_nos_03",
+          "is_unlocked_ace_time_charge_condition": 1,
+          "is_unlocked_ace_time_effect": 1,
+          "is_unlocked_slipstream": 1,
+          "level_title": "大招强化 IV",
+          "passive_skill_effect": [
+            "电动力场对附近车辆的干扰",
+            ""
+          ],
+          "passive_skill_effect_value": [
+            "-13公里/小时",
+            ""
+          ],
+          "passive_skill_rich_desc": "开局10秒后，处于第3名及以后名次时，极速+8km/h",
+          "slipstream": "跟随在车辆后方将获得尾流，产生持续的氮气充能效果",
+          "special_passive_skill_desc": "开局10秒后，处于第3名及以后名次时，极速+16km/h",
+          "special_passive_skill_icon": "new_carport_icon_10064",
+          "special_passive_skill_title": "极限追击",
+          "title_ace_time_charge_condition": "赛道专精",
+          "title_ace_time_effect": "RECU限制解除",
+          "title_slipstream": "空气动力学套件",
+          "title_unlock_nitro_2": "大招强化套件 I",
+          "title_unlock_nitro_3": "竞速级氮气支架",
+          "unlock_nitro_3": "解锁1x6磅，2x3磅，3x2磅氮气",
+          "upgrade_level_icon": "new_carport_icon_10006"
+        },
+        "stats": {
+          "speed_limit": 181.5,
+          "speedup_ratio": 1.021,
+          "charge": {
+            "ace_charge": 2700,
+            "drift_charge_energy_coef": 600,
+            "drift_charge_energy_min": 1200,
+            "drift_charge_energy_max": 6000,
+            "drift_extra_charge": [
+              [
+                1,
+                0
+              ],
+              [
+                2,
+                1800
+              ]
+            ]
+          }
+        }
+      }
+    ],
+    "skills": {
+      "ultimate": {
+        "id": 851,
+        "name": "电动力场",
+        "type": "ELEC_DRIVE",
+        "icon_static": "ui_skill06_4",
+        "icon_big": null,
+        "icon": null,
+        "init_ratio": null,
+        "icons": {
+          "normal": "ui_skill06_03_1",
+          "disable": "ui_skill06_03",
+          "alt": "ui_skill06_03_2",
+          "down": "ui_skill06_03_1",
+          "static": "ui_skill06_4",
+          "big": null
+        },
+        "extra": {
+          "cam_type": "ELEC_DRIVE",
+          "eff_id": 1,
+          "is_cost_energy": 2,
+          "rally_qte": 2
+        },
+        "value_texts": [
+          {
+            "key": "name",
+            "label": "技能名称",
+            "value": "电动力场"
+          },
+          {
+            "key": "skill_type",
+            "label": "技能类型",
+            "value": "ELEC_DRIVE"
+          },
+          {
+            "key": "cam_type",
+            "label": "镜头类型",
+            "value": "ELEC_DRIVE"
+          },
+          {
+            "key": "eff_id",
+            "label": "特效编号",
+            "value": "1"
+          },
+          {
+            "key": "min_charge",
+            "label": "最低充能万分比",
+            "value": "10000"
+          },
+          {
+            "key": "rally_qte",
+            "label": "拉力赛触发qte",
+            "value": "2"
+          }
+        ],
+        "instructions": [
+          {
+            "id": 202001,
+            "accel_action": 2,
+            "accelerate_curve": [
+              [
+                0,
+                30
+              ],
+              [
+                165,
+                21.7
+              ],
+              [
+                166,
+                5
+              ],
+              [
+                200,
+                5
+              ]
+            ],
+            "attack_show_friend_enemy_filter": [
+              1,
+              2
+            ],
+            "attack_show_role_filter": [
+              1,
+              2,
+              3
+            ],
+            "buff_count": 0,
+            "cost_ratio": 500,
+            "duration": 20,
+            "eff_id": 1,
+            "extra_children": [],
+            "extra_isolate": [],
+            "inst_group": 2,
+            "inst_name": "大招加速",
+            "inst_type": 2,
+            "is_hard_push": 1,
+            "rear_insts": [
+              -1
+            ],
+            "ref_insts": [
+              202001
+            ],
+            "skill_eff_id": 1005,
+            "sp_ex_speed_limit": 60,
+            "sp_max_ex_speed_limit": 60,
+            "sp_min_ex_speed_limit": 60,
+            "sp_n2o_ace_charge_ratio": 1,
+            "name": "大招加速",
+            "desc": null,
+            "type": 2,
+            "order": null,
+            "value_texts": [
+              {
+                "key": "attack_show_friend_enemy_filter",
+                "label": "敌友筛选",
+                "value": "[1,2]"
+              },
+              {
+                "key": "attack_show_role_filter",
+                "label": "定位筛选",
+                "value": "[1,2,3]"
+              },
+              {
+                "key": "buff_count",
+                "label": "Buff 数量",
+                "value": "0"
+              },
+              {
+                "key": "rear_insts",
+                "label": "后续节点",
+                "value": "[-1]"
+              },
+              {
+                "key": "extra_children",
+                "label": "子节点",
+                "value": "[]"
+              },
+              {
+                "key": "ref_insts",
+                "label": "引用节点",
+                "value": "[202001]"
+              }
+            ]
+          },
+          {
+            "id": 800801,
+            "attack_show_eff_dur": 5,
+            "attack_show_friend_enemy_filter": [
+              1,
+              2
+            ],
+            "attack_show_keep_dur": 5,
+            "attack_show_role_filter": [
+              1,
+              2,
+              3
+            ],
+            "buff_count": 0,
+            "cd_type": 1,
+            "duration": 999,
+            "eff_cd": 5.5,
+            "eff_id": 1,
+            "enemy_eff": [
+              52301
+            ],
+            "extra_children": [],
+            "extra_isolate": [],
+            "inst_group": 8,
+            "inst_name": "电场",
+            "inst_type": 8,
+            "lock_camp": 2,
+            "lock_cnt": 5,
+            "lock_dist": [
+              -100,
+              100
+            ],
+            "lock_instr_types2": [
+              18
+            ],
+            "lock_side_dist": [
+              -100,
+              100
+            ],
+            "lock_vertical_dist": [
+              -6000,
+              6000
+            ],
+            "rear_insts": [],
+            "ref_insts": [
+              800801
+            ],
+            "skill_eff_id": 8,
+            "sp_n2o_ace_charge_ratio": 1,
+            "name": "电场",
+            "desc": null,
+            "type": 8,
+            "order": null,
+            "value_texts": [
+              {
+                "key": "attack_show_friend_enemy_filter",
+                "label": "敌友筛选",
+                "value": "[1,2]"
+              },
+              {
+                "key": "attack_show_role_filter",
+                "label": "定位筛选",
+                "value": "[1,2,3]"
+              },
+              {
+                "key": "buff_count",
+                "label": "Buff 数量",
+                "value": "0"
+              },
+              {
+                "key": "rear_insts",
+                "label": "后续节点",
+                "value": "[]"
+              },
+              {
+                "key": "extra_children",
+                "label": "子节点",
+                "value": "[]"
+              },
+              {
+                "key": "ref_insts",
+                "label": "引用节点",
+                "value": "[800801]"
+              }
+            ]
+          },
+          {
+            "id": 3600801,
+            "desc": "集气无阈值",
+            "buff_count": 0,
+            "buff_icon": "new_carport_icon_110_1",
+            "duration": null,
+            "extra_children": [],
+            "extra_isolate": [],
+            "inst_group": 36,
+            "inst_name": "集气无阈值",
+            "inst_type": 36,
+            "is_positive": 1,
+            "rear_insts": [
+              -1
+            ],
+            "ref_insts": [
+              3600801
+            ],
+            "sp_n2o_ace_charge_ratio": 1,
+            "name": "集气无阈值",
+            "type": 36,
+            "order": null,
+            "value_texts": [
+              {
+                "key": "buff_count",
+                "label": "Buff 数量",
+                "value": "0"
+              },
+              {
+                "key": "rear_insts",
+                "label": "后续节点",
+                "value": "[-1]"
+              },
+              {
+                "key": "extra_children",
+                "label": "子节点",
+                "value": "[]"
+              },
+              {
+                "key": "ref_insts",
+                "label": "引用节点",
+                "value": "[3600801]"
+              }
+            ]
+          }
+        ]
+      },
+      "sp": null,
+      "passive": [
+        {
+          "id": 53401,
+          "name": "极限追击",
+          "type": null,
+          "icon_static": null,
+          "icon_big": null,
+          "icon": null,
+          "init_ratio": null,
+          "icons": {
+            "normal": null,
+            "disable": null,
+            "alt": null,
+            "down": null,
+            "static": null,
+            "big": null
+          },
+          "extra": {
+            "cam_type": null,
+            "eff_id": null,
+            "is_cost_energy": null,
+            "rally_qte": null
+          },
+          "value_texts": [
+            {
+              "key": "name",
+              "label": "技能名称",
+              "value": "极限追击"
+            }
+          ],
+          "instructions": [
+            {
+              "id": 130001,
+              "accelerate_curve": [
+                [
+                  0,
+                  0
+                ],
+                [
+                  1,
+                  0
+                ]
+              ],
+              "attack_show_friend_enemy_filter": [
+                1,
+                2
+              ],
+              "attack_show_role_filter": [
+                1,
+                2,
+                3
+              ],
+              "buff_count": 0,
+              "duration": 10,
+              "extra_children": [],
+              "extra_isolate": [],
+              "inst_group": 1001,
+              "inst_name": "起步cd",
+              "inst_type": 1,
+              "rear_insts": [
+                2801201
+              ],
+              "ref_insts": [
+                130001
+              ],
+              "sp_n2o_ace_charge_ratio": 1,
+              "name": "起步cd",
+              "desc": null,
+              "type": 1,
+              "order": null,
+              "value_texts": [
+                {
+                  "key": "attack_show_friend_enemy_filter",
+                  "label": "敌友筛选",
+                  "value": "[1,2]"
+                },
+                {
+                  "key": "attack_show_role_filter",
+                  "label": "定位筛选",
+                  "value": "[1,2,3]"
+                },
+                {
+                  "key": "buff_count",
+                  "label": "Buff 数量",
+                  "value": "0"
+                },
+                {
+                  "key": "rear_insts",
+                  "label": "后续节点",
+                  "value": "[2801201]"
+                },
+                {
+                  "key": "extra_children",
+                  "label": "子节点",
+                  "value": "[]"
+                },
+                {
+                  "key": "ref_insts",
+                  "label": "引用节点",
+                  "value": "[130001]"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "id": 50801,
+          "name": "封禁尾流",
+          "type": null,
+          "icon_static": null,
+          "icon_big": null,
+          "icon": null,
+          "init_ratio": null,
+          "icons": {
+            "normal": null,
+            "disable": null,
+            "alt": null,
+            "down": null,
+            "static": null,
+            "big": null
+          },
+          "extra": {
+            "cam_type": null,
+            "eff_id": null,
+            "is_cost_energy": null,
+            "rally_qte": null
+          },
+          "value_texts": [
+            {
+              "key": "name",
+              "label": "技能名称",
+              "value": "封禁尾流"
+            }
+          ],
+          "instructions": [
+            {
+              "id": 2100301,
+              "attack_show_friend_enemy_filter": [
+                1,
+                2
+              ],
+              "attack_show_role_filter": [
+                1,
+                2,
+                3
+              ],
+              "buff_count": 0,
+              "duration": 999,
+              "eff_id": 1,
+              "extra_children": [],
+              "extra_isolate": [],
+              "inst_group": 21001,
+              "inst_name": "封禁尾流",
+              "inst_type": 21,
+              "rear_insts": [],
+              "ref_insts": [
+                2100301
+              ],
+              "skill_eff_id": 21,
+              "slipstream_state": 1,
+              "sp_n2o_ace_charge_ratio": 1,
+              "name": "封禁尾流",
+              "desc": null,
+              "type": 21,
+              "order": null,
+              "value_texts": [
+                {
+                  "key": "attack_show_friend_enemy_filter",
+                  "label": "敌友筛选",
+                  "value": "[1,2]"
+                },
+                {
+                  "key": "attack_show_role_filter",
+                  "label": "定位筛选",
+                  "value": "[1,2,3]"
+                },
+                {
+                  "key": "buff_count",
+                  "label": "Buff 数量",
+                  "value": "0"
+                },
+                {
+                  "key": "rear_insts",
+                  "label": "后续节点",
+                  "value": "[]"
+                },
+                {
+                  "key": "extra_children",
+                  "label": "子节点",
+                  "value": "[]"
+                },
+                {
+                  "key": "ref_insts",
+                  "label": "引用节点",
+                  "value": "[2100301]"
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    "skillPanelGroups": {
+      "ultimate": [
+        {
+          "id": "795",
+          "name_rich": {
+            "raw": "自身极速提升",
+            "html": "自身极速提升"
+          },
+          "value_rich": {
+            "raw": "60km/h",
+            "html": "60km/h"
+          },
+          "value_text": "60km/h",
+          "instruction_ids": [],
+          "values": []
+        },
+        {
+          "id": "796",
+          "name_rich": {
+            "raw": "自身加速时长",
+            "html": "自身加速时长"
+          },
+          "value_rich": {
+            "raw": "20秒",
+            "html": "20秒"
+          },
+          "value_text": "20秒",
+          "instruction_ids": [],
+          "values": []
+        },
+        {
+          "id": "798",
+          "name_rich": {
+            "raw": "敌方大招扣能",
+            "html": "敌方大招扣能"
+          },
+          "value_rich": {
+            "raw": "12%",
+            "html": "12%"
+          },
+          "value_text": "12%",
+          "instruction_ids": [],
+          "values": []
+        },
+        {
+          "id": "799",
+          "name_rich": {
+            "raw": "电场扣能间隔",
+            "html": "电场扣能间隔"
+          },
+          "value_rich": {
+            "raw": "5秒",
+            "html": "5秒"
+          },
+          "value_text": "5秒",
+          "instruction_ids": [
+            906301,
+            906302
+          ],
+          "values": []
+        },
+        {
+          "id": "800",
+          "name_rich": {
+            "raw": "敌方极速降低",
+            "html": "敌方极速降低"
+          },
+          "value_rich": {
+            "raw": "-8km/h",
+            "html": "-8km/h"
+          },
+          "value_text": "-8km/h",
+          "instruction_ids": [
+            122001,
+            122010
+          ],
+          "values": []
+        },
+        {
+          "id": "801",
+          "name_rich": {
+            "raw": "电场作用范围",
+            "html": "电场作用范围"
+          },
+          "value_rich": {
+            "raw": "100米",
+            "html": "100米"
+          },
+          "value_text": "100米",
+          "instruction_ids": [],
+          "values": []
+        },
+        {
+          "id": "802",
+          "name_rich": {
+            "raw": "电场命中类型",
+            "html": "电场命中类型"
+          },
+          "value_rich": {
+            "raw": "#tipsnoicon[锁定类]",
+            "html": "<span class=\"rt-tip rt-tip--entry rt-tip--noicon\" data-tip=\"锁定类\" data-desc=\"·自动锁定范围内的目标&#10;·无法命中具有*隐身*、*无法选中*、*闪避*的敌方\" style=\"--tip-color:#ffd700\" title=\"·自动锁定范围内的目标&#10;·无法命中具有*隐身*、*无法选中*、*闪避*的敌方\">锁定类</span>"
+          },
+          "value_text": "#tipsnoicon[锁定类]",
+          "instruction_ids": [],
+          "values": []
+        },
+        {
+          "id": "20711",
+          "name_rich": {
+            "raw": "加速动力",
+            "html": "加速动力"
+          },
+          "value_rich": {
+            "raw": "低",
+            "html": "低"
+          },
+          "value_text": "低",
+          "instruction_ids": [],
+          "values": []
+        }
+      ],
+      "sp": [],
+      "passive": [],
+      "other": []
+    },
+    "richText": {
+      "id": 10006,
+      "ace_time_charge_condition": "在山路赛道，使用氮气时获得额外大招充能并在落后第一名超过一定距离时获得速度提升效果",
+      "ace_time_effect": "提高干扰频率并在比赛开始时获得30%大招能量",
+      "ace_time_effect_rich_desc": "提高干扰频率并在比赛开始时获得30%大招能量",
+      "chip_unlock_tips": "芯片最高生效等级为#fe7ab71#ffffff级",
+      "icon_ace_time_charge_condition": "new_carport_icon_mountainroad",
+      "icon_ace_time_effect": "new_carport_icon_10006",
+      "icon_slipstream": "new_carport_icon_14",
+      "icon_unlock_nitro_2": "new_carport_icon_10006",
+      "icon_unlock_nitro_3": "new_carport_icon_nos_03",
+      "level_title": "原车型",
+      "passive_skill_effect": [
+        "电动力场对附近车辆的干扰",
+        ""
+      ],
+      "passive_skill_effect_value": [
+        "-8公里/小时",
+        ""
+      ],
+      "passive_skill_rich_desc": "开局10秒后，处于第3名及以后名次时，极速+8km/h",
+      "slipstream": "跟随在车辆后方将获得尾流，产生持续的氮气充能效果",
+      "special_passive_skill_desc": {
+        "raw": "开局10秒后，处于第3名及以后名次时，极速+16km/h",
+        "html": "开局10秒后，处于第3名及以后名次时，极速+16km/h"
+      },
+      "special_passive_skill_icon": "new_carport_icon_10064",
+      "special_passive_skill_title": "极限追击",
+      "title_ace_time_charge_condition": "赛道专精",
+      "title_ace_time_effect": "RECU限制解除",
+      "title_slipstream": "空气动力学套件",
+      "title_unlock_nitro_2": "大招强化套件 I",
+      "title_unlock_nitro_3": "竞速级氮气支架",
+      "unlock_nitro_3": "解锁1x6磅，2x3磅，3x2磅氮气",
+      "upgrade_level_icon": "new_carport_icon_10064",
+      "feature_desc": {
+        "raw": "开启同步电机，#tips[加速推进]并进入持续20秒的长时间加速，期间集气无阈值并产生#dd9aff电场#ffffff干扰周围敌方车辆：\n·极速降低#desc[800]\n·每隔#desc[799]损失12%大招充能",
+        "html": "开启同步电机，<span class=\"rt-tip rt-tip--entry\" data-tip=\"加速推进\" data-icon=\"carport_new_skill_illustrate_b1\" data-desc=\"·获得沿车头方向的加速效果&#10;·有助于退出漂移状态\" style=\"--tip-color:#7eedff\" title=\"·获得沿车头方向的加速效果&#10;·有助于退出漂移状态\"><span class=\"rt-tip__icon-slot\"></span>加速推进</span>并进入持续20秒的长时间加速，期间集气无阈值并产生<span class=\"rt-color\" style=\"color: #dd9aff\">电场</span>干扰周围敌方车辆：<br/>·极速降低<span class=\"rt-desc\">敌方极速降低 -8km/h</span><br/>·每隔<span class=\"rt-desc\">电场扣能间隔 5秒</span>损失12%大招充能"
+      },
+      "sp_skill_desc": null,
+      "passive_skill_desc": null,
+      "story_title": "厂商：宝马",
+      "story": {
+        "raw": "宝马 i8是德国宝马第一台量产的混合动力超级跑车。外观方面，在传承宝马一贯设计理念的同时，又极具科幻感，代表着宝马从汽油时代迈向未来的电气时代的开端；动力方面，宝马 i8搭载了两台电动机和一台涡轮增压汽油发动机，最高可以输出近400匹的马力。兼具颜值和实力的宝马 i8于第一赛季登陆速度节！",
+        "html": "宝马 i8是德国宝马第一台量产的混合动力超级跑车。外观方面，在传承宝马一贯设计理念的同时，又极具科幻感，代表着宝马从汽油时代迈向未来的电气时代的开端；动力方面，宝马 i8搭载了两台电动机和一台涡轮增压汽油发动机，最高可以输出近400匹的马力。兼具颜值和实力的宝马 i8于第一赛季登陆速度节！"
+      }
+    },
+    "report": {
+      "title": "王牌速度节赛车检验报告",
+      "sections": [
+        {
+          "title": "基础数据",
+          "items": [
+            {
+              "label": "检测车辆",
+              "value": "宝马 i8"
+            },
+            {
+              "label": "注册日期",
+              "value": "{}年{}月{}日"
+            },
+            {
+              "label": "车辆类型",
+              "value": "真实阵营"
+            },
+            {
+              "label": "厂商",
+              "value": "宝马"
+            },
+            {
+              "label": "定位",
+              "value": "干扰位"
+            },
+            {
+              "label": "赛道专精",
+              "value": "山路"
+            },
+            {
+              "label": "能源类型",
+              "value": "插电式混合动力"
+            },
+            {
+              "label": "驱动方式",
+              "value": "中置四驱"
+            },
+            {
+              "label": "上市时间",
+              "value": "2014年"
+            }
+          ]
+        },
+        {
+          "title": "芯片模块",
+          "items": [
+            {
+              "label": "芯片写入权限",
+              "value": "已获取"
+            },
+            {
+              "label": "扩展芯片类型",
+              "value": "○○△△◣V"
+            },
+            {
+              "label": "等级合规检查",
+              "value": "芯片等级未高于RECU等级"
+            }
+          ]
+        },
+        {
+          "title": "外观检验",
+          "items": [
+            {
+              "label": "检验结果",
+              "value": "合格"
+            }
+          ]
+        },
+        {
+          "title": "大招驱动模块",
+          "items": [
+            {
+              "label": "能量控制单元",
+              "value": "五代RECU，工作正常"
+            },
+            {
+              "label": "瑞卡因子稳定器",
+              "value": "工作正常"
+            },
+            {
+              "label": "NOS",
+              "value": "氮氧加速系统已安装"
+            },
+            {
+              "label": "空气动力套件（2级解锁）",
+              "value": "未选装"
+            },
+            {
+              "label": "赛道专精（3级解锁）",
+              "value": "未选装"
+            },
+            {
+              "label": "RECU限制解除（8级解锁）",
+              "value": "未选装"
+            }
+          ]
+        },
+        {
+          "title": "整车判定",
+          "items": [
+            {
+              "label": "检验结果",
+              "value": "合格，可参加速度节赛事"
+            }
+          ]
+        }
+      ]
+    },
+    "story": {
+      "content": "宝马 i8是德国宝马第一台量产的混合动力超级跑车。外观方面，在传承宝马一贯设计理念的同时，又极具科幻感，代表着宝马从汽油时代迈向未来的电气时代的开端；动力方面，宝马 i8搭载了两台电动机和一台涡轮增压汽油发动机，最高可以输出近400匹的马力。兼具颜值和实力的宝马 i8于第一赛季登陆速度节！",
+      "id": 10006,
+      "story_content": "宝马 i8是德国宝马第一台量产的混合动力超级跑车。外观方面，在传承宝马一贯设计理念的同时，又极具科幻感，代表着宝马从汽油时代迈向未来的电气时代的开端；动力方面，宝马 i8搭载了两台电动机和一台涡轮增压汽油发动机，最高可以输出近400匹的马力。兼具颜值和实力的宝马 i8于第一赛季登陆速度节！",
+      "story_title": "厂商：宝马",
+      "vehicle_name": "宝马 i8"
+    },
+    "obtain": {
+      "tag_img": null,
+      "obtain_type_ids": [
+        5,
+        60
+      ],
+      "obtain_types": [
+        {
+          "id": 5,
+          "label": "补给箱",
+          "desc": "从速度节补给箱中获取",
+          "icon": "commonnew_supplyconversion"
+        },
+        {
+          "id": 60,
+          "label": "赛车学院",
+          "desc": "参与赛车学院获取",
+          "icon": "commonnew_qualifyingl"
+        }
+      ]
+    },
+    "restraints": {
+      "id": 10006,
+      "match": [
+        10061,
+        10036,
+        10023,
+        12008
+      ],
+      "be_restraint": [
+        10078,
+        10070,
+        10060
+      ]
+    },
+    "resources": {
+      "icons": {
+        "ace_time_effect": "new_carport_icon_10006",
+        "icon_ace_time_effect": "new_carport_icon_10006",
+        "ace_time_charge_condition": "new_carport_icon_mountainroad",
+        "slipstream": "new_carport_icon_14",
+        "unlock_nitro_2": "new_carport_icon_10006",
+        "unlock_nitro_3": "new_carport_icon_nos_03",
+        "upgrade_level_icon": "new_carport_icon_10064",
+        "special_passive_skill_icon": "new_carport_icon_10064"
+      }
+    },
+    "skins": {
+      "sets": {
+        "local": [
+          {
+            "source": "local",
+            "index": 1
+          },
+          {
+            "source": "local",
+            "index": 2
+          },
+          {
+            "source": "local",
+            "index": 3
+          }
+        ]
+      },
+      "meta": {
+        "1": {
+          "id": 50093,
+          "name": "涂装 电豹猎影",
+          "desc": "充满电的猎豹，比你想象的更加迅捷\n适用车型：#1dd8d0宝马 i8",
+          "icon_s": "tz_10006_1_s",
+          "icon_m": "tz_10006_1_m",
+          "icon_b": "tz_10006_1_b"
+        },
+        "2": {
+          "id": 50170,
+          "name": "涂装 君意如鸿",
+          "desc": "君意如鸿高的的，我心悬旆正摇摇。\n适用车型：#1dd8d0宝马 i8",
+          "icon_s": "tz_10006_2_s",
+          "icon_m": "tz_10006_2_m",
+          "icon_b": "tz_10006_2_b"
+        },
+        "3": {
+          "id": 50222,
+          "name": "涂装 速度矢量",
+          "desc": "在空气动力学中寻求极速美感。\n适用车型：#1dd8d0宝马 i8",
+          "icon_s": "tz_10006_3_s",
+          "icon_m": "tz_10006_3_m",
+          "icon_b": "tz_10006_3_b"
+        }
+      }
+    },
+    "media": {
+      "cover": "/rk-assets/10006_m.png",
+      "coverFallback": "/rk-assets/10006_m.png",
+      "shareImage": null,
+      "shareImageAdvance": null,
+      "skillVideo": {
+        "ultimate": {
+          "url": "https://vod.cc.163.com/file/605311966a37ca8252e83c63?source=27&protocol=https",
+          "thumbnail": "table_video_img_10006"
+        },
+        "sp": null
+      }
+    }
+  }
+}

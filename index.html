@@ -58,7 +58,8 @@
    <link rel="icon" type="image/png" href="icon.png">
    <link rel="apple-touch-icon" href="icon.png">
    
-   <script src="./html2canvas.min.js" async></script>
+    <script src="./html2canvas.min.js" async></script>
+    <script src="./car-database.js"></script>
    
    <script>
      window.si = window.si || function () { (window.siq = window.siq || []).push(arguments); };
@@ -304,7 +305,7 @@
        .bottom-msg-text { font-size: 16px; color: var(--text-color); margin-bottom: 12px; transition: color 0.3s; }
 
        .top-bar { display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px; position: relative; z-index: 1000; }
-       .dropdown-container { position: relative; }
+        .dropdown-container { position: relative; }
        .nav-btn { background: var(--card-bg); border: 1px solid var(--border); color: var(--text-color); padding: 8px 16px; border-radius: 8px; font-size: 13px; font-weight: bold; cursor: pointer; display: flex; align-items: center; gap: 6px; box-shadow: var(--btn-shadow); transition: background 0.3s, background-color 0.3s, border-color 0.3s, box-shadow 0.3s, color 0.3s, transform 0.3s; backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px); }
        .nav-btn:hover { border-color: var(--primary); box-shadow: 0 4px 12px var(--hover-glow-primary); }
        .dropdown-option { padding: 12px 16px; font-size: 13px; color: var(--text-color); cursor: pointer; transition: background-color 0.2s; display: flex; align-items: center; gap: 8px; text-decoration: none; }
@@ -384,7 +385,8 @@
        .empower-item.active .empower-sub-options, .extra-active-nitro #extraNitroContainer, .extra-active-ult #extraUltContainer, .extra-active-persec #extraPerSecContainer { max-height: 300px; opacity: 1; visibility: visible; border-width: 1px !important; }
        .empower-item.active .empower-sub-options { margin-top: 10px !important; padding: 10px !important; }
        .extra-active-nitro #extraNitroContainer, .extra-active-ult #extraUltContainer, .extra-active-persec #extraPerSecContainer { margin-top: 12px !important; padding: 12px !important; }
-       .dropdown-menu { display: none; position: absolute; top: 100%; background: var(--card-bg); backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px); border-radius: 12px; border: 1px solid var(--border); box-shadow: var(--dropdown-shadow); min-width: 140px; overflow: hidden; z-index: 2000; padding: 4px 0; margin-top: 8px; }
+        .dropdown-menu { display: none; position: absolute; top: 100%; background: rgba(20, 28, 54, 0.95); border-radius: 12px; border: 1px solid var(--border); box-shadow: var(--dropdown-shadow); min-width: 140px; max-height: 40vh; overflow-y: auto; z-index: 99999; padding: 4px 0; margin-top: 8px; }
+        body.light-mode .dropdown-menu { background: rgba(247, 250, 252, 0.95); }
        .dropdown-menu.left { left: 0; right: auto; }
        .dropdown-menu.right { right: 0; left: auto; }
        .dropdown-menu.show { display: block; animation: fadeInDown 0.25s ease forwards; }
@@ -407,7 +409,13 @@
        body.performance-mode *, body.performance-mode *::before, body.performance-mode *::after { transition: none !important; animation: none !important; }
        body.performance-mode details.tutorial-details.closing > div:last-child { display: none !important; }
 
-       .lang-en { display: none !important; }
+        .car-info-bar { margin-top: 12px; padding: 12px; background: var(--box-bg); border: 1px solid var(--border); border-radius: 10px; font-size: 12px; color: var(--text-muted); display: flex; align-items: center; gap: 12px; flex-wrap: wrap; }
+        .car-info-bar b { color: var(--primary); }
+        .dropdown-option.selected { background: rgba(155,81,224,0.15); color: var(--secondary); }
+        .car-search-box { position: relative; }
+        .car-badge { font-size: 10px; padding: 1px 6px; border-radius: 4px; background: var(--box-bg); border: 1px solid var(--border); color: var(--text-muted); }
+
+        .lang-en { display: none !important; }
        body.en-mode .zh { display: none !important; }
        body.en-mode .lang-en { display: unset !important; }
        body.en-mode span.lang-en, body.en-mode b.lang-en { display: inline-block !important; }
@@ -453,12 +461,12 @@
        </div>
 
        <div id="captureArea">
-           <div class="header">
-               <h1><span class="zh">王牌竞速一大和循环能量计算器</span><span class="lang-en">Ace Racer First Ult & Loop Calculator</span></h1>
-               <p><span class="zh">由 Vanem 设定交互逻辑、提供计算公式，AI辅助开发</span><span class="lang-en">Logic & Formulas by Vanem, AI Assisted</span></p>
-           </div>
-           
-           <style>
+            <div class="header">
+                <h1><span class="zh">王牌竞速一大和循环能量计算器</span><span class="lang-en">Ace Racer First Ult & Loop Calculator</span></h1>
+                <p><span class="zh">由 Vanem 设定交互逻辑、提供计算公式，AI辅助开发</span><span class="lang-en">Logic & Formulas by Vanem, AI Assisted</span></p>
+            </div>
+
+            <style>
                details.tutorial-details summary::-webkit-details-marker { display: none; }
                @keyframes badgePulse { 0% { opacity: 1; box-shadow: 0 0 0 0 rgba(255, 0, 127, 0.4); } 70% { opacity: 0.8; box-shadow: 0 0 0 4px rgba(255, 0, 127, 0); } 100% { opacity: 1; box-shadow: 0 0 0 0 rgba(255, 0, 127, 0); } }
            </style>
@@ -496,10 +504,10 @@
                        <div style="border-top: 2px dashed var(--warning); opacity: 1; padding-top: 12px; margin-top: 4px;">
                            <div style="font-size: 13px; color: var(--warning); font-weight: bold; margin-bottom: 6px;"><span class="zh">注意事项：</span><span class="lang-en">Notes:</span></div>
                            <ul id="notesContent" style="font-size: 12px; color: var(--text-muted); line-height: 1.6; padding-left: 18px; margin: 0; word-break: break-word;">
-                               <li><span class="zh">关于开局立刻获得能量的被动如何填写：开局获得的充能（如MINI JCW被动）和起步基础充能是两个东西！请勿将开局后获得的能量填入起步基础充能中！请填入“扩展自充能附加模块”中的“绑定到【大招释放】的自充能”中的“首发附加（开局充能等）”输入框中。</span><span class="lang-en">How to fill in the passive ability that grants energy immediately at the start of a match: The energy gained at the start (e.g., MINI JCW passive) is different from the starting base energy! Do not fill the energy gained at the start into the starting base energy field. Instead, fill it into the 'Initial Bonus (starting energy charge, etc.)' input box under 'Extended Self-Charge Add-on Module' -> 'Self-Charge Bound to [Ultimate Cast]'.</span></li>
-                               <li><span class="zh">关于偶发无法访问的情况：由于网站部署在境外服务器（GitHub）上，且部分省市运营商会对GitHub做间歇性SNI阻断（具体表现为昨天访问的好好的，今天突然进不去，过了一小会自己又好了），因此有小概率出现无法访问的情况。目前网站接入了第三方中转节点，但依旧存在极小的访问失败概率，这属于正常现象，遇到这种情况时，多刷新几次即可进入网站。另外，网站是无后端运行的，因此在域名过期前基本不可能突然关门（除非被GFW主动阻断），请放心使用。</span><span class="lang-en">Regarding occasional access issues: Since the site is hosted on overseas servers (GitHub), some regional ISPs may intermittently block SNI - meaning it works fine one day, then suddenly won't load the next, only to fix itself shortly after. So there's a small chance you might not be able to reach it. We've now added third-party relay nodes, but there's still a very slim chance of access failure. That's perfectly normal - just refresh a few times and you'll get in. Also, because the site runs entirely on the frontend with no backend, it's basically not going to disappear before the domain expires (unless the GFW actively blocks it). So rest assured.</span></li>
-                               <li><span class="zh">更新计划：网站现在和未来都无计划做出选择预设车辆后一键填写数值的功能，这样会让时效性变差且维护周期大大提高，与网站“无后端运行”、“自由定制”、“可长期运行”的初衷相悖。</span><span class="lang-en">Update Plan: Currently and in the future, the site has no plans to implement a feature that automatically fills in values by selecting a preset vehicle. This would reduce timeliness and greatly increase the maintenance cycle, contradicting the site's original intention of 'no backend operation,' 'customize freely,' and 'long-term operation'.</span></li>
-                           </ul>
+                                <li><span class="zh">选车后自动填充：大招阈值、基础双充（起手+氮气）、氮气时长、大招时长、开局立刻充能。其他参数（芯片、赋能、自充能附加模块等）需手动调整。</span><span class="lang-en">Auto-filled on car select: ult threshold, base dual charge, nitro duration, ult duration, start bonus charge. Other params (chips, empowers, extra modules) need manual tuning.</span></li>
+                                <li><span class="zh">赛车选择器：点击顶部“选择赛车”标签，即可从完整赛车列表中挑选车辆，选中后点击“应用并返回”自动填充基础氮气充能值和大招时长。注意：自动填充仅覆盖基础参数，芯片、赋能等配置仍需手动微调。</span><span class="lang-en">Car Selector: Tap "Select Car" tab to browse the full car list. Pick one, then click "Apply & Return" to auto-fill base nitro charge and ult duration. Note: chips, empowers still need manual tuning.</span></li>
+                                <li><span class="zh">关于偶发无法访问的情况：由于网站部署在境外服务器（GitHub）上，且部分省市运营商会对GitHub做间歇性SNI阻断（具体表现为昨天访问的好好的，今天突然进不去，过了一小会自己又好了），因此有小概率出现无法访问的情况。目前网站接入了第三方中转节点，但依旧存在极小的访问失败概率，这属于正常现象，遇到这种情况时，多刷新几次即可进入网站。另外，网站是无后端运行的，因此在域名过期前基本不可能突然关门（除非被GFW主动阻断），请放心使用。</span><span class="lang-en">Regarding occasional access issues: Since the site is hosted on overseas servers (GitHub), some regional ISPs may intermittently block SNI - meaning it works fine one day, then suddenly won't load the next, only to fix itself shortly after. So there's a small chance you might not be able to reach it. We've now added third-party relay nodes, but there's still a very slim chance of access failure. That's perfectly normal - just refresh a few times and you'll get in. Also, because the site runs entirely on the frontend with no backend, it's basically not going to disappear before the domain expires (unless the GFW actively blocks it). So rest assured.</span></li>
+                            </ul>
                        </div>
                        
                    </div>
@@ -578,22 +586,397 @@
            this.style.transform = 'translateY(0)';
            this.style.boxShadow = 'var(--btn-shadow)';
        };
-   }
-           </script>
+    }
+            </script>
 
-           <div class="footer-note" style="text-align: center; margin-bottom: 24px;">
-               <span style="font-size: 12px; color: var(--text-muted);">
-               <span class="zh">* 注：根据游戏底层逻辑，起步基础充能不受任何环境干扰；<br>先机仅受反制影响，不受充能效率影响；氮气充能、辅助充能、赋能充能与专精充能受反制和充能效率双重影响。</span>
-               <span class="lang-en">* Note: Base start charge ignores environments;<br>Xianji is affected only by Counter; Nitro, Assist, Empower, & Spec charges affected by Counter & Efficiency.</span>
-               </span>
-           </div>
+            <script>
+    var _selectedCar = null;
+    var _selectedCarId = null;
 
-           <div class="section-divider"><span><span class="zh">基础属性及赋能调整区</span><span class="lang-en">Base Stats & Empowerment Tweaks</span></span></div>
+    // Init on load
+    if (typeof CAR_DATABASE !== 'undefined') {
+        var readyFn = function() {
+            populateFilters();
+            populateCarGrid();
+        };
+        if (document.readyState === 'loading') {
+            document.addEventListener('DOMContentLoaded', readyFn);
+        } else {
+            readyFn();
+        }
+    }
+
+    function calcMaxHuineng(chipSlots) {
+        if (!chipSlots) return 50;
+        var maxH = 0;
+        for (var ci = 0; ci < chipSlots.length; ci++) {
+            var sym = chipSlots[ci];
+            if (sym === '\u25C7') maxH += 18;
+            else if (sym === '\u25B3') maxH += 9;
+            else if (sym === '\u25E3') maxH += 9;
+        }
+        return maxH;
+    }
+
+    function getPosIcon(pos) {
+        if (!pos) return '';
+        if (pos.indexOf('\u7ADE\u901F') >= 0) return 'data/icon/commonnew_icon_racing1.png';
+        if (pos.indexOf('\u8F85\u52A9') >= 0) return 'data/icon/commonnew_icon_auxiliary1.png';
+        if (pos.indexOf('\u5E72\u6270') >= 0) return 'data/icon/commonnew_icon_interference1.png';
+        if (pos.indexOf('\u5929\u5E73') >= 0) return 'data/icon/commonnew_icon_auncel1.png';
+        return '';
+    }
+    function getSpecIcon(spec) {
+        if (!spec) return '';
+        if (spec.indexOf('\u5C71\u8DEF') >= 0) return 'data/icon/new_carport_icon_mountainroad.png';
+        if (spec.indexOf('\u573A\u5730') >= 0) return 'data/icon/new_carport_icon_court.png';
+        if (spec.indexOf('\u57CE\u5E02') >= 0) return 'data/icon/new_carport_icon_city.png';
+        return '';
+    }
+
+    function populateCarGrid() {
+        var list = document.getElementById('carDropdown');
+        if (!list || !CAR_DATABASE) return;
+        var html = '';
+        // Add "未上线车辆" as first option
+        var sel0 = (_selectedCarId === -1) ? ' selected' : '';
+        html += '<div class="dropdown-option' + sel0 + '" data-id="-1" onclick="pickCar(-1);document.getElementById(\'carDropdown\').classList.remove(\'show\');">'
+            + '<span style="flex:1;"><span style="opacity:0.5;">\u2753</span> \u672A\u4E0A\u7EBF\u8F66\u8F86</span>'
+            + '<span style="font-size:11px;color:var(--text-muted);">\u624B\u52A8\u586B\u5199</span>'
+            + '</div>';
+        for (var i = 0; i < CAR_DATABASE.length; i++) {
+            var c = CAR_DATABASE[i];
+            var posIcon = getPosIcon(c.position);
+            var specIcon = getSpecIcon(c.specialization);
+            var icons = '';
+            if (posIcon) icons += '<img src=\"' + posIcon + '\" style=\"width:18px;height:18px;vertical-align:middle;\">';
+            if (specIcon) icons += '<img src=\"' + specIcon + '\" style=\"width:18px;height:18px;vertical-align:middle;margin-left:4px;\">';
+            var sel = (_selectedCarId === c.id) ? ' selected' : '';
+            html += '<div class=\"dropdown-option' + sel + '\" data-id=\"' + c.id + '\" data-pos=\"' + (c.position||'') + '\" data-spec=\"' + (c.specialization||'') + '\" onclick=\"pickCar(' + c.id + ');document.getElementById(\'carDropdown\').classList.remove(\'show\');\">'
+                + '<span style=\"flex:1;\">' + icons + ' ' + c.name + '</span>'
+                + '<span style=\"font-size:11px;color:var(--text-muted);\">[' + (c.ace_charge || '?') + ']' + (c.ult_duration ? ' ' + c.ult_duration + 's' : '') + '</span>'
+                + '</div>';
+        }
+        list.innerHTML = html;
+        filterCarList();
+    }
+
+    function toggleCarDropdown() {
+        document.getElementById('filterPosMenu').classList.remove('show');
+        document.getElementById('filterSpecMenu').classList.remove('show');
+        var menu = document.getElementById('carDropdown');
+        menu.classList.toggle('show');
+        filterCarList();
+    }
+
+    function filterCarList() {
+        var q = document.getElementById('carSearch').value.trim().toLowerCase();
+        var pos = _filterPos;
+        var spec = _filterSpec;
+        var items = document.querySelectorAll('#carDropdown .dropdown-option');
+        var matchCount = 0;
+        for (var i = 0; i < items.length; i++) {
+            var isSpecial = items[i].getAttribute('data-id') === '-1';
+            var name = items[i].querySelector('span').textContent.toLowerCase();
+            var matchName = name.indexOf(q) >= 0;
+            var matchPos = !pos || items[i].getAttribute('data-pos') === pos;
+            var matchSpec = !spec || items[i].getAttribute('data-spec') === spec;
+            var show = isSpecial || (matchName && matchPos && matchSpec);
+            items[i].style.display = show ? '' : 'none';
+            if (show && !isSpecial) matchCount++;
+        }
+        var label = document.getElementById('carListLabel');
+        if (_selectedCarId === -1) {
+            label.innerHTML = '<span style=\"opacity:0.5;\">\u2753</span> \u672A\u4E0A\u7EBF\u8F66\u8F86';
+        } else if (_selectedCarId && _selectedCarId > 0) {
+            for (var i = 0; i < CAR_DATABASE.length; i++) {
+                if (CAR_DATABASE[i].id === _selectedCarId) {
+                    var cc = CAR_DATABASE[i];
+                    var cp = getPosIcon(cc.position);
+                    var cs = getSpecIcon(cc.specialization);
+                    var ci = '';
+                    if (cp) ci += '<img src=\"' + cp + '\" style=\"width:14px;height:14px;vertical-align:middle;margin-right:4px;\">';
+                    if (cs) ci += '<img src=\"' + cs + '\" style=\"width:14px;height:14px;vertical-align:middle;margin-right:4px;\">';
+                    label.innerHTML = ci + ' ' + cc.name;
+                    break;
+                }
+            }
+        } else if (q || pos || spec) {
+            label.innerHTML = matchCount + ' \u8F86\u5339\u914D';
+        } else {
+            label.innerHTML = '\u9009\u62E9\u8F66\u8F86';
+        }
+    }
+
+    function pickCar(id) {
+        // Handle "未上线车辆"
+        if (id === -1) {
+            _selectedCar = null;
+            _selectedCarId = -1;
+            document.getElementById('carPreviewPlaceholder').style.display = '';
+            document.getElementById('carPreviewName').style.display = 'none';
+            document.getElementById('carPreviewInfo').style.display = 'none';
+            document.getElementById('carPreviewChips').style.display = 'none';
+            var img = document.getElementById('carImage');
+            img.src = 'data/icon/icon_mhyck_m.png';
+            img.alt = '\u672A\u4E0A\u7EBF\u8F66\u8F86';
+            img.style.display = '';
+            img.loading = 'lazy';
+            document.getElementById('carSelectInfo').style.display = 'none';
+            filterCarList();
+            return;
+        }
+
+        var car = null;
+        for (var i = 0; i < CAR_DATABASE.length; i++) {
+            if (CAR_DATABASE[i].id === id) { car = CAR_DATABASE[i]; break; }
+        }
+        if (!car) return;
+        _selectedCar = car;
+        _selectedCarId = car.id;
+
+        if (car.ace_charge) {
+            var v = Math.round(car.ace_charge / 100 * 10) / 10;
+            document.getElementById('baseNitro').value = v;
+            document.getElementById('startCharge').value = v;
+        }
+        if (car.ult_threshold) {
+            document.getElementById('ultThreshold').value = car.ult_threshold;
+        }
+        if (car.ult_duration) {
+            document.getElementById('baseUltDuration').value = car.ult_duration;
+        }
+        if (car.nitro_duration) {
+            document.getElementById('time_1x6').value = car.nitro_duration;
+            document.getElementById('r_1x6').checked = true;
+            if (typeof handleNitroRadioChange === 'function') handleNitroRadioChange();
+            if (typeof syncNitroTimes === 'function') syncNitroTimes('1x6');
+        }
+        var maxH = calcMaxHuineng(car.chip_slots);
+        document.getElementById('inputHuineng').max = maxH;
+        document.querySelectorAll('.limit-badge')[1].innerHTML = '<span class="zh">\u4E0A\u9650\uFF1A\u5148\u673A30% | \u6C47\u80FD' + maxH + '%</span><span class="lang-en">Limit: Xianji 30% | Huineng ' + maxH + '%</span>';
+        if (parseFloat(document.getElementById('inputHuineng').value) > maxH) {
+            document.getElementById('inputHuineng').value = maxH;
+        }
+        calculate();
+        filterCarList();
+
+        // Flash auto-filled sections only (core params)
+        var _flashTimers = {};
+        function flashSection(sectionId, inputIds) {
+            var sec = document.getElementById(sectionId);
+            if (!sec) return;
+            // Clear existing timer for this section
+            if (_flashTimers[sectionId]) {
+                clearInterval(_flashTimers[sectionId]);
+                sec.style.border = '';
+                sec.style.boxShadow = '';
+            }
+            var origBorder = sec.style.border;
+            var origShadow = sec.style.boxShadow;
+            var opacity = 0.3;
+            var dir = 0.04;
+            _flashTimers[sectionId] = setInterval(function() {
+                opacity += dir;
+                if (opacity >= 0.8) dir = -0.04;
+                if (opacity <= 0.2) dir = 0.04;
+                var c = 'rgba(0, 242, 254, ' + opacity + ')';
+                sec.style.setProperty('border', '1px solid ' + c, 'important');
+                sec.style.setProperty('box-shadow', '0 0 6px ' + c, 'important');
+            }, 50);
+            var stopFlash = function() {
+                clearInterval(_flashTimers[sectionId]);
+                delete _flashTimers[sectionId];
+                sec.style.border = origBorder;
+                sec.style.boxShadow = origShadow;
+            };
+            for (var fi = 0; fi < inputIds.length; fi++) {
+                var el = document.getElementById(inputIds[fi]);
+                if (el) {
+                    el.addEventListener('input', stopFlash, { once: true });
+                    el.addEventListener('change', stopFlash, { once: true });
+                    el.addEventListener('focus', stopFlash, { once: true });
+                    el.addEventListener('click', stopFlash, { once: true });
+                }
+            }
+            setTimeout(stopFlash, 8000);
+        }
+        if (car.ace_charge) flashSection('cardCoreParams', ['baseNitro', 'startCharge', 'ultThreshold']);
+        if (car.nitro_duration) flashSection('cardNitro', ['time_1x6', 'time_1x5', 'time_2x2', 'time_2x3', 'time_2x25', 'time_3x2', 'baseUltDuration', 'r_1x5', 'r_1x6', 'r_2x2', 'r_2x3', 'r_2x25', 'r_3x2']);
+        // Auto-fill 开局额外充能 into 大招释放 section
+        if (car.ult_charge_first) {
+            document.getElementById('hasExtraUlt').checked = true;
+            document.getElementById('valExtraUltFirst').value = car.ult_charge_first;
+            if (typeof toggleExtraUI === 'function') toggleExtraUI();
+            flashSection('extraUltSection', ['valExtraUltFirst', 'hasExtraUlt']);
+        }
+
+        document.getElementById('carPreviewPlaceholder').style.display = 'none';
+        document.getElementById('carPreviewName').style.display = '';
+        document.getElementById('carPreviewName').textContent = car.name + ' (' + (car.position||'') + ')';
+        document.getElementById('carPreviewInfo').style.display = '';
+        document.getElementById('carPreviewInfo').textContent = 'ace_charge: ' + (car.ace_charge || '?') + ' | ' + (car.specialization||'') + (car.ult_type ? ' | ' + car.ult_type : '') + (car.ult_duration ? ' | \u5927\u62DB\u65F6\u957F: ' + car.ult_duration + 's' : '');
+        // Show auto-fill info message
+        document.getElementById('carPreviewAutoMsg').style.display = '';
+        // Build green message dynamically
+        var filledItems = ['\u5927\u62DB\u9608\u503C', '\u57FA\u7840\u53CC\u5145', '\u6C2E\u6C14\u65F6\u957F', '\u5927\u62DB\u65F6\u957F'];
+        if (car.ult_charge_first) filledItems.push('\u5F00\u5C40\u7ACB\u523B\u5145\u80FD');
+        document.getElementById('carPreviewAutoMsg').innerHTML = '\u2713 \u5DF2\u81EA\u52A8\u586B\u5145\uFF1A' + filledItems.join('\u3001') + ' \u2014 \u5176\u4ED6\u53C2\u6570\u8BF7\u624B\u52A8\u8C03\u6574\u3002<br>\u8BE6\u7EC6\u8F66\u8F86\u6280\u80FD\u8BF7\u53C2\u8003 \u2192 <a href=\"https://reca.seimu.cn/ace-racer-admin/vehicles/' + car.id + '\" target=\"_blank\" style=\"color:var(--primary);text-decoration:underline;font-weight:bold;\">' + car.name + '</a>';
+        var chipInfo = document.getElementById('carPreviewChips');
+        if (car.chip_slots) {
+            chipInfo.style.display = 'flex';
+            chipInfo.innerHTML = '';
+            for (var ci = 0; ci < car.chip_slots.length; ci++) {
+                var sym = car.chip_slots[ci];
+                var iconNum = '1';
+                if (sym === '\u25CB') iconNum = '1';
+                else if (sym === 'V' || sym === 'v') iconNum = '2';
+                else if (sym === '\u25E3') iconNum = '3';
+                else if (sym === '\u25B3') iconNum = '4';
+                else if (sym === '\u25C7') iconNum = '5';
+                chipInfo.innerHTML += '<img loading=\"lazy\" src=\"data/icon/carport_new_skill_chip_none_icon_' + iconNum + '.png\" style=\"width:30px;height:30px;object-fit:contain;\">';
+            }
+        }
+        var img = document.getElementById('carImage');
+        // Try local image, fallback to placeholder on error
+        img.onerror = function() { this.src = 'data/icon/icon_mhyck_m.png'; this.onerror = null; };
+        img.src = 'data/26-07-15_29734784_android/full/' + encodeURI(car.asset_dir + '/body/' + car.id + '_m.png');
+        img.alt = car.name;
+        img.style.display = '';
+        img.loading = 'lazy';
+
+        var info = document.getElementById('carSelectInfo');
+        info.style.display = 'flex';
+        info.innerHTML = '<b>' + car.name + '</b>'
+            + ' &nbsp;|&nbsp; ' + (car.position||'') + ' / ' + (car.specialization||'')
+            + ' &nbsp;|&nbsp; ace_charge: <b>' + (car.ace_charge || '?') + '</b>'
+            + (car.ult_duration ? ' &nbsp;|&nbsp; \u5927\u62DB\u65F6\u957F: <b>' + car.ult_duration + 's</b>' : '')
+            + (car.has_sp ? ' &nbsp;|&nbsp; <span class="car-badge">SP</span>' : '');
+    }
+
+    function populateFilters() {
+        var posMenu = document.getElementById('filterPosMenu');
+        var specMenu = document.getElementById('filterSpecMenu');
+        if (!posMenu || !specMenu || !CAR_DATABASE) return;
+        var positions = {}, specs = {};
+        for (var i = 0; i < CAR_DATABASE.length; i++) {
+            var c = CAR_DATABASE[i];
+            if (c.position) positions[c.position] = 1;
+            if (c.specialization) specs[c.specialization] = 1;
+        }
+        var sortedPos = Object.keys(positions).sort();
+        posMenu.innerHTML = '<div class="dropdown-option" data-value="" onclick="selectFilter(\'pos\',\'\')"><span class="zh">全部定位</span><span class="lang-en">All Positions</span></div>';
+        for (var i = 0; i < sortedPos.length; i++) {
+            var p = sortedPos[i];
+            var pIcon = getPosIcon(p);
+            var pHtml = pIcon ? '<img src="' + pIcon + '" style="width:18px;height:18px;vertical-align:middle;margin-right:6px;">' : '';
+            posMenu.innerHTML += '<div class="dropdown-option" data-value="' + p + '" onclick="selectFilter(\'pos\',\'' + p + '\')">' + pHtml + p + '</div>';
+        }
+        var sortedSpec = Object.keys(specs).sort();
+        specMenu.innerHTML = '<div class="dropdown-option" data-value="" onclick="selectFilter(\'spec\',\'\')"><span class="zh">全部专精</span><span class="lang-en">All Specs</span></div>';
+        for (var i = 0; i < sortedSpec.length; i++) {
+            var s = sortedSpec[i];
+            var sIcon = getSpecIcon(s);
+            var sHtml = sIcon ? '<img src="' + sIcon + '" style="width:18px;height:18px;vertical-align:middle;margin-right:6px;">' : '';
+            specMenu.innerHTML += '<div class="dropdown-option" data-value="' + s + '" onclick="selectFilter(\'spec\',\'' + s + '\')">' + sHtml + s + '</div>';
+        }
+    }
+
+    var _filterPos = '', _filterSpec = '';
+
+    function toggleFilterMenu(type) {
+        var menuId = type === 'pos' ? 'filterPosMenu' : 'filterSpecMenu';
+        var otherMenuId = type === 'pos' ? 'filterSpecMenu' : 'filterPosMenu';
+        document.getElementById(otherMenuId).classList.remove('show');
+        document.getElementById('carDropdown').classList.remove('show');
+        var menu = document.getElementById(menuId);
+        menu.classList.toggle('show');
+    }
+
+    function selectFilter(type, value) {
+        if (type === 'pos') {
+            _filterPos = value;
+            var pIcon = value ? getPosIcon(value) : '';
+            document.getElementById('filterPosLabel').innerHTML = (pIcon ? '<img src=\"' + pIcon + '\" style=\"width:16px;height:16px;vertical-align:middle;margin-right:8px;\">' : '') + (value || '\u5168\u90E8\u5B9A\u4F4D');
+            document.getElementById('filterPosMenu').classList.remove('show');
+        } else {
+            _filterSpec = value;
+            var sIcon = value ? getSpecIcon(value) : '';
+            document.getElementById('filterSpecLabel').innerHTML = (sIcon ? '<img src=\"' + sIcon + '\" style=\"width:16px;height:16px;vertical-align:middle;margin-right:8px;\">' : '') + (value || '\u5168\u90E8\u4E13\u7CBE');
+            document.getElementById('filterSpecMenu').classList.remove('show');
+        }
+        filterCarList();
+    }
+
+    // Close dropdowns when clicking outside
+    document.addEventListener('click', function(e) {
+        if (!e.target.closest('.dropdown-container') && !e.target.closest('#carSearch')) {
+            var menus = document.querySelectorAll('#filterPosMenu, #filterSpecMenu, #carDropdown');
+            for (var i = 0; i < menus.length; i++) {
+                menus[i].classList.remove('show');
+            }
+        }
+    });
+
+            </script>
+
+            <div class="footer-note" style="text-align: center; margin-bottom: 24px;">
+                <span style="font-size: 12px; color: var(--text-muted);">
+                <span class="zh">* 注：根据游戏底层逻辑，起步基础充能不受任何环境干扰；<br>先机仅受反制影响，不受充能效率影响；氮气充能、辅助充能、赋能充能与专精充能受反制和充能效率双重影响。</span>
+                <span class="lang-en">* Note: Base start charge ignores environments;<br>Xianji is affected only by Counter; Nitro, Assist, Empower, & Spec charges affected by Counter & Efficiency.</span>
+                </span>
+            </div>
+            </div> <!-- /manualContent -->
+
+            <div id="carPreview">
+                    <div class="card" style="text-align:center;">
+                        <img id="carImage" src="data/icon/icon_mhyck_m.png" alt="" loading="lazy" style="max-width:100%;border-radius:12px;max-height:200px;background:var(--box-bg);padding:8px;" onerror="this.style.display='none'">
+                        <div id="carPreviewPlaceholder" style="padding:40px 20px;color:var(--text-muted);font-size:14px;">
+                            <span class="zh">请选择一辆赛车</span><span class="lang-en">Select a car</span>
+                        </div>
+                        <div id="carPreviewName" style="margin-top:8px;font-size:14px;color:var(--text-color);font-weight:bold;display:none;"></div>
+                        <div id="carPreviewInfo" style="font-size:12px;color:var(--text-muted);display:none;"></div>
+                        <div id="carPreviewAutoMsg" style="font-size:11px;color:var(--success);margin-top:6px;display:none;padding:6px 10px;background:rgba(76,223,138,0.08);border-radius:6px;"></div>
+                        <div id="carPreviewChips" style="display:none;margin-top:8px;gap:4px;justify-content:center;"></div>
+                    </div>
+                </div>
+                <div class="card" style="position:relative;z-index:100;">
+                    <div class="card-title"><span class="zh">选择赛车</span><span class="lang-en">Select Car</span></div>
+                    <div class="car-filters" style="display:flex;gap:8px;margin-bottom:12px;">
+                        <div class="dropdown-container" style="flex:1;">
+                            <button id="filterPosBtn" class="nav-btn" onclick="toggleFilterMenu('pos')" style="width:100%;justify-content:space-between;">
+                                <span id="filterPosLabel"><span class="zh">全部定位</span><span class="lang-en">All Positions</span></span>
+                                <span>▼</span>
+                            </button>
+                            <div id="filterPosMenu" class="dropdown-menu left" style="width:100%;"></div>
+                        </div>
+                        <div class="dropdown-container" style="flex:1;">
+                            <button id="filterSpecBtn" class="nav-btn" onclick="toggleFilterMenu('spec')" style="width:100%;justify-content:space-between;">
+                                <span id="filterSpecLabel"><span class="zh">全部专精</span><span class="lang-en">All Specs</span></span>
+                                <span>▼</span>
+                            </button>
+                            <div id="filterSpecMenu" class="dropdown-menu left" style="width:100%;"></div>
+                        </div>
+                    </div>
+                    <div class="car-search-box">
+                        <input type="text" id="carSearch" class="form-control" placeholder="搜索赛车名称..." oninput="filterCarList()" style="margin-bottom:12px;">
+                    </div>
+                    <div class="dropdown-container" style="width:100%;">
+                        <button id="carListBtn" class="nav-btn" onclick="toggleCarDropdown()" style="width:100%;justify-content:space-between;">
+                            <span id="carListLabel"><span class="zh">选择车辆</span><span class="lang-en">Select a car</span></span>
+                            <span>▼</span>
+                        </button>
+                        <div id="carDropdown" class="dropdown-menu left" style="width:100%;max-height:50vh;overflow-y:auto;"></div>
+                    </div>
+                    <div id="carSelectInfo" class="car-info-bar" style="display:none;"></div>
+                </div>
+
+            <div class="section-divider"><span><span class="zh">基础属性及赋能调整区</span><span class="lang-en">Base Stats & Empowerment Tweaks</span></span></div>
            
            <div class="desktop-layout" id="topLayout">
                <div class="desktop-col">
-                   <div class="card">
-                       <div class="card-title"><span class="zh">全局核心基准充能参数</span><span class="lang-en">Global Core Charge Parameters</span></div>
+                    <div id="cardCoreParams" class="card">
+                        <div class="card-title"><span class="zh">全局核心基准充能参数</span><span class="lang-en">Global Core Charge Parameters</span></div>
                        <div class="row-grid">
                            <div class="form-group">
                                <label class="form-label" style="color: var(--success); font-weight: bold;"><span class="zh">大招释放能量阈值</span><span class="lang-en">Ult Energy Threshold</span></label>
@@ -619,8 +1002,8 @@
                        </div>
                    </div>
 
-                   <div class="card">
-                       <div class="card-title"><span class="zh">氮气规格及单发时长同步</span><span class="lang-en">Nitro Specs & Duration Sync</span></div>
+                    <div id="cardNitro" class="card">
+                        <div class="card-title"><span class="zh">氮气规格及单发时长同步</span><span class="lang-en">Nitro Specs & Duration Sync</span></div>
                        <div class="form-label" style="margin-bottom: 12px; color: var(--primary);">
                            <span class="zh">更改任意一项氮气时长，其余规格自动等比同步换算：</span><span class="lang-en">Change any duration, others sync automatically:</span><br>
                            <span style="font-size: 11.5px; color: var(--text-muted); font-weight: normal; line-height: 1.8;"><span class="zh">注：车辆详情中显示的默认氮时为1×6氮气，只需修改1×6氮时即可</span><span class="lang-en">Note: Default duration in details is usually 1x6 nitro. Just modify 1x6.</span></span>
@@ -842,11 +1225,11 @@
 
                    <div class="card">
                        <div class="card-title"><span class="zh">扩展自充能附加模块</span><span class="lang-en">Extended Self-Charge Modules</span></div>
-                       
-                       <div style="background: var(--inner-bg); padding: 12px; border-radius: 10px; border: 1px solid var(--border); margin-bottom: 12px;">
-                           <label style="display: flex; align-items: center; gap: 8px; font-size: 13px; color: var(--text-color); cursor: pointer; width: 100%;">
-                               <input type="checkbox" id="hasExtraNitro" onchange="toggleExtraUI(); triggerAutoCalc(currentActiveField); calculate();" style="width: 16px; height: 16px; accent-color: var(--primary);">
-                               <span class="zh">绑定到【单发氮气】的自充能 (受反制与充能效率双重影响)</span><span class="lang-en">Self-charge via [Single Nitro] (Affected by Counter & Eff)</span>
+                        
+                        <div id="extraNitroSection" style="background: var(--inner-bg); padding: 12px; border-radius: 10px; border: 1px solid var(--border); margin-bottom: 12px;">
+                            <label style="display: flex; align-items: center; gap: 8px; font-size: 13px; color: var(--text-color); cursor: pointer; width: 100%;">
+                                <input type="checkbox" id="hasExtraNitro" onchange="toggleExtraUI(); triggerAutoCalc(currentActiveField); calculate();" style="width: 16px; height: 16px; accent-color: var(--primary);">
+                                <span class="zh">氮气自充能 (受反制与充能效率双重影响)</span><span class="lang-en">Nitro Self-Charge (Affected by Counter & Eff)</span>
                            </label>
                            
                            <div id="extraNitroContainer" style="display: none;">
@@ -868,23 +1251,23 @@
                            </div>
                        </div>
 
-                       <div style="background: var(--inner-bg); padding: 12px; border-radius: 10px; border: 1px solid var(--border); margin-bottom: 12px;">
-                           <label style="display: flex; align-items: center; gap: 8px; font-size: 13px; color: var(--text-color); cursor: pointer; width: 100%;">
+                        <div id="extraUltSection" style="background: var(--inner-bg); padding: 12px; border-radius: 10px; border: 1px solid var(--border); margin-bottom: 12px;">
+                            <label style="display: flex; align-items: center; gap: 8px; font-size: 13px; color: var(--text-color); cursor: pointer; width: 100%;">
                                <input type="checkbox" id="hasExtraUlt" onchange="toggleExtraUI(); triggerAutoCalc(currentActiveField); calculate();" style="width: 16px; height: 16px; accent-color: var(--secondary);">
-                               <span class="zh">绑定到【大招释放】的自充能 (受反制与充能效率双重影响)</span><span class="lang-en">Self-charge via [Ult Release] (Affected by Counter & Eff)</span>
+                                <span class="zh">开局立刻充能 / 大招自充能 (受反制与充能效率双重影响)</span><span class="lang-en">Start Bonus / Ult Self-Charge (Affected by Counter & Eff)</span>
                            </label>
                            
                            <div id="extraUltContainer" style="display: none;">
                                <div class="row-grid" style="margin-bottom: 0;">
                                    <div class="form-group" style="margin-bottom: 0;">
-                                       <label class="form-label" style="color: var(--secondary); font-size: 11.5px;"><span class="zh">首发附加 (开局充能等)</span><span class="lang-en">Initial Bonus (starting energy charge, etc.)</span></label>
+                                        <label class="form-label" style="color: var(--secondary); font-size: 11.5px;"><span class="zh">开局立刻充能</span><span class="lang-en">Start Bonus Charge</span></label>
                                        <div class="input-wrapper">
                                            <input type="number" id="valExtraUltFirst" class="form-control" value="0" min="0" step="0.1" oninput="triggerAutoCalc(currentActiveField); calculate();">
                                            <span class="input-unit">%</span>
                                        </div>
                                    </div>
                                    <div class="form-group" style="margin-bottom: 0;">
-                                       <label class="form-label" style="color: var(--secondary); font-size: 11.5px;"><span class="zh">循环附加 (后续每次)</span><span class="lang-en">Loop Bonus (Subsequent)</span></label>
+                                        <label class="form-label" style="color: var(--secondary); font-size: 11.5px;"><span class="zh">大招自充能</span><span class="lang-en">Ult Self-Charge</span></label>
                                        <div class="input-wrapper">
                                            <input type="number" id="valExtraUltLoop" class="form-control" value="0" min="0" step="0.1" oninput="triggerAutoCalc(currentActiveField); calculate();">
                                            <span class="input-unit">%</span>
@@ -894,10 +1277,10 @@
                            </div>
                        </div>
 
-                       <div style="background: var(--inner-bg); padding: 12px; border-radius: 10px; border: 1px solid var(--border);">
-                           <label style="display: flex; align-items: center; gap: 8px; font-size: 13px; color: var(--text-color); cursor: pointer; width: 100%;">
+                        <div id="extraPerSecSection" style="background: var(--inner-bg); padding: 12px; border-radius: 10px; border: 1px solid var(--border);">
+                            <label style="display: flex; align-items: center; gap: 8px; font-size: 13px; color: var(--text-color); cursor: pointer; width: 100%;">
                                <input type="checkbox" id="hasExtraPerSec" onchange="toggleExtraUI(); triggerAutoCalc(currentActiveField); calculate();" style="width: 16px; height: 16px; accent-color: var(--success);">
-                               <span class="zh">绑定到【持续时间】的每秒自充能 (受反制与充能效率双重影响)</span><span class="lang-en">Self-charge via [Duration] (Affected by Counter & Eff)</span>
+                                <span class="zh">每秒自充能 (受反制与充能效率双重影响)</span><span class="lang-en">Self-Charge per Second (Affected by Counter & Eff)</span>
                            </label>
                            
                            <div id="extraPerSecContainer" style="display: none;">
@@ -920,8 +1303,8 @@
                        </div>
                    </div>
 
-                   <div class="card">
-                       <div class="card-title"><span class="zh">自定义触发自充能</span><span class="lang-en">Custom Trigger Self-Charge</span></div>
+                    <div id="extraCustomSection" class="card">
+                        <div class="card-title"><span class="zh">自定义触发自充能</span><span class="lang-en">Custom Trigger Self-Charge</span></div>
                        <div class="form-group" style="margin-bottom: 12px;">
                            <label class="form-label" style="color: var(--primary);"><span class="zh">每次触发附加百分比 (受反制与充能效率双重影响)</span><span class="lang-en">Bonus % per trigger (Affected by Counter & Eff)</span></label>
                            <div class="input-wrapper">
@@ -1035,11 +1418,11 @@
                        <div class="result-desc" id="resultDetailLoop"><span class="zh">等待测算循环状态...</span><span class="lang-en">Waiting to calc loop status...</span></div>
                        <div id="formulaDisplayLoop" class="formula-box"><span class="zh">运算引擎加载中...</span><span class="lang-en">Loading calculation engine...</span></div>
                    </div>
-               </div>
-           </div>
-       </div>
+                </div>
+             </div>
+         </div>
 
-       <div class="section-divider" data-html2canvas-ignore="true"><span><span class="zh">计算数据分享</span><span class="lang-en">Data Export & Share</span></span></div>
+         <div class="section-divider" data-html2canvas-ignore="true"><span><span class="zh">计算数据分享</span><span class="lang-en">Data Export & Share</span></span></div>
        <div class="card" data-html2canvas-ignore="true" style="margin-bottom: 24px;">
            <div class="share-btn-group">
                <button class="share-btn btn-text" onclick="exportConfigText()">
@@ -2075,10 +2458,11 @@
            if (selectedNitroType === '2x2' || selectedNitroType === '2x3' || selectedNitroType === '2x25') nitroRatioMult = 0.5;
            else if (selectedNitroType === '3x2') nitroRatioMult = 1/3;
 
-           var currentBaseNitro = baseNitroInput * nitroRatioMult;
-           var specBonus = document.getElementById('isSpec').checked ? (10.0 * nitroRatioMult) : 0;
+            var currentBaseNitro = baseNitroInput * nitroRatioMult;
+            var specBonus = document.getElementById('isSpec').checked ? (10.0 * nitroRatioMult) : 0;
+            var _maxHuineng = parseFloat(document.getElementById('inputHuineng').max) || 50;
 
-           var initFixedBase = startCharge + (jiezouFirstCount * 4.0 * defenseMult);
+            var initFixedBase = startCharge + (jiezouFirstCount * 4.0 * defenseMult);
            var initMultBase = (huaxinFirstCount * 7.0) * defenseMult * efficiencyMult;
 
            var firstNitrosCount = parseInt(document.getElementById('inputFirstNitroCount').value);
@@ -2107,7 +2491,7 @@
                    reqHuineng = 999;
                }
                if (reqHuineng < 0) reqHuineng = 0;
-               if (reqHuineng > 50) reqHuineng = 50;
+                if (reqHuineng > _maxHuineng) reqHuineng = _maxHuineng;
                reqHuineng = Math.ceil(Number(reqHuineng.toFixed(4)) * 10) / 10;
                document.getElementById('inputHuineng').value = reqHuineng.toFixed(1);
            } else if (sourceField === 'huineng') {

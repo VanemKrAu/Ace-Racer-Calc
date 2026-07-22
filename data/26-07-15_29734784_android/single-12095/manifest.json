@@ -1,0 +1,35 @@
+{
+  "schemaVersion": 2,
+  "versionId": "26-07-15_29734784_android",
+  "generatedAt": "2026-07-16T09:22:13.000Z",
+  "mode": "single",
+  "base": null,
+  "since": null,
+  "filters": {
+    "publicOnly": true,
+    "naturalReleaseOnly": true,
+    "placeholdersExcluded": true,
+    "manualIncludesExcluded": true,
+    "detailAccessRequired": true
+  },
+  "data": {
+    "vehicleCount": 1,
+    "vehicleIds": [
+      12095
+    ],
+    "vehicles": [
+      {
+        "id": 12095,
+        "name": "布加迪 Bolide"
+      }
+    ],
+    "vehiclesSha256": "9ff5e3855e9c453cb34af8db47c134a7db1d49f81ff4604cce3371c218bdd63e",
+    "vehiclesFileSha256": "a1868037a7027d4870ba9b4566a8f4d9d9b209bbf41b71c83f2e4c89e3ebd666",
+    "delta": null
+  },
+  "assets": {
+    "skipped": true,
+    "fileCount": 0,
+    "missingCount": 0
+  }
+}

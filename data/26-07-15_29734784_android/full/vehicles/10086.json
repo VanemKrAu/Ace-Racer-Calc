@@ -1,0 +1,1663 @@
+{
+  "schemaVersion": 2,
+  "versionId": "26-07-15_29734784_android",
+  "generatedAt": "2026-07-16T09:22:34.000Z",
+  "item": {
+    "id": 10086,
+    "name": "梅赛德斯-AMG G 63",
+    "manufacturer": "梅赛德斯-奔驰",
+    "quality": "传说",
+    "class": 4,
+    "group": 2,
+    "position": "辅助位",
+    "positionLabel": "辅助位",
+    "racingRole": 2,
+    "racingRoleName": "辅助位",
+    "specialization": "城市",
+    "seasonCode": "S10",
+    "publication": {
+      "state": "released",
+      "releaseTimestamp": 1660233600,
+      "releaseText": "2022-8-12 00:00:00",
+      "releaseMacro": "S10_OPEN"
+    },
+    "summary": "强化我方的下一次氮气",
+    "description": "强化我方的下一次氮气",
+    "tags": [
+      {
+        "id": 31,
+        "text": "友方净化",
+        "desc": "为队友净化负面效果",
+        "color": 1
+      },
+      {
+        "id": 54,
+        "text": "多段充能",
+        "desc": "为友方提供多段辅助充能",
+        "color": 1
+      },
+      {
+        "id": 51,
+        "text": "友方隐身",
+        "desc": "为友方提供隐身效果",
+        "color": 1
+      },
+      {
+        "id": 157,
+        "text": "越野车",
+        "desc": "越野车在特殊地形中获得减速减免和额外集气",
+        "color": 2
+      },
+      {
+        "id": 21,
+        "text": "友方加速",
+        "desc": "提高队友的极速",
+        "color": 1
+      }
+    ],
+    "stats": {
+      "speed_limit": 180,
+      "speedup_ratio": 1.02,
+      "charge": {
+        "ace_charge": 4000,
+        "drift_charge_energy_coef": 600,
+        "drift_charge_energy_min": 1200,
+        "drift_charge_energy_max": 6000,
+        "drift_extra_charge": [
+          [
+            1,
+            0
+          ],
+          [
+            2,
+            1800
+          ]
+        ]
+      }
+    },
+    "maxDurability": 155,
+    "levels": [
+      {
+        "id": 10086,
+        "suffix": "0",
+        "rich_text": {
+          "id": 10086,
+          "ace_time_charge_condition": "在城市赛道，使用氮气时获得额外大招充能并在落后第一名超过一定距离时获得速度提升效果",
+          "ace_time_effect": "氮气护体可以充能两次",
+          "ace_time_effect_rich_desc": "氮气护体可以充能两次",
+          "chip_unlock_tips": "芯片最高生效等级为#fe7ab71#ffffff级",
+          "icon_ace_time_charge_condition": "new_carport_icon_city",
+          "icon_ace_time_effect": "new_carport_icon_10164",
+          "icon_slipstream": "new_carport_icon_14",
+          "icon_unlock_nitro_2": "new_carport_icon_10164",
+          "icon_unlock_nitro_3": "new_carport_icon_nos_03",
+          "level_title": "原车型",
+          "passive_skill_effect": [
+            "氮气护体加速",
+            ""
+          ],
+          "passive_skill_effect_value": [
+            "25公里/小时",
+            ""
+          ],
+          "passive_skill_rich_desc": "队友每次使用氮气时获得1.5秒#tips[隐身]效果并永久提升1km/h极速（上限叠加至30km/h）",
+          "slipstream": "跟随在车辆后方将获得尾流，产生持续的氮气充能效果",
+          "special_passive_skill_desc": "队友每次使用氮气时获得1.5秒#tips[隐身]效果并永久提升1km/h极速（上限叠加至30km/h）\n#acacac越野车：在沙地、草地、雪地等特殊地形中减速效果减少50%，并且额外获得自动集气。",
+          "special_passive_skill_icon": "new_carport_icon_10165",
+          "special_passive_skill_title": "碰撞规避",
+          "title_ace_time_charge_condition": "赛道专精",
+          "title_ace_time_effect": "RECU限制解除",
+          "title_slipstream": "空气动力学套件",
+          "title_unlock_nitro_2": "大招强化套件 I",
+          "title_unlock_nitro_3": "竞速级氮气支架",
+          "unlock_nitro_3": "解锁1x6磅，2x3磅，3x2磅氮气",
+          "upgrade_level_icon": "new_carport_icon_10165"
+        },
+        "stats": {
+          "speed_limit": 180,
+          "speedup_ratio": 1.02,
+          "charge": {
+            "ace_charge": 4000,
+            "drift_charge_energy_coef": 600,
+            "drift_charge_energy_min": 1200,
+            "drift_charge_energy_max": 6000,
+            "drift_extra_charge": [
+              [
+                1,
+                0
+              ],
+              [
+                2,
+                1800
+              ]
+            ]
+          }
+        }
+      },
+      {
+        "id": 10486,
+        "suffix": "1",
+        "rich_text": {
+          "id": 10486,
+          "ace_time_charge_condition": "在城市赛道，使用氮气时获得额外大招充能并在落后第一名超过一定距离时获得速度提升效果",
+          "ace_time_effect": "氮气护体可以充能两次",
+          "ace_time_effect_rich_desc": "氮气护体可以充能两次",
+          "chip_unlock_tips": "芯片最高生效等级为#fe7ab74#ffffff级",
+          "icon_ace_time_charge_condition": "new_carport_icon_city",
+          "icon_ace_time_effect": "new_carport_icon_10164",
+          "icon_slipstream": "new_carport_icon_14",
+          "icon_unlock_nitro_2": "new_carport_icon_10164",
+          "icon_unlock_nitro_3": "new_carport_icon_nos_03",
+          "is_unlocked_ace_time_charge_condition": 1,
+          "is_unlocked_slipstream": 1,
+          "level_title": "竞速级氮气支架 I",
+          "passive_skill_effect": [
+            "氮气护体加速",
+            ""
+          ],
+          "passive_skill_effect_value": [
+            "25公里/小时",
+            ""
+          ],
+          "passive_skill_rich_desc": "队友每次使用氮气时获得1.5秒#tips[隐身]效果并永久提升1km/h极速（上限叠加至30km/h）",
+          "slipstream": "跟随在车辆后方将获得尾流，产生持续的氮气充能效果",
+          "special_passive_skill_desc": "队友每次使用氮气时获得1.5秒#tips[隐身]效果并永久提升1km/h极速（上限叠加至30km/h）\n#acacac越野车：在沙地、草地、雪地等特殊地形中减速效果减少50%，并且额外获得自动集气。",
+          "special_passive_skill_icon": "new_carport_icon_10165",
+          "special_passive_skill_title": "碰撞规避",
+          "title_ace_time_charge_condition": "赛道专精",
+          "title_ace_time_effect": "RECU限制解除",
+          "title_slipstream": "空气动力学套件",
+          "title_unlock_nitro_2": "大招强化套件 I",
+          "title_unlock_nitro_3": "竞速级氮气支架",
+          "unlock_nitro_3": "解锁1x6磅，2x3磅，3x2磅氮气",
+          "upgrade_level_icon": "new_carport_icon_nos_03"
+        },
+        "stats": {
+          "speed_limit": 180,
+          "speedup_ratio": 1.02,
+          "charge": {
+            "ace_charge": 4000,
+            "drift_charge_energy_coef": 600,
+            "drift_charge_energy_min": 1200,
+            "drift_charge_energy_max": 6000,
+            "drift_extra_charge": [
+              [
+                1,
+                0
+              ],
+              [
+                2,
+                1800
+              ]
+            ]
+          }
+        }
+      },
+      {
+        "id": 10286,
+        "suffix": "2",
+        "rich_text": {
+          "id": 10286,
+          "ace_time_charge_condition": "在城市赛道，使用氮气时获得额外大招充能并在落后第一名超过一定距离时获得速度提升效果",
+          "ace_time_effect": "氮气护体可以充能两次",
+          "ace_time_effect_rich_desc": "氮气护体可以充能两次",
+          "chip_unlock_tips": "芯片最高生效等级为#fe7ab72#ffffff级",
+          "icon_ace_time_charge_condition": "new_carport_icon_city",
+          "icon_ace_time_effect": "new_carport_icon_10164",
+          "icon_slipstream": "new_carport_icon_14",
+          "icon_unlock_nitro_2": "new_carport_icon_10164",
+          "icon_unlock_nitro_3": "new_carport_icon_nos_03",
+          "is_unlocked_slipstream": 1,
+          "level_title": "空气动力学套件",
+          "passive_skill_effect": [
+            "氮气护体加速",
+            ""
+          ],
+          "passive_skill_effect_value": [
+            "25公里/小时",
+            ""
+          ],
+          "passive_skill_rich_desc": "队友每次使用氮气时获得1.5秒#tips[隐身]效果并永久提升1km/h极速（上限叠加至30km/h）",
+          "slipstream": "跟随在车辆后方将获得尾流，产生持续的氮气充能效果",
+          "special_passive_skill_desc": "队友每次使用氮气时获得1.5秒#tips[隐身]效果并永久提升1km/h极速（上限叠加至30km/h）\n#acacac越野车：在沙地、草地、雪地等特殊地形中减速效果减少50%，并且额外获得自动集气。",
+          "special_passive_skill_icon": "new_carport_icon_10165",
+          "special_passive_skill_title": "碰撞规避",
+          "title_ace_time_charge_condition": "赛道专精",
+          "title_ace_time_effect": "RECU限制解除",
+          "title_slipstream": "空气动力学套件",
+          "title_unlock_nitro_2": "大招强化套件 I",
+          "title_unlock_nitro_3": "竞速级氮气支架",
+          "unlock_nitro_3": "解锁1x6磅，2x3磅，3x2磅氮气",
+          "upgrade_level_icon": "new_carport_icon_14"
+        },
+        "stats": {
+          "speed_limit": 180,
+          "speedup_ratio": 1.02,
+          "charge": {
+            "ace_charge": 4000,
+            "drift_charge_energy_coef": 600,
+            "drift_charge_energy_min": 1200,
+            "drift_charge_energy_max": 6000,
+            "drift_extra_charge": [
+              [
+                1,
+                0
+              ],
+              [
+                2,
+                1800
+              ]
+            ]
+          }
+        }
+      },
+      {
+        "id": 10386,
+        "suffix": "3",
+        "rich_text": {
+          "id": 10386,
+          "ace_time_charge_condition": "在城市赛道，使用氮气时获得额外大招充能并在落后第一名超过一定距离时获得速度提升效果",
+          "ace_time_effect": "氮气护体可以充能两次",
+          "ace_time_effect_rich_desc": "氮气护体可以充能两次",
+          "chip_unlock_tips": "芯片最高生效等级为#fe7ab73#ffffff级",
+          "icon_ace_time_charge_condition": "new_carport_icon_city",
+          "icon_ace_time_effect": "new_carport_icon_10164",
+          "icon_slipstream": "new_carport_icon_14",
+          "icon_unlock_nitro_2": "new_carport_icon_10164",
+          "icon_unlock_nitro_3": "new_carport_icon_nos_03",
+          "is_unlocked_ace_time_charge_condition": 1,
+          "is_unlocked_slipstream": 1,
+          "level_title": "赛道专精",
+          "passive_skill_effect": [
+            "氮气护体加速",
+            ""
+          ],
+          "passive_skill_effect_value": [
+            "25公里/小时",
+            ""
+          ],
+          "passive_skill_rich_desc": "队友每次使用氮气时获得1.5秒#tips[隐身]效果并永久提升1km/h极速（上限叠加至30km/h）",
+          "slipstream": "跟随在车辆后方将获得尾流，产生持续的氮气充能效果",
+          "special_passive_skill_desc": "队友每次使用氮气时获得1.5秒#tips[隐身]效果并永久提升1km/h极速（上限叠加至30km/h）\n#acacac越野车：在沙地、草地、雪地等特殊地形中减速效果减少50%，并且额外获得自动集气。",
+          "special_passive_skill_icon": "new_carport_icon_10165",
+          "special_passive_skill_title": "碰撞规避",
+          "title_ace_time_charge_condition": "赛道专精",
+          "title_ace_time_effect": "RECU限制解除",
+          "title_slipstream": "空气动力学套件",
+          "title_unlock_nitro_2": "大招强化套件 I",
+          "title_unlock_nitro_3": "竞速级氮气支架",
+          "unlock_nitro_3": "解锁1x6磅，2x3磅，3x2磅氮气",
+          "upgrade_level_icon": "new_carport_icon_city"
+        },
+        "stats": {
+          "speed_limit": 180,
+          "speedup_ratio": 1.02,
+          "charge": {
+            "ace_charge": 4000,
+            "drift_charge_energy_coef": 600,
+            "drift_charge_energy_min": 1200,
+            "drift_charge_energy_max": 6000,
+            "drift_extra_charge": [
+              [
+                1,
+                0
+              ],
+              [
+                2,
+                1800
+              ]
+            ]
+          }
+        }
+      },
+      {
+        "id": 10586,
+        "suffix": "4",
+        "rich_text": {
+          "id": 10586,
+          "ace_time_charge_condition": "在城市赛道，使用氮气时获得额外大招充能并在落后第一名超过一定距离时获得速度提升效果",
+          "ace_time_effect": "氮气护体可以充能两次",
+          "ace_time_effect_rich_desc": "氮气护体可以充能两次",
+          "chip_unlock_tips": "芯片最高生效等级为#fe7ab75#ffffff级",
+          "icon_ace_time_charge_condition": "new_carport_icon_city",
+          "icon_ace_time_effect": "new_carport_icon_10164",
+          "icon_slipstream": "new_carport_icon_14",
+          "icon_unlock_nitro_2": "new_carport_icon_10164",
+          "icon_unlock_nitro_3": "new_carport_icon_nos_03",
+          "is_unlocked_ace_time_charge_condition": 1,
+          "is_unlocked_slipstream": 1,
+          "level_title": "大招强化 I",
+          "passive_skill_effect": [
+            "氮气护体加速",
+            ""
+          ],
+          "passive_skill_effect_value": [
+            "27公里/小时",
+            ""
+          ],
+          "passive_skill_rich_desc": "队友每次使用氮气时获得1.5秒#tips[隐身]效果并永久提升1km/h极速（上限叠加至30km/h）",
+          "slipstream": "跟随在车辆后方将获得尾流，产生持续的氮气充能效果",
+          "special_passive_skill_desc": "队友每次使用氮气时获得1.5秒#tips[隐身]效果并永久提升1km/h极速（上限叠加至30km/h）\n#acacac越野车：在沙地、草地、雪地等特殊地形中减速效果减少50%，并且额外获得自动集气。",
+          "special_passive_skill_icon": "new_carport_icon_10165",
+          "special_passive_skill_title": "碰撞规避",
+          "title_ace_time_charge_condition": "赛道专精",
+          "title_ace_time_effect": "RECU限制解除",
+          "title_slipstream": "空气动力学套件",
+          "title_unlock_nitro_2": "大招强化套件 I",
+          "title_unlock_nitro_3": "竞速级氮气支架",
+          "unlock_nitro_3": "解锁1x6磅，2x3磅，3x2磅氮气",
+          "upgrade_level_icon": "new_carport_icon_10164"
+        },
+        "stats": {
+          "speed_limit": 180,
+          "speedup_ratio": 1.02,
+          "charge": {
+            "ace_charge": 4000,
+            "drift_charge_energy_coef": 600,
+            "drift_charge_energy_min": 1200,
+            "drift_charge_energy_max": 6000,
+            "drift_extra_charge": [
+              [
+                1,
+                0
+              ],
+              [
+                2,
+                1800
+              ]
+            ]
+          }
+        }
+      },
+      {
+        "id": 10686,
+        "suffix": "5",
+        "rich_text": {
+          "id": 10686,
+          "ace_time_charge_condition": "在城市赛道，使用氮气时获得额外大招充能并在落后第一名超过一定距离时获得速度提升效果",
+          "ace_time_effect": "氮气护体可以充能两次",
+          "ace_time_effect_rich_desc": "氮气护体可以充能两次",
+          "chip_unlock_tips": "芯片最高生效等级为#fe7ab76#ffffff级",
+          "icon_ace_time_charge_condition": "new_carport_icon_city",
+          "icon_ace_time_effect": "new_carport_icon_10164",
+          "icon_slipstream": "new_carport_icon_14",
+          "icon_unlock_nitro_2": "new_carport_icon_10164",
+          "icon_unlock_nitro_3": "new_carport_icon_nos_03",
+          "is_unlocked_ace_time_charge_condition": 1,
+          "is_unlocked_slipstream": 1,
+          "level_title": "竞速级氮气支架 II",
+          "passive_skill_effect": [
+            "氮气护体加速",
+            ""
+          ],
+          "passive_skill_effect_value": [
+            "27公里/小时",
+            ""
+          ],
+          "passive_skill_rich_desc": "队友每次使用氮气时获得1.5秒#tips[隐身]效果并永久提升1km/h极速（上限叠加至30km/h）",
+          "slipstream": "跟随在车辆后方将获得尾流，产生持续的氮气充能效果",
+          "special_passive_skill_desc": "队友每次使用氮气时获得1.5秒#tips[隐身]效果并永久提升1km/h极速（上限叠加至30km/h）\n#acacac越野车：在沙地、草地、雪地等特殊地形中减速效果减少50%，并且额外获得自动集气。",
+          "special_passive_skill_icon": "new_carport_icon_10165",
+          "special_passive_skill_title": "碰撞规避",
+          "title_ace_time_charge_condition": "赛道专精",
+          "title_ace_time_effect": "RECU限制解除",
+          "title_slipstream": "空气动力学套件",
+          "title_unlock_nitro_2": "大招强化套件 I",
+          "title_unlock_nitro_3": "竞速级氮气支架",
+          "unlock_nitro_3": "解锁1x6磅，2x3磅，3x2磅氮气",
+          "upgrade_level_icon": "new_carport_icon_nos_03"
+        },
+        "stats": {
+          "speed_limit": 180,
+          "speedup_ratio": 1.02,
+          "charge": {
+            "ace_charge": 4000,
+            "drift_charge_energy_coef": 600,
+            "drift_charge_energy_min": 1200,
+            "drift_charge_energy_max": 6000,
+            "drift_extra_charge": [
+              [
+                1,
+                0
+              ],
+              [
+                2,
+                1800
+              ]
+            ]
+          }
+        }
+      },
+      {
+        "id": 10786,
+        "suffix": "6",
+        "rich_text": {
+          "id": 10786,
+          "ace_time_charge_condition": "在城市赛道，使用氮气时获得额外大招充能并在落后第一名超过一定距离时获得速度提升效果",
+          "ace_time_effect": "氮气护体可以充能两次",
+          "ace_time_effect_rich_desc": "氮气护体可以充能两次",
+          "chip_unlock_tips": "芯片最高生效等级为#fe7ab77#ffffff级",
+          "icon_ace_time_charge_condition": "new_carport_icon_city",
+          "icon_ace_time_effect": "new_carport_icon_10164",
+          "icon_slipstream": "new_carport_icon_14",
+          "icon_unlock_nitro_2": "new_carport_icon_10164",
+          "icon_unlock_nitro_3": "new_carport_icon_nos_03",
+          "is_unlocked_ace_time_charge_condition": 1,
+          "is_unlocked_slipstream": 1,
+          "level_title": "大招强化 II",
+          "passive_skill_effect": [
+            "氮气护体加速",
+            ""
+          ],
+          "passive_skill_effect_value": [
+            "29公里/小时",
+            ""
+          ],
+          "passive_skill_rich_desc": "队友每次使用氮气时获得1.5秒#tips[隐身]效果并永久提升1km/h极速（上限叠加至30km/h）",
+          "slipstream": "跟随在车辆后方将获得尾流，产生持续的氮气充能效果",
+          "special_passive_skill_desc": "队友每次使用氮气时获得1.5秒#tips[隐身]效果并永久提升1km/h极速（上限叠加至30km/h）\n#acacac越野车：在沙地、草地、雪地等特殊地形中减速效果减少50%，并且额外获得自动集气。",
+          "special_passive_skill_icon": "new_carport_icon_10165",
+          "special_passive_skill_title": "碰撞规避",
+          "title_ace_time_charge_condition": "赛道专精",
+          "title_ace_time_effect": "RECU限制解除",
+          "title_slipstream": "空气动力学套件",
+          "title_unlock_nitro_2": "大招强化套件 I",
+          "title_unlock_nitro_3": "竞速级氮气支架",
+          "unlock_nitro_3": "解锁1x6磅，2x3磅，3x2磅氮气",
+          "upgrade_level_icon": "new_carport_icon_10164"
+        },
+        "stats": {
+          "speed_limit": 180.5,
+          "speedup_ratio": 1.02,
+          "charge": {
+            "ace_charge": 4000,
+            "drift_charge_energy_coef": 600,
+            "drift_charge_energy_min": 1200,
+            "drift_charge_energy_max": 6000,
+            "drift_extra_charge": [
+              [
+                1,
+                0
+              ],
+              [
+                2,
+                1800
+              ]
+            ]
+          }
+        }
+      },
+      {
+        "id": 10886,
+        "suffix": "7",
+        "rich_text": {
+          "id": 10886,
+          "ace_time_charge_condition": "在城市赛道，使用氮气时获得额外大招充能并在落后第一名超过一定距离时获得速度提升效果",
+          "ace_time_effect": "氮气护体可以充能两次",
+          "ace_time_effect_rich_desc": "氮气护体可以充能两次",
+          "chip_unlock_tips": "芯片最高生效等级为#fe7ab78#ffffff级",
+          "icon_ace_time_charge_condition": "new_carport_icon_city",
+          "icon_ace_time_effect": "new_carport_icon_10164",
+          "icon_slipstream": "new_carport_icon_14",
+          "icon_unlock_nitro_2": "new_carport_icon_10164",
+          "icon_unlock_nitro_3": "new_carport_icon_nos_03",
+          "is_unlocked_ace_time_charge_condition": 1,
+          "is_unlocked_ace_time_effect": 1,
+          "is_unlocked_slipstream": 1,
+          "level_title": "RECU限制解除",
+          "passive_skill_effect": [
+            "氮气护体加速",
+            ""
+          ],
+          "passive_skill_effect_value": [
+            "29公里/小时",
+            ""
+          ],
+          "passive_skill_rich_desc": "队友每次使用氮气时获得1.5秒#tips[隐身]效果并永久提升1km/h极速（上限叠加至30km/h）",
+          "slipstream": "跟随在车辆后方将获得尾流，产生持续的氮气充能效果",
+          "special_passive_skill_desc": "队友每次使用氮气时获得1.5秒#tips[隐身]效果并永久提升1km/h极速（上限叠加至30km/h）\n#acacac越野车：在沙地、草地、雪地等特殊地形中减速效果减少50%，并且额外获得自动集气。",
+          "special_passive_skill_icon": "new_carport_icon_10165",
+          "special_passive_skill_title": "碰撞规避",
+          "title_ace_time_charge_condition": "赛道专精",
+          "title_ace_time_effect": "RECU限制解除",
+          "title_slipstream": "空气动力学套件",
+          "title_unlock_nitro_2": "大招强化套件 I",
+          "title_unlock_nitro_3": "竞速级氮气支架",
+          "unlock_nitro_3": "解锁1x6磅，2x3磅，3x2磅氮气",
+          "upgrade_level_icon": "new_carport_icon_10164"
+        },
+        "stats": {
+          "speed_limit": 180.5,
+          "speedup_ratio": 1.02,
+          "charge": {
+            "ace_charge": 4000,
+            "drift_charge_energy_coef": 600,
+            "drift_charge_energy_min": 1200,
+            "drift_charge_energy_max": 6000,
+            "drift_extra_charge": [
+              [
+                1,
+                0
+              ],
+              [
+                2,
+                1800
+              ]
+            ]
+          }
+        }
+      },
+      {
+        "id": 10986,
+        "suffix": "8",
+        "rich_text": {
+          "id": 10986,
+          "ace_time_charge_condition": "在城市赛道，使用氮气时获得额外大招充能并在落后第一名超过一定距离时获得速度提升效果",
+          "ace_time_effect": "氮气护体可以充能两次",
+          "ace_time_effect_rich_desc": "氮气护体可以充能两次",
+          "chip_unlock_tips": "芯片最高生效等级为#fe7ab79#ffffff级",
+          "icon_ace_time_charge_condition": "new_carport_icon_city",
+          "icon_ace_time_effect": "new_carport_icon_10164",
+          "icon_slipstream": "new_carport_icon_14",
+          "icon_unlock_nitro_2": "new_carport_icon_10164",
+          "icon_unlock_nitro_3": "new_carport_icon_nos_03",
+          "is_unlocked_ace_time_charge_condition": 1,
+          "is_unlocked_ace_time_effect": 1,
+          "is_unlocked_slipstream": 1,
+          "level_title": "大招强化 III",
+          "passive_skill_effect": [
+            "氮气护体加速",
+            ""
+          ],
+          "passive_skill_effect_value": [
+            "32公里/小时",
+            ""
+          ],
+          "passive_skill_rich_desc": "队友每次使用氮气时获得1.5秒#tips[隐身]效果并永久提升1km/h极速（上限叠加至30km/h）",
+          "slipstream": "跟随在车辆后方将获得尾流，产生持续的氮气充能效果",
+          "special_passive_skill_desc": "队友每次使用氮气时获得1.5秒#tips[隐身]效果并永久提升1km/h极速（上限叠加至30km/h）\n#acacac越野车：在沙地、草地、雪地等特殊地形中减速效果减少50%，并且额外获得自动集气。",
+          "special_passive_skill_icon": "new_carport_icon_10165",
+          "special_passive_skill_title": "碰撞规避",
+          "title_ace_time_charge_condition": "赛道专精",
+          "title_ace_time_effect": "RECU限制解除",
+          "title_slipstream": "空气动力学套件",
+          "title_unlock_nitro_2": "大招强化套件 I",
+          "title_unlock_nitro_3": "竞速级氮气支架",
+          "unlock_nitro_3": "解锁1x6磅，2x3磅，3x2磅氮气",
+          "upgrade_level_icon": "new_carport_icon_10164"
+        },
+        "stats": {
+          "speed_limit": 181,
+          "speedup_ratio": 1.02,
+          "charge": {
+            "ace_charge": 4000,
+            "drift_charge_energy_coef": 600,
+            "drift_charge_energy_min": 1200,
+            "drift_charge_energy_max": 6000,
+            "drift_extra_charge": [
+              [
+                1,
+                0
+              ],
+              [
+                2,
+                1800
+              ]
+            ]
+          }
+        }
+      },
+      {
+        "id": 11086,
+        "suffix": "9",
+        "rich_text": {
+          "id": 11086,
+          "ace_time_charge_condition": "在城市赛道，使用氮气时获得额外大招充能并在落后第一名超过一定距离时获得速度提升效果",
+          "ace_time_effect": "氮气护体可以充能两次",
+          "ace_time_effect_rich_desc": "氮气护体可以充能两次",
+          "chip_unlock_tips": "芯片最高生效等级为#fe7ab710#ffffff级",
+          "icon_ace_time_charge_condition": "new_carport_icon_city",
+          "icon_ace_time_effect": "new_carport_icon_10164",
+          "icon_slipstream": "new_carport_icon_14",
+          "icon_unlock_nitro_2": "new_carport_icon_10164",
+          "icon_unlock_nitro_3": "new_carport_icon_nos_03",
+          "is_unlocked_ace_time_charge_condition": 1,
+          "is_unlocked_ace_time_effect": 1,
+          "is_unlocked_slipstream": 1,
+          "level_title": "大招强化 IV",
+          "passive_skill_effect": [
+            "氮气护体加速",
+            ""
+          ],
+          "passive_skill_effect_value": [
+            "35公里/小时",
+            ""
+          ],
+          "passive_skill_rich_desc": "队友每次使用氮气时获得1.5秒#tips[隐身]效果并永久提升1km/h极速（上限叠加至30km/h）",
+          "slipstream": "跟随在车辆后方将获得尾流，产生持续的氮气充能效果",
+          "special_passive_skill_desc": "队友每次使用氮气时获得1.5秒#tips[隐身]效果并永久提升1km/h极速（上限叠加至30km/h）\n#acacac越野车：在沙地、草地、雪地等特殊地形中减速效果减少50%，并且额外获得自动集气。",
+          "special_passive_skill_icon": "new_carport_icon_10165",
+          "special_passive_skill_title": "碰撞规避",
+          "title_ace_time_charge_condition": "赛道专精",
+          "title_ace_time_effect": "RECU限制解除",
+          "title_slipstream": "空气动力学套件",
+          "title_unlock_nitro_2": "大招强化套件 I",
+          "title_unlock_nitro_3": "竞速级氮气支架",
+          "unlock_nitro_3": "解锁1x6磅，2x3磅，3x2磅氮气",
+          "upgrade_level_icon": "new_carport_icon_10164"
+        },
+        "stats": {
+          "speed_limit": 182,
+          "speedup_ratio": 1.02,
+          "charge": {
+            "ace_charge": 4000,
+            "drift_charge_energy_coef": 600,
+            "drift_charge_energy_min": 1200,
+            "drift_charge_energy_max": 6000,
+            "drift_extra_charge": [
+              [
+                1,
+                0
+              ],
+              [
+                2,
+                1800
+              ]
+            ]
+          }
+        }
+      }
+    ],
+    "skills": {
+      "ultimate": {
+        "id": 8651,
+        "name": "氮气护体",
+        "type": "N2O_CLEARANCE",
+        "icon_static": "ui_skill64_04",
+        "icon_big": null,
+        "icon": null,
+        "init_ratio": null,
+        "icons": {
+          "normal": "ui_skill64_03",
+          "disable": "ui_skill64_01",
+          "alt": "ui_skill64_06",
+          "down": "ui_skill64_03",
+          "static": "ui_skill64_04",
+          "big": null
+        },
+        "extra": {
+          "cam_type": "N2O_CLEARANCE",
+          "eff_id": 1,
+          "is_cost_energy": 2,
+          "rally_qte": 2
+        },
+        "value_texts": [
+          {
+            "key": "name",
+            "label": "技能名称",
+            "value": "氮气护体"
+          },
+          {
+            "key": "skill_type",
+            "label": "技能类型",
+            "value": "N2O_CLEARANCE"
+          },
+          {
+            "key": "cam_type",
+            "label": "镜头类型",
+            "value": "N2O_CLEARANCE"
+          },
+          {
+            "key": "eff_id",
+            "label": "特效编号",
+            "value": "1"
+          },
+          {
+            "key": "min_charge",
+            "label": "最低充能万分比",
+            "value": "10000"
+          },
+          {
+            "key": "rally_qte",
+            "label": "拉力赛触发qte",
+            "value": "2"
+          }
+        ],
+        "instructions": [
+          {
+            "id": 804801,
+            "attack_show_eff_dur": 2,
+            "attack_show_friend_enemy_filter": [
+              1,
+              2
+            ],
+            "attack_show_keep_dur": 2,
+            "attack_show_role_filter": [
+              1,
+              2,
+              3
+            ],
+            "buff_count": 0,
+            "cd_type": 1,
+            "duration": 0.1,
+            "eff_cd": 2,
+            "eff_id": 1,
+            "extra_children": [],
+            "extra_isolate": [],
+            "friend_eff": [
+              62302
+            ],
+            "inst_group": 838,
+            "inst_name": "氮气护体辅助",
+            "inst_type": 8,
+            "lock_camp": 1,
+            "lock_cnt": 5,
+            "lock_dist": [
+              -500,
+              500
+            ],
+            "lock_instr_ids": [
+              10300501
+            ],
+            "lock_side_dist": [
+              -500,
+              500
+            ],
+            "lock_vertical_dist": [
+              -6000,
+              6000
+            ],
+            "rear_insts": [],
+            "ref_insts": [
+              804801
+            ],
+            "skill_eff_id": 8,
+            "sp_n2o_ace_charge_ratio": 1,
+            "name": "氮气护体辅助",
+            "desc": null,
+            "type": 8,
+            "order": null,
+            "value_texts": [
+              {
+                "key": "attack_show_friend_enemy_filter",
+                "label": "敌友筛选",
+                "value": "[1,2]"
+              },
+              {
+                "key": "attack_show_role_filter",
+                "label": "定位筛选",
+                "value": "[1,2,3]"
+              },
+              {
+                "key": "buff_count",
+                "label": "Buff 数量",
+                "value": "0"
+              },
+              {
+                "key": "rear_insts",
+                "label": "后续节点",
+                "value": "[]"
+              },
+              {
+                "key": "extra_children",
+                "label": "子节点",
+                "value": "[]"
+              },
+              {
+                "key": "ref_insts",
+                "label": "引用节点",
+                "value": "[804801]"
+              }
+            ]
+          },
+          {
+            "id": 206101,
+            "accel_action": 2,
+            "accelerate_curve": [
+              [
+                0,
+                30
+              ],
+              [
+                165,
+                21.7
+              ],
+              [
+                166,
+                5
+              ],
+              [
+                200,
+                5
+              ]
+            ],
+            "attack_show_friend_enemy_filter": [
+              1,
+              2
+            ],
+            "attack_show_role_filter": [
+              1,
+              2,
+              3
+            ],
+            "buff_count": 0,
+            "cost_ratio": 1666,
+            "duration": 6,
+            "eff_id": 1,
+            "extra_children": [],
+            "extra_isolate": [],
+            "inst_group": 2,
+            "inst_name": "大招加速",
+            "inst_type": 2,
+            "is_hard_push": 1,
+            "rear_insts": [
+              -1
+            ],
+            "ref_insts": [
+              206101
+            ],
+            "skill_eff_id": 12169,
+            "sp_ex_speed_limit": 25,
+            "sp_max_ex_speed_limit": 25,
+            "sp_min_ex_speed_limit": 25,
+            "sp_n2o_ace_charge_ratio": 1,
+            "name": "大招加速",
+            "desc": null,
+            "type": 2,
+            "order": null,
+            "value_texts": [
+              {
+                "key": "sp_ex_speed_limit",
+                "label": "极速提升",
+                "value": "25km/h"
+              },
+              {
+                "key": "attack_show_friend_enemy_filter",
+                "label": "敌友筛选",
+                "value": "[1,2]"
+              },
+              {
+                "key": "attack_show_role_filter",
+                "label": "定位筛选",
+                "value": "[1,2,3]"
+              },
+              {
+                "key": "buff_count",
+                "label": "Buff 数量",
+                "value": "0"
+              },
+              {
+                "key": "rear_insts",
+                "label": "后续节点",
+                "value": "[-1]"
+              },
+              {
+                "key": "extra_children",
+                "label": "子节点",
+                "value": "[]"
+              },
+              {
+                "key": "ref_insts",
+                "label": "引用节点",
+                "value": "[206101]"
+              }
+            ]
+          },
+          {
+            "id": 2806201,
+            "attack_show_friend_enemy_filter": [
+              1,
+              2
+            ],
+            "attack_show_role_filter": [
+              1,
+              2,
+              3
+            ],
+            "buff_count": 0,
+            "extra_children": [
+              3701001
+            ],
+            "extra_isolate": [],
+            "inst_group": 28,
+            "inst_name": "判断是否处于氮气护体",
+            "inst_type": 28,
+            "rear_insts": [],
+            "ref_insts": [
+              906932,
+              2806201,
+              3500013,
+              3701001
+            ],
+            "sp_n2o_ace_charge_ratio": 1,
+            "status_effect": [
+              [
+                [
+                  3,
+                  "!=",
+                  3701001,
+                  [
+                    0
+                  ],
+                  3701001
+                ]
+              ]
+            ],
+            "name": "判断是否处于氮气护体",
+            "desc": null,
+            "type": 28,
+            "order": null,
+            "value_texts": [
+              {
+                "key": "attack_show_friend_enemy_filter",
+                "label": "敌友筛选",
+                "value": "[1,2]"
+              },
+              {
+                "key": "attack_show_role_filter",
+                "label": "定位筛选",
+                "value": "[1,2,3]"
+              },
+              {
+                "key": "buff_count",
+                "label": "Buff 数量",
+                "value": "0"
+              },
+              {
+                "key": "status_effect",
+                "label": "状态及效果",
+                "value": "[[[3,\"!=\",3701001,[0],3701001]]]"
+              },
+              {
+                "key": "rear_insts",
+                "label": "后续节点",
+                "value": "[]"
+              },
+              {
+                "key": "extra_children",
+                "label": "子节点",
+                "value": "[3701001]"
+              },
+              {
+                "key": "ref_insts",
+                "label": "引用节点",
+                "value": "[906932,2806201,3500013,3701001]"
+              }
+            ]
+          }
+        ]
+      },
+      "sp": null,
+      "passive": [
+        {
+          "id": 50801,
+          "name": "封禁尾流",
+          "type": null,
+          "icon_static": null,
+          "icon_big": null,
+          "icon": null,
+          "init_ratio": null,
+          "icons": {
+            "normal": null,
+            "disable": null,
+            "alt": null,
+            "down": null,
+            "static": null,
+            "big": null
+          },
+          "extra": {
+            "cam_type": null,
+            "eff_id": null,
+            "is_cost_energy": null,
+            "rally_qte": null
+          },
+          "value_texts": [
+            {
+              "key": "name",
+              "label": "技能名称",
+              "value": "封禁尾流"
+            }
+          ],
+          "instructions": [
+            {
+              "id": 2100301,
+              "attack_show_friend_enemy_filter": [
+                1,
+                2
+              ],
+              "attack_show_role_filter": [
+                1,
+                2,
+                3
+              ],
+              "buff_count": 0,
+              "duration": 999,
+              "eff_id": 1,
+              "extra_children": [],
+              "extra_isolate": [],
+              "inst_group": 21001,
+              "inst_name": "封禁尾流",
+              "inst_type": 21,
+              "rear_insts": [],
+              "ref_insts": [
+                2100301
+              ],
+              "skill_eff_id": 21,
+              "slipstream_state": 1,
+              "sp_n2o_ace_charge_ratio": 1,
+              "name": "封禁尾流",
+              "desc": null,
+              "type": 21,
+              "order": null,
+              "value_texts": [
+                {
+                  "key": "attack_show_friend_enemy_filter",
+                  "label": "敌友筛选",
+                  "value": "[1,2]"
+                },
+                {
+                  "key": "attack_show_role_filter",
+                  "label": "定位筛选",
+                  "value": "[1,2,3]"
+                },
+                {
+                  "key": "buff_count",
+                  "label": "Buff 数量",
+                  "value": "0"
+                },
+                {
+                  "key": "rear_insts",
+                  "label": "后续节点",
+                  "value": "[]"
+                },
+                {
+                  "key": "extra_children",
+                  "label": "子节点",
+                  "value": "[]"
+                },
+                {
+                  "key": "ref_insts",
+                  "label": "引用节点",
+                  "value": "[2100301]"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "id": 51801,
+          "name": "标记辅助车",
+          "type": null,
+          "icon_static": null,
+          "icon_big": null,
+          "icon": null,
+          "init_ratio": null,
+          "icons": {
+            "normal": null,
+            "disable": null,
+            "alt": null,
+            "down": null,
+            "static": null,
+            "big": null
+          },
+          "extra": {
+            "cam_type": null,
+            "eff_id": null,
+            "is_cost_energy": null,
+            "rally_qte": null
+          },
+          "value_texts": [
+            {
+              "key": "name",
+              "label": "技能名称",
+              "value": "标记辅助车"
+            }
+          ],
+          "instructions": [
+            {
+              "id": 10300501,
+              "attack_show_friend_enemy_filter": [
+                1,
+                2
+              ],
+              "attack_show_role_filter": [
+                1,
+                2,
+                3
+              ],
+              "buff_count": 0,
+              "duration": null,
+              "extra_children": [],
+              "extra_isolate": [],
+              "inst_group": 103,
+              "inst_name": "用于标记谁是辅助车",
+              "inst_type": 103,
+              "rear_insts": [],
+              "ref_insts": [
+                10300501
+              ],
+              "sp_n2o_ace_charge_ratio": 1,
+              "name": "用于标记谁是辅助车",
+              "desc": null,
+              "type": 103,
+              "order": null,
+              "value_texts": [
+                {
+                  "key": "attack_show_friend_enemy_filter",
+                  "label": "敌友筛选",
+                  "value": "[1,2]"
+                },
+                {
+                  "key": "attack_show_role_filter",
+                  "label": "定位筛选",
+                  "value": "[1,2,3]"
+                },
+                {
+                  "key": "buff_count",
+                  "label": "Buff 数量",
+                  "value": "0"
+                },
+                {
+                  "key": "rear_insts",
+                  "label": "后续节点",
+                  "value": "[]"
+                },
+                {
+                  "key": "extra_children",
+                  "label": "子节点",
+                  "value": "[]"
+                },
+                {
+                  "key": "ref_insts",
+                  "label": "引用节点",
+                  "value": "[10300501]"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "id": 62301,
+          "name": "碰撞规避",
+          "type": null,
+          "icon_static": null,
+          "icon_big": null,
+          "icon": null,
+          "init_ratio": null,
+          "icons": {
+            "normal": null,
+            "disable": null,
+            "alt": null,
+            "down": null,
+            "static": null,
+            "big": null
+          },
+          "extra": {
+            "cam_type": null,
+            "eff_id": null,
+            "is_cost_energy": null,
+            "rally_qte": null
+          },
+          "value_texts": [
+            {
+              "key": "name",
+              "label": "技能名称",
+              "value": "碰撞规避"
+            }
+          ],
+          "instructions": [
+            {
+              "id": 804802,
+              "attack_show_eff_dur": 2,
+              "attack_show_friend_enemy_filter": [
+                1,
+                2
+              ],
+              "attack_show_keep_dur": 2,
+              "attack_show_role_filter": [
+                1,
+                2,
+                3
+              ],
+              "buff_count": 0,
+              "cd_type": 1,
+              "duration": 0.2,
+              "eff_cd": 1,
+              "eff_id": 1,
+              "extra_children": [],
+              "extra_isolate": [],
+              "friend_eff": [
+                62303
+              ],
+              "inst_group": 839,
+              "inst_name": "碰撞规避辅助",
+              "inst_type": 8,
+              "lock_camp": 1,
+              "lock_cnt": 4,
+              "lock_dist": [
+                -500,
+                500
+              ],
+              "lock_no_reverse": 1,
+              "lock_side_dist": [
+                -500,
+                500
+              ],
+              "lock_vertical_dist": [
+                -6000,
+                6000
+              ],
+              "rear_insts": [
+                -1
+              ],
+              "ref_insts": [
+                804802
+              ],
+              "skill_eff_id": 8,
+              "sp_n2o_ace_charge_ratio": 1,
+              "name": "碰撞规避辅助",
+              "desc": null,
+              "type": 8,
+              "order": null,
+              "value_texts": [
+                {
+                  "key": "attack_show_friend_enemy_filter",
+                  "label": "敌友筛选",
+                  "value": "[1,2]"
+                },
+                {
+                  "key": "attack_show_role_filter",
+                  "label": "定位筛选",
+                  "value": "[1,2,3]"
+                },
+                {
+                  "key": "buff_count",
+                  "label": "Buff 数量",
+                  "value": "0"
+                },
+                {
+                  "key": "rear_insts",
+                  "label": "后续节点",
+                  "value": "[-1]"
+                },
+                {
+                  "key": "extra_children",
+                  "label": "子节点",
+                  "value": "[]"
+                },
+                {
+                  "key": "ref_insts",
+                  "label": "引用节点",
+                  "value": "[804802]"
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    "skillPanelGroups": {
+      "ultimate": [
+        {
+          "id": "518",
+          "name_rich": {
+            "raw": "极速提升",
+            "html": "极速提升"
+          },
+          "value_rich": {
+            "raw": "25km/h",
+            "html": "25km/h"
+          },
+          "value_text": "25km/h",
+          "instruction_ids": [
+            206101,
+            206105
+          ],
+          "values": []
+        },
+        {
+          "id": "519",
+          "name_rich": {
+            "raw": "持续时间",
+            "html": "持续时间"
+          },
+          "value_rich": {
+            "raw": "6秒",
+            "html": "6秒"
+          },
+          "value_text": "6秒",
+          "instruction_ids": [],
+          "values": []
+        },
+        {
+          "id": "520",
+          "name_rich": {
+            "raw": "辅助范围",
+            "html": "辅助范围"
+          },
+          "value_rich": {
+            "raw": "500米",
+            "html": "500米"
+          },
+          "value_text": "500米",
+          "instruction_ids": [],
+          "values": []
+        },
+        {
+          "id": "521",
+          "name_rich": {
+            "raw": "友方充能",
+            "html": "友方充能"
+          },
+          "value_rich": {
+            "raw": "23%",
+            "html": "23%"
+          },
+          "value_text": "23%",
+          "instruction_ids": [],
+          "values": []
+        },
+        {
+          "id": "522",
+          "name_rich": {
+            "raw": "氮气额外充能",
+            "html": "氮气额外充能"
+          },
+          "value_rich": {
+            "raw": "8%",
+            "html": "8%"
+          },
+          "value_text": "8%",
+          "instruction_ids": [],
+          "values": []
+        },
+        {
+          "id": "20645",
+          "name_rich": {
+            "raw": "加速动力",
+            "html": "加速动力"
+          },
+          "value_rich": {
+            "raw": "低",
+            "html": "低"
+          },
+          "value_text": "低",
+          "instruction_ids": [],
+          "values": []
+        }
+      ],
+      "sp": [],
+      "passive": [],
+      "other": []
+    },
+    "richText": {
+      "id": 10086,
+      "ace_time_charge_condition": "在城市赛道，使用氮气时获得额外大招充能并在落后第一名超过一定距离时获得速度提升效果",
+      "ace_time_effect": "氮气护体可以充能两次",
+      "ace_time_effect_rich_desc": "氮气护体可以充能两次",
+      "chip_unlock_tips": "芯片最高生效等级为#fe7ab71#ffffff级",
+      "icon_ace_time_charge_condition": "new_carport_icon_city",
+      "icon_ace_time_effect": "new_carport_icon_10164",
+      "icon_slipstream": "new_carport_icon_14",
+      "icon_unlock_nitro_2": "new_carport_icon_10164",
+      "icon_unlock_nitro_3": "new_carport_icon_nos_03",
+      "level_title": "原车型",
+      "passive_skill_effect": [
+        "氮气护体加速",
+        ""
+      ],
+      "passive_skill_effect_value": [
+        "25公里/小时",
+        ""
+      ],
+      "passive_skill_rich_desc": "队友每次使用氮气时获得1.5秒#tips[隐身]效果并永久提升1km/h极速（上限叠加至30km/h）",
+      "slipstream": "跟随在车辆后方将获得尾流，产生持续的氮气充能效果",
+      "special_passive_skill_desc": {
+        "raw": "队友每次使用氮气时获得1.5秒#tips[隐身]效果并永久提升1km/h极速（上限叠加至30km/h）\n#acacac越野车：在沙地、草地、雪地等特殊地形中减速效果减少50%，并且额外获得自动集气。",
+        "html": "队友每次使用氮气时获得1.5秒<span class=\"rt-tip rt-tip--entry\" data-tip=\"隐身\" data-icon=\"carport_new_skill_illustrate_b2\" data-desc=\"·车辆透明化&#10;·无视车辆间的碰撞&#10;·不会被“锁定类”“触碰类”干扰命中\" style=\"--tip-color:#7eedff\" title=\"·车辆透明化&#10;·无视车辆间的碰撞&#10;·不会被“锁定类”“触碰类”干扰命中\"><span class=\"rt-tip__icon-slot\"></span>隐身</span>效果并永久提升1km/h极速（上限叠加至30km/h）<br/><span class=\"rt-color\" style=\"color: #acacac\">越野车：在沙地、草地、雪地等特殊地形中减速效果减少50%，并且额外获得自动集气。</span>"
+      },
+      "special_passive_skill_icon": "new_carport_icon_10165",
+      "special_passive_skill_title": "碰撞规避",
+      "title_ace_time_charge_condition": "赛道专精",
+      "title_ace_time_effect": "RECU限制解除",
+      "title_slipstream": "空气动力学套件",
+      "title_unlock_nitro_2": "大招强化套件 I",
+      "title_unlock_nitro_3": "竞速级氮气支架",
+      "unlock_nitro_3": "解锁1x6磅，2x3磅，3x2磅氮气",
+      "upgrade_level_icon": "new_carport_icon_10165",
+      "feature_desc": {
+        "raw": "加速推进并为500米范围内非辅助位队友提供23%大招能量。加速开始时强化自身和辅助范围内非辅助位队友的下一次氮气：使用时额外充能8%并#tips[净化]自身负面效果。",
+        "html": "加速推进并为500米范围内非辅助位队友提供23%大招能量。加速开始时强化自身和辅助范围内非辅助位队友的下一次氮气：使用时额外充能8%并<span class=\"rt-tip rt-tip--entry\" data-tip=\"净化\" data-icon=\"carport_new_skill_illustrate_b9\" data-desc=\"·解除持续性的负面效果\" style=\"--tip-color:#7eedff\" title=\"·解除持续性的负面效果\"><span class=\"rt-tip__icon-slot\"></span>净化</span>自身负面效果。"
+      },
+      "sp_skill_desc": null,
+      "passive_skill_desc": null,
+      "story_title": "厂商：梅赛德斯-AMG",
+      "story": {
+        "raw": "有着“大G”之称的越野车G63是梅赛德斯-AMG的招牌与骄傲。它那霸气的外表、强悍的性能、奢华的内饰，使得它无论出现在何处都会引起人们的敬畏。它那杰出的领袖气质、硬派与优雅的完美平衡，以及澎湃的力量，都能让驾驶者享受与它共处时涌现的激情。",
+        "html": "有着“大G”之称的越野车G63是梅赛德斯-AMG的招牌与骄傲。它那霸气的外表、强悍的性能、奢华的内饰，使得它无论出现在何处都会引起人们的敬畏。它那杰出的领袖气质、硬派与优雅的完美平衡，以及澎湃的力量，都能让驾驶者享受与它共处时涌现的激情。"
+      }
+    },
+    "report": {
+      "title": "王牌速度节赛车检验报告",
+      "sections": [
+        {
+          "title": "基础数据",
+          "items": [
+            {
+              "label": "检测车辆",
+              "value": "梅赛德斯-AMG G 63"
+            },
+            {
+              "label": "注册日期",
+              "value": "{}年{}月{}日"
+            },
+            {
+              "label": "车辆类型",
+              "value": "真实阵营"
+            },
+            {
+              "label": "厂商",
+              "value": "梅赛德斯-AMG"
+            },
+            {
+              "label": "定位",
+              "value": "辅助位"
+            },
+            {
+              "label": "赛道专精",
+              "value": "城市"
+            },
+            {
+              "label": "能源类型",
+              "value": "汽油"
+            },
+            {
+              "label": "驱动方式",
+              "value": "前置四驱"
+            },
+            {
+              "label": "车重",
+              "value": "3850kg"
+            }
+          ]
+        },
+        {
+          "title": "芯片模块",
+          "items": [
+            {
+              "label": "芯片写入权限",
+              "value": "已获取"
+            },
+            {
+              "label": "扩展芯片类型",
+              "value": "○○◇◣◣V"
+            },
+            {
+              "label": "等级合规检查",
+              "value": "芯片等级未高于RECU等级"
+            }
+          ]
+        },
+        {
+          "title": "外观检验",
+          "items": [
+            {
+              "label": "检验结果",
+              "value": "合格"
+            }
+          ]
+        },
+        {
+          "title": "大招驱动模块",
+          "items": [
+            {
+              "label": "能量控制单元",
+              "value": "五代RECU，工作正常"
+            },
+            {
+              "label": "瑞卡因子监测",
+              "value": "工作正常"
+            },
+            {
+              "label": "NOS",
+              "value": "氮氧加速系统已安装"
+            },
+            {
+              "label": "空气动力套件（2级解锁）",
+              "value": "未选装"
+            },
+            {
+              "label": "赛道专精（3级解锁）",
+              "value": "未选装"
+            },
+            {
+              "label": "RECU限制解除（8级解锁）",
+              "value": "未选装"
+            }
+          ]
+        },
+        {
+          "title": "整车判定",
+          "items": [
+            {
+              "label": "检验结果",
+              "value": "合格，可参加速度节赛事"
+            }
+          ]
+        }
+      ]
+    },
+    "story": {
+      "content": "有着“大G”之称的越野车G63是梅赛德斯-AMG的招牌与骄傲。它那霸气的外表、强悍的性能、奢华的内饰，使得它无论出现在何处都会引起人们的敬畏。它那杰出的领袖气质、硬派与优雅的完美平衡，以及澎湃的力量，都能让驾驶者享受与它共处时涌现的激情。",
+      "id": 10086,
+      "story_content": "有着“大G”之称的越野车G63是梅赛德斯-AMG的招牌与骄傲。它那霸气的外表、强悍的性能、奢华的内饰，使得它无论出现在何处都会引起人们的敬畏。它那杰出的领袖气质、硬派与优雅的完美平衡，以及澎湃的力量，都能让驾驶者享受与它共处时涌现的激情。",
+      "story_title": "厂商：梅赛德斯-AMG",
+      "vehicle_name": "梅赛德斯-AMG G 63"
+    },
+    "obtain": {
+      "tag_img": "item_tag_icon_heijin",
+      "obtain_type_ids": [
+        4
+      ],
+      "obtain_types": [
+        {
+          "id": 4,
+          "label": "赛季会员",
+          "desc": "从赛季会员奖励中获取",
+          "icon": "commonnew_passconversion"
+        }
+      ]
+    },
+    "restraints": {
+      "id": 10086,
+      "match": [
+        12007,
+        10026,
+        10083,
+        12024,
+        10031,
+        10033,
+        12053
+      ],
+      "be_restraint": [
+        10012,
+        10025,
+        10039,
+        10080
+      ]
+    },
+    "resources": {
+      "icons": {
+        "ace_time_effect": "new_carport_icon_10164",
+        "icon_ace_time_effect": "new_carport_icon_10164",
+        "ace_time_charge_condition": "new_carport_icon_city",
+        "slipstream": "new_carport_icon_14",
+        "unlock_nitro_2": "new_carport_icon_10164",
+        "unlock_nitro_3": "new_carport_icon_nos_03",
+        "upgrade_level_icon": "new_carport_icon_10165",
+        "special_passive_skill_icon": "new_carport_icon_10165"
+      }
+    },
+    "skins": {
+      "sets": {
+        "local": [
+          {
+            "source": "local",
+            "index": 1
+          },
+          {
+            "source": "local",
+            "index": 2
+          },
+          {
+            "source": "local",
+            "index": 3
+          }
+        ]
+      },
+      "meta": {
+        "1": {
+          "id": 50235,
+          "name": "涂装 猛兽之心",
+          "desc": "不被规则束缚，勇闯天下！\n适用车型：#1dd8d0梅赛德斯-AMG G63",
+          "icon_s": "tz_10086_1_s",
+          "icon_m": "tz_10086_1_m",
+          "icon_b": "tz_10086_1_b"
+        },
+        "2": {
+          "id": 50265,
+          "name": "涂装 漠北极光",
+          "desc": "一起来着极北之地，欣赏这绚丽的极光\n适用车型：#1dd8d0梅赛德斯-AMG G 63",
+          "icon_s": "tz_10086_2_s",
+          "icon_m": "tz_10086_2_m",
+          "icon_b": "tz_10086_2_b"
+        },
+        "3": {
+          "id": 50333,
+          "name": "涂装 硬派标杆",
+          "desc": "硬派越野，经典传承\n适用车型：#1dd8d0梅赛德斯奔-AMG G 63",
+          "icon_s": "tz_10086_3_s",
+          "icon_m": "tz_10086_3_m",
+          "icon_b": "tz_10086_3_b"
+        }
+      }
+    },
+    "media": {
+      "cover": "/rk-assets/10086_m.png",
+      "coverFallback": "/rk-assets/10086_m.png",
+      "shareImage": {
+        "key": "share_10086",
+        "file": "share_10086.png",
+        "url": "https://h65.gdl.netease.com/web_res_list_20220824/share_10086.webp"
+      },
+      "shareImageAdvance": null,
+      "skillVideo": {
+        "ultimate": {
+          "url": "https://vod.cc.163.com/file/63058aca6b13db499d082a05?source=27&protocol=https",
+          "thumbnail": "table_video_img_10086"
+        },
+        "sp": null
+      }
+    }
+  }
+}

@@ -1,0 +1,98 @@
+{
+  "imageRoots": [
+    "E:\\AceRacer\\AceRacing-Workbench\\deploy\\wwwroot\\ace-racer\\rk-assets"
+  ],
+  "vehicles": [
+    {
+      "vehicleId": 12099,
+      "vehicleName": "百变小鹦",
+      "directory": "百变小鹦_12099",
+      "files": [
+        {
+          "category": "body",
+          "stem": "12099_m",
+          "file": "12099_m.png",
+          "relativePath": "assets/百变小鹦_12099/body/12099_m.png",
+          "vehicleRelativePath": "body/12099_m.png"
+        },
+        {
+          "category": "body",
+          "stem": "12099_s",
+          "file": "12099_s.png",
+          "relativePath": "assets/百变小鹦_12099/body/12099_s.png",
+          "vehicleRelativePath": "body/12099_s.png"
+        },
+        {
+          "category": "skill-icons",
+          "stem": "new_carport_icon_10403",
+          "file": "new_carport_icon_10403.png",
+          "relativePath": "assets/百变小鹦_12099/skill-icons/new_carport_icon_10403.png",
+          "vehicleRelativePath": "skill-icons/new_carport_icon_10403.png"
+        },
+        {
+          "category": "skill-icons",
+          "stem": "new_carport_icon_10404",
+          "file": "new_carport_icon_10404.png",
+          "relativePath": "assets/百变小鹦_12099/skill-icons/new_carport_icon_10404.png",
+          "vehicleRelativePath": "skill-icons/new_carport_icon_10404.png"
+        },
+        {
+          "category": "skill-icons",
+          "stem": "new_carport_icon_14",
+          "file": "new_carport_icon_14.png",
+          "relativePath": "assets/百变小鹦_12099/skill-icons/new_carport_icon_14.png",
+          "vehicleRelativePath": "skill-icons/new_carport_icon_14.png"
+        },
+        {
+          "category": "skill-icons",
+          "stem": "new_carport_icon_mountainroad",
+          "file": "new_carport_icon_mountainroad.png",
+          "relativePath": "assets/百变小鹦_12099/skill-icons/new_carport_icon_mountainroad.png",
+          "vehicleRelativePath": "skill-icons/new_carport_icon_mountainroad.png"
+        },
+        {
+          "category": "skill-icons",
+          "stem": "new_carport_icon_nos_03",
+          "file": "new_carport_icon_nos_03.png",
+          "relativePath": "assets/百变小鹦_12099/skill-icons/new_carport_icon_nos_03.png",
+          "vehicleRelativePath": "skill-icons/new_carport_icon_nos_03.png"
+        },
+        {
+          "category": "skill-icons",
+          "stem": "ui_skill190_01",
+          "file": "ui_skill190_01.png",
+          "relativePath": "assets/百变小鹦_12099/skill-icons/ui_skill190_01.png",
+          "vehicleRelativePath": "skill-icons/ui_skill190_01.png"
+        },
+        {
+          "category": "skill-icons",
+          "stem": "ui_skill190_03",
+          "file": "ui_skill190_03.png",
+          "relativePath": "assets/百变小鹦_12099/skill-icons/ui_skill190_03.png",
+          "vehicleRelativePath": "skill-icons/ui_skill190_03.png"
+        },
+        {
+          "category": "skill-icons",
+          "stem": "ui_skill190_04",
+          "file": "ui_skill190_04.png",
+          "relativePath": "assets/百变小鹦_12099/skill-icons/ui_skill190_04.png",
+          "vehicleRelativePath": "skill-icons/ui_skill190_04.png"
+        },
+        {
+          "category": "skill-icons",
+          "stem": "ui_skill190_06",
+          "file": "ui_skill190_06.png",
+          "relativePath": "assets/百变小鹦_12099/skill-icons/ui_skill190_06.png",
+          "vehicleRelativePath": "skill-icons/ui_skill190_06.png"
+        }
+      ],
+      "missing": {
+        "body": [],
+        "skins": [],
+        "skillIcons": []
+      }
+    }
+  ],
+  "fileCount": 11,
+  "missingCount": 0
+}
