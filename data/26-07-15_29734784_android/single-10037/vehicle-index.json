@@ -1,0 +1,14 @@
+{
+  "schemaVersion": 2,
+  "versionId": "26-07-15_29734784_android",
+  "generatedAt": "2026-07-23T08:36:20.000Z",
+  "total": 1,
+  "items": [
+    {
+      "id": 10037,
+      "name": "螺旋箭",
+      "dataFile": "vehicles/10037.json",
+      "assetDirectory": "assets/螺旋箭_10037"
+    }
+  ]
+}

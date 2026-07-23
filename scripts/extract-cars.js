@@ -1,5 +1,6 @@
 const fs = require('fs');
 const path = require('path');
+const pinyin = require('pinyin');
 
 const vehiclesDir = path.join(__dirname, '..', 'data', '26-07-15_29734784_android', 'full', 'vehicles');
 const outputFile = path.join(__dirname, '..', 'car-database.js');
@@ -14,6 +15,9 @@ const rawSkillLines = fs.existsSync(rawDataDir + '/vehicle_skill_v2_data.jsonl')
   : [];
 const rawInstLines = fs.existsSync(rawDataDir + '/vehicle_skill_instruction_data.jsonl')
   ? fs.readFileSync(rawDataDir + '/vehicle_skill_instruction_data.jsonl', 'utf-8').split('\n').filter(Boolean)
+  : [];
+const rawSkillValueLines = fs.existsSync(rawDataDir + '/skill_value_details_data.jsonl')
+  ? fs.readFileSync(rawDataDir + '/skill_value_details_data.jsonl', 'utf-8').split('\n').filter(Boolean)
   : [];
 
 // Build lookup: skillId -> instruction IDs
@@ -30,6 +34,15 @@ const instById = {};
 for (const line of rawInstLines) {
   const i = JSON.parse(line);
   instById[i.id] = i;
+}
+
+// Load skill_value_details for 额外起步充能 parsing
+const skillValueDetails = [];
+for (const line of rawSkillValueLines) {
+  const sv = JSON.parse(line);
+  if (sv.skill_value_name && sv.skill_value_name.includes('额外起步充能')) {
+    skillValueDetails.push(sv);
+  }
 }
 
 // Build lookup: vehicleId -> n2o instruction duration (raw * 2)
@@ -205,46 +218,47 @@ for (const file of files) {
       }
     }
 
-    // Parse 起步额外充能 from text: "开局时获得X%大招能量"
+    // Parse 额外起步充能 using reference site's method
+    // Source 1: skill_value_details_data.jsonl → "额外起步充能" entries
+    // Source 2: ace_time_effect text → "开局获得X%大招能量" pattern
     if (!ultChargeFirst) {
-      var startSources = [
-        v.richText?.ace_time_effect || '',
-        v.richText?.special_passive_skill_desc?.raw || '',
-        v.richText?.feature_desc?.raw || '',
-      ];
-      // Check each source separately to avoid cross-sentence matches
-      for (var si = 0; si < startSources.length; si++) {
-        var src = startSources[si];
-        if (!src) continue;
-        // Split by sentences and check each
-        var sentences = src.split(/[。\n]/);
-        for (var sj = 0; sj < sentences.length; sj++) {
-          var sent = sentences[sj];
-          if (!sent.includes('获得') || !sent.includes('%')) continue;
-          // Filter: check if "每" appears between "开局/起步" and "获得"
-          var startIdx = -1;
-          if (sent.includes('开局')) startIdx = sent.indexOf('开局');
-          else if (sent.includes('起步')) startIdx = sent.indexOf('起步');
-          else if (sent.includes('比赛开始')) startIdx = sent.indexOf('比赛开始');
-          var obtainIdx = sent.indexOf('获得', startIdx);
-          var between = startIdx >= 0 && obtainIdx > startIdx ? sent.substring(startIdx, obtainIdx) : '';
-          if (between.includes('每') || sent.includes('友方') || sent.includes('敌方') || sent.includes('队友') || sent.includes('全体')) continue;
-          // Also check if the text after "获得" contains "每" (recurring charge)
-          var afterObtain = obtainIdx > 0 ? sent.substring(obtainIdx) : '';
-          if (afterObtain.includes('每')) continue;
-          // Check if this sentence is about start/beginning
-          if (sent.includes('开局') || sent.includes('起步') || sent.includes('比赛开始')) {
-            var m = sent.match(/获得[^，]*?(\d+(?:\.\d+)?)\s*%/);
-            if (m) {
-              var val = parseFloat(m[1]);
-              if (val >= 1 && val <= 200) {
-                ultChargeFirst = val;
-                break;
-              }
+      // Source 1: skill_value_details
+      for (const sv of skillValueDetails) {
+        if (sv.vehicle_id !== carId) continue;
+        if (!sv.skill_value_name || !sv.skill_value_name.includes('额外起步充能')) continue;
+        const rawVal = (sv.skill_value_text || '').trim();
+        const pctM = rawVal.match(/^(\d+(?:\.\d+)?)\s*%$/);
+        if (pctM) {
+          ultChargeFirst = parseFloat(pctM[1]);
+          break;
+        }
+      }
+      // Source 2: ace_time_effect text (only if not found from skill_details)
+      if (!ultChargeFirst) {
+        const aceText = v.richText?.ace_time_effect || '';
+        const refRegex = /开局(?:时)?获得\s*(\d+(?:\.\d+)?)\s*%\s*(?:大招能量|能量)/g;
+        const refMatch = refRegex.exec(aceText);
+        if (refMatch) {
+          ultChargeFirst = parseFloat(refMatch[1]);
+        }
+      }
+      // Source 3: special_passive_skill_desc for "起步时" patterns (e.g., MINI JCW)
+      if (!ultChargeFirst) {
+        const spdText = v.richText?.special_passive_skill_desc?.raw || '';
+        var spdLines = spdText.split('\n');
+        for (var spdi = 0; spdi < spdLines.length; spdi++) {
+          var spdLine = spdLines[spdi];
+          if (!spdLine.includes('起步') || !spdLine.includes('%') || spdLine.includes('队友') || spdLine.includes('全体') || spdLine.includes('km/h')) continue;
+          var spdMatch = spdLine.match(/获得[^%]*?(\d+(?:\.\d+)?)\s*%/);
+          if (spdMatch) {
+            var val = parseFloat(spdMatch[1]);
+            // Only accept reasonable ult charge values (1-200%)
+            if (val >= 1 && val <= 200) {
+              ultChargeFirst = val;
             }
+            break;
           }
         }
-        if (ultChargeFirst) break;
       }
     }
 
@@ -305,6 +319,127 @@ for (const file of files) {
       ult_charge_loop: ultChargeLoop,
       per_sec_charge: perSecCharge,
       sp_charge: spCharge,
+      search_text: (() => {
+        // For pinyin search: convert Chinese chars to pinyin, keep ASCII as-is
+        var chars = v.name.split('');
+        var pinyinParts = [];
+        var asciiBuf = '';
+        for (var ci = 0; ci < chars.length; ci++) {
+          var code = chars[ci].charCodeAt(0);
+          if (code < 128) {
+            asciiBuf += chars[ci].toLowerCase();
+          } else {
+            if (asciiBuf) { pinyinParts.push(asciiBuf); asciiBuf = ''; }
+            try {
+              var py = pinyin.pinyin(chars[ci], { style: 0 });
+              if (py && py[0]) pinyinParts.push(py[0][0].toLowerCase());
+            } catch(e) { pinyinParts.push(chars[ci]); }
+          }
+        }
+        if (asciiBuf) pinyinParts.push(asciiBuf);
+        var result = pinyinParts.join('');
+        // Add common Chinese aliases for better search
+        var aliases = {
+          '迈凯伦 Senna': '塞纳',
+          '迈凯伦 P1': 'P1',
+          '迈凯伦 720S': '720s',
+          '迈凯伦 600LT': '600lt',
+          '布加迪 Bolide': '飞火流星',
+          '布加迪 Veyron': '威龙',
+          '布加迪 Chiron': '凯龙',
+          '布加迪 Divo': '迪沃',
+          '布加迪 LVN': '拉瓦诺',
+          '保时捷 911 GT2 RS': '保时捷911,gt2rs',
+          '保时捷 911 Turbo S': '保时捷911',
+          '保时捷 918 Spyder': '918',
+          '保时捷 Macan S': 'macan',
+          '保时捷 Panamera Turbo S': 'panamera',
+          '保时捷 Taycan Turbo S': 'taycan',
+          '保时捷 935': '935',
+          '福特 Focus RS': '福克斯rs',
+          '福特 Mustang': '野马',
+          '福特 F150': '猛禽,f150',
+          '福特 GT': '福特gt',
+          '宝马 M4 Racing': 'm4',
+          '宝马 M8 GTE': 'm8',
+          '宝马 X5': 'x5',
+          '宝马 i8': 'i8',
+          '宝马 M4 CSL': 'm4',
+          '兰博基尼 Aventador SVJ': '埃文塔多,svj,大牛',
+          '兰博基尼 Huracán STO': '飓风,sto,小牛',
+          '兰博基尼 Aventador J': '埃文塔多,小火车,火车头,火车',
+          '兰博基尼 Veneno': '毒药',
+          '兰博基尼 Revuelto': '雷维托,电牛,雷维尔托',
+          '兰博基尼 Sesto Elemento': '第六元素',
+          '法拉利 812 Competizione': '812',
+          '法拉利 LaFerrari': '拉法',
+          '阿斯顿马丁 Vanquish': '征服',
+          '阿斯顿马丁 Valkyrie AMR Pro': '女武神',
+          '阿斯顿马丁 DB11': 'db11',
+          '梅赛德斯-AMG GT Black Series': 'amggt,洞奔,洞洞奔',
+          '梅赛德斯-奔驰 Silver Arrow': '银箭',
+          '梅赛德斯-AMG G 63': '大g',
+          '梅赛德斯-AMG C 63 S Coupe': 'c63',
+          '梅赛德斯-奔驰 Biome': 'biome,电奔',
+          '雪佛兰 Camaro ZL1': '科迈罗,大黄蜂',
+          '雪佛兰 Corvette ZR1': '科尔维特',
+          '雪佛兰 Corvette C8': '科尔维特',
+          '道奇 Charger SRT Hellcat': 'charger,地狱猫',
+          '道奇 Challenger SRT 392': '挑战者',
+          '道奇 Viper ACR': '蝰蛇',
+          '日产 GT-R NISMO': 'gtr',
+          '丰田 Corolla Sprinter Trueno GT Apex': 'ae86,卡罗拉',
+          '本田 Civic Type R': 'type r,思域',
+          '大众 Beetle': '甲壳虫',
+          '大众 ID.R': 'idr',
+          '一汽-大众 GOLF GTI': '高尔夫gti',
+          '路虎卫士': '卫士',
+          '路虎 Range Rover Evoque': '极光',
+          '捷豹 F-TYPE SVR Convertible': 'ftype',
+          '玛莎拉蒂 Levante': '莱万特',
+          '玛莎拉蒂 Alfieri': '阿尔菲里',
+          '帕加尼 Huayra': '风神',
+          '柯尼塞格 Jesko': 'jesko,杰哥',
+          '柯尼塞格 Regera': 'regera,瑞哥,五五开',
+          '柯尼塞格 One:1': 'one1',
+          '莲花 GT430': 'gt430',
+          '莲花 Evija': 'evija,电莲,电莲花',
+          '莲花 Evija X': 'evija',
+          '莱肯 HyperSport': '莱肯',
+          '奥迪 TT RS': 'ttrs',
+          '奥迪 R8 Spyder V10': 'r8',
+          '奥迪 RS7 Sportback': 'rs7',
+          '奥迪 RS 6 Avant': 'rs6',
+          '奥迪 RS 3': 'rs3',
+          '宾利 Flying Spur Mulliner': '飞驰',
+          '讴歌 NSX': 'nsx',
+          '比亚迪 汉': '汉',
+          '比亚迪 海豹': '海豹',
+          '蔚来 EP9': 'ep9',
+          '蔚来ET9': 'et9',
+          '小鹏 P7': 'p7',
+          '五菱宏光 MINI EV': 'mini ev,五菱mini',
+          '坦克 300': '坦克300',
+          '仰望U8': 'u8',
+          '仰望U9': 'u9',
+          '腾势N7': 'n7',
+          '极氪007': '007',
+          '影豹R·ABT联名版': '影豹r',
+          '春风 450SR': '450sr',
+          '乐道L60': 'l60',
+          '方程豹 豹8': '豹8',
+          'AITO 问界 M5 EV': '问界m5',
+          '极狐阿尔法S 全新HI版': '极狐s',
+          '极狐 GT': '极狐gt',
+          '领克03 TCR': '领克03',
+          'MG6 XPOWER TCR': 'mg6',
+          'MINI JCW': 'mini',
+          'MINI Buggy': 'mini',
+          '英菲尼迪 Prototype': '肥皂,鼠标',
+        };
+        if (aliases[v.name]) result += ' ' + aliases[v.name];
+        return result;
+      })(),
       asset_dir: 'assets/' + v.name + '_' + carId,
     });
   } catch (e) {

@@ -677,8 +677,20 @@
         var matchCount = 0;
         for (var i = 0; i < items.length; i++) {
             var isSpecial = items[i].getAttribute('data-id') === '-1';
-            var name = items[i].querySelector('span').textContent.toLowerCase();
-            var matchName = name.indexOf(q) >= 0;
+            var id = parseInt(items[i].getAttribute('data-id'));
+            var matchName = false;
+            if (id > 0) {
+                for (var di = 0; di < CAR_DATABASE.length; di++) {
+                    if (CAR_DATABASE[di].id === id) {
+                        var c = CAR_DATABASE[di];
+                        matchName = c.name.toLowerCase().indexOf(q) >= 0 || (c.search_text && c.search_text.indexOf(q) >= 0);
+                        break;
+                    }
+                }
+            } else {
+                var name = items[i].querySelector('span').textContent.toLowerCase();
+                matchName = name.indexOf(q) >= 0;
+            }
             var matchPos = !pos || items[i].getAttribute('data-pos') === pos;
             var matchSpec = !spec || items[i].getAttribute('data-spec') === spec;
             var show = isSpecial || (matchName && matchPos && matchSpec);
@@ -706,6 +718,10 @@
         } else {
             label.innerHTML = '\u9009\u62E9\u8F66\u8F86';
         }
+        // Auto-open car dropdown when searching, close when cleared
+        if (q) {
+            document.getElementById('carDropdown').classList.add('show');
+        }
     }
 
     function pickCar(id) {
@@ -717,6 +733,7 @@
             document.getElementById('carPreviewName').style.display = 'none';
             document.getElementById('carPreviewInfo').style.display = 'none';
             document.getElementById('carPreviewChips').style.display = 'none';
+            document.getElementById('carPreviewAutoMsg').style.display = 'none';
             var img = document.getElementById('carImage');
             img.src = 'data/icon/icon_mhyck_m.png';
             img.alt = '\u672A\u4E0A\u7EBF\u8F66\u8F86';
@@ -940,27 +957,27 @@
                         <div id="carPreviewChips" style="display:none;margin-top:8px;gap:4px;justify-content:center;"></div>
                     </div>
                 </div>
-                <div class="card" style="position:relative;z-index:100;">
-                    <div class="card-title"><span class="zh">选择赛车</span><span class="lang-en">Select Car</span></div>
-                    <div class="car-filters" style="display:flex;gap:8px;margin-bottom:12px;">
-                        <div class="dropdown-container" style="flex:1;">
-                            <button id="filterPosBtn" class="nav-btn" onclick="toggleFilterMenu('pos')" style="width:100%;justify-content:space-between;">
-                                <span id="filterPosLabel"><span class="zh">全部定位</span><span class="lang-en">All Positions</span></span>
-                                <span>▼</span>
-                            </button>
-                            <div id="filterPosMenu" class="dropdown-menu left" style="width:100%;"></div>
+                    <div class="card" style="position:relative;z-index:100;">
+                        <div class="card-title"><span class="zh">选择赛车</span><span class="lang-en">Select Car</span></div>
+                        <div class="car-search-box">
+                            <input type="text" id="carSearch" class="form-control" placeholder="搜索赛车名称..." oninput="filterCarList()" style="margin-bottom:12px;">
                         </div>
-                        <div class="dropdown-container" style="flex:1;">
-                            <button id="filterSpecBtn" class="nav-btn" onclick="toggleFilterMenu('spec')" style="width:100%;justify-content:space-between;">
-                                <span id="filterSpecLabel"><span class="zh">全部专精</span><span class="lang-en">All Specs</span></span>
-                                <span>▼</span>
-                            </button>
-                            <div id="filterSpecMenu" class="dropdown-menu left" style="width:100%;"></div>
+                        <div class="car-filters" style="display:flex;gap:8px;margin-bottom:12px;">
+                            <div class="dropdown-container" style="flex:1;">
+                                <button id="filterPosBtn" class="nav-btn" onclick="toggleFilterMenu('pos')" style="width:100%;justify-content:space-between;">
+                                    <span id="filterPosLabel"><span class="zh">全部定位</span><span class="lang-en">All Positions</span></span>
+                                    <span>▼</span>
+                                </button>
+                                <div id="filterPosMenu" class="dropdown-menu left" style="width:100%;"></div>
+                            </div>
+                            <div class="dropdown-container" style="flex:1;">
+                                <button id="filterSpecBtn" class="nav-btn" onclick="toggleFilterMenu('spec')" style="width:100%;justify-content:space-between;">
+                                    <span id="filterSpecLabel"><span class="zh">全部专精</span><span class="lang-en">All Specs</span></span>
+                                    <span>▼</span>
+                                </button>
+                                <div id="filterSpecMenu" class="dropdown-menu left" style="width:100%;"></div>
+                            </div>
                         </div>
-                    </div>
-                    <div class="car-search-box">
-                        <input type="text" id="carSearch" class="form-control" placeholder="搜索赛车名称..." oninput="filterCarList()" style="margin-bottom:12px;">
-                    </div>
                     <div class="dropdown-container" style="width:100%;">
                         <button id="carListBtn" class="nav-btn" onclick="toggleCarDropdown()" style="width:100%;justify-content:space-between;">
                             <span id="carListLabel"><span class="zh">选择车辆</span><span class="lang-en">Select a car</span></span>
@@ -1589,13 +1606,14 @@
                }
            }
 
-           if (savedTheme === 'light' || savedTheme === 'dark') {
-               applyThemeMode(savedTheme === 'light');
-               updateThemeIcon(savedTheme);
-           } else {
-               applyThemeMode(!isSystemDark);
-               updateThemeIcon('system');
-           }
+            if (savedTheme === 'light' || savedTheme === 'dark') {
+                applyThemeMode(savedTheme === 'light');
+                updateThemeIcon(savedTheme);
+            } else {
+                applyThemeMode(false);
+                updateThemeIcon('dark');
+                localStorage.setItem('theme', 'dark');
+            }
        }
 
        function selectTheme(mode) {

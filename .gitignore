@@ -15,3 +15,8 @@ data/*/single-*/assets/*/skins/
 # 小尺寸车身图（只用 m 尺寸）
 data/*/full/assets/*/body/*_s.png
 data/*/single-*/assets/*/body/*_s.png
+
+# ZIP 压缩包
+data/*/full/packages/
+data/*/single-*/packages/
+*.zip

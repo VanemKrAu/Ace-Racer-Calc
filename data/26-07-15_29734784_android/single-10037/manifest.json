@@ -1,0 +1,35 @@
+{
+  "schemaVersion": 2,
+  "versionId": "26-07-15_29734784_android",
+  "generatedAt": "2026-07-23T08:36:20.000Z",
+  "mode": "single",
+  "base": null,
+  "since": null,
+  "filters": {
+    "publicOnly": true,
+    "naturalReleaseOnly": true,
+    "placeholdersExcluded": true,
+    "manualIncludesExcluded": true,
+    "detailAccessRequired": true
+  },
+  "data": {
+    "vehicleCount": 1,
+    "vehicleIds": [
+      10037
+    ],
+    "vehicles": [
+      {
+        "id": 10037,
+        "name": "螺旋箭"
+      }
+    ],
+    "vehiclesSha256": "9002d75bc5cd3e424c06ce0bf5a36080ba402a13d25d32db41884b025ce7ab1a",
+    "vehiclesFileSha256": "6341688eeedb9f612554b2b2c8fe26355280514887e4c29e45ca90cea90bade0",
+    "delta": null
+  },
+  "assets": {
+    "skipped": false,
+    "fileCount": 17,
+    "missingCount": 0
+  }
+}

@@ -1,0 +1,140 @@
+{
+  "imageRoots": [
+    "E:\\AceRacer\\AceRacing-Workbench\\deploy\\wwwroot\\ace-racer\\rk-assets"
+  ],
+  "vehicles": [
+    {
+      "vehicleId": 10037,
+      "vehicleName": "螺旋箭",
+      "directory": "螺旋箭_10037",
+      "files": [
+        {
+          "category": "body",
+          "stem": "10037_m",
+          "file": "10037_m.png",
+          "relativePath": "assets/螺旋箭_10037/body/10037_m.png",
+          "vehicleRelativePath": "body/10037_m.png"
+        },
+        {
+          "category": "body",
+          "stem": "10037_s",
+          "file": "10037_s.png",
+          "relativePath": "assets/螺旋箭_10037/body/10037_s.png",
+          "vehicleRelativePath": "body/10037_s.png"
+        },
+        {
+          "category": "skins",
+          "stem": "tz_10037_1_m",
+          "file": "tz_10037_1_m.png",
+          "relativePath": "assets/螺旋箭_10037/skins/tz_10037_1_m.png",
+          "vehicleRelativePath": "skins/tz_10037_1_m.png"
+        },
+        {
+          "category": "skins",
+          "stem": "tz_10037_1_s",
+          "file": "tz_10037_1_s.png",
+          "relativePath": "assets/螺旋箭_10037/skins/tz_10037_1_s.png",
+          "vehicleRelativePath": "skins/tz_10037_1_s.png"
+        },
+        {
+          "category": "skins",
+          "stem": "tz_10037_2_m",
+          "file": "tz_10037_2_m.png",
+          "relativePath": "assets/螺旋箭_10037/skins/tz_10037_2_m.png",
+          "vehicleRelativePath": "skins/tz_10037_2_m.png"
+        },
+        {
+          "category": "skins",
+          "stem": "tz_10037_2_s",
+          "file": "tz_10037_2_s.png",
+          "relativePath": "assets/螺旋箭_10037/skins/tz_10037_2_s.png",
+          "vehicleRelativePath": "skins/tz_10037_2_s.png"
+        },
+        {
+          "category": "skins",
+          "stem": "tz_10037_3_m",
+          "file": "tz_10037_3_m.png",
+          "relativePath": "assets/螺旋箭_10037/skins/tz_10037_3_m.png",
+          "vehicleRelativePath": "skins/tz_10037_3_m.png"
+        },
+        {
+          "category": "skins",
+          "stem": "tz_10037_3_s",
+          "file": "tz_10037_3_s.png",
+          "relativePath": "assets/螺旋箭_10037/skins/tz_10037_3_s.png",
+          "vehicleRelativePath": "skins/tz_10037_3_s.png"
+        },
+        {
+          "category": "skill-icons",
+          "stem": "new_carport_icon_10037",
+          "file": "new_carport_icon_10037.png",
+          "relativePath": "assets/螺旋箭_10037/skill-icons/new_carport_icon_10037.png",
+          "vehicleRelativePath": "skill-icons/new_carport_icon_10037.png"
+        },
+        {
+          "category": "skill-icons",
+          "stem": "new_carport_icon_10075",
+          "file": "new_carport_icon_10075.png",
+          "relativePath": "assets/螺旋箭_10037/skill-icons/new_carport_icon_10075.png",
+          "vehicleRelativePath": "skill-icons/new_carport_icon_10075.png"
+        },
+        {
+          "category": "skill-icons",
+          "stem": "new_carport_icon_14",
+          "file": "new_carport_icon_14.png",
+          "relativePath": "assets/螺旋箭_10037/skill-icons/new_carport_icon_14.png",
+          "vehicleRelativePath": "skill-icons/new_carport_icon_14.png"
+        },
+        {
+          "category": "skill-icons",
+          "stem": "new_carport_icon_city",
+          "file": "new_carport_icon_city.png",
+          "relativePath": "assets/螺旋箭_10037/skill-icons/new_carport_icon_city.png",
+          "vehicleRelativePath": "skill-icons/new_carport_icon_city.png"
+        },
+        {
+          "category": "skill-icons",
+          "stem": "new_carport_icon_nos_03",
+          "file": "new_carport_icon_nos_03.png",
+          "relativePath": "assets/螺旋箭_10037/skill-icons/new_carport_icon_nos_03.png",
+          "vehicleRelativePath": "skill-icons/new_carport_icon_nos_03.png"
+        },
+        {
+          "category": "skill-icons",
+          "stem": "ui_skill15_01",
+          "file": "ui_skill15_01.png",
+          "relativePath": "assets/螺旋箭_10037/skill-icons/ui_skill15_01.png",
+          "vehicleRelativePath": "skill-icons/ui_skill15_01.png"
+        },
+        {
+          "category": "skill-icons",
+          "stem": "ui_skill15_02",
+          "file": "ui_skill15_02.png",
+          "relativePath": "assets/螺旋箭_10037/skill-icons/ui_skill15_02.png",
+          "vehicleRelativePath": "skill-icons/ui_skill15_02.png"
+        },
+        {
+          "category": "skill-icons",
+          "stem": "ui_skill15_04",
+          "file": "ui_skill15_04.png",
+          "relativePath": "assets/螺旋箭_10037/skill-icons/ui_skill15_04.png",
+          "vehicleRelativePath": "skill-icons/ui_skill15_04.png"
+        },
+        {
+          "category": "skill-icons",
+          "stem": "ui_skill15_06",
+          "file": "ui_skill15_06.png",
+          "relativePath": "assets/螺旋箭_10037/skill-icons/ui_skill15_06.png",
+          "vehicleRelativePath": "skill-icons/ui_skill15_06.png"
+        }
+      ],
+      "missing": {
+        "body": [],
+        "skins": [],
+        "skillIcons": []
+      }
+    }
+  ],
+  "fileCount": 17,
+  "missingCount": 0
+}
