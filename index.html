@@ -2260,21 +2260,14 @@
                     for (var ci = 0; ci < CAR_DATABASE.length; ci++) {
                         if (CAR_DATABASE[ci].id === carId) { found = CAR_DATABASE[ci]; break; }
                     }
-                    if (found) {
-                        _selectedCar = found;
-                        _selectedCarId = found.id;
-                        if (urlParams.has('s')) {
-                            // Config exists: only update preview, don't overwrite values
-                            document.getElementById('carPreviewPlaceholder').style.display = 'none';
-                            document.getElementById('carPreviewName').style.display = '';
-                            document.getElementById('carPreviewName').textContent = found.name + ' (' + (found.position||'') + ')';
-                            document.getElementById('carPreviewInfo').style.display = '';
-                            document.getElementById('carPreviewInfo').textContent = 'ace_charge: ' + (found.ace_charge || '?') + ' | ' + (found.specialization||'');
-                            document.getElementById('carPreviewAutoMsg').style.display = 'none';
-                            document.getElementById('carImage').src = 'data/26-07-15_29734784_android/full/' + encodeURI(found.asset_dir + '/body/' + found.id + '_m.png');
-                            document.getElementById('carImage').style.display = '';
-                            filterCarList();
-                        } else {
+                     if (found) {
+                         _selectedCar = found;
+                         _selectedCarId = found.id;
+                         if (urlParams.has('s')) {
+                             // Config exists: only update preview, don't overwrite values
+                             updateCarPreview(found);
+                             filterCarList();
+                         } else {
                             // No config: auto-fill everything
                             setTimeout(function() { if (typeof pickCar === 'function') pickCar(carId); }, 300);
                         }
