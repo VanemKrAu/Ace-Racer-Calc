@@ -5581,6 +5581,42 @@ const CAR_DATABASE = [
     "asset_dir": "assets/日产 GT-R NISMO_10038"
   },
   {
+    "id": 10037,
+    "name": "螺旋箭",
+    "position": "竞速位",
+    "specialization": "城市",
+    "ace_charge": 3000,
+    "ult_duration": null,
+    "ult_type": "TORNADO",
+    "cost_ratio": null,
+    "has_sp": false,
+    "chip_slots": "○○△△◇V",
+    "speed_limit": 186.3,
+    "speedup_ratio": 1.093,
+    "drift_coef": 600,
+    "drift_min": 1200,
+    "drift_max": 6000,
+    "init_ratio": null,
+    "drift_extra_charge": [
+      [
+        1,
+        0
+      ],
+      [
+        2,
+        1800
+      ]
+    ],
+    "nitro_duration": 5.6,
+    "ult_threshold": 100,
+    "nitro_charge": null,
+    "ult_charge_first": null,
+    "ult_charge_loop": null,
+    "per_sec_charge": null,
+    "sp_charge": null,
+    "asset_dir": "assets/螺旋箭_10037"
+  },
+  {
     "id": 10036,
     "name": "催化剂",
     "position": "辅助位",
