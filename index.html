@@ -89,6 +89,13 @@
        
         const _ = (zh, en) => currentLang === 'en' ? en : zh;
         
+        document.addEventListener('DOMContentLoaded', function() {
+            var searchInput = document.getElementById('carSearch');
+            if (searchInput) {
+                searchInput.placeholder = currentLang === 'en' ? 'Search car name...' : '\u641C\u7D22\u8D5B\u8F66\u540D\u79F0...';
+            }
+        });
+        
         // Set language-aware attributes
         document.addEventListener('DOMContentLoaded', function() {
             var searchInput = document.getElementById('carSearch');
@@ -730,6 +737,46 @@
         if (q) {
             document.getElementById('carDropdown').classList.add('show');
         }
+    }
+
+    function updateCarPreview(car) {
+        document.getElementById('carPreviewPlaceholder').style.display = 'none';
+        document.getElementById('carPreviewName').style.display = '';
+        document.getElementById('carPreviewName').textContent = car.name + ' (' + (car.position||'') + ')';
+        document.getElementById('carPreviewInfo').style.display = '';
+        document.getElementById('carPreviewInfo').textContent = 'ace_charge: ' + (car.ace_charge || '?') + ' | ' + (car.specialization||'') + (car.ult_type ? ' | ' + car.ult_type : '') + (car.ult_duration ? ' | \u5927\u62DB\u65F6\u957F: ' + car.ult_duration + 's' : '');
+        var filledItems = ['\u5927\u62DB\u9608\u503C', '\u57FA\u7840\u53CC\u5145', '\u6C2E\u6C14\u65F6\u957F', '\u5927\u62DB\u65F6\u957F'];
+        if (car.ult_charge_first) filledItems.push('\u5F00\u5C40\u7ACB\u523B\u5145\u80FD');
+        document.getElementById('carPreviewAutoMsg').style.display = '';
+        document.getElementById('carPreviewAutoMsg').innerHTML = '\u2713 \u5DF2\u81EA\u52A8\u586B\u5145\uFF1A' + filledItems.join('\u3001') + ' \u2014 \u5176\u4ED6\u53C2\u6570\u8BF7\u624B\u52A8\u8C03\u6574\u3002<br>\u8BE6\u7EC6\u8F66\u8F86\u6280\u80FD\u8BF7\u53C2\u8003 \u2192 <a href=\"https://reca.seimu.cn/ace-racer-admin/vehicles/' + car.id + '\" target=\"_blank\" style=\"color:var(--primary);text-decoration:underline;font-weight:bold;\">' + car.name + '</a>';
+        var chipInfo = document.getElementById('carPreviewChips');
+        if (car.chip_slots) {
+            chipInfo.style.display = 'flex';
+            chipInfo.innerHTML = '';
+            for (var ci = 0; ci < car.chip_slots.length; ci++) {
+                var sym = car.chip_slots[ci];
+                var iconNum = '1';
+                if (sym === '\u25CB') iconNum = '1';
+                else if (sym === 'V' || sym === 'v') iconNum = '2';
+                else if (sym === '\u25E3') iconNum = '3';
+                else if (sym === '\u25B3') iconNum = '4';
+                else if (sym === '\u25C7') iconNum = '5';
+                chipInfo.innerHTML += '<img loading=\"lazy\" src=\"data/icon/carport_new_skill_chip_none_icon_' + iconNum + '.png\" style=\"width:30px;height:30px;object-fit:contain;\">';
+            }
+        }
+        var img = document.getElementById('carImage');
+        img.onerror = function() { this.src = 'data/icon/icon_mhyck_m.png'; this.onerror = null; };
+        img.src = 'data/26-07-15_29734784_android/full/' + encodeURI(car.asset_dir + '/body/' + car.id + '_m.png');
+        img.alt = car.name;
+        img.style.display = '';
+        img.loading = 'lazy';
+        var info = document.getElementById('carSelectInfo');
+        info.style.display = 'flex';
+        info.innerHTML = '<b>' + car.name + '</b>'
+            + ' &nbsp;|&nbsp; ' + (car.position||'') + ' / ' + (car.specialization||'')
+            + ' &nbsp;|&nbsp; ace_charge: <b>' + (car.ace_charge || '?') + '</b>'
+            + (car.ult_duration ? ' &nbsp;|&nbsp; \u5927\u62DB\u65F6\u957F: <b>' + car.ult_duration + 's</b>' : '')
+            + (car.has_sp ? ' &nbsp;|&nbsp; <span class="car-badge">SP</span>' : '');
     }
 
     function pickCar(id) {
@@ -2051,13 +2098,13 @@
            ];
 
            var cfgStr = encodeURIComponent(btoa(compactArr.join('|')));
-           var baseUrl = window.location.origin + window.location.pathname;
-            var shareUrl = baseUrl + '?s=' + cfgStr;
-            if (_selectedCarId && _selectedCarId > 0) {
-                shareUrl += '&car=' + _selectedCarId;
-            }
+            var baseUrl = window.location.origin + window.location.pathname;
+             var shareUrl = baseUrl + '?s=' + cfgStr;
+             if (_selectedCarId && _selectedCarId > 0) {
+                 shareUrl += '&car=' + _selectedCarId;
+             }
 
-           copyToClipboard(shareUrl, _("🔗 短链接已复制，分享给车友可直接打开！", "🔗 Short link copied, share to open directly!"));
+            copyToClipboard(shareUrl, _("🔗 短链接已复制，分享给车友可直接打开！", "🔗 Short link copied, share to open directly!"));
        }
        
        function loadConfigFromUrl() {
