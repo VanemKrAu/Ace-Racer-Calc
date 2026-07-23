@@ -87,7 +87,15 @@
            }
        }
        
-       const _ = (zh, en) => currentLang === 'en' ? en : zh;
+        const _ = (zh, en) => currentLang === 'en' ? en : zh;
+        
+        // Set language-aware attributes
+        document.addEventListener('DOMContentLoaded', function() {
+            var searchInput = document.getElementById('carSearch');
+            if (searchInput) {
+                searchInput.placeholder = currentLang === 'en' ? 'Search car name...' : '\u641C\u7D22\u8D5B\u8F66\u540D\u79F0...';
+            }
+        });
        
        if (currentLang === 'en') {
            document.documentElement.lang = 'en';
@@ -485,7 +493,7 @@
                        <div style="display: flex; align-items: center; gap: 10px; flex-shrink: 0;">
                            <span class="dropdown-icon" style="font-size: 12px; transition: transform 0.3s;">▼</span>
                            <div style="width: 1px; height: 14px; background: var(--warning); opacity: 0.4;"></div>
-                           <button onclick="event.preventDefault(); event.stopPropagation(); closeTutorial();" style="background: transparent; border: none; color: var(--warning); font-size: 18px; cursor: pointer; opacity: 0.7; transition: opacity 0.2s; padding: 0 4px; display: flex; align-items: center;" onmouseover="this.style.opacity='1'" onmouseout="this.style.opacity='0.7'" title="不再显示">
+                            <button onclick="event.preventDefault(); event.stopPropagation(); closeTutorial();" style="background: transparent; border: none; color: var(--warning); font-size: 18px; cursor: pointer; opacity: 0.7; transition: opacity 0.2s; padding: 0 4px; display: flex; align-items: center;" onmouseover="this.style.opacity='1'" onmouseout="this.style.opacity='0.7'" title="\u4E0D\u518D\u663E\u793A / Dismiss">
                                ×
                            </button>
                        </div>
@@ -960,7 +968,7 @@
                     <div class="card" style="position:relative;z-index:100;">
                         <div class="card-title"><span class="zh">选择赛车</span><span class="lang-en">Select Car</span></div>
                         <div class="car-search-box">
-                            <input type="text" id="carSearch" class="form-control" placeholder="搜索赛车名称..." oninput="filterCarList()" style="margin-bottom:12px;">
+                            <input type="text" id="carSearch" class="form-control" placeholder="\u641C\u7D22\u8D5B\u8F66\u540D\u79F0..." oninput="filterCarList()" style="margin-bottom:12px;">
                         </div>
                         <div class="car-filters" style="display:flex;gap:8px;margin-bottom:12px;">
                             <div class="dropdown-container" style="flex:1;">
@@ -2044,7 +2052,10 @@
 
            var cfgStr = encodeURIComponent(btoa(compactArr.join('|')));
            var baseUrl = window.location.origin + window.location.pathname;
-           var shareUrl = baseUrl + '?s=' + cfgStr;
+            var shareUrl = baseUrl + '?s=' + cfgStr;
+            if (_selectedCarId && _selectedCarId > 0) {
+                shareUrl += '&car=' + _selectedCarId;
+            }
 
            copyToClipboard(shareUrl, _("🔗 短链接已复制，分享给车友可直接打开！", "🔗 Short link copied, share to open directly!"));
        }
@@ -2238,10 +2249,40 @@
 
                    result = true;
                } catch (e) {
-               }
-           }
+                }
+            }
 
-           isRestoringConfig = false;
+            // Handle car parameter after config (if any)
+            if (urlParams.has('car')) {
+                var carId = parseInt(urlParams.get('car'), 10);
+                if (carId > 0 && CAR_DATABASE) {
+                    var found = null;
+                    for (var ci = 0; ci < CAR_DATABASE.length; ci++) {
+                        if (CAR_DATABASE[ci].id === carId) { found = CAR_DATABASE[ci]; break; }
+                    }
+                    if (found) {
+                        _selectedCar = found;
+                        _selectedCarId = found.id;
+                        if (urlParams.has('s')) {
+                            // Config exists: only update preview, don't overwrite values
+                            document.getElementById('carPreviewPlaceholder').style.display = 'none';
+                            document.getElementById('carPreviewName').style.display = '';
+                            document.getElementById('carPreviewName').textContent = found.name + ' (' + (found.position||'') + ')';
+                            document.getElementById('carPreviewInfo').style.display = '';
+                            document.getElementById('carPreviewInfo').textContent = 'ace_charge: ' + (found.ace_charge || '?') + ' | ' + (found.specialization||'');
+                            document.getElementById('carPreviewAutoMsg').style.display = 'none';
+                            document.getElementById('carImage').src = 'data/26-07-15_29734784_android/full/' + encodeURI(found.asset_dir + '/body/' + found.id + '_m.png');
+                            document.getElementById('carImage').style.display = '';
+                            filterCarList();
+                        } else {
+                            // No config: auto-fill everything
+                            setTimeout(function() { if (typeof pickCar === 'function') pickCar(carId); }, 300);
+                        }
+                    }
+                }
+            }
+
+            isRestoringConfig = false;
            return result;
        }
 
