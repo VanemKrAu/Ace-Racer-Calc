@@ -1020,6 +1020,19 @@ var _CAR_IMG = {
         _selectedCar = car;
         _selectedCarId = car.id;
 
+        // Reset all auto-fillable fields before filling new car data
+        document.getElementById('hasExtraUlt').checked = false;
+        document.getElementById('valExtraUltFirst').value = 0;
+        document.getElementById('valExtraUltLoop').value = 0;
+        document.getElementById('hasExtraNitro').checked = false;
+        document.getElementById('valExtraNitro').value = 0;
+        document.getElementById('hasExtraPerSec').checked = false;
+        document.getElementById('valExtraPerSec').value = 0;
+        document.getElementById('valCustomTrig').value = 0;
+        document.getElementById('customTrigFirstCount').value = 0;
+        document.getElementById('customTrigLoopCount').value = 0;
+        if (typeof toggleExtraUI === 'function') toggleExtraUI();
+
         if (car.ace_charge) {
             var nitroV = Math.round(car.ace_charge / 100 * 10) / 10;
             document.getElementById('baseNitro').value = nitroV;
