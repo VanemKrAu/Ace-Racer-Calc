@@ -947,7 +947,7 @@ var _CAR_IMG = {
         var filledItems = ['\u5927\u62DB\u9608\u503C', '\u57FA\u7840\u53CC\u5145', '\u6C2E\u6C14\u65F6\u957F', '\u5927\u62DB\u65F6\u957F'];
         if (car.ult_charge_first) filledItems.push('\u5F00\u5C40\u7ACB\u523B\u5145\u80FD');
         document.getElementById('carPreviewAutoMsg').style.display = '';
-        document.getElementById('carPreviewAutoMsg').innerHTML = '\u2713 \u5DF2\u81EA\u52A8\u586B\u5145\uFF1A' + filledItems.join('\u3001') + ' \u2014 \u5176\u4ED6\u53C2\u6570\u8BF7\u624B\u52A8\u8C03\u6574\u3002<br>\u8BE6\u7EC6\u8F66\u8F86\u6280\u80FD\u8BF7\u53C2\u8003 \u2192 <a href=\"https://reca.seimu.cn/ace-racer-admin/vehicles/' + car.id + '\" target=\"_blank\" style=\"color:var(--primary);text-decoration:underline;font-weight:bold;\">' + car.name + '</a>';
+        document.getElementById('carPreviewAutoMsg').innerHTML = '\u2713 \u5DF2\u81EA\u52A8\u586B\u5145\uFF1A' + filledItems.join('\u3001') + ' \u2014 \u5176\u4ED6\u53C2\u6570\u8BF7\u624B\u52A8\u8C03\u6574\u3002<br>\u8BE6\u7EC6\u8F66\u8F86\u6280\u80FD\u8BF7\u53C2\u8003 \u2192 <a href=\"https://reca.seimu.cn/ace-racer-admin/vehicles/' + car.id + '\" target=\"_blank\" style=\"color:var(--primary);text-decoration:underline;font-weight:bold;\">' + '瑞卡情报站-' + car.name + '</a>';
         var chipInfo = document.getElementById('carPreviewChips');
         if (car.chip_slots) {
             chipInfo.style.display = 'flex';
@@ -1133,7 +1133,7 @@ var _CAR_IMG = {
         if (car.ult_charge_loop) filledItems.push('\u5927\u62DB\u81EA\u5145\u80FD');
         if (car.per_sec_charge) filledItems.push('\u6BCF\u79D2\u81EA\u5145\u80FD');
         if (car.sp_charge) filledItems.push('SP\u81EA\u5145\u80FD');
-        document.getElementById('carPreviewAutoMsg').innerHTML = '\u2713 \u5DF2\u81EA\u52A8\u586B\u5145\uFF1A' + filledItems.join('\u3001') + ' \u2014 \u5176\u4ED6\u53C2\u6570\u8BF7\u624B\u52A8\u8C03\u6574\u3002<br>\u8BE6\u7EC6\u8F66\u8F86\u6280\u80FD\u8BF7\u53C2\u8003 \u2192 <a href=\"https://reca.seimu.cn/ace-racer-admin/vehicles/' + car.id + '\" target=\"_blank\" style=\"color:var(--primary);text-decoration:underline;font-weight:bold;\">' + car.name + '</a>';
+        document.getElementById('carPreviewAutoMsg').innerHTML = '\u2713 \u5DF2\u81EA\u52A8\u586B\u5145\uFF1A' + filledItems.join('\u3001') + ' \u2014 \u5176\u4ED6\u53C2\u6570\u8BF7\u624B\u52A8\u8C03\u6574\u3002<br>\u8BE6\u7EC6\u8F66\u8F86\u6280\u80FD\u8BF7\u53C2\u8003 \u2192 <a href=\"https://reca.seimu.cn/ace-racer-admin/vehicles/' + car.id + '\" target=\"_blank\" style=\"color:var(--primary);text-decoration:underline;font-weight:bold;\">' + '瑞卡情报站-' + car.name + '</a>';
         var chipInfo = document.getElementById('carPreviewChips');
         if (car.chip_slots) {
             chipInfo.style.display = 'flex';
