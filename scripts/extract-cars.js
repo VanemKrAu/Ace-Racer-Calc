@@ -271,17 +271,34 @@ for (const file of files) {
     ].join(' ');
 
     // Nitro charge from text: patterns like "使用氮气时，额外获得X%大招能量"
+    // Search each text block separately to avoid cross-text false matches
     if (!nitroCharge) {
-      // Use a character class that includes everything
       var reNitro = /使用氮气[\w\W]*?获得(\d+(?:\.\d+)?)\s*%/;
-      var nM = allDescText.match(reNitro);
-      if (nM) nitroCharge = parseFloat(nM[1]);
+      var textBlocks = [
+        v.richText?.special_passive_skill_desc?.raw || '',
+        v.richText?.feature_desc?.raw || '',
+        v.richText?.sp_skill_desc?.raw || '',
+        v.richText?.ace_time_effect || '',
+      ];
+      for (var ti = 0; ti < textBlocks.length; ti++) {
+        var nM = textBlocks[ti].match(reNitro);
+        if (nM) { nitroCharge = parseFloat(nM[1]); break; }
+      }
     }
 
     // Ult charge loop from text: "自充能X%" or "大招自充X%"
     if (!ultChargeLoop && !isEnemyDependent) {
-      const uM = allDescText.match(/自充能(\d+(?:\.\d+)?)\s*%/);
-      if (uM) ultChargeLoop = parseFloat(uM[1]);
+      var reLoop = /自充能(\d+(?:\.\d+)?)\s*%/;
+      var textBlocks2 = [
+        v.richText?.special_passive_skill_desc?.raw || '',
+        v.richText?.feature_desc?.raw || '',
+        v.richText?.sp_skill_desc?.raw || '',
+        v.richText?.ace_time_effect || '',
+      ];
+      for (var ti2 = 0; ti2 < textBlocks2.length; ti2++) {
+        var uM = textBlocks2[ti2].match(reLoop);
+        if (uM) { ultChargeLoop = parseFloat(uM[1]); break; }
+      }
     }
 
     // SP charge from SP text: "获得XXX集气量和X%大招能量" (only from sp_skill_desc)
