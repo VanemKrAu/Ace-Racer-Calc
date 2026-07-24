@@ -9,6 +9,35 @@ user-invocable: true
 
 项目路径: 仓库根目录 (clone 后进入项目目录)
 
+## 起步能量计算公式 (核心逻辑)
+
+```
+起步能量 = ace_charge + init_ratio + 额外起步充能
+         (万分比)    (万分比)     (百分比)
+```
+
+三部分来源各自独立，前端在 `pickCar()` 中分两步填入：
+1. `startCharge = (ace_charge + init_ratio) / 100` → 起步基础充能
+2. `valExtraUltFirst = ult_charge_first` → 开局立刻充能 (额外模块)
+
+### init_ratio 的提取规则
+
+`init_ratio` 只取 **基础技能**（`particular_skill` 指向的技能）的值。RECU 变体技能的 `init_ratio` 与 `ult_charge_first` 中的加成是同一份，不加重复。
+
+当前实现：`v.skills?.ultimate?.init_ratio` (22 辆车有值)。未来需改为从 `vehicle_data.jsonl` 中查 `particular_skill` 再取 `init_ratio`。
+
+### ult_charge_first (开局立刻充能) 的 4 数据源
+
+| 优先级 | 来源 | 提取方式 | 备注 |
+|--------|------|----------|------|
+| 1 | `skillPanelGroups.ultimate` | 查找 `name` 包含"额外起步充能" | 如果车辆 ID 在黑名单中则跳过 |
+| 2 | `skill_value_details_data.jsonl` | `skill_value_name` 包含"额外起步充能" + `vehicle_id` 匹配 | 按条目 ID 排除异常数据 |
+| 3 | `ace_time_effect` 文本 | 正则 `/开局(?:时)?获得\s*(\d+(?:\.\d+)?)\s*%\s*(?:大招能量\|能量)/` | 纯文本兜底 |
+| 4 | `special_passive_skill_desc` 文本 | 查找含"起步"+"%"的行，正则 `/获得[^%]*?(\d+(?:\.\d+)?)\s*%/` | 仅接受 1-200% 合理范围 |
+
+**已知异常数据排除：**
+- `skill_value_details` 条目 ID `1198` (车辆 12025 兰博基尼 Huracán STO) — 游戏导出标记了"额外起步充能 25%"但实际游戏里没有，跳过
+
 ## 数据提取与解析 (scripts/extract-cars.js 核心逻辑)
 
 ### 数据来源
@@ -17,7 +46,7 @@ user-invocable: true
 |------|------|------|
 | 车辆 JSON | `data/.../full/vehicles/{id}.json` | 主数据源，每辆车一个文件 |
 | JSONL 原始数据 (可选) | `E:/AceRacer/AceRacing-Workbench/data/.../` | 补充技能时长/阈值等（仅本地开发环境） |
-| 百度 pinyin 包 | 已安装于项目本地 | 中文→拼音，用于搜索 |
+| 百度 pinyin 包 | `npm install` 后位于 `node_modules/` | 中文→拼音，用于搜索 |
 
 ### 字段解析规则
 
@@ -25,45 +54,43 @@ user-invocable: true
 vehicle JSON → data.item
   ├── id           → 文件名去掉 .json
   ├── name         → v.name
+  ├── name_en      → 品牌翻译 + 保留型号 / 中文名拼音 / 手动覆盖
   ├── position     → v.positionLabel (天平位同时合并非干扰/竞速)
   ├── specialization → v.specialization
   ├── ace_charge   → v.levels[0].stats.charge.ace_charge (万分比)
-  │                  → 前端 baseNitro = ace_charge/100
-  ├── init_ratio   → v.skills.ultimate.init_ratio (万分比, 22 辆车有值)
+  │                  → 前端 baseNitro = ace_charge / 100
+  ├── init_ratio   → v.skills.ultimate.init_ratio (万分比)
   │                  → 前端 startCharge = (ace_charge + init_ratio)/100, 上限 100%
-  │                  ★ 没有 init_ratio 的车 → startCharge 仍 = ace_charge/100
-  │                  ★ 示例: 保时捷 911 Turbo S (ace=1, init=10000) → start=100%
+  │                  ★ 没有 init_ratio 的车 → startCharge = ace_charge/100
   ├── ult_duration → v.skills.ultimate.instructions 中 inst_type===2 的 duration
   ├── ult_type     → v.skills.ultimate.type
-  ├── ult_threshold→ 从 v.richText.ace_time_effect 用 /达到(\d+)%/ 提取
+  ├── ult_threshold→ ace_time_effect 文本 /达到(\d+)%/ 提取
   │                  → 失败时从 ultimate.value_texts 取 min_charge/100
   ├── cost_ratio   → ultimate.instructions 中 cost_ratio 字段
   ├── has_sp       → v.skills.sp 是否存在
   ├── chip_slots   → v.report.sections 中 "扩展芯片类型" 的值 (如 "○○△◇◇V")
-  ├── speed_limit  → v.levels[0].stats.speed_limit
-  ├── speedup_ratio→ v.levels[0].stats.speedup_ratio
-  ├── nitro_duration→ 通过 JSONL: vehicle_data → n2o_skill → skill_instruction → duration*2
-  │                  (在 index.html 中填入 time_1x6)
-  ├── nitro_charge → 从 skillPanelGroups.ultimate/passive 中排查 "氮气"+"充能"
-  │                  → 失败时从文本 /使用氮气[\w\W]*?获得(\d+(?:\.\d+)?)%/
-  │                  (在 index.html 中填入 valExtraNitro)
-  ├── ult_charge_first → 起步额外充能:
-  │     Source 1: skillPanelGroups.ultimate 中 "额外起步充能"
-  │     Source 2: skill_value_details_data.jsonl 中 vehicle_id匹配+"额外起步充能"
-  │     Source 3: ace_time_effect → /开局获得X%能量/
-  │     Source 4: special_passive_skill_desc → "起步时" 行
-  │                  (在 index.html 中填入 valExtraUltFirst)
-  ├── ult_charge_loop → 大招自充能:
+  ├── nitro_duration→ JSONL: vehicle_data → n2o_skill → skill_instruction → duration*2
+  │                  (前端填入 time_1x6)
+  ├── nitro_charge (氮气自充能) →
+  │     skillPanelGroups.ultimate/passive 中 "氮气"+"充能" 数值
+  │     → 失败时逐段搜索文本 /使用氮气[\w\W]*?获得(\d+(?:\.\d+)?)%/
+  │     (前端填入 valExtraNitro)
+  ├── ult_charge_first (开局立刻充能) → 见上方 4 数据源
+  │     (前端填入 valExtraUltFirst)
+  ├── ult_charge_loop (大招自充能) →
   │     skillPanelGroups.ultimate/passive 中 "大招"/"自身"+"充能"
-  │     (排除敌方依赖的)
-  │     → 失败时从文本 /自充能X%/ 或 /大招自充X%/
-  │                  (在 index.html 中填入 valExtraUltLoop)
-  ├── per_sec_charge→ skillPanelGroups.ultimate/passive 中 "每秒"+"充能"
-  │                  (在 index.html 中填入 valExtraPerSec)
-  ├── sp_charge    → skillPanelGroups.sp 中 "充能"项
-  │                 → 失败时从 sp_skill_desc 取 "获得XXX集气量和X%能量"
-  │                  (在 index.html 中填入 valCustomTrig, 首发/循环各计1次)
-  ├── search_text  → 中文转拼音 + 常用别名 (aliases 字典)
+  │     (排除友方、敌方、范围、降低、损失、扣能、上限、每秒)
+  │     → 失败时逐段搜索文本 /自充能(\d+(?:\.\d+)?)%/
+  │     (前端填入 valExtraUltLoop)
+  │     ★ 车辆文本包含"敌方"时整个字段置 null (依赖敌方站位)
+  ├── per_sec_charge (每秒自充能) →
+  │     skillPanelGroups.ultimate/passive 中 "每秒"+"充能"
+  │     (前端填入 valExtraPerSec)
+  ├── sp_charge (SP自充能) →
+  │     skillPanelGroups.sp 中 "充能" (排除友方、冷却、集气、自动、压缩)
+  │     → 失败时从 sp_skill_desc 取 "获得XXX集气量和X%大招能量"
+  │     (前端填入 valCustomTrig, 首发/循环各计 1 次)
+  ├── search_text  → 中文转拼音 + 常用别名 (aliases 字典, 99 辆车有)
   └── asset_dir    → 'assets/' + name + '_' + id
 ```
 
@@ -75,16 +102,18 @@ vehicle JSON → data.item
 
 如果车辆文本（feature_desc / ace_time_effect / special_passive_skill_desc）包含 "敌方"，则 `ult_charge_loop` 强制为 null（不在前端自动填入，因为依赖敌方站位/数量）
 
+### 文本提取的跨段误匹配防护
+
+`nitro_charge` 和 `ult_charge_loop` 的文本 fallback 需要逐段独立搜索，不能将多段文本 `join(' ')` 后统一搜索。否则会出现"使用氮气"在被动描述中匹配、"获得X%"在大招效果中匹配的跨段误匹配。
+
 ## 添加新车 (有 single-{ID} 数据包)
 
 ### 手动复制数据
 
 ```
-single-{ID}/vehicles/{ID}.json → data/26-07-15_29734784_android/full/vehicles/{ID}.json
-single-{ID}/assets/*           → data/26-07-15_29734784_android/full/assets/
+single-{ID}/vehicles/{ID}.json → data/.../full/vehicles/{ID}.json
+single-{ID}/assets/*           → data/.../full/assets/
 ```
-
-注意：`assets/` 下面是 `{车名}_{ID}/body/{ID}_m.png` 的目录结构
 
 ### 一键更新
 
@@ -96,20 +125,16 @@ node scripts/update.mjs [车ID...]
 - 加 ID: 只处理指定车辆 (如 `node scripts/update.mjs 10037 12099`)
 - 自动完成: 复制数据 → 重建 car-database.js → 上传图片到 B站 CDN → 刷新 index.html 中的 CDN URL 映射
 
-### 跳过数据复制直接更新
+### 单独重建数据库
 
-如果 `full/vehicles/` 和 `full/assets/` 已就绪：
 ```bash
-node scripts/extract-cars.js      # 重建 car-database.js
-node scripts/upload-bili.mjs      # 上传新图到 CDN
+node scripts/extract-cars.js
 ```
 
 ### 验证数据是否提取正确
 
 ```bash
-# 查看指定车辆的提取结果
 node -e "
-require('fs').readFileSync('car-database.js', 'utf-8').replace('const CAR_DATABASE', 'var CAR_DATABASE');
 eval(require('fs').readFileSync('car-database.js', 'utf-8').replace('const CAR_DATABASE', 'var CAR_DATABASE'));
 var car = CAR_DATABASE.find(c => c.id === 12099);
 console.log(JSON.stringify(car, null, 2));
@@ -118,21 +143,17 @@ console.log(JSON.stringify(car, null, 2));
 
 ## B 站 Cookie 维护
 
-Cookie 文件: `.agent_tmp/bili-cookies.json` (不受版本控制，需要从开发环境复制)
-
-`scripts/upload-bili.mjs` 内置了 cookie。更新步骤：
-1. 修改文件顶部 `SESSDATA` 和 `BILI_JCT` 两行
-2. 保存到 `.agent_tmp/bili-cookies.json` 备份
+`scripts/upload-bili.mjs` 从环境变量或 `.agent_tmp/bili-cookies.json` 读取 cookie:
+- 环境变量: `BILI_SESSDATA` + `BILI_JCT`
+- 配置文件: `.agent_tmp/bili-cookies.json` → `{"SESSDATA": "...", "bili_jct": "..."}`
 
 获取 cookie: 登录 `bilibili.com` → F12 → Application → Cookies → 复制 `SESSDATA` 和 `bili_jct`
 
 ## Git 推送
 
 ```bash
-cd /path/to/Ace-Racer-Calc
-git pull
-# 有新车数据: node scripts/update.mjs [车ID...]
-# 无新车数据: 只需推送
+git add -A
+git commit -m "feat: ..."
 git push
 ```
 
@@ -147,5 +168,6 @@ git push
 | `scripts/upload-bili.mjs` | 上传新图片到 B站 CDN，保存 URL 映射 |
 | `data/bili-url-mapping.json` | CDN URL → 本地路径映射表 |
 | `car-database.js` | 全部车辆数据（由 extract-cars.js 生成，前端自动加载） |
-| `data/26-07-15_29734784_android/full/vehicles/` | 车辆 JSON 源文件 |
-| `data/26-07-15_29734784_android/full/assets/` | 车辆图片源文件 |
+| `data/.../full/vehicles/` | 车辆 JSON 源文件 |
+| `data/.../full/assets/` | 车辆图片源文件 |
+| `package.json` | 依赖: pinyin (用于中文→拼音转换) |
