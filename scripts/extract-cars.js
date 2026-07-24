@@ -197,7 +197,7 @@ for (const file of files) {
           const numM = val.match(/(\d+(?:\.\d+)?)/);
           const num = numM ? parseFloat(numM[1]) : null;
           if (num === null) continue;
-          if (n.includes('充能') && !n.includes('友方') && !n.includes('冷却') && !n.includes('集气') && !n.includes('自动') && !n.includes('压缩')) {
+          if (n.includes('充能') && !n.includes('友方') && !n.includes('冷却') && !n.includes('集气') && !n.includes('自动') && !n.includes('压缩') && !n.includes('提升')) {
             spCharge = num;
           }
         }

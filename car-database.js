@@ -490,7 +490,7 @@ const CAR_DATABASE = [
     "ult_charge_first": null,
     "ult_charge_loop": null,
     "per_sec_charge": null,
-    "sp_charge": 2,
+    "sp_charge": null,
     "search_text": "huanhaizhixi hhzx",
     "asset_dir": "assets/幻海之汐_12081"
   },
