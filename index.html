@@ -950,7 +950,7 @@ var _CAR_IMG = {
         document.getElementById('carPreviewAutoMsg').style.display = '';
         var msgHtml = _('\u2713 \u5DF2\u81EA\u52A8\u586B\u5145\uFF1A', '\u2713 Auto-filled: ') + filledItems.join(_('\u3001', ', '));
         if (!car.ult_duration) {
-            msgHtml += _('<br><span style=\"color:var(--warning);font-weight:bold;\">⚠️ 大招时长和其他参数请手动填写</span>', '<br><span style=\"color:var(--warning);font-weight:bold;\">⚠️ Ult duration and other params need manual input</span>');
+            msgHtml += _('<br><span style=\"color:var(--warning);font-weight:bold;\">⚠️ 该车无固定大招时长，大招时长和其他参数请手动填写</span>', '<br><span style=\"color:var(--warning);font-weight:bold;\">⚠️ This car has no fixed ult duration, ult and other params need manual input</span>');
         } else {
             msgHtml += _('<br><span style=\"color:var(--warning);font-weight:bold;\">⚠️ 其他参数请手动调整</span>', '<br><span style=\"color:var(--warning);font-weight:bold;\">⚠️ Other params need manual tuning</span>');
         }
@@ -1163,7 +1163,7 @@ var _CAR_IMG = {
         if (car.sp_charge) filledItems.push(_("SP自充能","SP Charge"));
         var msgHtml = _('\u2713 \u5DF2\u81EA\u52A8\u586B\u5145\uFF1A', '\u2713 Auto-filled: ') + filledItems.join(_('\u3001', ', '));
         if (!car.ult_duration) {
-            msgHtml += _('<br><span style=\"color:var(--warning);font-weight:bold;\">⚠️ 大招时长和其他参数请手动填写</span>', '<br><span style=\"color:var(--warning);font-weight:bold;\">⚠️ Ult duration and other params need manual input</span>');
+            msgHtml += _('<br><span style=\"color:var(--warning);font-weight:bold;\">⚠️ 该车无固定大招时长，大招时长和其他参数请手动填写</span>', '<br><span style=\"color:var(--warning);font-weight:bold;\">⚠️ This car has no fixed ult duration, ult and other params need manual input</span>');
         } else {
             msgHtml += _('<br><span style=\"color:var(--warning);font-weight:bold;\">⚠️ 其他参数请手动调整</span>', '<br><span style=\"color:var(--warning);font-weight:bold;\">⚠️ Other params need manual tuning</span>');
         }
