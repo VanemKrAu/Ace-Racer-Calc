@@ -1023,9 +1023,12 @@ var _CAR_IMG = {
         _selectedCarId = car.id;
 
         if (car.ace_charge) {
-            var v = Math.round(car.ace_charge / 100 * 10) / 10;
-            document.getElementById('baseNitro').value = v;
-            document.getElementById('startCharge').value = v;
+            var nitroV = Math.round(car.ace_charge / 100 * 10) / 10;
+            document.getElementById('baseNitro').value = nitroV;
+            // startCharge = (ace_charge + init_ratio) / 100, capped at 100%
+            var initBonus = car.init_ratio || 0;
+            var startV = Math.min(100, Math.round((car.ace_charge + initBonus) / 100 * 10) / 10);
+            document.getElementById('startCharge').value = startV;
         }
         if (car.ult_threshold) {
             document.getElementById('ultThreshold').value = car.ult_threshold;
