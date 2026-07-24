@@ -978,6 +978,58 @@ var _CAR_IMG = {
             + (car.has_sp ? ' &nbsp;|&nbsp; <span class="car-badge">SP</span>' : '');
     }
 
+    // Flash system for auto-filled sections (persistent across car switches)
+    var _flashTimers = {};
+    function flashSection(sectionId, inputIds) {
+        var sec = document.getElementById(sectionId);
+        if (!sec) return;
+        var state = _flashTimers[sectionId];
+        if (state) {
+            // Already flashing — just re-attach stop listeners
+            if (state.stopFlash) {
+                for (var fi = 0; fi < inputIds.length; fi++) {
+                    var el = document.getElementById(inputIds[fi]);
+                    if (el) {
+                        el.addEventListener('input', state.stopFlash, { once: true });
+                        el.addEventListener('change', state.stopFlash, { once: true });
+                        el.addEventListener('focus', state.stopFlash, { once: true });
+                        el.addEventListener('click', state.stopFlash, { once: true });
+                    }
+                }
+            }
+            return;
+        }
+        var origBorder = sec.style.border;
+        var origShadow = sec.style.boxShadow;
+        state = { opacity: 0.3, dir: 0.04, timer: null, stopFlash: null };
+        _flashTimers[sectionId] = state;
+        state.timer = setInterval(function() {
+            state.opacity += state.dir;
+            if (state.opacity >= 0.8) state.dir = -0.04;
+            if (state.opacity <= 0.2) state.dir = 0.04;
+            var c = 'rgba(0, 242, 254, ' + state.opacity + ')';
+            sec.style.setProperty('border', '1px solid ' + c, 'important');
+            sec.style.setProperty('box-shadow', '0 0 6px ' + c, 'important');
+        }, 50);
+        state.stopFlash = function() {
+            if (_flashTimers[sectionId]) {
+                clearInterval(_flashTimers[sectionId].timer);
+                delete _flashTimers[sectionId];
+            }
+            sec.style.border = origBorder;
+            sec.style.boxShadow = origShadow;
+        };
+        for (var fi = 0; fi < inputIds.length; fi++) {
+            var el = document.getElementById(inputIds[fi]);
+            if (el) {
+                el.addEventListener('input', state.stopFlash, { once: true });
+                el.addEventListener('change', state.stopFlash, { once: true });
+                el.addEventListener('focus', state.stopFlash, { once: true });
+                el.addEventListener('click', state.stopFlash, { once: true });
+            }
+        }
+    }
+
     function pickCar(id) {
         // Handle "Unreleased car"
         if (id === -1) {
@@ -1048,57 +1100,6 @@ var _CAR_IMG = {
         calculate();
         filterCarList();
 
-        // Flash auto-filled sections only (core params)
-        var _flashTimers = {};
-        function flashSection(sectionId, inputIds) {
-            var sec = document.getElementById(sectionId);
-            if (!sec) return;
-            var state = _flashTimers[sectionId];
-            if (state) {
-                // Already flashing — just re-attach stop listeners (old ones were consumed)
-                if (state.stopFlash) {
-                    for (var fi = 0; fi < inputIds.length; fi++) {
-                        var el = document.getElementById(inputIds[fi]);
-                        if (el) {
-                            el.addEventListener('input', state.stopFlash, { once: true });
-                            el.addEventListener('change', state.stopFlash, { once: true });
-                            el.addEventListener('focus', state.stopFlash, { once: true });
-                            el.addEventListener('click', state.stopFlash, { once: true });
-                        }
-                    }
-                }
-                return;
-            }
-            var origBorder = sec.style.border;
-            var origShadow = sec.style.boxShadow;
-            state = { opacity: 0.3, dir: 0.04, timer: null, stopFlash: null };
-            _flashTimers[sectionId] = state;
-            state.timer = setInterval(function() {
-                state.opacity += state.dir;
-                if (state.opacity >= 0.8) state.dir = -0.04;
-                if (state.opacity <= 0.2) state.dir = 0.04;
-                var c = 'rgba(0, 242, 254, ' + state.opacity + ')';
-                sec.style.setProperty('border', '1px solid ' + c, 'important');
-                sec.style.setProperty('box-shadow', '0 0 6px ' + c, 'important');
-            }, 50);
-            state.stopFlash = function() {
-                if (_flashTimers[sectionId]) {
-                    clearInterval(_flashTimers[sectionId].timer);
-                    delete _flashTimers[sectionId];
-                }
-                sec.style.border = origBorder;
-                sec.style.boxShadow = origShadow;
-            };
-            for (var fi = 0; fi < inputIds.length; fi++) {
-                var el = document.getElementById(inputIds[fi]);
-                if (el) {
-                    el.addEventListener('input', state.stopFlash, { once: true });
-                    el.addEventListener('change', state.stopFlash, { once: true });
-                    el.addEventListener('focus', state.stopFlash, { once: true });
-                    el.addEventListener('click', state.stopFlash, { once: true });
-                }
-            }
-        }
         if (car.ace_charge) flashSection('cardCoreParams', ['baseNitro', 'startCharge', 'ultThreshold']);
         if (car.nitro_duration) flashSection('cardNitro', ['time_1x6', 'time_1x5', 'time_2x2', 'time_2x3', 'time_2x25', 'time_3x2', 'baseUltDuration', 'r_1x5', 'r_1x6', 'r_2x2', 'r_2x3', 'r_2x25', 'r_3x2']);
         // Auto-fill start bonus / ult self-charge into ult section
