@@ -299,25 +299,10 @@ var _CAR_IMG = {
                break;
            }
        }
-       
-        const _ = (zh, en) => currentLang === 'en' ? en : zh;
         
-        document.addEventListener('DOMContentLoaded', function() {
-            var searchInput = document.getElementById('carSearch');
-            if (searchInput) {
-                searchInput.placeholder = currentLang === 'en' ? 'Search car name...' : '\u641C\u7D22\u8D5B\u8F66\u540D\u79F0...';
-            }
-        });
+         const _ = (zh, en) => currentLang === 'en' ? en : zh;
         
-        // Set language-aware attributes
-        document.addEventListener('DOMContentLoaded', function() {
-            var searchInput = document.getElementById('carSearch');
-            if (searchInput) {
-                searchInput.placeholder = currentLang === 'en' ? 'Search car name...' : '\u641C\u7D22\u8D5B\u8F66\u540D\u79F0...';
-            }
-        });
-       
-       if (currentLang === 'en') {
+        if (currentLang === 'en') {
            document.documentElement.lang = 'en';
            document.title = 'Ace Racer - Ult Energy Calculator';
            let metaAppTitle = document.querySelector('meta[name="apple-mobile-web-app-title"]');
@@ -855,8 +840,8 @@ var _CAR_IMG = {
         // Add "Unreleased car" as first option
         var sel0 = (_selectedCarId === -1) ? ' selected' : '';
         html += '<div class="dropdown-option' + sel0 + '" data-id="-1" onclick="pickCar(-1);document.getElementById(\'carDropdown\').classList.remove(\'show\');">'
-            + '<span style="flex:1;"><span style="opacity:0.5;">\u2753</span> \u672A\u4E0A\u7EBF\u8F66\u8F86</span>'
-            + '<span style="font-size:11px;color:var(--text-muted);">\u624B\u52A8\u586B\u5199</span>'
+            + '<span style="flex:1;"><span style="opacity:0.5;">\u2753</span> ' + _("未上线车辆", "Unreleased Car") + '</span>'
+            + '<span style="font-size:11px;color:var(--text-muted);">' + _("手动填写", "Manual Input") + '</span>'
             + '</div>';
         for (var i = 0; i < CAR_DATABASE.length; i++) {
             var c = CAR_DATABASE[i];
@@ -913,7 +898,7 @@ var _CAR_IMG = {
         }
         var label = document.getElementById('carListLabel');
         if (_selectedCarId === -1) {
-            label.innerHTML = '<span style=\"opacity:0.5;\">\u2753</span> \u672A\u4E0A\u7EBF\u8F66\u8F86';
+            label.innerHTML = '<span style=\"opacity:0.5;\">\u2753</span> ' + _("未上线车辆", "Unreleased Car");
         } else if (_selectedCarId && _selectedCarId > 0) {
             for (var i = 0; i < CAR_DATABASE.length; i++) {
                 if (CAR_DATABASE[i].id === _selectedCarId) {
@@ -928,9 +913,9 @@ var _CAR_IMG = {
                 }
             }
         } else if (q || pos || spec) {
-            label.innerHTML = matchCount + ' \u8F86\u5339\u914D';
+            label.innerHTML = matchCount + _(" 辆匹配", " matched");
         } else {
-            label.innerHTML = '\u9009\u62E9\u8F66\u8F86';
+            label.innerHTML = _("选择车辆", "Select a car");
         }
         // Auto-open car dropdown when searching, close when cleared
         if (q) {
@@ -943,11 +928,11 @@ var _CAR_IMG = {
         document.getElementById('carPreviewName').style.display = '';
         document.getElementById('carPreviewName').textContent = car.name + ' (' + (car.position||'') + ')';
         document.getElementById('carPreviewInfo').style.display = '';
-        document.getElementById('carPreviewInfo').textContent = 'ace_charge: ' + (car.ace_charge || '?') + ' | ' + (car.specialization||'') + (car.ult_type ? ' | ' + car.ult_type : '') + (car.ult_duration ? ' | \u5927\u62DB\u65F6\u957F: ' + car.ult_duration + 's' : '');
-        var filledItems = ['\u5927\u62DB\u9608\u503C', '\u57FA\u7840\u53CC\u5145', '\u6C2E\u6C14\u65F6\u957F', '\u5927\u62DB\u65F6\u957F'];
-        if (car.ult_charge_first) filledItems.push('\u5F00\u5C40\u7ACB\u523B\u5145\u80FD');
+        document.getElementById('carPreviewInfo').textContent = 'ace_charge: ' + (car.ace_charge || '?') + ' | ' + (car.specialization||'') + (car.ult_type ? ' | ' + car.ult_type : '') + (car.ult_duration ? ' | ' + _("大招时长:","Ult Dur:") + ' ' + car.ult_duration + 's' : '');
+        var filledItems = [_("大招阈值","Ult Threshold"), _("基础双充","Base Dual Charge"), _("氮气时长","Nitro Dur"), _("大招时长","Ult Dur")];
+        if (car.ult_charge_first) filledItems.push(_("开局立刻充能","Start Bonus"));
         document.getElementById('carPreviewAutoMsg').style.display = '';
-        document.getElementById('carPreviewAutoMsg').innerHTML = '\u2713 \u5DF2\u81EA\u52A8\u586B\u5145\uFF1A' + filledItems.join('\u3001') + ' \u2014 \u5176\u4ED6\u53C2\u6570\u8BF7\u624B\u52A8\u8C03\u6574\u3002<br>\u8BE6\u7EC6\u8F66\u8F86\u6280\u80FD\u8BF7\u53C2\u8003 \u2192 <a href=\"https://reca.seimu.cn/ace-racer-admin/vehicles/' + car.id + '\" target=\"_blank\" style=\"color:var(--primary);text-decoration:underline;font-weight:bold;\">' + '瑞卡情报站-' + car.name + '</a>';
+        document.getElementById('carPreviewAutoMsg').innerHTML = _('\u2713 \u5DF2\u81EA\u52A8\u586B\u5145\uFF1A', '\u2713 Auto-filled: ') + filledItems.join(_('\u3001', ', ')) + _(' \u2014 \u5176\u4ED6\u53C2\u6570\u8BF7\u624B\u52A8\u8C03\u6574\u3002<br>\u8BE6\u7EC6\u8F66\u8F86\u6280\u80FD\u8BF7\u53C2\u8003 \u2192', ' — Other params need manual tuning.<br>Details \u2192') + ' <a href=\"https://reca.seimu.cn/ace-racer-admin/vehicles/' + car.id + '\" target=\"_blank\" style=\"color:var(--primary);text-decoration:underline;font-weight:bold;\">' + '瑞卡情报站-' + car.name + '</a>';
         var chipInfo = document.getElementById('carPreviewChips');
         if (car.chip_slots) {
             chipInfo.style.display = 'flex';
@@ -974,7 +959,7 @@ var _CAR_IMG = {
         info.innerHTML = '<b>' + car.name + '</b>'
             + ' &nbsp;|&nbsp; ' + (car.position||'') + ' / ' + (car.specialization||'')
             + ' &nbsp;|&nbsp; ace_charge: <b>' + (car.ace_charge || '?') + '</b>'
-            + (car.ult_duration ? ' &nbsp;|&nbsp; \u5927\u62DB\u65F6\u957F: <b>' + car.ult_duration + 's</b>' : '')
+            + (car.ult_duration ? ' &nbsp;|&nbsp; ' + _("大招时长:","Ult Dur:") + ' <b>' + car.ult_duration + 's</b>' : '')
             + (car.has_sp ? ' &nbsp;|&nbsp; <span class="car-badge">SP</span>' : '');
     }
 
@@ -990,7 +975,7 @@ var _CAR_IMG = {
             document.getElementById('carPreviewAutoMsg').style.display = 'none';
             var img = document.getElementById('carImage');
             img.src = _ICONS['icon_mhyck_m.png'];
-            img.alt = '\u672A\u4E0A\u7EBF\u8F66\u8F86';
+            img.alt = _("未上线车辆", "Unreleased Car");
             img.style.display = '';
             img.loading = 'lazy';
             document.getElementById('carSelectInfo').style.display = 'none';
@@ -1123,17 +1108,17 @@ var _CAR_IMG = {
         document.getElementById('carPreviewName').style.display = '';
         document.getElementById('carPreviewName').textContent = car.name + ' (' + (car.position||'') + ')';
         document.getElementById('carPreviewInfo').style.display = '';
-        document.getElementById('carPreviewInfo').textContent = 'ace_charge: ' + (car.ace_charge || '?') + ' | ' + (car.specialization||'') + (car.ult_type ? ' | ' + car.ult_type : '') + (car.ult_duration ? ' | \u5927\u62DB\u65F6\u957F: ' + car.ult_duration + 's' : '');
+        document.getElementById('carPreviewInfo').textContent = 'ace_charge: ' + (car.ace_charge || '?') + ' | ' + (car.specialization||'') + (car.ult_type ? ' | ' + car.ult_type : '') + (car.ult_duration ? ' | ' + _("大招时长:","Ult Dur:") + ' ' + car.ult_duration + 's' : '');
         // Show auto-fill info message
         document.getElementById('carPreviewAutoMsg').style.display = '';
         // Build green message dynamically
-        var filledItems = ['\u5927\u62DB\u9608\u503C', '\u57FA\u7840\u53CC\u5145', '\u6C2E\u6C14\u65F6\u957F', '\u5927\u62DB\u65F6\u957F'];
-        if (car.ult_charge_first) filledItems.push('\u5F00\u5C40\u7ACB\u523B\u5145\u80FD');
-        if (car.nitro_charge) filledItems.push('\u6C2E\u6C14\u81EA\u5145\u80FD');
-        if (car.ult_charge_loop) filledItems.push('\u5927\u62DB\u81EA\u5145\u80FD');
-        if (car.per_sec_charge) filledItems.push('\u6BCF\u79D2\u81EA\u5145\u80FD');
-        if (car.sp_charge) filledItems.push('SP\u81EA\u5145\u80FD');
-        document.getElementById('carPreviewAutoMsg').innerHTML = '\u2713 \u5DF2\u81EA\u52A8\u586B\u5145\uFF1A' + filledItems.join('\u3001') + ' \u2014 \u5176\u4ED6\u53C2\u6570\u8BF7\u624B\u52A8\u8C03\u6574\u3002<br>\u8BE6\u7EC6\u8F66\u8F86\u6280\u80FD\u8BF7\u53C2\u8003 \u2192 <a href=\"https://reca.seimu.cn/ace-racer-admin/vehicles/' + car.id + '\" target=\"_blank\" style=\"color:var(--primary);text-decoration:underline;font-weight:bold;\">' + '瑞卡情报站-' + car.name + '</a>';
+        var filledItems = [_("大招阈值","Ult Threshold"), _("基础双充","Base Dual Charge"), _("氮气时长","Nitro Dur"), _("大招时长","Ult Dur")];
+        if (car.ult_charge_first) filledItems.push(_("开局立刻充能","Start Bonus"));
+        if (car.nitro_charge) filledItems.push(_("氮气自充能","Nitro SC"));
+        if (car.ult_charge_loop) filledItems.push(_("大招自充能","Ult SC"));
+        if (car.per_sec_charge) filledItems.push(_("每秒自充能","PerSec SC"));
+        if (car.sp_charge) filledItems.push(_("SP自充能","SP Charge"));
+        document.getElementById('carPreviewAutoMsg').innerHTML = _('\u2713 \u5DF2\u81EA\u52A8\u586B\u5145\uFF1A', '\u2713 Auto-filled: ') + filledItems.join(_('\u3001', ', ')) + _(' \u2014 \u5176\u4ED6\u53C2\u6570\u8BF7\u624B\u52A8\u8C03\u6574\u3002<br>\u8BE6\u7EC6\u8F66\u8F86\u6280\u80FD\u8BF7\u53C2\u8003 \u2192', ' — Other params need manual tuning.<br>Details \u2192') + ' <a href=\"https://reca.seimu.cn/ace-racer-admin/vehicles/' + car.id + '\" target=\"_blank\" style=\"color:var(--primary);text-decoration:underline;font-weight:bold;\">' + '瑞卡情报站-' + car.name + '</a>';
         var chipInfo = document.getElementById('carPreviewChips');
         if (car.chip_slots) {
             chipInfo.style.display = 'flex';
@@ -1162,7 +1147,7 @@ var _CAR_IMG = {
         info.innerHTML = '<b>' + car.name + '</b>'
             + ' &nbsp;|&nbsp; ' + (car.position||'') + ' / ' + (car.specialization||'')
             + ' &nbsp;|&nbsp; ace_charge: <b>' + (car.ace_charge || '?') + '</b>'
-            + (car.ult_duration ? ' &nbsp;|&nbsp; \u5927\u62DB\u65F6\u957F: <b>' + car.ult_duration + 's</b>' : '')
+            + (car.ult_duration ? ' &nbsp;|&nbsp; ' + _("大招时长:","Ult Dur:") + ' <b>' + car.ult_duration + 's</b>' : '')
             + (car.has_sp ? ' &nbsp;|&nbsp; <span class="car-badge">SP</span>' : '');
     }
 
@@ -1209,12 +1194,12 @@ var _CAR_IMG = {
         if (type === 'pos') {
             _filterPos = value;
             var pIcon = value ? getPosIcon(value) : '';
-            document.getElementById('filterPosLabel').innerHTML = (pIcon ? '<img src=\"' + pIcon + '\" style=\"width:16px;height:16px;vertical-align:middle;margin-right:8px;\">' : '') + (value || '\u5168\u90E8\u5B9A\u4F4D');
+            document.getElementById('filterPosLabel').innerHTML = (pIcon ? '<img src=\"' + pIcon + '\" style=\"width:16px;height:16px;vertical-align:middle;margin-right:8px;\">' : '') + (value || _('全部定位', 'All Positions'));
             document.getElementById('filterPosMenu').classList.remove('show');
         } else {
             _filterSpec = value;
             var sIcon = value ? getSpecIcon(value) : '';
-            document.getElementById('filterSpecLabel').innerHTML = (sIcon ? '<img src=\"' + sIcon + '\" style=\"width:16px;height:16px;vertical-align:middle;margin-right:8px;\">' : '') + (value || '\u5168\u90E8\u4E13\u7CBE');
+            document.getElementById('filterSpecLabel').innerHTML = (sIcon ? '<img src=\"' + sIcon + '\" style=\"width:16px;height:16px;vertical-align:middle;margin-right:8px;\">' : '') + (value || _('全部专精', 'All Specializations'));
             document.getElementById('filterSpecMenu').classList.remove('show');
         }
         filterCarList();
@@ -1255,7 +1240,8 @@ var _CAR_IMG = {
                     <div class="card" style="position:relative;z-index:100;">
                         <div class="card-title"><span class="zh">选择赛车</span><span class="lang-en">Select Car</span></div>
                         <div class="car-search-box">
-                            <input type="text" id="carSearch" class="form-control" placeholder="Search car name..." oninput="filterCarList()" style="margin-bottom:12px;">
+                             <input type="text" id="carSearch" class="form-control" placeholder="Search car name..." oninput="filterCarList()" style="margin-bottom:12px;">
+                            <script>(function(){var e=document.getElementById('carSearch');if(e&&typeof currentLang!=='undefined')e.placeholder=currentLang==='zh'?'搜索赛车名称...':'Search car name...';})();</script>
                         </div>
                         <div class="car-filters" style="display:flex;gap:8px;margin-bottom:12px;">
                             <div class="dropdown-container" style="flex:1;">
