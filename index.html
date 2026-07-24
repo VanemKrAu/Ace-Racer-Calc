@@ -454,8 +454,8 @@ var _CAR_IMG = {
        .input-unit { position: absolute; right: 14px; color: var(--text-muted); font-size: 14px; font-weight: bold; }
 
 
-       /* 竖屏：车辆技能附加充能效率沉底，保持原顺序不变 */
-       @media (max-width: 849px) {
+/* Mobile: vehicle skill bonus efficiency card sinks to bottom, keep original order */
+        @media (max-width: 849px) {
            #topLayout { display: flex; flex-direction: column; }
            #topLayout > .desktop-col { display: contents; }
            .eff-card-mobile { order: 10; }
@@ -655,14 +655,13 @@ var _CAR_IMG = {
    <base target="_blank">
 </head>
 <body>
-   <noscript>
-     <div style="padding:40px;max-width:800px;margin:0 auto;font-family:sans-serif;">
-       <h1>王牌竞速 - 大招能量精密计算器</h1>
-       <p>王牌竞速高精度大招能量与循环测算工具。支持全赛车大招能量计算，精准测算循环周期与能量回复。由 Vanem 设定交互逻辑、提供计算公式。</p>
-       <p>王牌竞速芯片计算器 — 功能：芯片能量计算 | 大招循环周期测算 | 先机芯片联动 | 能量回复模拟 | 多赛车对比</p>
-       <p>请启用 JavaScript 以使用完整计算功能。访问网址：<a href="https://aceracercalc.top/">aceracercalc.top</a></p>
-     </div>
-   </noscript>
+    <noscript>
+      <div style="padding:40px;max-width:800px;margin:0 auto;font-family:sans-serif;">
+        <h1>Ace Racer - Ultimate Energy Calculator</h1>
+        <p>Ace Racer high-precision energy calculation tool. Supports full vehicle ult energy calculation, precise cycle period and energy recovery estimation. Logic & formulas by Vanem, AI assisted development.</p>
+        <p>Please enable JavaScript to use the full calculator. Visit: <a href="https://aceracercalc.top/">aceracercalc.top</a></p>
+      </div>
+    </noscript>
    <div class="app-container">
        <div class="top-bar" data-html2canvas-ignore="true">
            <div class="dropdown-container">
@@ -853,7 +852,7 @@ var _CAR_IMG = {
         var list = document.getElementById('carDropdown');
         if (!list || !CAR_DATABASE) return;
         var html = '';
-        // Add "未上线车辆" as first option
+        // Add "Unreleased car" as first option
         var sel0 = (_selectedCarId === -1) ? ' selected' : '';
         html += '<div class="dropdown-option' + sel0 + '" data-id="-1" onclick="pickCar(-1);document.getElementById(\'carDropdown\').classList.remove(\'show\');">'
             + '<span style="flex:1;"><span style="opacity:0.5;">\u2753</span> \u672A\u4E0A\u7EBF\u8F66\u8F86</span>'
@@ -980,7 +979,7 @@ var _CAR_IMG = {
     }
 
     function pickCar(id) {
-        // Handle "未上线车辆"
+        // Handle "Unreleased car"
         if (id === -1) {
             _selectedCar = null;
             _selectedCarId = -1;
@@ -1090,7 +1089,7 @@ var _CAR_IMG = {
         }
         if (car.ace_charge) flashSection('cardCoreParams', ['baseNitro', 'startCharge', 'ultThreshold']);
         if (car.nitro_duration) flashSection('cardNitro', ['time_1x6', 'time_1x5', 'time_2x2', 'time_2x3', 'time_2x25', 'time_3x2', 'baseUltDuration', 'r_1x5', 'r_1x6', 'r_2x2', 'r_2x3', 'r_2x25', 'r_3x2']);
-        // Auto-fill 开局额外充能 / 大招自充能 into 大招释放 section
+        // Auto-fill start bonus / ult self-charge into ult section
         if (car.ult_charge_first || car.ult_charge_loop) {
             document.getElementById('hasExtraUlt').checked = true;
             if (car.ult_charge_first) document.getElementById('valExtraUltFirst').value = car.ult_charge_first;
@@ -1098,21 +1097,21 @@ var _CAR_IMG = {
             if (typeof toggleExtraUI === 'function') toggleExtraUI();
             flashSection('extraUltSection', ['valExtraUltFirst', 'valExtraUltLoop', 'hasExtraUlt']);
         }
-        // Auto-fill 氮气自充能
+        // Auto-fill nitro self-charge
         if (car.nitro_charge) {
             document.getElementById('hasExtraNitro').checked = true;
             document.getElementById('valExtraNitro').value = car.nitro_charge;
             if (typeof toggleExtraUI === 'function') toggleExtraUI();
             flashSection('extraNitroSection', ['valExtraNitro', 'hasExtraNitro']);
         }
-        // Auto-fill 每秒自充能
+        // Auto-fill per-sec self-charge
         if (car.per_sec_charge) {
             document.getElementById('hasExtraPerSec').checked = true;
             document.getElementById('valExtraPerSec').value = car.per_sec_charge;
             if (typeof toggleExtraUI === 'function') toggleExtraUI();
             flashSection('extraPerSecSection', ['valExtraPerSec', 'hasExtraPerSec']);
         }
-        // Auto-fill SP自充能 into 自定义触发模块
+        // Auto-fill SP charge into custom trigger section
         if (car.sp_charge) {
             document.getElementById('valCustomTrig').value = car.sp_charge;
             document.getElementById('customTrigFirstCount').value = 1;
@@ -1256,7 +1255,7 @@ var _CAR_IMG = {
                     <div class="card" style="position:relative;z-index:100;">
                         <div class="card-title"><span class="zh">选择赛车</span><span class="lang-en">Select Car</span></div>
                         <div class="car-search-box">
-                            <input type="text" id="carSearch" class="form-control" placeholder="搜索赛车名称..." oninput="filterCarList()" style="margin-bottom:12px;">
+                            <input type="text" id="carSearch" class="form-control" placeholder="Search car name..." oninput="filterCarList()" style="margin-bottom:12px;">
                         </div>
                         <div class="car-filters" style="display:flex;gap:8px;margin-bottom:12px;">
                             <div class="dropdown-container" style="flex:1;">
@@ -1630,14 +1629,14 @@ var _CAR_IMG = {
                                <label class="form-label" style="color: var(--text-muted); font-size: 11.5px;"><span class="zh">首发一大触发次数</span><span class="lang-en">1st Ult Triggers</span></label>
                                <div class="input-wrapper">
                                    <input type="number" id="customTrigFirstCount" class="form-control" value="0" min="0" step="1" oninput="triggerAutoCalc(currentActiveField); calculate();">
-                                   <span class="input-unit"><span class="zh">次</span><span class="lang-en"></span></span>
+                                   <span class="input-unit"><span class="zh">次</span><span class="lang-en"> times</span></span>
                                </div>
                            </div>
                            <div class="form-group" style="margin-bottom: 0;">
                                <label class="form-label" style="color: var(--text-muted); font-size: 11.5px;"><span class="zh">循环内触发次数</span><span class="lang-en">Loop Triggers</span></label>
                                <div class="input-wrapper">
                                    <input type="number" id="customTrigLoopCount" class="form-control" value="0" min="0" step="1" oninput="calculate();">
-                                   <span class="input-unit"><span class="zh">次</span><span class="lang-en"></span></span>
+                                   <span class="input-unit"><span class="zh">次</span><span class="lang-en"> times</span></span>
                                </div>
                            </div>
                        </div>
@@ -1664,7 +1663,7 @@ var _CAR_IMG = {
                            <label class="form-label"><span class="zh">释放一大所需氮气个数</span><span class="lang-en">Nitros needed for 1st Ult</span></label>
                            <div class="input-wrapper">
                                <input type="number" id="inputFirstNitroCount" class="form-control" value="1" min="0" step="1" oninput="triggerAutoCalc(currentActiveField); calculate();">
-                               <span class="input-unit"><span class="zh">个</span><span class="lang-en"></span></span>
+                               <span class="input-unit"><span class="zh">个</span><span class="lang-en"> nitro(s)</span></span>
                            </div>
                        </div>
 
@@ -1719,7 +1718,7 @@ var _CAR_IMG = {
                            <label class="form-label"><span class="zh">大招内释放氮气个数</span><span class="lang-en">Nitros per Ult</span></label>
                            <div class="input-wrapper">
                                <input type="number" id="inputNitroCount" class="form-control" value="0" min="0" step="1" oninput="onNitroCountInput()">
-                               <span class="input-unit"><span class="zh">个</span><span class="lang-en"></span></span>
+                               <span class="input-unit"><span class="zh">个</span><span class="lang-en"> nitro(s)</span></span>
                            </div>
                        </div>
                    </div>
@@ -3138,15 +3137,16 @@ var _CAR_IMG = {
            });
        }
 
-       function toggleLanguage() {
-           currentLang = currentLang === 'zh' ? 'en' : 'zh';
-           document.body.classList.toggle('en-mode', currentLang === 'en');
-           document.documentElement.lang = currentLang === 'en' ? 'en' : 'zh-CN';
-           document.title = currentLang === 'en' ? 'Ace Racer - Ult Energy Calculator' : '王牌竞速 - 大招能量精密计算器';
-           let metaAppTitle = document.querySelector('meta[name="apple-mobile-web-app-title"]');
-           if (metaAppTitle) {
-               metaAppTitle.content = currentLang === 'en' ? 'Ace Calc' : '王牌计算器';
-           }
+        function toggleLanguage() {
+            currentLang = currentLang === 'zh' ? 'en' : 'zh';
+            document.body.classList.toggle('en-mode', currentLang === 'en');
+            document.documentElement.lang = currentLang === 'en' ? 'en' : 'zh-CN';
+            document.title = currentLang === 'en' ? 'Ace Racer - Ult Energy Calculator' : '王牌竞速 - 大招能量精密计算器';
+            let metaAppTitle = document.querySelector('meta[name="apple-mobile-web-app-title"]');
+            if (metaAppTitle) {
+                metaAppTitle.content = currentLang === 'en' ? 'Ace Calc' : '王牌计算器';
+            }
+            document.getElementById('langBtnText').textContent = currentLang === 'en' ? '中文 / English' : 'English / 中文';
            
            updateAutoCalcUI();
            updateNitroCountUI();
@@ -3159,7 +3159,7 @@ var _CAR_IMG = {
 
    <div class="lang-toggle-wrapper" data-html2canvas-ignore="true">
        <button id="langToggleBtn" class="lang-btn" onclick="toggleLanguage()">
-           <span>🌐</span> <span id="langBtnText">English / 中文</span>
+            <span>🌐</span> <span id="langBtnText">中文 / English</span>
        </button>
    </div>
 
