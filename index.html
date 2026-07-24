@@ -817,22 +817,9 @@ var _CAR_IMG = {
     }
             </script>
 
-            <script>
+             <script>
     var _selectedCar = null;
     var _selectedCarId = null;
-
-    // Init on load
-    if (typeof CAR_DATABASE !== 'undefined') {
-        var readyFn = function() {
-            populateFilters();
-            populateCarGrid();
-        };
-        if (document.readyState === 'loading') {
-            document.addEventListener('DOMContentLoaded', readyFn);
-        } else {
-            readyFn();
-        }
-    }
 
     function calcMaxHuineng(chipSlots) {
         if (!chipSlots) return 50;
@@ -848,17 +835,17 @@ var _CAR_IMG = {
 
     function getPosIcon(pos) {
         if (!pos) return '';
-        if (pos.indexOf('\u7ADE\u901F') >= 0) return _ICONS['commonnew_icon_racing1.png'];
-        if (pos.indexOf('\u8F85\u52A9') >= 0) return _ICONS['commonnew_icon_auxiliary1.png'];
-        if (pos.indexOf('\u5E72\u6270') >= 0) return _ICONS['commonnew_icon_interference1.png'];
-        if (pos.indexOf('\u5929\u5E73') >= 0) return _ICONS['commonnew_icon_auncel1.png'];
+        if (pos.indexOf('\u7ADE\u901F') >= 0) return (_ICONS||{})['commonnew_icon_racing1.png'] || '';
+        if (pos.indexOf('\u8F85\u52A9') >= 0) return (_ICONS||{})['commonnew_icon_auxiliary1.png'] || '';
+        if (pos.indexOf('\u5E72\u6270') >= 0) return (_ICONS||{})['commonnew_icon_interference1.png'] || '';
+        if (pos.indexOf('\u5929\u5E73') >= 0) return (_ICONS||{})['commonnew_icon_auncel1.png'] || '';
         return '';
     }
     function getSpecIcon(spec) {
         if (!spec) return '';
-        if (spec.indexOf('\u5C71\u8DEF') >= 0) return _ICONS['new_carport_icon_mountainroad.png'];
-        if (spec.indexOf('\u573A\u5730') >= 0) return _ICONS['new_carport_icon_court.png'];
-        if (spec.indexOf('\u57CE\u5E02') >= 0) return _ICONS['new_carport_icon_city.png'];
+        if (spec.indexOf('\u5C71\u8DEF') >= 0) return (_ICONS||{})['new_carport_icon_mountainroad.png'] || '';
+        if (spec.indexOf('\u573A\u5730') >= 0) return (_ICONS||{})['new_carport_icon_court.png'] || '';
+        if (spec.indexOf('\u57CE\u5E02') >= 0) return (_ICONS||{})['new_carport_icon_city.png'] || '';
         return '';
     }
 
@@ -3260,6 +3247,13 @@ var _CAR_IMG = {
         lastTime = 0; 
     });
 })();
+</script>
+<script>
+// Initialize car list and filters (all DOM elements exist)
+if (typeof CAR_DATABASE !== 'undefined') {
+    populateFilters();
+    populateCarGrid();
+}
 </script>
 </body>
 </html>
