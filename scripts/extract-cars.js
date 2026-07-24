@@ -446,6 +446,18 @@ for (const file of files) {
         }
         if (asciiBuf) pinyinParts.push(asciiBuf);
         var result = pinyinParts.join('');
+        // Generate pinyin initials (first letter of each Chinese char only)
+        var initials = '';
+        for (var ci = 0; ci < chars.length; ci++) {
+          var code = chars[ci].charCodeAt(0);
+          if (code >= 128) {
+            try {
+              var py = pinyin.pinyin(chars[ci], { style: 0 });
+              if (py && py[0]) initials += py[0][0].charAt(0).toLowerCase();
+            } catch(e) {}
+          }
+        }
+        if (initials) result += ' ' + initials;
         // Add common Chinese aliases for better search
         var aliases = {
           '迈凯伦 Senna': '塞纳',

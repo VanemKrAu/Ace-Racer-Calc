@@ -35,7 +35,7 @@ const CAR_DATABASE = [
     "ult_charge_loop": null,
     "per_sec_charge": null,
     "sp_charge": null,
-    "search_text": "baibianxiaoying",
+    "search_text": "baibianxiaoying bbxy",
     "asset_dir": "assets/百变小鹦_12099"
   },
   {
@@ -73,7 +73,7 @@ const CAR_DATABASE = [
     "ult_charge_loop": null,
     "per_sec_charge": null,
     "sp_charge": null,
-    "search_text": "bujiadi veyron 威龙",
+    "search_text": "bujiadi veyron bjd 威龙",
     "asset_dir": "assets/布加迪 Veyron_12098"
   },
   {
@@ -111,7 +111,7 @@ const CAR_DATABASE = [
     "ult_charge_loop": null,
     "per_sec_charge": null,
     "sp_charge": null,
-    "search_text": "qinggui·haoran",
+    "search_text": "qinggui·haoran qg·hr",
     "asset_dir": "assets/清规·浩然_12097"
   },
   {
@@ -149,7 +149,7 @@ const CAR_DATABASE = [
     "ult_charge_loop": null,
     "per_sec_charge": null,
     "sp_charge": null,
-    "search_text": "bentian civic type r type r,思域",
+    "search_text": "bentian civic type r bt type r,思域",
     "asset_dir": "assets/本田 Civic Type R_12096"
   },
   {
@@ -187,7 +187,7 @@ const CAR_DATABASE = [
     "ult_charge_loop": null,
     "per_sec_charge": null,
     "sp_charge": 6,
-    "search_text": "bujiadi bolide 飞火流星",
+    "search_text": "bujiadi bolide bjd 飞火流星",
     "asset_dir": "assets/布加迪 Bolide_12095"
   },
   {
@@ -225,7 +225,7 @@ const CAR_DATABASE = [
     "ult_charge_loop": null,
     "per_sec_charge": null,
     "sp_charge": null,
-    "search_text": "lianhua evija x evija",
+    "search_text": "lianhua evija x lh evija",
     "asset_dir": "assets/莲花 Evija X_12093"
   },
   {
@@ -263,7 +263,7 @@ const CAR_DATABASE = [
     "ult_charge_loop": null,
     "per_sec_charge": null,
     "sp_charge": null,
-    "search_text": "fangchengbao bao8 豹8",
+    "search_text": "fangchengbao bao8 fcbb 豹8",
     "asset_dir": "assets/方程豹 豹8_12092"
   },
   {
@@ -301,7 +301,7 @@ const CAR_DATABASE = [
     "ult_charge_loop": null,
     "per_sec_charge": null,
     "sp_charge": null,
-    "search_text": "lanbojini sesto elemento 第六元素",
+    "search_text": "lanbojini sesto elemento lbjn 第六元素",
     "asset_dir": "assets/兰博基尼 Sesto Elemento_12091"
   },
   {
@@ -339,7 +339,7 @@ const CAR_DATABASE = [
     "ult_charge_loop": null,
     "per_sec_charge": null,
     "sp_charge": null,
-    "search_text": "zhendehaoma",
+    "search_text": "zhendehaoma zdhm",
     "asset_dir": "assets/真的好马_12088"
   },
   {
@@ -377,7 +377,7 @@ const CAR_DATABASE = [
     "ult_charge_loop": null,
     "per_sec_charge": null,
     "sp_charge": null,
-    "search_text": "xiaoyao",
+    "search_text": "xiaoyao xy",
     "asset_dir": "assets/逍遥_12087"
   },
   {
@@ -415,7 +415,7 @@ const CAR_DATABASE = [
     "ult_charge_loop": null,
     "per_sec_charge": null,
     "sp_charge": null,
-    "search_text": "weilaiet9 et9",
+    "search_text": "weilaiet9 wl et9",
     "asset_dir": "assets/蔚来ET9_12084"
   },
   {
@@ -453,7 +453,7 @@ const CAR_DATABASE = [
     "ult_charge_loop": null,
     "per_sec_charge": null,
     "sp_charge": null,
-    "search_text": "guangtianshi",
+    "search_text": "guangtianshi gts",
     "asset_dir": "assets/光天使_12082"
   },
   {
@@ -491,7 +491,7 @@ const CAR_DATABASE = [
     "ult_charge_loop": null,
     "per_sec_charge": null,
     "sp_charge": 2,
-    "search_text": "huanhaizhixi",
+    "search_text": "huanhaizhixi hhzx",
     "asset_dir": "assets/幻海之汐_12081"
   },
   {
@@ -529,7 +529,7 @@ const CAR_DATABASE = [
     "ult_charge_loop": null,
     "per_sec_charge": null,
     "sp_charge": null,
-    "search_text": "baoshijie taycan turbo s taycan",
+    "search_text": "baoshijie taycan turbo s bsj taycan",
     "asset_dir": "assets/保时捷 Taycan Turbo S_12080"
   },
   {
@@ -567,7 +567,7 @@ const CAR_DATABASE = [
     "ult_charge_loop": 10,
     "per_sec_charge": null,
     "sp_charge": null,
-    "search_text": "lanbojini revuelto 雷维托,电牛,雷维尔托",
+    "search_text": "lanbojini revuelto lbjn 雷维托,电牛,雷维尔托",
     "asset_dir": "assets/兰博基尼 Revuelto_12079"
   },
   {
@@ -605,7 +605,7 @@ const CAR_DATABASE = [
     "ult_charge_loop": null,
     "per_sec_charge": null,
     "sp_charge": null,
-    "search_text": "taxuebaiju",
+    "search_text": "taxuebaiju txbj",
     "asset_dir": "assets/踏雪白驹_12078"
   },
   {
@@ -643,7 +643,7 @@ const CAR_DATABASE = [
     "ult_charge_loop": null,
     "per_sec_charge": null,
     "sp_charge": null,
-    "search_text": "zhufengqingji",
+    "search_text": "zhufengqingji zfqj",
     "asset_dir": "assets/逐风青骥_12077"
   },
   {
@@ -681,7 +681,7 @@ const CAR_DATABASE = [
     "ult_charge_loop": null,
     "per_sec_charge": null,
     "sp_charge": null,
-    "search_text": "mowang",
+    "search_text": "mowang mw",
     "asset_dir": "assets/魔王_12076"
   },
   {
@@ -719,7 +719,7 @@ const CAR_DATABASE = [
     "ult_charge_loop": null,
     "per_sec_charge": null,
     "sp_charge": null,
-    "search_text": "binli flying spur mulliner 飞驰",
+    "search_text": "binli flying spur mulliner bl 飞驰",
     "asset_dir": "assets/宾利 Flying Spur Mulliner_12075"
   },
   {
@@ -757,7 +757,7 @@ const CAR_DATABASE = [
     "ult_charge_loop": null,
     "per_sec_charge": null,
     "sp_charge": null,
-    "search_text": "damaitemaihao",
+    "search_text": "damaitemaihao dmtmh",
     "asset_dir": "assets/大买特买号_12074"
   },
   {
@@ -795,7 +795,7 @@ const CAR_DATABASE = [
     "ult_charge_loop": null,
     "per_sec_charge": null,
     "sp_charge": null,
-    "search_text": "falali laferrari 拉法",
+    "search_text": "falali laferrari fll 拉法",
     "asset_dir": "assets/法拉利 LaFerrari_12073"
   },
   {
@@ -833,7 +833,7 @@ const CAR_DATABASE = [
     "ult_charge_loop": null,
     "per_sec_charge": null,
     "sp_charge": null,
-    "search_text": "jiandun",
+    "search_text": "jiandun jd",
     "asset_dir": "assets/坚盾_12072"
   },
   {
@@ -871,7 +871,7 @@ const CAR_DATABASE = [
     "ult_charge_loop": null,
     "per_sec_charge": null,
     "sp_charge": null,
-    "search_text": "fenghangzhe",
+    "search_text": "fenghangzhe fhz",
     "asset_dir": "assets/风行者_12071"
   },
   {
@@ -909,7 +909,7 @@ const CAR_DATABASE = [
     "ult_charge_loop": null,
     "per_sec_charge": null,
     "sp_charge": null,
-    "search_text": "bosaidong",
+    "search_text": "bosaidong bsd",
     "asset_dir": "assets/波塞冬_12070"
   },
   {
@@ -947,7 +947,7 @@ const CAR_DATABASE = [
     "ult_charge_loop": null,
     "per_sec_charge": null,
     "sp_charge": null,
-    "search_text": "xuefolan corvette c8 科尔维特",
+    "search_text": "xuefolan corvette c8 xfl 科尔维特",
     "asset_dir": "assets/雪佛兰 Corvette C8_12069"
   },
   {
@@ -985,7 +985,7 @@ const CAR_DATABASE = [
     "ult_charge_loop": null,
     "per_sec_charge": null,
     "sp_charge": null,
-    "search_text": "kenisaige one:1 one1",
+    "search_text": "kenisaige one:1 knsg one1",
     "asset_dir": "assets/柯尼塞格 One:1_12068"
   },
   {
@@ -1023,7 +1023,7 @@ const CAR_DATABASE = [
     "ult_charge_loop": 13,
     "per_sec_charge": null,
     "sp_charge": null,
-    "search_text": "aodi rs 3 rs3",
+    "search_text": "aodi rs 3 ad rs3",
     "asset_dir": "assets/奥迪 RS 3_12067"
   },
   {
@@ -1061,7 +1061,7 @@ const CAR_DATABASE = [
     "ult_charge_loop": null,
     "per_sec_charge": null,
     "sp_charge": null,
-    "search_text": "diyuhuo",
+    "search_text": "diyuhuo dyh",
     "asset_dir": "assets/地狱火_12066"
   },
   {
@@ -1099,7 +1099,7 @@ const CAR_DATABASE = [
     "ult_charge_loop": null,
     "per_sec_charge": null,
     "sp_charge": null,
-    "search_text": "ouge nsx nsx",
+    "search_text": "ouge nsx og nsx",
     "asset_dir": "assets/讴歌 NSX_12065"
   },
   {
@@ -1137,7 +1137,7 @@ const CAR_DATABASE = [
     "ult_charge_loop": null,
     "per_sec_charge": null,
     "sp_charge": null,
-    "search_text": "jike007 007",
+    "search_text": "jike007 jk 007",
     "asset_dir": "assets/极氪007_12064"
   },
   {
@@ -1175,7 +1175,7 @@ const CAR_DATABASE = [
     "ult_charge_loop": null,
     "per_sec_charge": null,
     "sp_charge": null,
-    "search_text": "aboluo",
+    "search_text": "aboluo abl",
     "asset_dir": "assets/阿波罗_12063"
   },
   {
@@ -1213,7 +1213,7 @@ const CAR_DATABASE = [
     "ult_charge_loop": null,
     "per_sec_charge": null,
     "sp_charge": null,
-    "search_text": "dianna",
+    "search_text": "dianna dan",
     "asset_dir": "assets/狄安娜_12062"
   },
   {
@@ -1251,7 +1251,7 @@ const CAR_DATABASE = [
     "ult_charge_loop": null,
     "per_sec_charge": null,
     "sp_charge": null,
-    "search_text": "zhuyeqing",
+    "search_text": "zhuyeqing zyq",
     "asset_dir": "assets/竹叶青_12061"
   },
   {
@@ -1289,7 +1289,7 @@ const CAR_DATABASE = [
     "ult_charge_loop": null,
     "per_sec_charge": null,
     "sp_charge": null,
-    "search_text": "ledaol60 l60",
+    "search_text": "ledaol60 ld l60",
     "asset_dir": "assets/乐道L60_12060"
   },
   {
@@ -1327,7 +1327,7 @@ const CAR_DATABASE = [
     "ult_charge_loop": null,
     "per_sec_charge": null,
     "sp_charge": null,
-    "search_text": "yangwangu9 u9",
+    "search_text": "yangwangu9 yw u9",
     "asset_dir": "assets/仰望U9_12059"
   },
   {
@@ -1365,7 +1365,7 @@ const CAR_DATABASE = [
     "ult_charge_loop": null,
     "per_sec_charge": null,
     "sp_charge": null,
-    "search_text": "aodi rs 6 avant rs6",
+    "search_text": "aodi rs 6 avant ad rs6",
     "asset_dir": "assets/奥迪 RS 6 Avant_12058"
   },
   {
@@ -1403,7 +1403,7 @@ const CAR_DATABASE = [
     "ult_charge_loop": null,
     "per_sec_charge": null,
     "sp_charge": null,
-    "search_text": "chayunhangzhe",
+    "search_text": "chayunhangzhe cyhz",
     "asset_dir": "assets/茶韵行者_12057"
   },
   {
@@ -1441,7 +1441,7 @@ const CAR_DATABASE = [
     "ult_charge_loop": null,
     "per_sec_charge": null,
     "sp_charge": null,
-    "search_text": "paopaolvhangzhe",
+    "search_text": "paopaolvhangzhe pplhz",
     "asset_dir": "assets/泡泡旅行者_12056"
   },
   {
@@ -1479,7 +1479,7 @@ const CAR_DATABASE = [
     "ult_charge_loop": null,
     "per_sec_charge": null,
     "sp_charge": null,
-    "search_text": "tengshin7 n7",
+    "search_text": "tengshin7 ts n7",
     "asset_dir": "assets/腾势N7_12055"
   },
   {
@@ -1517,7 +1517,7 @@ const CAR_DATABASE = [
     "ult_charge_loop": null,
     "per_sec_charge": null,
     "sp_charge": null,
-    "search_text": "jindouyun",
+    "search_text": "jindouyun jdy",
     "asset_dir": "assets/筋斗云_12054"
   },
   {
@@ -1555,7 +1555,7 @@ const CAR_DATABASE = [
     "ult_charge_loop": null,
     "per_sec_charge": null,
     "sp_charge": null,
-    "search_text": "heimanba",
+    "search_text": "heimanba hmb",
     "asset_dir": "assets/黑曼巴_12053"
   },
   {
@@ -1593,7 +1593,7 @@ const CAR_DATABASE = [
     "ult_charge_loop": null,
     "per_sec_charge": null,
     "sp_charge": 13,
-    "search_text": "guanyu",
+    "search_text": "guanyu gy",
     "asset_dir": "assets/关羽_12052"
   },
   {
@@ -1631,7 +1631,7 @@ const CAR_DATABASE = [
     "ult_charge_loop": null,
     "per_sec_charge": null,
     "sp_charge": null,
-    "search_text": "lanbojini veneno 毒药",
+    "search_text": "lanbojini veneno lbjn 毒药",
     "asset_dir": "assets/兰博基尼 Veneno_12051"
   },
   {
@@ -1669,7 +1669,7 @@ const CAR_DATABASE = [
     "ult_charge_loop": null,
     "per_sec_charge": null,
     "sp_charge": null,
-    "search_text": "baoshijie panamera turbo s panamera",
+    "search_text": "baoshijie panamera turbo s bsj panamera",
     "asset_dir": "assets/保时捷 Panamera Turbo S_12049"
   },
   {
@@ -1707,7 +1707,7 @@ const CAR_DATABASE = [
     "ult_charge_loop": 40,
     "per_sec_charge": null,
     "sp_charge": null,
-    "search_text": "lanbojini aventador j 埃文塔多,小火车,火车头,火车",
+    "search_text": "lanbojini aventador j lbjn 埃文塔多,小火车,火车头,火车",
     "asset_dir": "assets/兰博基尼 Aventador J_12048"
   },
   {
@@ -1745,7 +1745,7 @@ const CAR_DATABASE = [
     "ult_charge_loop": null,
     "per_sec_charge": null,
     "sp_charge": null,
-    "search_text": "hundun",
+    "search_text": "hundun hd",
     "asset_dir": "assets/混沌_12047"
   },
   {
@@ -1783,7 +1783,7 @@ const CAR_DATABASE = [
     "ult_charge_loop": null,
     "per_sec_charge": null,
     "sp_charge": null,
-    "search_text": "kuangbiao",
+    "search_text": "kuangbiao kb",
     "asset_dir": "assets/狂飙_12046"
   },
   {
@@ -1821,7 +1821,7 @@ const CAR_DATABASE = [
     "ult_charge_loop": null,
     "per_sec_charge": null,
     "sp_charge": null,
-    "search_text": "baoma m4 csl m4",
+    "search_text": "baoma m4 csl bm m4",
     "asset_dir": "assets/宝马 M4 CSL_12045"
   },
   {
@@ -1859,7 +1859,7 @@ const CAR_DATABASE = [
     "ult_charge_loop": null,
     "per_sec_charge": null,
     "sp_charge": null,
-    "search_text": "daoqi viper acr 蝰蛇",
+    "search_text": "daoqi viper acr dq 蝰蛇",
     "asset_dir": "assets/道奇 Viper ACR_12044"
   },
   {
@@ -1897,7 +1897,7 @@ const CAR_DATABASE = [
     "ult_charge_loop": null,
     "per_sec_charge": null,
     "sp_charge": null,
-    "search_text": "yangwangu8 u8",
+    "search_text": "yangwangu8 yw u8",
     "asset_dir": "assets/仰望U8_12043"
   },
   {
@@ -1935,7 +1935,7 @@ const CAR_DATABASE = [
     "ult_charge_loop": null,
     "per_sec_charge": 2,
     "sp_charge": null,
-    "search_text": "maikailun senna 塞纳",
+    "search_text": "maikailun senna mkl 塞纳",
     "asset_dir": "assets/迈凯伦 Senna_12042"
   },
   {
@@ -1973,7 +1973,7 @@ const CAR_DATABASE = [
     "ult_charge_loop": null,
     "per_sec_charge": null,
     "sp_charge": null,
-    "search_text": "asidunmading valkyrie amr pro 女武神",
+    "search_text": "asidunmading valkyrie amr pro asdmd 女武神",
     "asset_dir": "assets/阿斯顿马丁 Valkyrie AMR Pro_12041"
   },
   {
@@ -2011,7 +2011,7 @@ const CAR_DATABASE = [
     "ult_charge_loop": null,
     "per_sec_charge": null,
     "sp_charge": 25,
-    "search_text": "yinci",
+    "search_text": "yinci yc",
     "asset_dir": "assets/隐刺_12040"
   },
   {
@@ -2049,7 +2049,7 @@ const CAR_DATABASE = [
     "ult_charge_loop": 4,
     "per_sec_charge": null,
     "sp_charge": null,
-    "search_text": "danzichuji",
+    "search_text": "danzichuji dzcj",
     "asset_dir": "assets/蛋仔出击_12039"
   },
   {
@@ -2087,7 +2087,7 @@ const CAR_DATABASE = [
     "ult_charge_loop": null,
     "per_sec_charge": null,
     "sp_charge": null,
-    "search_text": "baoshijie 911 turbo s 保时捷911",
+    "search_text": "baoshijie 911 turbo s bsj 保时捷911",
     "asset_dir": "assets/保时捷 911 Turbo S_12038"
   },
   {
@@ -2125,7 +2125,7 @@ const CAR_DATABASE = [
     "ult_charge_loop": null,
     "per_sec_charge": null,
     "sp_charge": null,
-    "search_text": "meisaidesi-amg c 63 s coupe c63",
+    "search_text": "meisaidesi-amg c 63 s coupe msds c63",
     "asset_dir": "assets/梅赛德斯-AMG C 63 S Coupe_12037"
   },
   {
@@ -2163,7 +2163,7 @@ const CAR_DATABASE = [
     "ult_charge_loop": null,
     "per_sec_charge": null,
     "sp_charge": null,
-    "search_text": "youlongjinghong",
+    "search_text": "youlongjinghong yljh",
     "asset_dir": "assets/游龙惊鸿_12036"
   },
   {
@@ -2201,7 +2201,7 @@ const CAR_DATABASE = [
     "ult_charge_loop": null,
     "per_sec_charge": null,
     "sp_charge": null,
-    "search_text": "elongchuanshuo",
+    "search_text": "elongchuanshuo elcs",
     "asset_dir": "assets/饿龙传说_12035"
   },
   {
@@ -2239,7 +2239,7 @@ const CAR_DATABASE = [
     "ult_charge_loop": null,
     "per_sec_charge": null,
     "sp_charge": null,
-    "search_text": "falali 812 competizione 812",
+    "search_text": "falali 812 competizione fll 812",
     "asset_dir": "assets/法拉利 812 Competizione_12034"
   },
   {
@@ -2277,7 +2277,7 @@ const CAR_DATABASE = [
     "ult_charge_loop": null,
     "per_sec_charge": null,
     "sp_charge": null,
-    "search_text": "tuanzi",
+    "search_text": "tuanzi tz",
     "asset_dir": "assets/团子_12033"
   },
   {
@@ -2315,7 +2315,7 @@ const CAR_DATABASE = [
     "ult_charge_loop": null,
     "per_sec_charge": null,
     "sp_charge": null,
-    "search_text": "yingbaor·abtlianmingban 影豹r",
+    "search_text": "yingbaor·abtlianmingban yb·lmb 影豹r",
     "asset_dir": "assets/影豹R·ABT联名版_12032"
   },
   {
@@ -2353,7 +2353,7 @@ const CAR_DATABASE = [
     "ult_charge_loop": null,
     "per_sec_charge": 1.2,
     "sp_charge": null,
-    "search_text": "wangpaifangchengshi evo",
+    "search_text": "wangpaifangchengshi evo wpfcs",
     "asset_dir": "assets/王牌方程式 EVO_12031"
   },
   {
@@ -2391,7 +2391,7 @@ const CAR_DATABASE = [
     "ult_charge_loop": null,
     "per_sec_charge": null,
     "sp_charge": null,
-    "search_text": "xingjuezhiyu",
+    "search_text": "xingjuezhiyu xjzy",
     "asset_dir": "assets/醒觉之羽_12030"
   },
   {
@@ -2429,7 +2429,7 @@ const CAR_DATABASE = [
     "ult_charge_loop": null,
     "per_sec_charge": null,
     "sp_charge": null,
-    "search_text": "wangpaisumian",
+    "search_text": "wangpaisumian wpsm",
     "asset_dir": "assets/王牌速面_12029"
   },
   {
@@ -2467,7 +2467,7 @@ const CAR_DATABASE = [
     "ult_charge_loop": null,
     "per_sec_charge": null,
     "sp_charge": null,
-    "search_text": "aima zaomengshi",
+    "search_text": "aima zaomengshi amzms",
     "asset_dir": "assets/爱玛 造梦师_12028"
   },
   {
@@ -2505,7 +2505,7 @@ const CAR_DATABASE = [
     "ult_charge_loop": null,
     "per_sec_charge": null,
     "sp_charge": null,
-    "search_text": "zhaocaifushu",
+    "search_text": "zhaocaifushu zcfs",
     "asset_dir": "assets/招财福鼠_12027"
   },
   {
@@ -2543,7 +2543,7 @@ const CAR_DATABASE = [
     "ult_charge_loop": null,
     "per_sec_charge": null,
     "sp_charge": null,
-    "search_text": "laiken hypersport 莱肯",
+    "search_text": "laiken hypersport lk 莱肯",
     "asset_dir": "assets/莱肯 HyperSport_12026"
   },
   {
@@ -2581,7 +2581,7 @@ const CAR_DATABASE = [
     "ult_charge_loop": null,
     "per_sec_charge": null,
     "sp_charge": null,
-    "search_text": "lanbojini huracán sto 飓风,sto,小牛",
+    "search_text": "lanbojini huracán sto lbjná 飓风,sto,小牛",
     "asset_dir": "assets/兰博基尼 Huracán STO_12025"
   },
   {
@@ -2619,7 +2619,7 @@ const CAR_DATABASE = [
     "ult_charge_loop": 6,
     "per_sec_charge": null,
     "sp_charge": null,
-    "search_text": "fengtian corolla sprinter trueno gt apex ae86,卡罗拉",
+    "search_text": "fengtian corolla sprinter trueno gt apex ft ae86,卡罗拉",
     "asset_dir": "assets/丰田 Corolla Sprinter Trueno GT Apex_12024"
   },
   {
@@ -2657,7 +2657,7 @@ const CAR_DATABASE = [
     "ult_charge_loop": null,
     "per_sec_charge": null,
     "sp_charge": null,
-    "search_text": "xingqionghuanyin",
+    "search_text": "xingqionghuanyin xqhy",
     "asset_dir": "assets/星穹幻音_12023"
   },
   {
@@ -2695,7 +2695,7 @@ const CAR_DATABASE = [
     "ult_charge_loop": null,
     "per_sec_charge": null,
     "sp_charge": null,
-    "search_text": "jiebao f-type svr convertible ftype",
+    "search_text": "jiebao f-type svr convertible jb ftype",
     "asset_dir": "assets/捷豹 F-TYPE SVR Convertible_12022"
   },
   {
@@ -2733,7 +2733,7 @@ const CAR_DATABASE = [
     "ult_charge_loop": null,
     "per_sec_charge": null,
     "sp_charge": null,
-    "search_text": "meisaidesi-benchi biome biome,电奔",
+    "search_text": "meisaidesi-benchi biome msdsbc biome,电奔",
     "asset_dir": "assets/梅赛德斯-奔驰 Biome_12021"
   },
   {
@@ -2771,7 +2771,7 @@ const CAR_DATABASE = [
     "ult_charge_loop": 1.6,
     "per_sec_charge": null,
     "sp_charge": null,
-    "search_text": "zhangfei",
+    "search_text": "zhangfei zf",
     "asset_dir": "assets/张飞_12020"
   },
   {
@@ -2809,7 +2809,7 @@ const CAR_DATABASE = [
     "ult_charge_loop": null,
     "per_sec_charge": null,
     "sp_charge": null,
-    "search_text": "aodi r8 spyder v10 r8",
+    "search_text": "aodi r8 spyder v10 ad r8",
     "asset_dir": "assets/奥迪 R8 Spyder V10_12019"
   },
   {
@@ -2847,7 +2847,7 @@ const CAR_DATABASE = [
     "ult_charge_loop": null,
     "per_sec_charge": null,
     "sp_charge": null,
-    "search_text": "guodong",
+    "search_text": "guodong gd",
     "asset_dir": "assets/果冻_12018"
   },
   {
@@ -2885,7 +2885,7 @@ const CAR_DATABASE = [
     "ult_charge_loop": null,
     "per_sec_charge": null,
     "sp_charge": null,
-    "search_text": "chaoyinsu",
+    "search_text": "chaoyinsu cys",
     "asset_dir": "assets/超音速_12017"
   },
   {
@@ -2923,7 +2923,7 @@ const CAR_DATABASE = [
     "ult_charge_loop": 2,
     "per_sec_charge": null,
     "sp_charge": null,
-    "search_text": "kaidihao",
+    "search_text": "kaidihao kdh",
     "asset_dir": "assets/凯蒂号_12016"
   },
   {
@@ -2961,7 +2961,7 @@ const CAR_DATABASE = [
     "ult_charge_loop": null,
     "per_sec_charge": null,
     "sp_charge": null,
-    "search_text": "heimolong",
+    "search_text": "heimolong hml",
     "asset_dir": "assets/黑魔龙_12015"
   },
   {
@@ -2999,7 +2999,7 @@ const CAR_DATABASE = [
     "ult_charge_loop": 4,
     "per_sec_charge": null,
     "sp_charge": null,
-    "search_text": "mengxingkaidi",
+    "search_text": "mengxingkaidi mxkd",
     "asset_dir": "assets/萌星凯蒂_12014"
   },
   {
@@ -3037,7 +3037,7 @@ const CAR_DATABASE = [
     "ult_charge_loop": null,
     "per_sec_charge": null,
     "sp_charge": null,
-    "search_text": "zhaoyun",
+    "search_text": "zhaoyun zy",
     "asset_dir": "assets/赵云_12013"
   },
   {
@@ -3075,7 +3075,7 @@ const CAR_DATABASE = [
     "ult_charge_loop": null,
     "per_sec_charge": null,
     "sp_charge": null,
-    "search_text": "zhousi",
+    "search_text": "zhousi zs",
     "asset_dir": "assets/宙斯_12012"
   },
   {
@@ -3113,7 +3113,7 @@ const CAR_DATABASE = [
     "ult_charge_loop": null,
     "per_sec_charge": null,
     "sp_charge": null,
-    "search_text": "biyadi haibao 海豹",
+    "search_text": "biyadi haibao bydhb 海豹",
     "asset_dir": "assets/比亚迪 海豹_12011"
   },
   {
@@ -3151,7 +3151,7 @@ const CAR_DATABASE = [
     "ult_charge_loop": null,
     "per_sec_charge": null,
     "sp_charge": null,
-    "search_text": "lanbojini aventador svj 埃文塔多,svj,大牛",
+    "search_text": "lanbojini aventador svj lbjn 埃文塔多,svj,大牛",
     "asset_dir": "assets/兰博基尼 Aventador SVJ_12010"
   },
   {
@@ -3189,7 +3189,7 @@ const CAR_DATABASE = [
     "ult_charge_loop": null,
     "per_sec_charge": null,
     "sp_charge": null,
-    "search_text": "heyu",
+    "search_text": "heyu hy",
     "asset_dir": "assets/鹤羽_12009"
   },
   {
@@ -3227,7 +3227,7 @@ const CAR_DATABASE = [
     "ult_charge_loop": null,
     "per_sec_charge": null,
     "sp_charge": null,
-    "search_text": "huandie",
+    "search_text": "huandie hd",
     "asset_dir": "assets/幻蝶_12008"
   },
   {
@@ -3265,7 +3265,7 @@ const CAR_DATABASE = [
     "ult_charge_loop": null,
     "per_sec_charge": null,
     "sp_charge": null,
-    "search_text": "lianhua evija evija,电莲,电莲花",
+    "search_text": "lianhua evija lh evija,电莲,电莲花",
     "asset_dir": "assets/莲花 Evija_12007"
   },
   {
@@ -3303,7 +3303,7 @@ const CAR_DATABASE = [
     "ult_charge_loop": null,
     "per_sec_charge": null,
     "sp_charge": null,
-    "search_text": "zhulong",
+    "search_text": "zhulong zl",
     "asset_dir": "assets/烛龙_12006"
   },
   {
@@ -3341,7 +3341,7 @@ const CAR_DATABASE = [
     "ult_charge_loop": null,
     "per_sec_charge": null,
     "sp_charge": null,
-    "search_text": "luhu range rover evoque 极光",
+    "search_text": "luhu range rover evoque lh 极光",
     "asset_dir": "assets/路虎 Range Rover Evoque_12005"
   },
   {
@@ -3379,7 +3379,7 @@ const CAR_DATABASE = [
     "ult_charge_loop": null,
     "per_sec_charge": null,
     "sp_charge": null,
-    "search_text": "yuqilin",
+    "search_text": "yuqilin yql",
     "asset_dir": "assets/玉麒麟_12004"
   },
   {
@@ -3417,7 +3417,7 @@ const CAR_DATABASE = [
     "ult_charge_loop": 0.7,
     "per_sec_charge": null,
     "sp_charge": null,
-    "search_text": "aima qingtian",
+    "search_text": "aima qingtian amqt",
     "asset_dir": "assets/爱玛 晴天_12003"
   },
   {
@@ -3455,7 +3455,7 @@ const CAR_DATABASE = [
     "ult_charge_loop": null,
     "per_sec_charge": null,
     "sp_charge": null,
-    "search_text": "yuegongwuling",
+    "search_text": "yuegongwuling ygwl",
     "asset_dir": "assets/月宫舞灵_12002"
   },
   {
@@ -3493,7 +3493,7 @@ const CAR_DATABASE = [
     "ult_charge_loop": null,
     "per_sec_charge": null,
     "sp_charge": null,
-    "search_text": "lvjianqishi",
+    "search_text": "lvjianqishi ljqs",
     "asset_dir": "assets/绿箭骑士_12001"
   },
   {
@@ -3531,7 +3531,7 @@ const CAR_DATABASE = [
     "ult_charge_loop": null,
     "per_sec_charge": null,
     "sp_charge": null,
-    "search_text": "xuefolan corvette zr1 科尔维特",
+    "search_text": "xuefolan corvette zr1 xfl 科尔维特",
     "asset_dir": "assets/雪佛兰 Corvette ZR1_12000"
   },
   {
@@ -3569,7 +3569,7 @@ const CAR_DATABASE = [
     "ult_charge_loop": null,
     "per_sec_charge": null,
     "sp_charge": null,
-    "search_text": "yuegongshengshi",
+    "search_text": "yuegongshengshi ygss",
     "asset_dir": "assets/月宫圣使_10099"
   },
   {
@@ -3607,7 +3607,7 @@ const CAR_DATABASE = [
     "ult_charge_loop": null,
     "per_sec_charge": null,
     "sp_charge": null,
-    "search_text": "chunfeng 450sr 450sr",
+    "search_text": "chunfeng 450sr cf 450sr",
     "asset_dir": "assets/春风 450SR_10098"
   },
   {
@@ -3645,7 +3645,7 @@ const CAR_DATABASE = [
     "ult_charge_loop": null,
     "per_sec_charge": null,
     "sp_charge": null,
-    "search_text": "baoshijie 918 spyder 918",
+    "search_text": "baoshijie 918 spyder bsj 918",
     "asset_dir": "assets/保时捷 918 Spyder_10097"
   },
   {
@@ -3683,7 +3683,7 @@ const CAR_DATABASE = [
     "ult_charge_loop": null,
     "per_sec_charge": null,
     "sp_charge": null,
-    "search_text": "jihu gt 极狐gt",
+    "search_text": "jihu gt jh 极狐gt",
     "asset_dir": "assets/极狐 GT_10096"
   },
   {
@@ -3721,7 +3721,7 @@ const CAR_DATABASE = [
     "ult_charge_loop": 15,
     "per_sec_charge": null,
     "sp_charge": null,
-    "search_text": "jihuaerfas quanxinhiban 极狐s",
+    "search_text": "jihuaerfas quanxinhiban jhaefqxb 极狐s",
     "asset_dir": "assets/极狐阿尔法S 全新HI版_10095"
   },
   {
@@ -3759,7 +3759,7 @@ const CAR_DATABASE = [
     "ult_charge_loop": null,
     "per_sec_charge": null,
     "sp_charge": null,
-    "search_text": "luoji",
+    "search_text": "luoji lj",
     "asset_dir": "assets/洛基_10094"
   },
   {
@@ -3797,7 +3797,7 @@ const CAR_DATABASE = [
     "ult_charge_loop": null,
     "per_sec_charge": null,
     "sp_charge": null,
-    "search_text": "hanshuangbingpo",
+    "search_text": "hanshuangbingpo hsbp",
     "asset_dir": "assets/寒霜冰魄_10093"
   },
   {
@@ -3835,7 +3835,7 @@ const CAR_DATABASE = [
     "ult_charge_loop": null,
     "per_sec_charge": null,
     "sp_charge": null,
-    "search_text": "chengzhongganglun",
+    "search_text": "chengzhongganglun czgl",
     "asset_dir": "assets/承重钢轮_10092"
   },
   {
@@ -3873,7 +3873,7 @@ const CAR_DATABASE = [
     "ult_charge_loop": null,
     "per_sec_charge": null,
     "sp_charge": null,
-    "search_text": "kaituotiechan",
+    "search_text": "kaituotiechan kttc",
     "asset_dir": "assets/开拓铁铲_10091"
   },
   {
@@ -3911,7 +3911,7 @@ const CAR_DATABASE = [
     "ult_charge_loop": 1.6,
     "per_sec_charge": null,
     "sp_charge": null,
-    "search_text": "wangpaifangchengshi",
+    "search_text": "wangpaifangchengshi wpfcs",
     "asset_dir": "assets/王牌方程式_10090"
   },
   {
@@ -3949,7 +3949,7 @@ const CAR_DATABASE = [
     "ult_charge_loop": null,
     "per_sec_charge": null,
     "sp_charge": null,
-    "search_text": "aito wenjie m5 ev 问界m5",
+    "search_text": "aito wenjie m5 ev wj 问界m5",
     "asset_dir": "assets/AITO 问界 M5 EV_10089"
   },
   {
@@ -3987,7 +3987,7 @@ const CAR_DATABASE = [
     "ult_charge_loop": null,
     "per_sec_charge": null,
     "sp_charge": null,
-    "search_text": "aodi rs7 sportback rs7",
+    "search_text": "aodi rs7 sportback ad rs7",
     "asset_dir": "assets/奥迪 RS7 Sportback_10088"
   },
   {
@@ -4025,7 +4025,7 @@ const CAR_DATABASE = [
     "ult_charge_loop": null,
     "per_sec_charge": null,
     "sp_charge": null,
-    "search_text": "xianquzhe",
+    "search_text": "xianquzhe xqz",
     "asset_dir": "assets/先驱者_10087"
   },
   {
@@ -4063,7 +4063,7 @@ const CAR_DATABASE = [
     "ult_charge_loop": null,
     "per_sec_charge": null,
     "sp_charge": null,
-    "search_text": "meisaidesi-amg g 63 大g",
+    "search_text": "meisaidesi-amg g 63 msds 大g",
     "asset_dir": "assets/梅赛德斯-AMG G 63_10086"
   },
   {
@@ -4101,7 +4101,7 @@ const CAR_DATABASE = [
     "ult_charge_loop": 10,
     "per_sec_charge": null,
     "sp_charge": null,
-    "search_text": "jiluguan",
+    "search_text": "jiluguan jlg",
     "asset_dir": "assets/记录官_10085"
   },
   {
@@ -4139,7 +4139,7 @@ const CAR_DATABASE = [
     "ult_charge_loop": null,
     "per_sec_charge": null,
     "sp_charge": null,
-    "search_text": "meisaidesi-benchi silver arrow 银箭",
+    "search_text": "meisaidesi-benchi silver arrow msdsbc 银箭",
     "asset_dir": "assets/梅赛德斯-奔驰 Silver Arrow_10084"
   },
   {
@@ -4177,7 +4177,7 @@ const CAR_DATABASE = [
     "ult_charge_loop": null,
     "per_sec_charge": null,
     "sp_charge": null,
-    "search_text": "meisaidesi-amg gt black series amggt,洞奔,洞洞奔",
+    "search_text": "meisaidesi-amg gt black series msds amggt,洞奔,洞洞奔",
     "asset_dir": "assets/梅赛德斯-AMG GT Black Series_10083"
   },
   {
@@ -4215,7 +4215,7 @@ const CAR_DATABASE = [
     "ult_charge_loop": null,
     "per_sec_charge": null,
     "sp_charge": null,
-    "search_text": "yinnilieshou",
+    "search_text": "yinnilieshou ynls",
     "asset_dir": "assets/隐匿猎手_10082"
   },
   {
@@ -4253,7 +4253,7 @@ const CAR_DATABASE = [
     "ult_charge_loop": null,
     "per_sec_charge": null,
     "sp_charge": null,
-    "search_text": "xuefolan camaro zl1 科迈罗,大黄蜂",
+    "search_text": "xuefolan camaro zl1 xfl 科迈罗,大黄蜂",
     "asset_dir": "assets/雪佛兰 Camaro ZL1_10081"
   },
   {
@@ -4291,7 +4291,7 @@ const CAR_DATABASE = [
     "ult_charge_loop": null,
     "per_sec_charge": null,
     "sp_charge": null,
-    "search_text": "shatanmanbuzhe",
+    "search_text": "shatanmanbuzhe stmbz",
     "asset_dir": "assets/沙滩漫步者_10080"
   },
   {
@@ -4329,7 +4329,7 @@ const CAR_DATABASE = [
     "ult_charge_loop": 8,
     "per_sec_charge": null,
     "sp_charge": null,
-    "search_text": "zhongji·yixing",
+    "search_text": "zhongji·yixing zj·yx",
     "asset_dir": "assets/终极·异形_10079"
   },
   {
@@ -4367,7 +4367,7 @@ const CAR_DATABASE = [
     "ult_charge_loop": null,
     "per_sec_charge": null,
     "sp_charge": null,
-    "search_text": "fuchouzhe",
+    "search_text": "fuchouzhe fcz",
     "asset_dir": "assets/复仇者_10078"
   },
   {
@@ -4405,7 +4405,7 @@ const CAR_DATABASE = [
     "ult_charge_loop": null,
     "per_sec_charge": null,
     "sp_charge": null,
-    "search_text": "xingjitanluzhe",
+    "search_text": "xingjitanluzhe xjtlz",
     "asset_dir": "assets/星际探路者_10077"
   },
   {
@@ -4443,7 +4443,7 @@ const CAR_DATABASE = [
     "ult_charge_loop": null,
     "per_sec_charge": null,
     "sp_charge": null,
-    "search_text": "weinasi",
+    "search_text": "weinasi wns",
     "asset_dir": "assets/维纳斯_10076"
   },
   {
@@ -4481,7 +4481,7 @@ const CAR_DATABASE = [
     "ult_charge_loop": null,
     "per_sec_charge": null,
     "sp_charge": null,
-    "search_text": "chuansuoshi",
+    "search_text": "chuansuoshi css",
     "asset_dir": "assets/穿梭师_10075"
   },
   {
@@ -4519,7 +4519,7 @@ const CAR_DATABASE = [
     "ult_charge_loop": 2,
     "per_sec_charge": null,
     "sp_charge": null,
-    "search_text": "yiqi-dazhong golf gti 高尔夫gti",
+    "search_text": "yiqi-dazhong golf gti yqdz 高尔夫gti",
     "asset_dir": "assets/一汽-大众 GOLF GTI_10074"
   },
   {
@@ -4557,7 +4557,7 @@ const CAR_DATABASE = [
     "ult_charge_loop": null,
     "per_sec_charge": null,
     "sp_charge": null,
-    "search_text": "maikailun 720s 720s",
+    "search_text": "maikailun 720s mkl 720s",
     "asset_dir": "assets/迈凯伦 720S_10073"
   },
   {
@@ -4595,7 +4595,7 @@ const CAR_DATABASE = [
     "ult_charge_loop": null,
     "per_sec_charge": null,
     "sp_charge": null,
-    "search_text": "yaoweimengmenghu",
+    "search_text": "yaoweimengmenghu ywmmh",
     "asset_dir": "assets/摇尾萌萌虎_10072"
   },
   {
@@ -4633,7 +4633,7 @@ const CAR_DATABASE = [
     "ult_charge_loop": null,
     "per_sec_charge": null,
     "sp_charge": null,
-    "search_text": "maikailun 600lt 600lt",
+    "search_text": "maikailun 600lt mkl 600lt",
     "asset_dir": "assets/迈凯伦 600LT_10071"
   },
   {
@@ -4671,7 +4671,7 @@ const CAR_DATABASE = [
     "ult_charge_loop": null,
     "per_sec_charge": null,
     "sp_charge": null,
-    "search_text": "jixiepaoxiaohu",
+    "search_text": "jixiepaoxiaohu jxpxh",
     "asset_dir": "assets/机械咆哮虎_10070"
   },
   {
@@ -4709,7 +4709,7 @@ const CAR_DATABASE = [
     "ult_charge_loop": null,
     "per_sec_charge": null,
     "sp_charge": null,
-    "search_text": "zhulang",
+    "search_text": "zhulang zl",
     "asset_dir": "assets/逐浪_10069"
   },
   {
@@ -4747,7 +4747,7 @@ const CAR_DATABASE = [
     "ult_charge_loop": null,
     "per_sec_charge": null,
     "sp_charge": null,
-    "search_text": "kongjianmanyouhu",
+    "search_text": "kongjianmanyouhu kjmyh",
     "asset_dir": "assets/空间漫游虎_10068"
   },
   {
@@ -4785,7 +4785,7 @@ const CAR_DATABASE = [
     "ult_charge_loop": 37,
     "per_sec_charge": null,
     "sp_charge": null,
-    "search_text": "masuoladi alfieri 阿尔菲里",
+    "search_text": "masuoladi alfieri msld 阿尔菲里",
     "asset_dir": "assets/玛莎拉蒂 Alfieri_10067"
   },
   {
@@ -4823,7 +4823,7 @@ const CAR_DATABASE = [
     "ult_charge_loop": 22,
     "per_sec_charge": null,
     "sp_charge": null,
-    "search_text": "shengqishi",
+    "search_text": "shengqishi sqs",
     "asset_dir": "assets/圣骑士_10066"
   },
   {
@@ -4861,7 +4861,7 @@ const CAR_DATABASE = [
     "ult_charge_loop": null,
     "per_sec_charge": null,
     "sp_charge": null,
-    "search_text": "daoqi challenger srt 392 挑战者",
+    "search_text": "daoqi challenger srt 392 dq 挑战者",
     "asset_dir": "assets/道奇 Challenger SRT 392_10065"
   },
   {
@@ -4899,7 +4899,7 @@ const CAR_DATABASE = [
     "ult_charge_loop": null,
     "per_sec_charge": null,
     "sp_charge": null,
-    "search_text": "bujiadi divo 迪沃",
+    "search_text": "bujiadi divo bjd 迪沃",
     "asset_dir": "assets/布加迪 Divo_10064"
   },
   {
@@ -4937,7 +4937,7 @@ const CAR_DATABASE = [
     "ult_charge_loop": 2,
     "per_sec_charge": null,
     "sp_charge": null,
-    "search_text": "aodi tt rs ttrs",
+    "search_text": "aodi tt rs ad ttrs",
     "asset_dir": "assets/奥迪 TT RS_10063"
   },
   {
@@ -4975,7 +4975,7 @@ const CAR_DATABASE = [
     "ult_charge_loop": null,
     "per_sec_charge": null,
     "sp_charge": null,
-    "search_text": "daoqi charger srt hellcat charger,地狱猫",
+    "search_text": "daoqi charger srt hellcat dq charger,地狱猫",
     "asset_dir": "assets/道奇 Charger SRT Hellcat_10062"
   },
   {
@@ -5013,7 +5013,7 @@ const CAR_DATABASE = [
     "ult_charge_loop": null,
     "per_sec_charge": null,
     "sp_charge": null,
-    "search_text": "daixiahuoyun",
+    "search_text": "daixiahuoyun dxhy",
     "asset_dir": "assets/逮虾货运_10061"
   },
   {
@@ -5051,7 +5051,7 @@ const CAR_DATABASE = [
     "ult_charge_loop": null,
     "per_sec_charge": null,
     "sp_charge": null,
-    "search_text": "hadisi",
+    "search_text": "hadisi hds",
     "asset_dir": "assets/哈迪斯_10060"
   },
   {
@@ -5089,7 +5089,7 @@ const CAR_DATABASE = [
     "ult_charge_loop": null,
     "per_sec_charge": null,
     "sp_charge": null,
-    "search_text": "bujiadi chiron 凯龙",
+    "search_text": "bujiadi chiron bjd 凯龙",
     "asset_dir": "assets/布加迪 Chiron_10059"
   },
   {
@@ -5127,7 +5127,7 @@ const CAR_DATABASE = [
     "ult_charge_loop": null,
     "per_sec_charge": null,
     "sp_charge": null,
-    "search_text": "maomianmeng",
+    "search_text": "maomianmeng mmm",
     "asset_dir": "assets/猫眠梦_10058"
   },
   {
@@ -5165,7 +5165,7 @@ const CAR_DATABASE = [
     "ult_charge_loop": null,
     "per_sec_charge": null,
     "sp_charge": null,
-    "search_text": "pinghangxunyangjian",
+    "search_text": "pinghangxunyangjian phxyj",
     "asset_dir": "assets/平行巡洋舰_10057"
   },
   {
@@ -5203,7 +5203,7 @@ const CAR_DATABASE = [
     "ult_charge_loop": null,
     "per_sec_charge": null,
     "sp_charge": null,
-    "search_text": "baoshijie 935 935",
+    "search_text": "baoshijie 935 bsj 935",
     "asset_dir": "assets/保时捷 935_10056"
   },
   {
@@ -5241,7 +5241,7 @@ const CAR_DATABASE = [
     "ult_charge_loop": null,
     "per_sec_charge": null,
     "sp_charge": null,
-    "search_text": "baoshijie macan s macan",
+    "search_text": "baoshijie macan s bsj macan",
     "asset_dir": "assets/保时捷 Macan S_10055"
   },
   {
@@ -5279,7 +5279,7 @@ const CAR_DATABASE = [
     "ult_charge_loop": null,
     "per_sec_charge": null,
     "sp_charge": null,
-    "search_text": "tanke 300 坦克300",
+    "search_text": "tanke 300 tk 坦克300",
     "asset_dir": "assets/坦克 300_10054"
   },
   {
@@ -5317,7 +5317,7 @@ const CAR_DATABASE = [
     "ult_charge_loop": 1,
     "per_sec_charge": null,
     "sp_charge": null,
-    "search_text": "wulinghongguang mini ev mini ev,五菱mini",
+    "search_text": "wulinghongguang mini ev wlhg mini ev,五菱mini",
     "asset_dir": "assets/五菱宏光 MINI EV_10053"
   },
   {
@@ -5355,7 +5355,7 @@ const CAR_DATABASE = [
     "ult_charge_loop": null,
     "per_sec_charge": null,
     "sp_charge": null,
-    "search_text": "anyemeiying",
+    "search_text": "anyemeiying aymy",
     "asset_dir": "assets/暗夜魅影_10052"
   },
   {
@@ -5393,7 +5393,7 @@ const CAR_DATABASE = [
     "ult_charge_loop": null,
     "per_sec_charge": null,
     "sp_charge": null,
-    "search_text": "xiaopeng p7 p7",
+    "search_text": "xiaopeng p7 xp p7",
     "asset_dir": "assets/小鹏 P7_10051"
   },
   {
@@ -5431,7 +5431,7 @@ const CAR_DATABASE = [
     "ult_charge_loop": 90,
     "per_sec_charge": null,
     "sp_charge": null,
-    "search_text": "kenisaige regera regera,瑞哥,五五开",
+    "search_text": "kenisaige regera knsg regera,瑞哥,五五开",
     "asset_dir": "assets/柯尼塞格 Regera_10050"
   },
   {
@@ -5469,7 +5469,7 @@ const CAR_DATABASE = [
     "ult_charge_loop": 5,
     "per_sec_charge": null,
     "sp_charge": null,
-    "search_text": "huojianhu",
+    "search_text": "huojianhu hjh",
     "asset_dir": "assets/火箭狐_10049"
   },
   {
@@ -5507,7 +5507,7 @@ const CAR_DATABASE = [
     "ult_charge_loop": 2,
     "per_sec_charge": null,
     "sp_charge": null,
-    "search_text": "guozaixianfeng",
+    "search_text": "guozaixianfeng gzxf",
     "asset_dir": "assets/过载先锋_10048"
   },
   {
@@ -5545,7 +5545,7 @@ const CAR_DATABASE = [
     "ult_charge_loop": 15,
     "per_sec_charge": null,
     "sp_charge": null,
-    "search_text": "shanling",
+    "search_text": "shanling sl",
     "asset_dir": "assets/闪灵_10047"
   },
   {
@@ -5583,7 +5583,7 @@ const CAR_DATABASE = [
     "ult_charge_loop": 4,
     "per_sec_charge": null,
     "sp_charge": null,
-    "search_text": "kenisaige jesko jesko,杰哥",
+    "search_text": "kenisaige jesko knsg jesko,杰哥",
     "asset_dir": "assets/柯尼塞格 Jesko_10046"
   },
   {
@@ -5621,7 +5621,7 @@ const CAR_DATABASE = [
     "ult_charge_loop": 5,
     "per_sec_charge": null,
     "sp_charge": null,
-    "search_text": "yingfeinidi prototype 肥皂,鼠标",
+    "search_text": "yingfeinidi prototype yfnd 肥皂,鼠标",
     "asset_dir": "assets/英菲尼迪 Prototype_10045"
   },
   {
@@ -5659,7 +5659,7 @@ const CAR_DATABASE = [
     "ult_charge_loop": null,
     "per_sec_charge": null,
     "sp_charge": null,
-    "search_text": "moguiyu",
+    "search_text": "moguiyu mgy",
     "asset_dir": "assets/魔鬼鱼_10044"
   },
   {
@@ -5697,7 +5697,7 @@ const CAR_DATABASE = [
     "ult_charge_loop": null,
     "per_sec_charge": null,
     "sp_charge": null,
-    "search_text": "masuoladi levante 莱万特",
+    "search_text": "masuoladi levante msld 莱万特",
     "asset_dir": "assets/玛莎拉蒂 Levante_10043"
   },
   {
@@ -5735,7 +5735,7 @@ const CAR_DATABASE = [
     "ult_charge_loop": null,
     "per_sec_charge": null,
     "sp_charge": null,
-    "search_text": "pajiani huayra 风神",
+    "search_text": "pajiani huayra pjn 风神",
     "asset_dir": "assets/帕加尼 Huayra_10042"
   },
   {
@@ -5773,7 +5773,7 @@ const CAR_DATABASE = [
     "ult_charge_loop": null,
     "per_sec_charge": null,
     "sp_charge": null,
-    "search_text": "luhuweishi 卫士",
+    "search_text": "luhuweishi lhws 卫士",
     "asset_dir": "assets/路虎卫士_10041"
   },
   {
@@ -5811,7 +5811,7 @@ const CAR_DATABASE = [
     "ult_charge_loop": null,
     "per_sec_charge": null,
     "sp_charge": null,
-    "search_text": "ceyidaofeng",
+    "search_text": "ceyidaofeng cydf",
     "asset_dir": "assets/侧翼刀锋_10040"
   },
   {
@@ -5849,7 +5849,7 @@ const CAR_DATABASE = [
     "ult_charge_loop": null,
     "per_sec_charge": null,
     "sp_charge": null,
-    "search_text": "lianhua gt430 gt430",
+    "search_text": "lianhua gt430 lh gt430",
     "asset_dir": "assets/莲花 GT430_10039"
   },
   {
@@ -5887,7 +5887,7 @@ const CAR_DATABASE = [
     "ult_charge_loop": null,
     "per_sec_charge": null,
     "sp_charge": null,
-    "search_text": "richan gt-r nismo gtr",
+    "search_text": "richan gt-r nismo rc gtr",
     "asset_dir": "assets/日产 GT-R NISMO_10038"
   },
   {
@@ -5925,7 +5925,7 @@ const CAR_DATABASE = [
     "ult_charge_loop": null,
     "per_sec_charge": null,
     "sp_charge": null,
-    "search_text": "luoxuanjian",
+    "search_text": "luoxuanjian lxj",
     "asset_dir": "assets/螺旋箭_10037"
   },
   {
@@ -5963,7 +5963,7 @@ const CAR_DATABASE = [
     "ult_charge_loop": null,
     "per_sec_charge": null,
     "sp_charge": null,
-    "search_text": "cuihuaji",
+    "search_text": "cuihuaji chj",
     "asset_dir": "assets/催化剂_10036"
   },
   {
@@ -6001,7 +6001,7 @@ const CAR_DATABASE = [
     "ult_charge_loop": 4,
     "per_sec_charge": null,
     "sp_charge": null,
-    "search_text": "chana",
+    "search_text": "chana cn",
     "asset_dir": "assets/刹那_10035"
   },
   {
@@ -6039,7 +6039,7 @@ const CAR_DATABASE = [
     "ult_charge_loop": null,
     "per_sec_charge": null,
     "sp_charge": null,
-    "search_text": "teyidian",
+    "search_text": "teyidian tyd",
     "asset_dir": "assets/特异点_10034"
   },
   {
@@ -6077,7 +6077,7 @@ const CAR_DATABASE = [
     "ult_charge_loop": null,
     "per_sec_charge": null,
     "sp_charge": null,
-    "search_text": "maikailun p1 P1",
+    "search_text": "maikailun p1 mkl P1",
     "asset_dir": "assets/迈凯伦 P1_10033"
   },
   {
@@ -6115,7 +6115,7 @@ const CAR_DATABASE = [
     "ult_charge_loop": null,
     "per_sec_charge": null,
     "sp_charge": null,
-    "search_text": "taitan",
+    "search_text": "taitan tt",
     "asset_dir": "assets/泰坦_10032"
   },
   {
@@ -6153,7 +6153,7 @@ const CAR_DATABASE = [
     "ult_charge_loop": 1.5,
     "per_sec_charge": null,
     "sp_charge": null,
-    "search_text": "asidunmading db11 db11",
+    "search_text": "asidunmading db11 asdmd db11",
     "asset_dir": "assets/阿斯顿马丁 DB11_10031"
   },
   {
@@ -6191,7 +6191,7 @@ const CAR_DATABASE = [
     "ult_charge_loop": 4,
     "per_sec_charge": null,
     "sp_charge": null,
-    "search_text": "asidunmading vanquish 征服",
+    "search_text": "asidunmading vanquish asdmd 征服",
     "asset_dir": "assets/阿斯顿马丁 Vanquish_10030"
   },
   {
@@ -6229,7 +6229,7 @@ const CAR_DATABASE = [
     "ult_charge_loop": null,
     "per_sec_charge": null,
     "sp_charge": null,
-    "search_text": "zashuazhe",
+    "search_text": "zashuazhe zsz",
     "asset_dir": "assets/杂耍者_10029"
   },
   {
@@ -6267,7 +6267,7 @@ const CAR_DATABASE = [
     "ult_charge_loop": 3,
     "per_sec_charge": null,
     "sp_charge": null,
-    "search_text": "yitai",
+    "search_text": "yitai yt",
     "asset_dir": "assets/以太_10028"
   },
   {
@@ -6305,7 +6305,7 @@ const CAR_DATABASE = [
     "ult_charge_loop": null,
     "per_sec_charge": null,
     "sp_charge": null,
-    "search_text": "faladi",
+    "search_text": "faladi fld",
     "asset_dir": "assets/法拉第_10027"
   },
   {
@@ -6343,7 +6343,7 @@ const CAR_DATABASE = [
     "ult_charge_loop": null,
     "per_sec_charge": null,
     "sp_charge": null,
-    "search_text": "chan",
+    "search_text": "chan c",
     "asset_dir": "assets/禅_10026"
   },
   {
@@ -6381,7 +6381,7 @@ const CAR_DATABASE = [
     "ult_charge_loop": null,
     "per_sec_charge": null,
     "sp_charge": null,
-    "search_text": "ganraozhe",
+    "search_text": "ganraozhe grz",
     "asset_dir": "assets/干扰者_10025"
   },
   {
@@ -6419,7 +6419,7 @@ const CAR_DATABASE = [
     "ult_charge_loop": null,
     "per_sec_charge": null,
     "sp_charge": null,
-    "search_text": "ranshaotaiyang",
+    "search_text": "ranshaotaiyang rsty",
     "asset_dir": "assets/燃烧太阳_10024"
   },
   {
@@ -6457,7 +6457,7 @@ const CAR_DATABASE = [
     "ult_charge_loop": null,
     "per_sec_charge": null,
     "sp_charge": null,
-    "search_text": "fengshen",
+    "search_text": "fengshen fs",
     "asset_dir": "assets/风神_10023"
   },
   {
@@ -6495,7 +6495,7 @@ const CAR_DATABASE = [
     "ult_charge_loop": null,
     "per_sec_charge": null,
     "sp_charge": null,
-    "search_text": "shenjianhao",
+    "search_text": "shenjianhao sjh",
     "asset_dir": "assets/神剑号_10022"
   },
   {
@@ -6533,7 +6533,7 @@ const CAR_DATABASE = [
     "ult_charge_loop": null,
     "per_sec_charge": null,
     "sp_charge": null,
-    "search_text": "zhanshen",
+    "search_text": "zhanshen zs",
     "asset_dir": "assets/战神_10021"
   },
   {
@@ -6571,7 +6571,7 @@ const CAR_DATABASE = [
     "ult_charge_loop": null,
     "per_sec_charge": null,
     "sp_charge": null,
-    "search_text": "dazhong id.r idr",
+    "search_text": "dazhong id.r dz idr",
     "asset_dir": "assets/大众 ID.R_10020"
   },
   {
@@ -6609,7 +6609,7 @@ const CAR_DATABASE = [
     "ult_charge_loop": 15,
     "per_sec_charge": null,
     "sp_charge": null,
-    "search_text": "biyadi han 汉",
+    "search_text": "biyadi han bydh 汉",
     "asset_dir": "assets/比亚迪 汉_10018"
   },
   {
@@ -6647,7 +6647,7 @@ const CAR_DATABASE = [
     "ult_charge_loop": null,
     "per_sec_charge": null,
     "sp_charge": null,
-    "search_text": "fute gt 福特gt",
+    "search_text": "fute gt ft 福特gt",
     "asset_dir": "assets/福特 GT_10017"
   },
   {
@@ -6723,7 +6723,7 @@ const CAR_DATABASE = [
     "ult_charge_loop": null,
     "per_sec_charge": null,
     "sp_charge": null,
-    "search_text": "dazhong beetle 甲壳虫",
+    "search_text": "dazhong beetle dz 甲壳虫",
     "asset_dir": "assets/大众 Beetle_10015"
   },
   {
@@ -6799,7 +6799,7 @@ const CAR_DATABASE = [
     "ult_charge_loop": null,
     "per_sec_charge": null,
     "sp_charge": null,
-    "search_text": "fute f150 猛禽,f150",
+    "search_text": "fute f150 ft 猛禽,f150",
     "asset_dir": "assets/福特 F150_10013"
   },
   {
@@ -6837,7 +6837,7 @@ const CAR_DATABASE = [
     "ult_charge_loop": null,
     "per_sec_charge": null,
     "sp_charge": null,
-    "search_text": "lingke03 tcr 领克03",
+    "search_text": "lingke03 tcr lk 领克03",
     "asset_dir": "assets/领克03 TCR_10012"
   },
   {
@@ -6875,7 +6875,7 @@ const CAR_DATABASE = [
     "ult_charge_loop": 20,
     "per_sec_charge": null,
     "sp_charge": null,
-    "search_text": "weilai ep9 ep9",
+    "search_text": "weilai ep9 wl ep9",
     "asset_dir": "assets/蔚来 EP9_10011"
   },
   {
@@ -6913,7 +6913,7 @@ const CAR_DATABASE = [
     "ult_charge_loop": 6,
     "per_sec_charge": null,
     "sp_charge": null,
-    "search_text": "bujiadi lvn 拉瓦诺",
+    "search_text": "bujiadi lvn bjd 拉瓦诺",
     "asset_dir": "assets/布加迪 LVN_10010"
   },
   {
@@ -6989,7 +6989,7 @@ const CAR_DATABASE = [
     "ult_charge_loop": null,
     "per_sec_charge": null,
     "sp_charge": null,
-    "search_text": "baoma i8 i8",
+    "search_text": "baoma i8 bm i8",
     "asset_dir": "assets/宝马 i8_10006"
   },
   {
@@ -7027,7 +7027,7 @@ const CAR_DATABASE = [
     "ult_charge_loop": null,
     "per_sec_charge": null,
     "sp_charge": null,
-    "search_text": "fute mustang 野马",
+    "search_text": "fute mustang ft 野马",
     "asset_dir": "assets/福特 Mustang_10005"
   },
   {
@@ -7065,7 +7065,7 @@ const CAR_DATABASE = [
     "ult_charge_loop": 2,
     "per_sec_charge": null,
     "sp_charge": null,
-    "search_text": "baoma x5 x5",
+    "search_text": "baoma x5 bm x5",
     "asset_dir": "assets/宝马 X5_10004"
   },
   {
@@ -7103,7 +7103,7 @@ const CAR_DATABASE = [
     "ult_charge_loop": null,
     "per_sec_charge": null,
     "sp_charge": null,
-    "search_text": "baoma m8 gte m8",
+    "search_text": "baoma m8 gte bm m8",
     "asset_dir": "assets/宝马 M8 GTE_10003"
   },
   {
@@ -7141,7 +7141,7 @@ const CAR_DATABASE = [
     "ult_charge_loop": null,
     "per_sec_charge": null,
     "sp_charge": null,
-    "search_text": "baoma m4 racing m4",
+    "search_text": "baoma m4 racing bm m4",
     "asset_dir": "assets/宝马 M4 Racing_10002"
   },
   {
@@ -7179,7 +7179,7 @@ const CAR_DATABASE = [
     "ult_charge_loop": null,
     "per_sec_charge": null,
     "sp_charge": null,
-    "search_text": "fute focus rs 福克斯rs",
+    "search_text": "fute focus rs ft 福克斯rs",
     "asset_dir": "assets/福特 Focus RS_10001"
   },
   {
@@ -7217,7 +7217,7 @@ const CAR_DATABASE = [
     "ult_charge_loop": null,
     "per_sec_charge": null,
     "sp_charge": null,
-    "search_text": "baoshijie 911 gt2 rs 保时捷911,gt2rs",
+    "search_text": "baoshijie 911 gt2 rs bsj 保时捷911,gt2rs",
     "asset_dir": "assets/保时捷 911 GT2 RS_10000"
   }
 ];
