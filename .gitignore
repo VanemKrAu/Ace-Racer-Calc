@@ -20,3 +20,6 @@ data/*/single-*/assets/*/body/*_s.png
 data/*/full/packages/
 data/*/single-*/packages/
 *.zip
+
+# Bilibili upload script (contains cookies)
+scripts/upload-bili.mjs

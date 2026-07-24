@@ -60,6 +60,218 @@
    
     <script src="./html2canvas.min.js" async></script>
     <script src="./car-database.js"></script>
+<script>
+// Bilibili CDN image URLs (auto-generated)
+var _BILI_CDN = true;
+var _ICONS = {
+  "carport_new_skill_chip_none_icon_1.png": "https://i0.hdslb.com/bfs/openplatform/bc21f2a932c02c2ef522842eb239e30434eb074a.png",
+  "carport_new_skill_chip_none_icon_2.png": "https://i0.hdslb.com/bfs/openplatform/12f18a774dc0f43d91e8444602aa169018f8b349.png",
+  "carport_new_skill_chip_none_icon_3.png": "https://i0.hdslb.com/bfs/openplatform/658c07f88619b166c6775e4bb732783a6a2f893c.png",
+  "carport_new_skill_chip_none_icon_4.png": "https://i0.hdslb.com/bfs/openplatform/25604735d19acdbc7b98c87e4d98ef86c78c1633.png",
+  "carport_new_skill_chip_none_icon_5.png": "https://i0.hdslb.com/bfs/openplatform/7b1b0de00cb83558ad9ede5a9720fc2545397924.png",
+  "commonnew_icon_auncel1.png": "https://i0.hdslb.com/bfs/openplatform/816a88e0944d71ac6773d57921b252fc8ed042f9.png",
+  "commonnew_icon_auxiliary1.png": "https://i0.hdslb.com/bfs/openplatform/1742ab598547949d3ff786c25ee0226ff0de3c2d.png",
+  "commonnew_icon_interference1.png": "https://i0.hdslb.com/bfs/openplatform/8c3bc59846013fad0c1de2b983ecd6dc67e7903f.png",
+  "commonnew_icon_racing1.png": "https://i0.hdslb.com/bfs/openplatform/9b80efdf5fb9dafc79a1080cdd4d87bb81495636.png",
+  "icon_mhyck_m.png": "https://i0.hdslb.com/bfs/openplatform/c3cbb25aa36571d87b86e067683332f530220699.png",
+  "new_carport_icon_city.png": "https://i0.hdslb.com/bfs/openplatform/6b03fddcf523615f52c09516e0a5ae941c6c196c.png",
+  "new_carport_icon_court.png": "https://i0.hdslb.com/bfs/openplatform/7708febb380440f4a6ad92b5f52c2eeba96eef12.png",
+  "new_carport_icon_mountainroad.png": "https://i0.hdslb.com/bfs/openplatform/1c3fdf64e6be6a831853d493c5d86b68af588fe2.png"
+};
+var _CAR_IMG = {
+  12099: "https://i0.hdslb.com/bfs/openplatform/3c9c54ec21f9620e91551f0c5eb31da4b8c3fc09.png",
+  12098: "https://i0.hdslb.com/bfs/openplatform/c14b36a050a0469655d83cbe9c897291a0ca66d9.png",
+  12097: "https://i0.hdslb.com/bfs/openplatform/696af623761fbcdafa1be64291695806df2f205b.png",
+  12096: "https://i0.hdslb.com/bfs/openplatform/1a0e11842f8b503a33c29c5e350d3c6f52a5d71c.png",
+  12095: "https://i0.hdslb.com/bfs/openplatform/170b08498b5da29b84ccb817b81ed68f8fe04199.png",
+  12093: "https://i0.hdslb.com/bfs/openplatform/de65ed04e42aa31bbefc5105b685701bbdb3abc3.png",
+  12092: "https://i0.hdslb.com/bfs/openplatform/3ab90719687f0b5b47df7b622b15f571f717240d.png",
+  12091: "https://i0.hdslb.com/bfs/openplatform/f12b48d09a1f157b284f91f2f6bcbfa996ba7bac.png",
+  12088: "https://i0.hdslb.com/bfs/openplatform/d07435f64480a33aa71a33c1d537a61b2c655a01.png",
+  12087: "https://i0.hdslb.com/bfs/openplatform/0adfcb35e285b1c42f50c41977c0377339578f8a.png",
+  12084: "https://i0.hdslb.com/bfs/openplatform/83d39f3b8da84c44866c6d1d7daadae01f5aac32.png",
+  12082: "https://i0.hdslb.com/bfs/openplatform/743ae50f61b7a22d8d64404049d45d47c7655fbd.png",
+  12081: "https://i0.hdslb.com/bfs/openplatform/aadcf95a5060a8a74846ccef77ccdf91fd75d582.png",
+  12080: "https://i0.hdslb.com/bfs/openplatform/8f66ffb53859b7d8f30c725a766b4e4244da7a96.png",
+  12079: "https://i0.hdslb.com/bfs/openplatform/f0bcf7c9dea1b05dbb5d93fc35772dac63508bbc.png",
+  12078: "https://i0.hdslb.com/bfs/openplatform/7c6b96acdf0dc24ac62750d705d6261739d07df3.png",
+  12077: "https://i0.hdslb.com/bfs/openplatform/9bda944ed93d58042e7833f3585444cd0524962c.png",
+  12076: "https://i0.hdslb.com/bfs/openplatform/716663133287ceb867dc47be7e72ca5d2149f60d.png",
+  12075: "https://i0.hdslb.com/bfs/openplatform/8f05607001edce10232d0358993e121622408e52.png",
+  12074: "https://i0.hdslb.com/bfs/openplatform/feb98a8f322ae3a5e45d0a82226842c943baaa1d.png",
+  12073: "https://i0.hdslb.com/bfs/openplatform/393eb1079d5f20e207218bcfb7b47e5d53fb2df6.png",
+  12072: "https://i0.hdslb.com/bfs/openplatform/0134c0f96bad73c042b9cca75d40d9025ff743ec.png",
+  12071: "https://i0.hdslb.com/bfs/openplatform/824dbd7ead1c79063d2785fc5185e1b5d603f4a7.png",
+  12070: "https://i0.hdslb.com/bfs/openplatform/4b879c8c55e34f1b10470388e4b393770b8e043d.png",
+  12069: "https://i0.hdslb.com/bfs/openplatform/606bca768bf3f77c44185180e1b0f20d1275724f.png",
+  12068: "https://i0.hdslb.com/bfs/openplatform/a1fbcd7ecc3efa6a9f19912a2e9f21c5a1e6f6ac.png",
+  12067: "https://i0.hdslb.com/bfs/openplatform/0c568683e695d69254d25f0312b551e1ef6dd3da.png",
+  12066: "https://i0.hdslb.com/bfs/openplatform/f9a53fe304d4e3fc4568bb0c79575c4ed16e43c0.png",
+  12065: "https://i0.hdslb.com/bfs/openplatform/59848c359a7289afd2cb27454d4e0cb53c338a3c.png",
+  12064: "https://i0.hdslb.com/bfs/openplatform/b64ae734e79e665934f6ec7ebfda7bebd6eb2f82.png",
+  12063: "https://i0.hdslb.com/bfs/openplatform/bcf4d21d76309b1392dfcf15c76cff14d4c0e858.png",
+  12062: "https://i0.hdslb.com/bfs/openplatform/f9155a1bf79c25552c69331d8299f0061050e63e.png",
+  12061: "https://i0.hdslb.com/bfs/openplatform/9b1269920abb772ce37720d7644ac6d2003898ce.png",
+  12060: "https://i0.hdslb.com/bfs/openplatform/bcab28b21104317bf793dd0e19f64deb70122f83.png",
+  12059: "https://i0.hdslb.com/bfs/openplatform/daa2dcef0767f9f935cb47e92310a0a0dd0826cc.png",
+  12058: "https://i0.hdslb.com/bfs/openplatform/4dfa2d18067f84683e2c81a43c9f44cb239c54ba.png",
+  12057: "https://i0.hdslb.com/bfs/openplatform/2b5d3ca1f841c60473b5c54bbb3b3ee5283e8d70.png",
+  12056: "https://i0.hdslb.com/bfs/openplatform/dc3f5c41919ba5844165b9d7fed66ac1327fffa5.png",
+  12055: "https://i0.hdslb.com/bfs/openplatform/179036bacdda695f087585b97425befd67e96230.png",
+  12054: "https://i0.hdslb.com/bfs/openplatform/ced0508bb2bfe0912ebf9242b3be95f9c2ad009c.png",
+  12053: "https://i0.hdslb.com/bfs/openplatform/77b78bd0a34c2abf860260bf274fb4ebcefc74c6.png",
+  12052: "https://i0.hdslb.com/bfs/openplatform/b17bf204c9056d695641fd7868a03247f4da76bf.png",
+  12051: "https://i0.hdslb.com/bfs/openplatform/3c6d91c87f37021db7164c2a5b7055e870b30577.png",
+  12049: "https://i0.hdslb.com/bfs/openplatform/cb54de60f6a898fb4ce4d73f28a746e10768d6b1.png",
+  12048: "https://i0.hdslb.com/bfs/openplatform/27e8969da4e1c05e7e23c6e5e9b305c98998934e.png",
+  12047: "https://i0.hdslb.com/bfs/openplatform/0d4827dc423d1aaee9bd6e8c53350f05b587b054.png",
+  12046: "https://i0.hdslb.com/bfs/openplatform/9572b50cce5d771a76df7244fd9832b3fb931475.png",
+  12045: "https://i0.hdslb.com/bfs/openplatform/b00cb0b8e515444c6c54985876138e89ca03bcc2.png",
+  12044: "https://i0.hdslb.com/bfs/openplatform/75cf5c4c38d430eb49e3ebb6866d1e57c54aaeca.png",
+  12043: "https://i0.hdslb.com/bfs/openplatform/ec41bd05f1d375d403b8d465292c66edad9f3cf4.png",
+  12042: "https://i0.hdslb.com/bfs/openplatform/0da76837507eab7fb16eaf01c7163333a5c3e308.png",
+  12041: "https://i0.hdslb.com/bfs/openplatform/b03f2a74ae4b41b31e98f6fff2810765fdf7a20b.png",
+  12040: "https://i0.hdslb.com/bfs/openplatform/79ce0c5a80ebd5fe425b177d3e42db09a948a454.png",
+  12039: "https://i0.hdslb.com/bfs/openplatform/d93e4b61952a013c71dbea9829627ae6fbcf48c4.png",
+  12038: "https://i0.hdslb.com/bfs/openplatform/e3043fdcf7e0f31776bc2772536c37977a558563.png",
+  12037: "https://i0.hdslb.com/bfs/openplatform/d3b9d03e94efcbd51f1f45a62ca660f30aef5264.png",
+  12036: "https://i0.hdslb.com/bfs/openplatform/e6113896bff21991694fc8816e773a81dc9b5c8b.png",
+  12035: "https://i0.hdslb.com/bfs/openplatform/a7af791a9f699a16194d33b520eecc045dfbdeea.png",
+  12034: "https://i0.hdslb.com/bfs/openplatform/d7a2111c771190b1216a366c96f29d718bf4f64a.png",
+  12033: "https://i0.hdslb.com/bfs/openplatform/1891c36f7cd4a694af066045bc2af45b28fd1426.png",
+  12032: "https://i0.hdslb.com/bfs/openplatform/ea00fe75fa7edc6ae5a9f00cf8fe65e9038c722a.png",
+  12031: "https://i0.hdslb.com/bfs/openplatform/6fd9fa1f8312db24553f18d366aeaf113e7d4fa0.png",
+  12030: "https://i0.hdslb.com/bfs/openplatform/257cf348aed76f0201460deeccf103da528527d9.png",
+  12029: "https://i0.hdslb.com/bfs/openplatform/1cf4b8116cb1afc4c185f10450a4c78867e86243.png",
+  12028: "https://i0.hdslb.com/bfs/openplatform/f82293a18071907ae5305397bae72301de47c905.png",
+  12027: "https://i0.hdslb.com/bfs/openplatform/10797427826070675ca6e47933387559165a55b1.png",
+  12026: "https://i0.hdslb.com/bfs/openplatform/fda57b6ce6f3e82d08b16dc9de77b15401d704f6.png",
+  12025: "https://i0.hdslb.com/bfs/openplatform/bbed47589ba11584c7316e4aa99d958ebef0b7a4.png",
+  12024: "https://i0.hdslb.com/bfs/openplatform/6378930bf72f09fe4216b3cefbeafd2eb6950301.png",
+  12023: "https://i0.hdslb.com/bfs/openplatform/9642c56d035e5ba182cdde3b64938604ed35ac97.png",
+  12022: "https://i0.hdslb.com/bfs/openplatform/26b2f50ba702c5435b11d870f4bb8302178169cf.png",
+  12021: "https://i0.hdslb.com/bfs/openplatform/534b250c5c662cf320f6fe71d38fe92ad50d44fb.png",
+  12020: "https://i0.hdslb.com/bfs/openplatform/dce69ac81aea44ab0a7ec29358e4f0297c5bdd94.png",
+  12019: "https://i0.hdslb.com/bfs/openplatform/7a8d65b7f7654a48982fa100231c6f4398efc91a.png",
+  12018: "https://i0.hdslb.com/bfs/openplatform/9f8128489d15abec3b02524058b244d9dc0bf01f.png",
+  12017: "https://i0.hdslb.com/bfs/openplatform/9b1c5b1823a9d58e18dc27676994d269de7db59a.png",
+  12016: "https://i0.hdslb.com/bfs/openplatform/9127e9a0b2d3d7af2df2b5d837be3ced3ed96f58.png",
+  12015: "https://i0.hdslb.com/bfs/openplatform/d548b4bdb164e11bad10995848878ec2405a3267.png",
+  12014: "https://i0.hdslb.com/bfs/openplatform/f8598c1ed28c681275f5b1a38de7965e6aad73ef.png",
+  12013: "https://i0.hdslb.com/bfs/openplatform/8fe537925b06192c02c2242fca9e856432c9c5d4.png",
+  12012: "https://i0.hdslb.com/bfs/openplatform/ab80f23974ab3b70d265933af7576d9fd3db87f4.png",
+  12011: "https://i0.hdslb.com/bfs/openplatform/b842f17feab2ce479b581774fe52523c9b5e6bcf.png",
+  12010: "https://i0.hdslb.com/bfs/openplatform/4bf44aacd4eb94c2eaa839bea5bc29d0ad3a9a83.png",
+  12009: "https://i0.hdslb.com/bfs/openplatform/d05822586c1ae5f73e99f877c1f51db87809c892.png",
+  12008: "https://i0.hdslb.com/bfs/openplatform/83ade5d94db1c148b88ee4cbda592952aa3cf0cd.png",
+  12007: "https://i0.hdslb.com/bfs/openplatform/a330f16b0d281723daeada55492204450dd68171.png",
+  12006: "https://i0.hdslb.com/bfs/openplatform/11010db09e432ba3d55c039d92bbcad961a6ab6d.png",
+  12005: "https://i0.hdslb.com/bfs/openplatform/04f59c6351f94150f65261337eb68a1e2c9776e2.png",
+  12004: "https://i0.hdslb.com/bfs/openplatform/1c7e1393f166d82420798e75b0e3742c11432dd3.png",
+  12003: "https://i0.hdslb.com/bfs/openplatform/9ae437a9319f99721508222ee548a5a5fb00cd6d.png",
+  12002: "https://i0.hdslb.com/bfs/openplatform/1487129ec597dc900b3d54cfe7ddcf204b7b56cc.png",
+  12001: "https://i0.hdslb.com/bfs/openplatform/86396068b9d8820d8a425750bb5ab4a929d52d04.png",
+  12000: "https://i0.hdslb.com/bfs/openplatform/fda70e876279275c9cf460217712c8ca2a4c276d.png",
+  10099: "https://i0.hdslb.com/bfs/openplatform/effd13ed2a3a6ac0f100dde2f40bfe094cc96412.png",
+  10098: "https://i0.hdslb.com/bfs/openplatform/62daf7c3d88a53faafa7a30d4f79613c1ae8625f.png",
+  10097: "https://i0.hdslb.com/bfs/openplatform/136626ff7b0003c8f602d1d4acbeb454983a5a07.png",
+  10096: "https://i0.hdslb.com/bfs/openplatform/415efb37472a1643796a871b5c613d3b0fb009d2.png",
+  10095: "https://i0.hdslb.com/bfs/openplatform/15dd39cc90a631b5fb4d3de1aa70fd4f1cd3ee14.png",
+  10094: "https://i0.hdslb.com/bfs/openplatform/e5019af7ae38786e97668481218a8a9266c4c6a0.png",
+  10093: "https://i0.hdslb.com/bfs/openplatform/b25f5da7c9cbdbed8ad862780a396848dba17901.png",
+  10092: "https://i0.hdslb.com/bfs/openplatform/33c1d2d980a95db7a934fad15309cc892f3e05c5.png",
+  10091: "https://i0.hdslb.com/bfs/openplatform/3def57d7a72f003ee192cb9e4cf1ec51f572fb5d.png",
+  10090: "https://i0.hdslb.com/bfs/openplatform/76f35d0943b975fd32217e2f6e1f5ca76c32dc49.png",
+  10089: "https://i0.hdslb.com/bfs/openplatform/a461e643c7906f2c60f430198438e0b4b43f1324.png",
+  10088: "https://i0.hdslb.com/bfs/openplatform/d6fc78573c552543c0a3cb151d112c9297c2867b.png",
+  10087: "https://i0.hdslb.com/bfs/openplatform/14387e969260a0c9ff8f277b1d75a51b85129316.png",
+  10086: "https://i0.hdslb.com/bfs/openplatform/ee9d910fa8241a58b7540f235ec3ba93a2436a42.png",
+  10085: "https://i0.hdslb.com/bfs/openplatform/9e08a52c9d700966fff9b4f2e43bee7b74de7935.png",
+  10084: "https://i0.hdslb.com/bfs/openplatform/b93a33feee0cf1589d196392533e8f6234c0a4cc.png",
+  10083: "https://i0.hdslb.com/bfs/openplatform/b6441a377b2b5c7960bba60d01060506f0db0e16.png",
+  10082: "https://i0.hdslb.com/bfs/openplatform/d1f56dcf94d41a5bcc5d75eb42ccd47878d0648c.png",
+  10081: "https://i0.hdslb.com/bfs/openplatform/d39ef5023dfb90acd766ea52b8a69ff0c548f03c.png",
+  10080: "https://i0.hdslb.com/bfs/openplatform/21c66950228da4f5ff952c0caa0ba96a84cb6b58.png",
+  10079: "https://i0.hdslb.com/bfs/openplatform/31afe6dcb4b0b6e17968d225778d6bd2d9e361ba.png",
+  10078: "https://i0.hdslb.com/bfs/openplatform/a9069c3021c5c4bd1d8939d157c864e3ce2394b8.png",
+  10077: "https://i0.hdslb.com/bfs/openplatform/d224ae0aa4594169dd21ae1c09a84b7a74d9a20b.png",
+  10076: "https://i0.hdslb.com/bfs/openplatform/d98d56819c210e32fada4dd9e22da561fa6641f2.png",
+  10075: "https://i0.hdslb.com/bfs/openplatform/43fe3ea3ee18113bc703e4cb9694dd05723e399b.png",
+  10074: "https://i0.hdslb.com/bfs/openplatform/d20545ef58557f80e0c341dc17f14c061ad65588.png",
+  10073: "https://i0.hdslb.com/bfs/openplatform/212a72df27adda84a16f0799212ff92279d94b7f.png",
+  10072: "https://i0.hdslb.com/bfs/openplatform/462d5a842ba97c8e024af766e04485f906d8ddee.png",
+  10071: "https://i0.hdslb.com/bfs/openplatform/ecd6fd4a9a7c218a02f4304ebde7a314f6f2c091.png",
+  10070: "https://i0.hdslb.com/bfs/openplatform/a9dd11a71dcb23b59122d38b5716a3452af8fb58.png",
+  10069: "https://i0.hdslb.com/bfs/openplatform/d038587d42d6e4d813b0c1e473b307ef5513de28.png",
+  10068: "https://i0.hdslb.com/bfs/openplatform/2468e9e0ce20ca3fc07fc91977c3bf99e8ee7e0d.png",
+  10067: "https://i0.hdslb.com/bfs/openplatform/cb93e86ef7e142873c500bda6744f5e5b3a58e46.png",
+  10066: "https://i0.hdslb.com/bfs/openplatform/669bebc66538342f9bc351f15f2902c9bb187d3a.png",
+  10065: "https://i0.hdslb.com/bfs/openplatform/6c15c529a93769792e55d697ceaec1351f069537.png",
+  10064: "https://i0.hdslb.com/bfs/openplatform/fa83515c15919f72bdcfeff1c62ad145c0080788.png",
+  10063: "https://i0.hdslb.com/bfs/openplatform/da07331ba89d6448b573aba24eb5232a29fadcb7.png",
+  10062: "https://i0.hdslb.com/bfs/openplatform/ee1d0cdf9e84a3446a7d931060857b8f34dc7469.png",
+  10061: "https://i0.hdslb.com/bfs/openplatform/9f013442e49c959f689a87744d50100fbd7c1112.png",
+  10060: "https://i0.hdslb.com/bfs/openplatform/d88d7b4fab0462f0ad6b060c7cf8a20080f9f85a.png",
+  10059: "https://i0.hdslb.com/bfs/openplatform/5a3fc8428037a85244023aa21fff02383da8ec2a.png",
+  10058: "https://i0.hdslb.com/bfs/openplatform/415b1e35b42f61269a40439cea7e00f7b1a32a0f.png",
+  10057: "https://i0.hdslb.com/bfs/openplatform/6e154e5bb40b8231e4e0b05d553f3127a146df48.png",
+  10056: "https://i0.hdslb.com/bfs/openplatform/497f72437f32479b369340c1e3669164450db04e.png",
+  10055: "https://i0.hdslb.com/bfs/openplatform/ba9e5e81b9f1605ee213f5975140d846f1b6a6ff.png",
+  10054: "https://i0.hdslb.com/bfs/openplatform/ea45f27aa829506998915ec43324891dd1c94d46.png",
+  10053: "https://i0.hdslb.com/bfs/openplatform/f533403859e2ed0370339ad05873413f9da48924.png",
+  10052: "https://i0.hdslb.com/bfs/openplatform/89f7ba85602660f106b927f098e5036a2d893ec0.png",
+  10051: "https://i0.hdslb.com/bfs/openplatform/9c24b87bb8fa909721dc84e35339875d5d270b45.png",
+  10050: "https://i0.hdslb.com/bfs/openplatform/2f802629eeb87e9d1fa9d4879238d3a580b43956.png",
+  10049: "https://i0.hdslb.com/bfs/openplatform/59a8049032121b24c4702d89f9dc50e526ed4adf.png",
+  10048: "https://i0.hdslb.com/bfs/openplatform/83950d34e2ee980761209ac1abb20eaf20cc6278.png",
+  10047: "https://i0.hdslb.com/bfs/openplatform/971e4a5aa8053bf5ede56d5be7c6314ce4e0148b.png",
+  10046: "https://i0.hdslb.com/bfs/openplatform/ecc221b1fa370744a02d2fcb633ec2f7d2a6055a.png",
+  10045: "https://i0.hdslb.com/bfs/openplatform/df6d82f9be3c4d9da6dc54bc28a9d49e2cb53d19.png",
+  10044: "https://i0.hdslb.com/bfs/openplatform/9cdc1b3789434bf43a6249c0c0e317a321e116bb.png",
+  10043: "https://i0.hdslb.com/bfs/openplatform/d986bcd62dffa5f4e829cea70afa24a8b8c4b0d5.png",
+  10042: "https://i0.hdslb.com/bfs/openplatform/2c9ebbd476180a5a380014b39c7ec866e1490ffd.png",
+  10041: "https://i0.hdslb.com/bfs/openplatform/2a31d2ca06f8835cec64e07f7d758c0798b94684.png",
+  10040: "https://i0.hdslb.com/bfs/openplatform/70f38fb04a904a08a8e43d826bc5c539d518ba8a.png",
+  10039: "https://i0.hdslb.com/bfs/openplatform/b559bc668fcb0a57f84ffcbeb37fba2974be702a.png",
+  10038: "https://i0.hdslb.com/bfs/openplatform/20fd57002e18eb926d57a879ed1c1380abf4b4df.png",
+  10037: "https://i0.hdslb.com/bfs/openplatform/5b80798f6284a3a5a84c133704aace9b59ec6bf1.png",
+  10036: "https://i0.hdslb.com/bfs/openplatform/316da17c4c5ee00e8acc27716832986452c78010.png",
+  10035: "https://i0.hdslb.com/bfs/openplatform/57626804e6d723095a117a8d2417dcca5c59c8ab.png",
+  10034: "https://i0.hdslb.com/bfs/openplatform/be8056af456e239e76f54501e3c9bb57702b00db.png",
+  10033: "https://i0.hdslb.com/bfs/openplatform/c726a88c2b94675cd49283f29e83d2ac89c02da0.png",
+  10032: "https://i0.hdslb.com/bfs/openplatform/13319ea49e2162b22171288f50b99ede00dfff82.png",
+  10031: "https://i0.hdslb.com/bfs/openplatform/9b1c9f7dab721fd3410213aa15ae6a3f229b5ecc.png",
+  10030: "https://i0.hdslb.com/bfs/openplatform/98f5b0705685e4e4810c8547a2f95b444185f51b.png",
+  10029: "https://i0.hdslb.com/bfs/openplatform/bdd2032efd239eec73fbe34993f1eba9e3241284.png",
+  10028: "https://i0.hdslb.com/bfs/openplatform/50c25a1f7375a3769f3289e844a6ec8cc535a5bb.png",
+  10027: "https://i0.hdslb.com/bfs/openplatform/557323eae5c9cf7f4a1889fcaf645a5bc33eea08.png",
+  10026: "https://i0.hdslb.com/bfs/openplatform/416d7677c72b069cdc53fd2bd618d9f9d5aa13f8.png",
+  10025: "https://i0.hdslb.com/bfs/openplatform/db26bf9254255a06c72628ff11d33eb8e7550783.png",
+  10024: "https://i0.hdslb.com/bfs/openplatform/dcab51f2635ecbc6c04cc3c47ae70624b90c01cf.png",
+  10023: "https://i0.hdslb.com/bfs/openplatform/5aa7b55a9192ace0d7be87ef646560b36905c54a.png",
+  10022: "https://i0.hdslb.com/bfs/openplatform/b9b6a59d22f06fadf6736bc704b8fbbdb5553664.png",
+  10021: "https://i0.hdslb.com/bfs/openplatform/d9c345cd8ff48e6279470f6389c8632a29665f2d.png",
+  10020: "https://i0.hdslb.com/bfs/openplatform/73af28834e423546b458c1614f1125948c4820e5.png",
+  10018: "https://i0.hdslb.com/bfs/openplatform/035a086b5df696bddd1e4aa81beb80949a0e2d04.png",
+  10017: "https://i0.hdslb.com/bfs/openplatform/39fa719450a414a2e3ec81f951e127e087531dbc.png",
+  10016: "https://i0.hdslb.com/bfs/openplatform/41ea6a0d90bf24254258182ef1fb6908ea666142.png",
+  10015: "https://i0.hdslb.com/bfs/openplatform/4bc387331b247fad052251b38900b8628a6decd0.png",
+  10014: "https://i0.hdslb.com/bfs/openplatform/f64730e89fd2f3b6a6d3fefae1f6e5ce5dd74528.png",
+  10013: "https://i0.hdslb.com/bfs/openplatform/9aa1421521c88ad7a5cf0aa1ac4802c682c8a6b7.png",
+  10012: "https://i0.hdslb.com/bfs/openplatform/c1254aeea69a2540e1f11c6a8cb40a4becfe68b2.png",
+  10011: "https://i0.hdslb.com/bfs/openplatform/105d25e684bc99aab724ed2c5faf5ee58b602f8f.png",
+  10010: "https://i0.hdslb.com/bfs/openplatform/4c438713563f5833fc69f91289266d90d5924c59.png",
+  10009: "https://i0.hdslb.com/bfs/openplatform/7aa49684e615a842e2a0880d37ed9edb6387f69b.png",
+  10006: "https://i0.hdslb.com/bfs/openplatform/56fe2aa8d88b0716d339cb8fa11c903a356cf255.png",
+  10005: "https://i0.hdslb.com/bfs/openplatform/13b60f4ca833fc3c53536837e68905e17a8c88f3.png",
+  10004: "https://i0.hdslb.com/bfs/openplatform/7d9b6c40fd0dd9a49febdc0ed1a277c9920cf2da.png",
+  10003: "https://i0.hdslb.com/bfs/openplatform/61971e8ca96f0a110b5974f22d86e0a3600e08ef.png",
+  10002: "https://i0.hdslb.com/bfs/openplatform/e68d2eaee7e7a9b2104b419051c62169dfcad609.png",
+  10001: "https://i0.hdslb.com/bfs/openplatform/da23bf40dfb6c842a665fbe4f389fc87c8c01bca.png",
+  10000: "https://i0.hdslb.com/bfs/openplatform/abf98f2297c3089641367c8920ff1b149c975819.png",
+};
+</script>
+
    
    <script>
      window.si = window.si || function () { (window.siq = window.siq || []).push(arguments); };
@@ -519,7 +731,7 @@
                        <div style="border-top: 2px dashed var(--warning); opacity: 1; padding-top: 12px; margin-top: 4px;">
                            <div style="font-size: 13px; color: var(--warning); font-weight: bold; margin-bottom: 6px;"><span class="zh">注意事项：</span><span class="lang-en">Notes:</span></div>
                            <ul id="notesContent" style="font-size: 12px; color: var(--text-muted); line-height: 1.6; padding-left: 18px; margin: 0; word-break: break-word;">
-                                <li><span class="zh">选车后自动填充：大招阈值、基础双充（起手+氮气）、氮气时长、大招时长、开局立刻充能。其他参数（芯片、赋能、自充能附加模块等）需手动调整。</span><span class="lang-en">Auto-filled on car select: ult threshold, base dual charge, nitro duration, ult duration, start bonus charge. Other params (chips, empowers, extra modules) need manual tuning.</span></li>
+                                 <li><span class="zh">选车后自动填充：大招阈值、基础双充（起手+氮气）、氮气时长、大招时长、开局立刻充能、氮气自充能、大招自充能、每秒自充能、SP自充能。其他参数（芯片、赋能等）需手动调整。</span><span class="lang-en">Auto-filled on car select: ult threshold, base dual charge, nitro duration, ult duration, start bonus, nitro self-charge, ult self-charge, per-sec charge, SP charge. Other params (chips, empowers) need manual tuning.</span></li>
                                 <li><span class="zh">赛车选择器：点击顶部“选择赛车”标签，即可从完整赛车列表中挑选车辆，选中后点击“应用并返回”自动填充基础氮气充能值和大招时长。注意：自动填充仅覆盖基础参数，芯片、赋能等配置仍需手动微调。</span><span class="lang-en">Car Selector: Tap "Select Car" tab to browse the full car list. Pick one, then click "Apply & Return" to auto-fill base nitro charge and ult duration. Note: chips, empowers still need manual tuning.</span></li>
                                 <li><span class="zh">关于偶发无法访问的情况：由于网站部署在境外服务器（GitHub）上，且部分省市运营商会对GitHub做间歇性SNI阻断（具体表现为昨天访问的好好的，今天突然进不去，过了一小会自己又好了），因此有小概率出现无法访问的情况。目前网站接入了第三方中转节点，但依旧存在极小的访问失败概率，这属于正常现象，遇到这种情况时，多刷新几次即可进入网站。另外，网站是无后端运行的，因此在域名过期前基本不可能突然关门（除非被GFW主动阻断），请放心使用。</span><span class="lang-en">Regarding occasional access issues: Since the site is hosted on overseas servers (GitHub), some regional ISPs may intermittently block SNI - meaning it works fine one day, then suddenly won't load the next, only to fix itself shortly after. So there's a small chance you might not be able to reach it. We've now added third-party relay nodes, but there's still a very slim chance of access failure. That's perfectly normal - just refresh a few times and you'll get in. Also, because the site runs entirely on the frontend with no backend, it's basically not going to disappear before the domain expires (unless the GFW actively blocks it). So rest assured.</span></li>
                             </ul>
@@ -635,17 +847,17 @@
 
     function getPosIcon(pos) {
         if (!pos) return '';
-        if (pos.indexOf('\u7ADE\u901F') >= 0) return 'data/icon/commonnew_icon_racing1.png';
-        if (pos.indexOf('\u8F85\u52A9') >= 0) return 'data/icon/commonnew_icon_auxiliary1.png';
-        if (pos.indexOf('\u5E72\u6270') >= 0) return 'data/icon/commonnew_icon_interference1.png';
-        if (pos.indexOf('\u5929\u5E73') >= 0) return 'data/icon/commonnew_icon_auncel1.png';
+        if (pos.indexOf('\u7ADE\u901F') >= 0) return _ICONS['commonnew_icon_racing1.png'];
+        if (pos.indexOf('\u8F85\u52A9') >= 0) return _ICONS['commonnew_icon_auxiliary1.png'];
+        if (pos.indexOf('\u5E72\u6270') >= 0) return _ICONS['commonnew_icon_interference1.png'];
+        if (pos.indexOf('\u5929\u5E73') >= 0) return _ICONS['commonnew_icon_auncel1.png'];
         return '';
     }
     function getSpecIcon(spec) {
         if (!spec) return '';
-        if (spec.indexOf('\u5C71\u8DEF') >= 0) return 'data/icon/new_carport_icon_mountainroad.png';
-        if (spec.indexOf('\u573A\u5730') >= 0) return 'data/icon/new_carport_icon_court.png';
-        if (spec.indexOf('\u57CE\u5E02') >= 0) return 'data/icon/new_carport_icon_city.png';
+        if (spec.indexOf('\u5C71\u8DEF') >= 0) return _ICONS['new_carport_icon_mountainroad.png'];
+        if (spec.indexOf('\u573A\u5730') >= 0) return _ICONS['new_carport_icon_court.png'];
+        if (spec.indexOf('\u57CE\u5E02') >= 0) return _ICONS['new_carport_icon_city.png'];
         return '';
     }
 
@@ -761,12 +973,12 @@
                 else if (sym === '\u25E3') iconNum = '3';
                 else if (sym === '\u25B3') iconNum = '4';
                 else if (sym === '\u25C7') iconNum = '5';
-                chipInfo.innerHTML += '<img loading=\"lazy\" src=\"data/icon/carport_new_skill_chip_none_icon_' + iconNum + '.png\" style=\"width:30px;height:30px;object-fit:contain;\">';
+                chipInfo.innerHTML += '<img loading=\"lazy\" src=\"' + _ICONS['carport_new_skill_chip_none_icon_' + iconNum + '.png'] + '\" style=\"width:30px;height:30px;object-fit:contain;\">';
             }
         }
         var img = document.getElementById('carImage');
-        img.onerror = function() { this.src = 'data/icon/icon_mhyck_m.png'; this.onerror = null; };
-        img.src = 'data/26-07-15_29734784_android/full/' + encodeURI(car.asset_dir + '/body/' + car.id + '_m.png');
+        img.onerror = function() { this.src = _ICONS['icon_mhyck_m.png']; this.onerror = null; };
+        img.src = _CAR_IMG[car.id] || ('data/26-07-15_29734784_android/full/' + encodeURI(car.asset_dir + '/body/' + car.id + '_m.png'));
         img.alt = car.name;
         img.style.display = '';
         img.loading = 'lazy';
@@ -790,7 +1002,7 @@
             document.getElementById('carPreviewChips').style.display = 'none';
             document.getElementById('carPreviewAutoMsg').style.display = 'none';
             var img = document.getElementById('carImage');
-            img.src = 'data/icon/icon_mhyck_m.png';
+            img.src = _ICONS['icon_mhyck_m.png'];
             img.alt = '\u672A\u4E0A\u7EBF\u8F66\u8F86';
             img.style.display = '';
             img.loading = 'lazy';
@@ -875,12 +1087,34 @@
         }
         if (car.ace_charge) flashSection('cardCoreParams', ['baseNitro', 'startCharge', 'ultThreshold']);
         if (car.nitro_duration) flashSection('cardNitro', ['time_1x6', 'time_1x5', 'time_2x2', 'time_2x3', 'time_2x25', 'time_3x2', 'baseUltDuration', 'r_1x5', 'r_1x6', 'r_2x2', 'r_2x3', 'r_2x25', 'r_3x2']);
-        // Auto-fill 开局额外充能 into 大招释放 section
-        if (car.ult_charge_first) {
+        // Auto-fill 开局额外充能 / 大招自充能 into 大招释放 section
+        if (car.ult_charge_first || car.ult_charge_loop) {
             document.getElementById('hasExtraUlt').checked = true;
-            document.getElementById('valExtraUltFirst').value = car.ult_charge_first;
+            if (car.ult_charge_first) document.getElementById('valExtraUltFirst').value = car.ult_charge_first;
+            if (car.ult_charge_loop) document.getElementById('valExtraUltLoop').value = car.ult_charge_loop;
             if (typeof toggleExtraUI === 'function') toggleExtraUI();
-            flashSection('extraUltSection', ['valExtraUltFirst', 'hasExtraUlt']);
+            flashSection('extraUltSection', ['valExtraUltFirst', 'valExtraUltLoop', 'hasExtraUlt']);
+        }
+        // Auto-fill 氮气自充能
+        if (car.nitro_charge) {
+            document.getElementById('hasExtraNitro').checked = true;
+            document.getElementById('valExtraNitro').value = car.nitro_charge;
+            if (typeof toggleExtraUI === 'function') toggleExtraUI();
+            flashSection('extraNitroSection', ['valExtraNitro', 'hasExtraNitro']);
+        }
+        // Auto-fill 每秒自充能
+        if (car.per_sec_charge) {
+            document.getElementById('hasExtraPerSec').checked = true;
+            document.getElementById('valExtraPerSec').value = car.per_sec_charge;
+            if (typeof toggleExtraUI === 'function') toggleExtraUI();
+            flashSection('extraPerSecSection', ['valExtraPerSec', 'hasExtraPerSec']);
+        }
+        // Auto-fill SP自充能 into 自定义触发模块
+        if (car.sp_charge) {
+            document.getElementById('valCustomTrig').value = car.sp_charge;
+            document.getElementById('customTrigFirstCount').value = 1;
+            document.getElementById('customTrigLoopCount').value = 1;
+            flashSection('extraCustomSection', ['valCustomTrig', 'customTrigFirstCount', 'customTrigLoopCount']);
         }
 
         document.getElementById('carPreviewPlaceholder').style.display = 'none';
@@ -893,6 +1127,10 @@
         // Build green message dynamically
         var filledItems = ['\u5927\u62DB\u9608\u503C', '\u57FA\u7840\u53CC\u5145', '\u6C2E\u6C14\u65F6\u957F', '\u5927\u62DB\u65F6\u957F'];
         if (car.ult_charge_first) filledItems.push('\u5F00\u5C40\u7ACB\u523B\u5145\u80FD');
+        if (car.nitro_charge) filledItems.push('\u6C2E\u6C14\u81EA\u5145\u80FD');
+        if (car.ult_charge_loop) filledItems.push('\u5927\u62DB\u81EA\u5145\u80FD');
+        if (car.per_sec_charge) filledItems.push('\u6BCF\u79D2\u81EA\u5145\u80FD');
+        if (car.sp_charge) filledItems.push('SP\u81EA\u5145\u80FD');
         document.getElementById('carPreviewAutoMsg').innerHTML = '\u2713 \u5DF2\u81EA\u52A8\u586B\u5145\uFF1A' + filledItems.join('\u3001') + ' \u2014 \u5176\u4ED6\u53C2\u6570\u8BF7\u624B\u52A8\u8C03\u6574\u3002<br>\u8BE6\u7EC6\u8F66\u8F86\u6280\u80FD\u8BF7\u53C2\u8003 \u2192 <a href=\"https://reca.seimu.cn/ace-racer-admin/vehicles/' + car.id + '\" target=\"_blank\" style=\"color:var(--primary);text-decoration:underline;font-weight:bold;\">' + car.name + '</a>';
         var chipInfo = document.getElementById('carPreviewChips');
         if (car.chip_slots) {
@@ -906,13 +1144,13 @@
                 else if (sym === '\u25E3') iconNum = '3';
                 else if (sym === '\u25B3') iconNum = '4';
                 else if (sym === '\u25C7') iconNum = '5';
-                chipInfo.innerHTML += '<img loading=\"lazy\" src=\"data/icon/carport_new_skill_chip_none_icon_' + iconNum + '.png\" style=\"width:30px;height:30px;object-fit:contain;\">';
+                chipInfo.innerHTML += '<img loading=\"lazy\" src=\"' + _ICONS['carport_new_skill_chip_none_icon_' + iconNum + '.png'] + '\" style=\"width:30px;height:30px;object-fit:contain;\">';
             }
         }
         var img = document.getElementById('carImage');
         // Try local image, fallback to placeholder on error
-        img.onerror = function() { this.src = 'data/icon/icon_mhyck_m.png'; this.onerror = null; };
-        img.src = 'data/26-07-15_29734784_android/full/' + encodeURI(car.asset_dir + '/body/' + car.id + '_m.png');
+        img.onerror = function() { this.src = _ICONS['icon_mhyck_m.png']; this.onerror = null; };
+        img.src = _CAR_IMG[car.id] || ('data/26-07-15_29734784_android/full/' + encodeURI(car.asset_dir + '/body/' + car.id + '_m.png'));
         img.alt = car.name;
         img.style.display = '';
         img.loading = 'lazy';
@@ -1001,7 +1239,8 @@
 
             <div id="carPreview">
                     <div class="card" style="text-align:center;">
-                        <img id="carImage" src="data/icon/icon_mhyck_m.png" alt="" loading="lazy" style="max-width:100%;border-radius:12px;max-height:200px;background:var(--box-bg);padding:8px;" onerror="this.style.display='none'">
+                        <img id="carImage" src="" alt="" loading="lazy" style="max-width:100%;border-radius:12px;max-height:200px;background:var(--box-bg);padding:8px;" onerror="this.style.display='none'">
+                        <script>document.getElementById('carImage').src = (_ICONS||{})['icon_mhyck_m.png'] || 'data/icon/icon_mhyck_m.png';</script>
                         <div id="carPreviewPlaceholder" style="padding:40px 20px;color:var(--text-muted);font-size:14px;">
                             <span class="zh">请选择一辆赛车</span><span class="lang-en">Select a car</span>
                         </div>
