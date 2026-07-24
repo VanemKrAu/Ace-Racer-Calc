@@ -1082,9 +1082,7 @@ var _CAR_IMG = {
         if (car.ult_threshold) {
             document.getElementById('ultThreshold').value = car.ult_threshold;
         }
-        if (car.ult_duration) {
-            document.getElementById('baseUltDuration').value = car.ult_duration;
-        }
+        document.getElementById('baseUltDuration').value = car.ult_duration || 0;
         if (car.nitro_duration) {
             document.getElementById('time_1x6').value = car.nitro_duration;
             document.getElementById('r_1x6').checked = true;
