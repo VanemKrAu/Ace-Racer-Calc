@@ -1042,27 +1042,31 @@ var _CAR_IMG = {
         function flashSection(sectionId, inputIds) {
             var sec = document.getElementById(sectionId);
             if (!sec) return;
-            // Clear existing timer for this section
-            if (_flashTimers[sectionId]) {
-                clearInterval(_flashTimers[sectionId]);
-                sec.style.border = '';
-                sec.style.boxShadow = '';
+            // Reuse existing state if already flashing this section (smooth transition)
+            var state = _flashTimers[sectionId];
+            if (state) {
+                clearInterval(state.timer);
+                // Continue from current opacity, but reset direction
+                state.dir = 0.04;
+            } else {
+                state = { opacity: 0.3, dir: 0.04, timer: null };
+                _flashTimers[sectionId] = state;
             }
             var origBorder = sec.style.border;
             var origShadow = sec.style.boxShadow;
-            var opacity = 0.3;
-            var dir = 0.04;
-            _flashTimers[sectionId] = setInterval(function() {
-                opacity += dir;
-                if (opacity >= 0.8) dir = -0.04;
-                if (opacity <= 0.2) dir = 0.04;
-                var c = 'rgba(0, 242, 254, ' + opacity + ')';
+            state.timer = setInterval(function() {
+                state.opacity += state.dir;
+                if (state.opacity >= 0.8) state.dir = -0.04;
+                if (state.opacity <= 0.2) state.dir = 0.04;
+                var c = 'rgba(0, 242, 254, ' + state.opacity + ')';
                 sec.style.setProperty('border', '1px solid ' + c, 'important');
                 sec.style.setProperty('box-shadow', '0 0 6px ' + c, 'important');
             }, 50);
             var stopFlash = function() {
-                clearInterval(_flashTimers[sectionId]);
-                delete _flashTimers[sectionId];
+                if (_flashTimers[sectionId]) {
+                    clearInterval(_flashTimers[sectionId].timer);
+                    delete _flashTimers[sectionId];
+                }
                 sec.style.border = origBorder;
                 sec.style.boxShadow = origShadow;
             };
