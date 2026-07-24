@@ -944,10 +944,14 @@ var _CAR_IMG = {
         document.getElementById('carPreviewName').textContent = _n(car) + ' (' + _pos(car.position) + ')';
         document.getElementById('carPreviewInfo').style.display = '';
         document.getElementById('carPreviewInfo').textContent = 'ace_charge: ' + (car.ace_charge || '?') + ' | ' + _spec(car.specialization) + (car.ult_type ? ' | ' + car.ult_type : '') + (car.ult_duration ? ' | ' + _("大招时长:","Ult Dur:") + ' ' + car.ult_duration + 's' : '');
-        var filledItems = [_("大招阈值","Ult Threshold"), _("基础双充","Base Dual Charge"), _("氮气时长","Nitro Dur"), _("大招时长","Ult Dur")];
+        var filledItems = [_("大招阈值","Ult Threshold"), _("基础双充","Base Dual Charge"), _("氮气时长","Nitro Dur")];
+        if (car.ult_duration) filledItems.push(_("大招时长","Ult Dur"));
         if (car.ult_charge_first) filledItems.push(_("起步额外充能","Start Bonus"));
         document.getElementById('carPreviewAutoMsg').style.display = '';
-        document.getElementById('carPreviewAutoMsg').innerHTML = _('\u2713 \u5DF2\u81EA\u52A8\u586B\u5145\uFF1A', '\u2713 Auto-filled: ') + filledItems.join(_('\u3001', ', ')) + _(' \u2014 \u5176\u4ED6\u53C2\u6570\u8BF7\u624B\u52A8\u8C03\u6574\u3002<br>\u8BE6\u7EC6\u8F66\u8F86\u6280\u80FD\u8BF7\u53C2\u8003 \u2192', ' — Other params need manual tuning.<br>Details \u2192') + ' <a href=\"https://reca.seimu.cn/ace-racer-admin/vehicles/' + car.id + '\" target=\"_blank\" style=\"color:var(--primary);text-decoration:underline;font-weight:bold;\">' + '瑞卡情报站-' + _n(car) + '</a>';
+        var msgHtml = _('\u2713 \u5DF2\u81EA\u52A8\u586B\u5145\uFF1A', '\u2713 Auto-filled: ') + filledItems.join(_('\u3001', ', '));
+        if (!car.ult_duration) msgHtml += _('<br><span style=\"color:var(--warning);font-weight:bold;\">⚠️ 该车无固定大招时长，请手动填写</span>', '<br><span style=\"color:var(--warning);font-weight:bold;\">⚠️ This car has no fixed ult duration, please fill manually</span>');
+        msgHtml += _(' \u2014 \u5176\u4ED6\u53C2\u6570\u8BF7\u624B\u52A8\u8C03\u6574\u3002<br>\u8BE6\u7EC6\u8F66\u8F86\u6280\u80FD\u8BF7\u53C2\u8003 \u2192', ' — Other params need manual tuning.<br>Details \u2192') + ' <a href=\"https://reca.seimu.cn/ace-racer-admin/vehicles/' + car.id + '\" target=\"_blank\" style=\"color:var(--primary);text-decoration:underline;font-weight:bold;\">' + '瑞卡情报站-' + _n(car) + '</a>';
+        document.getElementById('carPreviewAutoMsg').innerHTML = msgHtml;
         var chipInfo = document.getElementById('carPreviewChips');
         if (car.chip_slots) {
             chipInfo.style.display = 'flex';
@@ -1138,13 +1142,17 @@ var _CAR_IMG = {
         // Show auto-fill info message
         document.getElementById('carPreviewAutoMsg').style.display = '';
         // Build green message dynamically
-        var filledItems = [_("大招阈值","Ult Threshold"), _("基础双充","Base Dual Charge"), _("氮气时长","Nitro Dur"), _("大招时长","Ult Dur")];
+        var filledItems = [_("大招阈值","Ult Threshold"), _("基础双充","Base Dual Charge"), _("氮气时长","Nitro Dur")];
+        if (car.ult_duration) filledItems.push(_("大招时长","Ult Dur"));
         if (car.ult_charge_first) filledItems.push(_("起步额外充能","Start Bonus"));
         if (car.nitro_charge) filledItems.push(_("氮气自充能","Nitro SC"));
         if (car.ult_charge_loop) filledItems.push(_("大招自充能","Ult SC"));
         if (car.per_sec_charge) filledItems.push(_("每秒自充能","PerSec SC"));
         if (car.sp_charge) filledItems.push(_("SP自充能","SP Charge"));
-        document.getElementById('carPreviewAutoMsg').innerHTML = _('\u2713 \u5DF2\u81EA\u52A8\u586B\u5145\uFF1A', '\u2713 Auto-filled: ') + filledItems.join(_('\u3001', ', ')) + _(' \u2014 \u5176\u4ED6\u53C2\u6570\u8BF7\u624B\u52A8\u8C03\u6574\u3002<br>\u8BE6\u7EC6\u8F66\u8F86\u6280\u80FD\u8BF7\u53C2\u8003 \u2192', ' — Other params need manual tuning.<br>Details \u2192') + ' <a href=\"https://reca.seimu.cn/ace-racer-admin/vehicles/' + car.id + '\" target=\"_blank\" style=\"color:var(--primary);text-decoration:underline;font-weight:bold;\">' + '瑞卡情报站-' + _n(car) + '</a>';
+        var msgHtml = _('\u2713 \u5DF2\u81EA\u52A8\u586B\u5145\uFF1A', '\u2713 Auto-filled: ') + filledItems.join(_('\u3001', ', '));
+        if (!car.ult_duration) msgHtml += _('<br><span style=\"color:var(--warning);font-weight:bold;\">⚠️ 该车无固定大招时长，请手动填写</span>', '<br><span style=\"color:var(--warning);font-weight:bold;\">⚠️ This car has no fixed ult duration, please fill manually</span>');
+        msgHtml += _(' \u2014 \u5176\u4ED6\u53C2\u6570\u8BF7\u624B\u52A8\u8C03\u6574\u3002<br>\u8BE6\u7EC6\u8F66\u8F86\u6280\u80FD\u8BF7\u53C2\u8003 \u2192', ' — Other params need manual tuning.<br>Details \u2192') + ' <a href=\"https://reca.seimu.cn/ace-racer-admin/vehicles/' + car.id + '\" target=\"_blank\" style=\"color:var(--primary);text-decoration:underline;font-weight:bold;\">' + '瑞卡情报站-' + _n(car) + '</a>';
+        document.getElementById('carPreviewAutoMsg').innerHTML = msgHtml;
         var chipInfo = document.getElementById('carPreviewChips');
         if (car.chip_slots) {
             chipInfo.style.display = 'flex';
