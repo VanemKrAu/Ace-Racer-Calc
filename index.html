@@ -1067,6 +1067,14 @@ var _CAR_IMG = {
         _selectedCarId = car.id;
 
         // Reset all auto-fillable fields before filling new car data
+        function _stopFlash(sid) {
+            var st = _flashTimers[sid];
+            if (st && st.stopFlash) st.stopFlash();
+        }
+        _stopFlash('extraUltSection');
+        _stopFlash('extraNitroSection');
+        _stopFlash('extraPerSecSection');
+        _stopFlash('extraCustomSection');
         document.getElementById('hasExtraUlt').checked = false;
         document.getElementById('valExtraUltFirst').value = 0;
         document.getElementById('valExtraUltLoop').value = 0;
