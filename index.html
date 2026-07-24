@@ -1194,7 +1194,7 @@ var _CAR_IMG = {
             var p = sortedPos[i];
             var pIcon = getPosIcon(p);
             var pHtml = pIcon ? '<img src="' + pIcon + '" style="width:18px;height:18px;vertical-align:middle;margin-right:6px;">' : '';
-            posMenu.innerHTML += '<div class="dropdown-option" data-value="' + p + '" onclick="selectFilter(\'pos\',\'' + p + '\')">' + pHtml + p + '</div>';
+            posMenu.innerHTML += '<div class="dropdown-option" data-value="' + p + '" onclick="selectFilter(\'pos\',\'' + p + '\')">' + pHtml + _pos(p) + '</div>';
         }
         var sortedSpec = Object.keys(specs).sort();
         specMenu.innerHTML = '<div class="dropdown-option" data-value="" onclick="selectFilter(\'spec\',\'\')"><span class="zh">全部专精</span><span class="lang-en">All Specs</span></div>';
@@ -1202,7 +1202,7 @@ var _CAR_IMG = {
             var s = sortedSpec[i];
             var sIcon = getSpecIcon(s);
             var sHtml = sIcon ? '<img src="' + sIcon + '" style="width:18px;height:18px;vertical-align:middle;margin-right:6px;">' : '';
-            specMenu.innerHTML += '<div class="dropdown-option" data-value="' + s + '" onclick="selectFilter(\'spec\',\'' + s + '\')">' + sHtml + s + '</div>';
+            specMenu.innerHTML += '<div class="dropdown-option" data-value="' + s + '" onclick="selectFilter(\'spec\',\'' + s + '\')">' + sHtml + _spec(s) + '</div>';
         }
     }
 
@@ -1221,12 +1221,12 @@ var _CAR_IMG = {
         if (type === 'pos') {
             _filterPos = value;
             var pIcon = value ? getPosIcon(value) : '';
-            document.getElementById('filterPosLabel').innerHTML = (pIcon ? '<img src=\"' + pIcon + '\" style=\"width:16px;height:16px;vertical-align:middle;margin-right:8px;\">' : '') + (value || _('全部定位', 'All Positions'));
+            document.getElementById('filterPosLabel').innerHTML = (pIcon ? '<img src=\"' + pIcon + '\" style=\"width:16px;height:16px;vertical-align:middle;margin-right:8px;\">' : '') + (value ? _pos(value) : _('全部定位', 'All Positions'));
             document.getElementById('filterPosMenu').classList.remove('show');
         } else {
             _filterSpec = value;
             var sIcon = value ? getSpecIcon(value) : '';
-            document.getElementById('filterSpecLabel').innerHTML = (sIcon ? '<img src=\"' + sIcon + '\" style=\"width:16px;height:16px;vertical-align:middle;margin-right:8px;\">' : '') + (value || _('全部专精', 'All Specializations'));
+            document.getElementById('filterSpecLabel').innerHTML = (sIcon ? '<img src=\"' + sIcon + '\" style=\"width:16px;height:16px;vertical-align:middle;margin-right:8px;\">' : '') + (value ? _spec(value) : _('全部专精', 'All Specializations'));
             document.getElementById('filterSpecMenu').classList.remove('show');
         }
         filterCarList();
@@ -3163,6 +3163,7 @@ var _CAR_IMG = {
             
             // Refresh UI for language switch
             document.getElementById('carSearch').placeholder = currentLang === 'en' ? 'Search car name...' : '搜索赛车名称...';
+            if (typeof populateFilters === 'function') populateFilters();
             if (typeof populateCarGrid === 'function') populateCarGrid();
             if (typeof filterCarList === 'function') filterCarList();
             if (_selectedCar && typeof updateCarPreview === 'function') updateCarPreview(_selectedCar);
