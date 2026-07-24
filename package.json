@@ -1,0 +1,9 @@
+{
+  "name": "ace-racer-calc",
+  "private": true,
+  "version": "1.0.0",
+  "description": "Ace Racer Ultimate Energy Calculator - update tools",
+  "dependencies": {
+    "pinyin": "^4.0.0"
+  }
+}

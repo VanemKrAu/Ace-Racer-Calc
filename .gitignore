@@ -1,25 +1,20 @@
-# 临时文件
+﻿# 涓存椂鏂囦欢
 .agent_tmp/
 .agent_reports/
 *.tmp
 node_modules/
 
-# 技能图标（计算器不调用）
-data/*/full/assets/*/skill-icons/
+# 鎶€鑳藉浘鏍囷紙璁＄畻鍣ㄤ笉璋冪敤锛?data/*/full/assets/*/skill-icons/
 data/*/single-*/assets/*/skill-icons/
 
-# 皮肤图片（计算器不调用）
+# 鐨偆鍥剧墖锛堣绠楀櫒涓嶈皟鐢級
 data/*/full/assets/*/skins/
 data/*/single-*/assets/*/skins/
 
-# 小尺寸车身图（只用 m 尺寸）
-data/*/full/assets/*/body/*_s.png
+# 灏忓昂瀵歌溅韬浘锛堝彧鐢?m 灏哄锛?data/*/full/assets/*/body/*_s.png
 data/*/single-*/assets/*/body/*_s.png
 
-# ZIP 压缩包
-data/*/full/packages/
+# ZIP 鍘嬬缉鍖?data/*/full/packages/
 data/*/single-*/packages/
 *.zip
 
-# Bilibili upload script (contains cookies)
-scripts/upload-bili.mjs
