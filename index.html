@@ -805,6 +805,10 @@ var _CAR_IMG = {
     var _selectedCar = null;
     var _selectedCarId = null;
 
+    function _n(car) {
+        return currentLang === 'en' ? (car.name_en || car.name) : car.name;
+    }
+
     function calcMaxHuineng(chipSlots) {
         if (!chipSlots) return 50;
         var maxH = 0;
@@ -852,7 +856,7 @@ var _CAR_IMG = {
             if (specIcon) icons += '<img src=\"' + specIcon + '\" style=\"width:18px;height:18px;vertical-align:middle;margin-left:4px;\">';
             var sel = (_selectedCarId === c.id) ? ' selected' : '';
             html += '<div class=\"dropdown-option' + sel + '\" data-id=\"' + c.id + '\" data-pos=\"' + (c.position||'') + '\" data-spec=\"' + (c.specialization||'') + '\" onclick=\"pickCar(' + c.id + ');document.getElementById(\'carDropdown\').classList.remove(\'show\');\">'
-                + '<span style=\"flex:1;\">' + icons + ' ' + c.name + '</span>'
+                + '<span style=\"flex:1;\">' + icons + ' ' + _n(c) + '</span>'
                 + '<span style=\"font-size:11px;color:var(--text-muted);\">[' + (c.ace_charge || '?') + ']' + (c.ult_duration ? ' ' + c.ult_duration + 's' : '') + '</span>'
                 + '</div>';
         }
@@ -908,7 +912,7 @@ var _CAR_IMG = {
                     var ci = '';
                     if (cp) ci += '<img src=\"' + cp + '\" style=\"width:14px;height:14px;vertical-align:middle;margin-right:4px;\">';
                     if (cs) ci += '<img src=\"' + cs + '\" style=\"width:14px;height:14px;vertical-align:middle;margin-right:4px;\">';
-                    label.innerHTML = ci + ' ' + cc.name;
+                    label.innerHTML = ci + ' ' + _n(cc);
                     break;
                 }
             }
@@ -926,13 +930,13 @@ var _CAR_IMG = {
     function updateCarPreview(car) {
         document.getElementById('carPreviewPlaceholder').style.display = 'none';
         document.getElementById('carPreviewName').style.display = '';
-        document.getElementById('carPreviewName').textContent = car.name + ' (' + (car.position||'') + ')';
+        document.getElementById('carPreviewName').textContent = _n(car) + ' (' + (car.position||'') + ')';
         document.getElementById('carPreviewInfo').style.display = '';
         document.getElementById('carPreviewInfo').textContent = 'ace_charge: ' + (car.ace_charge || '?') + ' | ' + (car.specialization||'') + (car.ult_type ? ' | ' + car.ult_type : '') + (car.ult_duration ? ' | ' + _("大招时长:","Ult Dur:") + ' ' + car.ult_duration + 's' : '');
         var filledItems = [_("大招阈值","Ult Threshold"), _("基础双充","Base Dual Charge"), _("氮气时长","Nitro Dur"), _("大招时长","Ult Dur")];
         if (car.ult_charge_first) filledItems.push(_("开局立刻充能","Start Bonus"));
         document.getElementById('carPreviewAutoMsg').style.display = '';
-        document.getElementById('carPreviewAutoMsg').innerHTML = _('\u2713 \u5DF2\u81EA\u52A8\u586B\u5145\uFF1A', '\u2713 Auto-filled: ') + filledItems.join(_('\u3001', ', ')) + _(' \u2014 \u5176\u4ED6\u53C2\u6570\u8BF7\u624B\u52A8\u8C03\u6574\u3002<br>\u8BE6\u7EC6\u8F66\u8F86\u6280\u80FD\u8BF7\u53C2\u8003 \u2192', ' — Other params need manual tuning.<br>Details \u2192') + ' <a href=\"https://reca.seimu.cn/ace-racer-admin/vehicles/' + car.id + '\" target=\"_blank\" style=\"color:var(--primary);text-decoration:underline;font-weight:bold;\">' + '瑞卡情报站-' + car.name + '</a>';
+        document.getElementById('carPreviewAutoMsg').innerHTML = _('\u2713 \u5DF2\u81EA\u52A8\u586B\u5145\uFF1A', '\u2713 Auto-filled: ') + filledItems.join(_('\u3001', ', ')) + _(' \u2014 \u5176\u4ED6\u53C2\u6570\u8BF7\u624B\u52A8\u8C03\u6574\u3002<br>\u8BE6\u7EC6\u8F66\u8F86\u6280\u80FD\u8BF7\u53C2\u8003 \u2192', ' — Other params need manual tuning.<br>Details \u2192') + ' <a href=\"https://reca.seimu.cn/ace-racer-admin/vehicles/' + car.id + '\" target=\"_blank\" style=\"color:var(--primary);text-decoration:underline;font-weight:bold;\">' + '瑞卡情报站-' + _n(car) + '</a>';
         var chipInfo = document.getElementById('carPreviewChips');
         if (car.chip_slots) {
             chipInfo.style.display = 'flex';
@@ -951,12 +955,12 @@ var _CAR_IMG = {
         var img = document.getElementById('carImage');
         img.onerror = function() { this.src = _ICONS['icon_mhyck_m.png']; this.onerror = null; };
         img.src = _CAR_IMG[car.id] || ('data/26-07-15_29734784_android/full/' + encodeURI(car.asset_dir + '/body/' + car.id + '_m.png'));
-        img.alt = car.name;
+        img.alt = _n(car);
         img.style.display = '';
         img.loading = 'lazy';
         var info = document.getElementById('carSelectInfo');
         info.style.display = 'flex';
-        info.innerHTML = '<b>' + car.name + '</b>'
+        info.innerHTML = '<b>' + _n(car) + '</b>'
             + ' &nbsp;|&nbsp; ' + (car.position||'') + ' / ' + (car.specialization||'')
             + ' &nbsp;|&nbsp; ace_charge: <b>' + (car.ace_charge || '?') + '</b>'
             + (car.ult_duration ? ' &nbsp;|&nbsp; ' + _("大招时长:","Ult Dur:") + ' <b>' + car.ult_duration + 's</b>' : '')
@@ -1106,7 +1110,7 @@ var _CAR_IMG = {
 
         document.getElementById('carPreviewPlaceholder').style.display = 'none';
         document.getElementById('carPreviewName').style.display = '';
-        document.getElementById('carPreviewName').textContent = car.name + ' (' + (car.position||'') + ')';
+        document.getElementById('carPreviewName').textContent = _n(car) + ' (' + (car.position||'') + ')';
         document.getElementById('carPreviewInfo').style.display = '';
         document.getElementById('carPreviewInfo').textContent = 'ace_charge: ' + (car.ace_charge || '?') + ' | ' + (car.specialization||'') + (car.ult_type ? ' | ' + car.ult_type : '') + (car.ult_duration ? ' | ' + _("大招时长:","Ult Dur:") + ' ' + car.ult_duration + 's' : '');
         // Show auto-fill info message
@@ -1118,7 +1122,7 @@ var _CAR_IMG = {
         if (car.ult_charge_loop) filledItems.push(_("大招自充能","Ult SC"));
         if (car.per_sec_charge) filledItems.push(_("每秒自充能","PerSec SC"));
         if (car.sp_charge) filledItems.push(_("SP自充能","SP Charge"));
-        document.getElementById('carPreviewAutoMsg').innerHTML = _('\u2713 \u5DF2\u81EA\u52A8\u586B\u5145\uFF1A', '\u2713 Auto-filled: ') + filledItems.join(_('\u3001', ', ')) + _(' \u2014 \u5176\u4ED6\u53C2\u6570\u8BF7\u624B\u52A8\u8C03\u6574\u3002<br>\u8BE6\u7EC6\u8F66\u8F86\u6280\u80FD\u8BF7\u53C2\u8003 \u2192', ' — Other params need manual tuning.<br>Details \u2192') + ' <a href=\"https://reca.seimu.cn/ace-racer-admin/vehicles/' + car.id + '\" target=\"_blank\" style=\"color:var(--primary);text-decoration:underline;font-weight:bold;\">' + '瑞卡情报站-' + car.name + '</a>';
+        document.getElementById('carPreviewAutoMsg').innerHTML = _('\u2713 \u5DF2\u81EA\u52A8\u586B\u5145\uFF1A', '\u2713 Auto-filled: ') + filledItems.join(_('\u3001', ', ')) + _(' \u2014 \u5176\u4ED6\u53C2\u6570\u8BF7\u624B\u52A8\u8C03\u6574\u3002<br>\u8BE6\u7EC6\u8F66\u8F86\u6280\u80FD\u8BF7\u53C2\u8003 \u2192', ' — Other params need manual tuning.<br>Details \u2192') + ' <a href=\"https://reca.seimu.cn/ace-racer-admin/vehicles/' + car.id + '\" target=\"_blank\" style=\"color:var(--primary);text-decoration:underline;font-weight:bold;\">' + '瑞卡情报站-' + _n(car) + '</a>';
         var chipInfo = document.getElementById('carPreviewChips');
         if (car.chip_slots) {
             chipInfo.style.display = 'flex';
@@ -1138,13 +1142,13 @@ var _CAR_IMG = {
         // Try local image, fallback to placeholder on error
         img.onerror = function() { this.src = _ICONS['icon_mhyck_m.png']; this.onerror = null; };
         img.src = _CAR_IMG[car.id] || ('data/26-07-15_29734784_android/full/' + encodeURI(car.asset_dir + '/body/' + car.id + '_m.png'));
-        img.alt = car.name;
+        img.alt = _n(car);
         img.style.display = '';
         img.loading = 'lazy';
 
         var info = document.getElementById('carSelectInfo');
         info.style.display = 'flex';
-        info.innerHTML = '<b>' + car.name + '</b>'
+        info.innerHTML = '<b>' + _n(car) + '</b>'
             + ' &nbsp;|&nbsp; ' + (car.position||'') + ' / ' + (car.specialization||'')
             + ' &nbsp;|&nbsp; ace_charge: <b>' + (car.ace_charge || '?') + '</b>'
             + (car.ult_duration ? ' &nbsp;|&nbsp; ' + _("大招时长:","Ult Dur:") + ' <b>' + car.ult_duration + 's</b>' : '')
@@ -3133,6 +3137,11 @@ var _CAR_IMG = {
                 metaAppTitle.content = currentLang === 'en' ? 'Ace Calc' : '王牌计算器';
             }
             document.getElementById('langBtnText').textContent = currentLang === 'en' ? '中文 / English' : 'English / 中文';
+            
+            // Refresh UI for language switch
+            document.getElementById('carSearch').placeholder = currentLang === 'en' ? 'Search car name...' : '搜索赛车名称...';
+            if (typeof filterCarList === 'function') filterCarList();
+            if (_selectedCar && typeof updateCarPreview === 'function') updateCarPreview(_selectedCar);
            
            updateAutoCalcUI();
            updateNitroCountUI();

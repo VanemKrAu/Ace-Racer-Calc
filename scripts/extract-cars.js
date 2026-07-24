@@ -314,6 +314,94 @@ for (const file of files) {
     cars.push({
       id: carId,
       name: v.name,
+      name_en: (() => {
+        var n = v.name;
+        // Brand translation map
+        var brands = {
+          '保时捷': 'Porsche', '兰博基尼': 'Lamborghini', '布加迪': 'Bugatti',
+          '奥迪': 'Audi', '宝马': 'BMW', '迈凯伦': 'McLaren',
+          '福特': 'Ford', '莲花': 'Lotus', '雪佛兰': 'Chevrolet',
+          '柯尼塞格': 'Koenigsegg', '道奇': 'Dodge', '阿斯顿马丁': 'Aston Martin',
+          '法拉利': 'Ferrari', '玛莎拉蒂': 'Maserati', '梅赛德斯-AMG': 'Mercedes-AMG',
+          '梅赛德斯-奔驰': 'Mercedes-Benz', '比亚迪': 'BYD', '大众': 'Volkswagen',
+          '本田': 'Honda', '宾利': 'Bentley', '日产': 'Nissan',
+          '帕加尼': 'Pagani', '捷豹': 'Jaguar', '路虎': 'Land Rover',
+          '路虎卫士': 'Land Rover Defender', '讴歌': 'Acura', '丰田': 'Toyota',
+          '莱肯': 'Lykan', '一汽-大众': 'FAW-VW', '英菲尼迪': 'Infiniti',
+          'MINI': 'MINI', 'AITO': 'AITO', 'MG6': 'MG6',
+        };
+        // Manual full-name overrides
+        var overrides = {
+          '百变小鹦': 'Colorful Parrot', '清规·浩然': 'Qinggui Haoran',
+          '地狱火': 'Hellfire', '以太': 'Aether', '风神': 'Aeolus',
+          '禅': 'Zen', '混沌': 'Chaos', '泰坦': 'Titan',
+          '特异点': 'Singularity', '催化剂': 'Catalyst', '干扰者': 'Disruptor',
+          '螺旋箭': 'Spiral Arrow', '燃烧太阳': 'Burning Sun',
+          '刹那': 'Instant', '法拉第': 'Faraday', '神剑号': 'Excalibur',
+          '战神': 'Ares', '风行者': 'Windwalker', '哈迪斯': 'Hades',
+          '宙斯': 'Zeus', '波塞冬': 'Poseidon', '阿波罗': 'Apollo',
+          '烛龙': 'Zhulong', '鹤羽': 'Crane Feather',
+          '幻蝶': 'Phantom Butterfly', '赵云': 'Zhao Yun', '关羽': 'Guan Yu',
+          '张飞': 'Zhang Fei', '逍遥': 'Xiaoyao', '超音速': 'Supersonic',
+          '游龙惊鸿': 'Dragon Soar', '魔王': 'Demon King',
+          '黑魔龙': 'Black Dragon', '绿箭骑士': 'Green Knight',
+          '月宫圣使': 'Moon Envoy', '月宫舞灵': 'Moon Dancer',
+          '玉麒麟': 'Jade Qilin', '星辰幻音': 'Stellar Echo',
+          '醒觉之羽': 'Awakened Feather', '狂飙': 'Blazing Fury',
+          '逐浪': 'Wave Rider', '隐刺': 'Hidden Thorn',
+          '暗夜魅影': 'Night Phantom', '光天使': 'Light Angel',
+          '幻海之汐': 'Mirage Tide', '寒霜冰魄': 'Frost Soul',
+          '蛋仔出击': 'Eggling Strike', '团子': 'Dango',
+          '果冻': 'Jelly', '凯蒂号': 'Kitty', '萌星凯蒂': 'Star Kitty',
+          '饿龙传说': 'Hungry Dragon', '大买特买号': 'Shopmania',
+          '泡泡旅行者': 'Bubble Traveler', '茶韵行者': 'Tea Wanderer',
+          '招财福鼠': 'Fortune Mouse', '踏雪白驹': 'Snow Steed',
+          '逐风青骥': 'Wind Steed', '竹叶青': 'Bamboo Viper',
+          '黑曼巴': 'Black Mamba', '狄安娜': 'Diana',
+          '星穹幻音': 'Stellar Phantom', '坚盾': 'Iron Shield',
+          '复仇者': 'Avenger', '穿梭师': 'Voyager',
+          '星际探路者': 'Star Pathfinder', '维纳斯': 'Venus',
+          '记录官': 'Chronicler', '先驱者': 'Pioneer',
+          '隐匿猎手': 'Hidden Hunter', '沙滩漫步者': 'Beach Walker',
+          '侧翼刀锋': 'Side Blade', '承重钢轮': 'Steel Wheel',
+          '开拓铁铲': 'Pioneer Shovel', '过载先锋': 'Overload Vanguard',
+          '火箭狐': 'Rocket Fox', '闪灵': 'Phantom',
+          '魔鬼鱼': 'Manta Ray', '平行巡洋舰': 'Parallel Cruiser',
+          '猫眠梦': 'Catnap Dream', '杂耍者': 'Juggler',
+          '圣骑士': 'Paladin', '机械咆哮虎': 'Mecha Tiger',
+          '摇尾萌萌虎': 'Wagging Tiger', '空间漫游虎': 'Space Tiger',
+          '速面': 'Swift Noodle', '真的好马': 'Good Steed',
+          '王牌方程式': 'Ace Formula', '王牌方程式 EVO': 'Ace Formula EVO',
+          '王牌速面': 'Ace Noodle', '仰望U8': 'Yangwang U8',
+          '仰望U9': 'Yangwang U9',
+        };
+        if (overrides[n]) return overrides[n];
+        // Try brand replacement
+        for (var bk in brands) {
+          if (n.indexOf(bk) === 0) {
+            var rest = n.substring(bk.length).trim();
+            return brands[bk] + (rest ? ' ' + rest : '');
+          }
+        }
+        // Pinyin fallback for pure Chinese names
+        try {
+          var chars = n.split('');
+          var result = [];
+          var asciiBuf = '';
+          for (var ci = 0; ci < chars.length; ci++) {
+            var code = chars[ci].charCodeAt(0);
+            if (code < 128) { asciiBuf += chars[ci]; }
+            else {
+              if (asciiBuf) { result.push(asciiBuf); asciiBuf = ''; }
+              var py = pinyin.pinyin(chars[ci], { style: 0 });
+              if (py && py[0]) result.push(py[0][0].charAt(0).toUpperCase() + py[0][0].slice(1));
+              else result.push(chars[ci]);
+            }
+          }
+          if (asciiBuf) result.push(asciiBuf);
+          return result.join(' ');
+        } catch(e) { return n; }
+      })(),
       position: (v.positionLabel || '').replace('天平位（干扰）', '天平位').replace('天平位（竞速）', '天平位') || null,
       specialization: v.specialization || null,
       ace_charge: baseTier?.stats?.charge?.ace_charge || null,

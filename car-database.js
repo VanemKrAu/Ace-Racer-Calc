@@ -3,6 +3,7 @@ const CAR_DATABASE = [
   {
     "id": 12099,
     "name": "百变小鹦",
+    "name_en": "Colorful Parrot",
     "position": "天平位",
     "specialization": "山路",
     "ace_charge": 3200,
@@ -40,6 +41,7 @@ const CAR_DATABASE = [
   {
     "id": 12098,
     "name": "布加迪 Veyron",
+    "name_en": "Bugatti Veyron",
     "position": "竞速位",
     "specialization": "城市",
     "ace_charge": 3200,
@@ -77,6 +79,7 @@ const CAR_DATABASE = [
   {
     "id": 12097,
     "name": "清规·浩然",
+    "name_en": "Qinggui Haoran",
     "position": "干扰位",
     "specialization": "山路",
     "ace_charge": 3300,
@@ -114,6 +117,7 @@ const CAR_DATABASE = [
   {
     "id": 12096,
     "name": "本田 Civic Type R",
+    "name_en": "Honda Civic Type R",
     "position": "辅助位",
     "specialization": "城市",
     "ace_charge": 3900,
@@ -151,6 +155,7 @@ const CAR_DATABASE = [
   {
     "id": 12095,
     "name": "布加迪 Bolide",
+    "name_en": "Bugatti Bolide",
     "position": "竞速位",
     "specialization": "山路",
     "ace_charge": 3300,
@@ -188,6 +193,7 @@ const CAR_DATABASE = [
   {
     "id": 12093,
     "name": "莲花 Evija X",
+    "name_en": "Lotus Evija X",
     "position": "竞速位",
     "specialization": "场地",
     "ace_charge": 2500,
@@ -225,6 +231,7 @@ const CAR_DATABASE = [
   {
     "id": 12092,
     "name": "方程豹 豹8",
+    "name_en": "Fang Cheng Bao   Bao 8",
     "position": "辅助位",
     "specialization": "城市",
     "ace_charge": 4000,
@@ -262,6 +269,7 @@ const CAR_DATABASE = [
   {
     "id": 12091,
     "name": "兰博基尼 Sesto Elemento",
+    "name_en": "Lamborghini Sesto Elemento",
     "position": "竞速位",
     "specialization": "山路",
     "ace_charge": 2600,
@@ -299,6 +307,7 @@ const CAR_DATABASE = [
   {
     "id": 12088,
     "name": "真的好马",
+    "name_en": "Good Steed",
     "position": "天平位",
     "specialization": "山路",
     "ace_charge": 2600,
@@ -336,6 +345,7 @@ const CAR_DATABASE = [
   {
     "id": 12087,
     "name": "逍遥",
+    "name_en": "Xiaoyao",
     "position": "竞速位",
     "specialization": "城市",
     "ace_charge": 1800,
@@ -373,6 +383,7 @@ const CAR_DATABASE = [
   {
     "id": 12084,
     "name": "蔚来ET9",
+    "name_en": "Wei Lai ET9",
     "position": "辅助位",
     "specialization": "山路",
     "ace_charge": 3900,
@@ -410,6 +421,7 @@ const CAR_DATABASE = [
   {
     "id": 12082,
     "name": "光天使",
+    "name_en": "Light Angel",
     "position": "竞速位",
     "specialization": "城市",
     "ace_charge": 2600,
@@ -447,6 +459,7 @@ const CAR_DATABASE = [
   {
     "id": 12081,
     "name": "幻海之汐",
+    "name_en": "Mirage Tide",
     "position": "辅助位",
     "specialization": "场地",
     "ace_charge": 4000,
@@ -484,6 +497,7 @@ const CAR_DATABASE = [
   {
     "id": 12080,
     "name": "保时捷 Taycan Turbo S",
+    "name_en": "Porsche Taycan Turbo S",
     "position": "天平位",
     "specialization": "城市",
     "ace_charge": 3100,
@@ -521,6 +535,7 @@ const CAR_DATABASE = [
   {
     "id": 12079,
     "name": "兰博基尼 Revuelto",
+    "name_en": "Lamborghini Revuelto",
     "position": "竞速位",
     "specialization": "山路",
     "ace_charge": 3000,
@@ -558,6 +573,7 @@ const CAR_DATABASE = [
   {
     "id": 12078,
     "name": "踏雪白驹",
+    "name_en": "Snow Steed",
     "position": "竞速位",
     "specialization": "场地",
     "ace_charge": 3100,
@@ -595,6 +611,7 @@ const CAR_DATABASE = [
   {
     "id": 12077,
     "name": "逐风青骥",
+    "name_en": "Wind Steed",
     "position": "天平位",
     "specialization": "山路",
     "ace_charge": 3500,
@@ -632,6 +649,7 @@ const CAR_DATABASE = [
   {
     "id": 12076,
     "name": "魔王",
+    "name_en": "Demon King",
     "position": "干扰位",
     "specialization": "山路",
     "ace_charge": 3400,
@@ -669,6 +687,7 @@ const CAR_DATABASE = [
   {
     "id": 12075,
     "name": "宾利 Flying Spur Mulliner",
+    "name_en": "Bentley Flying Spur Mulliner",
     "position": "竞速位",
     "specialization": "场地",
     "ace_charge": 3000,
@@ -706,6 +725,7 @@ const CAR_DATABASE = [
   {
     "id": 12074,
     "name": "大买特买号",
+    "name_en": "Shopmania",
     "position": "竞速位",
     "specialization": "城市",
     "ace_charge": 2700,
@@ -743,6 +763,7 @@ const CAR_DATABASE = [
   {
     "id": 12073,
     "name": "法拉利 LaFerrari",
+    "name_en": "Ferrari LaFerrari",
     "position": "竞速位",
     "specialization": "城市",
     "ace_charge": 3200,
@@ -780,6 +801,7 @@ const CAR_DATABASE = [
   {
     "id": 12072,
     "name": "坚盾",
+    "name_en": "Iron Shield",
     "position": "辅助位",
     "specialization": "城市",
     "ace_charge": 4100,
@@ -817,6 +839,7 @@ const CAR_DATABASE = [
   {
     "id": 12071,
     "name": "风行者",
+    "name_en": "Windwalker",
     "position": "竞速位",
     "specialization": "山路",
     "ace_charge": 3100,
@@ -854,6 +877,7 @@ const CAR_DATABASE = [
   {
     "id": 12070,
     "name": "波塞冬",
+    "name_en": "Poseidon",
     "position": "干扰位",
     "specialization": "场地",
     "ace_charge": 2800,
@@ -891,6 +915,7 @@ const CAR_DATABASE = [
   {
     "id": 12069,
     "name": "雪佛兰 Corvette C8",
+    "name_en": "Chevrolet Corvette C8",
     "position": "天平位",
     "specialization": "城市",
     "ace_charge": 2900,
@@ -928,6 +953,7 @@ const CAR_DATABASE = [
   {
     "id": 12068,
     "name": "柯尼塞格 One:1",
+    "name_en": "Koenigsegg One:1",
     "position": "竞速位",
     "specialization": "城市",
     "ace_charge": 3450,
@@ -965,6 +991,7 @@ const CAR_DATABASE = [
   {
     "id": 12067,
     "name": "奥迪 RS 3",
+    "name_en": "Audi RS 3",
     "position": "辅助位",
     "specialization": "城市",
     "ace_charge": 3900,
@@ -1002,6 +1029,7 @@ const CAR_DATABASE = [
   {
     "id": 12066,
     "name": "地狱火",
+    "name_en": "Hellfire",
     "position": "干扰位",
     "specialization": "城市",
     "ace_charge": 2800,
@@ -1039,6 +1067,7 @@ const CAR_DATABASE = [
   {
     "id": 12065,
     "name": "讴歌 NSX",
+    "name_en": "Acura NSX",
     "position": "竞速位",
     "specialization": "城市",
     "ace_charge": 2900,
@@ -1076,6 +1105,7 @@ const CAR_DATABASE = [
   {
     "id": 12064,
     "name": "极氪007",
+    "name_en": "Ji Ke 007",
     "position": "竞速位",
     "specialization": "城市",
     "ace_charge": 3300,
@@ -1113,6 +1143,7 @@ const CAR_DATABASE = [
   {
     "id": 12063,
     "name": "阿波罗",
+    "name_en": "Apollo",
     "position": "天平位",
     "specialization": "山路",
     "ace_charge": 3500,
@@ -1150,6 +1181,7 @@ const CAR_DATABASE = [
   {
     "id": 12062,
     "name": "狄安娜",
+    "name_en": "Diana",
     "position": "干扰位",
     "specialization": "场地",
     "ace_charge": 2600,
@@ -1187,6 +1219,7 @@ const CAR_DATABASE = [
   {
     "id": 12061,
     "name": "竹叶青",
+    "name_en": "Bamboo Viper",
     "position": "干扰位",
     "specialization": "山路",
     "ace_charge": 3000,
@@ -1224,6 +1257,7 @@ const CAR_DATABASE = [
   {
     "id": 12060,
     "name": "乐道L60",
+    "name_en": "Le Dao L60",
     "position": "辅助位",
     "specialization": "城市",
     "ace_charge": 3900,
@@ -1261,6 +1295,7 @@ const CAR_DATABASE = [
   {
     "id": 12059,
     "name": "仰望U9",
+    "name_en": "Yangwang U9",
     "position": "竞速位",
     "specialization": "城市",
     "ace_charge": 3250,
@@ -1298,6 +1333,7 @@ const CAR_DATABASE = [
   {
     "id": 12058,
     "name": "奥迪 RS 6 Avant",
+    "name_en": "Audi RS 6 Avant",
     "position": "辅助位",
     "specialization": "场地",
     "ace_charge": 4000,
@@ -1335,6 +1371,7 @@ const CAR_DATABASE = [
   {
     "id": 12057,
     "name": "茶韵行者",
+    "name_en": "Tea Wanderer",
     "position": "辅助位",
     "specialization": "山路",
     "ace_charge": 4000,
@@ -1372,6 +1409,7 @@ const CAR_DATABASE = [
   {
     "id": 12056,
     "name": "泡泡旅行者",
+    "name_en": "Bubble Traveler",
     "position": "干扰位",
     "specialization": "场地",
     "ace_charge": 2600,
@@ -1409,6 +1447,7 @@ const CAR_DATABASE = [
   {
     "id": 12055,
     "name": "腾势N7",
+    "name_en": "Teng Shi N7",
     "position": "辅助位",
     "specialization": "城市",
     "ace_charge": 4100,
@@ -1446,6 +1485,7 @@ const CAR_DATABASE = [
   {
     "id": 12054,
     "name": "筋斗云",
+    "name_en": "Jin Dou Yun",
     "position": "辅助位",
     "specialization": "城市",
     "ace_charge": 3900,
@@ -1483,6 +1523,7 @@ const CAR_DATABASE = [
   {
     "id": 12053,
     "name": "黑曼巴",
+    "name_en": "Black Mamba",
     "position": "竞速位",
     "specialization": "山路",
     "ace_charge": 4,
@@ -1520,6 +1561,7 @@ const CAR_DATABASE = [
   {
     "id": 12052,
     "name": "关羽",
+    "name_en": "Guan Yu",
     "position": "天平位",
     "specialization": "城市",
     "ace_charge": 2700,
@@ -1557,6 +1599,7 @@ const CAR_DATABASE = [
   {
     "id": 12051,
     "name": "兰博基尼 Veneno",
+    "name_en": "Lamborghini Veneno",
     "position": "竞速位",
     "specialization": "场地",
     "ace_charge": 3150,
@@ -1594,6 +1637,7 @@ const CAR_DATABASE = [
   {
     "id": 12049,
     "name": "保时捷 Panamera Turbo S",
+    "name_en": "Porsche Panamera Turbo S",
     "position": "干扰位",
     "specialization": "城市",
     "ace_charge": 3000,
@@ -1631,6 +1675,7 @@ const CAR_DATABASE = [
   {
     "id": 12048,
     "name": "兰博基尼 Aventador J",
+    "name_en": "Lamborghini Aventador J",
     "position": "竞速位",
     "specialization": "场地",
     "ace_charge": 2900,
@@ -1668,6 +1713,7 @@ const CAR_DATABASE = [
   {
     "id": 12047,
     "name": "混沌",
+    "name_en": "Chaos",
     "position": "天平位",
     "specialization": "场地",
     "ace_charge": 2500,
@@ -1705,6 +1751,7 @@ const CAR_DATABASE = [
   {
     "id": 12046,
     "name": "狂飙",
+    "name_en": "Blazing Fury",
     "position": "竞速位",
     "specialization": "场地",
     "ace_charge": 3000,
@@ -1742,6 +1789,7 @@ const CAR_DATABASE = [
   {
     "id": 12045,
     "name": "宝马 M4 CSL",
+    "name_en": "BMW M4 CSL",
     "position": "辅助位",
     "specialization": "场地",
     "ace_charge": 3900,
@@ -1779,6 +1827,7 @@ const CAR_DATABASE = [
   {
     "id": 12044,
     "name": "道奇 Viper ACR",
+    "name_en": "Dodge Viper ACR",
     "position": "竞速位",
     "specialization": "山路",
     "ace_charge": 2500,
@@ -1816,6 +1865,7 @@ const CAR_DATABASE = [
   {
     "id": 12043,
     "name": "仰望U8",
+    "name_en": "Yangwang U8",
     "position": "干扰位",
     "specialization": "场地",
     "ace_charge": 3200,
@@ -1853,6 +1903,7 @@ const CAR_DATABASE = [
   {
     "id": 12042,
     "name": "迈凯伦 Senna",
+    "name_en": "McLaren Senna",
     "position": "竞速位",
     "specialization": "山路",
     "ace_charge": 2800,
@@ -1890,6 +1941,7 @@ const CAR_DATABASE = [
   {
     "id": 12041,
     "name": "阿斯顿马丁 Valkyrie AMR Pro",
+    "name_en": "Aston Martin Valkyrie AMR Pro",
     "position": "天平位",
     "specialization": "场地",
     "ace_charge": 2600,
@@ -1927,6 +1979,7 @@ const CAR_DATABASE = [
   {
     "id": 12040,
     "name": "隐刺",
+    "name_en": "Hidden Thorn",
     "position": "干扰位",
     "specialization": "场地",
     "ace_charge": 2900,
@@ -1964,6 +2017,7 @@ const CAR_DATABASE = [
   {
     "id": 12039,
     "name": "蛋仔出击",
+    "name_en": "Eggling Strike",
     "position": "辅助位",
     "specialization": "山路",
     "ace_charge": 3800,
@@ -2001,6 +2055,7 @@ const CAR_DATABASE = [
   {
     "id": 12038,
     "name": "保时捷 911 Turbo S",
+    "name_en": "Porsche 911 Turbo S",
     "position": "竞速位",
     "specialization": "城市",
     "ace_charge": 1,
@@ -2038,6 +2093,7 @@ const CAR_DATABASE = [
   {
     "id": 12037,
     "name": "梅赛德斯-AMG C 63 S Coupe",
+    "name_en": "Mercedes-AMG C 63 S Coupe",
     "position": "竞速位",
     "specialization": "场地",
     "ace_charge": 2600,
@@ -2075,6 +2131,7 @@ const CAR_DATABASE = [
   {
     "id": 12036,
     "name": "游龙惊鸿",
+    "name_en": "Dragon Soar",
     "position": "辅助位",
     "specialization": "城市",
     "ace_charge": 3800,
@@ -2112,6 +2169,7 @@ const CAR_DATABASE = [
   {
     "id": 12035,
     "name": "饿龙传说",
+    "name_en": "Hungry Dragon",
     "position": "干扰位",
     "specialization": "场地",
     "ace_charge": 3300,
@@ -2149,6 +2207,7 @@ const CAR_DATABASE = [
   {
     "id": 12034,
     "name": "法拉利 812 Competizione",
+    "name_en": "Ferrari 812 Competizione",
     "position": "竞速位",
     "specialization": "城市",
     "ace_charge": 2700,
@@ -2186,6 +2245,7 @@ const CAR_DATABASE = [
   {
     "id": 12033,
     "name": "团子",
+    "name_en": "Dango",
     "position": "辅助位",
     "specialization": "城市",
     "ace_charge": 4000,
@@ -2223,6 +2283,7 @@ const CAR_DATABASE = [
   {
     "id": 12032,
     "name": "影豹R·ABT联名版",
+    "name_en": "Ying Bao R · ABT Lian Ming Ban",
     "position": "竞速位",
     "specialization": "城市",
     "ace_charge": 2500,
@@ -2260,6 +2321,7 @@ const CAR_DATABASE = [
   {
     "id": 12031,
     "name": "王牌方程式 EVO",
+    "name_en": "Ace Formula EVO",
     "position": "天平位",
     "specialization": "场地",
     "ace_charge": 3200,
@@ -2297,6 +2359,7 @@ const CAR_DATABASE = [
   {
     "id": 12030,
     "name": "醒觉之羽",
+    "name_en": "Awakened Feather",
     "position": "竞速位",
     "specialization": "山路",
     "ace_charge": 2700,
@@ -2334,6 +2397,7 @@ const CAR_DATABASE = [
   {
     "id": 12029,
     "name": "王牌速面",
+    "name_en": "Ace Noodle",
     "position": "竞速位",
     "specialization": "城市",
     "ace_charge": 1,
@@ -2371,6 +2435,7 @@ const CAR_DATABASE = [
   {
     "id": 12028,
     "name": "爱玛 造梦师",
+    "name_en": "Ai Ma   Zao Meng Shi",
     "position": "辅助位",
     "specialization": "城市",
     "ace_charge": 3500,
@@ -2408,6 +2473,7 @@ const CAR_DATABASE = [
   {
     "id": 12027,
     "name": "招财福鼠",
+    "name_en": "Fortune Mouse",
     "position": "竞速位",
     "specialization": "场地",
     "ace_charge": 2700,
@@ -2445,6 +2511,7 @@ const CAR_DATABASE = [
   {
     "id": 12026,
     "name": "莱肯 HyperSport",
+    "name_en": "Lykan HyperSport",
     "position": "干扰位",
     "specialization": "城市",
     "ace_charge": 2500,
@@ -2482,6 +2549,7 @@ const CAR_DATABASE = [
   {
     "id": 12025,
     "name": "兰博基尼 Huracán STO",
+    "name_en": "Lamborghini Huracán STO",
     "position": "竞速位",
     "specialization": "城市",
     "ace_charge": 2800,
@@ -2519,6 +2587,7 @@ const CAR_DATABASE = [
   {
     "id": 12024,
     "name": "丰田 Corolla Sprinter Trueno GT Apex",
+    "name_en": "Toyota Corolla Sprinter Trueno GT Apex",
     "position": "竞速位",
     "specialization": "山路",
     "ace_charge": 2500,
@@ -2556,6 +2625,7 @@ const CAR_DATABASE = [
   {
     "id": 12023,
     "name": "星穹幻音",
+    "name_en": "Stellar Phantom",
     "position": "干扰位",
     "specialization": "山路",
     "ace_charge": 2600,
@@ -2593,6 +2663,7 @@ const CAR_DATABASE = [
   {
     "id": 12022,
     "name": "捷豹 F-TYPE SVR Convertible",
+    "name_en": "Jaguar F-TYPE SVR Convertible",
     "position": "竞速位",
     "specialization": "山路",
     "ace_charge": 2600,
@@ -2630,6 +2701,7 @@ const CAR_DATABASE = [
   {
     "id": 12021,
     "name": "梅赛德斯-奔驰 Biome",
+    "name_en": "Mercedes-Benz Biome",
     "position": "天平位",
     "specialization": "场地",
     "ace_charge": 2900,
@@ -2667,6 +2739,7 @@ const CAR_DATABASE = [
   {
     "id": 12020,
     "name": "张飞",
+    "name_en": "Zhang Fei",
     "position": "竞速位",
     "specialization": "场地",
     "ace_charge": 3000,
@@ -2704,6 +2777,7 @@ const CAR_DATABASE = [
   {
     "id": 12019,
     "name": "奥迪 R8 Spyder V10",
+    "name_en": "Audi R8 Spyder V10",
     "position": "天平位",
     "specialization": "山路",
     "ace_charge": 3300,
@@ -2741,6 +2815,7 @@ const CAR_DATABASE = [
   {
     "id": 12018,
     "name": "果冻",
+    "name_en": "Jelly",
     "position": "辅助位",
     "specialization": "场地",
     "ace_charge": 4000,
@@ -2778,6 +2853,7 @@ const CAR_DATABASE = [
   {
     "id": 12017,
     "name": "超音速",
+    "name_en": "Supersonic",
     "position": "干扰位",
     "specialization": "城市",
     "ace_charge": 3000,
@@ -2815,6 +2891,7 @@ const CAR_DATABASE = [
   {
     "id": 12016,
     "name": "凯蒂号",
+    "name_en": "Kitty",
     "position": "竞速位",
     "specialization": "山路",
     "ace_charge": 2500,
@@ -2852,6 +2929,7 @@ const CAR_DATABASE = [
   {
     "id": 12015,
     "name": "黑魔龙",
+    "name_en": "Black Dragon",
     "position": "干扰位",
     "specialization": "城市",
     "ace_charge": 3000,
@@ -2889,6 +2967,7 @@ const CAR_DATABASE = [
   {
     "id": 12014,
     "name": "萌星凯蒂",
+    "name_en": "Star Kitty",
     "position": "竞速位",
     "specialization": "城市",
     "ace_charge": 2700,
@@ -2926,6 +3005,7 @@ const CAR_DATABASE = [
   {
     "id": 12013,
     "name": "赵云",
+    "name_en": "Zhao Yun",
     "position": "竞速位",
     "specialization": "城市",
     "ace_charge": 2800,
@@ -2963,6 +3043,7 @@ const CAR_DATABASE = [
   {
     "id": 12012,
     "name": "宙斯",
+    "name_en": "Zeus",
     "position": "天平位",
     "specialization": "城市",
     "ace_charge": 3000,
@@ -3000,6 +3081,7 @@ const CAR_DATABASE = [
   {
     "id": 12011,
     "name": "比亚迪 海豹",
+    "name_en": "BYD 海豹",
     "position": "干扰位",
     "specialization": "场地",
     "ace_charge": 2600,
@@ -3037,6 +3119,7 @@ const CAR_DATABASE = [
   {
     "id": 12010,
     "name": "兰博基尼 Aventador SVJ",
+    "name_en": "Lamborghini Aventador SVJ",
     "position": "竞速位",
     "specialization": "场地",
     "ace_charge": 2500,
@@ -3074,6 +3157,7 @@ const CAR_DATABASE = [
   {
     "id": 12009,
     "name": "鹤羽",
+    "name_en": "Crane Feather",
     "position": "竞速位",
     "specialization": "城市",
     "ace_charge": 2500,
@@ -3111,6 +3195,7 @@ const CAR_DATABASE = [
   {
     "id": 12008,
     "name": "幻蝶",
+    "name_en": "Phantom Butterfly",
     "position": "辅助位",
     "specialization": "山路",
     "ace_charge": 3700,
@@ -3148,6 +3233,7 @@ const CAR_DATABASE = [
   {
     "id": 12007,
     "name": "莲花 Evija",
+    "name_en": "Lotus Evija",
     "position": "竞速位",
     "specialization": "城市",
     "ace_charge": 4,
@@ -3185,6 +3271,7 @@ const CAR_DATABASE = [
   {
     "id": 12006,
     "name": "烛龙",
+    "name_en": "Zhulong",
     "position": "干扰位",
     "specialization": "城市",
     "ace_charge": 2900,
@@ -3222,6 +3309,7 @@ const CAR_DATABASE = [
   {
     "id": 12005,
     "name": "路虎 Range Rover Evoque",
+    "name_en": "Land Rover Range Rover Evoque",
     "position": "干扰位",
     "specialization": "山路",
     "ace_charge": 3000,
@@ -3259,6 +3347,7 @@ const CAR_DATABASE = [
   {
     "id": 12004,
     "name": "玉麒麟",
+    "name_en": "Jade Qilin",
     "position": "辅助位",
     "specialization": "场地",
     "ace_charge": 3600,
@@ -3296,6 +3385,7 @@ const CAR_DATABASE = [
   {
     "id": 12003,
     "name": "爱玛 晴天",
+    "name_en": "Ai Ma   Qing Tian",
     "position": "辅助位",
     "specialization": "场地",
     "ace_charge": 3700,
@@ -3333,6 +3423,7 @@ const CAR_DATABASE = [
   {
     "id": 12002,
     "name": "月宫舞灵",
+    "name_en": "Moon Dancer",
     "position": "辅助位",
     "specialization": "山路",
     "ace_charge": 3600,
@@ -3370,6 +3461,7 @@ const CAR_DATABASE = [
   {
     "id": 12001,
     "name": "绿箭骑士",
+    "name_en": "Green Knight",
     "position": "干扰位",
     "specialization": "城市",
     "ace_charge": 2700,
@@ -3407,6 +3499,7 @@ const CAR_DATABASE = [
   {
     "id": 12000,
     "name": "雪佛兰 Corvette ZR1",
+    "name_en": "Chevrolet Corvette ZR1",
     "position": "干扰位",
     "specialization": "场地",
     "ace_charge": 3000,
@@ -3444,6 +3537,7 @@ const CAR_DATABASE = [
   {
     "id": 10099,
     "name": "月宫圣使",
+    "name_en": "Moon Envoy",
     "position": "天平位",
     "specialization": "山路",
     "ace_charge": 2600,
@@ -3481,6 +3575,7 @@ const CAR_DATABASE = [
   {
     "id": 10098,
     "name": "春风 450SR",
+    "name_en": "Chun Feng  450SR",
     "position": "竞速位",
     "specialization": "场地",
     "ace_charge": 3200,
@@ -3518,6 +3613,7 @@ const CAR_DATABASE = [
   {
     "id": 10097,
     "name": "保时捷 918 Spyder",
+    "name_en": "Porsche 918 Spyder",
     "position": "竞速位",
     "specialization": "城市",
     "ace_charge": 2800,
@@ -3555,6 +3651,7 @@ const CAR_DATABASE = [
   {
     "id": 10096,
     "name": "极狐 GT",
+    "name_en": "Ji Hu  GT",
     "position": "竞速位",
     "specialization": "城市",
     "ace_charge": 2500,
@@ -3592,6 +3689,7 @@ const CAR_DATABASE = [
   {
     "id": 10095,
     "name": "极狐阿尔法S 全新HI版",
+    "name_en": "Ji Hu A Er Fa S  Quan Xin HI Ban",
     "position": "辅助位",
     "specialization": "城市",
     "ace_charge": 3900,
@@ -3629,6 +3727,7 @@ const CAR_DATABASE = [
   {
     "id": 10094,
     "name": "洛基",
+    "name_en": "Luo Ji",
     "position": "干扰位",
     "specialization": "山路",
     "ace_charge": 3100,
@@ -3666,6 +3765,7 @@ const CAR_DATABASE = [
   {
     "id": 10093,
     "name": "寒霜冰魄",
+    "name_en": "Frost Soul",
     "position": "干扰位",
     "specialization": "场地",
     "ace_charge": 2800,
@@ -3703,6 +3803,7 @@ const CAR_DATABASE = [
   {
     "id": 10092,
     "name": "承重钢轮",
+    "name_en": "Steel Wheel",
     "position": "干扰位",
     "specialization": "城市",
     "ace_charge": 2900,
@@ -3740,6 +3841,7 @@ const CAR_DATABASE = [
   {
     "id": 10091,
     "name": "开拓铁铲",
+    "name_en": "Pioneer Shovel",
     "position": "干扰位",
     "specialization": "场地",
     "ace_charge": 2700,
@@ -3777,6 +3879,7 @@ const CAR_DATABASE = [
   {
     "id": 10090,
     "name": "王牌方程式",
+    "name_en": "Ace Formula",
     "position": "竞速位",
     "specialization": "场地",
     "ace_charge": 2700,
@@ -3814,6 +3917,7 @@ const CAR_DATABASE = [
   {
     "id": 10089,
     "name": "AITO 问界 M5 EV",
+    "name_en": "AITO 问界 M5 EV",
     "position": "辅助位",
     "specialization": "场地",
     "ace_charge": 4000,
@@ -3851,6 +3955,7 @@ const CAR_DATABASE = [
   {
     "id": 10088,
     "name": "奥迪 RS7 Sportback",
+    "name_en": "Audi RS7 Sportback",
     "position": "竞速位",
     "specialization": "城市",
     "ace_charge": 2900,
@@ -3888,6 +3993,7 @@ const CAR_DATABASE = [
   {
     "id": 10087,
     "name": "先驱者",
+    "name_en": "Pioneer",
     "position": "辅助位",
     "specialization": "山路",
     "ace_charge": 4000,
@@ -3925,6 +4031,7 @@ const CAR_DATABASE = [
   {
     "id": 10086,
     "name": "梅赛德斯-AMG G 63",
+    "name_en": "Mercedes-AMG G 63",
     "position": "辅助位",
     "specialization": "城市",
     "ace_charge": 4000,
@@ -3962,6 +4069,7 @@ const CAR_DATABASE = [
   {
     "id": 10085,
     "name": "记录官",
+    "name_en": "Chronicler",
     "position": "竞速位",
     "specialization": "场地",
     "ace_charge": 3000,
@@ -3999,6 +4107,7 @@ const CAR_DATABASE = [
   {
     "id": 10084,
     "name": "梅赛德斯-奔驰 Silver Arrow",
+    "name_en": "Mercedes-Benz Silver Arrow",
     "position": "竞速位",
     "specialization": "场地",
     "ace_charge": 3520,
@@ -4036,6 +4145,7 @@ const CAR_DATABASE = [
   {
     "id": 10083,
     "name": "梅赛德斯-AMG GT Black Series",
+    "name_en": "Mercedes-AMG GT Black Series",
     "position": "竞速位",
     "specialization": "山路",
     "ace_charge": 2650,
@@ -4073,6 +4183,7 @@ const CAR_DATABASE = [
   {
     "id": 10082,
     "name": "隐匿猎手",
+    "name_en": "Hidden Hunter",
     "position": "天平位",
     "specialization": "场地",
     "ace_charge": 2700,
@@ -4110,6 +4221,7 @@ const CAR_DATABASE = [
   {
     "id": 10081,
     "name": "雪佛兰 Camaro ZL1",
+    "name_en": "Chevrolet Camaro ZL1",
     "position": "辅助位",
     "specialization": "场地",
     "ace_charge": 3700,
@@ -4147,6 +4259,7 @@ const CAR_DATABASE = [
   {
     "id": 10080,
     "name": "沙滩漫步者",
+    "name_en": "Beach Walker",
     "position": "干扰位",
     "specialization": "山路",
     "ace_charge": 2500,
@@ -4184,6 +4297,7 @@ const CAR_DATABASE = [
   {
     "id": 10079,
     "name": "终极·异形",
+    "name_en": "Zhong Ji · Yi Xing",
     "position": "竞速位",
     "specialization": "城市",
     "ace_charge": 3300,
@@ -4221,6 +4335,7 @@ const CAR_DATABASE = [
   {
     "id": 10078,
     "name": "复仇者",
+    "name_en": "Avenger",
     "position": "干扰位",
     "specialization": "城市",
     "ace_charge": 3200,
@@ -4258,6 +4373,7 @@ const CAR_DATABASE = [
   {
     "id": 10077,
     "name": "星际探路者",
+    "name_en": "Star Pathfinder",
     "position": "辅助位",
     "specialization": "城市",
     "ace_charge": 4000,
@@ -4295,6 +4411,7 @@ const CAR_DATABASE = [
   {
     "id": 10076,
     "name": "维纳斯",
+    "name_en": "Venus",
     "position": "竞速位",
     "specialization": "山路",
     "ace_charge": 3200,
@@ -4332,6 +4449,7 @@ const CAR_DATABASE = [
   {
     "id": 10075,
     "name": "穿梭师",
+    "name_en": "Voyager",
     "position": "竞速位",
     "specialization": "山路",
     "ace_charge": 2800,
@@ -4369,6 +4487,7 @@ const CAR_DATABASE = [
   {
     "id": 10074,
     "name": "一汽-大众 GOLF GTI",
+    "name_en": "FAW-VW GOLF GTI",
     "position": "竞速位",
     "specialization": "城市",
     "ace_charge": 2500,
@@ -4406,6 +4525,7 @@ const CAR_DATABASE = [
   {
     "id": 10073,
     "name": "迈凯伦 720S",
+    "name_en": "McLaren 720S",
     "position": "竞速位",
     "specialization": "场地",
     "ace_charge": 3000,
@@ -4443,6 +4563,7 @@ const CAR_DATABASE = [
   {
     "id": 10072,
     "name": "摇尾萌萌虎",
+    "name_en": "Wagging Tiger",
     "position": "辅助位",
     "specialization": "山路",
     "ace_charge": 3800,
@@ -4480,6 +4601,7 @@ const CAR_DATABASE = [
   {
     "id": 10071,
     "name": "迈凯伦 600LT",
+    "name_en": "McLaren 600LT",
     "position": "竞速位",
     "specialization": "山路",
     "ace_charge": 2500,
@@ -4517,6 +4639,7 @@ const CAR_DATABASE = [
   {
     "id": 10070,
     "name": "机械咆哮虎",
+    "name_en": "Mecha Tiger",
     "position": "干扰位",
     "specialization": "城市",
     "ace_charge": 2600,
@@ -4554,6 +4677,7 @@ const CAR_DATABASE = [
   {
     "id": 10069,
     "name": "逐浪",
+    "name_en": "Wave Rider",
     "position": "干扰位",
     "specialization": "城市",
     "ace_charge": 2700,
@@ -4591,6 +4715,7 @@ const CAR_DATABASE = [
   {
     "id": 10068,
     "name": "空间漫游虎",
+    "name_en": "Space Tiger",
     "position": "天平位",
     "specialization": "场地",
     "ace_charge": 2500,
@@ -4628,6 +4753,7 @@ const CAR_DATABASE = [
   {
     "id": 10067,
     "name": "玛莎拉蒂 Alfieri",
+    "name_en": "Maserati Alfieri",
     "position": "竞速位",
     "specialization": "城市",
     "ace_charge": 3000,
@@ -4665,6 +4791,7 @@ const CAR_DATABASE = [
   {
     "id": 10066,
     "name": "圣骑士",
+    "name_en": "Paladin",
     "position": "竞速位",
     "specialization": "山路",
     "ace_charge": 3000,
@@ -4702,6 +4829,7 @@ const CAR_DATABASE = [
   {
     "id": 10065,
     "name": "道奇 Challenger SRT 392",
+    "name_en": "Dodge Challenger SRT 392",
     "position": "干扰位",
     "specialization": "山路",
     "ace_charge": 3200,
@@ -4739,6 +4867,7 @@ const CAR_DATABASE = [
   {
     "id": 10064,
     "name": "布加迪 Divo",
+    "name_en": "Bugatti Divo",
     "position": "竞速位",
     "specialization": "城市",
     "ace_charge": 3000,
@@ -4776,6 +4905,7 @@ const CAR_DATABASE = [
   {
     "id": 10063,
     "name": "奥迪 TT RS",
+    "name_en": "Audi TT RS",
     "position": "辅助位",
     "specialization": "城市",
     "ace_charge": 4000,
@@ -4813,6 +4943,7 @@ const CAR_DATABASE = [
   {
     "id": 10062,
     "name": "道奇 Charger SRT Hellcat",
+    "name_en": "Dodge Charger SRT Hellcat",
     "position": "辅助位",
     "specialization": "山路",
     "ace_charge": 4000,
@@ -4850,6 +4981,7 @@ const CAR_DATABASE = [
   {
     "id": 10061,
     "name": "逮虾货运",
+    "name_en": "Dai Xia Huo Yun",
     "position": "辅助位",
     "specialization": "场地",
     "ace_charge": 3900,
@@ -4887,6 +5019,7 @@ const CAR_DATABASE = [
   {
     "id": 10060,
     "name": "哈迪斯",
+    "name_en": "Hades",
     "position": "天平位",
     "specialization": "场地",
     "ace_charge": 2800,
@@ -4924,6 +5057,7 @@ const CAR_DATABASE = [
   {
     "id": 10059,
     "name": "布加迪 Chiron",
+    "name_en": "Bugatti Chiron",
     "position": "竞速位",
     "specialization": "场地",
     "ace_charge": 3800,
@@ -4961,6 +5095,7 @@ const CAR_DATABASE = [
   {
     "id": 10058,
     "name": "猫眠梦",
+    "name_en": "Catnap Dream",
     "position": "辅助位",
     "specialization": "场地",
     "ace_charge": 3800,
@@ -4998,6 +5133,7 @@ const CAR_DATABASE = [
   {
     "id": 10057,
     "name": "平行巡洋舰",
+    "name_en": "Parallel Cruiser",
     "position": "辅助位",
     "specialization": "城市",
     "ace_charge": 3700,
@@ -5035,6 +5171,7 @@ const CAR_DATABASE = [
   {
     "id": 10056,
     "name": "保时捷 935",
+    "name_en": "Porsche 935",
     "position": "竞速位",
     "specialization": "场地",
     "ace_charge": 2600,
@@ -5072,6 +5209,7 @@ const CAR_DATABASE = [
   {
     "id": 10055,
     "name": "保时捷 Macan S",
+    "name_en": "Porsche Macan S",
     "position": "干扰位",
     "specialization": "场地",
     "ace_charge": 3200,
@@ -5109,6 +5247,7 @@ const CAR_DATABASE = [
   {
     "id": 10054,
     "name": "坦克 300",
+    "name_en": "Tan Ke  300",
     "position": "干扰位",
     "specialization": "山路",
     "ace_charge": 2600,
@@ -5146,6 +5285,7 @@ const CAR_DATABASE = [
   {
     "id": 10053,
     "name": "五菱宏光 MINI EV",
+    "name_en": "Wu Ling Hong Guang  MINI EV",
     "position": "辅助位",
     "specialization": "山路",
     "ace_charge": 3600,
@@ -5183,6 +5323,7 @@ const CAR_DATABASE = [
   {
     "id": 10052,
     "name": "暗夜魅影",
+    "name_en": "Night Phantom",
     "position": "干扰位",
     "specialization": "山路",
     "ace_charge": 2800,
@@ -5220,6 +5361,7 @@ const CAR_DATABASE = [
   {
     "id": 10051,
     "name": "小鹏 P7",
+    "name_en": "Xiao Peng  P7",
     "position": "干扰位",
     "specialization": "城市",
     "ace_charge": 3000,
@@ -5257,6 +5399,7 @@ const CAR_DATABASE = [
   {
     "id": 10050,
     "name": "柯尼塞格 Regera",
+    "name_en": "Koenigsegg Regera",
     "position": "竞速位",
     "specialization": "城市",
     "ace_charge": 3200,
@@ -5294,6 +5437,7 @@ const CAR_DATABASE = [
   {
     "id": 10049,
     "name": "火箭狐",
+    "name_en": "Rocket Fox",
     "position": "竞速位",
     "specialization": "城市",
     "ace_charge": 3100,
@@ -5331,6 +5475,7 @@ const CAR_DATABASE = [
   {
     "id": 10048,
     "name": "过载先锋",
+    "name_en": "Overload Vanguard",
     "position": "竞速位",
     "specialization": "山路",
     "ace_charge": 3500,
@@ -5368,6 +5513,7 @@ const CAR_DATABASE = [
   {
     "id": 10047,
     "name": "闪灵",
+    "name_en": "Phantom",
     "position": "竞速位",
     "specialization": "山路",
     "ace_charge": 2700,
@@ -5405,6 +5551,7 @@ const CAR_DATABASE = [
   {
     "id": 10046,
     "name": "柯尼塞格 Jesko",
+    "name_en": "Koenigsegg Jesko",
     "position": "竞速位",
     "specialization": "城市",
     "ace_charge": 2600,
@@ -5442,6 +5589,7 @@ const CAR_DATABASE = [
   {
     "id": 10045,
     "name": "英菲尼迪 Prototype",
+    "name_en": "Infiniti Prototype",
     "position": "竞速位",
     "specialization": "城市",
     "ace_charge": 2500,
@@ -5479,6 +5627,7 @@ const CAR_DATABASE = [
   {
     "id": 10044,
     "name": "魔鬼鱼",
+    "name_en": "Manta Ray",
     "position": "干扰位",
     "specialization": "场地",
     "ace_charge": 3300,
@@ -5516,6 +5665,7 @@ const CAR_DATABASE = [
   {
     "id": 10043,
     "name": "玛莎拉蒂 Levante",
+    "name_en": "Maserati Levante",
     "position": "辅助位",
     "specialization": "场地",
     "ace_charge": 3900,
@@ -5553,6 +5703,7 @@ const CAR_DATABASE = [
   {
     "id": 10042,
     "name": "帕加尼 Huayra",
+    "name_en": "Pagani Huayra",
     "position": "竞速位",
     "specialization": "场地",
     "ace_charge": 3200,
@@ -5590,6 +5741,7 @@ const CAR_DATABASE = [
   {
     "id": 10041,
     "name": "路虎卫士",
+    "name_en": "Land Rover 卫士",
     "position": "干扰位",
     "specialization": "山路",
     "ace_charge": 2900,
@@ -5627,6 +5779,7 @@ const CAR_DATABASE = [
   {
     "id": 10040,
     "name": "侧翼刀锋",
+    "name_en": "Side Blade",
     "position": "竞速位",
     "specialization": "城市",
     "ace_charge": 2700,
@@ -5664,6 +5817,7 @@ const CAR_DATABASE = [
   {
     "id": 10039,
     "name": "莲花 GT430",
+    "name_en": "Lotus GT430",
     "position": "干扰位",
     "specialization": "场地",
     "ace_charge": 2500,
@@ -5701,6 +5855,7 @@ const CAR_DATABASE = [
   {
     "id": 10038,
     "name": "日产 GT-R NISMO",
+    "name_en": "Nissan GT-R NISMO",
     "position": "竞速位",
     "specialization": "山路",
     "ace_charge": 2900,
@@ -5738,6 +5893,7 @@ const CAR_DATABASE = [
   {
     "id": 10037,
     "name": "螺旋箭",
+    "name_en": "Spiral Arrow",
     "position": "竞速位",
     "specialization": "城市",
     "ace_charge": 3000,
@@ -5775,6 +5931,7 @@ const CAR_DATABASE = [
   {
     "id": 10036,
     "name": "催化剂",
+    "name_en": "Catalyst",
     "position": "辅助位",
     "specialization": "山路",
     "ace_charge": 4100,
@@ -5812,6 +5969,7 @@ const CAR_DATABASE = [
   {
     "id": 10035,
     "name": "刹那",
+    "name_en": "Instant",
     "position": "竞速位",
     "specialization": "山路",
     "ace_charge": 2800,
@@ -5849,6 +6007,7 @@ const CAR_DATABASE = [
   {
     "id": 10034,
     "name": "特异点",
+    "name_en": "Singularity",
     "position": "辅助位",
     "specialization": "场地",
     "ace_charge": 3600,
@@ -5886,6 +6045,7 @@ const CAR_DATABASE = [
   {
     "id": 10033,
     "name": "迈凯伦 P1",
+    "name_en": "McLaren P1",
     "position": "竞速位",
     "specialization": "场地",
     "ace_charge": 3300,
@@ -5923,6 +6083,7 @@ const CAR_DATABASE = [
   {
     "id": 10032,
     "name": "泰坦",
+    "name_en": "Titan",
     "position": "干扰位",
     "specialization": "场地",
     "ace_charge": 2600,
@@ -5960,6 +6121,7 @@ const CAR_DATABASE = [
   {
     "id": 10031,
     "name": "阿斯顿马丁 DB11",
+    "name_en": "Aston Martin DB11",
     "position": "竞速位",
     "specialization": "山路",
     "ace_charge": 2700,
@@ -5997,6 +6159,7 @@ const CAR_DATABASE = [
   {
     "id": 10030,
     "name": "阿斯顿马丁 Vanquish",
+    "name_en": "Aston Martin Vanquish",
     "position": "辅助位",
     "specialization": "场地",
     "ace_charge": 3900,
@@ -6034,6 +6197,7 @@ const CAR_DATABASE = [
   {
     "id": 10029,
     "name": "杂耍者",
+    "name_en": "Juggler",
     "position": "辅助位",
     "specialization": "场地",
     "ace_charge": 3900,
@@ -6071,6 +6235,7 @@ const CAR_DATABASE = [
   {
     "id": 10028,
     "name": "以太",
+    "name_en": "Aether",
     "position": "辅助位",
     "specialization": "城市",
     "ace_charge": 4000,
@@ -6108,6 +6273,7 @@ const CAR_DATABASE = [
   {
     "id": 10027,
     "name": "法拉第",
+    "name_en": "Faraday",
     "position": "干扰位",
     "specialization": "场地",
     "ace_charge": 2700,
@@ -6145,6 +6311,7 @@ const CAR_DATABASE = [
   {
     "id": 10026,
     "name": "禅",
+    "name_en": "Zen",
     "position": "竞速位",
     "specialization": "城市",
     "ace_charge": 2650,
@@ -6182,6 +6349,7 @@ const CAR_DATABASE = [
   {
     "id": 10025,
     "name": "干扰者",
+    "name_en": "Disruptor",
     "position": "干扰位",
     "specialization": "山路",
     "ace_charge": 2600,
@@ -6219,6 +6387,7 @@ const CAR_DATABASE = [
   {
     "id": 10024,
     "name": "燃烧太阳",
+    "name_en": "Burning Sun",
     "position": "干扰位",
     "specialization": "场地",
     "ace_charge": 3500,
@@ -6256,6 +6425,7 @@ const CAR_DATABASE = [
   {
     "id": 10023,
     "name": "风神",
+    "name_en": "Aeolus",
     "position": "辅助位",
     "specialization": "山路",
     "ace_charge": 4500,
@@ -6293,6 +6463,7 @@ const CAR_DATABASE = [
   {
     "id": 10022,
     "name": "神剑号",
+    "name_en": "Excalibur",
     "position": "竞速位",
     "specialization": "山路",
     "ace_charge": 2900,
@@ -6330,6 +6501,7 @@ const CAR_DATABASE = [
   {
     "id": 10021,
     "name": "战神",
+    "name_en": "Ares",
     "position": "干扰位",
     "specialization": "场地",
     "ace_charge": 2600,
@@ -6367,6 +6539,7 @@ const CAR_DATABASE = [
   {
     "id": 10020,
     "name": "大众 ID.R",
+    "name_en": "Volkswagen ID.R",
     "position": "辅助位",
     "specialization": "山路",
     "ace_charge": 4000,
@@ -6404,6 +6577,7 @@ const CAR_DATABASE = [
   {
     "id": 10018,
     "name": "比亚迪 汉",
+    "name_en": "BYD 汉",
     "position": "辅助位",
     "specialization": "场地",
     "ace_charge": 3750,
@@ -6441,6 +6615,7 @@ const CAR_DATABASE = [
   {
     "id": 10017,
     "name": "福特 GT",
+    "name_en": "Ford GT",
     "position": "竞速位",
     "specialization": "场地",
     "ace_charge": 3300,
@@ -6478,6 +6653,7 @@ const CAR_DATABASE = [
   {
     "id": 10016,
     "name": "MINI Buggy",
+    "name_en": "MINI Buggy",
     "position": "干扰位",
     "specialization": "场地",
     "ace_charge": 2800,
@@ -6515,6 +6691,7 @@ const CAR_DATABASE = [
   {
     "id": 10015,
     "name": "大众 Beetle",
+    "name_en": "Volkswagen Beetle",
     "position": "辅助位",
     "specialization": "城市",
     "ace_charge": 4100,
@@ -6552,6 +6729,7 @@ const CAR_DATABASE = [
   {
     "id": 10014,
     "name": "MG6 XPOWER TCR",
+    "name_en": "MG6 XPOWER TCR",
     "position": "竞速位",
     "specialization": "场地",
     "ace_charge": 2800,
@@ -6589,6 +6767,7 @@ const CAR_DATABASE = [
   {
     "id": 10013,
     "name": "福特 F150",
+    "name_en": "Ford F150",
     "position": "干扰位",
     "specialization": "山路",
     "ace_charge": 2700,
@@ -6626,6 +6805,7 @@ const CAR_DATABASE = [
   {
     "id": 10012,
     "name": "领克03 TCR",
+    "name_en": "Ling Ke 03 TCR",
     "position": "干扰位",
     "specialization": "城市",
     "ace_charge": 2500,
@@ -6663,6 +6843,7 @@ const CAR_DATABASE = [
   {
     "id": 10011,
     "name": "蔚来 EP9",
+    "name_en": "Wei Lai  EP9",
     "position": "竞速位",
     "specialization": "场地",
     "ace_charge": 2600,
@@ -6700,6 +6881,7 @@ const CAR_DATABASE = [
   {
     "id": 10010,
     "name": "布加迪 LVN",
+    "name_en": "Bugatti LVN",
     "position": "竞速位",
     "specialization": "城市",
     "ace_charge": 2700,
@@ -6737,6 +6919,7 @@ const CAR_DATABASE = [
   {
     "id": 10009,
     "name": "MINI JCW",
+    "name_en": "MINI JCW",
     "position": "辅助位",
     "specialization": "城市",
     "ace_charge": 3500,
@@ -6774,6 +6957,7 @@ const CAR_DATABASE = [
   {
     "id": 10006,
     "name": "宝马 i8",
+    "name_en": "BMW i8",
     "position": "干扰位",
     "specialization": "山路",
     "ace_charge": 2700,
@@ -6811,6 +6995,7 @@ const CAR_DATABASE = [
   {
     "id": 10005,
     "name": "福特 Mustang",
+    "name_en": "Ford Mustang",
     "position": "干扰位",
     "specialization": "山路",
     "ace_charge": 2700,
@@ -6848,6 +7033,7 @@ const CAR_DATABASE = [
   {
     "id": 10004,
     "name": "宝马 X5",
+    "name_en": "BMW X5",
     "position": "辅助位",
     "specialization": "城市",
     "ace_charge": 3700,
@@ -6885,6 +7071,7 @@ const CAR_DATABASE = [
   {
     "id": 10003,
     "name": "宝马 M8 GTE",
+    "name_en": "BMW M8 GTE",
     "position": "竞速位",
     "specialization": "城市",
     "ace_charge": 2700,
@@ -6922,6 +7109,7 @@ const CAR_DATABASE = [
   {
     "id": 10002,
     "name": "宝马 M4 Racing",
+    "name_en": "BMW M4 Racing",
     "position": "竞速位",
     "specialization": "城市",
     "ace_charge": 3500,
@@ -6959,6 +7147,7 @@ const CAR_DATABASE = [
   {
     "id": 10001,
     "name": "福特 Focus RS",
+    "name_en": "Ford Focus RS",
     "position": "辅助位",
     "specialization": "场地",
     "ace_charge": 3500,
@@ -6996,6 +7185,7 @@ const CAR_DATABASE = [
   {
     "id": 10000,
     "name": "保时捷 911 GT2 RS",
+    "name_en": "Porsche 911 GT2 RS",
     "position": "竞速位",
     "specialization": "山路",
     "ace_charge": 3400,
