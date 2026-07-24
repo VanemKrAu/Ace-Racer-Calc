@@ -176,7 +176,8 @@ for (const file of files) {
           }
           // 起步额外充能
           if (n.includes('额外起步充能')) {
-            ultChargeFirst = num;
+            // Skip known-bad entries (data export errors)
+            if (carId !== 12025) ultChargeFirst = num;
           }
           // 每秒自充
           if (n.includes('每秒') && n.includes('充能') && !n.includes('友方') && !n.includes('敌方')) {
@@ -226,6 +227,8 @@ for (const file of files) {
       for (const sv of skillValueDetails) {
         if (sv.vehicle_id !== carId) continue;
         if (!sv.skill_value_name || !sv.skill_value_name.includes('额外起步充能')) continue;
+        // Exclude known bad data entries
+        if (String(sv.id ?? '') === '1198') continue; // Huracán STO 异常数据
         const rawVal = (sv.skill_value_text || '').trim();
         const pctM = rawVal.match(/^(\d+(?:\.\d+)?)\s*%$/);
         if (pctM) {
@@ -308,15 +311,6 @@ for (const file of files) {
       if (!spText.includes('每次')) {
         const spM = spText.match(/获得(\d+)集气量[和同]*(\d+(?:\.\d+)?)\s*%/);
         if (spM) spCharge = parseFloat(spM[2]);
-      }
-    }
-
-    // Validate ult_charge_first: only keep if ace_time_effect mentions race start
-    if (ultChargeFirst) {
-      var aceText = v.richText?.ace_time_effect || '';
-      // "开局时获得X%" or "起步时" patterns indicate race-start bonus
-      if (!aceText.includes('开局') && !aceText.includes('起步时')) {
-        ultChargeFirst = null;
       }
     }
 
