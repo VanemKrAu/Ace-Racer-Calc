@@ -92,9 +92,17 @@ for (const file of files) {
     let costRatio = null;
 
     if (ult?.instructions) {
-      const accelInst = ult.instructions.find(i => i.inst_type === 2);
-      if (accelInst?.duration && accelInst.duration < 100) {
-        ultDuration = accelInst.duration;
+      // Find the accel duration: look for any instruction with a reasonable duration (1-30s)
+      for (var instIdx = 0; instIdx < ult.instructions.length; instIdx++) {
+        var inst = ult.instructions[instIdx];
+        if (inst && typeof inst.duration === 'number' && inst.duration >= 1 && inst.duration <= 30) {
+          ultDuration = inst.duration;
+          break;
+        }
+      }
+      // Fallback: use N2O nitro duration if ult duration not found in instructions
+      if (!ultDuration && vehicleNitroDuration[carId]) {
+        ultDuration = vehicleNitroDuration[carId];
       }
       const costInst = ult.instructions.find(i => i.cost_ratio);
       if (costInst?.cost_ratio) {
