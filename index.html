@@ -1053,18 +1053,26 @@ var _CAR_IMG = {
         function flashSection(sectionId, inputIds) {
             var sec = document.getElementById(sectionId);
             if (!sec) return;
-            // Reuse existing state if already flashing this section (smooth transition)
             var state = _flashTimers[sectionId];
             if (state) {
-                clearInterval(state.timer);
-                // Continue from current opacity, but reset direction
-                state.dir = 0.04;
-            } else {
-                state = { opacity: 0.3, dir: 0.04, timer: null };
-                _flashTimers[sectionId] = state;
+                // Already flashing — just re-attach stop listeners (old ones were consumed)
+                if (state.stopFlash) {
+                    for (var fi = 0; fi < inputIds.length; fi++) {
+                        var el = document.getElementById(inputIds[fi]);
+                        if (el) {
+                            el.addEventListener('input', state.stopFlash, { once: true });
+                            el.addEventListener('change', state.stopFlash, { once: true });
+                            el.addEventListener('focus', state.stopFlash, { once: true });
+                            el.addEventListener('click', state.stopFlash, { once: true });
+                        }
+                    }
+                }
+                return;
             }
             var origBorder = sec.style.border;
             var origShadow = sec.style.boxShadow;
+            state = { opacity: 0.3, dir: 0.04, timer: null, stopFlash: null };
+            _flashTimers[sectionId] = state;
             state.timer = setInterval(function() {
                 state.opacity += state.dir;
                 if (state.opacity >= 0.8) state.dir = -0.04;
@@ -1073,7 +1081,7 @@ var _CAR_IMG = {
                 sec.style.setProperty('border', '1px solid ' + c, 'important');
                 sec.style.setProperty('box-shadow', '0 0 6px ' + c, 'important');
             }, 50);
-            var stopFlash = function() {
+            state.stopFlash = function() {
                 if (_flashTimers[sectionId]) {
                     clearInterval(_flashTimers[sectionId].timer);
                     delete _flashTimers[sectionId];
@@ -1084,10 +1092,10 @@ var _CAR_IMG = {
             for (var fi = 0; fi < inputIds.length; fi++) {
                 var el = document.getElementById(inputIds[fi]);
                 if (el) {
-                    el.addEventListener('input', stopFlash, { once: true });
-                    el.addEventListener('change', stopFlash, { once: true });
-                    el.addEventListener('focus', stopFlash, { once: true });
-                    el.addEventListener('click', stopFlash, { once: true });
+                    el.addEventListener('input', state.stopFlash, { once: true });
+                    el.addEventListener('change', state.stopFlash, { once: true });
+                    el.addEventListener('focus', state.stopFlash, { once: true });
+                    el.addEventListener('click', state.stopFlash, { once: true });
                 }
             }
         }
