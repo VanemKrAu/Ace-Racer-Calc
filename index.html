@@ -500,7 +500,7 @@ var _CAR_IMG = {
        .row-grid { display: flex; gap: 12px; }
        .row-grid .form-group { flex: 1; }
        .section-divider { text-align: center; margin: 36px 0 24px; position: relative; }
-       .section-divider span { background: var(--bg-color); padding: 0 16px; color: var(--secondary); font-weight: 900; font-size: 20px; letter-spacing: 2px; position: relative; z-index: 1; transition: background-color 0.3s; text-shadow: var(--divider-shadow); border-radius: 8px; }
+        .section-divider span { background: var(--bg-color); padding: 0 4px; color: var(--secondary); font-weight: 900; font-size: 20px; letter-spacing: 2px; position: relative; z-index: 1; transition: background-color 0.3s; text-shadow: var(--divider-shadow); border-radius: 8px; display: inline-block; }
        .section-divider::before { content: ""; position: absolute; top: 50%; left: 0; right: 0; height: 1px; background: linear-gradient(90deg, transparent, var(--secondary), transparent); }
        
        .limit-badge { font-size: 11px; padding: 2px 6px; border-radius: 4px; background: var(--limit-badge-bg); color: var(--limit-badge-text); border: 1px solid var(--limit-badge-border); font-weight: normal; }
@@ -2032,8 +2032,9 @@ var _CAR_IMG = {
            var resValLoopElem = document.getElementById('resultValueLoop');
            var resLoop = (resValLoopElem.textContent || resValLoopElem.innerText || '').replace(/✅|❌/g, '').trim();
 
-           var text = _("🏎️【王牌竞速·大招能量配置单】\n", "🏎️[Ace Racer Config]\n");
-           text += "┈┈┈┈┈┈┈┈┈┈┈┈┈┈\n";
+            var text = _("🏎️【王牌竞速·大招能量配置单】\n", "🏎️[Ace Racer Config]\n");
+            if (_selectedCar) text += _("🚗 车辆：", "🚗 Car: ") + _n(_selectedCar) + "\n";
+            text += "┈┈┈┈┈┈┈┈┈┈┈┈┈┈\n";
            text += _("🔹 基础充能：阈值", "🔹 Base Charge: Threshold ") + target + _("% |起步", "% | Start ") + startCharge + _("% |专精(", "% | Specialty(") + isSpec + ")\n";
            text += _("🔹 氮气充能：", "🔹 Nitro Charge: ") + baseNitro + "% (" + nitroType + " / " + nitroTime + _("秒)\n", "s)\n");
            text += _("🔹 环境影响：反制", "🔹 Environment: Counter ") + counter + _("% | 降效", "% | Debuff ") + debuff + "%\n";
