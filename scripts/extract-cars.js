@@ -100,10 +100,6 @@ for (const file of files) {
           break;
         }
       }
-      // Fallback: use N2O nitro duration if ult duration not found in instructions
-      if (!ultDuration && vehicleNitroDuration[carId]) {
-        ultDuration = vehicleNitroDuration[carId];
-      }
       const costInst = ult.instructions.find(i => i.cost_ratio);
       if (costInst?.cost_ratio) {
         costRatio = costInst.cost_ratio;
