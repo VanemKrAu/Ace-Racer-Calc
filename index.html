@@ -808,6 +808,17 @@ var _CAR_IMG = {
     function _n(car) {
         return currentLang === 'en' ? (car.name_en || car.name) : car.name;
     }
+    function _spec(s) {
+        return currentLang === 'en'
+            ? ({'山路':'Mountain','场地':'Track','城市':'Urban'})[s] || s
+            : s;
+    }
+    function _pos(p) {
+        if (!p) return '';
+        return currentLang === 'en'
+            ? ({'竞速位':'Racing','辅助位':'Support','干扰位':'Interfere','天平位':'Balance'})[p] || p
+            : p;
+    }
 
     function calcMaxHuineng(chipSlots) {
         if (!chipSlots) return 50;
@@ -930,9 +941,9 @@ var _CAR_IMG = {
     function updateCarPreview(car) {
         document.getElementById('carPreviewPlaceholder').style.display = 'none';
         document.getElementById('carPreviewName').style.display = '';
-        document.getElementById('carPreviewName').textContent = _n(car) + ' (' + (car.position||'') + ')';
+        document.getElementById('carPreviewName').textContent = _n(car) + ' (' + _pos(car.position) + ')';
         document.getElementById('carPreviewInfo').style.display = '';
-        document.getElementById('carPreviewInfo').textContent = 'ace_charge: ' + (car.ace_charge || '?') + ' | ' + (car.specialization||'') + (car.ult_type ? ' | ' + car.ult_type : '') + (car.ult_duration ? ' | ' + _("大招时长:","Ult Dur:") + ' ' + car.ult_duration + 's' : '');
+        document.getElementById('carPreviewInfo').textContent = 'ace_charge: ' + (car.ace_charge || '?') + ' | ' + _spec(car.specialization) + (car.ult_type ? ' | ' + car.ult_type : '') + (car.ult_duration ? ' | ' + _("大招时长:","Ult Dur:") + ' ' + car.ult_duration + 's' : '');
         var filledItems = [_("大招阈值","Ult Threshold"), _("基础双充","Base Dual Charge"), _("氮气时长","Nitro Dur"), _("大招时长","Ult Dur")];
         if (car.ult_charge_first) filledItems.push(_("开局立刻充能","Start Bonus"));
         document.getElementById('carPreviewAutoMsg').style.display = '';
@@ -961,7 +972,7 @@ var _CAR_IMG = {
         var info = document.getElementById('carSelectInfo');
         info.style.display = 'flex';
         info.innerHTML = '<b>' + _n(car) + '</b>'
-            + ' &nbsp;|&nbsp; ' + (car.position||'') + ' / ' + (car.specialization||'')
+            + ' &nbsp;|&nbsp; ' + _pos(car.position) + ' / ' + _spec(car.specialization)
             + ' &nbsp;|&nbsp; ace_charge: <b>' + (car.ace_charge || '?') + '</b>'
             + (car.ult_duration ? ' &nbsp;|&nbsp; ' + _("大招时长:","Ult Dur:") + ' <b>' + car.ult_duration + 's</b>' : '')
             + (car.has_sp ? ' &nbsp;|&nbsp; <span class="car-badge">SP</span>' : '');
@@ -1114,9 +1125,9 @@ var _CAR_IMG = {
 
         document.getElementById('carPreviewPlaceholder').style.display = 'none';
         document.getElementById('carPreviewName').style.display = '';
-        document.getElementById('carPreviewName').textContent = _n(car) + ' (' + (car.position||'') + ')';
+        document.getElementById('carPreviewName').textContent = _n(car) + ' (' + _pos(car.position) + ')';
         document.getElementById('carPreviewInfo').style.display = '';
-        document.getElementById('carPreviewInfo').textContent = 'ace_charge: ' + (car.ace_charge || '?') + ' | ' + (car.specialization||'') + (car.ult_type ? ' | ' + car.ult_type : '') + (car.ult_duration ? ' | ' + _("大招时长:","Ult Dur:") + ' ' + car.ult_duration + 's' : '');
+        document.getElementById('carPreviewInfo').textContent = 'ace_charge: ' + (car.ace_charge || '?') + ' | ' + _spec(car.specialization) + (car.ult_type ? ' | ' + car.ult_type : '') + (car.ult_duration ? ' | ' + _("大招时长:","Ult Dur:") + ' ' + car.ult_duration + 's' : '');
         // Show auto-fill info message
         document.getElementById('carPreviewAutoMsg').style.display = '';
         // Build green message dynamically
@@ -1153,7 +1164,7 @@ var _CAR_IMG = {
         var info = document.getElementById('carSelectInfo');
         info.style.display = 'flex';
         info.innerHTML = '<b>' + _n(car) + '</b>'
-            + ' &nbsp;|&nbsp; ' + (car.position||'') + ' / ' + (car.specialization||'')
+            + ' &nbsp;|&nbsp; ' + _pos(car.position) + ' / ' + _spec(car.specialization)
             + ' &nbsp;|&nbsp; ace_charge: <b>' + (car.ace_charge || '?') + '</b>'
             + (car.ult_duration ? ' &nbsp;|&nbsp; ' + _("大招时长:","Ult Dur:") + ' <b>' + car.ult_duration + 's</b>' : '')
             + (car.has_sp ? ' &nbsp;|&nbsp; <span class="car-badge">SP</span>' : '');
@@ -3144,6 +3155,7 @@ var _CAR_IMG = {
             
             // Refresh UI for language switch
             document.getElementById('carSearch').placeholder = currentLang === 'en' ? 'Search car name...' : '搜索赛车名称...';
+            if (typeof populateCarGrid === 'function') populateCarGrid();
             if (typeof filterCarList === 'function') filterCarList();
             if (_selectedCar && typeof updateCarPreview === 'function') updateCarPreview(_selectedCar);
            
