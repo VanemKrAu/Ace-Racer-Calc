@@ -716,7 +716,7 @@ var _CAR_IMG = {
                        <div style="border-top: 2px dashed var(--warning); opacity: 1; padding-top: 12px; margin-top: 4px;">
                            <div style="font-size: 13px; color: var(--warning); font-weight: bold; margin-bottom: 6px;"><span class="zh">注意事项：</span><span class="lang-en">Notes:</span></div>
                            <ul id="notesContent" style="font-size: 12px; color: var(--text-muted); line-height: 1.6; padding-left: 18px; margin: 0; word-break: break-word;">
-                                 <li><span class="zh">选车后自动填充：大招阈值、基础双充（起手+氮气）、氮气时长、大招时长、开局立刻充能、氮气自充能、大招自充能、每秒自充能、SP自充能。其他参数（芯片、赋能等）需手动调整。</span><span class="lang-en">Auto-filled on car select: ult threshold, base dual charge, nitro duration, ult duration, start bonus, nitro self-charge, ult self-charge, per-sec charge, SP charge. Other params (chips, empowers) need manual tuning.</span></li>
+                                 <li><span class="zh">选车后自动填充：大招阈值、基础双充（起手+氮气）、氮气时长、大招时长、起步额外充能、氮气自充能、大招自充能、每秒自充能、SP自充能。其他参数（芯片、赋能等）需手动调整。</span><span class="lang-en">Auto-filled on car select: ult threshold, base dual charge, nitro duration, ult duration, start bonus, nitro self-charge, ult self-charge, per-sec charge, SP charge. Other params (chips, empowers) need manual tuning.</span></li>
                                 <li><span class="zh">赛车选择器：点击顶部“选择赛车”标签，即可从完整赛车列表中挑选车辆，选中后点击“应用并返回”自动填充基础氮气充能值和大招时长。注意：自动填充仅覆盖基础参数，芯片、赋能等配置仍需手动微调。</span><span class="lang-en">Car Selector: Tap "Select Car" tab to browse the full car list. Pick one, then click "Apply & Return" to auto-fill base nitro charge and ult duration. Note: chips, empowers still need manual tuning.</span></li>
                                 <li><span class="zh">关于偶发无法访问的情况：由于网站部署在境外服务器（GitHub）上，且部分省市运营商会对GitHub做间歇性SNI阻断（具体表现为昨天访问的好好的，今天突然进不去，过了一小会自己又好了），因此有小概率出现无法访问的情况。目前网站接入了第三方中转节点，但依旧存在极小的访问失败概率，这属于正常现象，遇到这种情况时，多刷新几次即可进入网站。另外，网站是无后端运行的，因此在域名过期前基本不可能突然关门（除非被GFW主动阻断），请放心使用。</span><span class="lang-en">Regarding occasional access issues: Since the site is hosted on overseas servers (GitHub), some regional ISPs may intermittently block SNI - meaning it works fine one day, then suddenly won't load the next, only to fix itself shortly after. So there's a small chance you might not be able to reach it. We've now added third-party relay nodes, but there's still a very slim chance of access failure. That's perfectly normal - just refresh a few times and you'll get in. Also, because the site runs entirely on the frontend with no backend, it's basically not going to disappear before the domain expires (unless the GFW actively blocks it). So rest assured.</span></li>
                             </ul>
@@ -945,7 +945,7 @@ var _CAR_IMG = {
         document.getElementById('carPreviewInfo').style.display = '';
         document.getElementById('carPreviewInfo').textContent = 'ace_charge: ' + (car.ace_charge || '?') + ' | ' + _spec(car.specialization) + (car.ult_type ? ' | ' + car.ult_type : '') + (car.ult_duration ? ' | ' + _("大招时长:","Ult Dur:") + ' ' + car.ult_duration + 's' : '');
         var filledItems = [_("大招阈值","Ult Threshold"), _("基础双充","Base Dual Charge"), _("氮气时长","Nitro Dur"), _("大招时长","Ult Dur")];
-        if (car.ult_charge_first) filledItems.push(_("开局立刻充能","Start Bonus"));
+        if (car.ult_charge_first) filledItems.push(_("起步额外充能","Start Bonus"));
         document.getElementById('carPreviewAutoMsg').style.display = '';
         document.getElementById('carPreviewAutoMsg').innerHTML = _('\u2713 \u5DF2\u81EA\u52A8\u586B\u5145\uFF1A', '\u2713 Auto-filled: ') + filledItems.join(_('\u3001', ', ')) + _(' \u2014 \u5176\u4ED6\u53C2\u6570\u8BF7\u624B\u52A8\u8C03\u6574\u3002<br>\u8BE6\u7EC6\u8F66\u8F86\u6280\u80FD\u8BF7\u53C2\u8003 \u2192', ' — Other params need manual tuning.<br>Details \u2192') + ' <a href=\"https://reca.seimu.cn/ace-racer-admin/vehicles/' + car.id + '\" target=\"_blank\" style=\"color:var(--primary);text-decoration:underline;font-weight:bold;\">' + '瑞卡情报站-' + _n(car) + '</a>';
         var chipInfo = document.getElementById('carPreviewChips');
@@ -1141,7 +1141,7 @@ var _CAR_IMG = {
         document.getElementById('carPreviewAutoMsg').style.display = '';
         // Build green message dynamically
         var filledItems = [_("大招阈值","Ult Threshold"), _("基础双充","Base Dual Charge"), _("氮气时长","Nitro Dur"), _("大招时长","Ult Dur")];
-        if (car.ult_charge_first) filledItems.push(_("开局立刻充能","Start Bonus"));
+        if (car.ult_charge_first) filledItems.push(_("起步额外充能","Start Bonus"));
         if (car.nitro_charge) filledItems.push(_("氮气自充能","Nitro SC"));
         if (car.ult_charge_loop) filledItems.push(_("大招自充能","Ult SC"));
         if (car.per_sec_charge) filledItems.push(_("每秒自充能","PerSec SC"));
@@ -1580,13 +1580,13 @@ var _CAR_IMG = {
                         <div id="extraUltSection" style="background: var(--inner-bg); padding: 12px; border-radius: 10px; border: 1px solid var(--border); margin-bottom: 12px;">
                             <label style="display: flex; align-items: center; gap: 8px; font-size: 13px; color: var(--text-color); cursor: pointer; width: 100%;">
                                <input type="checkbox" id="hasExtraUlt" onchange="toggleExtraUI(); triggerAutoCalc(currentActiveField); calculate();" style="width: 16px; height: 16px; accent-color: var(--secondary);">
-                                <span class="zh">开局立刻充能 / 大招自充能 (受反制与充能效率双重影响)</span><span class="lang-en">Start Bonus / Ult Self-Charge (Affected by Counter & Eff)</span>
+                                <span class="zh">起步额外充能 / 大招自充能 (受反制与充能效率双重影响)</span><span class="lang-en">Start Bonus / Ult Self-Charge (Affected by Counter & Eff)</span>
                            </label>
                            
                            <div id="extraUltContainer" style="display: none;">
                                <div class="row-grid" style="margin-bottom: 0;">
                                    <div class="form-group" style="margin-bottom: 0;">
-                                        <label class="form-label" style="color: var(--secondary); font-size: 11.5px;"><span class="zh">开局立刻充能</span><span class="lang-en">Start Bonus Charge</span></label>
+                                        <label class="form-label" style="color: var(--secondary); font-size: 11.5px;"><span class="zh">起步额外充能</span><span class="lang-en">Start Bonus Charge</span></label>
                                        <div class="input-wrapper">
                                            <input type="number" id="valExtraUltFirst" class="form-control" value="0" min="0" step="0.1" oninput="triggerAutoCalc(currentActiveField); calculate();">
                                            <span class="input-unit">%</span>

@@ -18,7 +18,7 @@ user-invocable: true
 
 三部分来源各自独立，前端在 `pickCar()` 中分两步填入：
 1. `startCharge = (ace_charge + init_ratio) / 100` → 起步基础充能
-2. `valExtraUltFirst = ult_charge_first` → 开局立刻充能 (额外模块)
+2. `valExtraUltFirst = ult_charge_first` → 起步额外充能 (额外模块)
 
 ### init_ratio 的提取规则
 
@@ -26,7 +26,7 @@ user-invocable: true
 
 当前实现：`v.skills?.ultimate?.init_ratio` (22 辆车有值)。未来需改为从 `vehicle_data.jsonl` 中查 `particular_skill` 再取 `init_ratio`。
 
-### ult_charge_first (开局立刻充能) 的 4 数据源
+### ult_charge_first (起步额外充能) 的 4 数据源
 
 | 优先级 | 来源 | 提取方式 | 备注 |
 |--------|------|----------|------|
@@ -75,7 +75,7 @@ vehicle JSON → data.item
   │     skillPanelGroups.ultimate/passive 中 "氮气"+"充能" 数值
   │     → 失败时逐段搜索文本 /使用氮气[\w\W]*?获得(\d+(?:\.\d+)?)%/
   │     (前端填入 valExtraNitro)
-  ├── ult_charge_first (开局立刻充能) → 见上方 4 数据源
+  ├── ult_charge_first (起步额外充能) → 见上方 4 数据源
   │     (前端填入 valExtraUltFirst)
   ├── ult_charge_loop (大招自充能) →
   │     skillPanelGroups.ultimate/passive 中 "大招"/"自身"+"充能"
