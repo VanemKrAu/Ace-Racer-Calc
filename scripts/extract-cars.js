@@ -311,6 +311,15 @@ for (const file of files) {
       }
     }
 
+    // Validate ult_charge_first: only keep if ace_time_effect mentions race start
+    if (ultChargeFirst) {
+      var aceText = v.richText?.ace_time_effect || '';
+      // "开局时获得X%" or "起步时" patterns indicate race-start bonus
+      if (!aceText.includes('开局') && !aceText.includes('起步时')) {
+        ultChargeFirst = null;
+      }
+    }
+
     cars.push({
       id: carId,
       name: v.name,
