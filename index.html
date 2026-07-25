@@ -697,7 +697,7 @@ var _CAR_IMG = {
                        <div style="display: flex; align-items: center; gap: 10px; flex-shrink: 0;">
                            <span class="dropdown-icon" style="font-size: 12px; transition: transform 0.3s;">▼</span>
                            <div style="width: 1px; height: 14px; background: var(--warning); opacity: 0.4;"></div>
-                            <button onclick="event.preventDefault(); event.stopPropagation(); closeTutorial();" style="background: transparent; border: none; color: var(--warning); font-size: 18px; cursor: pointer; opacity: 0.7; transition: opacity 0.2s; padding: 0 4px; display: flex; align-items: center;" onmouseover="this.style.opacity='1'" onmouseout="this.style.opacity='0.7'" title="\u4E0D\u518D\u663E\u793A / Dismiss">
+                            <button id="closeTutorialBtn" onclick="event.preventDefault(); event.stopPropagation(); closeTutorial();" style="background: transparent; border: none; color: var(--warning); font-size: 18px; cursor: pointer; opacity: 0.7; transition: opacity 0.2s; padding: 0 4px; display: flex; align-items: center;" onmouseover="this.style.opacity='1'" onmouseout="this.style.opacity='0.7'">
                                ×
                            </button>
                        </div>
@@ -818,6 +818,50 @@ var _CAR_IMG = {
         return currentLang === 'en'
             ? ({'竞速位':'Racing','辅助位':'Support','干扰位':'Interfere','天平位':'Balance'})[p] || p
             : p;
+    }
+    function _setQualityBg(car) {
+        var img = document.getElementById('carImage');
+        var wrap = document.getElementById('carImgWrap');
+        if (!img || !wrap) return;
+        var map = {'普通':['#55b685','#55b685'],'稀有':['#38bdf8','#38bdf8'],'史诗':['#c084fc','#c084fc'],'传说':['#fbbf24','#fbbf24']};
+        var pair = map[car.quality];
+        // Remove old bar
+        var oldBar = document.getElementById('carQualityBar');
+        if (oldBar) oldBar.remove();
+        if (pair) {
+            wrap.style.position = 'relative';
+            var bar = document.createElement('div');
+            bar.id = 'carQualityBar';
+            bar.style.cssText = 'position:absolute;top:0;left:0;right:0;height:3px;border-radius:12px 12px 0 0;z-index:2;background:linear-gradient(90deg,transparent 0%,' + pair[1] + ' 35%,' + pair[1] + ' 65%,transparent 100%);';
+            wrap.insertBefore(bar, wrap.firstChild);
+        } else {
+            wrap.style.position = '';
+        }
+        // Set quality badge
+        var tags = document.getElementById('carPreviewTags');
+        if (!tags) return;
+        var q = car.quality;
+        var p = car.position;
+        var s = car.specialization;
+        var html = '';
+        if (q) {
+            var qc = map[q] ? map[q][1] : '#94a3b8';
+            html += '<span style=\"display:inline-flex;align-items:center;gap:4px;padding:2px 10px;border-radius:6px;font-size:12px;font-weight:bold;color:' + qc + ';background:' + qc + '22;border:1px solid ' + qc + '44;\">' + q + '</span>';
+        }
+        if (p) {
+            var pi = getPosIcon(p);
+            html += '<span style=\"display:inline-flex;align-items:center;gap:4px;padding:2px 10px;border-radius:6px;font-size:12px;color:var(--text-muted);background:var(--box-bg);border:1px solid var(--border);\">' + (pi ? '<img src=\"' + pi + '\" style=\"width:14px;height:14px;\">' : '') + _pos(p) + '</span>';
+        }
+        if (s) {
+            var si = getSpecIcon(s);
+            html += '<span style=\"display:inline-flex;align-items:center;gap:4px;padding:2px 10px;border-radius:6px;font-size:12px;color:var(--text-muted);background:var(--box-bg);border:1px solid var(--border);\">' + (si ? '<img src=\"' + si + '\" style=\"width:14px;height:14px;\">' : '') + _spec(s) + '</span>';
+        }
+        if (html) {
+            tags.innerHTML = html;
+            tags.style.display = 'flex';
+        } else {
+            tags.style.display = 'none';
+        }
     }
 
     function calcMaxHuineng(chipSlots) {
@@ -942,8 +986,6 @@ var _CAR_IMG = {
         document.getElementById('carPreviewPlaceholder').style.display = 'none';
         document.getElementById('carPreviewName').style.display = '';
         document.getElementById('carPreviewName').textContent = _n(car) + ' (' + _pos(car.position) + ')';
-        document.getElementById('carPreviewInfo').style.display = '';
-        document.getElementById('carPreviewInfo').textContent = 'ace_charge: ' + (car.ace_charge || '?') + ' | ' + _spec(car.specialization) + (car.ult_type ? ' | ' + car.ult_type : '') + (car.ult_duration ? ' | ' + _("大招时长:","Ult Dur:") + ' ' + car.ult_duration + 's' : '');
         var filledItems = [_("大招阈值","Ult Threshold"), _("基础双充","Base Dual Charge"), _("氮气时长","Nitro Dur")];
         if (car.ult_duration) filledItems.push(_("大招时长","Ult Dur"));
         if (car.ult_charge_first) filledItems.push(_("起步额外充能","Start Bonus"));
@@ -974,6 +1016,7 @@ var _CAR_IMG = {
         var img = document.getElementById('carImage');
         img.onerror = function() { this.src = _ICONS['icon_mhyck_m.png']; this.onerror = null; };
         img.src = _CAR_IMG[car.id] || ('data/26-07-15_29734784_android/full/' + encodeURI(car.asset_dir + '/body/' + car.id + '_m.png'));
+        _setQualityBg(car);
         img.alt = _n(car);
         img.style.display = '';
         img.loading = 'lazy';
@@ -1049,6 +1092,12 @@ var _CAR_IMG = {
             document.getElementById('carPreviewChips').style.display = 'none';
             document.getElementById('carPreviewAutoMsg').style.display = 'none';
             var img = document.getElementById('carImage');
+            var wrap = document.getElementById('carImgWrap');
+            if (wrap) wrap.style.position = '';
+            var oldBar = document.getElementById('carQualityBar');
+            if (oldBar) oldBar.remove();
+            var ut = document.getElementById('carPreviewTags');
+            if (ut) ut.style.display = 'none';
             img.src = _ICONS['icon_mhyck_m.png'];
             img.alt = _("未上线车辆", "Unreleased Car");
             img.style.display = '';
@@ -1149,8 +1198,6 @@ var _CAR_IMG = {
         document.getElementById('carPreviewPlaceholder').style.display = 'none';
         document.getElementById('carPreviewName').style.display = '';
         document.getElementById('carPreviewName').textContent = _n(car) + ' (' + _pos(car.position) + ')';
-        document.getElementById('carPreviewInfo').style.display = '';
-        document.getElementById('carPreviewInfo').textContent = 'ace_charge: ' + (car.ace_charge || '?') + ' | ' + _spec(car.specialization) + (car.ult_type ? ' | ' + car.ult_type : '') + (car.ult_duration ? ' | ' + _("大招时长:","Ult Dur:") + ' ' + car.ult_duration + 's' : '');
         // Show auto-fill info message
         document.getElementById('carPreviewAutoMsg').style.display = '';
         // Build green message dynamically
@@ -1188,6 +1235,7 @@ var _CAR_IMG = {
         // Try local image, fallback to placeholder on error
         img.onerror = function() { this.src = _ICONS['icon_mhyck_m.png']; this.onerror = null; };
         img.src = _CAR_IMG[car.id] || ('data/26-07-15_29734784_android/full/' + encodeURI(car.asset_dir + '/body/' + car.id + '_m.png'));
+        _setQualityBg(car);
         img.alt = _n(car);
         img.style.display = '';
         img.loading = 'lazy';
@@ -1276,13 +1324,16 @@ var _CAR_IMG = {
 
             <div id="carPreview">
                     <div class="card" style="text-align:center;">
-                        <img id="carImage" src="" alt="" loading="lazy" style="max-width:100%;border-radius:12px;max-height:200px;background:var(--box-bg);padding:8px;" onerror="this.style.display='none'">
+                        <div id="carImgWrap" style="display:inline-block;max-width:100%;">
+                            <img id="carImage" src="" alt="" loading="lazy" style="max-width:100%;border-radius:12px;max-height:200px;padding:8px;background:var(--box-bg);" onerror="this.style.display='none'">
+                        </div>
                         <script>document.getElementById('carImage').src = (_ICONS||{})['icon_mhyck_m.png'] || 'data/icon/icon_mhyck_m.png';</script>
                         <div id="carPreviewPlaceholder" style="padding:40px 20px;color:var(--text-muted);font-size:14px;">
                             <span class="zh">请选择一辆赛车</span><span class="lang-en">Select a car</span>
                         </div>
                         <div id="carPreviewName" style="margin-top:8px;font-size:14px;color:var(--text-color);font-weight:bold;display:none;"></div>
-                        <div id="carPreviewInfo" style="font-size:12px;color:var(--text-muted);display:none;"></div>
+                        <div id="carPreviewTags" style="display:none;margin-top:6px;gap:6px;justify-content:center;flex-wrap:wrap;"></div>
+                        <div id="carPreviewInfo" style="display:none;"></div>
                         <div id="carPreviewAutoMsg" style="font-size:11px;color:var(--success);margin-top:6px;display:none;padding:6px 10px;background:rgba(76,223,138,0.08);border-radius:6px;"></div>
                         <div id="carPreviewChips" style="display:none;margin-top:8px;gap:4px;justify-content:center;"></div>
                     </div>
@@ -3144,8 +3195,11 @@ var _CAR_IMG = {
 
        initTheme();
 
-       function initApp() {
-           if (currentLang === 'en') document.body.classList.add('en-mode');
+        function initApp() {
+            if (currentLang === 'en') document.body.classList.add('en-mode');
+
+            var ctb = document.getElementById('closeTutorialBtn');
+            if (ctb) ctb.title = currentLang === 'en' ? 'Dismiss' : '不再显示';
 
            updateAutoCalcUI();
            updateNitroCountUI();
@@ -3184,6 +3238,8 @@ var _CAR_IMG = {
                 metaAppTitle.content = currentLang === 'en' ? 'Ace Calc' : '王牌计算器';
             }
             document.getElementById('langBtnText').textContent = currentLang === 'en' ? '中文 / English' : 'English / 中文';
+            var ctb = document.getElementById('closeTutorialBtn');
+            if (ctb) ctb.title = currentLang === 'en' ? 'Dismiss' : '不再显示';
             
             // Refresh UI for language switch
             document.getElementById('carSearch').placeholder = currentLang === 'en' ? 'Search car name...' : '搜索赛车名称...';
