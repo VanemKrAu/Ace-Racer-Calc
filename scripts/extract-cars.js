@@ -413,6 +413,7 @@ for (const file of files) {
       })(),
       position: (v.positionLabel || '').replace('天平位（干扰）', '天平位').replace('天平位（竞速）', '天平位') || null,
       specialization: v.specialization || null,
+      quality: v.quality || null,
       ace_charge: baseTier?.stats?.charge?.ace_charge || null,
       ult_duration: ultDuration,
       ult_type: ultType,
