@@ -306,7 +306,12 @@ for (const file of files) {
       ];
       for (var ti2 = 0; ti2 < textBlocks2.length; ti2++) {
         var uM = textBlocks2[ti2].match(reLoop);
-        if (uM) { ultChargeLoop = parseFloat(uM[1]); break; }
+        if (uM) {
+          // Skip "每秒自充能" (per-second), that's a different field
+          var before = textBlocks2[ti2].slice(Math.max(0, uM.index - 4), uM.index);
+          if (before.includes('每秒')) continue;
+          ultChargeLoop = parseFloat(uM[1]); break;
+        }
       }
     }
 
