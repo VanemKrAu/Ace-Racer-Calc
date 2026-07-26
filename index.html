@@ -625,10 +625,6 @@ var _CAR_IMG = {
         .car-info-bar { margin-top: 12px; padding: 12px; background: var(--box-bg); border: 1px solid var(--border); border-radius: 10px; font-size: 12px; color: var(--text-muted); display: flex; align-items: center; gap: 12px; flex-wrap: wrap; }
         .car-info-bar b { color: var(--primary); }
         .dropdown-option.selected { background: rgba(155,81,224,0.15); color: var(--secondary); }
-        .dropdown-option.sel-common { background: rgba(85,182,133,0.15); color: #55b685; }
-        .dropdown-option.sel-rare { background: rgba(56,189,248,0.15); color: #38bdf8; }
-        .dropdown-option.sel-epic { background: rgba(192,132,252,0.15); color: #c084fc; }
-        .dropdown-option.sel-legend { background: rgba(251,191,36,0.15); color: #fbbf24; }
         .car-search-box { position: relative; }
         .car-badge { font-size: 10px; padding: 1px 6px; border-radius: 4px; background: var(--box-bg); border: 1px solid var(--border); color: var(--text-muted); }
 
@@ -947,8 +943,7 @@ var _CAR_IMG = {
             if (posIcon) icons += '<img src=\"' + posIcon + '\" style=\"width:18px;height:18px;vertical-align:middle;\">';
             if (specIcon) icons += '<img src=\"' + specIcon + '\" style=\"width:18px;height:18px;vertical-align:middle;margin-left:4px;\">';
             var sel = (_selectedCarId === c.id) ? ' selected' : '';
-            var selQ = (_selectedCarId === c.id) ? ({'普通':' sel-common','稀有':' sel-rare','史诗':' sel-epic','传说':' sel-legend'})[c.quality] || '' : '';
-            html += '<div class=\"dropdown-option' + sel + selQ + '\" data-id=\"' + c.id + '\" data-pos=\"' + (c.position||'') + '\" data-spec=\"' + (c.specialization||'') + '\" onclick=\"pickCar(' + c.id + ');document.getElementById(\'carDropdown\').classList.remove(\'show\');\">'
+            html += '<div class=\"dropdown-option' + sel + '\" data-id=\"' + c.id + '\" data-pos=\"' + (c.position||'') + '\" data-spec=\"' + (c.specialization||'') + '\" onclick=\"pickCar(' + c.id + ');document.getElementById(\'carDropdown\').classList.remove(\'show\');\">'
                 + '<span style=\"flex:1;\">' + icons + ' ' + _n(c) + '</span>'
                 + '<span style=\"font-size:11px;color:var(--text-muted);\">[' + (c.ace_charge || '?') + ']' + (c.ult_duration ? ' ' + c.ult_duration + 's' : '') + '</span>'
                 + '</div>';
