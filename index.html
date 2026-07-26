@@ -1018,12 +1018,27 @@ var _CAR_IMG = {
         img.onerror = function() { this.src = _ICONS['icon_mhyck_m.png']; this.onerror = null; };
         img.src = _CAR_IMG[car.id] || ('data/26-07-15_29734784_android/full/' + encodeURI(car.asset_dir + '/body/' + car.id + '_m.png'));
         _setQualityBg(car);
-        // Sync checkbox height to input
+        // Sync checkbox card
+        var _sl = document.getElementById('specLabel');
         var _si = document.getElementById('baseUltDuration');
-        var _sc = document.getElementById('isSpec');
-        if (_si && _sc) {
-            var _rg = _sc.closest('.row-grid');
-            if (_rg) { var _cc = _rg.querySelector('div:last-child > div'); if (_cc) _cc.style.minHeight = _si.offsetHeight + 'px'; }
+        if (_sl && _si) {
+            // Match height to input
+            _sl.parentElement.style.minHeight = _si.offsetHeight + 'px';
+            // Measure and auto-shrink font if needed
+            var _sc = document.getElementById('isSpec');
+            var _rg = _sc ? _sc.closest('.row-grid') : null;
+            if (_rg) {
+                var _rc = _rg.querySelector('div:last-child');
+                if (_rc) {
+                    var avail = _rc.offsetWidth - 28; // minus 2*14px padding
+                    if (avail > 0 && _sl.scrollWidth > avail) {
+                        var ratio = avail / _sl.scrollWidth;
+                        _sl.style.fontSize = Math.max(9, Math.round(14 * ratio * 10) / 10) + 'px';
+                    } else {
+                        _sl.style.fontSize = '14px';
+                    }
+                }
+            }
         }
         img.alt = _n(car);
         img.style.display = '';
@@ -1248,12 +1263,27 @@ var _CAR_IMG = {
         img.onerror = function() { this.src = _ICONS['icon_mhyck_m.png']; this.onerror = null; };
         img.src = _CAR_IMG[car.id] || ('data/26-07-15_29734784_android/full/' + encodeURI(car.asset_dir + '/body/' + car.id + '_m.png'));
         _setQualityBg(car);
-        // Sync checkbox height to input
+        // Sync checkbox card
+        var _sl = document.getElementById('specLabel');
         var _si = document.getElementById('baseUltDuration');
-        var _sc = document.getElementById('isSpec');
-        if (_si && _sc) {
-            var _rg = _sc.closest('.row-grid');
-            if (_rg) { var _cc = _rg.querySelector('div:last-child > div'); if (_cc) _cc.style.minHeight = _si.offsetHeight + 'px'; }
+        if (_sl && _si) {
+            // Match height to input
+            _sl.parentElement.style.minHeight = _si.offsetHeight + 'px';
+            // Measure and auto-shrink font if needed
+            var _sc = document.getElementById('isSpec');
+            var _rg = _sc ? _sc.closest('.row-grid') : null;
+            if (_rg) {
+                var _rc = _rg.querySelector('div:last-child');
+                if (_rc) {
+                    var avail = _rc.offsetWidth - 28; // minus 2*14px padding
+                    if (avail > 0 && _sl.scrollWidth > avail) {
+                        var ratio = avail / _sl.scrollWidth;
+                        _sl.style.fontSize = Math.max(9, Math.round(14 * ratio * 10) / 10) + 'px';
+                    } else {
+                        _sl.style.fontSize = '14px';
+                    }
+                }
+            }
         }
         img.alt = _n(car);
         img.style.display = '';
@@ -1501,7 +1531,7 @@ var _CAR_IMG = {
                              </div>
                              <div style="flex:1 1 50%;">
                                  <div style="display:flex;align-items:center;background:var(--inner-bg);border:1px solid var(--border);border-radius:10px;padding:12px 14px;width:100%;box-sizing:border-box;">
-                                     <label style="display: flex; align-items: center; gap: 6px; font-size: clamp(9px, 2.5vw, 14px); color: var(--text-muted); cursor: pointer;white-space:nowrap;height:19px;">
+                                     <label id="specLabel" style="display: flex; align-items: center; gap: 6px; font-size: 14px; color: var(--text-muted); cursor: pointer;white-space:nowrap;height:19px;">
                                          <input type="checkbox" id="isSpec" checked onchange="triggerAutoCalc(currentActiveField); calculate();" style="width: 15px; height: 15px; accent-color: var(--primary); flex-shrink:0;"> <span class="zh">专精地图 (基础10%折算)</span><span class="lang-en">Specialty Map (10% base)</span>
                                      </label>
                                  </div>
@@ -3237,7 +3267,25 @@ var _CAR_IMG = {
            }
        }
        
-       initApp();
+        initApp();
+
+        // Re-sync checkbox layout on resize
+        var _resizeTimer;
+        window.addEventListener('resize', function() {
+            clearTimeout(_resizeTimer);
+            _resizeTimer = setTimeout(function() {
+                var _sl = document.getElementById('specLabel');
+                if (!_sl) return;
+                _sl.style.fontSize = '14px';
+                var _rg = _sl.closest('.row-grid');
+                var _rc = _rg ? _rg.querySelector('div:last-child') : null;
+                if (!_rc) return;
+                var avail = _rc.offsetWidth - 28;
+                if (avail > 0 && _sl.scrollWidth > avail) {
+                    _sl.style.fontSize = Math.max(9, Math.round(14 * avail / _sl.scrollWidth * 10) / 10) + 'px';
+                }
+            }, 100);
+        });
 
        if ('serviceWorker' in navigator) {
            window.addEventListener('load', function() {
