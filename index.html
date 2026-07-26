@@ -997,7 +997,7 @@ var _CAR_IMG = {
         } else {
             msgHtml += _('<br><span style=\"color:var(--warning);font-weight:bold;\">⚠️ 其他参数请手动调整</span>', '<br><span style=\"color:var(--warning);font-weight:bold;\">⚠️ Other params need manual tuning</span>');
         }
-        msgHtml += _('<br>\u8BE6\u7EC6\u8F66\u8F86\u6280\u80FD\u8BF7\u53C2\u8003 \u2192', '<br>Details \u2192') + ' <a href=\"https://reca.seimu.cn/ace-racer-admin/vehicles/' + car.id + '\" target=\"_blank\" style=\"color:var(--primary);text-decoration:underline;font-weight:bold;\">' + '瑞卡情报站-' + _n(car) + '</a>';
+        msgHtml += _('<br>\u8BE6\u7EC6\u8F66\u8F86\u6280\u80FD\u8BF7\u53C2\u8003 \u2192', '<br>Details \u2192') + ' <a href=\"https://reca.seimu.cn/ace-racer-admin/vehicles/' + car.id + '\" target=\"_blank\" style=\"color:var(--primary);text-decoration:underline;font-weight:bold;\">' + _('瑞卡情报站-', 'Racer Information Station-') + _n(car) + '</a>';
         document.getElementById('carPreviewAutoMsg').innerHTML = msgHtml;
         var chipInfo = document.getElementById('carPreviewChips');
         if (car.chip_slots) {
@@ -1215,7 +1215,7 @@ var _CAR_IMG = {
         } else {
             msgHtml += _('<br><span style=\"color:var(--warning);font-weight:bold;\">⚠️ 其他参数请手动调整</span>', '<br><span style=\"color:var(--warning);font-weight:bold;\">⚠️ Other params need manual tuning</span>');
         }
-        msgHtml += _('<br>\u8BE6\u7EC6\u8F66\u8F86\u6280\u80FD\u8BF7\u53C2\u8003 \u2192', '<br>Details \u2192') + ' <a href=\"https://reca.seimu.cn/ace-racer-admin/vehicles/' + car.id + '\" target=\"_blank\" style=\"color:var(--primary);text-decoration:underline;font-weight:bold;\">' + '瑞卡情报站-' + _n(car) + '</a>';
+        msgHtml += _('<br>\u8BE6\u7EC6\u8F66\u8F86\u6280\u80FD\u8BF7\u53C2\u8003 \u2192', '<br>Details \u2192') + ' <a href=\"https://reca.seimu.cn/ace-racer-admin/vehicles/' + car.id + '\" target=\"_blank\" style=\"color:var(--primary);text-decoration:underline;font-weight:bold;\">' + _('瑞卡情报站-', 'Racer Information Station-') + _n(car) + '</a>';
         document.getElementById('carPreviewAutoMsg').innerHTML = msgHtml;
         var chipInfo = document.getElementById('carPreviewChips');
         if (car.chip_slots) {
