@@ -1029,8 +1029,10 @@ var _CAR_IMG = {
             var _lc = _rg.querySelector('.form-group');
             var _rc = _rg.querySelector('div:last-child');
             if (!_lc || !_rc) return;
-            // Reset to flex default
-            _lc.style.flex = ''; _lc.style.width = ''; _lc.style.maxWidth = '';
+            // Set left to 50%, right fills rest
+            _lc.style.flex = 'none';
+            _lc.style.width = '50%';
+            _lc.style.maxWidth = '50%';
             _rc.style.flex = '1'; _rc.style.minWidth = '0';
             // Measure and calculate
             var totalW = _rg.offsetWidth - 12; // minus gap
@@ -1287,8 +1289,10 @@ var _CAR_IMG = {
             var _lc = _rg.querySelector('.form-group');
             var _rc = _rg.querySelector('div:last-child');
             if (!_lc || !_rc) return;
-            // Reset to flex default
-            _lc.style.flex = ''; _lc.style.width = ''; _lc.style.maxWidth = '';
+            // Set left to 50%, right fills rest
+            _lc.style.flex = 'none';
+            _lc.style.width = '50%';
+            _lc.style.maxWidth = '50%';
             _rc.style.flex = '1'; _rc.style.minWidth = '0';
             // Measure and calculate
             var totalW = _rg.offsetWidth - 12; // minus gap
@@ -3307,7 +3311,7 @@ var _CAR_IMG = {
                 var _lc = _rg.querySelector('.form-group');
                 var _rc = _rg.querySelector('div:last-child');
                 if (!_lc || !_rc) return;
-                _lc.style.flex = ''; _lc.style.width = ''; _lc.style.maxWidth = '';
+                _lc.style.flex = 'none'; _lc.style.width = '50%'; _lc.style.maxWidth = '50%';
                 _rc.style.flex = '1'; _rc.style.minWidth = '0';
                 var totalW = _rg.offsetWidth - 12;
                 var leftMax = totalW * 0.5;
