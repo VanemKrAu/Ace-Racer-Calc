@@ -1026,7 +1026,7 @@ var _CAR_IMG = {
             if (!_sl || !_si || !_rg) return;
             _sl.style.fontSize = '14px';
             _sl.parentElement.style.minHeight = _si.offsetHeight + 'px';
-            // CSS Grid handles column sizing (minmax(33.33%,50%) 1fr)
+            // Flex 0 1 50%/both: equal shrink when container narrow
             var _rc = _rg.lastElementChild;
             if (!_rc) return;
             var pad = 28;
@@ -1266,7 +1266,7 @@ var _CAR_IMG = {
             if (!_sl || !_si || !_rg) return;
             _sl.style.fontSize = '14px';
             _sl.parentElement.style.minHeight = _si.offsetHeight + 'px';
-            // CSS Grid handles column sizing (minmax(33.33%,50%) 1fr)
+            // Flex 0 1 50%/both: equal shrink when container narrow
             var _rc = _rg.lastElementChild;
             if (!_rc) return;
             var pad = 28;
@@ -1510,23 +1510,23 @@ var _CAR_IMG = {
                            </div>
                        </div>
                        
-                          <div id="specGrid" style="display:grid;grid-template-columns:minmax(33.33%,50%) 1fr;gap:12px;align-items:flex-end;margin-top:12px;">
-                             <div style="min-width:0;">
-                                 <label class="form-label" style="color: var(--primary);"><span class="zh">100%能量大招时长</span><span class="lang-en">100% Energy Ult Duration</span></label>
-                                 <div style="font-size:11px; color:var(--success); margin-bottom: 6px;" id="actualUltTimeSpan"></div>
-                                 <div class="input-wrapper">
-                                     <input type="number" id="baseUltDuration" class="form-control" value="5.0" step="0.1" oninput="triggerAutoCalc(currentActiveField); calculate();">
-                                     <span class="input-unit"><span class="zh">秒</span><span class="lang-en">s</span></span>
-                                 </div>
-                             </div>
-                             <div style="min-width:0;">
-                                 <div style="display:flex;align-items:center;background:var(--inner-bg);border:1px solid var(--border);border-radius:10px;padding:12px 14px;width:100%;box-sizing:border-box;overflow:hidden;">
-                                     <label id="specLabel" style="display: flex; align-items: center; gap: 6px; font-size: 14px; color: var(--text-muted); cursor: pointer;white-space:nowrap;height:19px;">
-                                         <input type="checkbox" id="isSpec" checked onchange="triggerAutoCalc(currentActiveField); calculate();" style="width: 15px; height: 15px; accent-color: var(--primary); flex-shrink:0;"> <span class="zh">专精地图 (基础10%折算)</span><span class="lang-en">Specialty Map (10% base)</span>
-                                     </label>
-                                 </div>
-                             </div>
-                         </div>
+                          <div id="specGrid" style="display:flex;gap:12px;align-items:flex-end;margin-top:12px;">
+                              <div style="flex:0 1 50%;min-width:33.33%;max-width:50%;">
+                                  <label class="form-label" style="color: var(--primary);"><span class="zh">100%能量大招时长</span><span class="lang-en">100% Energy Ult Duration</span></label>
+                                  <div style="font-size:11px; color:var(--success); margin-bottom: 6px;" id="actualUltTimeSpan"></div>
+                                  <div class="input-wrapper">
+                                      <input type="number" id="baseUltDuration" class="form-control" value="5.0" step="0.1" oninput="triggerAutoCalc(currentActiveField); calculate();">
+                                      <span class="input-unit"><span class="zh">秒</span><span class="lang-en">s</span></span>
+                                  </div>
+                              </div>
+                              <div style="flex:0 1 50%;min-width:0;">
+                                  <div style="display:flex;align-items:center;background:var(--inner-bg);border:1px solid var(--border);border-radius:10px;padding:12px 14px;width:100%;box-sizing:border-box;overflow:hidden;">
+                                      <label id="specLabel" style="display: flex; align-items: center; gap: 6px; font-size: 14px; color: var(--text-muted); cursor: pointer;white-space:nowrap;height:19px;">
+                                          <input type="checkbox" id="isSpec" checked onchange="triggerAutoCalc(currentActiveField); calculate();" style="width: 15px; height: 15px; accent-color: var(--primary); flex-shrink:0;"> <span class="zh">专精地图 (基础10%折算)</span><span class="lang-en">Specialty Map (10% base)</span>
+                                      </label>
+                                  </div>
+                              </div>
+                          </div>
                    </div>
 
                    <div class="card">
@@ -3268,12 +3268,8 @@ var _CAR_IMG = {
                 var _rg = document.getElementById('specGrid');
                 if (!_sl || !_rg) return;
                 _sl.style.fontSize = '14px';
-                var _lc = _rg.firstElementChild;
                 var _rc = _rg.lastElementChild;
-                if (!_lc || !_rc) return;
-                _lc.style.width = ''; _lc.style.maxWidth = '';
-                _rc.style.minWidth = '0';
-                // CSS Grid handles column sizing; just check and shrink font if needed
+                if (!_rc) return;
                 requestAnimationFrame(function() {
                     var pad = 28;
                     var rightAvail = _rc.offsetWidth - pad;
