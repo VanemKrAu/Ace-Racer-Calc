@@ -4,7 +4,9 @@
 
 > **Ace Racer Ultimate Energy Calculator** — 由 Vanem 设定交互逻辑与计算公式，AI 辅助开发。
 
-![](https://i0.hdslb.com/bfs/openplatform/98b8c12bc7177aa56b9b3c75b3a5b1cda3fad086.jpg)
+<p align="center">
+  <img src="https://i0.hdslb.com/bfs/openplatform/98b8c12bc7177aa56b9b3c75b3a5b1cda3fad086.jpg" width="256" height="256" alt="Ace-Racer-Calc" />
+</p>
 ## 📖 项目简介
 面向网易手游《王牌竞速》的高精度能量运算工具，双轨并行测算：
 1. **首发一大（一气首大）**：判断开局是否能直接满能量释放首个大招；
