@@ -865,6 +865,37 @@ var _CAR_IMG = {
         }
     }
 
+    function _syncSpecLayout() {
+        var _sl = document.getElementById('specLabel');
+        var _si = document.getElementById('baseUltDuration');
+        var _rg = document.getElementById('specGrid');
+        var _lc = document.getElementById('specLeft');
+        var _rc = document.getElementById('specRight');
+        if (!_sl || !_si || !_rg || !_lc || !_rc) return;
+        _sl.style.fontSize = '14px';
+        _sl.parentElement.style.minHeight = _si.offsetHeight + 'px';
+        _lc.style.flex = ''; _lc.style.width = ''; _lc.style.maxWidth = '';
+        _rc.style.flex = ''; _rc.style.minWidth = '0';
+        var gap = 12; var pad = 28;
+        var total = _rg.offsetWidth - gap;
+        var leftMax = total * 0.5;
+        var leftMin = total / 3;
+        var rightW = total - leftMax;
+        var rightAvail = rightW - pad;
+        if (rightAvail > 0 && _sl.scrollWidth > rightAvail) {
+            var needRight = _sl.scrollWidth + pad;
+            var leftW = Math.max(leftMin, Math.min(leftMax, total - needRight));
+            _lc.style.flex = 'none';
+            _lc.style.width = leftW + 'px';
+            _lc.style.maxWidth = leftW + 'px';
+            rightW = total - leftW;
+            rightAvail = rightW - pad;
+            if (rightAvail > 0 && _sl.scrollWidth > rightAvail) {
+                _sl.style.fontSize = Math.max(9, Math.round(14 * rightAvail / _sl.scrollWidth * 10) / 10) + 'px';
+            }
+        }
+    }
+
     function calcMaxHuineng(chipSlots) {
         if (!chipSlots) return 50;
         var maxH = 0;
@@ -1018,34 +1049,8 @@ var _CAR_IMG = {
         img.onerror = function() { this.src = _ICONS['icon_mhyck_m.png']; this.onerror = null; };
         img.src = _CAR_IMG[car.id] || ('data/26-07-15_29734784_android/full/' + encodeURI(car.asset_dir + '/body/' + car.id + '_m.png'));
         _setQualityBg(car);
-        // Sync checkbox card (deferred for layout)
-        requestAnimationFrame(function() {
-            var _sl = document.getElementById('specLabel');
-            var _si = document.getElementById('baseUltDuration');
-            var _rg = document.getElementById('specGrid');
-            var _lc = document.getElementById('specLeft');
-            var _rc = document.getElementById('specRight');
-            if (!_sl || !_si || !_rg || !_lc || !_rc) return;
-            _sl.style.fontSize = '14px';
-            _sl.parentElement.style.minHeight = _si.offsetHeight + 'px';
-            _lc.style.flex = ''; _lc.style.width = ''; _lc.style.maxWidth = '';
-            _rc.style.flex = ''; _rc.style.minWidth = '0';
-            var gap = 12;
-            var pad = 28;
-            var total = _rg.offsetWidth - gap;
-            var leftMax = total * 0.5;
-            var leftMin = total / 3;
-            // Step 1: try 50/50
-            var rightW = total - leftMax;
-            var rightAvail = rightW - pad;
-            if (rightAvail > 0 && _sl.scrollWidth > rightAvail) {
-                // Step 2: shrink left column to give right more space
-                var needRight = _sl.scrollWidth + pad;
-                var leftW = Math.max(leftMin, Math.min(leftMax, total - needRight));
-                _lc.style.flex = 'none';
-                _lc.style.width = leftW + 'px';
-                _lc.style.maxWidth = leftW + 'px';
-                rightW = total - leftW;
+        // Sync checkbox card
+        setTimeout(function() { _syncSpecLayout(); }, 50);
                 rightAvail = rightW - pad;
                 // Step 3: if still overflow, shrink font
                 if (rightAvail > 0 && _sl.scrollWidth > rightAvail) {
@@ -1230,10 +1235,6 @@ var _CAR_IMG = {
             document.getElementById('customTrigLoopCount').value = 1;
             flashSection('extraCustomSection', ['valCustomTrig', 'customTrigFirstCount', 'customTrigLoopCount']);
         }
-        // Sync checkbox card height to input
-        var _specInput = document.getElementById('baseUltDuration');
-        var _specCard = document.getElementById('isSpec') && document.getElementById('isSpec').closest('.row-grid')?.querySelector('div:last-child > div');
-        if (_specInput && _specCard) _specCard.style.minHeight = _specInput.offsetHeight + 'px';
 
         document.getElementById('carPreviewPlaceholder').style.display = 'none';
         document.getElementById('carPreviewName').style.display = '';
@@ -1276,34 +1277,8 @@ var _CAR_IMG = {
         img.onerror = function() { this.src = _ICONS['icon_mhyck_m.png']; this.onerror = null; };
         img.src = _CAR_IMG[car.id] || ('data/26-07-15_29734784_android/full/' + encodeURI(car.asset_dir + '/body/' + car.id + '_m.png'));
         _setQualityBg(car);
-        // Sync checkbox card (deferred for layout)
-        requestAnimationFrame(function() {
-            var _sl = document.getElementById('specLabel');
-            var _si = document.getElementById('baseUltDuration');
-            var _rg = document.getElementById('specGrid');
-            var _lc = document.getElementById('specLeft');
-            var _rc = document.getElementById('specRight');
-            if (!_sl || !_si || !_rg || !_lc || !_rc) return;
-            _sl.style.fontSize = '14px';
-            _sl.parentElement.style.minHeight = _si.offsetHeight + 'px';
-            _lc.style.flex = ''; _lc.style.width = ''; _lc.style.maxWidth = '';
-            _rc.style.flex = ''; _rc.style.minWidth = '0';
-            var gap = 12;
-            var pad = 28;
-            var total = _rg.offsetWidth - gap;
-            var leftMax = total * 0.5;
-            var leftMin = total / 3;
-            // Step 1: try 50/50
-            var rightW = total - leftMax;
-            var rightAvail = rightW - pad;
-            if (rightAvail > 0 && _sl.scrollWidth > rightAvail) {
-                // Step 2: shrink left column to give right more space
-                var needRight = _sl.scrollWidth + pad;
-                var leftW = Math.max(leftMin, Math.min(leftMax, total - needRight));
-                _lc.style.flex = 'none';
-                _lc.style.width = leftW + 'px';
-                _lc.style.maxWidth = leftW + 'px';
-                rightW = total - leftW;
+        // Sync checkbox card
+        setTimeout(function() { _syncSpecLayout(); }, 50);
                 rightAvail = rightW - pad;
                 // Step 3: if still overflow, shrink font
                 if (rightAvail > 0 && _sl.scrollWidth > rightAvail) {
@@ -3296,34 +3271,20 @@ var _CAR_IMG = {
         initApp();
 
         // Re-sync checkbox layout on resize
+        // Re-sync checkbox on resize
         var _resizeTimer;
         window.addEventListener('resize', function() {
             clearTimeout(_resizeTimer);
-            _resizeTimer = setTimeout(function() {
-                var _sl = document.getElementById('specLabel');
-                var _rg = document.getElementById('specGrid');
-                var _lc = document.getElementById('specLeft');
-                var _rc = document.getElementById('specRight');
-                if (!_sl || !_rg || !_lc || !_rc) return;
-                _sl.style.fontSize = '14px';
-                _lc.style.flex = ''; _lc.style.width = ''; _lc.style.maxWidth = '';
-                var gap = 12; var pad = 28;
-                var total = _rg.offsetWidth - gap;
-                var leftMax = total * 0.5;
-                var leftMin = total / 3;
-                var rightW = total - leftMax;
-                var rightAvail = rightW - pad;
-                if (rightAvail > 0 && _sl.scrollWidth > rightAvail) {
-                    var needRight = _sl.scrollWidth + pad;
-                    var leftW = Math.max(leftMin, Math.min(leftMax, total - needRight));
-                    _lc.style.flex = 'none'; _lc.style.width = leftW + 'px'; _lc.style.maxWidth = leftW + 'px';
-                    rightW = total - leftW; rightAvail = rightW - pad;
-                    if (rightAvail > 0 && _sl.scrollWidth > rightAvail) {
-                        _sl.style.fontSize = Math.max(9, Math.round(14 * rightAvail / _sl.scrollWidth * 10) / 10) + 'px';
-                    }
-                }
-            }, 100);
+            _resizeTimer = setTimeout(function() { if (typeof _syncSpecLayout === 'function') _syncSpecLayout(); }, 100);
         });
+        // Use ResizeObserver for reliable mobile layout detection
+        if (window.ResizeObserver) {
+            var _roTarget = document.getElementById('specGrid');
+            if (_roTarget) {
+                var _ro = new ResizeObserver(function() { if (typeof _syncSpecLayout === 'function') _syncSpecLayout(); });
+                _ro.observe(_roTarget);
+            }
+        }
 
        if ('serviceWorker' in navigator) {
            window.addEventListener('load', function() {
