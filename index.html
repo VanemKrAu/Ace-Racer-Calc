@@ -874,22 +874,23 @@ var _CAR_IMG = {
         if (!_sl || !_si || !_rg || !_lc || !_rc) return;
         _sl.style.fontSize = '14px';
         _sl.parentElement.style.minHeight = _si.offsetHeight + 'px';
-        _lc.style.flex = ''; _lc.style.width = ''; _lc.style.maxWidth = '';
-        _rc.style.flex = ''; _rc.style.minWidth = '0';
+        // Right column always fills remaining space
+        _rc.style.flex = '1'; _rc.style.minWidth = '0';
+        // Start: left at 50%, right fills rest
+        _lc.style.flex = '0 0 50%'; _lc.style.maxWidth = '50%'; _lc.style.width = '';
         var gap = 12; var pad = 28;
         var total = _rg.offsetWidth - gap;
         var leftMax = total * 0.5;
         var leftMin = total / 3;
-        var rightW = total - leftMax;
-        var rightAvail = rightW - pad;
+        var rightAvail = total - leftMax - pad;
         if (rightAvail > 0 && _sl.scrollWidth > rightAvail) {
+            // Shrink left column to give right more space
             var needRight = _sl.scrollWidth + pad;
             var leftW = Math.max(leftMin, Math.min(leftMax, total - needRight));
             _lc.style.flex = 'none';
             _lc.style.width = leftW + 'px';
             _lc.style.maxWidth = leftW + 'px';
-            rightW = total - leftW;
-            rightAvail = rightW - pad;
+            rightAvail = total - leftW - pad;
             if (rightAvail > 0 && _sl.scrollWidth > rightAvail) {
                 _sl.style.fontSize = Math.max(9, Math.round(14 * rightAvail / _sl.scrollWidth * 10) / 10) + 'px';
             }
