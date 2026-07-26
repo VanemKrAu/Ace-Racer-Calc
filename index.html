@@ -1018,6 +1018,13 @@ var _CAR_IMG = {
         img.onerror = function() { this.src = _ICONS['icon_mhyck_m.png']; this.onerror = null; };
         img.src = _CAR_IMG[car.id] || ('data/26-07-15_29734784_android/full/' + encodeURI(car.asset_dir + '/body/' + car.id + '_m.png'));
         _setQualityBg(car);
+        // Sync checkbox height to input
+        var _si = document.getElementById('baseUltDuration');
+        var _sc = document.getElementById('isSpec');
+        if (_si && _sc) {
+            var _rg = _sc.closest('.row-grid');
+            if (_rg) { var _cc = _rg.querySelector('div:last-child > div'); if (_cc) _cc.style.minHeight = _si.offsetHeight + 'px'; }
+        }
         img.alt = _n(car);
         img.style.display = '';
         img.loading = 'lazy';
@@ -1195,6 +1202,10 @@ var _CAR_IMG = {
             document.getElementById('customTrigLoopCount').value = 1;
             flashSection('extraCustomSection', ['valCustomTrig', 'customTrigFirstCount', 'customTrigLoopCount']);
         }
+        // Sync checkbox card height to input
+        var _specInput = document.getElementById('baseUltDuration');
+        var _specCard = document.getElementById('isSpec') && document.getElementById('isSpec').closest('.row-grid')?.querySelector('div:last-child > div');
+        if (_specInput && _specCard) _specCard.style.minHeight = _specInput.offsetHeight + 'px';
 
         document.getElementById('carPreviewPlaceholder').style.display = 'none';
         document.getElementById('carPreviewName').style.display = '';
@@ -1237,6 +1248,13 @@ var _CAR_IMG = {
         img.onerror = function() { this.src = _ICONS['icon_mhyck_m.png']; this.onerror = null; };
         img.src = _CAR_IMG[car.id] || ('data/26-07-15_29734784_android/full/' + encodeURI(car.asset_dir + '/body/' + car.id + '_m.png'));
         _setQualityBg(car);
+        // Sync checkbox height to input
+        var _si = document.getElementById('baseUltDuration');
+        var _sc = document.getElementById('isSpec');
+        if (_si && _sc) {
+            var _rg = _sc.closest('.row-grid');
+            if (_rg) { var _cc = _rg.querySelector('div:last-child > div'); if (_cc) _cc.style.minHeight = _si.offsetHeight + 'px'; }
+        }
         img.alt = _n(car);
         img.style.display = '';
         img.loading = 'lazy';
@@ -1484,7 +1502,7 @@ var _CAR_IMG = {
                             <div style="flex:1;">
                                 <div style="display:flex;align-items:center;background:var(--inner-bg);border:1px solid var(--border);border-radius:10px;padding:12px 14px;width:100%;box-sizing:border-box;">
                                     <label style="display: flex; align-items: center; gap: 6px; font-size: 11.5px; color: var(--text-muted); cursor: pointer;width:100%;">
-                                        <input type="checkbox" id="isSpec" checked onchange="triggerAutoCalc(currentActiveField); calculate();" style="width: 15px; height: 15px; accent-color: var(--primary); flex-shrink:0;"> <span class="zh" style="line-height:19px;display:inline-block;">专精地图 (基础10%折算)</span><span class="lang-en" style="line-height:19px;display:inline-block;">Specialty Map (10% base)</span>
+                                        <input type="checkbox" id="isSpec" checked onchange="triggerAutoCalc(currentActiveField); calculate();" style="width: 15px; height: 15px; accent-color: var(--primary); flex-shrink:0;"> <span class="zh">专精地图 (基础10%折算)</span><span class="lang-en">Specialty Map (10% base)</span>
                                     </label>
                                 </div>
                             </div>
@@ -3241,6 +3259,12 @@ var _CAR_IMG = {
             document.getElementById('langBtnText').textContent = currentLang === 'en' ? '中文 / English' : 'English / 中文';
             var ctb = document.getElementById('closeTutorialBtn');
             if (ctb) ctb.title = currentLang === 'en' ? 'Dismiss' : '不再显示';
+            // Sync checkbox height on init
+            setTimeout(function(){
+                var _si = document.getElementById('baseUltDuration');
+                var _sc = document.getElementById('isSpec');
+                if (_si && _sc) { var _rg = _sc.closest('.row-grid'); if (_rg) { var _cc = _rg.querySelector('div:last-child > div'); if (_cc) _cc.style.minHeight = _si.offsetHeight + 'px'; } }
+            }, 50);
             
             // Refresh UI for language switch
             document.getElementById('carSearch').placeholder = currentLang === 'en' ? 'Search car name...' : '搜索赛车名称...';
