@@ -1472,23 +1472,23 @@ var _CAR_IMG = {
                            </div>
                        </div>
                        
-                       <div class="row-grid" style="margin-top:12px;">
-                           <div class="form-group" style="margin-bottom:0;">
-                               <label class="form-label" style="color: var(--primary);"><span class="zh">100%能量大招时长</span><span class="lang-en">100% Energy Ult Duration</span></label>
-                               <div style="font-size:11px; color:var(--success); margin-bottom: 6px;" id="actualUltTimeSpan"></div>
-                               <div class="input-wrapper">
-                                   <input type="number" id="baseUltDuration" class="form-control" value="5.0" step="0.1" oninput="triggerAutoCalc(currentActiveField); calculate();">
-                                   <span class="input-unit"><span class="zh">秒</span><span class="lang-en">s</span></span>
-                               </div>
-                           </div>
-                           <div style="flex:1; display:flex; align-items:flex-end;">
-                               <div style="width:100%; display: flex; align-items: center; justify-content: space-between; background: var(--inner-bg); padding: 11px; border-radius: 10px; border: 1px solid var(--border);">
-                                   <label style="display: flex; align-items: center; gap: 6px; font-size: 11.5px; color: var(--text-muted); cursor: pointer; width:100%;">
-                                       <input type="checkbox" id="isSpec" checked onchange="triggerAutoCalc(currentActiveField); calculate();" style="width: 15px; height: 15px; accent-color: var(--primary);"> <span class="zh">专精地图 (基础10%折算)</span><span class="lang-en">Specialty Map (10% base)</span>
-                                   </label>
-                               </div>
-                           </div>
-                       </div>
+                        <div class="row-grid" style="margin-top:12px;align-items:flex-end;">
+                            <div class="form-group" style="margin-bottom:0;">
+                                <label class="form-label" style="color: var(--primary);"><span class="zh">100%能量大招时长</span><span class="lang-en">100% Energy Ult Duration</span></label>
+                                <div style="font-size:11px; color:var(--success); margin-bottom: 6px;" id="actualUltTimeSpan"></div>
+                                <div class="input-wrapper">
+                                    <input type="number" id="baseUltDuration" class="form-control" value="5.0" step="0.1" oninput="triggerAutoCalc(currentActiveField); calculate();">
+                                    <span class="input-unit"><span class="zh">秒</span><span class="lang-en">s</span></span>
+                                </div>
+                            </div>
+                            <div style="flex:1; max-width:260px;">
+                                <div style="width:100%; display: flex; align-items: center; justify-content: center; background: var(--inner-bg); padding: 10px 11px; border-radius: 10px; border: 1px solid var(--border); box-sizing:border-box;min-height:42px;">
+                                    <label style="display: flex; align-items: center; gap: 6px; font-size: 11.5px; color: var(--text-muted); cursor: pointer;">
+                                        <input type="checkbox" id="isSpec" checked onchange="triggerAutoCalc(currentActiveField); calculate();" style="width: 15px; height: 15px; accent-color: var(--primary);"> <span class="zh">专精地图 (基础10%折算)</span><span class="lang-en">Specialty Map (10% base)</span>
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
                    </div>
 
                    <div class="card">
