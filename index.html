@@ -1022,16 +1022,34 @@ var _CAR_IMG = {
         requestAnimationFrame(function() {
             var _sl = document.getElementById('specLabel');
             var _si = document.getElementById('baseUltDuration');
-            if (_sl && _si) {
-                _sl.parentElement.style.minHeight = _si.offsetHeight + 'px';
-                _sl.style.fontSize = '14px';
-                var _rg = _sl.closest('.row-grid');
-                var _rc = _rg ? _rg.querySelector('div:last-child > div') : null;
-                if (_rc) {
-                    var avail = _rc.clientWidth - 28;
-                    if (avail > 0 && _sl.scrollWidth > avail) {
-                        _sl.style.fontSize = Math.max(9, Math.round(14 * avail / _sl.scrollWidth * 10) / 10) + 'px';
-                    }
+            var _rg = document.querySelector('.row-grid');
+            if (!_sl || !_si || !_rg) return;
+            _sl.style.fontSize = '14px';
+            _sl.parentElement.style.minHeight = _si.offsetHeight + 'px';
+            var _lc = _rg.querySelector('.form-group');
+            var _rc = _rg.querySelector('div:last-child');
+            if (!_lc || !_rc) return;
+            // Reset to flex default
+            _lc.style.flex = ''; _lc.style.width = ''; _lc.style.maxWidth = '';
+            _rc.style.flex = '1'; _rc.style.minWidth = '0';
+            // Measure and calculate
+            var totalW = _rg.offsetWidth - 12; // minus gap
+            var leftMax = totalW * 0.5;
+            var leftMin = totalW / 3;
+            var pad = 28;
+            // Step 1: try 50/50, measure if text fits
+            var rightAvail = totalW - leftMax - pad;
+            if (rightAvail > 0 && _sl.scrollWidth > rightAvail) {
+                // Step 2: shrink left column
+                var needed = _sl.scrollWidth + pad;
+                var leftW = Math.max(leftMin, Math.min(leftMax, totalW - needed));
+                _lc.style.flex = 'none';
+                _lc.style.width = leftW + 'px';
+                _lc.style.maxWidth = leftW + 'px';
+                rightAvail = totalW - leftW - pad;
+                // Step 3: if still overflow, shrink font
+                if (rightAvail > 0 && _sl.scrollWidth > rightAvail) {
+                    _sl.style.fontSize = Math.max(9, Math.round(14 * rightAvail / _sl.scrollWidth * 10) / 10) + 'px';
                 }
             }
         });
@@ -1262,16 +1280,34 @@ var _CAR_IMG = {
         requestAnimationFrame(function() {
             var _sl = document.getElementById('specLabel');
             var _si = document.getElementById('baseUltDuration');
-            if (_sl && _si) {
-                _sl.parentElement.style.minHeight = _si.offsetHeight + 'px';
-                _sl.style.fontSize = '14px';
-                var _rg = _sl.closest('.row-grid');
-                var _rc = _rg ? _rg.querySelector('div:last-child > div') : null;
-                if (_rc) {
-                    var avail = _rc.clientWidth - 28;
-                    if (avail > 0 && _sl.scrollWidth > avail) {
-                        _sl.style.fontSize = Math.max(9, Math.round(14 * avail / _sl.scrollWidth * 10) / 10) + 'px';
-                    }
+            var _rg = document.querySelector('.row-grid');
+            if (!_sl || !_si || !_rg) return;
+            _sl.style.fontSize = '14px';
+            _sl.parentElement.style.minHeight = _si.offsetHeight + 'px';
+            var _lc = _rg.querySelector('.form-group');
+            var _rc = _rg.querySelector('div:last-child');
+            if (!_lc || !_rc) return;
+            // Reset to flex default
+            _lc.style.flex = ''; _lc.style.width = ''; _lc.style.maxWidth = '';
+            _rc.style.flex = '1'; _rc.style.minWidth = '0';
+            // Measure and calculate
+            var totalW = _rg.offsetWidth - 12; // minus gap
+            var leftMax = totalW * 0.5;
+            var leftMin = totalW / 3;
+            var pad = 28;
+            // Step 1: try 50/50, measure if text fits
+            var rightAvail = totalW - leftMax - pad;
+            if (rightAvail > 0 && _sl.scrollWidth > rightAvail) {
+                // Step 2: shrink left column
+                var needed = _sl.scrollWidth + pad;
+                var leftW = Math.max(leftMin, Math.min(leftMax, totalW - needed));
+                _lc.style.flex = 'none';
+                _lc.style.width = leftW + 'px';
+                _lc.style.maxWidth = leftW + 'px';
+                rightAvail = totalW - leftW - pad;
+                // Step 3: if still overflow, shrink font
+                if (rightAvail > 0 && _sl.scrollWidth > rightAvail) {
+                    _sl.style.fontSize = Math.max(9, Math.round(14 * rightAvail / _sl.scrollWidth * 10) / 10) + 'px';
                 }
             }
         });
@@ -1510,23 +1546,23 @@ var _CAR_IMG = {
                            </div>
                        </div>
                        
-                         <div class="row-grid" style="margin-top:12px;align-items:flex-end;">
-                             <div class="form-group" style="margin-bottom:0;flex:1 1 50%;max-width:50%;min-width:33.33%;">
-                                 <label class="form-label" style="color: var(--primary);"><span class="zh">100%能量大招时长</span><span class="lang-en">100% Energy Ult Duration</span></label>
-                                 <div style="font-size:11px; color:var(--success); margin-bottom: 6px;" id="actualUltTimeSpan"></div>
-                                 <div class="input-wrapper">
-                                     <input type="number" id="baseUltDuration" class="form-control" value="5.0" step="0.1" oninput="triggerAutoCalc(currentActiveField); calculate();">
-                                     <span class="input-unit"><span class="zh">秒</span><span class="lang-en">s</span></span>
-                                 </div>
-                             </div>
-                             <div style="flex:1 1 50%;min-width:0;">
-                                  <div style="display:flex;align-items:center;background:var(--inner-bg);border:1px solid var(--border);border-radius:10px;padding:12px 14px;width:100%;box-sizing:border-box;overflow:hidden;">
-                                     <label id="specLabel" style="display: flex; align-items: center; gap: 6px; font-size: 14px; color: var(--text-muted); cursor: pointer;white-space:nowrap;height:19px;">
-                                         <input type="checkbox" id="isSpec" checked onchange="triggerAutoCalc(currentActiveField); calculate();" style="width: 15px; height: 15px; accent-color: var(--primary); flex-shrink:0;"> <span class="zh">专精地图 (基础10%折算)</span><span class="lang-en">Specialty Map (10% base)</span>
-                                     </label>
-                                 </div>
-                             </div>
-                         </div>
+                          <div class="row-grid" style="margin-top:12px;align-items:flex-end;">
+                              <div class="form-group" style="margin-bottom:0;">
+                                  <label class="form-label" style="color: var(--primary);"><span class="zh">100%能量大招时长</span><span class="lang-en">100% Energy Ult Duration</span></label>
+                                  <div style="font-size:11px; color:var(--success); margin-bottom: 6px;" id="actualUltTimeSpan"></div>
+                                  <div class="input-wrapper">
+                                      <input type="number" id="baseUltDuration" class="form-control" value="5.0" step="0.1" oninput="triggerAutoCalc(currentActiveField); calculate();">
+                                      <span class="input-unit"><span class="zh">秒</span><span class="lang-en">s</span></span>
+                                  </div>
+                              </div>
+                              <div style="flex:1;min-width:0;">
+                                   <div style="display:flex;align-items:center;background:var(--inner-bg);border:1px solid var(--border);border-radius:10px;padding:12px 14px;width:100%;box-sizing:border-box;overflow:hidden;">
+                                      <label id="specLabel" style="display: flex; align-items: center; gap: 6px; font-size: 14px; color: var(--text-muted); cursor: pointer;white-space:nowrap;height:19px;">
+                                          <input type="checkbox" id="isSpec" checked onchange="triggerAutoCalc(currentActiveField); calculate();" style="width: 15px; height: 15px; accent-color: var(--primary); flex-shrink:0;"> <span class="zh">专精地图 (基础10%折算)</span><span class="lang-en">Specialty Map (10% base)</span>
+                                      </label>
+                                  </div>
+                              </div>
+                          </div>
                    </div>
 
                    <div class="card">
@@ -3265,14 +3301,29 @@ var _CAR_IMG = {
             clearTimeout(_resizeTimer);
             _resizeTimer = setTimeout(function() {
                 var _sl = document.getElementById('specLabel');
-                if (!_sl) return;
+                var _rg = document.querySelector('.row-grid');
+                if (!_sl || !_rg) return;
                 _sl.style.fontSize = '14px';
-                var _rg = _sl.closest('.row-grid');
-                var _rc = _rg ? _rg.querySelector('div:last-child') : null;
-                if (!_rc) return;
-                var avail = _rc.offsetWidth - 28;
-                if (avail > 0 && _sl.scrollWidth > avail) {
-                    _sl.style.fontSize = Math.max(9, Math.round(14 * avail / _sl.scrollWidth * 10) / 10) + 'px';
+                var _lc = _rg.querySelector('.form-group');
+                var _rc = _rg.querySelector('div:last-child');
+                if (!_lc || !_rc) return;
+                _lc.style.flex = ''; _lc.style.width = ''; _lc.style.maxWidth = '';
+                _rc.style.flex = '1'; _rc.style.minWidth = '0';
+                var totalW = _rg.offsetWidth - 12;
+                var leftMax = totalW * 0.5;
+                var leftMin = totalW / 3;
+                var pad = 28;
+                var rightAvail = totalW - leftMax - pad;
+                if (rightAvail > 0 && _sl.scrollWidth > rightAvail) {
+                    var needed = _sl.scrollWidth + pad;
+                    var leftW = Math.max(leftMin, Math.min(leftMax, totalW - needed));
+                    _lc.style.flex = 'none';
+                    _lc.style.width = leftW + 'px';
+                    _lc.style.maxWidth = leftW + 'px';
+                    rightAvail = totalW - leftW - pad;
+                    if (rightAvail > 0 && _sl.scrollWidth > rightAvail) {
+                        _sl.style.fontSize = Math.max(9, Math.round(14 * rightAvail / _sl.scrollWidth * 10) / 10) + 'px';
+                    }
                 }
             }, 100);
         });
