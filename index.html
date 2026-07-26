@@ -1052,13 +1052,6 @@ var _CAR_IMG = {
         _setQualityBg(car);
         // Sync checkbox card
         setTimeout(function() { _syncSpecLayout(); }, 50);
-                rightAvail = rightW - pad;
-                // Step 3: if still overflow, shrink font
-                if (rightAvail > 0 && _sl.scrollWidth > rightAvail) {
-                    _sl.style.fontSize = Math.max(9, Math.round(14 * rightAvail / _sl.scrollWidth * 10) / 10) + 'px';
-                }
-            }
-        });
         img.alt = _n(car);
         img.style.display = '';
         img.loading = 'lazy';
@@ -1280,13 +1273,6 @@ var _CAR_IMG = {
         _setQualityBg(car);
         // Sync checkbox card
         setTimeout(function() { _syncSpecLayout(); }, 50);
-                rightAvail = rightW - pad;
-                // Step 3: if still overflow, shrink font
-                if (rightAvail > 0 && _sl.scrollWidth > rightAvail) {
-                    _sl.style.fontSize = Math.max(9, Math.round(14 * rightAvail / _sl.scrollWidth * 10) / 10) + 'px';
-                }
-            }
-        });
         img.alt = _n(car);
         img.style.display = '';
         img.loading = 'lazy';
