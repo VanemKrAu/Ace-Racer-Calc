@@ -62,7 +62,10 @@ vehicle JSON → data.item
   ├── init_ratio   → v.skills.ultimate.init_ratio (万分比)
   │                  → 前端 startCharge = (ace_charge + init_ratio)/100, 上限 100%
   │                  ★ 没有 init_ratio 的车 → startCharge = ace_charge/100
-  ├── ult_duration → v.skills.ultimate.instructions 中 inst_type===2 的 duration
+  ├── ult_duration →
+  │     Source 1: v.levels[最高级].rich_text.passive_skill_effect 含"持续时间"/"时长" → 对应 value
+  │     Source 2: v.skills.ultimate.instructions 中最先找到的 1-30s 合理 duration
+  │     (前端填入 baseUltDuration, 无值填 0)
   ├── ult_type     → v.skills.ultimate.type
   ├── ult_threshold→ ace_time_effect 文本 /达到(\d+)%/ 提取
   │                  → 失败时从 ultimate.value_texts 取 min_charge/100
