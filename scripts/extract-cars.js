@@ -91,13 +91,36 @@ for (const file of files) {
     let ultType = ult?.type || null;
     let costRatio = null;
 
+    // Check level-based duration overrides (from rich_text passive_skill_effect)
+    if (v.levels) {
+      // Search from highest level to lowest (level 9 overrides level 0)
+      for (var li = v.levels.length - 1; li >= 0; li--) {
+        var lvl = v.levels[li];
+        var rt = lvl?.rich_text;
+        if (!rt || !Array.isArray(rt.passive_skill_effect)) continue;
+        for (var pei = 0; pei < rt.passive_skill_effect.length; pei++) {
+          var label = String(rt.passive_skill_effect[pei] || '');
+          if (label.includes('持续时间') || label.includes('时长')) {
+            var val = rt.passive_skill_effect_value?.[pei];
+            if (val) {
+              var numM = String(val).match(/(\d+(?:\.\d+)?)/);
+              if (numM) { ultDuration = parseFloat(numM[1]); break; }
+            }
+          }
+        }
+        if (ultDuration) break;
+      }
+    }
+
     if (ult?.instructions) {
       // Find the accel duration: look for any instruction with a reasonable duration (1-30s)
-      for (var instIdx = 0; instIdx < ult.instructions.length; instIdx++) {
-        var inst = ult.instructions[instIdx];
-        if (inst && typeof inst.duration === 'number' && inst.duration >= 1 && inst.duration <= 30) {
-          ultDuration = inst.duration;
-          break;
+      if (!ultDuration) {
+        for (var instIdx = 0; instIdx < ult.instructions.length; instIdx++) {
+          var inst = ult.instructions[instIdx];
+          if (inst && typeof inst.duration === 'number' && inst.duration >= 1 && inst.duration <= 30) {
+            ultDuration = inst.duration;
+            break;
+          }
         }
       }
       const costInst = ult.instructions.find(i => i.cost_ratio);
