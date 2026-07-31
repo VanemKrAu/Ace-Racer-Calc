@@ -512,7 +512,7 @@ var _CAR_IMG = {
    
        .bottom-image-wrapper { text-align: center; margin: 30px 0 15px 0; padding: 0 10px; }
        .bottom-image-wrapper img { max-width: 85%; width: auto; height: auto; border-radius: 24px; box-shadow: var(--img-shadow); border: 1px solid var(--img-border); transition: transform 0.2s ease, box-shadow 0.2s ease; display: inline-block; background-color: var(--img-bg); }
-       .bottom-image-wrapper #imgDark, .bottom-image-wrapper #imgLight { width: 512px; height: 512px; max-width: 100%; }
+       .bottom-image-wrapper #imgDark, .bottom-image-wrapper #imgLight { width: 512px; height: auto; max-width: 100%; aspect-ratio: 1 / 1; }
        .bottom-image-wrapper img:hover { transform: scale(1.01); box-shadow: var(--img-hover-shadow); }
        .img-caption { font-size: 11px; color: var(--text-muted); margin-top: 8px; letter-spacing: 0.5px; font-weight: 400; transition: color 0.3s; }
        @media (max-width: 500px) { .bottom-image-wrapper img { max-width: 75%; } }
