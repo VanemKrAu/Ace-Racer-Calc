@@ -312,6 +312,9 @@ var _CAR_IMG = {
 
    <style>
        :root {
+           --grid-size: 34px;
+           --grid-line-width: 1px;
+           --grid-line: rgba(148, 163, 184, 0.05);
            --bg-color: rgb(24, 33, 61);
            --bg-gradient: linear-gradient(135deg, rgb(13, 18, 38) 0%, rgb(24, 33, 61) 50%, rgb(32, 44, 79) 100%);
            --card-bg: rgba(30, 42, 75, 0.65);
@@ -366,6 +369,7 @@ var _CAR_IMG = {
        }
 
        body.light-mode {
+           --grid-line: rgba(96, 80, 45, 0.045);
            --bg-color: #f0f4f8;
            --bg-gradient: linear-gradient(135deg, #f8fafc 0%, #e2e8f0 100%);
            --card-bg: rgba(255, 255, 255, 0.85);
@@ -421,10 +425,12 @@ var _CAR_IMG = {
 
        * { box-sizing: border-box; margin: 0; padding: 0; font-family: -apple-system, BlinkMacSystemFont, sans-serif; -webkit-tap-highlight-color: transparent; }
        
-       body { background-color: var(--bg-color); background-image: var(--bg-gradient); background-attachment: fixed; color: var(--text-color); padding: 16px; margin: 0 auto; padding-bottom: 40px; width: 100%; transition: background-image 0.3s, background-color 0.3s, color 0.3s; }
+       body { background-color: var(--bg-color); background-image: linear-gradient(to right, var(--grid-line) var(--grid-line-width), transparent var(--grid-line-width)), linear-gradient(to bottom, var(--grid-line) var(--grid-line-width), transparent var(--grid-line-width)), var(--bg-gradient); background-size: var(--grid-size) var(--grid-size), var(--grid-size) var(--grid-size), auto; background-attachment: fixed; color: var(--text-color); padding: 16px; margin: 0 auto; padding-bottom: 40px; width: 100%; transition: background-image 0.3s, background-color 0.3s, color 0.3s; }
        .app-container { max-width: 480px; margin: 0 auto; position: relative; }
        
-       .header { text-align: center; margin-bottom: 20px; padding: 20px 0; background: var(--card-bg); backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px); border-radius: 16px; border: 1px solid var(--border); box-shadow: var(--card-shadow); }
+       .header { position: relative; text-align: center; margin-bottom: 20px; padding: 20px 0; background: var(--card-bg); backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px); border-radius: 16px; border: 1px solid var(--border); box-shadow: var(--card-shadow); }
+       .hero-grid { position: absolute; top: 0; left: 0; right: 0; bottom: 0; pointer-events: none; z-index: 0; background-image: linear-gradient(to right, var(--grid-line) var(--grid-line-width), transparent var(--grid-line-width)), linear-gradient(to bottom, var(--grid-line) var(--grid-line-width), transparent var(--grid-line-width)); background-size: var(--grid-size) var(--grid-size), var(--grid-size) var(--grid-size); border-radius: inherit; }
+       .header > *:not(.hero-grid) { position: relative; z-index: 1; }
        .header h1 { font-size: 20px; color: var(--text-color); text-shadow: var(--header-shadow); margin-bottom: 6px; letter-spacing: 1px; }
        .header p { font-size: 12px; color: var(--primary); font-weight: bold; text-transform: uppercase; }
 
@@ -679,6 +685,7 @@ var _CAR_IMG = {
 
        <div id="captureArea">
             <div class="header">
+                <div class="hero-grid" aria-hidden="true"></div>
                 <h1><span class="zh">王牌竞速一大和循环能量计算器</span><span class="lang-en">Ace Racer First Ult & Loop Calculator</span></h1>
                 <p><span class="zh">由 Vanem 设定交互逻辑、提供计算公式，AI辅助开发</span><span class="lang-en">Logic & Formulas by Vanem, AI Assisted</span></p>
             </div>
