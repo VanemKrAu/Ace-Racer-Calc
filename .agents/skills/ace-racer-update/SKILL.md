@@ -95,9 +95,9 @@ vehicle JSON → data.item
   └── asset_dir    → 'assets/' + name + '_' + id
 ```
 
-### 额外起步充能 4 数据源优先级
+### 额外起步充能 5 数据源优先级
 
-优先 `skillPanelGroups` 数值 → JSONL `skill_value_details` → `ace_time_effect` 文本 → `special_passive_skill_desc` 文本
+优先 `skillPanelGroups` 数值 → JSONL `skill_value_details` → `ace_time_effect` 文本 → `special_passive_skill_desc` 文本 → `levels[最高级]` 等级数据
 
 ### 大招自充能 敌方依赖过滤
 
