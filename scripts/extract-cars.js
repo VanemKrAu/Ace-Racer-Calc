@@ -203,8 +203,7 @@ for (const file of files) {
           }
           // 起步额外充能
           if (n.includes('额外起步充能')) {
-            // Skip known-bad entries (data export errors)
-            if (carId !== 12025) ultChargeFirst = num;
+            ultChargeFirst = num;
           }
           // 每秒自充
           if (n.includes('每秒') && n.includes('充能') && !n.includes('友方') && !n.includes('敌方')) {
@@ -256,8 +255,6 @@ for (const file of files) {
       for (const sv of skillValueDetails) {
         if (sv.vehicle_id !== carId) continue;
         if (!sv.skill_value_name || !sv.skill_value_name.includes('额外起步充能')) continue;
-        // Exclude known bad data entries
-        if (String(sv.id ?? '') === '1198') continue; // Huracán STO 异常数据
         const rawVal = (sv.skill_value_text || '').trim();
         const pctM = rawVal.match(/^(\d+(?:\.\d+)?)\s*%$/);
         if (pctM) {
@@ -290,6 +287,25 @@ for (const file of files) {
             }
             break;
           }
+        }
+      }
+      // Source 4: level-based "开局时大招初始能量值" (highest level first)
+      if (!ultChargeFirst && v.levels) {
+        for (var lvlIdx = v.levels.length - 1; lvlIdx >= 0; lvlIdx--) {
+          var rt2 = v.levels[lvlIdx]?.rich_text;
+          if (!rt2 || !Array.isArray(rt2.passive_skill_effect)) continue;
+          for (var pej = 0; pej < rt2.passive_skill_effect.length; pej++) {
+            var lab2 = String(rt2.passive_skill_effect[pej] || '');
+            if (lab2.includes('开局') && (lab2.includes('能量') || lab2.includes('充能'))) {
+              var val2 = String(rt2.passive_skill_effect_value?.[pej] || '');
+              var pct2 = val2.match(/(\d+(?:\.\d+)?)\s*%/);
+              if (pct2) {
+                var pv = parseFloat(pct2[1]);
+                if (pv > 0) { ultChargeFirst = pv; break; }
+              }
+            }
+          }
+          if (ultChargeFirst) break;
         }
       }
     }

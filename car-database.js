@@ -2645,7 +2645,7 @@ const CAR_DATABASE = [
     "nitro_duration": 5.2,
     "ult_threshold": 100,
     "nitro_charge": null,
-    "ult_charge_first": null,
+    "ult_charge_first": 25,
     "ult_charge_loop": null,
     "per_sec_charge": null,
     "sp_charge": null,

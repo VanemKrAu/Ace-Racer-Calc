@@ -26,17 +26,15 @@ user-invocable: true
 
 当前实现：`v.skills?.ultimate?.init_ratio` (22 辆车有值)。未来需改为从 `vehicle_data.jsonl` 中查 `particular_skill` 再取 `init_ratio`。
 
-### ult_charge_first (起步额外充能) 的 4 数据源
+### ult_charge_first (起步额外充能) 的 5 数据源
 
 | 优先级 | 来源 | 提取方式 | 备注 |
 |--------|------|----------|------|
-| 1 | `skillPanelGroups.ultimate` | 查找 `name` 包含"额外起步充能" | 如果车辆 ID 在黑名单中则跳过 |
-| 2 | `skill_value_details_data.jsonl` | `skill_value_name` 包含"额外起步充能" + `vehicle_id` 匹配 | 按条目 ID 排除异常数据 |
+| 1 | `skillPanelGroups.ultimate` | 查找 `name` 包含"额外起步充能" | |
+| 2 | `skill_value_details_data.jsonl` | `skill_value_name` 包含"额外起步充能" + `vehicle_id` 匹配 | |
 | 3 | `ace_time_effect` 文本 | 正则 `/开局(?:时)?获得\s*(\d+(?:\.\d+)?)\s*%\s*(?:大招能量\|能量)/` | 纯文本兜底 |
 | 4 | `special_passive_skill_desc` 文本 | 查找含"起步"+"%"的行，正则 `/获得[^%]*?(\d+(?:\.\d+)?)\s*%/` | 仅接受 1-200% 合理范围 |
-
-**已知异常数据排除：**
-- `skill_value_details` 条目 ID `1198` (车辆 12025 兰博基尼 Huracán STO) — 游戏导出标记了"额外起步充能 25%"但实际游戏里没有，跳过
+| 5 | `levels[最高级].rich_text.passive_skill_effect` | 查找含"开局"+"能量"/"充能"的标签，取对应 value | 覆盖 10 级才有的起步充能 |
 
 ## 数据提取与解析 (scripts/extract-cars.js 核心逻辑)
 
@@ -78,7 +76,7 @@ vehicle JSON → data.item
   │     skillPanelGroups.ultimate/passive 中 "氮气"+"充能" 数值
   │     → 失败时逐段搜索文本 /使用氮气[\w\W]*?获得(\d+(?:\.\d+)?)%/
   │     (前端填入 valExtraNitro)
-  ├── ult_charge_first (起步额外充能) → 见上方 4 数据源
+  ├── ult_charge_first (起步额外充能) → 见上方 5 数据源
   │     (前端填入 valExtraUltFirst)
   ├── ult_charge_loop (大招自充能) →
   │     skillPanelGroups.ultimate/passive 中 "大招"/"自身"+"充能"
