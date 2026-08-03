@@ -1369,22 +1369,26 @@ var _CAR_IMG = {
                 </span>
             </div>
 
-            <div id="carPreview">
-                    <div class="card" style="text-align:center;">
-                        <div id="carImgWrap" style="display:inline-block;max-width:100%;">
-                            <img id="carImage" src="" alt="" loading="lazy" style="max-width:100%;border-radius:12px;max-height:200px;padding:8px;background:var(--box-bg);" onerror="this.style.display='none'">
+            <div class="desktop-layout">
+                <div class="desktop-col">
+                    <div id="carPreview">
+                        <div class="card" style="text-align:center;">
+                            <div id="carImgWrap" style="display:inline-block;max-width:100%;">
+                                <img id="carImage" src="" alt="" loading="lazy" style="max-width:100%;border-radius:12px;max-height:200px;padding:8px;background:var(--box-bg);" onerror="this.style.display='none'">
+                            </div>
+                            <script>document.getElementById('carImage').src = (_ICONS||{})['icon_mhyck_m.png'] || 'data/icon/icon_mhyck_m.png';</script>
+                            <div id="carPreviewPlaceholder" style="padding:40px 20px;color:var(--text-muted);font-size:14px;">
+                                <span class="zh">请选择一辆赛车</span><span class="lang-en">Select a car</span>
+                            </div>
+                            <div id="carPreviewName" style="margin-top:8px;font-size:14px;color:var(--text-color);font-weight:bold;display:none;"></div>
+                            <div id="carPreviewTags" style="display:none;margin-top:6px;gap:6px;justify-content:center;flex-wrap:wrap;"></div>
+                            <div id="carPreviewInfo" style="display:none;"></div>
+                            <div id="carPreviewAutoMsg" style="font-size:11px;color:var(--success);margin-top:6px;display:none;padding:6px 10px;background:rgba(76,223,138,0.08);border-radius:6px;"></div>
+                            <div id="carPreviewChips" style="display:none;margin-top:8px;gap:4px;justify-content:center;"></div>
                         </div>
-                        <script>document.getElementById('carImage').src = (_ICONS||{})['icon_mhyck_m.png'] || 'data/icon/icon_mhyck_m.png';</script>
-                        <div id="carPreviewPlaceholder" style="padding:40px 20px;color:var(--text-muted);font-size:14px;">
-                            <span class="zh">请选择一辆赛车</span><span class="lang-en">Select a car</span>
-                        </div>
-                        <div id="carPreviewName" style="margin-top:8px;font-size:14px;color:var(--text-color);font-weight:bold;display:none;"></div>
-                        <div id="carPreviewTags" style="display:none;margin-top:6px;gap:6px;justify-content:center;flex-wrap:wrap;"></div>
-                        <div id="carPreviewInfo" style="display:none;"></div>
-                        <div id="carPreviewAutoMsg" style="font-size:11px;color:var(--success);margin-top:6px;display:none;padding:6px 10px;background:rgba(76,223,138,0.08);border-radius:6px;"></div>
-                        <div id="carPreviewChips" style="display:none;margin-top:8px;gap:4px;justify-content:center;"></div>
                     </div>
                 </div>
+                <div class="desktop-col">
                     <div class="card" style="position:relative;z-index:100;">
                         <div class="card-title"><span class="zh">选择赛车</span><span class="lang-en">Select Car</span></div>
                         <div class="car-search-box">
@@ -1416,6 +1420,8 @@ var _CAR_IMG = {
                     </div>
                     <div id="carSelectInfo" class="car-info-bar" style="display:none;"></div>
                 </div>
+            </div>
+        </div>
 
             <div class="section-divider"><span><span class="zh">基础属性及赋能调整区</span><span class="lang-en">Base Stats & Empowerment Tweaks</span></span></div>
            
