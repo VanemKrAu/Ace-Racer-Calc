@@ -1,6 +1,45 @@
 // Auto-generated car database - DO NOT EDIT MANUALLY
 const CAR_DATABASE = [
   {
+    "id": 12102,
+    "name": "货拉拉多拉",
+    "name_en": "Huo Lala Duola",
+    "position": "干扰位",
+    "specialization": "城市",
+    "quality": "稀有",
+    "ace_charge": 3500,
+    "ult_duration": 7,
+    "ult_type": "N2O_GOODS",
+    "cost_ratio": 1428,
+    "has_sp": false,
+    "chip_slots": "○○△◇◣V",
+    "speed_limit": 178,
+    "speedup_ratio": 1.01,
+    "drift_coef": 600,
+    "drift_min": 1200,
+    "drift_max": 6000,
+    "init_ratio": null,
+    "drift_extra_charge": [
+      [
+        1,
+        0
+      ],
+      [
+        2,
+        1800
+      ]
+    ],
+    "nitro_duration": null,
+    "ult_threshold": 100,
+    "nitro_charge": null,
+    "ult_charge_first": null,
+    "ult_charge_loop": null,
+    "per_sec_charge": null,
+    "sp_charge": null,
+    "search_text": "huolaladuola hlldl 货拉拉多拉",
+    "asset_dir": "assets/货拉拉多拉_12102"
+  },
+  {
     "id": 12099,
     "name": "百变小鹦",
     "name_en": "Colorful Parrot",
@@ -194,6 +233,45 @@ const CAR_DATABASE = [
     "sp_charge": 6,
     "search_text": "bujiadi bolide bjd 飞火流星",
     "asset_dir": "assets/布加迪 Bolide_12095"
+  },
+  {
+    "id": 12094,
+    "name": "罗刹",
+    "name_en": "Luo Sha",
+    "position": "天平位",
+    "specialization": "城市",
+    "quality": "传说",
+    "ace_charge": 3100,
+    "ult_duration": 10,
+    "ult_type": "N2O_SOUL",
+    "cost_ratio": 1000,
+    "has_sp": false,
+    "chip_slots": "○○△◇◇V",
+    "speed_limit": 184,
+    "speedup_ratio": 1.17,
+    "drift_coef": 600,
+    "drift_min": 1200,
+    "drift_max": 6000,
+    "init_ratio": null,
+    "drift_extra_charge": [
+      [
+        1,
+        0
+      ],
+      [
+        2,
+        1800
+      ]
+    ],
+    "nitro_duration": null,
+    "ult_threshold": 100,
+    "nitro_charge": null,
+    "ult_charge_first": null,
+    "ult_charge_loop": null,
+    "per_sec_charge": null,
+    "sp_charge": null,
+    "search_text": "luocha lc 罗刹",
+    "asset_dir": "assets/罗刹_12094"
   },
   {
     "id": 12093,

@@ -1,0 +1,100 @@
+{
+  "schemaVersion": 2,
+  "generatedAt": "2026-08-19T16:27:57.000Z",
+  "imageRoots": [
+    "E:\\AceRacer\\AceRacing-Workbench\\deploy\\wwwroot\\ace-racer\\rk-assets"
+  ],
+  "vehicles": [
+    {
+      "vehicleId": 12102,
+      "vehicleName": "货拉拉多拉",
+      "directory": "货拉拉多拉_12102",
+      "files": [
+        {
+          "category": "body",
+          "stem": "12102_m",
+          "file": "12102_m.png",
+          "relativePath": "vehicles/images/货拉拉多拉_12102/body/12102_m.png",
+          "vehicleRelativePath": "body/12102_m.png"
+        },
+        {
+          "category": "body",
+          "stem": "12102_s",
+          "file": "12102_s.png",
+          "relativePath": "vehicles/images/货拉拉多拉_12102/body/12102_s.png",
+          "vehicleRelativePath": "body/12102_s.png"
+        },
+        {
+          "category": "skill-icons",
+          "stem": "new_carport_icon_10409",
+          "file": "new_carport_icon_10409.png",
+          "relativePath": "vehicles/images/货拉拉多拉_12102/skill-icons/new_carport_icon_10409.png",
+          "vehicleRelativePath": "skill-icons/new_carport_icon_10409.png"
+        },
+        {
+          "category": "skill-icons",
+          "stem": "new_carport_icon_10410",
+          "file": "new_carport_icon_10410.png",
+          "relativePath": "vehicles/images/货拉拉多拉_12102/skill-icons/new_carport_icon_10410.png",
+          "vehicleRelativePath": "skill-icons/new_carport_icon_10410.png"
+        },
+        {
+          "category": "skill-icons",
+          "stem": "new_carport_icon_14",
+          "file": "new_carport_icon_14.png",
+          "relativePath": "vehicles/images/货拉拉多拉_12102/skill-icons/new_carport_icon_14.png",
+          "vehicleRelativePath": "skill-icons/new_carport_icon_14.png"
+        },
+        {
+          "category": "skill-icons",
+          "stem": "new_carport_icon_city",
+          "file": "new_carport_icon_city.png",
+          "relativePath": "vehicles/images/货拉拉多拉_12102/skill-icons/new_carport_icon_city.png",
+          "vehicleRelativePath": "skill-icons/new_carport_icon_city.png"
+        },
+        {
+          "category": "skill-icons",
+          "stem": "new_carport_icon_nos_03",
+          "file": "new_carport_icon_nos_03.png",
+          "relativePath": "vehicles/images/货拉拉多拉_12102/skill-icons/new_carport_icon_nos_03.png",
+          "vehicleRelativePath": "skill-icons/new_carport_icon_nos_03.png"
+        },
+        {
+          "category": "skill-icons",
+          "stem": "ui_skill193_01",
+          "file": "ui_skill193_01.png",
+          "relativePath": "vehicles/images/货拉拉多拉_12102/skill-icons/ui_skill193_01.png",
+          "vehicleRelativePath": "skill-icons/ui_skill193_01.png"
+        },
+        {
+          "category": "skill-icons",
+          "stem": "ui_skill193_03",
+          "file": "ui_skill193_03.png",
+          "relativePath": "vehicles/images/货拉拉多拉_12102/skill-icons/ui_skill193_03.png",
+          "vehicleRelativePath": "skill-icons/ui_skill193_03.png"
+        },
+        {
+          "category": "skill-icons",
+          "stem": "ui_skill193_04",
+          "file": "ui_skill193_04.png",
+          "relativePath": "vehicles/images/货拉拉多拉_12102/skill-icons/ui_skill193_04.png",
+          "vehicleRelativePath": "skill-icons/ui_skill193_04.png"
+        },
+        {
+          "category": "skill-icons",
+          "stem": "ui_skill193_06",
+          "file": "ui_skill193_06.png",
+          "relativePath": "vehicles/images/货拉拉多拉_12102/skill-icons/ui_skill193_06.png",
+          "vehicleRelativePath": "skill-icons/ui_skill193_06.png"
+        }
+      ],
+      "missing": {
+        "body": [],
+        "skins": [],
+        "skillIcons": []
+      }
+    }
+  ],
+  "fileCount": 11,
+  "missingCount": 0
+}

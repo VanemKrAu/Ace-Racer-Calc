@@ -1,0 +1,128 @@
+{
+  "schemaVersion": 2,
+  "generatedAt": "2026-08-19T16:27:40.000Z",
+  "imageRoots": [
+    "E:\\AceRacer\\AceRacing-Workbench\\deploy\\wwwroot\\ace-racer\\rk-assets"
+  ],
+  "vehicles": [
+    {
+      "vehicleId": 12094,
+      "vehicleName": "罗刹",
+      "directory": "罗刹_12094",
+      "files": [
+        {
+          "category": "body",
+          "stem": "12094_m",
+          "file": "12094_m.png",
+          "relativePath": "vehicles/images/罗刹_12094/body/12094_m.png",
+          "vehicleRelativePath": "body/12094_m.png"
+        },
+        {
+          "category": "body",
+          "stem": "12094_s",
+          "file": "12094_s.png",
+          "relativePath": "vehicles/images/罗刹_12094/body/12094_s.png",
+          "vehicleRelativePath": "body/12094_s.png"
+        },
+        {
+          "category": "skins",
+          "stem": "tz_12094_1_m",
+          "file": "tz_12094_1_m.png",
+          "relativePath": "vehicles/images/罗刹_12094/skins/tz_12094_1_m.png",
+          "vehicleRelativePath": "skins/tz_12094_1_m.png"
+        },
+        {
+          "category": "skins",
+          "stem": "tz_12094_1_s",
+          "file": "tz_12094_1_s.png",
+          "relativePath": "vehicles/images/罗刹_12094/skins/tz_12094_1_s.png",
+          "vehicleRelativePath": "skins/tz_12094_1_s.png"
+        },
+        {
+          "category": "skins",
+          "stem": "tz_12094_2_m",
+          "file": "tz_12094_2_m.png",
+          "relativePath": "vehicles/images/罗刹_12094/skins/tz_12094_2_m.png",
+          "vehicleRelativePath": "skins/tz_12094_2_m.png"
+        },
+        {
+          "category": "skins",
+          "stem": "tz_12094_2_s",
+          "file": "tz_12094_2_s.png",
+          "relativePath": "vehicles/images/罗刹_12094/skins/tz_12094_2_s.png",
+          "vehicleRelativePath": "skins/tz_12094_2_s.png"
+        },
+        {
+          "category": "skill-icons",
+          "stem": "new_carport_icon_10405",
+          "file": "new_carport_icon_10405.png",
+          "relativePath": "vehicles/images/罗刹_12094/skill-icons/new_carport_icon_10405.png",
+          "vehicleRelativePath": "skill-icons/new_carport_icon_10405.png"
+        },
+        {
+          "category": "skill-icons",
+          "stem": "new_carport_icon_10406",
+          "file": "new_carport_icon_10406.png",
+          "relativePath": "vehicles/images/罗刹_12094/skill-icons/new_carport_icon_10406.png",
+          "vehicleRelativePath": "skill-icons/new_carport_icon_10406.png"
+        },
+        {
+          "category": "skill-icons",
+          "stem": "new_carport_icon_14",
+          "file": "new_carport_icon_14.png",
+          "relativePath": "vehicles/images/罗刹_12094/skill-icons/new_carport_icon_14.png",
+          "vehicleRelativePath": "skill-icons/new_carport_icon_14.png"
+        },
+        {
+          "category": "skill-icons",
+          "stem": "new_carport_icon_city",
+          "file": "new_carport_icon_city.png",
+          "relativePath": "vehicles/images/罗刹_12094/skill-icons/new_carport_icon_city.png",
+          "vehicleRelativePath": "skill-icons/new_carport_icon_city.png"
+        },
+        {
+          "category": "skill-icons",
+          "stem": "new_carport_icon_nos_03",
+          "file": "new_carport_icon_nos_03.png",
+          "relativePath": "vehicles/images/罗刹_12094/skill-icons/new_carport_icon_nos_03.png",
+          "vehicleRelativePath": "skill-icons/new_carport_icon_nos_03.png"
+        },
+        {
+          "category": "skill-icons",
+          "stem": "ui_skill191_01",
+          "file": "ui_skill191_01.png",
+          "relativePath": "vehicles/images/罗刹_12094/skill-icons/ui_skill191_01.png",
+          "vehicleRelativePath": "skill-icons/ui_skill191_01.png"
+        },
+        {
+          "category": "skill-icons",
+          "stem": "ui_skill191_03",
+          "file": "ui_skill191_03.png",
+          "relativePath": "vehicles/images/罗刹_12094/skill-icons/ui_skill191_03.png",
+          "vehicleRelativePath": "skill-icons/ui_skill191_03.png"
+        },
+        {
+          "category": "skill-icons",
+          "stem": "ui_skill191_04",
+          "file": "ui_skill191_04.png",
+          "relativePath": "vehicles/images/罗刹_12094/skill-icons/ui_skill191_04.png",
+          "vehicleRelativePath": "skill-icons/ui_skill191_04.png"
+        },
+        {
+          "category": "skill-icons",
+          "stem": "ui_skill191_06",
+          "file": "ui_skill191_06.png",
+          "relativePath": "vehicles/images/罗刹_12094/skill-icons/ui_skill191_06.png",
+          "vehicleRelativePath": "skill-icons/ui_skill191_06.png"
+        }
+      ],
+      "missing": {
+        "body": [],
+        "skins": [],
+        "skillIcons": []
+      }
+    }
+  ],
+  "fileCount": 15,
+  "missingCount": 0
+}

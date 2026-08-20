@@ -1,0 +1,13 @@
+{
+  "schemaVersion": 2,
+  "generatedAt": "2026-08-19T16:27:57.000Z",
+  "total": 1,
+  "items": [
+    {
+      "id": 12102,
+      "name": "货拉拉多拉",
+      "dataFile": "vehicles/vehicles/12102.json",
+      "assetDirectory": "vehicles/images/货拉拉多拉_12102"
+    }
+  ]
+}

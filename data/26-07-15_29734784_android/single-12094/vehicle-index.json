@@ -1,0 +1,13 @@
+{
+  "schemaVersion": 2,
+  "generatedAt": "2026-08-19T16:27:40.000Z",
+  "total": 1,
+  "items": [
+    {
+      "id": 12094,
+      "name": "罗刹",
+      "dataFile": "vehicles/vehicles/12094.json",
+      "assetDirectory": "vehicles/images/罗刹_12094"
+    }
+  ]
+}

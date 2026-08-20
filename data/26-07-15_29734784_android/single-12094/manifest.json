@@ -1,0 +1,57 @@
+{
+  "schemaVersion": 2,
+  "generatedAt": "2026-08-19T16:27:40.000Z",
+  "mode": "single",
+  "base": null,
+  "since": null,
+  "filters": {
+    "publicOnly": true,
+    "naturalReleaseOnly": true,
+    "placeholdersExcluded": true,
+    "manualIncludesExcluded": true,
+    "detailAccessRequired": true,
+    "chipsTalentsFollowVisibility": true
+  },
+  "data": {
+    "vehicleCount": 1,
+    "vehicleIds": [
+      12094
+    ],
+    "vehicles": [
+      {
+        "id": 12094,
+        "name": "罗刹"
+      }
+    ],
+    "vehiclesSha256": "5b6e090bf3d28d292b19757d638592412520c5c84b2cfad6b86ae881a16378f1",
+    "vehiclesFileSha256": "a4cce301a93a850b3128c7435ce3f0674da85f490b3f296ef92f604adb33f361",
+    "delta": null
+  },
+  "assets": {
+    "skipped": false,
+    "vehicles": {
+      "fileCount": 15,
+      "missingCount": 0
+    },
+    "chips": null,
+    "talents": null
+  },
+  "categories": {
+    "vehicles": {
+      "file": "vehicles/vehicles.json",
+      "total": 1,
+      "sha256": "a4cce301a93a850b3128c7435ce3f0674da85f490b3f296ef92f604adb33f361"
+    },
+    "balance": null,
+    "chips": null,
+    "talents": null
+  },
+  "archives": {
+    "vehicles": {
+      "file": "vehicles.zip",
+      "bytes": 827304,
+      "sha256": "47de71a9e2036156124903bbe6237d0a9d763fb78d369e8c93f5d590a7e98dd8",
+      "entryCount": 20
+    }
+  }
+}

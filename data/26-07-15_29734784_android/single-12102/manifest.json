@@ -1,0 +1,57 @@
+{
+  "schemaVersion": 2,
+  "generatedAt": "2026-08-19T16:27:57.000Z",
+  "mode": "single",
+  "base": null,
+  "since": null,
+  "filters": {
+    "publicOnly": true,
+    "naturalReleaseOnly": true,
+    "placeholdersExcluded": true,
+    "manualIncludesExcluded": true,
+    "detailAccessRequired": true,
+    "chipsTalentsFollowVisibility": true
+  },
+  "data": {
+    "vehicleCount": 1,
+    "vehicleIds": [
+      12102
+    ],
+    "vehicles": [
+      {
+        "id": 12102,
+        "name": "货拉拉多拉"
+      }
+    ],
+    "vehiclesSha256": "86f39e15ad94b69537340066e4c9997d24139c74cba9d10e60de10cf57127484",
+    "vehiclesFileSha256": "894e4cf2c6d27bfd36426b0a9d6ab8a8a5e23b6c7fa23e3fdae223eade3ad1e9",
+    "delta": null
+  },
+  "assets": {
+    "skipped": false,
+    "vehicles": {
+      "fileCount": 11,
+      "missingCount": 0
+    },
+    "chips": null,
+    "talents": null
+  },
+  "categories": {
+    "vehicles": {
+      "file": "vehicles/vehicles.json",
+      "total": 1,
+      "sha256": "894e4cf2c6d27bfd36426b0a9d6ab8a8a5e23b6c7fa23e3fdae223eade3ad1e9"
+    },
+    "balance": null,
+    "chips": null,
+    "talents": null
+  },
+  "archives": {
+    "vehicles": {
+      "file": "vehicles.zip",
+      "bytes": 267961,
+      "sha256": "05617fdd8831bca42799f76c3c0473cc94a19114354e5c161c063cf763c3a6f5",
+      "entryCount": 16
+    }
+  }
+}
