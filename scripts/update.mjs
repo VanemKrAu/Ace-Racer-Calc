@@ -150,6 +150,9 @@ console.log(`  Cars in database: ${carCount}`);
 console.log(`  Images on CDN:    ${Object.keys(carUrls).length}`);
 console.log(`  Icons on CDN:     ${Object.keys(iconKeys).length}`);
 
+console.log('\n  ⚠️  REMEMBER: 新车请登记 scripts/extract-cars.js 顶部 ADDED_AT 表!');
+console.log('     时间戳: node -e "console.log(Date.now())"（否则新车不排列表最前）');
+
 console.log('\n  ✅ Update complete! Ready to commit and push.');
 console.log('  ───────────────────────────────────────');
 console.log('  Suggested commit: git add -A && git commit -m "feat: add N new cars + CDN upload"');

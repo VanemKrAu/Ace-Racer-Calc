@@ -92,6 +92,9 @@ vehicle JSON → data.item
   │     → 失败时从 sp_skill_desc 取 "获得XXX集气量和X%大招能量"
   │     (前端填入 valCustomTrig, 首发/循环各计 1 次)
   ├── search_text  → 中文转拼音 + 常用别名 (aliases 字典, 99 辆车有)
+  ├── added_at     → ADDED_AT 登记表 (extract-cars.js 顶部)
+  │                  → 无登记的车为 null
+  │                  → 前端列表按 added_at 降序，新车在上；同批按 ID 降序
   └── asset_dir    → 'assets/' + name + '_' + id
 ```
 
@@ -125,6 +128,24 @@ node scripts/update.mjs [车ID...]
 - 不加 ID: 自动扫描所有 `single-*` 目录
 - 加 ID: 只处理指定车辆 (如 `node scripts/update.mjs 10037 12099`)
 - 自动完成: 复制数据 → 重建 car-database.js → 上传图片到 B站 CDN → 刷新 index.html 中的 CDN URL 映射
+
+### ⚠️ 新车登记 ADDED_AT (必须，否则不排最前)
+
+车辆列表按**添加时间排序**（新车在上，同批按 ID 降序），
+前端读取每辆车的 `added_at` 字段排序（无值排最后，保持旧序）。
+
+每加一批新车，必须在 `scripts/extract-cars.js` 顶部的 `ADDED_AT` 表中登记：
+
+```js
+const ADDED_AT = {
+  12094: 1787240818462, // 罗刹 (2026-08-20)
+  12102: 1787240818462, // 货拉拉多拉 (2026-08-20)
+};
+```
+
+时间戳获取：`node -e "console.log(Date.now())"`
+同批车用同一时间戳即可（同批按 ID 降序由前端自动处理）。
+**漏登记后果**：新车数据正常但会排在列表最底（视为旧车）。
 
 ### 单独重建数据库
 
@@ -165,10 +186,10 @@ git push
 | 文件 | 作用 |
 |------|------|
 | `scripts/update.mjs` | 主工作流脚本，一键完成全部更新步骤 |
-| `scripts/extract-cars.js` | 从 `full/vehicles/*.json` 提取数据生成 `car-database.js` |
+| `scripts/extract-cars.js` | 从 `full/vehicles/*.json` 提取数据生成 `car-database.js`；顶部 `ADDED_AT` 表登记车辆入库时间（列表排序用） |
 | `scripts/upload-bili.mjs` | 上传新图片到 B站 CDN，保存 URL 映射 |
 | `data/bili-url-mapping.json` | CDN URL → 本地路径映射表 |
-| `car-database.js` | 全部车辆数据（由 extract-cars.js 生成，前端自动加载） |
+| `car-database.js` | 全部车辆数据（由 extract-cars.js 生成，前端自动加载；含 `added_at` 字段用于列表排序） |
 | `data/.../full/vehicles/` | 车辆 JSON 源文件 |
 | `data/.../full/assets/` | 车辆图片源文件 |
 | `package.json` | 依赖: pinyin (用于中文→拼音转换) |
