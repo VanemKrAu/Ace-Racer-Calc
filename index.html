@@ -937,6 +937,13 @@ var _CAR_IMG = {
         return '';
     }
 
+    function sortCarsByAdded() {
+        return CAR_DATABASE.slice().sort(function(a, b) {
+            var ta = a.added_at || 0, tb = b.added_at || 0;
+            if (ta !== tb) return tb - ta;
+            return (b.id || 0) - (a.id || 0);
+        });
+    }
     function populateCarGrid() {
         var list = document.getElementById('carDropdown');
         if (!list || !CAR_DATABASE) return;
@@ -947,8 +954,9 @@ var _CAR_IMG = {
             + '<span style="flex:1;"><span style="opacity:0.5;">\u2753</span> ' + _("未上线车辆", "Unreleased Car") + '</span>'
             + '<span style="font-size:11px;color:var(--text-muted);">' + _("手动填写", "Manual Input") + '</span>'
             + '</div>';
-        for (var i = 0; i < CAR_DATABASE.length; i++) {
-            var c = CAR_DATABASE[i];
+        var sortedCars = sortCarsByAdded();
+        for (var i = 0; i < sortedCars.length; i++) {
+            var c = sortedCars[i];
             var posIcon = getPosIcon(c.position);
             var specIcon = getSpecIcon(c.specialization);
             var icons = '';

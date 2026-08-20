@@ -2,6 +2,7 @@
 const CAR_DATABASE = [
   {
     "id": 12102,
+    "added_at": 1787240818462,
     "name": "货拉拉多拉",
     "name_en": "Huo Lala Duola",
     "position": "干扰位",
@@ -236,6 +237,7 @@ const CAR_DATABASE = [
   },
   {
     "id": 12094,
+    "added_at": 1787240818462,
     "name": "罗刹",
     "name_en": "Luo Sha",
     "position": "天平位",

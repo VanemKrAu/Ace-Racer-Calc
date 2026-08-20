@@ -6,6 +6,13 @@ const vehiclesDir = path.join(__dirname, '..', 'data', '26-07-15_29734784_androi
 const outputFile = path.join(__dirname, '..', 'car-database.js');
 const rawDataDir = 'E:/AceRacer/AceRacing-Workbench/data/26-07-15_29734784_android';
 
+// 车辆添加时间登记表（新增车辆时在此登记，用于列表"新车在上"排序）
+// 时间戳 = 该车加入网站的时间 (Date.now())
+const ADDED_AT = {
+  12094: 1787240818462, // 罗刹
+  12102: 1787240818462, // 货拉拉多拉
+};
+
 // Load raw JSONL data for nitro durations
 const rawVehicleLines = fs.existsSync(rawDataDir + '/vehicle_data.jsonl')
   ? fs.readFileSync(rawDataDir + '/vehicle_data.jsonl', 'utf-8').split('\n').filter(Boolean)
@@ -612,6 +619,7 @@ for (const file of files) {
         return result;
       })(),
       asset_dir: 'assets/' + v.name + '_' + carId,
+      added_at: ADDED_AT[carId] || null,
     });
   } catch (e) {
     console.error(`Error processing ${file}: ${e.message}`);
