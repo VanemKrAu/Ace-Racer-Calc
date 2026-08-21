@@ -4,11 +4,11 @@
 
 **王牌竞速大招能量计算器**
 
+</div>
+
 # 王牌竞速 · 大招能量精密计算器
 
 > **Ace Racer Ultimate Energy Calculator** — 由 Vanem 设定交互逻辑与计算公式，AI 辅助开发。
-
-</div>
 
 <p align="center">
   <img src="https://i0.hdslb.com/bfs/openplatform/98b8c12bc7177aa56b9b3c75b3a5b1cda3fad086.jpg" width="256" height="256" alt="Ace-Racer-Calc" />
