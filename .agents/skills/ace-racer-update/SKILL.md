@@ -129,6 +129,18 @@ node scripts/update.mjs [车ID...]
 - 加 ID: 只处理指定车辆 (如 `node scripts/update.mjs 10037 12099`)
 - 自动完成: 复制数据 → 重建 car-database.js → 上传图片到 B站 CDN → 刷新 index.html 中的 CDN URL 映射
 
+### ⚠️ 图片必须上传 B站 CDN (硬性要求)
+
+新车的车身图（`full/assets/{车名}_{ID}/body/{ID}_m.png`）**必须上传 B站图床**：
+
+1. 图片文件**同时必须提交进仓库**（前端兜底路径，`update.mjs` 已自动复制）
+2. **必须**执行 `node scripts/upload-bili.mjs` 上传到 B站 CDN（需要 cookie）
+3. 上传成功后 `bili-url-mapping.json` 自动更新，`index.html` 的 `_CAR_IMG` 指向 CDN URL
+4. **无 cookie 时流程会中断**（`upload-bili.mjs` 直接 `exit(1)`），此时必须向用户索要 cookie（`SESSDATA` + `bili_jct`，见下方 Cookie 维护），**不允许跳过上传直接结束**
+5. 上传完成后用 `curl -sI <CDN_URL>` 验证返回 200 且 `content-type: image/png`
+
+**判定标准**：新车在 `index.html` 的 `_CAR_IMG` 中必须能查到对应的 `i0.hdslb.com` URL，查不到 = 流程未完成。
+
 ### ⚠️ 新车登记 ADDED_AT (必须，否则不排最前)
 
 车辆列表按**添加时间排序**（新车在上，同批按 ID 降序），
@@ -170,6 +182,9 @@ console.log(JSON.stringify(car, null, 2));
 - 配置文件: `.agent_tmp/bili-cookies.json` → `{"SESSDATA": "...", "bili_jct": "..."}`
 
 获取 cookie: 登录 `bilibili.com` → F12 → Application → Cookies → 复制 `SESSDATA` 和 `bili_jct`
+
+⚠️ **没有 cookie = 流程无法完成**。upload-bili.mjs 在缺少 cookie 时会报错退出，
+必须向用户索要 cookie 后继续，**不允许以"图片已提交仓库"为由跳过 CDN 上传**。
 
 ## Git 推送
 
