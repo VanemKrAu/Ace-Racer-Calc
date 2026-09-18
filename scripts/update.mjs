@@ -132,7 +132,14 @@ if (blockStart < 0) {
   const newBlock = generateCDNBlock(iconKeys, carUrls);
   html = html.slice(0, insertPoint) + newBlock + html.slice(insertPoint);
 } else {
-  const oldBlock = html.slice(blockStart, blockEnd + 9);
+  // 从注释向前找到所属的 <script> 开标签，整块替换。
+  // 若只从注释开始替换，原有 <script> 会残留，而新块又自带一个 <script>，
+  // 结果出现连续两个 <script> 开标签（标签不配平）→ 该段脚本语法错误 → 页面 JS 全挂。
+  const scriptOpen = html.lastIndexOf('<script', blockStart);
+  // 仅当 <script> 与注释之间只有空白时才连开标签一起替换，否则退回只替换注释块
+  const between = scriptOpen >= 0 ? html.slice(scriptOpen, blockStart) : '';
+  const from = (scriptOpen >= 0 && /^<script[^>]*>\s*$/.test(between)) ? scriptOpen : blockStart;
+  const oldBlock = html.slice(from, blockEnd + 9);
   const newBlock = generateCDNBlock(iconKeys, carUrls);
   html = html.replace(oldBlock, newBlock);
   log('REPLACE', 'Updated CDN block in index.html');
