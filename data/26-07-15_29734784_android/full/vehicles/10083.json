@@ -1,7 +1,6 @@
 {
   "schemaVersion": 2,
-  "versionId": "26-07-15_29734784_android",
-  "generatedAt": "2026-07-16T09:22:34.000Z",
+  "generatedAt": "2026-09-18T12:34:31.000Z",
   "item": {
     "id": 10083,
     "name": "梅赛德斯-AMG GT Black Series",
@@ -50,7 +49,7 @@
       }
     ],
     "stats": {
-      "speed_limit": 173,
+      "speed_limit": 179,
       "speedup_ratio": 1.07,
       "charge": {
         "ace_charge": 2650,
@@ -108,7 +107,7 @@
           "upgrade_level_icon": "new_carport_icon_10161"
         },
         "stats": {
-          "speed_limit": 173,
+          "speed_limit": 179,
           "speedup_ratio": 1.07,
           "charge": {
             "ace_charge": 2650,
@@ -167,7 +166,7 @@
           "upgrade_level_icon": "new_carport_icon_nos_03"
         },
         "stats": {
-          "speed_limit": 173,
+          "speed_limit": 179,
           "speedup_ratio": 1.07,
           "charge": {
             "ace_charge": 2650,
@@ -225,7 +224,7 @@
           "upgrade_level_icon": "new_carport_icon_14"
         },
         "stats": {
-          "speed_limit": 173,
+          "speed_limit": 179,
           "speedup_ratio": 1.07,
           "charge": {
             "ace_charge": 2650,
@@ -284,7 +283,7 @@
           "upgrade_level_icon": "new_carport_icon_mountainroad"
         },
         "stats": {
-          "speed_limit": 173,
+          "speed_limit": 179,
           "speedup_ratio": 1.07,
           "charge": {
             "ace_charge": 2650,
@@ -343,7 +342,7 @@
           "upgrade_level_icon": "new_carport_icon_10160"
         },
         "stats": {
-          "speed_limit": 173,
+          "speed_limit": 179,
           "speedup_ratio": 1.07,
           "charge": {
             "ace_charge": 2650,
@@ -402,7 +401,7 @@
           "upgrade_level_icon": "new_carport_icon_nos_03"
         },
         "stats": {
-          "speed_limit": 173,
+          "speed_limit": 179,
           "speedup_ratio": 1.07,
           "charge": {
             "ace_charge": 2650,
@@ -461,7 +460,7 @@
           "upgrade_level_icon": "new_carport_icon_10160"
         },
         "stats": {
-          "speed_limit": 173.5,
+          "speed_limit": 179.5,
           "speedup_ratio": 1.07,
           "charge": {
             "ace_charge": 2650,
@@ -521,7 +520,7 @@
           "upgrade_level_icon": "new_carport_icon_10160"
         },
         "stats": {
-          "speed_limit": 173.5,
+          "speed_limit": 179.5,
           "speedup_ratio": 1.07,
           "charge": {
             "ace_charge": 2650,
@@ -581,7 +580,7 @@
           "upgrade_level_icon": "new_carport_icon_10160"
         },
         "stats": {
-          "speed_limit": 174,
+          "speed_limit": 180,
           "speedup_ratio": 1.07,
           "charge": {
             "ace_charge": 2650,
@@ -641,7 +640,7 @@
           "upgrade_level_icon": "new_carport_icon_10160"
         },
         "stats": {
-          "speed_limit": 175,
+          "speed_limit": 181,
           "speedup_ratio": 1.07,
           "charge": {
             "ace_charge": 2650,
@@ -1413,7 +1412,8 @@
         10012,
         10025,
         10039,
-        12066
+        12066,
+        12089
       ]
     },
     "resources": {

@@ -1,7 +1,6 @@
 {
   "schemaVersion": 2,
-  "versionId": "26-07-15_29734784_android",
-  "generatedAt": "2026-07-16T09:22:34.000Z",
+  "generatedAt": "2026-09-18T12:34:31.000Z",
   "item": {
     "id": 12067,
     "name": "奥迪 RS 3",
@@ -1382,7 +1381,9 @@
         12065,
         10026
       ],
-      "be_restraint": []
+      "be_restraint": [
+        10019
+      ]
     },
     "resources": {
       "icons": {

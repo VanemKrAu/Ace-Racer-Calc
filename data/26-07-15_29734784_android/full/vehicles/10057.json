@@ -1,7 +1,6 @@
 {
   "schemaVersion": 2,
-  "versionId": "26-07-15_29734784_android",
-  "generatedAt": "2026-07-16T09:22:34.000Z",
+  "generatedAt": "2026-09-18T12:34:31.000Z",
   "item": {
     "id": 10057,
     "name": "平行巡洋舰",
@@ -1678,6 +1677,10 @@
           {
             "source": "local",
             "index": 5
+          },
+          {
+            "source": "local",
+            "index": 6
           }
         ]
       },
@@ -1721,6 +1724,14 @@
           "icon_s": "tz_10057_5_s",
           "icon_m": "tz_10057_5_m",
           "icon_b": "tz_10057_5_b"
+        },
+        "6": {
+          "id": 50713,
+          "name": "涂装 盛世华章",
+          "desc": "你我携手共同书写盛世华章！\n适用车型：#1dd8d0平行巡洋舰",
+          "icon_s": "tz_10057_6_s",
+          "icon_m": "tz_10057_6_m",
+          "icon_b": "tz_10057_6_b"
         }
       }
     },

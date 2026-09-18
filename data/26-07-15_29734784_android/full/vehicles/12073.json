@@ -1,7 +1,6 @@
 {
   "schemaVersion": 2,
-  "versionId": "26-07-15_29734784_android",
-  "generatedAt": "2026-07-16T09:22:34.000Z",
+  "generatedAt": "2026-09-18T12:34:31.000Z",
   "item": {
     "id": 12073,
     "name": "法拉利 LaFerrari",
@@ -1860,7 +1859,8 @@
       "be_restraint": [
         12001,
         12080,
-        12101
+        12101,
+        10019
       ]
     },
     "resources": {

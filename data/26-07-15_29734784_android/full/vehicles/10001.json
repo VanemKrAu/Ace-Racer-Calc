@@ -1,7 +1,6 @@
 {
   "schemaVersion": 2,
-  "versionId": "26-07-15_29734784_android",
-  "generatedAt": "2026-07-16T09:22:34.000Z",
+  "generatedAt": "2026-09-18T12:34:31.000Z",
   "item": {
     "id": 10001,
     "name": "福特 Focus RS",
@@ -1653,7 +1652,7 @@
             },
             {
               "label": "驱动方式",
-              "value": "前置前驱"
+              "value": "前置四驱"
             },
             {
               "label": "车重",

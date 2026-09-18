@@ -1,7 +1,6 @@
 {
   "schemaVersion": 2,
-  "versionId": "26-07-15_29734784_android",
-  "generatedAt": "2026-07-16T09:22:34.000Z",
+  "generatedAt": "2026-09-18T12:34:31.000Z",
   "item": {
     "id": 12034,
     "name": "法拉利 812 Competizione",
@@ -1079,10 +1078,10 @@
             "html": "最高氮气极速"
           },
           "value_rich": {
-            "raw": "90km/h",
-            "html": "90km/h"
+            "raw": "96km/h",
+            "html": "96km/h"
           },
-          "value_text": "90km/h",
+          "value_text": "96km/h",
           "instruction_ids": [],
           "values": []
         },
@@ -1300,7 +1299,8 @@
         12066,
         12080,
         12070,
-        12076
+        12076,
+        10019
       ]
     },
     "resources": {

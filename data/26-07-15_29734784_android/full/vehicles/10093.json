@@ -1,7 +1,6 @@
 {
   "schemaVersion": 2,
-  "versionId": "26-07-15_29734784_android",
-  "generatedAt": "2026-07-16T09:22:34.000Z",
+  "generatedAt": "2026-09-18T12:34:31.000Z",
   "item": {
     "id": 10093,
     "name": "寒霜冰魄",
@@ -55,9 +54,9 @@
         "color": 1
       },
       {
-        "id": 158,
-        "text": "无法闪现",
-        "desc": "使敌方的闪现失效",
+        "id": 183,
+        "text": "削弱闪现",
+        "desc": "降低敌方的闪现距离",
         "color": 3
       }
     ],
@@ -108,7 +107,7 @@
           ],
           "passive_skill_rich_desc": "敌方车辆每次使用大招时，自充能6%",
           "slipstream": "跟随在车辆后方将获得尾流，产生持续的氮气充能效果",
-          "special_passive_skill_desc": "敌方车辆每次使用大招时，自充能6%",
+          "special_passive_skill_desc": "敌方车辆每次进行闪现后2秒内闪现距离降低30%，敌方车辆每次使用大招时自身充能6%",
           "special_passive_skill_icon": "new_carport_icon_10185",
           "special_passive_skill_title": "霜魂",
           "title_ace_time_charge_condition": "赛道专精",
@@ -167,7 +166,7 @@
           ],
           "passive_skill_rich_desc": "敌方车辆每次使用大招时，自充能6%",
           "slipstream": "跟随在车辆后方将获得尾流，产生持续的氮气充能效果",
-          "special_passive_skill_desc": "敌方车辆每次使用大招时，自充能6%",
+          "special_passive_skill_desc": "敌方车辆每次进行闪现后2秒内闪现距离降低30%，敌方车辆每次使用大招时自身充能6%",
           "special_passive_skill_icon": "new_carport_icon_10185",
           "special_passive_skill_title": "霜魂",
           "title_ace_time_charge_condition": "赛道专精",
@@ -225,7 +224,7 @@
           ],
           "passive_skill_rich_desc": "敌方车辆每次使用大招时，自充能6%",
           "slipstream": "跟随在车辆后方将获得尾流，产生持续的氮气充能效果",
-          "special_passive_skill_desc": "敌方车辆每次使用大招时，自充能6%",
+          "special_passive_skill_desc": "敌方车辆每次进行闪现后2秒内闪现距离降低30%，敌方车辆每次使用大招时自身充能6%",
           "special_passive_skill_icon": "new_carport_icon_10185",
           "special_passive_skill_title": "霜魂",
           "title_ace_time_charge_condition": "赛道专精",
@@ -284,7 +283,7 @@
           ],
           "passive_skill_rich_desc": "敌方车辆每次使用大招时，自充能6%",
           "slipstream": "跟随在车辆后方将获得尾流，产生持续的氮气充能效果",
-          "special_passive_skill_desc": "敌方车辆每次使用大招时，自充能6%",
+          "special_passive_skill_desc": "敌方车辆每次进行闪现后2秒内闪现距离降低30%，敌方车辆每次使用大招时自身充能6%",
           "special_passive_skill_icon": "new_carport_icon_10185",
           "special_passive_skill_title": "霜魂",
           "title_ace_time_charge_condition": "赛道专精",
@@ -343,7 +342,7 @@
           ],
           "passive_skill_rich_desc": "敌方车辆每次使用大招时，自充能6%",
           "slipstream": "跟随在车辆后方将获得尾流，产生持续的氮气充能效果",
-          "special_passive_skill_desc": "敌方车辆每次使用大招时，自充能6%",
+          "special_passive_skill_desc": "敌方车辆每次进行闪现后2秒内闪现距离降低30%，敌方车辆每次使用大招时自身充能6%",
           "special_passive_skill_icon": "new_carport_icon_10185",
           "special_passive_skill_title": "霜魂",
           "title_ace_time_charge_condition": "赛道专精",
@@ -402,7 +401,7 @@
           ],
           "passive_skill_rich_desc": "敌方车辆每次使用大招时，自充能6%",
           "slipstream": "跟随在车辆后方将获得尾流，产生持续的氮气充能效果",
-          "special_passive_skill_desc": "敌方车辆每次使用大招时，自充能6%",
+          "special_passive_skill_desc": "敌方车辆每次进行闪现后2秒内闪现距离降低30%，敌方车辆每次使用大招时自身充能6%",
           "special_passive_skill_icon": "new_carport_icon_10185",
           "special_passive_skill_title": "霜魂",
           "title_ace_time_charge_condition": "赛道专精",
@@ -461,7 +460,7 @@
           ],
           "passive_skill_rich_desc": "敌方车辆每次使用大招时，自充能6%",
           "slipstream": "跟随在车辆后方将获得尾流，产生持续的氮气充能效果",
-          "special_passive_skill_desc": "敌方车辆每次使用大招时，自充能6%",
+          "special_passive_skill_desc": "敌方车辆每次进行闪现后2秒内闪现距离降低30%，敌方车辆每次使用大招时自身充能6%",
           "special_passive_skill_icon": "new_carport_icon_10185",
           "special_passive_skill_title": "霜魂",
           "title_ace_time_charge_condition": "赛道专精",
@@ -521,7 +520,7 @@
           ],
           "passive_skill_rich_desc": "敌方车辆每次使用大招时，自充能6%",
           "slipstream": "跟随在车辆后方将获得尾流，产生持续的氮气充能效果",
-          "special_passive_skill_desc": "敌方车辆每次使用大招时，自充能6%",
+          "special_passive_skill_desc": "敌方车辆每次进行闪现后2秒内闪现距离降低30%，敌方车辆每次使用大招时自身充能6%",
           "special_passive_skill_icon": "new_carport_icon_10185",
           "special_passive_skill_title": "霜魂",
           "title_ace_time_charge_condition": "赛道专精",
@@ -581,7 +580,7 @@
           ],
           "passive_skill_rich_desc": "敌方车辆每次使用大招时，自充能6%",
           "slipstream": "跟随在车辆后方将获得尾流，产生持续的氮气充能效果",
-          "special_passive_skill_desc": "敌方车辆每次使用大招时，自充能6%",
+          "special_passive_skill_desc": "敌方车辆每次进行闪现后2秒内闪现距离降低30%，敌方车辆每次使用大招时自身充能6%",
           "special_passive_skill_icon": "new_carport_icon_10185",
           "special_passive_skill_title": "霜魂",
           "title_ace_time_charge_condition": "赛道专精",
@@ -641,7 +640,7 @@
           ],
           "passive_skill_rich_desc": "敌方车辆每次使用大招时，自充能6%",
           "slipstream": "跟随在车辆后方将获得尾流，产生持续的氮气充能效果",
-          "special_passive_skill_desc": "敌方车辆每次使用大招时，自充能6%",
+          "special_passive_skill_desc": "敌方车辆每次进行闪现后2秒内闪现距离降低30%，敌方车辆每次使用大招时自身充能6%",
           "special_passive_skill_icon": "new_carport_icon_10185",
           "special_passive_skill_title": "霜魂",
           "title_ace_time_charge_condition": "赛道专精",
@@ -1085,6 +1084,123 @@
               ]
             }
           ]
+        },
+        {
+          "id": 63305,
+          "name": "霜魂-闪现减距",
+          "type": null,
+          "icon_static": null,
+          "icon_big": null,
+          "icon": null,
+          "init_ratio": null,
+          "icons": {
+            "normal": null,
+            "disable": null,
+            "alt": null,
+            "down": null,
+            "static": null,
+            "big": null
+          },
+          "extra": {
+            "cam_type": null,
+            "eff_id": null,
+            "is_cost_energy": null,
+            "rally_qte": null
+          },
+          "value_texts": [
+            {
+              "key": "name",
+              "label": "技能名称",
+              "value": "霜魂-闪现减距"
+            }
+          ],
+          "instructions": [
+            {
+              "id": 813501,
+              "attack_show_eff_dur": 5,
+              "attack_show_friend_enemy_filter": [
+                1,
+                2
+              ],
+              "attack_show_keep_dur": 5,
+              "attack_show_role_filter": [
+                1,
+                2,
+                3
+              ],
+              "buff_count": 0,
+              "cd_type": 1,
+              "eff_cd": 1,
+              "enemy_eff": [
+                63306
+              ],
+              "extra_children": [],
+              "extra_isolate": [],
+              "inst_group": 8105,
+              "inst_name": "霜魂干扰",
+              "inst_type": 8,
+              "lock_camp": 2,
+              "lock_cnt": 5,
+              "lock_dist": [
+                -6000,
+                6000
+              ],
+              "lock_no_dodge": 1,
+              "lock_no_rebound": 1,
+              "lock_no_reverse": 1,
+              "lock_side_dist": [
+                -6000,
+                6000
+              ],
+              "lock_vertical_dist": [
+                -6000,
+                6000
+              ],
+              "rear_insts": [
+                -1
+              ],
+              "ref_insts": [
+                813501
+              ],
+              "sp_n2o_ace_charge_ratio": 1,
+              "name": "霜魂干扰",
+              "desc": null,
+              "type": 8,
+              "order": null,
+              "value_texts": [
+                {
+                  "key": "attack_show_friend_enemy_filter",
+                  "label": "敌友筛选",
+                  "value": "[1,2]"
+                },
+                {
+                  "key": "attack_show_role_filter",
+                  "label": "定位筛选",
+                  "value": "[1,2,3]"
+                },
+                {
+                  "key": "buff_count",
+                  "label": "Buff 数量",
+                  "value": "0"
+                },
+                {
+                  "key": "rear_insts",
+                  "label": "后续节点",
+                  "value": "[-1]"
+                },
+                {
+                  "key": "extra_children",
+                  "label": "子节点",
+                  "value": "[]"
+                },
+                {
+                  "key": "ref_insts",
+                  "label": "引用节点",
+                  "value": "[813501]"
+                }
+              ]
+            }
+          ]
         }
       ]
     },
@@ -1249,7 +1365,78 @@
         }
       ],
       "sp": [],
-      "passive": [],
+      "passive": [
+        {
+          "id": "2156",
+          "name_rich": {
+            "raw": "命中类型",
+            "html": "命中类型"
+          },
+          "value_rich": {
+            "raw": "#tipsnoicon[直接命中]",
+            "html": "<span class=\"rt-tip rt-tip--entry rt-tip--noicon\" data-tip=\"直接命中\" data-desc=\"·直接命中目标，除非目标处于*无法选中*状态\" style=\"--tip-color:#ffd700\" title=\"·直接命中目标，除非目标处于*无法选中*状态\">直接命中</span>"
+          },
+          "value_text": "#tipsnoicon[直接命中]",
+          "instruction_ids": [],
+          "values": []
+        },
+        {
+          "id": "2157",
+          "name_rich": {
+            "raw": "参数 2157",
+            "html": "参数 2157"
+          },
+          "value_rich": {
+            "raw": "#a9a9a9(开局时施加状态)",
+            "html": "<span class=\"rt-color\" style=\"color: #a9a9a9\">(开局时施加状态)</span>"
+          },
+          "value_text": "#a9a9a9(开局时施加状态)",
+          "instruction_ids": [],
+          "values": []
+        },
+        {
+          "id": "2158",
+          "name_rich": {
+            "raw": "闪现缩短",
+            "html": "闪现缩短"
+          },
+          "value_rich": {
+            "raw": "30%",
+            "html": "30%"
+          },
+          "value_text": "30%",
+          "instruction_ids": [],
+          "values": []
+        },
+        {
+          "id": "2159",
+          "name_rich": {
+            "raw": "持续时长",
+            "html": "持续时长"
+          },
+          "value_rich": {
+            "raw": "2秒",
+            "html": "2秒"
+          },
+          "value_text": "2秒",
+          "instruction_ids": [],
+          "values": []
+        },
+        {
+          "id": "2160",
+          "name_rich": {
+            "raw": "可否净化",
+            "html": "可否净化"
+          },
+          "value_rich": {
+            "raw": "可净化",
+            "html": "可净化"
+          },
+          "value_text": "可净化",
+          "instruction_ids": [],
+          "values": []
+        }
+      ],
       "other": []
     },
     "richText": {
@@ -1275,8 +1462,8 @@
       "passive_skill_rich_desc": "敌方车辆每次使用大招时，自充能6%",
       "slipstream": "跟随在车辆后方将获得尾流，产生持续的氮气充能效果",
       "special_passive_skill_desc": {
-        "raw": "敌方车辆每次使用大招时，自充能6%",
-        "html": "敌方车辆每次使用大招时，自充能6%"
+        "raw": "敌方车辆每次进行闪现后2秒内闪现距离降低30%，敌方车辆每次使用大招时自身充能6%",
+        "html": "敌方车辆每次进行闪现后2秒内闪现距离降低30%，敌方车辆每次使用大招时自身充能6%"
       },
       "special_passive_skill_icon": "new_carport_icon_10185",
       "special_passive_skill_title": "霜魂",
@@ -1288,8 +1475,8 @@
       "unlock_nitro_3": "解锁1x6磅，2x3磅，3x2磅氮气",
       "upgrade_level_icon": "new_carport_icon_10185",
       "feature_desc": {
-        "raw": "加速推进并在100米范围内的敌方车辆前方50米处召唤暴风雪：\n·穿越暴风雪的敌方车辆失去全部额外速度和动力增益（涡轮、氮气、大招的基础加速和动力不受影响）\n·被冰霜附着5秒（已被冰霜附着的车辆不会被重复附着）\n·冰霜使敌方车辆减速10km/h且无法#tips[闪现]和#tips[后退]，附着结束时若敌方车辆仍处于前3名则额外被冻结1秒。",
-        "html": "加速推进并在100米范围内的敌方车辆前方50米处召唤暴风雪：<br/>·穿越暴风雪的敌方车辆失去全部额外速度和动力增益（涡轮、氮气、大招的基础加速和动力不受影响）<br/>·被冰霜附着5秒（已被冰霜附着的车辆不会被重复附着）<br/>·冰霜使敌方车辆减速10km/h且无法<span class=\"rt-tip rt-tip--entry\" data-tip=\"闪现\" data-icon=\"carport_new_skill_illustrate_b3\" data-desc=\"·沿赛道预设路线向前快速位移\" style=\"--tip-color:#7eedff\" title=\"·沿赛道预设路线向前快速位移\"><span class=\"rt-tip__icon-slot\"></span>闪现</span>和<span class=\"rt-tip rt-tip--entry\" data-tip=\"后退\" data-icon=\"carport_new_skill_illustrate_r1\" data-desc=\"·沿赛道预设路线向后位移一段距离\" style=\"--tip-color:#ffa8b1\" title=\"·沿赛道预设路线向后位移一段距离\"><span class=\"rt-tip__icon-slot\"></span>后退</span>，附着结束时若敌方车辆仍处于前3名则额外被冻结1秒。"
+        "raw": "加速推进并在100米范围内的敌方车辆前方50米处召唤暴风雪：\n·穿越暴风雪的敌方车辆失去全部额外速度和动力增益（涡轮、氮气、大招的基础加速和动力不受影响）\n·被冰霜附着5秒（已被冰霜附着的车辆立即结束附着）\n·冰霜使敌方车辆减速10km/h，附着结束时若敌方车辆仍处于前3名则额外被冻结1秒。",
+        "html": "加速推进并在100米范围内的敌方车辆前方50米处召唤暴风雪：<br/>·穿越暴风雪的敌方车辆失去全部额外速度和动力增益（涡轮、氮气、大招的基础加速和动力不受影响）<br/>·被冰霜附着5秒（已被冰霜附着的车辆立即结束附着）<br/>·冰霜使敌方车辆减速10km/h，附着结束时若敌方车辆仍处于前3名则额外被冻结1秒。"
       },
       "sp_skill_desc": null,
       "passive_skill_desc": null,
@@ -1495,6 +1682,10 @@
           {
             "source": "local",
             "index": 6
+          },
+          {
+            "source": "local",
+            "index": 7
           }
         ]
       },
@@ -1546,6 +1737,14 @@
           "icon_s": "tz_10093_6_s",
           "icon_m": "tz_10093_6_m",
           "icon_b": "tz_10093_6_b"
+        },
+        "7": {
+          "id": 50687,
+          "name": "涂装 织女守望",
+          "desc": "织女在银河彼岸守望牛郎，谁知那分离的忧伤与重逢的期盼！\n适用车型：#1dd8d0寒霜冰魄",
+          "icon_s": "tz_10093_7_s",
+          "icon_m": "tz_10093_7_m",
+          "icon_b": "tz_10093_7_b"
         }
       }
     },

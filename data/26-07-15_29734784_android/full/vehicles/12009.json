@@ -1,7 +1,6 @@
 {
   "schemaVersion": 2,
-  "versionId": "26-07-15_29734784_android",
-  "generatedAt": "2026-07-16T09:22:34.000Z",
+  "generatedAt": "2026-09-18T12:34:31.000Z",
   "item": {
     "id": 12009,
     "name": "鹤羽",
@@ -1441,8 +1440,8 @@
       "unlock_nitro_3": "解锁1x6磅，2x3磅，3x2磅氮气",
       "upgrade_level_icon": "new_carport_icon_10212",
       "feature_desc": {
-        "raw": "加速推进并获得一个涡轮，极速提升#desc[283]，持续11秒，加速期间：\n·冲破面前可见的#tips[放置物]\n·前3次使用涡轮时，向前#tips[闪现]22米并刷新涡轮\n·开启大招时若未处于第一名，则期间闪现距离加成20%",
-        "html": "加速推进并获得一个涡轮，极速提升<span class=\"rt-desc\">极速提升 25km/h</span>，持续11秒，加速期间：<br/>·冲破面前可见的<span class=\"rt-tip rt-tip--entry\" data-tip=\"放置物\" data-icon=\"carport_new_skill_illustrate_y7\" data-desc=\"·因车辆技能临时放在赛道中的道具&#10;·接触时触发相应效果\" style=\"--tip-color:#ffd700\" title=\"·因车辆技能临时放在赛道中的道具&#10;·接触时触发相应效果\"><span class=\"rt-tip__icon-slot\"></span>放置物</span><br/>·前3次使用涡轮时，向前<span class=\"rt-tip rt-tip--entry\" data-tip=\"闪现\" data-icon=\"carport_new_skill_illustrate_b3\" data-desc=\"·沿赛道预设路线向前快速位移\" style=\"--tip-color:#7eedff\" title=\"·沿赛道预设路线向前快速位移\"><span class=\"rt-tip__icon-slot\"></span>闪现</span>22米并刷新涡轮<br/>·开启大招时若未处于第一名，则期间闪现距离加成20%"
+        "raw": "加速推进并获得一个涡轮，极速提升#desc[283]，持续11秒，加速期间：\n·冲破面前可见的#tips[放置物]\n·前3次使用涡轮时，向前#tips[闪现]25米并刷新涡轮\n·开启大招时若未处于第一名，则期间闪现距离加成20%",
+        "html": "加速推进并获得一个涡轮，极速提升<span class=\"rt-desc\">极速提升 25km/h</span>，持续11秒，加速期间：<br/>·冲破面前可见的<span class=\"rt-tip rt-tip--entry\" data-tip=\"放置物\" data-icon=\"carport_new_skill_illustrate_y7\" data-desc=\"·因车辆技能临时放在赛道中的道具&#10;·接触时触发相应效果\" style=\"--tip-color:#ffd700\" title=\"·因车辆技能临时放在赛道中的道具&#10;·接触时触发相应效果\"><span class=\"rt-tip__icon-slot\"></span>放置物</span><br/>·前3次使用涡轮时，向前<span class=\"rt-tip rt-tip--entry\" data-tip=\"闪现\" data-icon=\"carport_new_skill_illustrate_b3\" data-desc=\"·沿赛道预设路线向前快速位移\" style=\"--tip-color:#7eedff\" title=\"·沿赛道预设路线向前快速位移\"><span class=\"rt-tip__icon-slot\"></span>闪现</span>25米并刷新涡轮<br/>·开启大招时若未处于第一名，则期间闪现距离加成20%"
       },
       "sp_skill_desc": null,
       "passive_skill_desc": null,
@@ -1599,7 +1598,8 @@
       "be_restraint": [
         10080,
         12001,
-        12062
+        12062,
+        12101
       ]
     },
     "resources": {

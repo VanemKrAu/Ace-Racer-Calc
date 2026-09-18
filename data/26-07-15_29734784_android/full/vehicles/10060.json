@@ -1,7 +1,6 @@
 {
   "schemaVersion": 2,
-  "versionId": "26-07-15_29734784_android",
-  "generatedAt": "2026-07-16T09:22:34.000Z",
+  "generatedAt": "2026-09-18T12:34:31.000Z",
   "item": {
     "id": 10060,
     "name": "哈迪斯",
@@ -1641,6 +1640,10 @@
           {
             "source": "local",
             "index": 8
+          },
+          {
+            "source": "local",
+            "index": 9
           }
         ]
       },
@@ -1708,6 +1711,14 @@
           "icon_s": "tz_10060_8_s",
           "icon_m": "tz_10060_8_m",
           "icon_b": "tz_10060_8_b"
+        },
+        "9": {
+          "id": 50680,
+          "name": "涂装 冥玉青釉",
+          "desc": "冰冷的釉色，十足的寒意。\n适用车型：#1dd8d0哈迪斯",
+          "icon_s": "tz_10060_9_s",
+          "icon_m": "tz_10060_9_m",
+          "icon_b": "tz_10060_9_b"
         }
       }
     },

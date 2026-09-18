@@ -1,7 +1,6 @@
 {
   "schemaVersion": 2,
-  "versionId": "26-07-15_29734784_android",
-  "generatedAt": "2026-07-16T09:22:34.000Z",
+  "generatedAt": "2026-09-18T12:34:31.000Z",
   "item": {
     "id": 12062,
     "name": "狄安娜",
@@ -102,7 +101,7 @@
           ],
           "passive_skill_rich_desc": "42",
           "slipstream": "跟随在车辆后方将获得尾流，产生持续的氮气充能效果",
-          "special_passive_skill_desc": "队友每累计使用6次大招时将一名未被标记的敌方标记为猎物",
+          "special_passive_skill_desc": "队友每累计使用5次大招时破除敌方隐身并将一名未被标记的敌方标记为猎物",
           "special_passive_skill_icon": "new_carport_icon_10322",
           "special_passive_skill_title": "合作狩猎",
           "title_ace_time_charge_condition": "赛道专精",
@@ -161,7 +160,7 @@
           ],
           "passive_skill_rich_desc": "42",
           "slipstream": "跟随在车辆后方将获得尾流，产生持续的氮气充能效果",
-          "special_passive_skill_desc": "队友每累计使用6次大招时将一名未被标记的敌方标记为猎物",
+          "special_passive_skill_desc": "队友每累计使用5次大招时破除敌方隐身并将一名未被标记的敌方标记为猎物",
           "special_passive_skill_icon": "new_carport_icon_10322",
           "special_passive_skill_title": "合作狩猎",
           "title_ace_time_charge_condition": "赛道专精",
@@ -219,7 +218,7 @@
           ],
           "passive_skill_rich_desc": "42",
           "slipstream": "跟随在车辆后方将获得尾流，产生持续的氮气充能效果",
-          "special_passive_skill_desc": "队友每累计使用6次大招时将一名未被标记的敌方标记为猎物",
+          "special_passive_skill_desc": "队友每累计使用5次大招时破除敌方隐身并将一名未被标记的敌方标记为猎物",
           "special_passive_skill_icon": "new_carport_icon_10322",
           "special_passive_skill_title": "合作狩猎",
           "title_ace_time_charge_condition": "赛道专精",
@@ -278,7 +277,7 @@
           ],
           "passive_skill_rich_desc": "42",
           "slipstream": "跟随在车辆后方将获得尾流，产生持续的氮气充能效果",
-          "special_passive_skill_desc": "队友每累计使用6次大招时将一名未被标记的敌方标记为猎物",
+          "special_passive_skill_desc": "队友每累计使用5次大招时破除敌方隐身并将一名未被标记的敌方标记为猎物",
           "special_passive_skill_icon": "new_carport_icon_10322",
           "special_passive_skill_title": "合作狩猎",
           "title_ace_time_charge_condition": "赛道专精",
@@ -337,7 +336,7 @@
           ],
           "passive_skill_rich_desc": "42",
           "slipstream": "跟随在车辆后方将获得尾流，产生持续的氮气充能效果",
-          "special_passive_skill_desc": "队友每累计使用6次大招时将一名未被标记的敌方标记为猎物",
+          "special_passive_skill_desc": "队友每累计使用5次大招时破除敌方隐身并将一名未被标记的敌方标记为猎物",
           "special_passive_skill_icon": "new_carport_icon_10322",
           "special_passive_skill_title": "合作狩猎",
           "title_ace_time_charge_condition": "赛道专精",
@@ -396,7 +395,7 @@
           ],
           "passive_skill_rich_desc": "42",
           "slipstream": "跟随在车辆后方将获得尾流，产生持续的氮气充能效果",
-          "special_passive_skill_desc": "队友每累计使用6次大招时将一名未被标记的敌方标记为猎物",
+          "special_passive_skill_desc": "队友每累计使用5次大招时破除敌方隐身并将一名未被标记的敌方标记为猎物",
           "special_passive_skill_icon": "new_carport_icon_10322",
           "special_passive_skill_title": "合作狩猎",
           "title_ace_time_charge_condition": "赛道专精",
@@ -455,7 +454,7 @@
           ],
           "passive_skill_rich_desc": "42",
           "slipstream": "跟随在车辆后方将获得尾流，产生持续的氮气充能效果",
-          "special_passive_skill_desc": "队友每累计使用6次大招时将一名未被标记的敌方标记为猎物",
+          "special_passive_skill_desc": "队友每累计使用5次大招时破除敌方隐身并将一名未被标记的敌方标记为猎物",
           "special_passive_skill_icon": "new_carport_icon_10322",
           "special_passive_skill_title": "合作狩猎",
           "title_ace_time_charge_condition": "赛道专精",
@@ -515,7 +514,7 @@
           ],
           "passive_skill_rich_desc": "42",
           "slipstream": "跟随在车辆后方将获得尾流，产生持续的氮气充能效果",
-          "special_passive_skill_desc": "队友每累计使用6次大招时将一名未被标记的敌方标记为猎物",
+          "special_passive_skill_desc": "队友每累计使用5次大招时破除敌方隐身并将一名未被标记的敌方标记为猎物",
           "special_passive_skill_icon": "new_carport_icon_10322",
           "special_passive_skill_title": "合作狩猎",
           "title_ace_time_charge_condition": "赛道专精",
@@ -575,7 +574,7 @@
           ],
           "passive_skill_rich_desc": "42",
           "slipstream": "跟随在车辆后方将获得尾流，产生持续的氮气充能效果",
-          "special_passive_skill_desc": "队友每累计使用6次大招时将一名未被标记的敌方标记为猎物",
+          "special_passive_skill_desc": "队友每累计使用5次大招时破除敌方隐身并将一名未被标记的敌方标记为猎物",
           "special_passive_skill_icon": "new_carport_icon_10322",
           "special_passive_skill_title": "合作狩猎",
           "title_ace_time_charge_condition": "赛道专精",
@@ -635,7 +634,7 @@
           ],
           "passive_skill_rich_desc": "42",
           "slipstream": "跟随在车辆后方将获得尾流，产生持续的氮气充能效果",
-          "special_passive_skill_desc": "队友每累计使用6次大招时将一名未被标记的敌方标记为猎物",
+          "special_passive_skill_desc": "队友每累计使用5次大招时破除敌方隐身并将一名未被标记的敌方标记为猎物",
           "special_passive_skill_icon": "new_carport_icon_10322",
           "special_passive_skill_title": "合作狩猎",
           "title_ace_time_charge_condition": "赛道专精",
@@ -1090,13 +1089,13 @@
               "duration": null,
               "extra_children": [],
               "extra_isolate": [
-                809801
+                803407
               ],
               "glob_check_eff_ids": [
-                809801
+                803407
               ],
               "glob_check_mode": 1,
-              "glob_check_num": 6,
+              "glob_check_num": 5,
               "glob_check_target": 4,
               "glob_check_type": 1,
               "inst_group": 38022,
@@ -1106,7 +1105,7 @@
                 -1
               ],
               "ref_insts": [
-                809801,
+                803407,
                 3801501
               ],
               "sp_n2o_ace_charge_ratio": 1,
@@ -1133,7 +1132,7 @@
                 {
                   "key": "ref_insts",
                   "label": "引用节点",
-                  "value": "[809801,3801501]"
+                  "value": "[803407,3801501]"
                 }
               ]
             }
@@ -1413,8 +1412,8 @@
       "passive_skill_rich_desc": "42",
       "slipstream": "跟随在车辆后方将获得尾流，产生持续的氮气充能效果",
       "special_passive_skill_desc": {
-        "raw": "队友每累计使用6次大招时将一名未被标记的敌方标记为猎物",
-        "html": "队友每累计使用6次大招时将一名未被标记的敌方标记为猎物"
+        "raw": "队友每累计使用5次大招时破除敌方隐身并将一名未被标记的敌方标记为猎物",
+        "html": "队友每累计使用5次大招时破除敌方隐身并将一名未被标记的敌方标记为猎物"
       },
       "special_passive_skill_icon": "new_carport_icon_10322",
       "special_passive_skill_title": "合作狩猎",
@@ -1586,8 +1585,24 @@
       }
     },
     "skins": {
-      "sets": {},
-      "meta": {}
+      "sets": {
+        "local": [
+          {
+            "source": "local",
+            "index": 1
+          }
+        ]
+      },
+      "meta": {
+        "1": {
+          "id": 50634,
+          "name": "涂装 星辉纪元 狄安娜",
+          "desc": "星辉纪元系列涂装，光芒的星辰宇宙！\n适用车型：#1dd8d0狄安娜",
+          "icon_s": "tz_12062_1_s",
+          "icon_m": "tz_12062_1_m",
+          "icon_b": "tz_12062_1_b"
+        }
+      }
     },
     "media": {
       "cover": "/rk-assets/12062_m.png",

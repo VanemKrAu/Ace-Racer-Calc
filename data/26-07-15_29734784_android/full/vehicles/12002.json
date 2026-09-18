@@ -1,7 +1,6 @@
 {
   "schemaVersion": 2,
-  "versionId": "26-07-15_29734784_android",
-  "generatedAt": "2026-07-16T09:22:34.000Z",
+  "generatedAt": "2026-09-18T12:34:31.000Z",
   "item": {
     "id": 12002,
     "name": "月宫舞灵",
@@ -1621,6 +1620,10 @@
           {
             "source": "local",
             "index": 4
+          },
+          {
+            "source": "local",
+            "index": 5
           }
         ]
       },
@@ -1656,6 +1659,14 @@
           "icon_s": "tz_12002_4_s",
           "icon_m": "tz_12002_4_m",
           "icon_b": "tz_12002_4_b"
+        },
+        "5": {
+          "id": 50718,
+          "name": "涂装 广寒月影",
+          "desc": "广寒宫里听闻有美丽的身影！\n适用车型：#1dd8d0月宫舞灵",
+          "icon_s": "tz_12002_5_s",
+          "icon_m": "tz_12002_5_m",
+          "icon_b": "tz_12002_5_b"
         }
       }
     },

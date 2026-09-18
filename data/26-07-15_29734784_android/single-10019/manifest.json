@@ -1,0 +1,57 @@
+{
+  "schemaVersion": 2,
+  "generatedAt": "2026-09-18T12:32:06.000Z",
+  "mode": "single",
+  "base": null,
+  "since": null,
+  "filters": {
+    "publicOnly": true,
+    "naturalReleaseOnly": true,
+    "placeholdersExcluded": true,
+    "manualIncludesExcluded": true,
+    "detailAccessRequired": true,
+    "chipsTalentsFollowVisibility": true
+  },
+  "data": {
+    "vehicleCount": 1,
+    "vehicleIds": [
+      10019
+    ],
+    "vehicles": [
+      {
+        "id": 10019,
+        "name": "丰田 86"
+      }
+    ],
+    "vehiclesSha256": "813f3219ef8a061a4d80523a086b6009bc7f3e727ccb8406e8c7c2a49bde5ebe",
+    "vehiclesFileSha256": "490a0622a5ef92f0c647d4234d2b06b028bc19f279712ca79803862b9231e3b1",
+    "delta": null
+  },
+  "assets": {
+    "skipped": false,
+    "vehicles": {
+      "fileCount": 13,
+      "missingCount": 0
+    },
+    "chips": null,
+    "talents": null
+  },
+  "categories": {
+    "vehicles": {
+      "file": "vehicles/vehicles.json",
+      "total": 1,
+      "sha256": "490a0622a5ef92f0c647d4234d2b06b028bc19f279712ca79803862b9231e3b1"
+    },
+    "balance": null,
+    "chips": null,
+    "talents": null
+  },
+  "archives": {
+    "vehicles": {
+      "file": "vehicles.zip",
+      "bytes": 469726,
+      "sha256": "3fc22e3f0eec1d95efb66152d88df6e916b3617ef0b2be17b25addd5022702e3",
+      "entryCount": 18
+    }
+  }
+}

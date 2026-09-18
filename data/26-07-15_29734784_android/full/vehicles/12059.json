@@ -1,7 +1,6 @@
 {
   "schemaVersion": 2,
-  "versionId": "26-07-15_29734784_android",
-  "generatedAt": "2026-07-16T09:22:34.000Z",
+  "generatedAt": "2026-09-18T12:34:31.000Z",
   "item": {
     "id": 12059,
     "name": "仰望U9",
@@ -52,6 +51,12 @@
         "id": 4,
         "text": "隐身",
         "desc": "·无视车辆间的碰撞\n·不会被“锁定类”“触碰类”干扰命中",
+        "color": 1
+      },
+      {
+        "id": 2,
+        "text": "自动集气",
+        "desc": "技能可以自动获取氮气",
         "color": 1
       }
     ],
@@ -866,7 +871,8 @@
             "id": 11000002,
             "buff_count": 0,
             "camp_detection_effs": [
-              902126
+              902126,
+              902154
             ],
             "camp_detection_range": 3,
             "camp_detection_type": 2,
@@ -1197,6 +1203,20 @@
           "values": []
         },
         {
+          "id": "2161",
+          "name_rich": {
+            "raw": "阵营额外集气",
+            "html": "阵营额外集气"
+          },
+          "value_rich": {
+            "raw": "每秒180",
+            "html": "每秒180"
+          },
+          "value_text": "每秒180",
+          "instruction_ids": [],
+          "values": []
+        },
+        {
           "id": "20591",
           "name_rich": {
             "raw": "加速动力",
@@ -1251,8 +1271,8 @@
       "unlock_nitro_3": "解锁1x6磅，2x3磅，3x2磅氮气",
       "upgrade_level_icon": "new_carport_icon_10318",
       "feature_desc": {
-        "raw": "加速推进，极速提升#desc[1359]，持续8秒。队友每有一台真实阵营车辆，大招期间极速+15km/h（上限叠加至30km/h），敌方每有一台真实阵营车辆，大招期间每秒自充能1.8%。",
-        "html": "加速推进，极速提升<span class=\"rt-desc\">极速提升 60km/h</span>，持续8秒。队友每有一台真实阵营车辆，大招期间极速+15km/h（上限叠加至30km/h），敌方每有一台真实阵营车辆，大招期间每秒自充能1.8%。"
+        "raw": "加速推进，极速提升#desc[1359]，持续8秒。队友每有一台真实阵营车辆，大招期间极速+15km/h（上限叠加至30km/h），敌方每有一台真实阵营车辆，大招期间每秒自充能1.8%并获得180集气量。",
+        "html": "加速推进，极速提升<span class=\"rt-desc\">极速提升 60km/h</span>，持续8秒。队友每有一台真实阵营车辆，大招期间极速+15km/h（上限叠加至30km/h），敌方每有一台真实阵营车辆，大招期间每秒自充能1.8%并获得180集气量。"
       },
       "sp_skill_desc": null,
       "passive_skill_desc": null,

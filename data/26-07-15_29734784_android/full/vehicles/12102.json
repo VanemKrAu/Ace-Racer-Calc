@@ -1,6 +1,6 @@
 {
   "schemaVersion": 2,
-  "generatedAt": "2026-08-19T16:27:57.000Z",
+  "generatedAt": "2026-09-18T12:34:31.000Z",
   "item": {
     "id": 12102,
     "name": "货拉拉多拉",
@@ -15,7 +15,7 @@
     "specialization": "城市",
     "seasonCode": "S34",
     "publication": {
-      "state": "unreleased",
+      "state": "released",
       "releaseTimestamp": 1787241600,
       "releaseText": "2026-8-21 00:00:00",
       "releaseMacro": "S34_WEEK6_START"
@@ -24,39 +24,27 @@
     "description": "放置随机货箱，准时完成比赛",
     "tags": [
       {
-        "id": 123,
-        "text": "原地掉头",
-        "desc": "可以进入逆向行驶",
+        "id": 138,
+        "text": "瞬间冲线",
+        "desc": "有几率直接冲线完成比赛",
         "color": 2
       },
       {
-        "id": 71,
-        "text": "能量损失",
-        "desc": "使敌方损失大招能量",
+        "id": 139,
+        "text": "实体放置物",
+        "desc": "实体放置物会阻挡敌方前进，即使敌方处于无法选中状态",
+        "color": 4
+      },
+      {
+        "id": 140,
+        "text": "障碍阻挡",
+        "desc": "障碍物会阻挡经过的敌方",
         "color": 3
       },
       {
-        "id": 119,
-        "text": "瞬移",
-        "desc": "瞬移为固定距离的闪现",
-        "color": 2
-      },
-      {
-        "id": 106,
-        "text": "碰撞保护",
-        "desc": "碰撞时不会损失集气量",
-        "color": 1
-      },
-      {
-        "id": 85,
-        "text": "无视隐身",
-        "desc": "锁定类、触碰类干扰可以额外命中隐身的敌方",
-        "color": 2
-      },
-      {
-        "id": 68,
-        "text": "触碰干扰",
-        "desc": "·自身或技能效果触碰到敌方时命中\n·不受*混乱*、*反弹*、*闪避*效果影响\n·无法命中具有*隐身*、*无法选中*的敌方",
+        "id": 10,
+        "text": "多段释放",
+        "desc": "大招期间可以多次点击触发额外效果",
         "color": 4
       }
     ],
@@ -786,6 +774,11 @@
             "order": null,
             "value_texts": [
               {
+                "key": "sp_ex_speed_limit",
+                "label": "极速提升",
+                "value": "40km/h"
+              },
+              {
                 "key": "attack_show_friend_enemy_filter",
                 "label": "敌友筛选",
                 "value": "[1,2]"
@@ -1118,7 +1111,7 @@
                 [
                   [
                     20,
-                    "=",
+                    ">=",
                     3,
                     [],
                     9900101
@@ -1148,7 +1141,7 @@
                 {
                   "key": "status_effect",
                   "label": "状态及效果",
-                  "value": "[[[20,\"=\",3,[],9900101]]]"
+                  "value": "[[[20,\">=\",3,[],9900101]]]"
                 },
                 {
                   "key": "rear_insts",
@@ -1172,7 +1165,137 @@
       ]
     },
     "skillPanelGroups": {
-      "ultimate": [],
+      "ultimate": [
+        {
+          "id": "2102",
+          "name_rich": {
+            "raw": "极速提升",
+            "html": "极速提升"
+          },
+          "value_rich": {
+            "raw": "40km/h",
+            "html": "40km/h"
+          },
+          "value_text": "40km/h",
+          "instruction_ids": [
+            209951,
+            209955
+          ],
+          "values": []
+        },
+        {
+          "id": "2103",
+          "name_rich": {
+            "raw": "加速动力",
+            "html": "加速动力"
+          },
+          "value_rich": {
+            "raw": "中",
+            "html": "中"
+          },
+          "value_text": "中",
+          "instruction_ids": [],
+          "values": []
+        },
+        {
+          "id": "2104",
+          "name_rich": {
+            "raw": "加速时长",
+            "html": "加速时长"
+          },
+          "value_rich": {
+            "raw": "7秒",
+            "html": "7秒"
+          },
+          "value_text": "7秒",
+          "instruction_ids": [],
+          "values": []
+        },
+        {
+          "id": "2106",
+          "name_rich": {
+            "raw": "实体概率",
+            "html": "实体概率"
+          },
+          "value_rich": {
+            "raw": "50%",
+            "html": "50%"
+          },
+          "value_text": "50%",
+          "instruction_ids": [],
+          "values": []
+        },
+        {
+          "id": "2107",
+          "name_rich": {
+            "raw": "生成位置",
+            "html": "生成位置"
+          },
+          "value_rich": {
+            "raw": "自身位置",
+            "html": "自身位置"
+          },
+          "value_text": "自身位置",
+          "instruction_ids": [],
+          "values": []
+        },
+        {
+          "id": "2108",
+          "name_rich": {
+            "raw": "命中类型",
+            "html": "命中类型"
+          },
+          "value_rich": {
+            "raw": "#tipsnoicon[实体放置类]",
+            "html": "<span class=\"rt-tip rt-tip--entry rt-tip--noicon\" data-tip=\"实体放置类\" data-desc=\"·实体放置物会阻碍前进路线&#10;·不受*混乱*、*反弹*、*闪避*、*隐身*、*无法选中*效果影响&#10;·可以被清障效果清除\" style=\"--tip-color:#ffd700\" title=\"·实体放置物会阻碍前进路线&#10;·不受*混乱*、*反弹*、*闪避*、*隐身*、*无法选中*效果影响&#10;·可以被清障效果清除\">实体放置类</span>"
+          },
+          "value_text": "#tipsnoicon[实体放置类]",
+          "instruction_ids": [],
+          "values": []
+        },
+        {
+          "id": "2109",
+          "name_rich": {
+            "raw": "存在时长",
+            "html": "存在时长"
+          },
+          "value_rich": {
+            "raw": "永久存在",
+            "html": "永久存在"
+          },
+          "value_text": "永久存在",
+          "instruction_ids": [],
+          "values": []
+        },
+        {
+          "id": "2110",
+          "name_rich": {
+            "raw": "自动清障延时",
+            "html": "自动清障延时"
+          },
+          "value_rich": {
+            "raw": "0.3秒",
+            "html": "0.3秒"
+          },
+          "value_text": "0.3秒",
+          "instruction_ids": [],
+          "values": []
+        },
+        {
+          "id": "2111",
+          "name_rich": {
+            "raw": "自动清障范围",
+            "html": "自动清障范围"
+          },
+          "value_rich": {
+            "raw": "15米",
+            "html": "15米"
+          },
+          "value_text": "15米",
+          "instruction_ids": [],
+          "values": []
+        }
+      ],
       "sp": [],
       "passive": [],
       "other": []
@@ -1213,8 +1336,8 @@
       "unlock_nitro_3": "解锁1x6磅，2x3磅，3x2磅氮气",
       "upgrade_level_icon": "new_carport_icon_10410",
       "feature_desc": {
-        "raw": "加速推进，7秒内极速+40km/h。加速开始时和大招期间第一次点击大招时在赛道中放置永久存在的货箱。货箱随机为实体货箱和空货箱，敌方撞击实体货箱时将会被阻挡0.3秒；撞击空货箱时将不受影响。",
-        "html": "加速推进，7秒内极速+40km/h。加速开始时和大招期间第一次点击大招时在赛道中放置永久存在的货箱。货箱随机为实体货箱和空货箱，敌方撞击实体货箱时将会被阻挡0.3秒；撞击空货箱时将不受影响。"
+        "raw": "加速推进，极速提升#desc[2102]，持续7秒：\n·加速开始时和大招期间第一次点击大招时在赛道中放置永久存在的货箱\n·货箱随机为实体货箱和空货箱\n·敌方撞击实体货箱时将会被阻挡0.3秒\n·撞击空货箱时将不受影响。",
+        "html": "加速推进，极速提升<span class=\"rt-desc\">极速提升 40km/h</span>，持续7秒：<br/>·加速开始时和大招期间第一次点击大招时在赛道中放置永久存在的货箱<br/>·货箱随机为实体货箱和空货箱<br/>·敌方撞击实体货箱时将会被阻挡0.3秒<br/>·撞击空货箱时将不受影响。"
       },
       "sp_skill_desc": null,
       "passive_skill_desc": null,
@@ -1358,7 +1481,13 @@
     "restraints": {
       "id": 12102,
       "match": [],
-      "be_restraint": []
+      "be_restraint": [
+        10021,
+        10065,
+        10077,
+        10038,
+        10045
+      ]
     },
     "resources": {
       "icons": {

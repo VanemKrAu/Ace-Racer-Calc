@@ -1,6 +1,6 @@
 {
   "schemaVersion": 2,
-  "generatedAt": "2026-08-19T16:27:40.000Z",
+  "generatedAt": "2026-09-18T12:34:31.000Z",
   "item": {
     "id": 12094,
     "name": "罗刹",
@@ -15,7 +15,7 @@
     "specialization": "城市",
     "seasonCode": "S34",
     "publication": {
-      "state": "unreleased",
+      "state": "released",
       "releaseTimestamp": 1787241600,
       "releaseText": "2026-8-21 00:00:00",
       "releaseMacro": "S34_WEEK6_START"
@@ -24,39 +24,27 @@
     "description": "建立灵魂链接",
     "tags": [
       {
-        "id": 123,
-        "text": "原地掉头",
-        "desc": "可以进入逆向行驶",
-        "color": 2
+        "id": 194,
+        "text": "灵魂链接",
+        "desc": "使链接的友方共享充能，敌方共享扣能",
+        "color": 4
       },
       {
-        "id": 71,
-        "text": "能量损失",
-        "desc": "使敌方损失大招能量",
+        "id": 193,
+        "text": "耗能增加",
+        "desc": "增加敌方的能量损失和消耗",
         "color": 3
       },
       {
-        "id": 119,
-        "text": "瞬移",
-        "desc": "瞬移为固定距离的闪现",
-        "color": 2
+        "id": 89,
+        "text": "混乱",
+        "desc": "·混乱状态下的车辆进行辅助时会辅助敌方，进行干扰时会干扰友方\n·仅对非开局触发的范围锁定类技能生效",
+        "color": 3
       },
       {
-        "id": 106,
-        "text": "碰撞保护",
-        "desc": "碰撞时不会损失集气量",
-        "color": 1
-      },
-      {
-        "id": 85,
-        "text": "无视隐身",
-        "desc": "锁定类、触碰类干扰可以额外命中隐身的敌方",
-        "color": 2
-      },
-      {
-        "id": 68,
-        "text": "触碰干扰",
-        "desc": "·自身或技能效果触碰到敌方时命中\n·不受*混乱*、*反弹*、*闪避*效果影响\n·无法命中具有*隐身*、*无法选中*的敌方",
+        "id": 66,
+        "text": "锁定干扰",
+        "desc": "·自动锁定范围内的目标\n·无法命中具有*隐身*、*无法选中*、*闪避*的敌方",
         "color": 4
       }
     ],
@@ -107,7 +95,7 @@
           ],
           "passive_skill_rich_desc": "42",
           "slipstream": "跟随在车辆后方将获得尾流，产生持续的氮气充能效果",
-          "special_passive_skill_desc": "使用大招后，摄取1000米范围内一名未建立灵魂链接的敌方的魂魄5秒，摄魂期间该敌方进入混乱状态且能量损失和消耗提升25%",
+          "special_passive_skill_desc": "使用大招后，摄取1000米范围内一名未建立灵魂链接的敌方的魂魄5秒，摄魂期间该敌方进入#ffa8b1#tipsnoicon[混乱]#ffffff状态且能量损失和消耗提升25%",
           "special_passive_skill_icon": "new_carport_icon_10406",
           "special_passive_skill_title": "摄魂",
           "title_ace_time_charge_condition": "赛道专精",
@@ -166,7 +154,7 @@
           ],
           "passive_skill_rich_desc": "42",
           "slipstream": "跟随在车辆后方将获得尾流，产生持续的氮气充能效果",
-          "special_passive_skill_desc": "使用大招后，摄取1000米范围内一名未建立灵魂链接的敌方的魂魄5秒，摄魂期间该敌方进入混乱状态且能量损失和消耗提升25%",
+          "special_passive_skill_desc": "使用大招后，摄取1000米范围内一名未建立灵魂链接的敌方的魂魄5秒，摄魂期间该敌方进入#ffa8b1#tipsnoicon[混乱]#ffffff状态且能量损失和消耗提升25%",
           "special_passive_skill_icon": "new_carport_icon_10406",
           "special_passive_skill_title": "摄魂",
           "title_ace_time_charge_condition": "赛道专精",
@@ -224,7 +212,7 @@
           ],
           "passive_skill_rich_desc": "42",
           "slipstream": "跟随在车辆后方将获得尾流，产生持续的氮气充能效果",
-          "special_passive_skill_desc": "使用大招后，摄取1000米范围内一名未建立灵魂链接的敌方的魂魄5秒，摄魂期间该敌方进入混乱状态且能量损失和消耗提升25%",
+          "special_passive_skill_desc": "使用大招后，摄取1000米范围内一名未建立灵魂链接的敌方的魂魄5秒，摄魂期间该敌方进入#ffa8b1#tipsnoicon[混乱]#ffffff状态且能量损失和消耗提升25%",
           "special_passive_skill_icon": "new_carport_icon_10406",
           "special_passive_skill_title": "摄魂",
           "title_ace_time_charge_condition": "赛道专精",
@@ -283,7 +271,7 @@
           ],
           "passive_skill_rich_desc": "42",
           "slipstream": "跟随在车辆后方将获得尾流，产生持续的氮气充能效果",
-          "special_passive_skill_desc": "使用大招后，摄取1000米范围内一名未建立灵魂链接的敌方的魂魄5秒，摄魂期间该敌方进入混乱状态且能量损失和消耗提升25%",
+          "special_passive_skill_desc": "使用大招后，摄取1000米范围内一名未建立灵魂链接的敌方的魂魄5秒，摄魂期间该敌方进入#ffa8b1#tipsnoicon[混乱]#ffffff状态且能量损失和消耗提升25%",
           "special_passive_skill_icon": "new_carport_icon_10406",
           "special_passive_skill_title": "摄魂",
           "title_ace_time_charge_condition": "赛道专精",
@@ -342,7 +330,7 @@
           ],
           "passive_skill_rich_desc": "42",
           "slipstream": "跟随在车辆后方将获得尾流，产生持续的氮气充能效果",
-          "special_passive_skill_desc": "使用大招后，摄取1000米范围内一名未建立灵魂链接的敌方的魂魄5秒，摄魂期间该敌方进入混乱状态且能量损失和消耗提升25%",
+          "special_passive_skill_desc": "使用大招后，摄取1000米范围内一名未建立灵魂链接的敌方的魂魄5秒，摄魂期间该敌方进入#ffa8b1#tipsnoicon[混乱]#ffffff状态且能量损失和消耗提升25%",
           "special_passive_skill_icon": "new_carport_icon_10406",
           "special_passive_skill_title": "摄魂",
           "title_ace_time_charge_condition": "赛道专精",
@@ -401,7 +389,7 @@
           ],
           "passive_skill_rich_desc": "42",
           "slipstream": "跟随在车辆后方将获得尾流，产生持续的氮气充能效果",
-          "special_passive_skill_desc": "使用大招后，摄取1000米范围内一名未建立灵魂链接的敌方的魂魄5秒，摄魂期间该敌方进入混乱状态且能量损失和消耗提升25%",
+          "special_passive_skill_desc": "使用大招后，摄取1000米范围内一名未建立灵魂链接的敌方的魂魄5秒，摄魂期间该敌方进入#ffa8b1#tipsnoicon[混乱]#ffffff状态且能量损失和消耗提升25%",
           "special_passive_skill_icon": "new_carport_icon_10406",
           "special_passive_skill_title": "摄魂",
           "title_ace_time_charge_condition": "赛道专精",
@@ -460,7 +448,7 @@
           ],
           "passive_skill_rich_desc": "42",
           "slipstream": "跟随在车辆后方将获得尾流，产生持续的氮气充能效果",
-          "special_passive_skill_desc": "使用大招后，摄取1000米范围内一名未建立灵魂链接的敌方的魂魄5秒，摄魂期间该敌方进入混乱状态且能量损失和消耗提升25%",
+          "special_passive_skill_desc": "使用大招后，摄取1000米范围内一名未建立灵魂链接的敌方的魂魄5秒，摄魂期间该敌方进入#ffa8b1#tipsnoicon[混乱]#ffffff状态且能量损失和消耗提升25%",
           "special_passive_skill_icon": "new_carport_icon_10406",
           "special_passive_skill_title": "摄魂",
           "title_ace_time_charge_condition": "赛道专精",
@@ -520,7 +508,7 @@
           ],
           "passive_skill_rich_desc": "42",
           "slipstream": "跟随在车辆后方将获得尾流，产生持续的氮气充能效果",
-          "special_passive_skill_desc": "使用大招后，摄取1000米范围内一名未建立灵魂链接的敌方的魂魄5秒，摄魂期间该敌方进入混乱状态且能量损失和消耗提升25%",
+          "special_passive_skill_desc": "使用大招后，摄取1000米范围内一名未建立灵魂链接的敌方的魂魄5秒，摄魂期间该敌方进入#ffa8b1#tipsnoicon[混乱]#ffffff状态且能量损失和消耗提升25%",
           "special_passive_skill_icon": "new_carport_icon_10406",
           "special_passive_skill_title": "摄魂",
           "title_ace_time_charge_condition": "赛道专精",
@@ -580,7 +568,7 @@
           ],
           "passive_skill_rich_desc": "42",
           "slipstream": "跟随在车辆后方将获得尾流，产生持续的氮气充能效果",
-          "special_passive_skill_desc": "使用大招后，摄取1000米范围内一名未建立灵魂链接的敌方的魂魄5秒，摄魂期间该敌方进入混乱状态且能量损失和消耗提升25%",
+          "special_passive_skill_desc": "使用大招后，摄取1000米范围内一名未建立灵魂链接的敌方的魂魄5秒，摄魂期间该敌方进入#ffa8b1#tipsnoicon[混乱]#ffffff状态且能量损失和消耗提升25%",
           "special_passive_skill_icon": "new_carport_icon_10406",
           "special_passive_skill_title": "摄魂",
           "title_ace_time_charge_condition": "赛道专精",
@@ -640,7 +628,7 @@
           ],
           "passive_skill_rich_desc": "42",
           "slipstream": "跟随在车辆后方将获得尾流，产生持续的氮气充能效果",
-          "special_passive_skill_desc": "使用大招后，摄取1000米范围内一名未建立灵魂链接的敌方的魂魄5秒，摄魂期间该敌方进入混乱状态且能量损失和消耗提升25%",
+          "special_passive_skill_desc": "使用大招后，摄取1000米范围内一名未建立灵魂链接的敌方的魂魄5秒，摄魂期间该敌方进入#ffa8b1#tipsnoicon[混乱]#ffffff状态且能量损失和消耗提升25%",
           "special_passive_skill_icon": "new_carport_icon_10406",
           "special_passive_skill_title": "摄魂",
           "title_ace_time_charge_condition": "赛道专精",
@@ -785,6 +773,11 @@
             "type": 2,
             "order": null,
             "value_texts": [
+              {
+                "key": "sp_ex_speed_limit",
+                "label": "极速提升",
+                "value": "50km/h"
+              },
               {
                 "key": "attack_show_friend_enemy_filter",
                 "label": "敌友筛选",
@@ -996,9 +989,238 @@
       ]
     },
     "skillPanelGroups": {
-      "ultimate": [],
+      "ultimate": [
+        {
+          "id": "2112",
+          "name_rich": {
+            "raw": "极速提升",
+            "html": "极速提升"
+          },
+          "value_rich": {
+            "raw": "50km/h",
+            "html": "50km/h"
+          },
+          "value_text": "50km/h",
+          "instruction_ids": [
+            209941,
+            209945
+          ],
+          "values": []
+        },
+        {
+          "id": "2113",
+          "name_rich": {
+            "raw": "加速动力",
+            "html": "加速动力"
+          },
+          "value_rich": {
+            "raw": "中",
+            "html": "中"
+          },
+          "value_text": "中",
+          "instruction_ids": [],
+          "values": []
+        },
+        {
+          "id": "2114",
+          "name_rich": {
+            "raw": "加速时长",
+            "html": "加速时长"
+          },
+          "value_rich": {
+            "raw": "10秒",
+            "html": "10秒"
+          },
+          "value_text": "10秒",
+          "instruction_ids": [],
+          "values": []
+        },
+        {
+          "id": "2115",
+          "name_rich": {
+            "raw": "作用范围",
+            "html": "作用范围"
+          },
+          "value_rich": {
+            "raw": "无限制",
+            "html": "无限制"
+          },
+          "value_text": "无限制",
+          "instruction_ids": [],
+          "values": []
+        },
+        {
+          "id": "2116",
+          "name_rich": {
+            "raw": "命中类型",
+            "html": "命中类型"
+          },
+          "value_rich": {
+            "raw": "#tipsnoicon[锁定类]",
+            "html": "<span class=\"rt-tip rt-tip--entry rt-tip--noicon\" data-tip=\"锁定类\" data-desc=\"·自动锁定范围内的目标&#10;·无法命中具有*隐身*、*无法选中*、*闪避*的敌方\" style=\"--tip-color:#ffd700\" title=\"·自动锁定范围内的目标&#10;·无法命中具有*隐身*、*无法选中*、*闪避*的敌方\">锁定类</span>"
+          },
+          "value_text": "#tipsnoicon[锁定类]",
+          "instruction_ids": [],
+          "values": []
+        },
+        {
+          "id": "2117",
+          "name_rich": {
+            "raw": "参数 2117",
+            "html": "参数 2117"
+          },
+          "value_rich": {
+            "raw": "#acacac(无视隐身、混乱、反弹、嘲讽、闪避、转移）",
+            "html": "<span class=\"rt-color\" style=\"color: #acacac\">(无视隐身、混乱、反弹、嘲讽、闪避、转移）</span>"
+          },
+          "value_text": "#acacac(无视隐身、混乱、反弹、嘲讽、闪避、转移）",
+          "instruction_ids": [],
+          "values": []
+        },
+        {
+          "id": "2118",
+          "name_rich": {
+            "raw": "链接时长",
+            "html": "链接时长"
+          },
+          "value_rich": {
+            "raw": "7秒",
+            "html": "7秒"
+          },
+          "value_text": "7秒",
+          "instruction_ids": [],
+          "values": []
+        },
+        {
+          "id": "2119",
+          "name_rich": {
+            "raw": "友方充能共享",
+            "html": "友方充能共享"
+          },
+          "value_rich": {
+            "raw": "50%",
+            "html": "50%"
+          },
+          "value_text": "50%",
+          "instruction_ids": [],
+          "values": []
+        },
+        {
+          "id": "2121",
+          "name_rich": {
+            "raw": "敌方扣能共享",
+            "html": "敌方扣能共享"
+          },
+          "value_rich": {
+            "raw": "50%",
+            "html": "50%"
+          },
+          "value_text": "50%",
+          "instruction_ids": [],
+          "values": []
+        },
+        {
+          "id": "2123",
+          "name_rich": {
+            "raw": "可否净化",
+            "html": "可否净化"
+          },
+          "value_rich": {
+            "raw": "不可净化",
+            "html": "不可净化"
+          },
+          "value_text": "不可净化",
+          "instruction_ids": [],
+          "values": []
+        }
+      ],
       "sp": [],
-      "passive": [],
+      "passive": [
+        {
+          "id": "2124",
+          "name_rich": {
+            "raw": "作用范围",
+            "html": "作用范围"
+          },
+          "value_rich": {
+            "raw": "1000米",
+            "html": "1000米"
+          },
+          "value_text": "1000米",
+          "instruction_ids": [],
+          "values": []
+        },
+        {
+          "id": "2125",
+          "name_rich": {
+            "raw": "命中类型",
+            "html": "命中类型"
+          },
+          "value_rich": {
+            "raw": "#tipsnoicon[锁定类]",
+            "html": "<span class=\"rt-tip rt-tip--entry rt-tip--noicon\" data-tip=\"锁定类\" data-desc=\"·自动锁定范围内的目标&#10;·无法命中具有*隐身*、*无法选中*、*闪避*的敌方\" style=\"--tip-color:#ffd700\" title=\"·自动锁定范围内的目标&#10;·无法命中具有*隐身*、*无法选中*、*闪避*的敌方\">锁定类</span>"
+          },
+          "value_text": "#tipsnoicon[锁定类]",
+          "instruction_ids": [],
+          "values": []
+        },
+        {
+          "id": "2126",
+          "name_rich": {
+            "raw": "参数 2126",
+            "html": "参数 2126"
+          },
+          "value_rich": {
+            "raw": "#acacac(未链接的敌方）",
+            "html": "<span class=\"rt-color\" style=\"color: #acacac\">(未链接的敌方）</span>"
+          },
+          "value_text": "#acacac(未链接的敌方）",
+          "instruction_ids": [],
+          "values": []
+        },
+        {
+          "id": "2127",
+          "name_rich": {
+            "raw": "持续时长",
+            "html": "持续时长"
+          },
+          "value_rich": {
+            "raw": "5秒",
+            "html": "5秒"
+          },
+          "value_text": "5秒",
+          "instruction_ids": [],
+          "values": []
+        },
+        {
+          "id": "2128",
+          "name_rich": {
+            "raw": "能量损耗",
+            "html": "能量损耗"
+          },
+          "value_rich": {
+            "raw": "+25%",
+            "html": "+25%"
+          },
+          "value_text": "+25%",
+          "instruction_ids": [],
+          "values": []
+        },
+        {
+          "id": "2129",
+          "name_rich": {
+            "raw": "可否净化",
+            "html": "可否净化"
+          },
+          "value_rich": {
+            "raw": "可净化",
+            "html": "可净化"
+          },
+          "value_text": "可净化",
+          "instruction_ids": [],
+          "values": []
+        }
+      ],
       "other": []
     },
     "richText": {
@@ -1024,8 +1246,8 @@
       "passive_skill_rich_desc": "42",
       "slipstream": "跟随在车辆后方将获得尾流，产生持续的氮气充能效果",
       "special_passive_skill_desc": {
-        "raw": "使用大招后，摄取1000米范围内一名未建立灵魂链接的敌方的魂魄5秒，摄魂期间该敌方进入混乱状态且能量损失和消耗提升25%",
-        "html": "使用大招后，摄取1000米范围内一名未建立灵魂链接的敌方的魂魄5秒，摄魂期间该敌方进入混乱状态且能量损失和消耗提升25%"
+        "raw": "使用大招后，摄取1000米范围内一名未建立灵魂链接的敌方的魂魄5秒，摄魂期间该敌方进入#ffa8b1#tipsnoicon[混乱]#ffffff状态且能量损失和消耗提升25%",
+        "html": "使用大招后，摄取1000米范围内一名未建立灵魂链接的敌方的魂魄5秒，摄魂期间该敌方进入<span class=\"rt-color\" style=\"color: #ffa8b1\"><span class=\"rt-tip rt-tip--entry rt-tip--noicon\" data-tip=\"混乱\" data-desc=\"·混乱状态下的车辆进行辅助时会辅助敌方，进行干扰时会干扰友方&#10;·仅对非开局触发的范围锁定类技能生效\" style=\"--tip-color:#ffa8b1\" title=\"·混乱状态下的车辆进行辅助时会辅助敌方，进行干扰时会干扰友方&#10;·仅对非开局触发的范围锁定类技能生效\">混乱</span></span>状态且能量损失和消耗提升25%"
       },
       "special_passive_skill_icon": "new_carport_icon_10406",
       "special_passive_skill_title": "摄魂",
@@ -1037,8 +1259,8 @@
       "unlock_nitro_3": "解锁1x6磅，2x3磅，3x2磅氮气",
       "upgrade_level_icon": "new_carport_icon_10406",
       "feature_desc": {
-        "raw": "加速推进，10秒内极速+50km/h。加速开始时使用灵魂锁链随机使两名敌方或两名队友建立灵魂链接，持续7秒。灵魂链接期间，两名队友共享50%充能，两名敌方共享50%扣能。",
-        "html": "加速推进，10秒内极速+50km/h。加速开始时使用灵魂锁链随机使两名敌方或两名队友建立灵魂链接，持续7秒。灵魂链接期间，两名队友共享50%充能，两名敌方共享50%扣能。"
+        "raw": "加速推进，极速提升#desc[2112]，持续10秒。加速开始时：\n·使用灵魂锁链随机使两名敌方或两名队友建立灵魂链接，持续7秒\n·灵魂链接期间，两名队友#ffd700#tipsnoicon[共享]#ffffff50%充能，两名敌方共享50%扣能。",
+        "html": "加速推进，极速提升<span class=\"rt-desc\">极速提升 50km/h</span>，持续10秒。加速开始时：<br/>·使用灵魂锁链随机使两名敌方或两名队友建立灵魂链接，持续7秒<br/>·灵魂链接期间，两名队友<span class=\"rt-color\" style=\"color: #ffd700\"><span class=\"rt-tip rt-tip--entry rt-tip--noicon\" data-tip=\"共享\" data-desc=\"·共享充能时，会依据目标实际增加的能量值获得对应百分比的大招充能，不会再计算自身的充能效率、团魂等&#10;·共享扣能时，会依据目标实际损失、消耗的能量值扣除对应百分比大招充能\" style=\"--tip-color:#ffd700\" title=\"·共享充能时，会依据目标实际增加的能量值获得对应百分比的大招充能，不会再计算自身的充能效率、团魂等&#10;·共享扣能时，会依据目标实际损失、消耗的能量值扣除对应百分比大招充能\">共享</span></span>50%充能，两名敌方共享50%扣能。"
       },
       "sp_skill_desc": null,
       "passive_skill_desc": null,

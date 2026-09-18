@@ -1,7 +1,6 @@
 {
   "schemaVersion": 2,
-  "versionId": "26-07-15_29734784_android",
-  "generatedAt": "2026-07-16T09:22:34.000Z",
+  "generatedAt": "2026-09-18T12:34:31.000Z",
   "item": {
     "id": 12032,
     "name": "影豹R·ABT联名版",
@@ -86,7 +85,7 @@
           ],
           "passive_skill_effect_value": [
             "12秒",
-            "30公里/小时"
+            "40公里/小时"
           ],
           "passive_skill_rich_desc": "大招能量达到50%即可使用，每次使用大招恢复20点耐久值",
           "slipstream": "跟随在车辆后方将获得尾流，产生持续的氮气充能效果",
@@ -145,7 +144,7 @@
           ],
           "passive_skill_effect_value": [
             "12秒",
-            "30公里/小时"
+            "40公里/小时"
           ],
           "passive_skill_rich_desc": "大招能量达到50%即可使用，每次使用大招恢复20点耐久值",
           "slipstream": "跟随在车辆后方将获得尾流，产生持续的氮气充能效果",
@@ -203,7 +202,7 @@
           ],
           "passive_skill_effect_value": [
             "12秒",
-            "30公里/小时"
+            "40公里/小时"
           ],
           "passive_skill_rich_desc": "大招能量达到50%即可使用，每次使用大招恢复20点耐久值",
           "slipstream": "跟随在车辆后方将获得尾流，产生持续的氮气充能效果",
@@ -262,7 +261,7 @@
           ],
           "passive_skill_effect_value": [
             "12秒",
-            "30公里/小时"
+            "40公里/小时"
           ],
           "passive_skill_rich_desc": "大招能量达到50%即可使用，每次使用大招恢复20点耐久值",
           "slipstream": "跟随在车辆后方将获得尾流，产生持续的氮气充能效果",
@@ -321,7 +320,7 @@
           ],
           "passive_skill_effect_value": [
             "14秒",
-            "30公里/小时"
+            "40公里/小时"
           ],
           "passive_skill_rich_desc": "大招能量达到50%即可使用，每次使用大招恢复20点耐久值",
           "slipstream": "跟随在车辆后方将获得尾流，产生持续的氮气充能效果",
@@ -380,7 +379,7 @@
           ],
           "passive_skill_effect_value": [
             "14秒",
-            "30公里/小时"
+            "40公里/小时"
           ],
           "passive_skill_rich_desc": "大招能量达到50%即可使用，每次使用大招恢复20点耐久值",
           "slipstream": "跟随在车辆后方将获得尾流，产生持续的氮气充能效果",
@@ -439,7 +438,7 @@
           ],
           "passive_skill_effect_value": [
             "14秒",
-            "40公里/小时"
+            "50公里/小时"
           ],
           "passive_skill_rich_desc": "大招能量达到50%即可使用，每次使用大招恢复20点耐久值",
           "slipstream": "跟随在车辆后方将获得尾流，产生持续的氮气充能效果",
@@ -499,7 +498,7 @@
           ],
           "passive_skill_effect_value": [
             "14秒",
-            "40公里/小时"
+            "50公里/小时"
           ],
           "passive_skill_rich_desc": "大招能量达到50%即可使用，每次使用大招恢复20点耐久值",
           "slipstream": "跟随在车辆后方将获得尾流，产生持续的氮气充能效果",
@@ -559,7 +558,7 @@
           ],
           "passive_skill_effect_value": [
             "14秒",
-            "50公里/小时"
+            "63公里/小时"
           ],
           "passive_skill_rich_desc": "大招能量达到50%即可使用，每次使用大招恢复20点耐久值",
           "slipstream": "跟随在车辆后方将获得尾流，产生持续的氮气充能效果",
@@ -619,7 +618,7 @@
           ],
           "passive_skill_effect_value": [
             "16秒",
-            "50公里/小时"
+            "63公里/小时"
           ],
           "passive_skill_rich_desc": "大招能量达到50%即可使用，每次使用大招恢复20点耐久值",
           "slipstream": "跟随在车辆后方将获得尾流，产生持续的氮气充能效果",
@@ -771,7 +770,7 @@
               {
                 "key": "sp_ex_speed_limit",
                 "label": "极速提升",
-                "value": "30km/h"
+                "value": "40km/h"
               },
               {
                 "key": "duration",
@@ -878,7 +877,7 @@
           },
           {
             "id": 3500028,
-            "desc": "解除负面效果",
+            "desc": "净化",
             "buff_count": 0,
             "buff_icon": "new_carport_icon_109_1",
             "dispel_type": 1,
@@ -1113,10 +1112,10 @@
             "html": "极速提升"
           },
           "value_rich": {
-            "raw": "30km/h",
-            "html": "30km/h"
+            "raw": "40km/h",
+            "html": "40km/h"
           },
-          "value_text": "30km/h",
+          "value_text": "40km/h",
           "instruction_ids": [
             204001,
             204005
@@ -1234,7 +1233,7 @@
       ],
       "passive_skill_effect_value": [
         "12秒",
-        "30公里/小时"
+        "40公里/小时"
       ],
       "passive_skill_rich_desc": "大招能量达到50%即可使用，每次使用大招恢复20点耐久值",
       "slipstream": "跟随在车辆后方将获得尾流，产生持续的氮气充能效果",
@@ -1253,7 +1252,7 @@
       "upgrade_level_icon": "new_carport_icon_10247",
       "feature_desc": {
         "raw": "#tips[加速推进]并进入长达#desc[129]的养精蓄锐模式：\n·极速提升#desc[128]\n·每秒恢复4点耐久\n·开启时#tips[净化]自身负面效果\n·加速结束时获得5000集气量",
-        "html": "<span class=\"rt-tip rt-tip--entry\" data-tip=\"加速推进\" data-icon=\"carport_new_skill_illustrate_b1\" data-desc=\"·获得沿车头方向的加速效果&#10;·有助于退出漂移状态\" style=\"--tip-color:#7eedff\" title=\"·获得沿车头方向的加速效果&#10;·有助于退出漂移状态\"><span class=\"rt-tip__icon-slot\"></span>加速推进</span>并进入长达<span class=\"rt-desc\">持续时间 12秒</span>的养精蓄锐模式：<br/>·极速提升<span class=\"rt-desc\">极速提升 30km/h</span><br/>·每秒恢复4点耐久<br/>·开启时<span class=\"rt-tip rt-tip--entry\" data-tip=\"净化\" data-icon=\"carport_new_skill_illustrate_b9\" data-desc=\"·解除持续性的负面效果\" style=\"--tip-color:#7eedff\" title=\"·解除持续性的负面效果\"><span class=\"rt-tip__icon-slot\"></span>净化</span>自身负面效果<br/>·加速结束时获得5000集气量"
+        "html": "<span class=\"rt-tip rt-tip--entry\" data-tip=\"加速推进\" data-icon=\"carport_new_skill_illustrate_b1\" data-desc=\"·获得沿车头方向的加速效果&#10;·有助于退出漂移状态\" style=\"--tip-color:#7eedff\" title=\"·获得沿车头方向的加速效果&#10;·有助于退出漂移状态\"><span class=\"rt-tip__icon-slot\"></span>加速推进</span>并进入长达<span class=\"rt-desc\">持续时间 12秒</span>的养精蓄锐模式：<br/>·极速提升<span class=\"rt-desc\">极速提升 40km/h</span><br/>·每秒恢复4点耐久<br/>·开启时<span class=\"rt-tip rt-tip--entry\" data-tip=\"净化\" data-icon=\"carport_new_skill_illustrate_b9\" data-desc=\"·解除持续性的负面效果\" style=\"--tip-color:#7eedff\" title=\"·解除持续性的负面效果\"><span class=\"rt-tip__icon-slot\"></span>净化</span>自身负面效果<br/>·加速结束时获得5000集气量"
       },
       "sp_skill_desc": null,
       "passive_skill_desc": null,
@@ -1394,7 +1393,8 @@
       ],
       "be_restraint": [
         10041,
-        10016
+        10016,
+        10019
       ]
     },
     "resources": {

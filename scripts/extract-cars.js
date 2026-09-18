@@ -4,13 +4,15 @@ const pinyin = require('pinyin');
 
 const vehiclesDir = path.join(__dirname, '..', 'data', '26-07-15_29734784_android', 'full', 'vehicles');
 const outputFile = path.join(__dirname, '..', 'car-database.js');
-const rawDataDir = 'E:/AceRacer/AceRacing-Workbench/data/26-07-15_29734784_android';
+const rawDataDir = 'E:/AceRacer/AceRacing-Workbench/data/26-09-18_29825663_android';
 
 // 车辆添加时间登记表（新增车辆时在此登记，用于列表"新车在上"排序）
 // 时间戳 = 该车加入网站的时间 (Date.now())
 const ADDED_AT = {
   12094: 1787240818462, // 罗刹
   12102: 1787240818462, // 货拉拉多拉
+  10019: 1789736122761, // 丰田 86
+  12089: 1789736122761, // 狻猊
 };
 
 // Load raw JSONL data for nitro durations

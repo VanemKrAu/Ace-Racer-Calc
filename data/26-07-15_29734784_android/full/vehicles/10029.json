@@ -1,7 +1,6 @@
 {
   "schemaVersion": 2,
-  "versionId": "26-07-15_29734784_android",
-  "generatedAt": "2026-07-16T09:22:34.000Z",
+  "generatedAt": "2026-09-18T12:34:31.000Z",
   "item": {
     "id": 10029,
     "name": "杂耍者",
@@ -819,16 +818,13 @@
             "buff_count": 0,
             "cd_type": 1,
             "coll_enemy_instr_ids": [
-              10101201,
-              801101
+              10101201
             ],
             "coll_friendly_instr_ids": [
-              10101201,
-              801101
+              10101201
             ],
             "coll_scenes_instr_ids": [
-              10101201,
-              801101
+              10101201
             ],
             "coll_type_mask": 7,
             "durable_reduce_coef": 100,
@@ -837,7 +833,6 @@
             "eff_id": 1,
             "extra_children": [],
             "extra_isolate": [
-              801101,
               10101201
             ],
             "inst_group": 16,
@@ -845,7 +840,6 @@
             "inst_type": 16,
             "rear_insts": [],
             "ref_insts": [
-              801101,
               1600201,
               10101201
             ],
@@ -884,7 +878,7 @@
               {
                 "key": "ref_insts",
                 "label": "引用节点",
-                "value": "[801101,1600201,10101201]"
+                "value": "[1600201,10101201]"
               }
             ]
           },
@@ -902,6 +896,7 @@
               3
             ],
             "buff_count": 0,
+            "cd_instr_independent": 1,
             "cd_type": 1,
             "duration": 0.1,
             "eff_cd": 0.5,
@@ -968,6 +963,92 @@
                 "key": "ref_insts",
                 "label": "引用节点",
                 "value": "[801701]"
+              }
+            ]
+          },
+          {
+            "id": 801101,
+            "attack_show_eff_dur": 2,
+            "attack_show_friend_enemy_filter": [
+              1,
+              2
+            ],
+            "attack_show_keep_dur": 2,
+            "attack_show_role_filter": [
+              1,
+              3
+            ],
+            "buff_count": 0,
+            "cd_instr_independent": 1,
+            "cd_type": 1,
+            "duration": 0.1,
+            "eff_cd": 1,
+            "eff_id": 1,
+            "extra_children": [],
+            "extra_isolate": [],
+            "friend_eff": [
+              52601
+            ],
+            "inst_group": 8,
+            "inst_name": "杂耍戏法充能",
+            "inst_type": 8,
+            "lock_camp": 1,
+            "lock_cnt": 5,
+            "lock_dist": [
+              -1200,
+              1200
+            ],
+            "lock_instr_ids": [
+              10300501
+            ],
+            "lock_side_dist": [
+              -1200,
+              1200
+            ],
+            "lock_vertical_dist": [
+              -6000,
+              6000
+            ],
+            "rear_insts": [],
+            "ref_insts": [
+              801101
+            ],
+            "skill_eff_id": 8,
+            "sp_n2o_ace_charge_ratio": 1,
+            "name": "杂耍戏法充能",
+            "desc": null,
+            "type": 8,
+            "order": null,
+            "value_texts": [
+              {
+                "key": "attack_show_friend_enemy_filter",
+                "label": "敌友筛选",
+                "value": "[1,2]"
+              },
+              {
+                "key": "attack_show_role_filter",
+                "label": "定位筛选",
+                "value": "[1,3]"
+              },
+              {
+                "key": "buff_count",
+                "label": "Buff 数量",
+                "value": "0"
+              },
+              {
+                "key": "rear_insts",
+                "label": "后续节点",
+                "value": "[]"
+              },
+              {
+                "key": "extra_children",
+                "label": "子节点",
+                "value": "[]"
+              },
+              {
+                "key": "ref_insts",
+                "label": "引用节点",
+                "value": "[801101]"
               }
             ]
           }
@@ -1398,8 +1479,8 @@
       "unlock_nitro_3": "解锁1x6磅，2x3磅，3x2磅氮气",
       "upgrade_level_icon": "new_carport_icon_10077",
       "feature_desc": {
-        "raw": "#tips[加速推进]并使队友获得#tips[隐身]。\n加速期间如果发生碰撞（车墙或者车车），将会结束加速，并且旋转跳跃到路面前方位置，同时给1200米内全体非辅助位队友补充35%大招能量。",
-        "html": "<span class=\"rt-tip rt-tip--entry\" data-tip=\"加速推进\" data-icon=\"carport_new_skill_illustrate_b1\" data-desc=\"·获得沿车头方向的加速效果&#10;·有助于退出漂移状态\" style=\"--tip-color:#7eedff\" title=\"·获得沿车头方向的加速效果&#10;·有助于退出漂移状态\"><span class=\"rt-tip__icon-slot\"></span>加速推进</span>并使队友获得<span class=\"rt-tip rt-tip--entry\" data-tip=\"隐身\" data-icon=\"carport_new_skill_illustrate_b2\" data-desc=\"·车辆透明化&#10;·无视车辆间的碰撞&#10;·不会被“锁定类”“触碰类”干扰命中\" style=\"--tip-color:#7eedff\" title=\"·车辆透明化&#10;·无视车辆间的碰撞&#10;·不会被“锁定类”“触碰类”干扰命中\"><span class=\"rt-tip__icon-slot\"></span>隐身</span>。<br/>加速期间如果发生碰撞（车墙或者车车），将会结束加速，并且旋转跳跃到路面前方位置，同时给1200米内全体非辅助位队友补充35%大招能量。"
+        "raw": "#tips[加速推进]并使队友获得#tips[隐身]。\n·加速期间如果发生碰撞（车墙或者车车），将会结束加速，并且旋转跳跃到路面前方位置\n·加速开始时给1200米内全体非辅助位队友补充35%大招能量。",
+        "html": "<span class=\"rt-tip rt-tip--entry\" data-tip=\"加速推进\" data-icon=\"carport_new_skill_illustrate_b1\" data-desc=\"·获得沿车头方向的加速效果&#10;·有助于退出漂移状态\" style=\"--tip-color:#7eedff\" title=\"·获得沿车头方向的加速效果&#10;·有助于退出漂移状态\"><span class=\"rt-tip__icon-slot\"></span>加速推进</span>并使队友获得<span class=\"rt-tip rt-tip--entry\" data-tip=\"隐身\" data-icon=\"carport_new_skill_illustrate_b2\" data-desc=\"·车辆透明化&#10;·无视车辆间的碰撞&#10;·不会被“锁定类”“触碰类”干扰命中\" style=\"--tip-color:#7eedff\" title=\"·车辆透明化&#10;·无视车辆间的碰撞&#10;·不会被“锁定类”“触碰类”干扰命中\"><span class=\"rt-tip__icon-slot\"></span>隐身</span>。<br/>·加速期间如果发生碰撞（车墙或者车车），将会结束加速，并且旋转跳跃到路面前方位置<br/>·加速开始时给1200米内全体非辅助位队友补充35%大招能量。"
       },
       "sp_skill_desc": null,
       "passive_skill_desc": null,

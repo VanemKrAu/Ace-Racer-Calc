@@ -1,7 +1,6 @@
 {
   "schemaVersion": 2,
-  "versionId": "26-07-15_29734784_android",
-  "generatedAt": "2026-07-16T09:22:34.000Z",
+  "generatedAt": "2026-09-18T12:34:31.000Z",
   "item": {
     "id": 12078,
     "name": "踏雪白驹",
@@ -1458,8 +1457,24 @@
       }
     },
     "skins": {
-      "sets": {},
-      "meta": {}
+      "sets": {
+        "local": [
+          {
+            "source": "local",
+            "index": 1
+          }
+        ]
+      },
+      "meta": {
+        "1": {
+          "id": 50638,
+          "name": "涂装 荒野征途 白驹",
+          "desc": "荒野征途系列涂装，探索荒野奥秘！\n适用车型：#1dd8d0踏雪白驹",
+          "icon_s": "tz_12078_1_s",
+          "icon_m": "tz_12078_1_m",
+          "icon_b": "tz_12078_1_b"
+        }
+      }
     },
     "media": {
       "cover": "/rk-assets/12078_m.png",

@@ -1,4 +1,4 @@
-﻿# 涓存椂鏂囦欢
+# 涓存椂鏂囦欢
 .agent_tmp/
 .agent_reports/
 *.tmp
@@ -17,4 +17,7 @@ data/*/single-*/assets/*/body/*_s.png
 # ZIP 鍘嬬缉鍖?data/*/full/packages/
 data/*/single-*/packages/
 *.zip
+
+# 本地暂存的原始导出包（updata/ 手工投放，不入库）
+updata/
 

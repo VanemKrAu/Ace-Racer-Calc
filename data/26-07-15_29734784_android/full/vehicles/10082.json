@@ -1,7 +1,6 @@
 {
   "schemaVersion": 2,
-  "versionId": "26-07-15_29734784_android",
-  "generatedAt": "2026-07-16T09:22:34.000Z",
+  "generatedAt": "2026-09-18T12:34:31.000Z",
   "item": {
     "id": 10082,
     "name": "隐匿猎手",
@@ -1560,6 +1559,10 @@
           {
             "source": "local",
             "index": 9
+          },
+          {
+            "source": "local",
+            "index": 10
           }
         ]
       },
@@ -1635,6 +1638,14 @@
           "icon_s": "tz_10082_9_s",
           "icon_m": "tz_10082_9_m",
           "icon_b": "tz_10082_9_b"
+        },
+        "10": {
+          "id": 50702,
+          "name": "涂装 羞花",
+          "desc": "回眸一笑百媚生，六宫粉黛无颜色！\n适用车型：#1dd8d0隐匿猎手",
+          "icon_s": "tz_10082_10_s",
+          "icon_m": "tz_10082_10_m",
+          "icon_b": "tz_10082_10_b"
         }
       }
     },

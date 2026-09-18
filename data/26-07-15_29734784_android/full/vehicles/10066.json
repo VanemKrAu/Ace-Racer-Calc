@@ -1,7 +1,6 @@
 {
   "schemaVersion": 2,
-  "versionId": "26-07-15_29734784_android",
-  "generatedAt": "2026-07-16T09:22:34.000Z",
+  "generatedAt": "2026-09-18T12:34:31.000Z",
   "item": {
     "id": 10066,
     "name": "圣骑士",
@@ -744,11 +743,11 @@
               ],
               [
                 166,
-                8
+                10
               ],
               [
                 200,
-                8
+                10
               ]
             ],
             "attack_show_friend_enemy_filter": [
@@ -1694,10 +1693,10 @@
             "html": "加速动力"
           },
           "value_rich": {
-            "raw": "高",
-            "html": "高"
+            "raw": "极高",
+            "html": "极高"
           },
-          "value_text": "高",
+          "value_text": "极高",
           "instruction_ids": [],
           "values": []
         }
@@ -1947,6 +1946,10 @@
           {
             "source": "local",
             "index": 7
+          },
+          {
+            "source": "local",
+            "index": 8
           }
         ]
       },
@@ -2006,6 +2009,14 @@
           "icon_s": "tz_10066_7_s",
           "icon_m": "tz_10066_7_m",
           "icon_b": "tz_10066_7_b"
+        },
+        "8": {
+          "id": 50688,
+          "name": "涂装 帝皇合体",
+          "desc": "帝皇铠甲，合体！\n适用车型：#1dd8d0圣骑士",
+          "icon_s": "tz_10066_8_s",
+          "icon_m": "tz_10066_8_m",
+          "icon_b": "tz_10066_8_b"
         }
       }
     },

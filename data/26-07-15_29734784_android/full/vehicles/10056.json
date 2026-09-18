@@ -1,7 +1,6 @@
 {
   "schemaVersion": 2,
-  "versionId": "26-07-15_29734784_android",
-  "generatedAt": "2026-07-16T09:22:34.000Z",
+  "generatedAt": "2026-09-18T12:34:31.000Z",
   "item": {
     "id": 10056,
     "name": "保时捷 935",
@@ -884,7 +883,7 @@
           },
           {
             "id": 3500028,
-            "desc": "解除负面效果",
+            "desc": "净化",
             "buff_count": 0,
             "buff_icon": "new_carport_icon_109_1",
             "dispel_type": 1,
@@ -1427,7 +1426,8 @@
         10080,
         12001,
         12005,
-        12080
+        12080,
+        10019
       ]
     },
     "resources": {

@@ -1,0 +1,13 @@
+{
+  "schemaVersion": 2,
+  "generatedAt": "2026-09-18T12:32:06.000Z",
+  "total": 1,
+  "items": [
+    {
+      "id": 10019,
+      "name": "丰田 86",
+      "dataFile": "vehicles/vehicles/10019.json",
+      "assetDirectory": "vehicles/images/丰田 86_10019"
+    }
+  ]
+}

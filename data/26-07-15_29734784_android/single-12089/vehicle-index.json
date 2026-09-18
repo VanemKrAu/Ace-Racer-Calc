@@ -1,0 +1,13 @@
+{
+  "schemaVersion": 2,
+  "generatedAt": "2026-09-18T12:43:43.000Z",
+  "total": 1,
+  "items": [
+    {
+      "id": 12089,
+      "name": "狻猊",
+      "dataFile": "vehicles/vehicles/12089.json",
+      "assetDirectory": "vehicles/images/狻猊_12089"
+    }
+  ]
+}

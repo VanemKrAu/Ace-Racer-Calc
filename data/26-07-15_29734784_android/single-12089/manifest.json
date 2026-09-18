@@ -1,0 +1,57 @@
+{
+  "schemaVersion": 2,
+  "generatedAt": "2026-09-18T12:43:43.000Z",
+  "mode": "single",
+  "base": null,
+  "since": null,
+  "filters": {
+    "publicOnly": true,
+    "naturalReleaseOnly": true,
+    "placeholdersExcluded": true,
+    "manualIncludesExcluded": true,
+    "detailAccessRequired": true,
+    "chipsTalentsFollowVisibility": true
+  },
+  "data": {
+    "vehicleCount": 1,
+    "vehicleIds": [
+      12089
+    ],
+    "vehicles": [
+      {
+        "id": 12089,
+        "name": "狻猊"
+      }
+    ],
+    "vehiclesSha256": "5b034ae0b9f08116cd9fa38737b198b3691e03fadd21269517a0d9fee574c97e",
+    "vehiclesFileSha256": "9227823c01548bc3d8a57e9211209e8409993b1095360555dcec5e85be674946",
+    "delta": null
+  },
+  "assets": {
+    "skipped": false,
+    "vehicles": {
+      "fileCount": 15,
+      "missingCount": 0
+    },
+    "chips": null,
+    "talents": null
+  },
+  "categories": {
+    "vehicles": {
+      "file": "vehicles/vehicles.json",
+      "total": 1,
+      "sha256": "9227823c01548bc3d8a57e9211209e8409993b1095360555dcec5e85be674946"
+    },
+    "balance": null,
+    "chips": null,
+    "talents": null
+  },
+  "archives": {
+    "vehicles": {
+      "file": "vehicles.zip",
+      "bytes": 815011,
+      "sha256": "066e771b821dde89fbc5b8683a8ca85c923988828ff3453cbabe219138c6cb2e",
+      "entryCount": 20
+    }
+  }
+}

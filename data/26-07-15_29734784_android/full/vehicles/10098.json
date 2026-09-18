@@ -1,7 +1,6 @@
 {
   "schemaVersion": 2,
-  "versionId": "26-07-15_29734784_android",
-  "generatedAt": "2026-07-16T09:22:34.000Z",
+  "generatedAt": "2026-09-18T12:34:31.000Z",
   "item": {
     "id": 10098,
     "name": "春风 450SR",
@@ -832,52 +831,6 @@
             ]
           },
           {
-            "id": 3500016,
-            "desc": "解除负面效果",
-            "buff_count": 0,
-            "buff_icon": "new_carport_icon_109_1",
-            "dispel_type": 1,
-            "duration": 0.1,
-            "eff_id": 1,
-            "extra_children": [],
-            "extra_isolate": [],
-            "inst_group": 35,
-            "inst_name": "净化",
-            "inst_type": 35,
-            "is_positive": 1,
-            "rear_insts": [],
-            "ref_insts": [
-              3500016
-            ],
-            "skill_eff_id": 18888,
-            "sp_n2o_ace_charge_ratio": 1,
-            "name": "净化",
-            "type": 35,
-            "order": null,
-            "value_texts": [
-              {
-                "key": "buff_count",
-                "label": "Buff 数量",
-                "value": "0"
-              },
-              {
-                "key": "rear_insts",
-                "label": "后续节点",
-                "value": "[]"
-              },
-              {
-                "key": "extra_children",
-                "label": "子节点",
-                "value": "[]"
-              },
-              {
-                "key": "ref_insts",
-                "label": "引用节点",
-                "value": "[3500016]"
-              }
-            ]
-          },
-          {
             "id": 2901201,
             "attack_show_friend_enemy_filter": [
               1,
@@ -1216,10 +1169,10 @@
             "html": "强化涡轮额外极速"
           },
           "value_rich": {
-            "raw": "50km/h",
-            "html": "50km/h"
+            "raw": "45km/h",
+            "html": "45km/h"
           },
-          "value_text": "50km/h",
+          "value_text": "45km/h",
           "instruction_ids": [],
           "values": []
         },
@@ -1230,10 +1183,10 @@
             "html": "参数 197"
           },
           "value_rich": {
-            "raw": "#a9a9a9(上限：150km/h)",
-            "html": "<span class=\"rt-color\" style=\"color: #a9a9a9\">(上限：150km/h)</span>"
+            "raw": "#a9a9a9(上限：135km/h)",
+            "html": "<span class=\"rt-color\" style=\"color: #a9a9a9\">(上限：135km/h)</span>"
           },
-          "value_text": "#a9a9a9(上限：150km/h)",
+          "value_text": "#a9a9a9(上限：135km/h)",
           "instruction_ids": [],
           "values": []
         },
@@ -1320,8 +1273,8 @@
       "unlock_nitro_3": "解锁1x6磅，2x3磅，3x2磅氮气",
       "upgrade_level_icon": "new_carport_icon_10067",
       "feature_desc": {
-        "raw": "立即获得一个涡轮，#tips[净化]自身并强化接下来3次涡轮：\n·使用后#tips[净化]自身，6秒内极速+50km/h并大幅提升动力\n·3次强化涡轮提供的加速可叠加。\n#acacac被动（摩托专属）：每次使用氮气后短时间内使用涡轮或大招将触发抬头冲锋加速，抬头冲锋期间进入漂移会使加速立即结束。",
-        "html": "立即获得一个涡轮，<span class=\"rt-tip rt-tip--entry\" data-tip=\"净化\" data-icon=\"carport_new_skill_illustrate_b9\" data-desc=\"·解除持续性的负面效果\" style=\"--tip-color:#7eedff\" title=\"·解除持续性的负面效果\"><span class=\"rt-tip__icon-slot\"></span>净化</span>自身并强化接下来3次涡轮：<br/>·使用后<span class=\"rt-tip rt-tip--entry\" data-tip=\"净化\" data-icon=\"carport_new_skill_illustrate_b9\" data-desc=\"·解除持续性的负面效果\" style=\"--tip-color:#7eedff\" title=\"·解除持续性的负面效果\"><span class=\"rt-tip__icon-slot\"></span>净化</span>自身，6秒内极速+50km/h并大幅提升动力<br/>·3次强化涡轮提供的加速可叠加。<br/><span class=\"rt-color\" style=\"color: #acacac\">被动（摩托专属）：每次使用氮气后短时间内使用涡轮或大招将触发抬头冲锋加速，抬头冲锋期间进入漂移会使加速立即结束。</span>"
+        "raw": "立即获得一个涡轮并强化接下来3次涡轮：\n·使用后#tips[净化]自身，6秒内极速+45km/h并大幅提升动力\n·3次强化涡轮提供的加速可叠加。\n#acacac被动（摩托专属）：每次使用氮气后短时间内使用涡轮或大招将触发抬头冲锋加速，抬头冲锋期间进入漂移会使加速立即结束。",
+        "html": "立即获得一个涡轮并强化接下来3次涡轮：<br/>·使用后<span class=\"rt-tip rt-tip--entry\" data-tip=\"净化\" data-icon=\"carport_new_skill_illustrate_b9\" data-desc=\"·解除持续性的负面效果\" style=\"--tip-color:#7eedff\" title=\"·解除持续性的负面效果\"><span class=\"rt-tip__icon-slot\"></span>净化</span>自身，6秒内极速+45km/h并大幅提升动力<br/>·3次强化涡轮提供的加速可叠加。<br/><span class=\"rt-color\" style=\"color: #acacac\">被动（摩托专属）：每次使用氮气后短时间内使用涡轮或大招将触发抬头冲锋加速，抬头冲锋期间进入漂移会使加速立即结束。</span>"
       },
       "sp_skill_desc": null,
       "passive_skill_desc": null,
@@ -1479,7 +1432,8 @@
         10025,
         10039,
         10012,
-        12101
+        12101,
+        10019
       ]
     },
     "resources": {

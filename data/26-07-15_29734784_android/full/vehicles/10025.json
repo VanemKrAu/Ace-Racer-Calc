@@ -1,7 +1,6 @@
 {
   "schemaVersion": 2,
-  "versionId": "26-07-15_29734784_android",
-  "generatedAt": "2026-07-16T09:22:34.000Z",
+  "generatedAt": "2026-09-18T12:34:31.000Z",
   "item": {
     "id": 10025,
     "name": "干扰者",
@@ -1582,6 +1581,10 @@
           {
             "source": "local",
             "index": 6
+          },
+          {
+            "source": "local",
+            "index": 7
           }
         ]
       },
@@ -1633,6 +1636,14 @@
           "icon_s": "tz_10025_6_s",
           "icon_m": "tz_10025_6_m",
           "icon_b": "tz_10025_6_b"
+        },
+        "7": {
+          "id": 50723,
+          "name": "涂装 封魔斩",
+          "desc": "封魔斩，一斩千击！\n适用车型：#1dd8d0干扰者",
+          "icon_s": "tz_10025_7_s",
+          "icon_m": "tz_10025_7_m",
+          "icon_b": "tz_10025_7_b"
         }
       }
     },

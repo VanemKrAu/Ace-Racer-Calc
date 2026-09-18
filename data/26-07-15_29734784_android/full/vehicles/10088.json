@@ -1,7 +1,6 @@
 {
   "schemaVersion": 2,
-  "versionId": "26-07-15_29734784_android",
-  "generatedAt": "2026-07-16T09:22:34.000Z",
+  "generatedAt": "2026-09-18T12:34:31.000Z",
   "item": {
     "id": 10088,
     "name": "奥迪 RS7 Sportback",
@@ -737,11 +736,11 @@
               ],
               [
                 166,
-                7
+                8
               ],
               [
                 200,
-                6
+                8
               ]
             ],
             "attack_show_friend_enemy_filter": [
@@ -1080,10 +1079,10 @@
             "html": "加速动力"
           },
           "value_rich": {
-            "raw": "中",
-            "html": "中"
+            "raw": "高",
+            "html": "高"
           },
-          "value_text": "中",
+          "value_text": "高",
           "instruction_ids": [],
           "values": []
         }

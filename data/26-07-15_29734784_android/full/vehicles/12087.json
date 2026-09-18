@@ -1,7 +1,6 @@
 {
   "schemaVersion": 2,
-  "versionId": "26-07-15_29734784_android",
-  "generatedAt": "2026-07-16T09:22:34.000Z",
+  "generatedAt": "2026-09-18T12:34:31.000Z",
   "item": {
     "id": 12087,
     "name": "逍遥",
@@ -56,7 +55,7 @@
       }
     ],
     "stats": {
-      "speed_limit": 185,
+      "speed_limit": 191,
       "speedup_ratio": 1.24,
       "charge": {
         "ace_charge": 1800,
@@ -114,7 +113,7 @@
           "upgrade_level_icon": "new_carport_icon_10395"
         },
         "stats": {
-          "speed_limit": 185,
+          "speed_limit": 191,
           "speedup_ratio": 1.24,
           "charge": {
             "ace_charge": 1800,
@@ -173,7 +172,7 @@
           "upgrade_level_icon": "new_carport_icon_nos_03"
         },
         "stats": {
-          "speed_limit": 185,
+          "speed_limit": 191,
           "speedup_ratio": 1.24,
           "charge": {
             "ace_charge": 1800,
@@ -231,7 +230,7 @@
           "upgrade_level_icon": "new_carport_icon_14"
         },
         "stats": {
-          "speed_limit": 185,
+          "speed_limit": 191,
           "speedup_ratio": 1.24,
           "charge": {
             "ace_charge": 1800,
@@ -290,7 +289,7 @@
           "upgrade_level_icon": "new_carport_icon_city"
         },
         "stats": {
-          "speed_limit": 185,
+          "speed_limit": 191,
           "speedup_ratio": 1.24,
           "charge": {
             "ace_charge": 1800,
@@ -349,7 +348,7 @@
           "upgrade_level_icon": "new_carport_icon_10394"
         },
         "stats": {
-          "speed_limit": 185,
+          "speed_limit": 191,
           "speedup_ratio": 1.24,
           "charge": {
             "ace_charge": 1800,
@@ -408,7 +407,7 @@
           "upgrade_level_icon": "new_carport_icon_nos_03"
         },
         "stats": {
-          "speed_limit": 185,
+          "speed_limit": 191,
           "speedup_ratio": 1.24,
           "charge": {
             "ace_charge": 1800,
@@ -467,7 +466,7 @@
           "upgrade_level_icon": "new_carport_icon_10394"
         },
         "stats": {
-          "speed_limit": 185.5,
+          "speed_limit": 191.5,
           "speedup_ratio": 1.24,
           "charge": {
             "ace_charge": 1800,
@@ -527,7 +526,7 @@
           "upgrade_level_icon": "new_carport_icon_10394"
         },
         "stats": {
-          "speed_limit": 185.5,
+          "speed_limit": 191.5,
           "speedup_ratio": 1.24,
           "charge": {
             "ace_charge": 1800,
@@ -587,7 +586,7 @@
           "upgrade_level_icon": "new_carport_icon_10394"
         },
         "stats": {
-          "speed_limit": 186,
+          "speed_limit": 192,
           "speedup_ratio": 1.24,
           "charge": {
             "ace_charge": 1800,
@@ -647,7 +646,7 @@
           "upgrade_level_icon": "new_carport_icon_10394"
         },
         "stats": {
-          "speed_limit": 187,
+          "speed_limit": 193,
           "speedup_ratio": 1.24,
           "charge": {
             "ace_charge": 1800,
@@ -1667,6 +1666,10 @@
           {
             "source": "local",
             "index": 1
+          },
+          {
+            "source": "local",
+            "index": 2
           }
         ]
       },
@@ -1678,6 +1681,14 @@
           "icon_s": "tz_12087_1_s",
           "icon_m": "tz_12087_1_m",
           "icon_b": "tz_12087_1_b"
+        },
+        "2": {
+          "id": 50689,
+          "name": "涂装 瑶台镜花",
+          "desc": "瑶台之上，镜花不语，却已道尽世间万千风华！\n适用车型：#1dd8d0逍遥",
+          "icon_s": "tz_12087_2_s",
+          "icon_m": "tz_12087_2_m",
+          "icon_b": "tz_12087_2_b"
         }
       }
     },

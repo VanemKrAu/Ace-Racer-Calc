@@ -1,0 +1,114 @@
+{
+  "schemaVersion": 2,
+  "generatedAt": "2026-09-18T12:32:06.000Z",
+  "imageRoots": [
+    "E:\\AceRacer\\AceRacing-Workbench\\deploy\\wwwroot\\ace-racer\\rk-assets"
+  ],
+  "vehicles": [
+    {
+      "vehicleId": 10019,
+      "vehicleName": "丰田 86",
+      "directory": "丰田 86_10019",
+      "files": [
+        {
+          "category": "body",
+          "stem": "10019_m",
+          "file": "10019_m.png",
+          "relativePath": "vehicles/images/丰田 86_10019/body/10019_m.png",
+          "vehicleRelativePath": "body/10019_m.png"
+        },
+        {
+          "category": "body",
+          "stem": "10019_s",
+          "file": "10019_s.png",
+          "relativePath": "vehicles/images/丰田 86_10019/body/10019_s.png",
+          "vehicleRelativePath": "body/10019_s.png"
+        },
+        {
+          "category": "skins",
+          "stem": "tz_10019_1_m",
+          "file": "tz_10019_1_m.png",
+          "relativePath": "vehicles/images/丰田 86_10019/skins/tz_10019_1_m.png",
+          "vehicleRelativePath": "skins/tz_10019_1_m.png"
+        },
+        {
+          "category": "skins",
+          "stem": "tz_10019_1_s",
+          "file": "tz_10019_1_s.png",
+          "relativePath": "vehicles/images/丰田 86_10019/skins/tz_10019_1_s.png",
+          "vehicleRelativePath": "skins/tz_10019_1_s.png"
+        },
+        {
+          "category": "skill-icons",
+          "stem": "new_carport_icon_10421",
+          "file": "new_carport_icon_10421.png",
+          "relativePath": "vehicles/images/丰田 86_10019/skill-icons/new_carport_icon_10421.png",
+          "vehicleRelativePath": "skill-icons/new_carport_icon_10421.png"
+        },
+        {
+          "category": "skill-icons",
+          "stem": "new_carport_icon_10422",
+          "file": "new_carport_icon_10422.png",
+          "relativePath": "vehicles/images/丰田 86_10019/skill-icons/new_carport_icon_10422.png",
+          "vehicleRelativePath": "skill-icons/new_carport_icon_10422.png"
+        },
+        {
+          "category": "skill-icons",
+          "stem": "new_carport_icon_14",
+          "file": "new_carport_icon_14.png",
+          "relativePath": "vehicles/images/丰田 86_10019/skill-icons/new_carport_icon_14.png",
+          "vehicleRelativePath": "skill-icons/new_carport_icon_14.png"
+        },
+        {
+          "category": "skill-icons",
+          "stem": "new_carport_icon_mountainroad",
+          "file": "new_carport_icon_mountainroad.png",
+          "relativePath": "vehicles/images/丰田 86_10019/skill-icons/new_carport_icon_mountainroad.png",
+          "vehicleRelativePath": "skill-icons/new_carport_icon_mountainroad.png"
+        },
+        {
+          "category": "skill-icons",
+          "stem": "new_carport_icon_nos_03",
+          "file": "new_carport_icon_nos_03.png",
+          "relativePath": "vehicles/images/丰田 86_10019/skill-icons/new_carport_icon_nos_03.png",
+          "vehicleRelativePath": "skill-icons/new_carport_icon_nos_03.png"
+        },
+        {
+          "category": "skill-icons",
+          "stem": "ui_skill200_01",
+          "file": "ui_skill200_01.png",
+          "relativePath": "vehicles/images/丰田 86_10019/skill-icons/ui_skill200_01.png",
+          "vehicleRelativePath": "skill-icons/ui_skill200_01.png"
+        },
+        {
+          "category": "skill-icons",
+          "stem": "ui_skill200_03",
+          "file": "ui_skill200_03.png",
+          "relativePath": "vehicles/images/丰田 86_10019/skill-icons/ui_skill200_03.png",
+          "vehicleRelativePath": "skill-icons/ui_skill200_03.png"
+        },
+        {
+          "category": "skill-icons",
+          "stem": "ui_skill200_04",
+          "file": "ui_skill200_04.png",
+          "relativePath": "vehicles/images/丰田 86_10019/skill-icons/ui_skill200_04.png",
+          "vehicleRelativePath": "skill-icons/ui_skill200_04.png"
+        },
+        {
+          "category": "skill-icons",
+          "stem": "ui_skill200_06",
+          "file": "ui_skill200_06.png",
+          "relativePath": "vehicles/images/丰田 86_10019/skill-icons/ui_skill200_06.png",
+          "vehicleRelativePath": "skill-icons/ui_skill200_06.png"
+        }
+      ],
+      "missing": {
+        "body": [],
+        "skins": [],
+        "skillIcons": []
+      }
+    }
+  ],
+  "fileCount": 13,
+  "missingCount": 0
+}

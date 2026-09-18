@@ -1,7 +1,6 @@
 {
   "schemaVersion": 2,
-  "versionId": "26-07-15_29734784_android",
-  "generatedAt": "2026-07-16T09:22:34.000Z",
+  "generatedAt": "2026-09-18T12:34:31.000Z",
   "item": {
     "id": 10026,
     "name": "禅",
@@ -21,8 +20,8 @@
       "releaseText": "已上线",
       "releaseMacro": "PAST"
     },
-    "summary": "人车合一，不能受任何干扰",
-    "description": "人车合一，不能受任何干扰",
+    "summary": "人车合一，撞墙会结束大招",
+    "description": "人车合一，撞墙会结束大招",
     "tags": [
       {
         "id": 11,
@@ -763,6 +762,9 @@
               202201
             ],
             "skill_eff_id": 1010,
+            "sp_ex_speed_limit": 40,
+            "sp_max_ex_speed_limit": 40,
+            "sp_min_ex_speed_limit": 40,
             "sp_n2o_ace_charge_ratio": 1,
             "name": "大招加速",
             "desc": null,
@@ -819,13 +821,10 @@
             ],
             "buff_count": 0,
             "cd_type": 1,
-            "coll_enemy_instr_ids": [
-              2800301
-            ],
             "coll_scenes_instr_ids": [
               2800301
             ],
-            "coll_type_mask": 6,
+            "coll_type_mask": 4,
             "duration": 999,
             "eff_cd": 0.1,
             "eff_id": 1,
@@ -834,7 +833,7 @@
               2800301
             ],
             "inst_group": 16,
-            "inst_name": "碰撞打断",
+            "inst_name": "撞墙打断",
             "inst_type": 16,
             "rear_insts": [],
             "ref_insts": [
@@ -844,7 +843,7 @@
             ],
             "skill_eff_id": 16,
             "sp_n2o_ace_charge_ratio": 1,
-            "name": "碰撞打断",
+            "name": "撞墙打断",
             "desc": null,
             "type": 16,
             "order": null,
@@ -1371,10 +1370,10 @@
             "html": "每秒极速提升"
           },
           "value_rich": {
-            "raw": "10km/h",
-            "html": "10km/h"
+            "raw": "7km/h",
+            "html": "7km/h"
           },
-          "value_text": "10km/h",
+          "value_text": "7km/h",
           "instruction_ids": [],
           "values": []
         },
@@ -1385,10 +1384,10 @@
             "html": "极速提升上限"
           },
           "value_rich": {
-            "raw": "100km/h",
-            "html": "100km/h"
+            "raw": "110km/h",
+            "html": "110km/h"
           },
-          "value_text": "100km/h",
+          "value_text": "110km/h",
           "instruction_ids": [],
           "values": []
         },
@@ -1507,8 +1506,8 @@
       "unlock_nitro_3": "解锁1x6磅，2x3磅，3x2磅氮气",
       "upgrade_level_icon": "new_carport_icon_10057",
       "feature_desc": {
-        "raw": "#tips[加速推进]，并进入#dd9aff人车合一状态:#ffffff\n·每秒极速+10km/h，最大可叠加至100km/h。\n·加速持续#desc[89]，如果发生碰撞（不计友方碰撞），则会提前结束。\n·大招结束时获得充能，生效时间越长充能越多，最多可获得24%大招能量。",
-        "html": "<span class=\"rt-tip rt-tip--entry\" data-tip=\"加速推进\" data-icon=\"carport_new_skill_illustrate_b1\" data-desc=\"·获得沿车头方向的加速效果&#10;·有助于退出漂移状态\" style=\"--tip-color:#7eedff\" title=\"·获得沿车头方向的加速效果&#10;·有助于退出漂移状态\"><span class=\"rt-tip__icon-slot\"></span>加速推进</span>，并进入<span class=\"rt-color\" style=\"color: #dd9aff\">人车合一状态:</span><br/>·每秒极速+10km/h，最大可叠加至100km/h。<br/>·加速持续<span class=\"rt-desc\">最大持续时间 8秒</span>，如果发生碰撞（不计友方碰撞），则会提前结束。<br/>·大招结束时获得充能，生效时间越长充能越多，最多可获得24%大招能量。"
+        "raw": "#tips[加速推进]，极速提升40km/h并进入#dd9aff人车合一状态:#ffffff\n·开启时和每秒极速+7km/h，最大可叠加至70km/h。\n·加速持续#desc[89]，如果撞墙则大招会提前结束。\n·大招结束时获得充能，生效时间越长充能越多，最多可获得24%大招能量。",
+        "html": "<span class=\"rt-tip rt-tip--entry\" data-tip=\"加速推进\" data-icon=\"carport_new_skill_illustrate_b1\" data-desc=\"·获得沿车头方向的加速效果&#10;·有助于退出漂移状态\" style=\"--tip-color:#7eedff\" title=\"·获得沿车头方向的加速效果&#10;·有助于退出漂移状态\"><span class=\"rt-tip__icon-slot\"></span>加速推进</span>，极速提升40km/h并进入<span class=\"rt-color\" style=\"color: #dd9aff\">人车合一状态:</span><br/>·开启时和每秒极速+7km/h，最大可叠加至70km/h。<br/>·加速持续<span class=\"rt-desc\">最大持续时间 8秒</span>，如果撞墙则大招会提前结束。<br/>·大招结束时获得充能，生效时间越长充能越多，最多可获得24%大招能量。"
       },
       "sp_skill_desc": null,
       "passive_skill_desc": null,

@@ -1,7 +1,6 @@
 {
   "schemaVersion": 2,
-  "versionId": "26-07-15_29734784_android",
-  "generatedAt": "2026-07-16T09:22:34.000Z",
+  "generatedAt": "2026-09-18T12:34:31.000Z",
   "item": {
     "id": 12008,
     "name": "幻蝶",
@@ -1622,6 +1621,10 @@
           {
             "source": "local",
             "index": 4
+          },
+          {
+            "source": "local",
+            "index": 5
           }
         ]
       },
@@ -1657,6 +1660,14 @@
           "icon_s": "tz_12008_4_s",
           "icon_m": "tz_12008_4_m",
           "icon_b": "tz_12008_4_b"
+        },
+        "5": {
+          "id": 50705,
+          "name": "涂装 卡蜜拉之吻",
+          "desc": "“我厚颜无耻地在你温暖的生命中占有一席之地。”\n适用车型：#1dd8d0幻蝶",
+          "icon_s": "tz_12008_5_s",
+          "icon_m": "tz_12008_5_m",
+          "icon_b": "tz_12008_5_b"
         }
       }
     },
