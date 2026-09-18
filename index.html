@@ -942,6 +942,10 @@ var _CAR_IMG = {
 
     function sortCarsByAdded() {
         return CAR_DATABASE.slice().sort(function(a, b) {
+            // 主键：游戏排期时间（新的在上）
+            var ra = a.release_at || 0, rb = b.release_at || 0;
+            if (ra !== rb) return rb - ra;
+            // 副键：加入网站时间
             var ta = a.added_at || 0, tb = b.added_at || 0;
             if (ta !== tb) return tb - ta;
             return (b.id || 0) - (a.id || 0);

@@ -15,6 +15,12 @@ const ADDED_AT = {
   12089: 1789736122761, // 狻猊
 };
 
+// 游戏排期时间补丁表（秒级 Unix 时间戳，与 publication.releaseTimestamp 同单位）
+// 只登记「游戏数据里 releaseTimestamp=0 但需要归位」的车
+const RELEASE_PATCH = {
+  12099: 1783008000, // 百变小鹦：数据中无排期时间，暂借 ID 邻居 12098 的排期（2026-07-02）
+};
+
 // Load raw JSONL data for nitro durations
 const rawVehicleLines = fs.existsSync(rawDataDir + '/vehicle_data.jsonl')
   ? fs.readFileSync(rawDataDir + '/vehicle_data.jsonl', 'utf-8').split('\n').filter(Boolean)
@@ -622,6 +628,13 @@ for (const file of files) {
       })(),
       asset_dir: 'assets/' + v.name + '_' + carId,
       added_at: ADDED_AT[carId] || null,
+      release_at: (function () {
+        // 游戏排期时间（秒）→ 毫秒；无排期数据时用补丁表，再没有则为 null
+        var ts = Number(v.publication && v.publication.releaseTimestamp) || 0;
+        if (!ts) ts = Number(v.releaseTimestamp) || 0;
+        if (!ts) ts = Number(RELEASE_PATCH[carId]) || 0;
+        return ts > 0 ? ts * 1000 : null;
+      })(),
     });
   } catch (e) {
     console.error(`Error processing ${file}: ${e.message}`);
