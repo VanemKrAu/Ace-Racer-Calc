@@ -3,8 +3,8 @@
   "short_name": "王牌计算器",
   "start_url": "./",
   "display": "standalone",
-  "background_color": "#0b0c16",
-  "theme_color": "#00f2fe",
+  "background_color": "#000000",
+  "theme_color": "#f2f2f6",
   "description": "王牌竞速高精度大招能量与循环测算工具",
   "icons": [
     {

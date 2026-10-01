@@ -130,12 +130,14 @@ def main():
     ap = argparse.ArgumentParser()
     ap.add_argument("--url", default=DEFAULT_URL)
     ap.add_argument("--out", default=os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+    ap.add_argument("--chrome", default=None,
+                    help="Chromium 可执行文件路径；默认用 playwright 自带的那份")
     a = ap.parse_args()
     out = a.out
     os.makedirs(out, exist_ok=True)
 
     with sync_playwright() as p:
-        b = p.chromium.launch()
+        b = p.chromium.launch(executable_path=a.chrome) if a.chrome else p.chromium.launch()
 
         # ── 桌面 2560×1516 ────────────────────────────────────────────
         ctx = b.new_context(viewport={"width": 1280, "height": 758}, device_scale_factor=2,
@@ -149,8 +151,9 @@ def main():
         shoot(pg, 0, f"{out}/screenshot-desktop-1.png")
         # 2 参数区：左列核心参数/氮气规格 + 右列七大赋能矩阵
         shoot(pg, max(0, (pos["基础属性及赋能调整区"] or 700) - 60), f"{out}/screenshot-desktop-2.png")
-        # 3 结果区：芯片面板 + 首发/循环两张结果卡完整入画
-        y3 = framed_y(cards, ["chip", "nitro", "first", "loop"], cards["vh"], cards["scrollH"])
+        # 3 结果区：以「首发 / 循环」两张结果卡为准取景——它们是结论，必须完整入画。
+        #   带上芯片面板会超出一屏（V3 下四块合计 856px > 可用 718px），底部会把公式框硬切掉。
+        y3 = framed_y(cards, ["first", "loop"], cards["vh"], cards["scrollH"])
         if y3 is None:
             y3 = max(0, 2000)
         shoot(pg, y3, f"{out}/screenshot-desktop-3.png")
@@ -165,8 +168,8 @@ def main():
         print("移动卡片:", cards2)
         # 1 顶部
         shoot(pg2, 0, f"{out}/screenshot-mobile-1.png")
-        # 2 结果区：芯片面板 + 首发/循环两张结果卡完整入画
-        y2 = framed_y(cards2, ["chip", "nitro", "first", "loop"], cards2["vh"], cards2["scrollH"])
+        # 2 结果区：以「首发 / 循环」两张结果卡为准取景（同上，保证结论不被切）
+        y2 = framed_y(cards2, ["first", "loop"], cards2["vh"], cards2["scrollH"])
         if y2 is None:
             y2 = 3520
         shoot(pg2, y2, f"{out}/screenshot-mobile-2.png")
