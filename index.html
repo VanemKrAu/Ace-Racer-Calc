@@ -1448,8 +1448,8 @@ body.ds-c.performance-mode .ds-dock { background: var(--cell); }
 </div>
 
 <nav class="ds-dock" data-html2canvas-ignore="true" aria-label="结果速览">
-  <button type="button" class="ds-dock-item" data-target="calcAreaFirst" data-target-fallback="resultCardFirst" data-state="idle"><span class="ds-dock-k"><span class="zh">首发</span><span class="lang-en">1st Ult</span></span><span class="ds-dock-v">--</span></button>
-  <button type="button" class="ds-dock-item" data-target="calcAreaLoop" data-target-fallback="resultCardLoop" data-state="idle"><span class="ds-dock-k"><span class="zh">循环</span><span class="lang-en">Loop</span></span><span class="ds-dock-v">--</span></button>
+  <button type="button" class="ds-dock-item" data-gauge="first" data-target="calcAreaFirst" data-target-fallback="resultCardFirst" data-state="idle"><span class="ds-dock-k"><span class="zh">首发</span><span class="lang-en">1st Ult</span></span><span class="ds-dock-v">--</span></button>
+  <button type="button" class="ds-dock-item" data-gauge="loop" data-target="calcAreaLoop" data-target-fallback="resultCardLoop" data-state="idle"><span class="ds-dock-k"><span class="zh">循环</span><span class="lang-en">Loop</span></span><span class="ds-dock-v">--</span></button>
 </nav>
 <div id="copyToast" class="copy-toast"><span class="zh">操作成功！</span><span class="lang-en">Operation Successful!</span></div>
 <script>
@@ -3651,7 +3651,13 @@ if (typeof CAR_DATABASE !== 'undefined') {
   function renderDock(res) {
     var items = document.querySelectorAll('.ds-dock-item');
     for (var i = 0; i < items.length; i++) {
-      var r = items[i].dataset.target === 'resultCardFirst' ? res.first : res.loop;
+      // 用专门的 data-gauge 判定这是「首发」还是「循环」。
+      // 别再拿 data-target 判断：那个属性是给「跳转」用的（后来从 resultCard* 改成了 calcArea*），
+      // 改过一次就把这里的对应关系带错了 —— 两项都落到 loop，导致 dock 的「首发」显示循环的数字。
+      // 兜底同时认新旧两种 target 值，双保险。
+      var tgt = items[i].dataset.target;
+      var key = items[i].dataset.gauge || ((tgt === 'resultCardFirst' || tgt === 'calcAreaFirst') ? 'first' : 'loop');
+      var r = key === 'first' ? res.first : res.loop;
       if (!r) continue;
       items[i].dataset.state = r.idle ? 'idle' : (r.pass ? 'pass' : 'fail');
       items[i].querySelector('.ds-dock-v').textContent = r.idle || !isFinite(r.total) ? '--' : r.total.toFixed(1) + '%';
