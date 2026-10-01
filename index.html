@@ -3793,11 +3793,43 @@ if (typeof CAR_DATABASE !== 'undefined') {
       next.classList.add('is-on');
       cur.classList.remove('is-on');
       ambOn = 1 - ambOn;
+      // 少数派生内核（夸克等）在换层后会继续沿用旧的模糊位图，轻推一下强制重绘，无副作用
+      next.style.transform = 'translateZ(0)';
+      void next.offsetWidth;
+      next.style.transform = '';
     };
     if (next.src !== url) {
       next.src = url;
-      // 等解码完再淡入，否则会淡入到一半才出图；解码失败也照常淡入（宁可硬切也别卡住）
-      if (next.decode) next.decode().then(swap, swap); else requestAnimationFrame(swap);
+      // 等解码完再淡入，避免淡入到一半才出图。但绝不能把换层「绑死」在 decode() 上：
+      // 实测（打桩复现）decode() 可能永不落定、同步抛错、或返回非 Promise —— 那样背景会永久
+      // 卡在旧车上（夸克浏览器换车背景不跟着变就是这个原因）。所以三重保险：
+      //   ① 已在缓存（complete 且有尺寸）→ 立刻换，不等 decode
+      //   ② decode 正常回调 → 立刻换
+      //   ③ 最多等 400ms → 无论如何都换（宁可硬切也不能卡住）
+      var settled = false, timer = 0;
+      var fire = function () {
+        if (settled) return;
+        settled = true;
+        if (timer) clearTimeout(timer);
+        swap();
+      };
+      timer = setTimeout(fire, 400);
+      if (next.complete && next.naturalWidth > 0) {
+        fire();
+      } else {
+        try {
+          if (typeof next.decode === 'function') {
+            var pr = next.decode();
+            if (pr && typeof pr.then === 'function') pr.then(fire, fire);
+            else fire();                     // 返回了非 Promise：别等它
+          } else {
+            next.addEventListener('load', fire, { once: true });
+            next.addEventListener('error', fire, { once: true });
+          }
+        } catch (e) {
+          fire();                            // decode 同步抛错：直接换
+        }
+      }
     } else {
       swap();
     }
