@@ -984,7 +984,7 @@ body.ds-c.performance-mode .ds-dock { background: var(--cell); }
 <div id="carPreview">
   <div class="card car-hero">
     <div class="car-stage">
-      <div id="carImgWrap"><img id="carImage" src="" alt="" loading="lazy" onerror="this.style.display='none'"></div>
+      <div id="carImgWrap"><img id="carImage" src="" alt="" loading="lazy"></div>
       <div id="carPreviewPlaceholder"><span class="zh">请选择一辆赛车</span><span class="lang-en">Select a car</span></div>
     </div>
     <div class="car-meta">
@@ -1331,7 +1331,7 @@ body.ds-c.performance-mode .ds-dock { background: var(--cell); }
 </div>
     </div>
     <div class="cp-calc">
-      <section class="cp-group cp-group-first">
+      <section class="cp-group cp-group-first" id="calcAreaFirst">
         <div class="cp-group-head"><span class="cp-step">1</span><div class="section-divider"><span><span class="zh">首发一大交互测算区</span><span class="lang-en">First Ult Calculation Area</span></span></div></div>
         <div class="cp-group-body">
 <div class="card chip-card">
@@ -1376,7 +1376,7 @@ body.ds-c.performance-mode .ds-dock { background: var(--cell); }
 </div></div>
       </section>
       <div class="cp-split" aria-hidden="true"><span class="cp-split-long"><span class="zh">首发一大 ⟷ 后续循环 · 两套独立测算</span><span class="lang-en">1st Ult ⟷ Loop · separate calculations</span></span><span class="cp-split-short"><span class="zh">两套独立测算</span><span class="lang-en">SEPARATE</span></span></div>
-      <section class="cp-group cp-group-loop">
+      <section class="cp-group cp-group-loop" id="calcAreaLoop">
         <div class="cp-group-head"><span class="cp-step">2</span><div class="section-divider"><span><span class="zh">后续大招循环测算区</span><span class="lang-en">Subsequent Ult Loop Area</span></span></div></div>
         <div class="cp-group-body">
 <div class="card nitro-count-card">
@@ -1448,8 +1448,8 @@ body.ds-c.performance-mode .ds-dock { background: var(--cell); }
 </div>
 
 <nav class="ds-dock" data-html2canvas-ignore="true" aria-label="结果速览">
-  <button type="button" class="ds-dock-item" data-target="resultCardFirst" data-state="idle"><span class="ds-dock-k"><span class="zh">首发</span><span class="lang-en">1st Ult</span></span><span class="ds-dock-v">--</span></button>
-  <button type="button" class="ds-dock-item" data-target="resultCardLoop" data-state="idle"><span class="ds-dock-k"><span class="zh">循环</span><span class="lang-en">Loop</span></span><span class="ds-dock-v">--</span></button>
+  <button type="button" class="ds-dock-item" data-target="calcAreaFirst" data-target-fallback="resultCardFirst" data-state="idle"><span class="ds-dock-k"><span class="zh">首发</span><span class="lang-en">1st Ult</span></span><span class="ds-dock-v">--</span></button>
+  <button type="button" class="ds-dock-item" data-target="calcAreaLoop" data-target-fallback="resultCardLoop" data-state="idle"><span class="ds-dock-k"><span class="zh">循环</span><span class="lang-en">Loop</span></span><span class="ds-dock-v">--</span></button>
 </nav>
 <div id="copyToast" class="copy-toast"><span class="zh">操作成功！</span><span class="lang-en">Operation Successful!</span></div>
 <script>
@@ -3679,9 +3679,38 @@ if (typeof CAR_DATABASE !== 'undefined') {
     }
     clearTimeout(dockActiveTimer);
     dockActiveTimer = setTimeout(clearDockActive, 3000);
-    var el = $(b.dataset.target);
+    // 跳转目标优先取「整个测算区」的容器（带标题与输入卡那一整块），
+    // 取不到再退回单张结果卡片 —— 之前直接跳到卡片，会把标题与输入区甩到屏幕外。
+    var el = $(b.dataset.target) || (b.dataset.targetFallback ? $(b.dataset.targetFallback) : null);
     if (el) el.scrollIntoView({ behavior: 'smooth', block: 'start' });
   });
+
+  // ---------- 车图容错：绝不因为一次加载失败就把车图永久隐藏 ----------
+  // 原站在 <img id="carImage"> 上写了 onerror="this.style.display='none'"：
+  // 首次访问时只要那张占位车图（icon_mhyck_m.png）请求失败一次（CDN 抖动 / 403 / 网络瞬断），
+  // 车辆显示区就永久空白、必须刷新才能恢复。这里改成三级兜底：
+  //   占位图失败 → 原样重试一次 → 仍失败退回站内本地副本（data/icon/），全程不隐藏。
+  (function () {
+    var img = $('carImage');
+    if (!img) return;
+    var ph = (_ICONS || {})['icon_mhyck_m.png'] || 'data/icon/icon_mhyck_m.png';
+    var phLocal = 'data/icon/icon_mhyck_m.png';
+    var tries = 0;
+    img.addEventListener('error', function () {
+      var cur = img.getAttribute('src') || '';
+      // 占位图在页面上是 CDN 哈希 URL，不含 icon_mhyck_m 字样，所以要用完整 URL 比对 + 本地路径正则
+      var isPlaceholder = (cur === ph) || (cur.indexOf(phLocal) >= 0) || /icon_mhyck_m/.test(cur);
+      // 车辆图自身加载失败由业务逻辑兜底（它会换成占位图），这里只管占位图失败的情况，别抢
+      if (!isPlaceholder) return;
+      tries++;
+      if (tries === 1) {
+        img.removeAttribute('src');
+        setTimeout(function () { img.src = ph; }, 150);
+      } else if (tries === 2) {
+        img.src = phLocal;
+      }
+    });
+  })();
   if (window.IntersectionObserver) {
     var seen = {};
     var io = new IntersectionObserver(function (es) {
