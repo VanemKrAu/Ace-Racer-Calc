@@ -1,4 +1,4 @@
-const CACHE_NAME = 'calc-dynamic-cache-v7';
+const CACHE_NAME = 'calc-dynamic-cache-v8';
 
 const CURRENT_VALID_ASSETS = [
     '/',

@@ -12,7 +12,7 @@
  *   node scripts/update.mjs 12095 12099 # add multiple cars
  */
 
-import { readFileSync, writeFileSync, readdirSync, copyFileSync, existsSync, mkdirSync } from 'fs';
+import { readFileSync, writeFileSync, readdirSync, copyFileSync, existsSync, mkdirSync, statSync } from 'fs';
 import { join, dirname } from 'path';
 import { execSync } from 'child_process';
 
@@ -33,55 +33,115 @@ function step(msg) {
   console.log(`\n┌${line}┐\n│   ${msg}   │\n└${line}┘`);
 }
 
-// ── Step 0: Parse car IDs ──
-const carIds = process.argv.slice(2);
+// ── Step 0: Parse args ──
+//   node scripts/update.mjs [--from <导出根目录>] [车ID...]
+// 历史数据包放在 data/<数据集>/single-{id}/（.gitignore 也是这么声明的），
+// 手工投放的包放在仓库根的 updata/ 下（可能还套一层批次目录，如 updata/26-09-18_delta/single-10019）。
+const fromIdx = process.argv.indexOf('--from');
+const FROM = fromIdx >= 0 ? process.argv[fromIdx + 1] : null;
+const carIds = process.argv.slice(2).filter(a => a !== '--from' && a !== FROM);
+
+const sourceRoots = [FROM, join(ROOT, 'updata'), DATA].filter(Boolean);
+
+/** 在候选源目录（含一层批次子目录）里找 single-{id} */
+function findSingle(id) {
+  for (const root of sourceRoots) {
+    if (!existsSync(root)) continue;
+    const direct = join(root, `single-${id}`);
+    if (existsSync(direct)) return direct;
+    for (const e of readdirSync(root, { withFileTypes: true })) {
+      if (!e.isDirectory()) continue;
+      const nested = join(root, e.name, `single-${id}`);
+      if (existsSync(nested)) return nested;
+    }
+  }
+  return null;
+}
+
+/** 列出所有可见的 single-* 目录 */
+function listSingles() {
+  const found = new Map();
+  for (const root of sourceRoots) {
+    if (!existsSync(root)) continue;
+    const scan = (dir) => {
+      for (const e of readdirSync(dir, { withFileTypes: true })) {
+        if (!e.isDirectory()) continue;
+        if (e.name.startsWith('single-') && !e.name.includes('packages')) found.set(e.name.replace('single-', ''), join(dir, e.name));
+        else if (e.name !== 'full' && e.name !== 'packages') {
+          // 批次目录（如 updata/26-09-18_delta/）再看一层
+          for (const e2 of readdirSync(join(dir, e.name), { withFileTypes: true })) {
+            if (e2.isDirectory() && e2.name.startsWith('single-') && !e2.name.includes('packages'))
+              found.set(e2.name.replace('single-', ''), join(dir, e.name, e2.name));
+          }
+        }
+      }
+    };
+    scan(root);
+  }
+  return found;
+}
+
+/** 递归复制目录（已存在的文件不覆盖） */
+function copyDir(src, dst) {
+  mkdirSync(dst, { recursive: true });
+  for (const e of readdirSync(src, { withFileTypes: true })) {
+    const s = join(src, e.name), d = join(dst, e.name);
+    if (e.isDirectory()) copyDir(s, d);
+    else if (!existsSync(d)) { copyFileSync(s, d); log('COPY', `assets/${dst.split(/[\\/]assets[\\/]/)[1] || e.name}`); }
+  }
+}
 
 // ── Step 1: Discover new car data ──
 step('1. Discover new single-car data');
+if (FROM) log('FROM', `使用指定导出目录: ${FROM}`);
+log('SCAN', `候选源: ${sourceRoots.join('  |  ')}`);
 
-const dataRoot = dirname(DATA);
-const singles = readdirSync(dataRoot)
-  .filter(d => d.startsWith('single-') && !d.includes('packages'));
-
-if (singles.length === 0) {
-  log('SKIP', 'No single-* directories found');
+const singles = listSingles();
+if (singles.size === 0) {
+  log('SKIP', '找不到任何 single-* 目录（可用 --from <导出根目录> 指定）');
 } else {
-  const discoveredIds = singles.map(s => s.replace('single-', ''));
-  const targetIds = carIds.length > 0 ? carIds : discoveredIds;
-
+  const targetIds = carIds.length > 0 ? carIds : [...singles.keys()];
   for (const id of targetIds) {
-    const srcDir = join(dataRoot, `single-${id}`);
-    if (!existsSync(srcDir)) {
-      log('SKIP', `single-${id} not found, skipping`);
-      continue;
-    }
+    const srcDir = findSingle(id) || singles.get(String(id));
+    if (!srcDir) { log('SKIP', `找不到 single-${id}，跳过`); continue; }
+    log('FOUND', `${id} → ${srcDir}`);
 
-    // Copy vehicle JSON
-    const srcVehicle = join(srcDir, 'vehicles', `${id}.json`);
+    // 车辆 JSON：兼容两种导出布局
+    //   旧: single-{id}/vehicles/{id}.json
+    //   新: single-{id}/vehicles/vehicles/{id}.json   (schemaVersion 2 导出)
+    const jsonCandidates = [join(srcDir, 'vehicles', `${id}.json`), join(srcDir, 'vehicles', 'vehicles', `${id}.json`)];
+    const srcVehicle = jsonCandidates.find(existsSync);
     const dstVehicle = join(VEHICLES, `${id}.json`);
-    if (existsSync(srcVehicle) && !existsSync(dstVehicle)) {
+    if (!srcVehicle) {
+      log('WARN', `single-${id} 里找不到 ${id}.json（找过: ${jsonCandidates.map(p => p.replace(ROOT, '.')).join(' , ')}）`);
+    } else {
+      const isNew = !existsSync(dstVehicle);
       copyFileSync(srcVehicle, dstVehicle);
-      log('COPY', `vehicles/${id}.json`);
+      log(isNew ? 'COPY' : 'UPDATE', `vehicles/${id}.json${isNew ? '' : '（已存在，按新导出覆盖）'}`);
     }
 
-    // Copy asset images
-    const srcAssets = join(srcDir, 'assets');
-    if (existsSync(srcAssets)) {
-      const assetDirs = readdirSync(srcAssets).filter(d => {
-        try { return statSync(join(srcAssets, d)).isDirectory(); } catch { return false; }
-      });
-      for (const ad of assetDirs) {
-        const srcAssetDir = join(srcAssets, ad, 'body');
-        if (!existsSync(srcAssetDir)) continue;
-        const dstAssetDir = join(ASSETS, ad, 'body');
-        mkdirSync(dstAssetDir, { recursive: true });
-        for (const f of readdirSync(srcAssetDir).filter(f => f.endsWith('_m.png') && !f.startsWith('tz_'))) {
-          const src = join(srcAssetDir, f);
-          const dst = join(dstAssetDir, f);
-          if (!existsSync(dst)) {
-            copyFileSync(src, dst);
-            log('COPY', `assets/${ad}/body/${f}`);
+    // 资源图：兼容两种布局
+    //   旧: single-{id}/assets/{车名}_{id}/body/*_m.png
+    //   新: single-{id}/vehicles/images/{车名}_{id}/body/*_m.png
+    const assetRoots = [join(srcDir, 'assets'), join(srcDir, 'vehicles', 'images')].filter(existsSync);
+    if (assetRoots.length === 0) log('WARN', `single-${id} 里找不到资源目录（assets/ 或 vehicles/images/）`);
+    for (const assetRoot of assetRoots) {
+      for (const ad of readdirSync(assetRoot, { withFileTypes: true })) {
+        if (!ad.isDirectory()) continue;
+        const bodyDir = join(assetRoot, ad.name, 'body');
+        if (existsSync(bodyDir)) {
+          const dstBody = join(ASSETS, ad.name, 'body');
+          mkdirSync(dstBody, { recursive: true });
+          for (const f of readdirSync(bodyDir).filter(f => f.endsWith('_m.png') && !f.startsWith('tz_'))) {
+            const dst = join(dstBody, f);
+            if (!existsSync(dst)) { copyFileSync(join(bodyDir, f), dst); log('COPY', `assets/${ad.name}/body/${f}`); }
           }
+        }
+        // 其余资源（skins / skill-icons 等）整目录补齐
+        for (const sub of readdirSync(join(assetRoot, ad.name), { withFileTypes: true })) {
+          if (!sub.isDirectory() || sub.name === 'body') continue;
+          const s = join(assetRoot, ad.name, sub.name), d = join(ASSETS, ad.name, sub.name);
+          if (!existsSync(d)) copyDir(s, d);
         }
       }
     }
@@ -150,9 +210,15 @@ log('DONE', 'index.html CDN references updated');
 
 // ── Step 5: Summary ──
 step('5. Summary');
-const dbCars = readFileSync(join(ROOT, 'car-database.js'), 'utf-8');
-const dbMatch = dbCars.match(/const CAR_DATABASE = \[([\s\S]*?)\];/);
-const carCount = dbMatch ? (dbMatch[1].match(/"id":/g) || []).length : 0;
+// 读不到就如实说，不要因为最后一步读文件失败把整条命令弄成失败退出
+let carCount = '?';
+try {
+  const dbCars = readFileSync(join(ROOT, 'car-database.js'), 'utf-8');
+  const dbMatch = dbCars.match(/const CAR_DATABASE = \[([\s\S]*?)\];/);
+  carCount = dbMatch ? (dbMatch[1].match(/"id":/g) || []).length : '?';
+} catch (e) {
+  carCount = `读取失败（${e.code || e.message}）`;
+}
 console.log(`  Cars in database: ${carCount}`);
 console.log(`  Images on CDN:    ${Object.keys(carUrls).length}`);
 console.log(`  Icons on CDN:     ${Object.keys(iconKeys).length}`);

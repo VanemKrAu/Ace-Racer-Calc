@@ -9,6 +9,8 @@ const rawDataDir = 'E:/AceRacer/AceRacing-Workbench/data/26-09-18_29825663_andro
 // 车辆添加时间登记表（新增车辆时在此登记，用于列表"新车在上"排序）
 // 时间戳 = 该车加入网站的时间 (Date.now())
 const ADDED_AT = {
+  12050: 1790841739849, // 法拉利 SF90 XX Stradale
+  12104: 1790841739849, // 炎龙驹
   12094: 1787240818462, // 罗刹
   12102: 1787240818462, // 货拉拉多拉
   10019: 1789736122761, // 丰田 86
@@ -19,6 +21,13 @@ const ADDED_AT = {
 // 只登记「游戏数据里 releaseTimestamp=0 但需要归位」的车
 const RELEASE_PATCH = {
   12099: 1783008000, // 百变小鹦：数据中无排期时间，暂借 ID 邻居 12098 的排期（2026-07-02）
+};
+
+// 人工字段覆盖表：字段从游戏数据里能提取到、但已确认与实战不符的，登记在这里。
+// 必须登记在本表 —— car-database.js 是每次重建生成的，直接手改会在下次更新时被打回。
+const FIELD_OVERRIDE = {
+  10019: { nitro_charge: null }, // 丰田 86：没有「每次释放氮气时的自充能」，提取到的 7 是错的；
+                                 // 留着会让选车时自动勾选并填入「氮气自充能」。
 };
 
 // Load raw JSONL data for nitro durations
@@ -197,6 +206,19 @@ for (const file of files) {
     ].join(' ');
     const isEnemyDependent = allText.includes('敌方');
 
+    // ── 「自身充能」类字段的统一防线（2026-10-01 全量审查后加）────────────────
+    // 背景：丰田 86 的面板行名是「氮气损失充能 = 7%」（损失量），而 nitro_charge 当时
+    //       只有「名称含氮气+充能」两个条件、一个排除都没有，于是把「损失」当成了「自充能」。
+    // 规则：
+    //   · 排除「损失/消耗/扣除/降低/减少/削减」—— 这些是扣能量，不是获得充能
+    //   · 排除「上限/范围」—— 描述的是阈值或作用范围，不是充能量
+    //   · 「每秒」值一律归 per_sec_charge，不得填进单次充能字段（限定词可能写在行值里）
+    //   · 量级校验：充能百分比不可能超过 100%（布加迪 Chiron 的 500% 就是这么混进来的）
+    //   · 不排除「友方」—— 实测口径：友方效果通常包含自己那辆车（已确认）
+    const BAD_CHARGE = /损失|消耗|扣除|降低|减少|削减|上限|范围/;
+    const isPerSecTxt = (name, value) => /每秒/.test(name + ' ' + value);
+    const selfChargeOk = (name, value, num) => !BAD_CHARGE.test(name + ' ' + value) && !(num > 100);
+
     const spg = v.skillPanelGroups;
     if (spg) {
       // Ultimate panel
@@ -208,21 +230,24 @@ for (const file of files) {
           const num = numM ? parseFloat(numM[1]) : null;
           if (num === null) continue;
 
-          // 氮气额外充能
-          if (n.includes('氮气') && n.includes('充能')) {
+          // 每秒自充（优先判定，避免被下面两个字段抢走）
+          // 注意：限定词可能写在行值里（如「闪耀状态大招充能 = 4%每秒」），所以名字与值都要看
+          if (isPerSecTxt(n, val) && n.includes('充能') && !n.includes('友方') && !n.includes('敌方') && selfChargeOk(n, val, num)) {
+            perSecCharge = num;
+            continue;
+          }
+          // 氮气额外充能（自身、非损失、非每秒）
+          if (n.includes('氮气') && n.includes('充能') && selfChargeOk(n, val, num) && !isPerSecTxt(n, val)) {
             nitroCharge = num;
           }
           // 大招自充/自身充能 (self, not ally/enemy, not per-sec)
-          if ((n.includes('大招') || n.includes('自身')) && n.includes('充能') && !n.includes('友方') && !n.includes('敌方') && !n.includes('范围') && !n.includes('降低') && !n.includes('损失') && !n.includes('扣能') && !n.includes('上限') && !n.includes('每秒')) {
+          if ((n.includes('大招') || n.includes('自身')) && n.includes('充能') && !n.includes('友方') && !n.includes('敌方') && !n.includes('每秒')
+              && selfChargeOk(n, val, num) && !isPerSecTxt(n, val)) {
             if (!isEnemyDependent) ultChargeLoop = num;
           }
           // 起步额外充能
-          if (n.includes('额外起步充能')) {
+          if (n.includes('额外起步充能') && selfChargeOk(n, val, num)) {
             ultChargeFirst = num;
-          }
-          // 每秒自充
-          if (n.includes('每秒') && n.includes('充能') && !n.includes('友方') && !n.includes('敌方')) {
-            perSecCharge = num;
           }
         }
       }
@@ -234,14 +259,15 @@ for (const file of files) {
           const numM = val.match(/(\d+(?:\.\d+)?)/);
           const num = numM ? parseFloat(numM[1]) : null;
           if (num === null) continue;
-          if (n.includes('充能') && !n.includes('友方') && !n.includes('冷却') && !n.includes('集气') && !n.includes('自动') && !n.includes('压缩')) {
+          if (n.includes('充能') && !n.includes('友方') && !n.includes('冷却') && !n.includes('集气') && !n.includes('自动') && !n.includes('压缩')
+              && selfChargeOk(n, val, num)) {
             // Verify it's direct charge, not efficiency boost
             var spDesc = v.richText?.sp_skill_desc?.raw || '';
             if (!spDesc.includes('效率')) spCharge = num;
           }
         }
       }
-      // Passive panel
+      // Passive panel（原先这里比 ultimate 面板少了好几项排除条件，现与之一致）
       if (spg.passive) {
         for (const g of spg.passive) {
           const n = g.name_rich?.raw || '';
@@ -249,14 +275,16 @@ for (const file of files) {
           const numM = val.match(/(\d+(?:\.\d+)?)/);
           const num = numM ? parseFloat(numM[1]) : null;
           if (num === null) continue;
-          if (n.includes('氮气') && n.includes('充能')) {
+          if (isPerSecTxt(n, val) && n.includes('充能') && !n.includes('友方') && !n.includes('敌方') && selfChargeOk(n, val, num)) {
+            perSecCharge = num;
+            continue;
+          }
+          if (n.includes('氮气') && n.includes('充能') && selfChargeOk(n, val, num) && !isPerSecTxt(n, val)) {
             nitroCharge = num;
           }
-          if ((n.includes('大招') || n.includes('自身')) && n.includes('充能') && !n.includes('友方') && !n.includes('敌方') && !n.includes('范围') && !n.includes('每秒')) {
+          if ((n.includes('大招') || n.includes('自身')) && n.includes('充能') && !n.includes('友方') && !n.includes('敌方')
+              && selfChargeOk(n, val, num) && !isPerSecTxt(n, val)) {
             if (!isEnemyDependent) ultChargeLoop = num;
-          }
-          if (n.includes('每秒') && n.includes('充能')) {
-            perSecCharge = num;
           }
         }
       }
@@ -336,7 +364,11 @@ for (const file of files) {
     // Nitro charge from text: patterns like "使用氮气时，额外获得X%大招能量"
     // Search each text block separately to avoid cross-text false matches
     if (!nitroCharge) {
-      var reNitro = /使用氮气[\w\W]*?获得(\d+(?:\.\d+)?)\s*%/;
+      // 2026-10-01 修正：原正则 /使用氮气[\w\W]*?获得(\d+)%/ 会跨句贪婪匹配，
+      //   把「使用氮气时损失15点耐久值，每次修复完成时获得30%」错挂成「氮气自充能 30%」。
+      //   现在限制 30 字以内，且若这段里还夹着别的触发条件（修复完成/超越/漂移/…）就丢弃。
+      var reNitro = /使用氮气[^。；;]{0,30}?获得(\d+(?:\.\d+)?)\s*%/;
+      var OTHER_TRIGGER = /每次修复|修复完成|超越|漂移|命中|开局|受到|被干扰|撞击|碰撞|集气|损失|消耗/;
       var textBlocks = [
         v.richText?.special_passive_skill_desc?.raw || '',
         v.richText?.feature_desc?.raw || '',
@@ -345,7 +377,10 @@ for (const file of files) {
       ];
       for (var ti = 0; ti < textBlocks.length; ti++) {
         var nM = textBlocks[ti].match(reNitro);
-        if (nM) { nitroCharge = parseFloat(nM[1]); break; }
+        // 命中的片段里若夹着别的触发条件，或量级不合理（>100%），丢弃该次命中、继续找下一段
+        if (nM && !OTHER_TRIGGER.test(nM[0]) && parseFloat(nM[1]) > 0 && parseFloat(nM[1]) <= 100) {
+          nitroCharge = parseFloat(nM[1]); break;
+        }
       }
     }
 
@@ -360,7 +395,7 @@ for (const file of files) {
       ];
       for (var ti2 = 0; ti2 < textBlocks2.length; ti2++) {
         var uM = textBlocks2[ti2].match(reLoop);
-        if (uM) {
+        if (uM && parseFloat(uM[1]) > 0 && parseFloat(uM[1]) <= 100) {
           // Skip "每秒自充能" (per-second), that's a different field
           var before = textBlocks2[ti2].slice(Math.max(0, uM.index - 4), uM.index);
           if (before.includes('每秒')) continue;
@@ -375,7 +410,7 @@ for (const file of files) {
       // Skip conditional charges (每/每次 = each time)
       if (!spText.includes('每次')) {
         const spM = spText.match(/获得(\d+)集气量[和同]*(\d+(?:\.\d+)?)\s*%/);
-        if (spM) spCharge = parseFloat(spM[2]);
+        if (spM && parseFloat(spM[2]) > 0 && parseFloat(spM[2]) <= 100) spCharge = parseFloat(spM[2]);
       }
     }
 
@@ -642,6 +677,12 @@ for (const file of files) {
 }
 
 cars.sort((a, b) => b.id - a.id);
+
+// 应用人工字段覆盖（见文件顶部 FIELD_OVERRIDE 的说明）
+for (const c of cars) {
+  const ov = FIELD_OVERRIDE[c.id];
+  if (ov) Object.assign(c, ov);
+}
 
 const jsContent = `// Auto-generated car database - DO NOT EDIT MANUALLY
 const CAR_DATABASE = ${JSON.stringify(cars, null, 2)};

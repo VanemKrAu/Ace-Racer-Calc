@@ -60,6 +60,7 @@
    
     <script src="./html2canvas.min.js" async></script>
     <script src="./car-database.js"></script>
+
 <script>
 // Bilibili CDN image URLs (auto-generated)
 var _BILI_CDN = true;
@@ -79,6 +80,7 @@ var _ICONS = {
   "new_carport_icon_mountainroad.png": "https://i0.hdslb.com/bfs/openplatform/1c3fdf64e6be6a831853d493c5d86b68af588fe2.png"
 };
 var _CAR_IMG = {
+  12104: "https://i0.hdslb.com/bfs/openplatform/91cc4888705d98530f64a17dd24d6677ad09ca7f.png",
   12102: "https://i0.hdslb.com/bfs/openplatform/ac23b31fa9206b5b5591302a70a26800ddd693d8.png",
   12099: "https://i0.hdslb.com/bfs/openplatform/3c9c54ec21f9620e91551f0c5eb31da4b8c3fc09.png",
   12098: "https://i0.hdslb.com/bfs/openplatform/c14b36a050a0469655d83cbe9c897291a0ca66d9.png",
@@ -125,6 +127,7 @@ var _CAR_IMG = {
   12053: "https://i0.hdslb.com/bfs/openplatform/77b78bd0a34c2abf860260bf274fb4ebcefc74c6.png",
   12052: "https://i0.hdslb.com/bfs/openplatform/b17bf204c9056d695641fd7868a03247f4da76bf.png",
   12051: "https://i0.hdslb.com/bfs/openplatform/3c6d91c87f37021db7164c2a5b7055e870b30577.png",
+  12050: "https://i0.hdslb.com/bfs/openplatform/0cd43638ecc8012ffefebc815fb10ef27adbe685.png",
   12049: "https://i0.hdslb.com/bfs/openplatform/cb54de60f6a898fb4ce4d73f28a746e10768d6b1.png",
   12048: "https://i0.hdslb.com/bfs/openplatform/27e8969da4e1c05e7e23c6e5e9b305c98998934e.png",
   12047: "https://i0.hdslb.com/bfs/openplatform/0d4827dc423d1aaee9bd6e8c53350f05b587b054.png",
@@ -279,6 +282,7 @@ var _CAR_IMG = {
 
 
 
+
    
    <script>
      window.si = window.si || function () { (window.siq = window.siq || []).push(arguments); };
@@ -325,6 +329,10 @@ body { min-height: 100vh; }
 img { max-width: 100%; }
 button { font: inherit; color: inherit; }
 a { color: inherit; }
+
+/* 长截图导出的加载遮罩转圈（导出的那段 JS 会用；原来那里是个相机 emoji，与全站 SVG 图标不一致） */
+@keyframes dsSpin { to { transform: rotate(360deg); } }
+@media (prefers-reduced-motion: reduce) { @keyframes dsSpin { to { transform: none; } } }
 
 /* 中英切换 */
 .lang-en { display: none !important; }
@@ -487,11 +495,11 @@ body[data-theme-mode="light"] .theme-ico .ico:nth-child(1), body[data-theme-mode
    思路：像一个原生 App —— 分组列表、开关、圆环读数、底部结果胶囊。
    强调色跟随所选赛车的品质（传说金 / 史诗紫 / 稀有蓝 / 普通绿），没选车时为中性灰。 */
 .ds-c {
-  --bg: #f2f2f6; --cell: #ffffff; --fill: #efeff3; --fill-2: #dcdce2; --sep: #e6e6eb;
-  --ink: #111114; --ink-2: #5f5f67; --ink-3: #9b9ba3;
+  --bg: #f2f2f6; --cell: #ffffff; --fill: #f2f2f5; --fill-2: #dcdce2; --fill-hover: #e8e8ee; --sep: #e6e6eb;
+  --ink: #111114; --ink-2: #5f5f67; --ink-3: #6f6f78;
   --acc: #1d1d1f; --acc-ink: #1d1d1f; --on-acc: #fff; --flash-rgb: 29, 29, 31;
   --acc-soft: rgba(29,29,31,.07); --acc-glow: rgba(29,29,31,.07);
-  --pass: #1a8f45; --pass-fill: #34c759; --fail: #d92d20; --fail-fill: #ff3b30; --warn: #b86e00;
+  --pass: #1a8f45; --pass-fill: #34c759; --fail: #d92d20; --fail-fill: #ff3b30; --warn: #8a4f00;
   --pass-soft: rgba(52,199,89,.13); --fail-soft: rgba(255,59,48,.11); --warn-soft: rgba(184,110,0,.14); --dock-2: rgba(255,255,255,.14);
   /* 勾选 / 开关用背景图绘制（不用 input::after —— html2canvas 会因此导出失败） */
   --check-w: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 12 12'%3E%3Cpath d='M2.6 6.2 5 8.5l4.4-4.8' fill='none' stroke='%23ffffff' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
@@ -509,7 +517,7 @@ body[data-theme-mode="light"] .theme-ico .ico:nth-child(1), body[data-theme-mode
 .ds-c[data-quality="rare"] { --acc: #1e90e8; --acc-ink: #0f6fb8; --flash-rgb: 30, 144, 232; --acc-soft: rgba(30,144,232,.13); --acc-glow: rgba(30,144,232,.2); }
 .ds-c[data-quality="common"] { --acc: #2fb872; --acc-ink: #15814a; --flash-rgb: 47, 184, 114; --acc-soft: rgba(47,184,114,.14); --acc-glow: rgba(47,184,114,.2); }
 .ds-c:not(.light-mode) {
-  --bg: #000000; --cell: #1c1c1e; --fill: #2a2a2d; --fill-2: #3a3a3d; --sep: #2c2c2f;
+  --bg: #000000; --cell: #1c1c1e; --fill: #2a2a2d; --fill-2: #3a3a3d; --fill-hover: #343438; --sep: #2c2c2f;
   --ink: #f5f5f7; --ink-2: #a3a3aa; --ink-3: #6c6c73;
   --acc: #8e8e93; --acc-ink: #f5f5f7; --flash-rgb: 142, 142, 147; --acc-soft: rgba(142,142,147,.16); --acc-glow: rgba(142,142,147,.14);
   --pass: #30d158; --pass-fill: #30d158; --fail: #ff453a; --fail-fill: #ff453a; --warn: #ffb340;
@@ -542,13 +550,16 @@ body[data-theme-mode="light"] .theme-ico .ico:nth-child(1), body[data-theme-mode
 .ds-c .dropdown-menu { background: var(--cell); border-radius: var(--r-md); padding: 6px; box-shadow: 0 12px 40px rgba(0,0,0,.18), 0 0 0 1px var(--sep); }
 .ds-c .dropdown-option { padding: 10px 12px; border-radius: var(--r-sm); font-size: 14px; color: var(--ink); }
 .ds-c .dropdown-option .ico { width: 17px; height: 17px; color: var(--ink-2); }
-.ds-c .dropdown-option:hover { background: var(--fill); }
+.ds-c .dropdown-option:hover { background: var(--fill-hover); }
 .ds-c .dropdown-option.selected { background: var(--fill); font-weight: 600; }
 .ds-c .dropdown-option.sel-common { --qcs: rgba(47,184,114,.16); } .ds-c .dropdown-option.sel-rare { --qcs: rgba(30,144,232,.16); }
 .ds-c .dropdown-option.sel-epic { --qcs: rgba(155,93,229,.16); } .ds-c .dropdown-option.sel-legend { --qcs: rgba(242,169,0,.18); }
 .ds-c .dropdown-option[class*="sel-"] { background: var(--qcs); font-weight: 600; color: var(--ink); }
 .ds-c .dropdown-option img { width: 20px !important; height: 20px !important; }
-.ds-c.light-mode .dropdown-option img, .ds-c.light-mode .select-btn img { filter: invert(1) brightness(.35); }
+/* 浅色下这几个位置的图标：定位图标原图是「淡蓝色天平」、专精图标是「白色」剪影。
+   绝不能用 invert —— 反色会把蓝色变成橙黄、白色变成纯黑（V3 设计稿原来的 invert(1) brightness(.35)
+   就是这么把彩色图标弄成黑块的）。这里只压亮度、保留色相：蓝的仍是蓝、白的变成中灰，都不发死。 */
+.ds-c.light-mode .dropdown-option img, .ds-c.light-mode .select-btn img { filter: brightness(.6); }
 
 /* 大标题 */
 .ds-c .header { gap: 16px; padding: 10px 2px 22px; }
@@ -584,7 +595,7 @@ body[data-theme-mode="light"] .theme-ico .ico:nth-child(1), body[data-theme-mode
 .ds-c { --tray: rgba(0,0,0,.045); --tray-line: rgba(0,0,0,.06); }
 .ds-c:not(.light-mode) { --tray: rgba(255,255,255,.035); --tray-line: rgba(255,255,255,.08); }
 .ds-c .cp-calc { display: grid; grid-template-columns: minmax(0, 1fr); gap: 0; margin-top: 34px; }
-.ds-c .cp-group { background: var(--tray); border-radius: 26px; padding: 16px; box-shadow: inset 0 0 0 1px var(--tray-line); min-width: 0; }
+.ds-c .cp-group { background: var(--tray); border-radius: 26px; padding: 15px; border: 1px solid var(--tray-line); min-width: 0; }
 .ds-c .cp-group-head { display: flex; align-items: center; gap: 10px; margin: 2px 4px 14px; }
 .ds-c .cp-group-head .section-divider { padding: 0; }
 .ds-c .cp-step { width: 30px; height: 30px; flex: none; display: inline-flex; align-items: center; justify-content: center; border-radius: 50%; background: var(--ink); color: var(--cell); font: 800 15px/1 var(--round); }
@@ -607,13 +618,26 @@ body[data-theme-mode="light"] .theme-ico .ico:nth-child(1), body[data-theme-mode
 
 /* 环境光背景：取当前赛车图做大半径模糊（先缩小再放大，省 GPU）+ 品质色辉光 + 细颗粒。
    只在屏幕上渲染（fixed、z-index:-1、不在 .app-container 内），长图导出仍是纯色底。 */
+/* 打光颜色单独一套 token（--amb-*），不直接用 --acc-*：
+   浅色跟随品质色（看着还行）；深色不用品质色 —— 没选车时留一层中性白光，选了车就把打光收掉。 */
+.ds-c { --amb-glow: var(--acc-glow); --amb-soft: var(--acc-soft); }
+.ds-c:not(.light-mode) { --amb-glow: rgba(255,255,255,.10); --amb-soft: rgba(255,255,255,.05); }
+.ds-c:not(.light-mode).ds-has-car { --amb-glow: transparent; --amb-soft: transparent; }
 .ds-c .ds-ambient { position: fixed; inset: 0; z-index: -1; pointer-events: none; overflow: hidden;
-  background: radial-gradient(55% 45% at 12% -5%, var(--acc-glow), transparent 72%),
-              radial-gradient(45% 40% at 105% 35%, var(--acc-soft), transparent 70%),
-              radial-gradient(60% 50% at 40% 112%, var(--acc-soft), transparent 70%); }
-.ds-c .ds-ambient img { position: absolute; left: 50%; top: 30%; width: 46vmax; max-width: none; height: auto; transform: translate(-50%, -50%) scale(2.6); filter: blur(34px) saturate(1.7); opacity: 0; transition: opacity .9s ease; }
-body.ds-c.ds-has-car .ds-ambient img { opacity: .55; }
-body.ds-c.light-mode.ds-has-car .ds-ambient img { opacity: .2; filter: blur(34px) saturate(2.2); }
+  background: radial-gradient(55% 45% at 12% -5%, var(--amb-glow), transparent 72%),
+              radial-gradient(45% 40% at 105% 35%, var(--amb-soft), transparent 70%),
+              radial-gradient(60% 50% at 40% 112%, var(--amb-soft), transparent 70%); }
+/* 固定像素宽度（不再用 vmax）：拖动窗口时这层的盒子不变，浏览器无需重新栅格化这块大模糊，
+   这是「拖宽度卡顿」里最贵的一项；覆盖面积靠 scale(2.6)。 */
+.ds-c .ds-ambient img { position: absolute; left: 50%; top: 30%; width: 1120px; max-width: none; height: auto; transform: translate(-50%, -50%) scale(2.6); filter: blur(34px) saturate(1.7); opacity: 0; transition: opacity .9s ease; }
+.ds-c.light-mode .ds-ambient img { filter: blur(34px) saturate(2.2); }
+/* 换车交叉淡入：两层 A/B 轮换，view.js 把新图放到「暗着的那层」再切 .is-on —— 旧车淡出、新车淡入 */
+body.ds-c .ds-ambient img.is-on { opacity: .55; }
+/* 浅色底本身亮，模糊车辆要更实一点才看得见；.3 让背景的亮度起伏与深色模式 .55 基本持平
+   （实测 浅色 .3 起伏 std 15.5 / 深色 .55 std 15.7） */
+body.ds-c.light-mode .ds-ambient img.is-on { opacity: .3; }
+/* 只有选了车才把这层提升为独立合成层（省一块大纹理），拖窗口时它就只做合成、不再重新模糊 */
+body.ds-c.ds-has-car .ds-ambient img { will-change: transform, opacity; }
 .ds-c .ds-ambient::after { content: ""; position: absolute; inset: 0; opacity: .07; background-size: 170px 170px;
   background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='170' height='170'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='2' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 .5 0 0 0 0 .5 0 0 0 0 .5 0 0 0 1 0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E"); }
 body.ds-c.light-mode .ds-ambient::after { opacity: .05; }
@@ -635,7 +659,9 @@ body.ds-c.performance-mode .ds-ambient img { display: none; }
 .ds-c .form-label { display: block; font-size: 13px; color: var(--ink-2); margin: 0 0 6px 2px; line-height: 1.45; }
 .ds-c .form-group.is-key .form-label { color: var(--ink); font-weight: 700; }
 .ds-c .form-control { height: 46px; background: var(--fill); border: 0; border-radius: var(--r-md); padding: 0 44px 0 14px; color: var(--ink); font: 700 19px/1 var(--round); font-variant-numeric: tabular-nums; box-shadow: inset 0 0 0 1.5px transparent; transition: box-shadow .15s, background .15s; }
-.ds-c .form-group.is-key .form-control { box-shadow: inset 0 0 0 1.5px var(--acc); }
+/* 原来这里还给「关键参数」的输入框加了一圈 1.5px 品级色内描边。但它跟聚焦态
+   （下一行的 .form-control:focus，同样是 --acc 描边）长得一模一样，看着就像一直卡在高亮。
+   去掉描边，关键字段只靠加粗变深的 label 区分。 */
 .ds-c .form-control:focus { outline: none; background: var(--cell); box-shadow: inset 0 0 0 2px var(--acc); }
 .ds-c .input-unit { right: 14px; font-size: 13px; font-weight: 600; color: var(--ink-3); }
 .ds-c #carSearch { font: 500 15px var(--sans); padding-left: 40px; }
@@ -644,8 +670,10 @@ body.ds-c.performance-mode .ds-ambient img { display: none; }
 /* 氮气规格：磁贴 */
 .ds-c .nitro-grid { gap: 8px; margin-bottom: 14px; grid-template-columns: 1fr 1fr; }
 .ds-c .nitro-left label { white-space: nowrap; }
-.ds-c .nitro-item { flex-direction: column; align-items: stretch; gap: 6px; padding: 10px; background: var(--fill); border-radius: var(--r-md); box-shadow: inset 0 0 0 2px transparent; transition: box-shadow .15s, background .15s; }
-.ds-c .nitro-item.selected { background: var(--cell); box-shadow: inset 0 0 0 2px var(--acc); }
+/* 选中描边用真 border 而不是 box-shadow: inset —— html2canvas 会把 inset 阴影画成 16px 粗带
+   （实测隔离图 32px@scale2），长截图导出会变成一圈超粗的框。padding 减 2px 保持外框尺寸不变。 */
+.ds-c .nitro-item { flex-direction: column; align-items: stretch; gap: 6px; padding: 8px; background: var(--fill); border-radius: var(--r-md); border: 2px solid transparent; transition: border-color .15s, background .15s; }
+.ds-c .nitro-item.selected { background: var(--cell); border-color: var(--acc); }
 .ds-c .nitro-left { gap: 8px; font-size: 13px; font-weight: 600; color: var(--ink-2); }
 .ds-c .nitro-item.selected .nitro-left { color: var(--ink); }
 .ds-c .nitro-left input[type="radio"] { appearance: none; width: 18px; height: 18px; margin: 0; border-radius: 50%; border: 1.5px solid var(--ink-3); flex: none; cursor: pointer; background: no-repeat center / 12px 12px; }
@@ -730,10 +758,20 @@ body.ds-c.performance-mode .ds-ambient img { display: none; }
 .ds-c #carPreviewTags > span { border-radius: 999px !important; padding: 4px 12px !important; font-size: 12.5px !important; font-weight: 600 !important; border: 0 !important; }
 .ds-c #carPreviewTags > span:first-child { background: var(--acc) !important; color: var(--on-acc) !important; }
 .ds-c #carPreviewTags > span:not(:first-child) { background: var(--fill) !important; color: var(--ink-2) !important; }
-.ds-c.light-mode #carPreviewTags img { filter: invert(1) brightness(.35); }
+/* 定位 / 专精图标同理：只压亮度、保留色相（说明见 c-1-tokens.css）。原 V3 设计稿的
+   invert(1) brightness(.35) 会把蓝色的定位图标和白色的专精图标一起弄成黑块。 */
+.ds-c.light-mode #carPreviewTags img { filter: brightness(.6); }
 .ds-c #carPreviewChips { gap: 6px; justify-content: center; }
 .ds-c #carPreviewChips img { width: 30px !important; height: 30px !important; }
-.ds-c.light-mode #carPreviewChips img { filter: invert(1) opacity(.4); }
+/* 芯片槽位图标是「为深色底设计的半透明灰色软块」（5 种图源外形都是同一个圆，只有内部纹路不同），
+   浅色下直接放会是一团深色污渍、反相又变成没有边界的白块。所以：反相把盘面变浅（220 左右），
+   再用两层 drop-shadow 沿它的 alpha 形状描出一圈深色轮廓（轮廓最暗 ~76）——
+   实测 槽腔 221 / 轮廓清晰度 178，既保持浅色底，形状笔画又看得清。 */
+/* 芯片槽位（浅色）：撤掉 contrast 阈值（它会把「形状」整块压成实心黑），
+   只把原来的橙黄反色改成中性灰 —— 保持设计里那层「圆盘 + 略深一圈形状」的关系。
+   注：原图里的形状是「填充区」（灰度 83 的实心块），不是描边，滤镜造不出描边；
+   若要真正的黑色描边，得把这 5 种形状（○ △ ◇ ◣ V）重画成内联 SVG。 */
+.ds-c.light-mode #carPreviewChips img { filter: grayscale(1) invert(1) brightness(1.3) drop-shadow(0 0 .5px rgba(0,0,0,.55)) drop-shadow(0 0 .5px rgba(0,0,0,.55)); }
 .ds-c #carPreviewAutoMsg { width: 100%; text-align: left; font-size: 13px; line-height: 1.7; color: var(--pass); padding: 12px 14px; background: var(--pass-soft); border-radius: var(--r-md); }
 .ds-c #carPreviewAutoMsg a { color: var(--ink) !important; }
 
@@ -741,10 +779,13 @@ body.ds-c.performance-mode .ds-ambient img { display: none; }
 .ds-c .car-search-box > .ico { left: 14px; width: 17px; height: 17px; color: var(--ink-3); }
 .ds-c .car-filters { gap: 10px; margin-bottom: 10px; }
 .ds-c .select-btn { height: 46px; padding: 0 14px; background: var(--fill); border-radius: var(--r-md); box-shadow: none; color: var(--ink); font-size: 14px; }
-.ds-c .select-btn:hover { background: var(--fill-2); }
+.ds-c .select-btn:hover { background: var(--fill-hover); }
 .ds-c .select-btn .ico { width: 16px; height: 16px; color: var(--ink-3); }
 .ds-c .select-btn img { width: 18px !important; height: 18px !important; }
-.ds-c .car-list-btn { height: 54px; font-size: 16px; font-weight: 700; background: var(--cell); box-shadow: inset 0 0 0 2px var(--acc); }
+.ds-c .car-list-btn { height: 54px; padding: 0 12px; font-size: 16px; font-weight: 700; background: var(--cell); border: 2px solid var(--acc); }
+/* 「已选车辆」那格：悬停必须看得见反馈，但又不能像之前那样把白底压成灰底（浅色下显得整块发灰）。
+   改成填一层品质色淡底（--acc-soft：传说金 / 史诗紫 / 稀有蓝 / 普通绿，未选车时是中性淡灰）+ 描边保持。 */
+.ds-c .car-list-btn:hover { background: var(--acc-soft); border-color: var(--acc); box-shadow: 0 6px 20px var(--acc-soft); }
 .ds-c .car-info-bar { margin-top: 12px; padding: 12px 14px; gap: 4px 6px; font-size: 13px; color: var(--ink-2); background: var(--fill); border-radius: var(--r-md); }
 .ds-c .car-info-bar b { color: var(--ink); }
 .ds-c .car-info-bar .car-badge { background: var(--acc); color: var(--on-acc); padding: 1px 7px; border-radius: 999px; font-size: 11px; font-weight: 700; }
@@ -783,7 +824,7 @@ body.ds-c.performance-mode .ds-ambient img { display: none; }
 .ds-c .share-card { padding: 8px; }
 .ds-c .share-btn-group { gap: 8px; }
 .ds-c .share-btn { gap: 8px; padding: 16px 8px; background: var(--fill); border: 0; border-radius: var(--r-md); color: var(--ink); font-size: 14px; font-weight: 700; transition: background .15s, transform .1s; }
-.ds-c .share-btn:hover { background: var(--fill-2); }
+.ds-c .share-btn:hover { background: var(--fill-hover); }
 .ds-c .share-btn:active { transform: scale(.97); }
 .ds-c .share-btn .ico { width: 30px; height: 30px; padding: 6px; border-radius: 50%; background: var(--cell); color: var(--ink); }
 
@@ -881,7 +922,7 @@ body.ds-c.performance-mode .ds-dock { background: var(--cell); }
     </noscript>
 
 
-<div class="ds-ambient" aria-hidden="true" data-html2canvas-ignore="true"><img id="dsAmbientImg" alt=""></div>
+<div class="ds-ambient" aria-hidden="true" data-html2canvas-ignore="true"><img id="dsAmbientImg" alt=""><img id="dsAmbientImg2" alt=""></div>
 <div class="app-container">
   <div class="top-bar" data-html2canvas-ignore="true">
     <div class="top-left">
@@ -1700,7 +1741,7 @@ body.ds-c.performance-mode .ds-dock { background: var(--cell); }
                     var ci = '';
                     if (cp) ci += '<img src=\"' + cp + '\" style=\"width:14px;height:14px;vertical-align:middle;margin-right:4px;\">';
                     if (cs) ci += '<img src=\"' + cs + '\" style=\"width:14px;height:14px;vertical-align:middle;margin-right:4px;\">';
-                    label.innerHTML = ci + ' ' + _n(cc);
+                    label.innerHTML = ci + '<span>' + _n(cc) + '</span>';
                     break;
                 }
             }
@@ -2314,7 +2355,7 @@ function __tok(n, d) { var v = getComputedStyle(document.body).getPropertyValue(
            loaderOverlay.style.flexDirection = 'column';
            loaderOverlay.style.justifyContent = 'center';
            loaderOverlay.style.alignItems = 'center';
-           loaderOverlay.innerHTML = '<div style="font-size:40px; margin-bottom:16px;">📸</div><div style="font-size:18px; font-weight:bold; color:'+__tok('--export-accent', isLight?'#007bb5':'#00f2fe')+';">' + _("正在生成超清长图...", "Generating HD screenshot...") + '</div><div style="font-size:12px; color:#8e9aaf; margin-top:8px;">' + _("(极速渲染引擎运转中，请稍候)", "(Rendering engine running, please wait...)") + '</div>';
+           loaderOverlay.innerHTML = '<div style="width:38px;height:38px;margin-bottom:16px;border-radius:50%;border:3px solid rgba(142,154,175,.35);border-top-color:var(--export-accent,#00f2fe);animation:dsSpin .9s linear infinite;"></div><div style="font-size:18px; font-weight:bold; color:'+__tok('--export-accent', isLight?'#007bb5':'#00f2fe')+';">' + _("正在生成超清长图...", "Generating HD screenshot...") + '</div><div style="font-size:12px; color:#8e9aaf; margin-top:8px;">' + _("(极速渲染引擎运转中，请稍候)", "(Rendering engine running, please wait...)") + '</div>';
            document.body.appendChild(loaderOverlay);
 
         setTimeout(function() {
@@ -3616,16 +3657,28 @@ if (typeof CAR_DATABASE !== 'undefined') {
       items[i].querySelector('.ds-dock-v').textContent = r.idle || !isFinite(r.total) ? '--' : r.total.toFixed(1) + '%';
     }
   }
+  // dock 只是「跳到结果卡」的快捷入口，不是 tab —— 高亮只做「刚点了哪一项」的临时反馈，
+  // 不能留在那儿当成选中态。两种情况清掉：①离开结果区、dock 重新出现时 ②3s 兜底。
+  var dockActiveTimer = null;
+  function clearDockActive() {
+    clearTimeout(dockActiveTimer);
+    var all = document.querySelectorAll('.ds-dock-item');
+    for (var i = 0; i < all.length; i++) {
+      all[i].classList.remove('is-active');
+      all[i].removeAttribute('aria-current');
+    }
+  }
   document.addEventListener('click', function (e) {
     var b = e.target.closest && e.target.closest('.ds-dock-item');
     if (!b) return;
-    // 单选高亮：只有刚点的那一项是选中态
     var all = document.querySelectorAll('.ds-dock-item');
     for (var i = 0; i < all.length; i++) {
       var on = all[i] === b;
       all[i].classList.toggle('is-active', on);
       if (on) all[i].setAttribute('aria-current', 'true'); else all[i].removeAttribute('aria-current');
     }
+    clearTimeout(dockActiveTimer);
+    dockActiveTimer = setTimeout(clearDockActive, 3000);
     var el = $(b.dataset.target);
     if (el) el.scrollIntoView({ behavior: 'smooth', block: 'start' });
   });
@@ -3633,7 +3686,9 @@ if (typeof CAR_DATABASE !== 'undefined') {
     var seen = {};
     var io = new IntersectionObserver(function (es) {
       es.forEach(function (e) { seen[e.target.id] = e.isIntersecting; });
-      document.body.classList.toggle('ds-results-visible', !!(seen.resultCardFirst || seen.resultCardLoop));
+      var inside = !!(seen.resultCardFirst || seen.resultCardLoop);
+      document.body.classList.toggle('ds-results-visible', inside);
+      if (!inside) clearDockActive();   // 离开结果区 → dock 重新出现，顺手清掉临时高亮
     }, { threshold: 0.25 });
     ['resultCardFirst', 'resultCardLoop'].forEach(function (id) { if ($(id)) io.observe($(id)); });
   }
@@ -3656,6 +3711,23 @@ if (typeof CAR_DATABASE !== 'undefined') {
   function syncTheme() {
     var t = ($('themeIcon') || {}).textContent || '';
     setData('themeMode', t.indexOf('☀') >= 0 ? 'light' : t.indexOf('🌙') >= 0 ? 'dark' : 'system');
+    // 页面本身默认就是深色（原站 initTheme 无存档时会写死 dark），但滚动条、原生控件这些
+    // UA 部件仍会跟着系统走 —— 这里把 color-scheme 钉在 <html> 上，让它们跟随页面主题。
+    var light = document.body.classList.contains('light-mode');
+    var cs = light ? 'light' : 'dark';
+    if (document.documentElement.style.colorScheme !== cs) document.documentElement.style.colorScheme = cs;
+    // 手机地址栏 / 安装成 PWA 后的状态栏底色（theme-color）。
+    // 原站在 <head> 里写了两条按「系统偏好」切换的 meta，但本站有三档主题且默认深色 ——
+    // 系统与站内主题不一致时，地址栏颜色会和页面对不上。这里改成跟随站内实际主题：
+    // 只保留一条 meta、去掉 media 条件，主题一变就同步改写它。
+    var metas = document.querySelectorAll('meta[name="theme-color"]');
+    if (metas.length) {
+      var meta = metas[0];
+      for (var i = 1; i < metas.length; i++) metas[i].parentNode.removeChild(metas[i]);
+      if (meta.hasAttribute('media')) meta.removeAttribute('media');
+      var color = light ? '#f2f2f6' : '#000000';
+      if (meta.getAttribute('content') !== color) meta.setAttribute('content', color);
+    }
   }
   var Q = { '普通': 'common', '稀有': 'rare', '史诗': 'epic', '传说': 'legend' };
   function syncQuality() {
@@ -3663,13 +3735,43 @@ if (typeof CAR_DATABASE !== 'undefined') {
     setData('quality', c ? (Q[c.quality] || 'none') : 'none');
   }
 
-  // ---------- 环境光背景：跟随当前车图 ----------
+  // ---------- 环境光背景：跟随当前车图，换车时两层交叉淡入淡出 ----------
+  // 背景的「流动感」= 取当前车图做大半径模糊后渐显。要让每次换车都有这个效果，
+  // 不能只改同一张图的 src（那样是硬切），得用 A/B 两层：新图先放进当前暗着的那层，
+  // 再切 .is-on —— 旧车淡出与新车淡入同时进行，就是背景里的交叉溶解。
+  var ambLayers = null, ambOn = 0, ambToken = 0;
   function syncAmbient() {
-    var amb = $('dsAmbientImg'), car = $('carImage');
-    if (!amb || !car) return;
+    if (!ambLayers) {
+      var l0 = $('dsAmbientImg'), l1 = $('dsAmbientImg2');
+      if (!l0) return;
+      ambLayers = l1 ? [l0, l1] : [l0];
+    }
+    var car = $('carImage');
+    if (!car) return;
     var has = !!(typeof _selectedCar !== 'undefined' && _selectedCar && car.src && car.style.display !== 'none');
-    if (has && amb.src !== car.src) amb.src = car.src;
-    document.body.classList.toggle('ds-has-car', has);
+    if (!has) {                        // 未上线车辆 / 未选车：两层都淡出，背景回到中性灰
+      for (var i = 0; i < ambLayers.length; i++) ambLayers[i].classList.remove('is-on');
+      document.body.classList.remove('ds-has-car');
+      return;
+    }
+    document.body.classList.add('ds-has-car');
+    var cur = ambLayers[ambOn];
+    if (cur.classList.contains('is-on') && cur.src === car.src) return;   // 没换车
+    if (ambLayers.length < 2) { cur.src = car.src; cur.classList.add('is-on'); return; }
+    var next = ambLayers[1 - ambOn], url = car.src, token = ++ambToken;
+    var swap = function () {
+      if (token !== ambToken) return;   // 期间又换过车，交给后来那次
+      next.classList.add('is-on');
+      cur.classList.remove('is-on');
+      ambOn = 1 - ambOn;
+    };
+    if (next.src !== url) {
+      next.src = url;
+      // 等解码完再淡入，否则会淡入到一半才出图；解码失败也照常淡入（宁可硬切也别卡住）
+      if (next.decode) next.decode().then(swap, swap); else requestAnimationFrame(swap);
+    } else {
+      swap();
+    }
   }
 
   // ---------- 液态玻璃折射（仅 Chromium：只有它支持 backdrop-filter: url(#svg)） ----------
@@ -3716,6 +3818,23 @@ if (typeof CAR_DATABASE !== 'undefined') {
   if (window.ResizeObserver && document.querySelector('.ds-c .ds-dock')) {
     new ResizeObserver(function () { requestAnimationFrame(buildGlass); }).observe(document.querySelector('.ds-c .ds-dock'));
   }
+  // 拖动窗口 / DevTools 分隔条时，backdrop-filter: url(#svg) 每帧都要重新光栅化位移贴图，
+  // 是这页最贵的一步（DevTools 打开时更明显）。拖动期间先退回通用的磨砂玻璃层，停下来再重建折射层。
+  var refractPaused = false, resizeTimer = null;
+  window.addEventListener('resize', function () {
+    if (!isChromium) return;
+    if (document.body.classList.contains('ds-lg-refract')) {
+      document.body.classList.remove('ds-lg-refract');
+      refractPaused = true;
+    }
+    clearTimeout(resizeTimer);
+    resizeTimer = setTimeout(function () {
+      if (!refractPaused) return;
+      refractPaused = false;
+      glassKey = '';                       // 强制重建：尺寸没变也必须把折射层贴回去
+      requestAnimationFrame(buildGlass);
+    }, 220);
+  }, { passive: true });
 
   // ---------- 汇总刷新 ----------
   var queued = false;
@@ -3733,6 +3852,11 @@ if (typeof CAR_DATABASE !== 'undefined') {
   });
   mo.observe($('resultCardFirst'), { attributes: true, attributeFilter: ['class'] });
   mo.observe($('resultCardLoop'), { attributes: true, attributeFilter: ['class'] });
+  // 换车信号：选真车时 carPreviewName 的文本会变，能顺带触发；但「未上线车辆」只切 style、
+  // 换占位图，一个文本都不动 —— 不额外盯这几个属性，品质色和环境光就切不回去。
+  if ($('carPreviewName')) mo.observe($('carPreviewName'), { attributes: true, attributeFilter: ['style'] });
+  if ($('carPreviewPlaceholder')) mo.observe($('carPreviewPlaceholder'), { attributes: true, attributeFilter: ['style'] });
+  if ($('carImage')) mo.observe($('carImage'), { attributes: true, attributeFilter: ['src'] });
 
   sync();
 })();
