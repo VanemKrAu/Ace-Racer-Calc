@@ -912,7 +912,7 @@ body.ds-c.performance-mode .ds-dock { background: var(--cell); }
    <base target="_blank">
 </head>
 <body class="ds-c">
-<script>try{if(localStorage.getItem('theme')==='light')document.body.classList.add('light-mode');}catch(e){}</script>
+<script>try{var __t=localStorage.getItem('theme');if(typeof __t==='string'&&(__t==='light'||(__t==='system'&&!(window.matchMedia&&window.matchMedia('(prefers-color-scheme: dark)').matches))))document.body.classList.add('light-mode');}catch(e){}</script>
 <noscript>
       <div style="padding:40px;max-width:800px;margin:0 auto;font-family:sans-serif;">
         <h1>Ace Racer - Ultimate Energy Calculator</h1>
@@ -2168,7 +2168,7 @@ function __tok(n, d) { var v = getComputedStyle(document.body).getPropertyValue(
                isSystemDark = systemThemeMql.matches;
                
                var themeChangeHandler = function(e) {
-                   if (!localStorage.getItem('theme')) {
+                   if (!localStorage.getItem('theme') || localStorage.getItem('theme') === 'system') {
                        applyThemeMode(!e.matches);
                    }
                };
@@ -2180,8 +2180,8 @@ function __tok(n, d) { var v = getComputedStyle(document.body).getPropertyValue(
                }
            }
 
-            if (savedTheme === 'light' || savedTheme === 'dark') {
-                applyThemeMode(savedTheme === 'light');
+            if (savedTheme === 'light' || savedTheme === 'dark' || savedTheme === 'system') {
+                applyThemeMode(savedTheme === 'system' ? !isSystemDark : savedTheme === 'light');
                 updateThemeIcon(savedTheme);
             } else {
                 applyThemeMode(false);
@@ -2192,7 +2192,7 @@ function __tok(n, d) { var v = getComputedStyle(document.body).getPropertyValue(
 
        function selectTheme(mode) {
            if (mode === 'system') {
-               localStorage.removeItem('theme');
+               localStorage.setItem('theme', 'system');
                var isSystemDark = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches;
                applyThemeMode(!isSystemDark);
            } else {
