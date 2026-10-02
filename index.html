@@ -2408,20 +2408,38 @@ body.diag-bare .card, body.diag-bare .tutorial-details, body.diag-bare .footer-l
       return '<button type="button" class="pv-qchip' + (q[0] === qualFilter ? ' on' : '') + '" data-q="' + q[0] + '">' + L(q[1], q[2]) + '<span>' + n + '</span></button>';
     }).join('');
   }
+  // 「全部定位 / 全部专精」这两个筛选器本来就是从主界面搬进面板的。直接 appendChild 会让主界面
+  // 瞬间塌掉一块（生硬），所以打开时先在原处做高度收缩、动画结束再搬进面板；
+  // 关闭时先搬回原位、再从 0 高度展开。复用 view.js 里那套开合用的 morph 动画。
+  var FILTER_BOX = ['height', 'marginTop', 'marginBottom'];
+  function filterBox(el) {
+    var cs = getComputedStyle(el);
+    return { height: el.getBoundingClientRect().height,
+             marginTop: parseFloat(cs.marginTop) || 0,
+             marginBottom: parseFloat(cs.marginBottom) || 0 };
+  }
   function openSheet() {
     if (!sheet || document.body.classList.contains('pv-sheet-open')) return;
     var dd = $('carDropdown'), filters = document.querySelector('.car-filters');
     home.dd = dd.parentNode; home.ddNext = dd.nextSibling;
     home.f = filters.parentNode; home.fNext = filters.nextSibling;
-    toolsHost.appendChild(filters);
-    listHost.appendChild(dd);
-    dd.classList.add('show');
-    proxy.value = $('carSearch').value;
-    paintQual();
-    filterCarList();
-    document.body.classList.add('pv-sheet-open');
-    var sel = dd.querySelector('.dropdown-option.selected');
-    requestAnimationFrame(function () { if (sel) sel.scrollIntoView({ block: 'center' }); });
+    document.body.classList.add('pv-sheet-open');          // 面板立刻开始滑入，和收缩同时进行
+    var move = function () {
+      toolsHost.appendChild(filters);
+      filters.style.height = ''; filters.style.overflow = '';
+      listHost.appendChild(dd);
+      dd.classList.add('show');
+      proxy.value = $('carSearch').value;
+      paintQual();
+      filterCarList();
+      var sel = dd.querySelector('.dropdown-option.selected');
+      requestAnimationFrame(function () { if (sel) sel.scrollIntoView({ block: 'center' }); });
+    };
+    if (typeof morph === 'function') {
+      morph(filters, false, FILTER_BOX, [filters], function () { return {}; }, move);
+    } else {
+      move();
+    }
   }
   function closeSheet() {
     if (!document.body.classList.contains('pv-sheet-open')) return;
@@ -2431,6 +2449,11 @@ body.diag-bare .card, body.diag-bare .tutorial-details, body.diag-bare .footer-l
     dd.classList.remove('show');
     home.dd.insertBefore(dd, home.ddNext);
     home.f.insertBefore(filters, home.fNext);
+    // 搬回主界面后从 0 高度展开，别让下面的内容「啪」地被顶下去
+    if (typeof morph === 'function') {
+      var to = filterBox(filters);
+      morph(filters, true, FILTER_BOX, [filters], function () { return to; }, null, true);
+    }
     qualFilter = '';
     filterCarList();
     if (document.activeElement === proxy) proxy.blur();
@@ -2483,54 +2506,105 @@ body.diag-bare .card, body.diag-bare .tutorial-details, body.diag-bare .footer-l
     window.filterCarList = function () { var r = origFilter.apply(this, arguments); applyQual(); return r; };
     decorateList();
 
-    // ---------- 小横条 / 头部：按住上下拖动面板 ----------
-    // 手感：跟手位移只用 transform（不触发重排）、往上拖带阻尼、松手按「下拉超过 1/4 面板高
-    // 或快速下甩」决定收起还是弹回；遮罩透明度跟着手指走，松手后交还给 CSS 动画收尾。
-    var drag = null;
-    function dragStart(e) {
-      if (drag || e.button > 0) return;
-      if (!e.target.closest('.pv-sheet-grab, .pv-sheet-head')) return;
-      if (e.target.closest('button, input, a')) return;        // 头部里的按钮不参与拖拽
-      drag = { y0: e.clientY, dy: 0, t0: e.timeStamp, id: e.pointerId, h: sheet.offsetHeight || 480 };
-      sheet.style.transition = 'none';
-      try { sheet.setPointerCapture(e.pointerId); } catch (err) {}
-    }
-    function dragMove(e) {
-      if (!drag || e.pointerId !== drag.id) return;
-      var dy = e.clientY - drag.y0;
-      drag.dy = dy > 0 ? dy : dy * .28;                        // 往上拖留阻尼，别把面板拔离视口
-      sheet.style.transform = 'translateY(' + drag.dy.toFixed(1) + 'px)';
-      if (mask) mask.style.opacity = String(Math.max(0, 1 - Math.max(0, drag.dy) / (drag.h * .8)));
-    }
-    function dragEnd(e) {
-      if (!drag || (e && e.pointerId !== drag.id)) return;
-      var d = drag; drag = null;
+    // ---------- 拖拽收起面板 ----------
+    // 两种起手方式，但底层事件必须分开用：
+    //   ① 按住小横条 / 头部 —— 用 pointer 事件，立刻跟手；
+    //   ② 从车辆列表里起手 —— 只能用 touch 事件。因为列表本身可滚动，浏览器一旦判定你在滚列表，
+    //      就会发 pointercancel 掐掉后续的 pointermove，pointer 方案根本收不到「拉过头」那一段。
+    //      所以走 touchmove，并在确认接管后用 preventDefault 掐断列表自己的滚动。
+    // 接管条件：列表已经滚到最顶（scrollTop <= 0）且手指在往下拉 —— 也就是「列表到顶后再拉就收起」。
+    // 位移只走 transform（不触发重排）；往上拖带阻尼；松手按「下拉超过 1/4 面板高或快速下甩」
+    // 决定收起还是弹回；遮罩透明度跟手，松手后交还 CSS 动画收尾。
+    var drag = null, pending = null;
+
+    function finishDrag(d, ts) {
+      if (d.list) { d.list.style.overflowY = ''; d.list.style.touchAction = ''; }   // 放开列表
       if (mask) mask.style.opacity = '';
-      if (!document.body.classList.contains('pv-sheet-open')) {   // 拖到一半被别的方式关掉了
+      if (!document.body.classList.contains('pv-sheet-open')) {    // 拖到一半被别的方式关掉了
         sheet.style.transition = ''; sheet.style.transform = ''; return;
       }
-      if (Math.abs(d.dy) < 4) {                                // 只是点了一下横条
+      if (Math.abs(d.dy) < 4) {                                    // 只是点了一下
         sheet.style.transition = ''; sheet.style.transform = ''; return;
       }
-      var flick = (e && e.timeStamp - d.t0 < 260 && d.dy > 40); // 快速下甩
+      var flick = (ts - d.t0 < 260 && d.dy > 40);                  // 快速下甩
       var close = d.dy > d.h * .25 || flick;
       sheet.style.transition = 'transform .3s cubic-bezier(.2,.8,.2,1)';
       if (close) {
-        sheet.style.transform = 'translateY(102%)';            // 先滑出去，动画结束再真正关闭，避免跳一下
+        sheet.style.transform = 'translateY(102%)';                // 先滑出去，动画结束再真正关闭，避免跳一下
         setTimeout(function () {
           sheet.style.transition = '';
           sheet.style.transform = '';
           closeSheet();
         }, 300);
       } else {
-        sheet.style.transform = '';                            // 回到 CSS 的定位，CSS transition 负责回弹
+        sheet.style.transform = '';                                // 回到 CSS 的定位，CSS transition 负责回弹
         setTimeout(function () { sheet.style.transition = ''; }, 320);
       }
     }
-    sheet.addEventListener('pointerdown', dragStart);
-    sheet.addEventListener('pointermove', dragMove);
-    sheet.addEventListener('pointerup', dragEnd);
-    sheet.addEventListener('pointercancel', dragEnd);
+    function applyDrag(y) {
+      var dy = y - drag.y0;
+      drag.dy = dy > 0 ? dy : dy * .28;                            // 往上拖留阻尼，别把面板拔离视口
+      sheet.style.transform = 'translateY(' + drag.dy.toFixed(1) + 'px)';
+      if (mask) mask.style.opacity = String(Math.max(0, 1 - Math.max(0, drag.dy) / (drag.h * .8)));
+    }
+    function takeOver(d) {                                         // 从列表接管为面板拖动
+      drag = d; pending = null;
+      if (drag.list) { drag.list.style.overflowY = 'hidden'; drag.list.style.touchAction = 'none'; }
+      sheet.style.transition = 'none';
+    }
+
+    // ① 小横条 / 头部：pointer
+    sheet.addEventListener('pointerdown', function (e) {
+      if (drag || pending || e.button > 0) return;
+      if (e.target.closest('button, input, a')) return;            // 头部里的按钮不参与拖拽
+      if (!e.target.closest('.pv-sheet-grab, .pv-sheet-head')) return;
+      drag = { id: e.pointerId, ptr: true, y0: e.clientY, t0: e.timeStamp, dy: 0,
+               h: sheet.offsetHeight || 480, list: null };
+      sheet.style.transition = 'none';
+      try { sheet.setPointerCapture(e.pointerId); } catch (err) {}
+    });
+    sheet.addEventListener('pointermove', function (e) {
+      if (!drag || !drag.ptr || e.pointerId !== drag.id) return;
+      applyDrag(e.clientY);
+    });
+    sheet.addEventListener('pointerup', function (e) {
+      if (!drag || !drag.ptr || e.pointerId !== drag.id) return;
+      var d = drag; drag = null; finishDrag(d, e.timeStamp);
+    });
+    sheet.addEventListener('pointercancel', function (e) {
+      if (!drag || !drag.ptr || e.pointerId !== drag.id) return;
+      var d = drag; drag = null; finishDrag(d, e.timeStamp);
+    });
+
+    // ② 车辆列表：touch（到顶后继续下拉才接管）
+    listHost.addEventListener('touchstart', function (e) {
+      if (drag || pending || e.touches.length !== 1) return;
+      pending = { id: -1, ptr: false, y0: e.touches[0].clientY, t0: e.timeStamp, dy: 0,
+                  h: sheet.offsetHeight || 480, list: listHost };
+    }, { passive: true });
+    listHost.addEventListener('touchmove', function (e) {
+      if (!e.touches.length) return;
+      var y = e.touches[0].clientY;
+      if (pending && !pending.ptr) {
+        if (listHost.scrollTop > 0 || (y - pending.y0) < 8) return;  // 还在列表里滚、或在往上滑 → 不接管
+        var d = pending;
+        d.y0 = y; d.dy = 0; d.t0 = e.timeStamp;                      // 以当前点为起点，避免跳一下
+        takeOver(d);
+      }
+      if (!drag || drag.ptr) return;
+      e.preventDefault();                                            // 掐断列表自己的滚动
+      applyDrag(y);
+    }, { passive: false });
+    listHost.addEventListener('touchend', function (e) {
+      if (pending && !pending.ptr) { pending = null; return; }
+      if (!drag || drag.ptr) return;
+      var d = drag; drag = null; finishDrag(d, e.timeStamp);
+    });
+    listHost.addEventListener('touchcancel', function (e) {
+      if (pending && !pending.ptr) { pending = null; return; }
+      if (!drag || drag.ptr) return;
+      var d = drag; drag = null; finishDrag(d, e.timeStamp);
+    });
   }
 
   document.addEventListener('DOMContentLoaded', function () {
