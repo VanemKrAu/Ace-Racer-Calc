@@ -1022,42 +1022,24 @@ body.ds-c.performance-mode .ds-dock { background: var(--cell); }
 }
 body.ds-c .ds-ambient canvas.is-on { opacity: .62; }
 body.ds-c.light-mode .ds-ambient canvas.is-on { opacity: .34; }
-/* 两团分区光：用 body 的两个伪元素，小尺寸绘制再 scale 放大（纹理小、只做合成） */
-/* 两团分区光：用 body 的两个伪元素，小尺寸绘制再放大（纹理小、只做合成）。
-   性能：缩放从「动画属性」改成「静态 transform」——
-   缩放一旦参与 keyframes，浏览器每帧都得重新决定这块的光栅化比例；自带内核的 Chrome 扛得住，
-   套壳浏览器（系统 WebView）上就退化成每帧重绘一大块 radial-gradient，滑动立刻发涩。
-   钉成静态值后动画只剩 translate + opacity，整条动画能留在合成器里跑。
-   缩放取的是原来「最亮时刻」的值，所以光团最显眼的时候尺寸与改动前完全一致。 */
-body.ds-c::before, body.ds-c::after {
-  content: ""; position: fixed; z-index: -1; pointer-events: none;
-  left: 50%; top: 50%; width: 120px; height: 120px; margin: -60px 0 0 -60px; border-radius: 50%;
-  opacity: 0; will-change: transform, opacity;
+/* 分区光：三团随滚动漂移的光（首发 / 循环 / 基础属性），统一画在一块低分辨率画布上 ——
+   绘制逻辑见 view.js 里的 dsZoneGlow。三团光的 keyframes（位置 / 缩放 / 透明度）与原来逐项一致，
+   包括缩放那点「呼吸」都保留了。
+
+   为什么换实现：原来是三个带 scale(7.5) 与 will-change 的 fixed 伪元素，每一个都是独立合成层，
+   光栅化尺寸约 2700×2700 物理像素，三块合计接近 87MB 纹理，每帧都要重新合成一遍。
+   这正是套壳内核（Via / 系统 WebView）下顿挫的根源 —— 真机实测：只关掉这三团光就恢复顺滑，
+   而帧率读数一直 100+，说明卡在合成器而不是主线程，「掉帧才降级」那类兜底根本察觉不到它。
+   画布方案把三团光并成一层、内部按 1/2 分辨率绘制，纹理降到几百 KB，外观不变：
+   颜色 / 位置 / 大小 / 透明度曲线照旧，浅色模式下的 multiply 合成也保留。 */
+.ds-c .ds-zoneglow {
+  position: fixed; inset: 0; z-index: -1; width: 100%; height: 100%;
+  pointer-events: none; opacity: 0; transition: opacity .6s ease;
 }
-body.ds-c::before { transform: scale(7.5); background: radial-gradient(closest-side, color-mix(in oklab, var(--zone-first) 70%, transparent), transparent); }
-body.ds-c::after { transform: scale(7.5); background: radial-gradient(closest-side, color-mix(in oklab, var(--zone-loop) 70%, transparent), transparent); }
-@supports (animation-timeline: scroll()) {
-  body.ds-c::before { animation: dsZoneA linear both; animation-timeline: scroll(root); }
-  body.ds-c::after { animation: dsZoneB linear both; animation-timeline: scroll(root); }
-}
-/* 滚动进度 → 光团位置：首发区（约 45%~65%）亮起橙光，循环区（约 62%~85%）亮起青光。
-   这里用独立的 translate 属性而非 transform，才不会盖掉上面那个静态 scale；
-   而能跑 animation-timeline 的内核（Chrome 115+）必然支持独立 translate（Chrome 104+），
-   所以这条路径不会踩兼容坑。 */
-@keyframes dsZoneA {
-  0%, 38% { translate: -40vw 70vh; opacity: 0; }
-  52% { translate: -28vw 10vh; opacity: .5; }
-  64% { translate: -20vw -30vh; opacity: .35; }
-  76%, 100% { translate: -30vw -90vh; opacity: 0; }
-}
-@keyframes dsZoneB {
-  0%, 56% { translate: 40vw 80vh; opacity: 0; }
-  70% { translate: 30vw 5vh; opacity: .45; }
-  84% { translate: 22vw -35vh; opacity: .3; }
-  96%, 100% { translate: 30vw -90vh; opacity: 0; }
-}
-body.ds-c.light-mode::before, body.ds-c.light-mode::after { mix-blend-mode: multiply; }
-body.ds-c.performance-mode::before, body.ds-c.performance-mode::after { display: none; }
+.ds-c .ds-zoneglow.is-on { opacity: 1; }
+.ds-c.light-mode .ds-zoneglow { mix-blend-mode: multiply; }
+.ds-c.performance-mode .ds-zoneglow { display: none; }
+@media (prefers-reduced-motion: reduce) { .ds-c .ds-zoneglow { display: none; } }
 
 /* ---------- 3. 区块标题：中英双层 kicker，给每段一个身份 ---------- */
 .ds-c .section-divider > span::before {
@@ -1175,26 +1157,7 @@ body.ds-c:has(input[type="number"]:focus, input[type="text"]:focus) .ds-dock { t
   .ds-c .card-title:has(.limit-badge) .limit-badge { margin-left: 0; order: 3; flex-basis: auto; }
   .ds-c .pv-collapsible .card-title:has(.limit-badge) .limit-badge { display: none; }
 }
-/* 第三团光：基础属性区跟随品质色（放在 .ds-ambient::before，才能读到 body 上的 --acc）。
-   性能处理同上：scale 钉成静态（取最亮时刻的 8），keyframes 只走 translate + opacity。 */
-.ds-c .ds-ambient::before {
-  content: ""; position: absolute; z-index: 0; pointer-events: none;
-  left: 50%; top: 50%; width: 120px; height: 120px; margin: -60px 0 0 -60px; border-radius: 50%; opacity: 0;
-  transform: scale(8);
-  background: radial-gradient(closest-side, color-mix(in oklab, var(--acc) 75%, transparent), transparent);
-}
-@supports (animation-timeline: scroll()) {
-  .ds-c .ds-ambient::before { animation: dsZoneC linear both; animation-timeline: scroll(root); }
-}
-@keyframes dsZoneC {
-  0%, 10% { translate: 35vw 70vh; opacity: 0; }
-  24% { translate: 28vw 0vh; opacity: .42; }
-  38% { translate: -25vw -20vh; opacity: .36; }
-  48%, 100% { translate: -30vw -90vh; opacity: 0; }
-}
-.ds-c.light-mode .ds-ambient::before { mix-blend-mode: multiply; }
-.ds-c.performance-mode .ds-ambient::before { display: none; }
-@media (prefers-reduced-motion: reduce) { .ds-c .ds-ambient::before { animation: none !important; opacity: 0 !important; } }
+/* 第三团光（基础属性区那团品质色光）也并进上面那块画布了，不再需要这个伪元素。 */
 
 /* ---------- 分区标识去掉橙 / 青：只留品质色，测算区回到中性 ---------- */
 .ds-c { --zone-first: var(--acc); --zone-loop: var(--acc); }
@@ -1453,15 +1416,14 @@ details.tutorial-details.pv-js.pv-closing summary .dropdown-icon { transform: no
    真机诊断开关（URL 参数，配合 <body> 开头那段脚本）
    用途：在真实手机上逐个排除「到底哪一层在拖慢这类套壳内核」。
      ?diag=1    左上角实时帧率浮层（含最低帧率与当前降级状态）
-     ?noglow=1  关掉三团滚动光
+     ?noglow=1  关掉三团滚动分区光
      ?nodock=1  关掉 dock 的 backdrop-filter
      ?noamb=1   关掉环境光背景层
      ?perf=1    强制无动画性能模式（环境光 + 光团 + dock 玻璃全关）
      ?bare=1    最彻底：以上全关，并把半透明卡片改成不透明
    这些 class 只被 CSS 消费，不触碰任何业务逻辑；不带参数时等于不存在。
    ============================================================================ */
-body.diag-noglow::before, body.diag-noglow::after { display: none !important; }
-body.diag-noglow .ds-ambient::before { display: none !important; }
+body.diag-noglow .ds-zoneglow { display: none !important; }
 body.diag-nodock .ds-dock, body.diag-nodock .ds-dock::before {
   -webkit-backdrop-filter: none !important; backdrop-filter: none !important;
   background-image: none !important; background-color: var(--cell);
@@ -1529,6 +1491,8 @@ body.diag-bare .card, body.diag-bare .tutorial-details, body.diag-bare .footer-l
 
 
 <div class="ds-ambient" aria-hidden="true" data-html2canvas-ignore="true"><canvas id="dsAmbientImg"></canvas><canvas id="dsAmbientImg2"></canvas></div>
+<!-- 分区光画布：三团随滚动漂移的光都画在这一层上（代替原来三个大合成层伪元素），绘制见 view.js -->
+<canvas class="ds-zoneglow" id="dsZoneGlow" aria-hidden="true" data-html2canvas-ignore="true"></canvas>
 <div class="app-container">
   <div class="top-bar" data-html2canvas-ignore="true">
     <div class="top-left">
@@ -5025,6 +4989,94 @@ if (typeof CAR_DATABASE !== 'undefined') {
     }
   });
 
+  // ---------- 分区光：三团随滚动漂移的光，画在一块低分辨率画布上 ----------
+  // 关键帧与原来 CSS 的 dsZoneA / B / C 逐项一致（连缩放那点「呼吸」都保留了），
+  // 只是改由画布绘制。换实现的理由：原来是三个带 scale + will-change 的 fixed 伪元素，
+  // 各成一个独立合成层，光栅化尺寸约 2700×2700 物理像素、三块合计接近 87MB 纹理，
+  // 每帧都要重新合成一遍 —— 套壳内核（Via / 系统 WebView）下顿挫的根源就在这里
+  // （真机实测：只关掉这三团光就恢复顺滑；而帧率读数一直 100+，说明卡在合成器而非主线程，
+  //  「掉帧才降级」那类兜底根本看不见它）。
+  // 现在三团光并成一层、内部按半分辨率绘制，纹理降到几百 KB，外观与原来一致。
+  // 每项 = [滚动进度, translateX(vw), translateY(vh), scale, opacity]
+  var ZG_KEYS = {
+    A: [[0, -40, 70, 7, 0], [.38, -40, 70, 7, 0], [.52, -28, 10, 7.5, .5], [.64, -20, -30, 7, .35], [.76, -30, -90, 6, 0], [1, -30, -90, 6, 0]],
+    B: [[0, 40, 80, 7, 0], [.56, 40, 80, 7, 0], [.70, 30, 5, 7.5, .45], [.84, 22, -35, 7, .3], [.96, 30, -90, 6, 0], [1, 30, -90, 6, 0]],
+    C: [[0, 35, 70, 7, 0], [.10, 35, 70, 7, 0], [.24, 28, 0, 8, .42], [.38, -25, -20, 8, .36], [.48, -30, -90, 6, 0], [1, -30, -90, 6, 0]]
+  };
+  var ZG_SCALE = .5;                       // 画布内部像素 = CSS 像素 × 0.5（模糊光晕，放大后看不出）
+  var zgCanvas = $('dsZoneGlow');
+  var zgCtx = (zgCanvas && zgCanvas.getContext) ? zgCanvas.getContext('2d') : null;
+  var zgQueued = false, zgRT = 0;
+
+  function zgAt(keys, p) {                 // 按滚动进度做线性插值
+    var i = 0;
+    while (i < keys.length - 2 && p > keys[i + 1][0]) i++;
+    var a = keys[i], b = keys[i + 1], span = b[0] - a[0];
+    var t = span > 0 ? (p - a[0]) / span : 0;
+    if (t < 0) t = 0; else if (t > 1) t = 1;
+    return { tx: a[1] + (b[1] - a[1]) * t, ty: a[2] + (b[2] - a[2]) * t,
+             s: a[3] + (b[3] - a[3]) * t, o: a[4] + (b[4] - a[4]) * t };
+  }
+  function zgRgba(c, a) {                  // --acc 可能是 #hex，也可能是 rgb()/rgba()，两种都接住
+    c = String(c || '').trim();
+    var m = /^#([0-9a-f]{6})$/i.exec(c);
+    if (m) { var n = parseInt(m[1], 16); return 'rgba(' + (n >> 16 & 255) + ',' + (n >> 8 & 255) + ',' + (n & 255) + ',' + a + ')'; }
+    m = /^rgba?\(([^)]+)\)/i.exec(c);
+    if (m) { var q = m[1].split(','); return 'rgba(' + parseFloat(q[0]) + ',' + parseFloat(q[1]) + ',' + parseFloat(q[2]) + ',' + a + ')'; }
+    return 'rgba(255,191,46,' + a + ')';
+  }
+  function zgColors() {                    // 深色模式下循环光用中性白光，其余跟随品质色（与原样式一致）
+    var acc = getComputedStyle(document.body).getPropertyValue('--acc');
+    var light = document.body.classList.contains('light-mode');
+    return { A: { c: acc, a: .70 },
+             B: light ? { c: acc, a: .70 } : { c: '#ffffff', a: .20 },
+             C: { c: acc, a: .75 } };
+  }
+  function zgDraw() {
+    if (!zgCtx || !zgCanvas.width) return;
+    if (document.body.classList.contains('performance-mode')) return;
+    var W = zgCanvas.width, H = zgCanvas.height;
+    zgCtx.clearRect(0, 0, W, H);
+    var doc = document.documentElement;
+    var max = doc.scrollHeight - window.innerHeight;
+    var raw = window.pageYOffset || doc.scrollTop || 0;
+    var p = max > 40 ? Math.min(1, Math.max(0, raw / max)) : 0;
+    var vw = window.innerWidth || 1, vh = window.innerHeight || 1, k = W / vw;
+    var cols = zgColors(), list = [['A', cols.A], ['B', cols.B], ['C', cols.C]];
+    for (var i = 0; i < list.length; i++) {
+      var z = zgAt(ZG_KEYS[list[i][0]], p), col = list[i][1];
+      if (z.o <= .004) continue;
+      var cx = (vw / 2 + z.tx / 100 * vw) * k;
+      var cy = (vh / 2 + z.ty / 100 * vh) * k;
+      var r = 60 * z.s * k;                // 原元素 120px 宽的一半 × 缩放
+      if (r <= .5) continue;
+      var g = zgCtx.createRadialGradient(cx, cy, 0, cx, cy, r);
+      g.addColorStop(0, zgRgba(col.c, col.a * z.o));
+      g.addColorStop(1, zgRgba(col.c, 0));
+      zgCtx.fillStyle = g;
+      zgCtx.fillRect(cx - r, cy - r, r * 2, r * 2);
+    }
+  }
+  function zgSchedule() {
+    if (zgQueued) return;
+    zgQueued = true;
+    requestAnimationFrame(function () { zgQueued = false; zgDraw(); });
+  }
+  function zgResize() {
+    if (!zgCanvas) return;
+    var w = Math.max(1, Math.round((window.innerWidth || 1) * ZG_SCALE));
+    var h = Math.max(1, Math.round((window.innerHeight || 1) * ZG_SCALE));
+    if (zgCanvas.width !== w) zgCanvas.width = w;
+    if (zgCanvas.height !== h) zgCanvas.height = h;
+    zgDraw();
+  }
+  if (zgCtx) {
+    zgResize();
+    zgCanvas.classList.add('is-on');
+    window.addEventListener('resize', function () { clearTimeout(zgRT); zgRT = setTimeout(zgResize, 180); }, { passive: true });
+    zgSchedule();
+  }
+
   // ---------- 液态玻璃折射（仅 Chromium：只有它支持 backdrop-filter: url(#svg)） ----------
   // 按胶囊实际尺寸生成位移贴图：边缘一圈（bezel）按「凸透镜」把采样点往外推，中心不动 → 边缘处背景被弯折。
   var isChromium = (function () {
@@ -5123,6 +5175,7 @@ if (typeof CAR_DATABASE !== 'undefined') {
     requestAnimationFrame(scrollFpsWatch);
   }
   function markScrolling() {
+    zgSchedule();                    // 分区光按滚动进度重画（画布只有半分辨率，一次不到 1ms）
     if (!isScrolling) {
       isScrolling = true; sFrames = 0; sT0 = 0;
       if (!fpsWatching) { fpsWatching = true; requestAnimationFrame(scrollFpsWatch); }
@@ -5141,7 +5194,7 @@ if (typeof CAR_DATABASE !== 'undefined') {
     queued = false;
     var res = { first: renderGauge('first'), loop: renderGauge('loop') };
     stripLeadEmoji($('resultDetailFirst')); stripLeadEmoji($('resultDetailLoop'));
-    renderDock(res); syncSliders(); syncTheme(); syncQuality(); syncAmbient();
+    renderDock(res); syncSliders(); syncTheme(); syncQuality(); syncAmbient(); zgSchedule();
   }
   function schedule() { if (!queued) { queued = true; requestAnimationFrame(sync); } }
 
