@@ -1449,11 +1449,76 @@ details.tutorial-details.pv-js.pv-closing summary .dropdown-icon { transform: no
 .ds-c:not(.light-mode)[data-quality="rare"] .car-stage::after { opacity: .56; }
 .ds-c:not(.light-mode)[data-quality="epic"] .car-stage::after { opacity: .62; }
 
+/* ============================================================================
+   真机诊断开关（URL 参数，配合 <body> 开头那段脚本）
+   用途：在真实手机上逐个排除「到底哪一层在拖慢这类套壳内核」。
+     ?diag=1    左上角实时帧率浮层（含最低帧率与当前降级状态）
+     ?noglow=1  关掉三团滚动光
+     ?nodock=1  关掉 dock 的 backdrop-filter
+     ?noamb=1   关掉环境光背景层
+     ?perf=1    强制无动画性能模式（环境光 + 光团 + dock 玻璃全关）
+     ?bare=1    最彻底：以上全关，并把半透明卡片改成不透明
+   这些 class 只被 CSS 消费，不触碰任何业务逻辑；不带参数时等于不存在。
+   ============================================================================ */
+body.diag-noglow::before, body.diag-noglow::after { display: none !important; }
+body.diag-noglow .ds-ambient::before { display: none !important; }
+body.diag-nodock .ds-dock, body.diag-nodock .ds-dock::before {
+  -webkit-backdrop-filter: none !important; backdrop-filter: none !important;
+  background-image: none !important; background-color: var(--cell);
+}
+body.diag-noamb .ds-ambient { display: none !important; }
+body.diag-bare .card, body.diag-bare .tutorial-details, body.diag-bare .footer-legal, body.diag-bare .bottom-image-wrapper {
+  background-color: var(--cell) !important; background-image: none !important;
+}
 </style>
    <base target="_blank">
 </head>
 <body class="ds-c">
 <script>try{var __t=localStorage.getItem('theme');if(typeof __t==='string'&&(__t==='light'||(__t==='system'&&!(window.matchMedia&&window.matchMedia('(prefers-color-scheme: dark)').matches))))document.body.classList.add('light-mode');}catch(e){}</script>
+<script>
+/* 真机诊断开关：用 URL 参数给 <body> 挂上对应的 class（CSS 在 <head> 末尾消费它们）。
+   目的只有一个 —— 在真实手机上逐个排除，定位到底是哪一层在拖慢套壳内核（Via / 夸克这类）。
+   ?diag=1 会额外显示一个帧率浮层，方便直接读出数字。不带参数时这段代码不做任何事。 */
+(function () {
+  var q = '&' + String(location.search || '').replace(/^\?/, '');
+  function on(n) { return q.indexOf('&' + n + '=1') >= 0; }
+  var cls = [];
+  if (on('noglow') || on('bare')) cls.push('diag-noglow');
+  if (on('nodock') || on('bare')) cls.push('diag-nodock');
+  if (on('noamb') || on('bare')) cls.push('diag-noamb');
+  if (on('bare')) cls.push('diag-bare');
+  if (on('perf') || on('bare')) cls.push('performance-mode');
+  if (cls.length && document.body) document.body.className += ' ' + cls.join(' ');
+
+  if (!on('diag')) return;
+  function boot() {
+    var el = document.createElement('div');
+    el.id = 'pvDiag';
+    el.setAttribute('aria-hidden', 'true');
+    el.style.cssText = 'position:fixed;left:6px;top:6px;z-index:2147483647;background:rgba(0,0,0,.8);'
+      + 'color:#5f5;font:700 12px/1.5 ui-monospace,SFMono-Regular,Consolas,monospace;padding:6px 9px;'
+      + 'border-radius:8px;pointer-events:none;white-space:pre;text-shadow:0 1px 2px #000';
+    document.body.appendChild(el);
+    var f = 0, t0 = performance.now(), cur = 0, lo = 0, touched = false;
+    (function tick(now) {
+      f++;
+      if (now - t0 >= 500) {
+        cur = Math.round(f * 1000 / (now - t0)); f = 0; t0 = now;
+        if (touched && (lo === 0 || cur < lo)) lo = cur;   // 只记交互期间的谷值
+      }
+      var mods = document.body.className.split(' ').filter(function (c) { return /^(performance-mode|diag-)/.test(c); });
+      el.textContent = 'FPS ' + cur + (lo ? '   最低 ' + lo : '')
+        + '\n降级 ' + (document.body.classList.contains('ds-scrolling') ? '开' : '关')
+        + '   模式 ' + (mods.join('+').replace(/diag-/g, '') || '正常');
+      requestAnimationFrame(tick);
+    })(performance.now());
+    ['scroll', 'touchstart', 'touchmove', 'pointerdown'].forEach(function (ev) {
+      document.addEventListener(ev, function () { touched = true; }, { passive: true, capture: true });
+    });
+  }
+  if (document.body) boot(); else document.addEventListener('DOMContentLoaded', boot);
+})();
+</script>
 <noscript>
       <div style="padding:40px;max-width:800px;margin:0 auto;font-family:sans-serif;">
         <h1>Ace Racer Chip Calculator</h1>
