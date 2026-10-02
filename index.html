@@ -318,9 +318,23 @@ var _CAR_IMG = {
        }
    </script>
 
-   <link rel="preload" href="fonts/ace-sans-400.v1.woff2" as="font" type="font/woff2" crossorigin>
-<link rel="preload" href="fonts/ace-sans-500.v1.woff2" as="font" type="font/woff2" crossorigin>
-<link rel="preload" href="fonts/ace-sans-700.v1.woff2" as="font" type="font/woff2" crossorigin>
+   <!-- 字体：Noto Sans SC（思源黑体 Google 发行版）· 全字符集 · 三个字重
+       托管在 registry.npmmirror.com（阿里云 npmmirror，中国大陆可直连，非 Google 域名），
+       字体文件不再随仓库分发 —— 也就不必再为了「网站新增了两个字」重新裁剪字体。
+       每个字重是一份按 unicode-range 切的 CSS：字符表是全的，但浏览器只会下载当前页面
+       真正用到的那几片（通常十来片），所以「全字符集」并不会拖慢首屏。
+       异步加载（media="print" → onload 切回 all）：字体不是首屏关键资源，不该阻塞渲染；
+       万一时序不巧，下面的系统字体栈会先顶上（font-display: swap 已由 CDN 的 CSS 声明）。
+       换镜像 / 升级版本：改下面三个 URL 的域名或版本号即可。 -->
+<link rel="preconnect" href="https://registry.npmmirror.com" crossorigin>
+<link rel="stylesheet" media="print" onload="this.media='all'" href="https://registry.npmmirror.com/@fontsource/noto-sans-sc/5.3.0/files/400.css">
+<link rel="stylesheet" media="print" onload="this.media='all'" href="https://registry.npmmirror.com/@fontsource/noto-sans-sc/5.3.0/files/500.css">
+<link rel="stylesheet" media="print" onload="this.media='all'" href="https://registry.npmmirror.com/@fontsource/noto-sans-sc/5.3.0/files/700.css">
+<noscript>
+<link rel="stylesheet" href="https://registry.npmmirror.com/@fontsource/noto-sans-sc/5.3.0/files/400.css">
+<link rel="stylesheet" href="https://registry.npmmirror.com/@fontsource/noto-sans-sc/5.3.0/files/500.css">
+<link rel="stylesheet" href="https://registry.npmmirror.com/@fontsource/noto-sans-sc/5.3.0/files/700.css">
+</noscript>
 <style>
 /* ============ base.css：三套设计共用的「功能性」样式 ============
    只放 JS 依赖的显隐 / 展开 / 语言切换机制，不放任何视觉风格。 */
@@ -509,9 +523,9 @@ body[data-theme-mode="light"] .theme-ico .ico:nth-child(1), body[data-theme-mode
   --check-acc: var(--check-w);
   --shadow: 0 1px 2px rgba(0,0,0,.04), 0 0 0 1px rgba(0,0,0,.035);
   --r-lg: 20px; --r-md: 14px; --r-sm: 10px;
-  --sans: "AceRacer Sans", system-ui, -apple-system, "PingFang SC", "HarmonyOS Sans SC", "MiSans", "Microsoft YaHei UI", "Microsoft YaHei", "Segoe UI", sans-serif;
-  --round: "AceRacer Sans", ui-rounded, "SF Pro Rounded", "HarmonyOS Sans SC", "MiSans", system-ui, "Segoe UI Variable Display", "Segoe UI", sans-serif;
-  --mono: ui-monospace, "SF Mono", "Cascadia Mono", Consolas, "AceRacer Sans", monospace;
+  --sans: "Noto Sans SC", system-ui, -apple-system, "PingFang SC", "HarmonyOS Sans SC", "MiSans", "Microsoft YaHei UI", "Microsoft YaHei", "Segoe UI", sans-serif;
+  --round: "Noto Sans SC", ui-rounded, "SF Pro Rounded", "HarmonyOS Sans SC", "MiSans", system-ui, "Segoe UI Variable Display", "Segoe UI", sans-serif;
+  --mono: ui-monospace, "SF Mono", "Cascadia Mono", Consolas, "Noto Sans SC", monospace;
 }
 .ds-c[data-quality="legend"] { --acc: #f2a900; --acc-ink: #9a6400; --flash-rgb: 242, 169, 0; --acc-soft: rgba(242,169,0,.14); --acc-glow: rgba(242,169,0,.22); }
 .ds-c[data-quality="epic"] { --acc: #9b5de5; --acc-ink: #7a3fc4; --flash-rgb: 155, 93, 229; --acc-soft: rgba(155,93,229,.13); --acc-glow: rgba(155,93,229,.2); }
@@ -603,7 +617,9 @@ body[data-theme-mode="light"] .theme-ico .ico:nth-child(1), body[data-theme-mode
 .ds-c .cp-group-body { display: flex; flex-direction: column; gap: 14px; }
 .ds-c .cp-group-body > * { flex: none; }
 /* 隔断：窄屏为横向分隔条，≥850px 两组左右并排、中间竖向分隔 */
-.ds-c .cp-split { display: flex; align-items: center; gap: 12px; margin: 22px 6px; color: var(--ink-3); font-size: 12.5px; font-weight: 700; }
+/* 隔断：窄屏为横向分隔条，≥850px 两组左右并排、中间竖向分隔。
+   中间原来的文字胶囊已按用户要求移除，所以 gap 归零 —— 分割线保持连续不断开。 */
+.ds-c .cp-split { display: flex; align-items: center; gap: 0; margin: 22px 6px; color: var(--ink-3); font-size: 12.5px; font-weight: 700; }
 .ds-c .cp-split::before, .ds-c .cp-split::after { content: ""; flex: 1; height: 0; border-top: 2px dashed var(--fill-2); }
 .ds-c .cp-split > span { white-space: nowrap; padding: 5px 12px; border-radius: 999px; background: var(--cell); box-shadow: var(--shadow); }
 .ds-c .cp-split-short { display: none; }
@@ -874,6 +890,17 @@ body.ds-c.performance-mode .ds-ambient canvas { display: none; }
 body.ds-c.ds-lg-refract .ds-dock { -webkit-backdrop-filter: none; backdrop-filter: none; }
 body.ds-c.ds-lg-refract .ds-dock::before { content: ""; position: absolute; inset: 0; border-radius: inherit; z-index: -1; pointer-events: none;
   backdrop-filter: url(#ds-lg-filter) blur(3px) saturate(1.9); }
+/* 滚动期降级：暂停「SVG 位移折射」。
+   形如 url(#svg) 的 backdrop-filter，只要它下面有内容在动，合成器每帧都得重新采样这一块、
+   重跑一遍 feDisplacementMap 逐像素位移。自带内核的 Chrome 有独立 GPU 进程 + Input Vizard
+   （输入事件不经浏览器主线程），扛得住；套壳浏览器（Via / 夸克这类把渲染交给系统 WebView 的）
+   这条滤镜链常落到主线程上，于是「一滑动就一步一卡」。这里在滚动期间只摘掉位移、保留同半径
+   磨砂与提饱和 —— 少的只是边缘那圈约 20px 的弯折，滚动中肉眼分辨不出；手一停 160ms 立刻
+   恢复完整折射，静止观感与改动前完全一致。 */
+body.ds-c.ds-scrolling.ds-lg-refract .ds-dock::before {
+  -webkit-backdrop-filter: blur(3px) saturate(1.9);
+  backdrop-filter: blur(3px) saturate(1.9);
+}
 body.ds-c.ds-results-visible .ds-dock { transform: translate(-50%, 150%); opacity: 0; pointer-events: none; }
 body.ds-c.performance-mode .ds-dock, body.ds-c.performance-mode .ds-dock::before { -webkit-backdrop-filter: none !important; backdrop-filter: none !important; }
 body.ds-c.performance-mode .ds-dock { background: var(--cell); }
@@ -920,12 +947,8 @@ body.ds-c.performance-mode .ds-dock { background: var(--cell); }
    4) 结果卡成为每个测算区的视觉主角：状态色辉光 + 270° 转速表式读数（JS 在 proto.js）。
    ===================================================================== */
 
-/* ---------- 字体：站内自带（Noto Sans CJK SC 按本站用字裁剪的子集，见 fonts/OFL.txt） ----------
-   手机装了第三方系统字体时，system-ui / sans-serif 都会被替换；这里指定站内字体，任何设备显示一致。
-   文件名带版本号，可长期缓存；用字有增补时重新裁剪并把 .v1 递增。 */
-@font-face { font-family: "AceRacer Sans"; font-style: normal; font-weight: 400; font-display: swap; src: url("fonts/ace-sans-400.v1.woff2") format("woff2"); }
-@font-face { font-family: "AceRacer Sans"; font-style: normal; font-weight: 500; font-display: swap; src: url("fonts/ace-sans-500.v1.woff2") format("woff2"); }
-@font-face { font-family: "AceRacer Sans"; font-style: normal; font-weight: 700; font-display: swap; src: url("fonts/ace-sans-700.v1.woff2") format("woff2"); }
+/* ---------- 字体：由 <head> 里那份 npmmirror（国内可直连）分片 CSS 提供，详见那几行注释 ----------
+   手机装了第三方系统字体时，system-ui / sans-serif 都会被替换；指定这一套后各设备显示一致。 */
 .ds-c select, .ds-c textarea { font-family: inherit; }
 
 /* ---------- 0. 新 token ---------- */
@@ -1000,29 +1023,38 @@ body.ds-c.performance-mode .ds-dock { background: var(--cell); }
 body.ds-c .ds-ambient canvas.is-on { opacity: .62; }
 body.ds-c.light-mode .ds-ambient canvas.is-on { opacity: .34; }
 /* 两团分区光：用 body 的两个伪元素，小尺寸绘制再 scale 放大（纹理小、只做合成） */
+/* 两团分区光：用 body 的两个伪元素，小尺寸绘制再放大（纹理小、只做合成）。
+   性能：缩放从「动画属性」改成「静态 transform」——
+   缩放一旦参与 keyframes，浏览器每帧都得重新决定这块的光栅化比例；自带内核的 Chrome 扛得住，
+   套壳浏览器（系统 WebView）上就退化成每帧重绘一大块 radial-gradient，滑动立刻发涩。
+   钉成静态值后动画只剩 translate + opacity，整条动画能留在合成器里跑。
+   缩放取的是原来「最亮时刻」的值，所以光团最显眼的时候尺寸与改动前完全一致。 */
 body.ds-c::before, body.ds-c::after {
   content: ""; position: fixed; z-index: -1; pointer-events: none;
   left: 50%; top: 50%; width: 120px; height: 120px; margin: -60px 0 0 -60px; border-radius: 50%;
   opacity: 0; will-change: transform, opacity;
 }
-body.ds-c::before { background: radial-gradient(closest-side, color-mix(in oklab, var(--zone-first) 70%, transparent), transparent); }
-body.ds-c::after { background: radial-gradient(closest-side, color-mix(in oklab, var(--zone-loop) 70%, transparent), transparent); }
+body.ds-c::before { transform: scale(7.5); background: radial-gradient(closest-side, color-mix(in oklab, var(--zone-first) 70%, transparent), transparent); }
+body.ds-c::after { transform: scale(7.5); background: radial-gradient(closest-side, color-mix(in oklab, var(--zone-loop) 70%, transparent), transparent); }
 @supports (animation-timeline: scroll()) {
   body.ds-c::before { animation: dsZoneA linear both; animation-timeline: scroll(root); }
   body.ds-c::after { animation: dsZoneB linear both; animation-timeline: scroll(root); }
 }
-/* 滚动进度 → 光团位置：首发区（约 45%~65%）亮起橙光，循环区（约 62%~85%）亮起青光 */
+/* 滚动进度 → 光团位置：首发区（约 45%~65%）亮起橙光，循环区（约 62%~85%）亮起青光。
+   这里用独立的 translate 属性而非 transform，才不会盖掉上面那个静态 scale；
+   而能跑 animation-timeline 的内核（Chrome 115+）必然支持独立 translate（Chrome 104+），
+   所以这条路径不会踩兼容坑。 */
 @keyframes dsZoneA {
-  0%, 38% { transform: translate(-40vw, 70vh) scale(7); opacity: 0; }
-  52% { transform: translate(-28vw, 10vh) scale(7.5); opacity: .5; }
-  64% { transform: translate(-20vw, -30vh) scale(7); opacity: .35; }
-  76%, 100% { transform: translate(-30vw, -90vh) scale(6); opacity: 0; }
+  0%, 38% { translate: -40vw 70vh; opacity: 0; }
+  52% { translate: -28vw 10vh; opacity: .5; }
+  64% { translate: -20vw -30vh; opacity: .35; }
+  76%, 100% { translate: -30vw -90vh; opacity: 0; }
 }
 @keyframes dsZoneB {
-  0%, 56% { transform: translate(40vw, 80vh) scale(7); opacity: 0; }
-  70% { transform: translate(30vw, 5vh) scale(7.5); opacity: .45; }
-  84% { transform: translate(22vw, -35vh) scale(7); opacity: .3; }
-  96%, 100% { transform: translate(30vw, -90vh) scale(6); opacity: 0; }
+  0%, 56% { translate: 40vw 80vh; opacity: 0; }
+  70% { translate: 30vw 5vh; opacity: .45; }
+  84% { translate: 22vw -35vh; opacity: .3; }
+  96%, 100% { translate: 30vw -90vh; opacity: 0; }
 }
 body.ds-c.light-mode::before, body.ds-c.light-mode::after { mix-blend-mode: multiply; }
 body.ds-c.performance-mode::before, body.ds-c.performance-mode::after { display: none; }
@@ -1143,20 +1175,22 @@ body.ds-c:has(input[type="number"]:focus, input[type="text"]:focus) .ds-dock { t
   .ds-c .card-title:has(.limit-badge) .limit-badge { margin-left: 0; order: 3; flex-basis: auto; }
   .ds-c .pv-collapsible .card-title:has(.limit-badge) .limit-badge { display: none; }
 }
-/* 第三团光：基础属性区跟随品质色（放在 .ds-ambient::before，才能读到 body 上的 --acc） */
+/* 第三团光：基础属性区跟随品质色（放在 .ds-ambient::before，才能读到 body 上的 --acc）。
+   性能处理同上：scale 钉成静态（取最亮时刻的 8），keyframes 只走 translate + opacity。 */
 .ds-c .ds-ambient::before {
   content: ""; position: absolute; z-index: 0; pointer-events: none;
   left: 50%; top: 50%; width: 120px; height: 120px; margin: -60px 0 0 -60px; border-radius: 50%; opacity: 0;
+  transform: scale(8);
   background: radial-gradient(closest-side, color-mix(in oklab, var(--acc) 75%, transparent), transparent);
 }
 @supports (animation-timeline: scroll()) {
   .ds-c .ds-ambient::before { animation: dsZoneC linear both; animation-timeline: scroll(root); }
 }
 @keyframes dsZoneC {
-  0%, 10% { transform: translate(35vw, 70vh) scale(7); opacity: 0; }
-  24% { transform: translate(28vw, 0vh) scale(8); opacity: .42; }
-  38% { transform: translate(-25vw, -20vh) scale(8); opacity: .36; }
-  48%, 100% { transform: translate(-30vw, -90vh) scale(6); opacity: 0; }
+  0%, 10% { translate: 35vw 70vh; opacity: 0; }
+  24% { translate: 28vw 0vh; opacity: .42; }
+  38% { translate: -25vw -20vh; opacity: .36; }
+  48%, 100% { translate: -30vw -90vh; opacity: 0; }
 }
 .ds-c.light-mode .ds-ambient::before { mix-blend-mode: multiply; }
 .ds-c.performance-mode .ds-ambient::before { display: none; }
@@ -1289,8 +1323,11 @@ details.tutorial-details.pv-js.pv-closing summary .dropdown-icon { transform: no
   body.ds-c.pv-sheet-open .pv-sheet.dropdown-container { transform: none; visibility: visible; transition: transform .34s cubic-bezier(.2, .8, .2, 1), visibility 0s; }
   body.ds-c.pv-sheet-open { overflow: hidden; }
   body.ds-c.pv-sheet-open .ds-dock { transform: translate(-50%, 150%); opacity: 0; pointer-events: none; }
-  .ds-c .pv-sheet-grab { flex: none; width: 38px; height: 5px; margin: 8px auto 2px; border-radius: 3px; background: var(--fill-2); }
-  .ds-c .pv-sheet-head { flex: none; display: flex; align-items: center; justify-content: space-between; padding: 6px 16px 10px; }
+  .ds-c .pv-sheet-grab { position: relative; flex: none; width: 38px; height: 5px; margin: 8px auto 2px; border-radius: 3px; background: var(--fill-2); touch-action: none; cursor: grab; }
+  /* 横条本体只有 5px 高，手指很难按准；用伪元素把命中区扩成约 138×25，拖动才跟手 */
+  .ds-c .pv-sheet-grab::before { content: ""; position: absolute; left: -50px; right: -50px; top: -10px; bottom: -10px; }
+  .ds-c .pv-sheet-grab:active { cursor: grabbing; }
+  .ds-c .pv-sheet-head { flex: none; display: flex; align-items: center; justify-content: space-between; padding: 6px 16px 10px; touch-action: none; }
   .ds-c .pv-sheet-head b { font-size: 17px; font-weight: 600; }
   .ds-c .pv-sheet-done { height: 32px; padding: 0 14px; border: 0; border-radius: 999px; background: var(--fill); color: var(--ink); font: 600 14px var(--sans); cursor: pointer; }
   .ds-c .pv-sheet-search { flex: none; position: relative; margin: 0 16px 10px; }
@@ -1879,7 +1916,7 @@ details.tutorial-details.pv-js.pv-closing summary .dropdown-icon { transform: no
   <div id="formulaDisplayFirst" class="formula-box"><span class="zh">运算引擎加载中...</span><span class="lang-en">Loading calculation engine...</span></div>
 </div></div>
       </section>
-      <div class="cp-split" aria-hidden="true"><span class="cp-split-long"><span class="zh">首发一大 ⟷ 后续循环 · 两套独立测算</span><span class="lang-en">1st Ult ⟷ Loop · separate calculations</span></span><span class="cp-split-short"><span class="zh">两套独立测算</span><span class="lang-en">SEPARATE</span></span></div>
+      <div class="cp-split" aria-hidden="true"></div>
       <section class="cp-group cp-group-loop" id="calcAreaLoop">
         <div class="cp-group-head"><span class="cp-step">2</span><div class="section-divider"><span><span class="zh">后续大招循环测算区</span><span class="lang-en">Subsequent Ult Loop Area</span></span></div></div>
         <div class="cp-group-body">
@@ -2073,7 +2110,7 @@ details.tutorial-details.pv-js.pv-closing summary .dropdown-icon { transform: no
         d.className = inp.className + ' pv-x-val';
         var v = inp.value;
         if (v === '' && inp.placeholder) { d.textContent = inp.placeholder; d.classList.add('pv-x-ph'); } else d.textContent = v;
-        d.style.setProperty('font-family', '"AceRacer Sans", Arial, "Helvetica Neue", Helvetica, sans-serif', 'important');
+        d.style.setProperty('font-family', '"Noto Sans SC", Arial, "Helvetica Neue", Helvetica, sans-serif', 'important');
         inp.parentNode.replaceChild(d, inp);
       }
     });
@@ -2418,6 +2455,55 @@ details.tutorial-details.pv-js.pv-closing summary .dropdown-icon { transform: no
     var origFilter = window.filterCarList;
     window.filterCarList = function () { var r = origFilter.apply(this, arguments); applyQual(); return r; };
     decorateList();
+
+    // ---------- 小横条 / 头部：按住上下拖动面板 ----------
+    // 手感：跟手位移只用 transform（不触发重排）、往上拖带阻尼、松手按「下拉超过 1/4 面板高
+    // 或快速下甩」决定收起还是弹回；遮罩透明度跟着手指走，松手后交还给 CSS 动画收尾。
+    var drag = null;
+    function dragStart(e) {
+      if (drag || e.button > 0) return;
+      if (!e.target.closest('.pv-sheet-grab, .pv-sheet-head')) return;
+      if (e.target.closest('button, input, a')) return;        // 头部里的按钮不参与拖拽
+      drag = { y0: e.clientY, dy: 0, t0: e.timeStamp, id: e.pointerId, h: sheet.offsetHeight || 480 };
+      sheet.style.transition = 'none';
+      try { sheet.setPointerCapture(e.pointerId); } catch (err) {}
+    }
+    function dragMove(e) {
+      if (!drag || e.pointerId !== drag.id) return;
+      var dy = e.clientY - drag.y0;
+      drag.dy = dy > 0 ? dy : dy * .28;                        // 往上拖留阻尼，别把面板拔离视口
+      sheet.style.transform = 'translateY(' + drag.dy.toFixed(1) + 'px)';
+      if (mask) mask.style.opacity = String(Math.max(0, 1 - Math.max(0, drag.dy) / (drag.h * .8)));
+    }
+    function dragEnd(e) {
+      if (!drag || (e && e.pointerId !== drag.id)) return;
+      var d = drag; drag = null;
+      if (mask) mask.style.opacity = '';
+      if (!document.body.classList.contains('pv-sheet-open')) {   // 拖到一半被别的方式关掉了
+        sheet.style.transition = ''; sheet.style.transform = ''; return;
+      }
+      if (Math.abs(d.dy) < 4) {                                // 只是点了一下横条
+        sheet.style.transition = ''; sheet.style.transform = ''; return;
+      }
+      var flick = (e && e.timeStamp - d.t0 < 260 && d.dy > 40); // 快速下甩
+      var close = d.dy > d.h * .25 || flick;
+      sheet.style.transition = 'transform .3s cubic-bezier(.2,.8,.2,1)';
+      if (close) {
+        sheet.style.transform = 'translateY(102%)';            // 先滑出去，动画结束再真正关闭，避免跳一下
+        setTimeout(function () {
+          sheet.style.transition = '';
+          sheet.style.transform = '';
+          closeSheet();
+        }, 300);
+      } else {
+        sheet.style.transform = '';                            // 回到 CSS 的定位，CSS transition 负责回弹
+        setTimeout(function () { sheet.style.transition = ''; }, 320);
+      }
+    }
+    sheet.addEventListener('pointerdown', dragStart);
+    sheet.addEventListener('pointermove', dragMove);
+    sheet.addEventListener('pointerup', dragEnd);
+    sheet.addEventListener('pointercancel', dragEnd);
   }
 
   document.addEventListener('DOMContentLoaded', function () {
@@ -3358,10 +3444,10 @@ function __tok(n, d) { var v = getComputedStyle(document.body).getPropertyValue(
                    cloneElements[i].style.setProperty('color', compStyle.color, 'important');
                    cloneElements[i].style.setProperty('border-color', compStyle.borderColor, 'important');
                }
-               cloneElements[i].style.setProperty('font-family', '"AceRacer Sans", Arial, "Helvetica Neue", Helvetica, sans-serif', 'important');
+               cloneElements[i].style.setProperty('font-family', '"Noto Sans SC", Arial, "Helvetica Neue", Helvetica, sans-serif', 'important');
                cloneElements[i].style.setProperty('letter-spacing', 'normal', 'important');
            }
-           clone.style.setProperty('font-family', '"AceRacer Sans", Arial, "Helvetica Neue", Helvetica, sans-serif', 'important');
+           clone.style.setProperty('font-family', '"Noto Sans SC", Arial, "Helvetica Neue", Helvetica, sans-serif', 'important');
 
            var origInputs = appContainer.querySelectorAll('input, select, textarea');
            var cloneInputs = clone.querySelectorAll('input, select, textarea');
@@ -3524,13 +3610,13 @@ function __tok(n, d) { var v = getComputedStyle(document.body).getPropertyValue(
                    ctx.stroke();
                    
                    ctx.fillStyle = __tok('--export-accent', isLight ? '#007bb5' : '#00f2fe');
-                   ctx.font = 'bold ' + (22 * scaleMultiplier) + 'px "AceRacer Sans", -apple-system, BlinkMacSystemFont, sans-serif';
+                   ctx.font = 'bold ' + (22 * scaleMultiplier) + 'px "Noto Sans SC", -apple-system, BlinkMacSystemFont, sans-serif';
                    ctx.textAlign = 'center';
                    ctx.textBaseline = 'middle';
                    ctx.fillText('aceracercalc.top', newCanvas.width / 2, canvas.height + (30 * scaleMultiplier));
                    
                    ctx.fillStyle = isLight ? '#4a5568' : '#8e9aaf';
-                   ctx.font = (13 * scaleMultiplier) + 'px "AceRacer Sans", -apple-system, BlinkMacSystemFont, sans-serif';
+                   ctx.font = (13 * scaleMultiplier) + 'px "Noto Sans SC", -apple-system, BlinkMacSystemFont, sans-serif';
                    ctx.fillText(_('王牌竞速芯片计算器', 'Ace Racer Chip Calculator'), newCanvas.width / 2, canvas.height + (52 * scaleMultiplier));
                    
                    var link = document.createElement('a');
@@ -4493,57 +4579,53 @@ function __tok(n, d) { var v = getComputedStyle(document.body).getPropertyValue(
 <script>
 
 (function() {
-    var frameCount = 0;
-    var lastTime = 0; 
-    var lowFpsCount = 0;
-    
-    var FPS_THRESHOLD = 25; 
-    var TOLERANCE = 3;
-    var isActive = true;
+    // 交互期帧率哨兵。
+    // 旧逻辑是「开机满 3 秒后开始，每秒统计一次总帧率」——可空闲时 rAF 本来就是满帧，
+    // 于是无论滑动卡成什么样，判据都永远漂亮：套壳浏览器上滚成幻灯片也不会降级。
+    // 现在只在「最近 200ms 内有过滚动 / 触摸 / 滚轮」时才采样，连续几个采样都不达标才降级。
+    var FPS_THRESHOLD = 30;      // 交互中低于 30fps 才算卡
+    var WINDOW_MS = 600;         // 每 600ms 出一个采样
+    var TOLERANCE = 3;           // 连续 3 个采样（约 1.8 秒滑动）都不达标才降级
+    var lastInput = 0, frames = 0, t0 = 0, slow = 0, isActive = true;
 
-    function checkFPS() { 
+    function markInput() { lastInput = performance.now(); }
+    ['scroll', 'touchstart', 'touchmove', 'pointerdown', 'pointermove', 'wheel', 'keydown'].forEach(function (ev) {
+        document.addEventListener(ev, markInput, { passive: true, capture: true });
+    });
+
+    function checkFPS(now) {
         if (!isActive) return;
+        if (!t0) t0 = now;
 
-        var now = performance.now(); 
-        if (lastTime === 0) lastTime = now; 
-
-        frameCount++;
-        var elapsed = now - lastTime;
-
-        if (elapsed >= 1000) {
-            var fps = Math.round((frameCount * 1000) / elapsed);
-            
-            if (fps > 0 && fps < FPS_THRESHOLD && !document.hidden) {
-                lowFpsCount++;
-                if (lowFpsCount >= TOLERANCE) {
-                    document.body.classList.add('performance-mode');
-                    if (typeof showToast === 'function') {
-                        showToast(_("⚠️ 检测到设备持续卡顿，已自动切换至【无动画性能模式】", "⚠️ Device lag detected, auto-switched to [Performance Mode]"));
+        if (now - lastInput < 200) {
+            frames++;
+            var dt = now - t0;
+            if (dt >= WINDOW_MS) {
+                var fps = frames * 1000 / dt;
+                if (fps < FPS_THRESHOLD) {
+                    slow++;
+                    if (slow >= TOLERANCE) {
+                        document.body.classList.add('performance-mode');
+                        if (typeof showToast === 'function') {
+                            showToast(_("⚠️ 检测到滑动持续卡顿，已自动切换至【无动画性能模式】", "⚠️ Persistent scroll lag detected, auto-switched to [Performance Mode]"));
+                        }
+                        isActive = false;
+                        return;
                     }
-                    isActive = false; 
-                    return; 
+                } else {
+                    slow = 0;
                 }
-            } else {
-                lowFpsCount = 0; 
+                frames = 0; t0 = now;
             }
-
-            frameCount = 0;
-            lastTime = now;
+        } else if (now - t0 > WINDOW_MS) {
+            frames = 0; t0 = now;     // 空闲期不计入，免得把空闲帧率混进判据
         }
-        
-        if (isActive) {
-            requestAnimationFrame(checkFPS);
-        }
-    }
-
-    setTimeout(function() {
         requestAnimationFrame(checkFPS);
-    }, 3000);
+    }
+    requestAnimationFrame(checkFPS);
 
     document.addEventListener('visibilitychange', function() {
-        lowFpsCount = 0;
-        frameCount = 0;
-        lastTime = 0; 
+        frames = 0; t0 = 0; slow = 0;   // 切回前台重新开始，别把后台停顿算成掉帧
     });
 })();
 
@@ -4766,7 +4848,7 @@ if (typeof CAR_DATABASE !== 'undefined') {
   // 手机上就是「一卡一卡、直接跳到下一屏」。实测去掉这一层，滑动帧间隔从 ~70ms 回到 16.7ms。
   // 现在改成：换车时只在一块 200px 宽的小 canvas 上模糊一次（等效半径按比例换算，看起来完全一样），
   // 之后屏幕上只是把这张已经糊好的小图放大显示 —— 合成器每帧只做一次贴图，几乎零开销。
-  var ambLayers = null, ambOn = 0, ambToken = 0;
+  var ambLayers = null, ambOn = 0, ambToken = 0, ambImg = null;   // ambImg：最近一次成功加载的车图，回前台重画时复用
   var AMB_W = 200;                               // 模糊图工作宽度；CSS 仍按 1120px 显示
   function ambKey(url) { return url + '|' + (document.body.classList.contains('light-mode') ? 'l' : 'd'); }
   function paintAmb(cv, img, key) {
@@ -4832,6 +4914,7 @@ if (typeof CAR_DATABASE !== 'undefined') {
       next.dataset.pending = '';
       if (token !== ambToken) return;  // 期间又换过车，交给后来那次
       if (!paintAmb(next, im, key)) return;
+      ambImg = im;                     // 留住已解码的图，页面回到前台时可直接重画
       if (next === cur) { cur.classList.add('is-on'); return; }
       next.classList.add('is-on');
       cur.classList.remove('is-on');
@@ -4842,6 +4925,40 @@ if (typeof CAR_DATABASE !== 'undefined') {
     im.src = url;
     if (im.complete && im.naturalWidth > 0) go();
   }
+
+  // ---------- 回到前台 / 从往返缓存恢复 / 画布上下文丢失 → 重画环境光 ----------
+  // 为什么必须补这一步：浏览器（Android Chrome 与各家套壳 WebView 都算）会在页面转入后台时
+  // 回收 canvas 的绘制内容来省内存，回到前台画布就是一片空白。而上面 syncAmbient() 的判据是
+  // 「is-on 且 dataset.key 没变就直接返回」—— 画布虽然空了，这两个标记却还在，于是它认定
+  // 「已经画好了」，背景车图就再也不出现（除非换车或切主题）。这里在恢复可见时把标记作废并重画。
+  function revalidateAmbient() {
+    if (!ambLayers) return;
+    ambToken++;                                     // 作废进行中的加载，避免和这次重画抢
+    for (var i = 0; i < ambLayers.length; i++) ambLayers[i].dataset.key = '';
+    var car = $('carImage');
+    if (car && car.src && ambImg && ambImg.naturalWidth) {
+      var key = ambKey(car.src);
+      for (var j = 0; j < ambLayers.length; j++) {
+        var cv = ambLayers[j];
+        if (cv.classList.contains('is-on')) {
+          cv.width = 0;                            // 丢掉可能已被回收的后备存储，强制重建
+          if (paintAmb(cv, ambImg, key)) return;   // 图还在手上，直接重画，不用重新请求
+        }
+      }
+    }
+    syncAmbient();                                 // 否则走正常路径（命中缓存时也很快）
+  }
+  document.addEventListener('visibilitychange', function () { if (!document.hidden) revalidateAmbient(); });
+  window.addEventListener('pageshow', function (e) { if (e.persisted) revalidateAmbient(); });
+  window.addEventListener('resume', revalidateAmbient);   // Page Lifecycle：部分套壳内核只发这个
+  [['dsAmbientImg'], ['dsAmbientImg2']].forEach(function (ids) {
+    var cv = $(ids[0]);
+    if (cv && cv.addEventListener) {
+      // 2D 画布也可能被回收上下文；preventDefault 才能等到 contextrestored
+      cv.addEventListener('contextlost', function (e) { e.preventDefault(); revalidateAmbient(); });
+      cv.addEventListener('contextrestored', function () { revalidateAmbient(); });
+    }
+  });
 
   // ---------- 液态玻璃折射（仅 Chromium：只有它支持 backdrop-filter: url(#svg)） ----------
   // 按胶囊实际尺寸生成位移贴图：边缘一圈（bezel）按「凸透镜」把采样点往外推，中心不动 → 边缘处背景被弯折。
@@ -4904,6 +5021,25 @@ if (typeof CAR_DATABASE !== 'undefined') {
       requestAnimationFrame(buildGlass);
     }, 220);
   }, { passive: true });
+
+  // ---------- 滚动期降级：暂停最贵的合成滤镜 ----------
+  // dock 的液态玻璃折射是 backdrop-filter: url(#svg)。只要它下面有内容在动，合成器每帧都得
+  // 重新采样这一块、重跑一遍 feDisplacementMap 位移。自带内核的 Chrome 有独立 GPU 进程 +
+  // Input Vizard（输入事件不走浏览器主线程）扛得住；套壳浏览器（Via 这类把渲染交给系统
+  // WebView 的）这条链常常落到主线程上，滑动就一步一卡。
+  // 这里在滚动期间只摘掉「位移」、保留同半径的磨砂与提饱和 —— 少的仅是边缘那圈约 20px 的
+  // 弯折，滚动中肉眼分辨不出；手一停 160ms 立刻复原，静止观感与改动前完全一致。
+  // 用捕获阶段监听：选车面板里的列表是独立滚动容器，scroll 事件不冒泡，只有捕获才收得到。
+  var scrollIdleTimer = 0, isScrolling = false;
+  function markScrolling() {
+    if (!isScrolling) { isScrolling = true; document.body.classList.add('ds-scrolling'); }
+    clearTimeout(scrollIdleTimer);
+    scrollIdleTimer = setTimeout(function () {
+      isScrolling = false;
+      document.body.classList.remove('ds-scrolling');
+    }, 160);
+  }
+  document.addEventListener('scroll', markScrolling, { passive: true, capture: true });
 
   // ---------- 汇总刷新 ----------
   var queued = false;
