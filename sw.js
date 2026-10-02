@@ -14,7 +14,14 @@ const CURRENT_VALID_ASSETS = [
     'screenshot-mobile-3.png',
     'screenshot-desktop-1.png',
     'screenshot-desktop-2.png',
-    'screenshot-desktop-3.png'
+    'screenshot-desktop-3.png',
+    // 站内字体（离线时也保持同一套字体；带 / 前缀的是站点部署在根路径时的匹配形式）
+    'fonts/ace-sans-400.v1.woff2',
+    'fonts/ace-sans-500.v1.woff2',
+    'fonts/ace-sans-700.v1.woff2',
+    '/fonts/ace-sans-400.v1.woff2',
+    '/fonts/ace-sans-500.v1.woff2',
+    '/fonts/ace-sans-700.v1.woff2'
 ];
 
 self.addEventListener('install', (e) => {

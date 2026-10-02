@@ -318,7 +318,10 @@ var _CAR_IMG = {
        }
    </script>
 
-   <style>
+   <link rel="preload" href="fonts/ace-sans-400.v1.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="fonts/ace-sans-500.v1.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="fonts/ace-sans-700.v1.woff2" as="font" type="font/woff2" crossorigin>
+<style>
 /* ============ base.css：三套设计共用的「功能性」样式 ============
    只放 JS 依赖的显隐 / 展开 / 语言切换机制，不放任何视觉风格。 */
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
@@ -506,9 +509,9 @@ body[data-theme-mode="light"] .theme-ico .ico:nth-child(1), body[data-theme-mode
   --check-acc: var(--check-w);
   --shadow: 0 1px 2px rgba(0,0,0,.04), 0 0 0 1px rgba(0,0,0,.035);
   --r-lg: 20px; --r-md: 14px; --r-sm: 10px;
-  --sans: system-ui, -apple-system, "PingFang SC", "HarmonyOS Sans SC", "MiSans", "Microsoft YaHei UI", "Microsoft YaHei", "Segoe UI", sans-serif;
-  --round: ui-rounded, "SF Pro Rounded", "HarmonyOS Sans SC", "MiSans", system-ui, "Segoe UI Variable Display", "Segoe UI", sans-serif;
-  --mono: ui-monospace, "SF Mono", "Cascadia Mono", Consolas, "Microsoft YaHei", monospace;
+  --sans: "AceRacer Sans", system-ui, -apple-system, "PingFang SC", "HarmonyOS Sans SC", "MiSans", "Microsoft YaHei UI", "Microsoft YaHei", "Segoe UI", sans-serif;
+  --round: "AceRacer Sans", ui-rounded, "SF Pro Rounded", "HarmonyOS Sans SC", "MiSans", system-ui, "Segoe UI Variable Display", "Segoe UI", sans-serif;
+  --mono: ui-monospace, "SF Mono", "Cascadia Mono", Consolas, "AceRacer Sans", monospace;
 }
 .ds-c[data-quality="legend"] { --acc: #f2a900; --acc-ink: #9a6400; --flash-rgb: 242, 169, 0; --acc-soft: rgba(242,169,0,.14); --acc-glow: rgba(242,169,0,.22); }
 .ds-c[data-quality="epic"] { --acc: #9b5de5; --acc-ink: #7a3fc4; --flash-rgb: 155, 93, 229; --acc-soft: rgba(155,93,229,.13); --acc-glow: rgba(155,93,229,.2); }
@@ -627,19 +630,19 @@ body[data-theme-mode="light"] .theme-ico .ico:nth-child(1), body[data-theme-mode
               radial-gradient(60% 50% at 40% 112%, var(--amb-soft), transparent 70%); }
 /* 固定像素宽度（不再用 vmax）：拖动窗口时这层的盒子不变，浏览器无需重新栅格化这块大模糊，
    这是「拖宽度卡顿」里最贵的一项；覆盖面积靠 scale(2.6)。 */
-.ds-c .ds-ambient img { position: absolute; left: 50%; top: 30%; width: 1120px; max-width: none; height: auto; transform: translate(-50%, -50%) scale(2.6); filter: blur(34px) saturate(1.7); opacity: 0; transition: opacity .9s ease; }
-.ds-c.light-mode .ds-ambient img { filter: blur(34px) saturate(2.2); }
+.ds-c .ds-ambient canvas { position: absolute; left: 50%; top: 30%; width: 1120px; max-width: none; height: auto; transform: translate(-50%, -50%) scale(2.6); opacity: 0; transition: opacity .9s ease; }
+/* 模糊与提饱和已在 view.js 里预先画进 canvas（浅色 2.2 / 深色 1.7），这里不再用 CSS filter */
 /* 换车交叉淡入：两层 A/B 轮换，view.js 把新图放到「暗着的那层」再切 .is-on —— 旧车淡出、新车淡入 */
-body.ds-c .ds-ambient img.is-on { opacity: .55; }
+body.ds-c .ds-ambient canvas.is-on { opacity: .55; }
 /* 浅色底本身亮，模糊车辆要更实一点才看得见；.3 让背景的亮度起伏与深色模式 .55 基本持平
    （实测 浅色 .3 起伏 std 15.5 / 深色 .55 std 15.7） */
-body.ds-c.light-mode .ds-ambient img.is-on { opacity: .3; }
+body.ds-c.light-mode .ds-ambient canvas.is-on { opacity: .3; }
 /* 只有选了车才把这层提升为独立合成层（省一块大纹理），拖窗口时它就只做合成、不再重新模糊 */
-body.ds-c.ds-has-car .ds-ambient img { will-change: transform, opacity; }
+body.ds-c.ds-has-car .ds-ambient canvas { will-change: transform, opacity; }
 .ds-c .ds-ambient::after { content: ""; position: absolute; inset: 0; opacity: .07; background-size: 170px 170px;
   background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='170' height='170'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='2' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 .5 0 0 0 0 .5 0 0 0 0 .5 0 0 0 1 0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E"); }
 body.ds-c.light-mode .ds-ambient::after { opacity: .05; }
-body.ds-c.performance-mode .ds-ambient img { display: none; }
+body.ds-c.performance-mode .ds-ambient canvas { display: none; }
 
 /* C · 分组列表与原生控件 */
 .ds-c .card { background: var(--cell); border-radius: var(--r-lg); box-shadow: var(--shadow); padding: 18px; }
@@ -917,6 +920,14 @@ body.ds-c.performance-mode .ds-dock { background: var(--cell); }
    4) 结果卡成为每个测算区的视觉主角：状态色辉光 + 270° 转速表式读数（JS 在 proto.js）。
    ===================================================================== */
 
+/* ---------- 字体：站内自带（Noto Sans CJK SC 按本站用字裁剪的子集，见 fonts/OFL.txt） ----------
+   手机装了第三方系统字体时，system-ui / sans-serif 都会被替换；这里指定站内字体，任何设备显示一致。
+   文件名带版本号，可长期缓存；用字有增补时重新裁剪并把 .v1 递增。 */
+@font-face { font-family: "AceRacer Sans"; font-style: normal; font-weight: 400; font-display: swap; src: url("fonts/ace-sans-400.v1.woff2") format("woff2"); }
+@font-face { font-family: "AceRacer Sans"; font-style: normal; font-weight: 500; font-display: swap; src: url("fonts/ace-sans-500.v1.woff2") format("woff2"); }
+@font-face { font-family: "AceRacer Sans"; font-style: normal; font-weight: 700; font-display: swap; src: url("fonts/ace-sans-700.v1.woff2") format("woff2"); }
+.ds-c select, .ds-c textarea { font-family: inherit; }
+
 /* ---------- 0. 新 token ---------- */
 .ds-c {
   --zone-first: #ff8a1f;            /* 首发 · 点火橙 */
@@ -952,6 +963,16 @@ body.ds-c.performance-mode .ds-dock { background: var(--cell); }
   box-shadow: inset 0 1px 0 var(--surface-rim), inset 0 0 0 1px var(--surface-edge), var(--surface-drop);
 }
 .ds-c.light-mode .card, .ds-c.light-mode .tutorial-details, .ds-c.light-mode .footer-legal, .ds-c.light-mode .bottom-image-wrapper { background-image: none; }
+/* 顶栏三个按钮（菜单 / 主题 / 语言）：与卡片同一套半透明玻璃，不再是实心块 */
+.ds-c .top-bar .nav-btn {
+  background-color: var(--surface);
+  background-image: linear-gradient(180deg, rgba(255, 255, 255, .07), rgba(255, 255, 255, 0));
+  box-shadow: inset 0 1px 0 var(--surface-rim), inset 0 0 0 1px var(--surface-edge), var(--surface-drop);
+  transition: background-color .15s, transform .15s;
+}
+.ds-c.light-mode .top-bar .nav-btn { background-image: none; }
+.ds-c .top-bar .nav-btn:hover { background-color: var(--surface); background-image: linear-gradient(var(--fill-hover), var(--fill-hover)); }
+.ds-c .top-bar .nav-btn:active { transform: scale(.96); }
 /* 卡片里的「凸起层」也改成半透明，避免在玻璃上出现一块块实心黑洞 */
 .ds-c:not(.light-mode) .nitro-item.selected,
 .ds-c:not(.light-mode) .empower-sub-options,
@@ -976,8 +997,8 @@ body.ds-c.performance-mode .ds-dock { background: var(--cell); }
     radial-gradient(55% 40% at 108% 30%, color-mix(in oklab, var(--acc) 10%, transparent), transparent 70%),
     #f3f4f8;
 }
-body.ds-c .ds-ambient img.is-on { opacity: .62; }
-body.ds-c.light-mode .ds-ambient img.is-on { opacity: .34; }
+body.ds-c .ds-ambient canvas.is-on { opacity: .62; }
+body.ds-c.light-mode .ds-ambient canvas.is-on { opacity: .34; }
 /* 两团分区光：用 body 的两个伪元素，小尺寸绘制再 scale 放大（纹理小、只做合成） */
 body.ds-c::before, body.ds-c::after {
   content: ""; position: fixed; z-index: -1; pointer-events: none;
@@ -1093,9 +1114,9 @@ body.ds-c:has(input[type="number"]:focus, input[type="text"]:focus) .ds-dock { t
 .ds-c .pv-collapsible > .card-title::after {
   content: ""; width: 22px; height: 22px; margin-left: 8px; flex: none; border-radius: 50%;
   background: var(--fill) url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%238e8e93' stroke-width='2.4' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='m6 9 6 6 6-6'/%3E%3C/svg%3E") no-repeat center / 14px;
-  transition: transform .25s;
+  transition: transform .32s cubic-bezier(.2,.8,.2,1);
 }
-.ds-c .pv-collapsible:not(.pv-collapsed) > .card-title::after { transform: rotate(180deg); }
+.ds-c .pv-collapsible:not(.pv-shut) > .card-title::after { transform: rotate(180deg); }
 .ds-c .pv-collapsed > :not(.card-title) { display: none !important; }
 .ds-c .pv-collapsed > .card-title { margin-bottom: 0; }
 .ds-c .pv-sum { margin-left: auto; font-size: 12px; font-weight: 600; color: var(--ink-3); white-space: nowrap; }
@@ -1107,8 +1128,8 @@ body.ds-c:has(input[type="number"]:focus, input[type="text"]:focus) .ds-dock { t
 /* ---------- V4.1 微调 ---------- */
 /* 手机：环境光车图放到视口中部、更饱和，让每一屏卡片后面都有颜色起伏 */
 @media (max-width: 849px) {
-  .ds-c .ds-ambient img { top: 48%; }
-  body.ds-c:not(.light-mode) .ds-ambient img.is-on { opacity: .72; }
+  .ds-c .ds-ambient canvas { top: 48%; }
+  body.ds-c:not(.light-mode) .ds-ambient canvas.is-on { opacity: .72; }
 }
 /* 浅色：凸起层与标签保持实白，避免「脏玻璃」发灰 */
 .ds-c.light-mode #carPreviewTags > span:not(:first-child),
@@ -1226,7 +1247,8 @@ body.ds-c.performance-mode .dropdown-menu { -webkit-backdrop-filter: none; backd
 /* ---------- 手机端：计算过程默认收起 ---------- */
 .ds-c .pv-fold-btn { display: flex; align-items: center; justify-content: center; gap: 6px; width: 100%; height: 40px; border: 0; border-radius: var(--r-md);
   background: var(--fill); color: var(--ink-2); font: 500 13px var(--sans); cursor: pointer; }
-.ds-c .pv-fold-btn .ico { width: 15px; height: 15px; transition: transform .2s; }
+.ds-c .pv-fold-btn { transition: margin-bottom .3s cubic-bezier(.2,.8,.2,1); }
+.ds-c .pv-fold-btn .ico { width: 15px; height: 15px; transition: transform .3s cubic-bezier(.2,.8,.2,1); }
 .ds-c .pv-fold-btn.open { margin-bottom: 8px; }
 .ds-c .pv-fold-btn.open .ico { transform: rotate(180deg); }
 .ds-c .formula-box.pv-fold-closed { display: none; }
@@ -1234,8 +1256,11 @@ body.ds-c.performance-mode .dropdown-menu { -webkit-backdrop-filter: none; backd
 /* ---------- 手机端：页脚合并成一张卡 ---------- */
 .ds-c .pv-mini-details > summary { list-style: none; display: inline-flex; align-items: center; gap: 4px; margin-bottom: 10px; font-size: 13px; color: var(--ink-2); cursor: pointer; }
 .ds-c .pv-mini-details > summary::-webkit-details-marker { display: none; }
-.ds-c .pv-mini-details > summary .ico { width: 14px; height: 14px; transition: transform .2s; }
-.ds-c .pv-mini-details[open] > summary .ico { transform: rotate(180deg); }
+.ds-c .pv-mini-details > summary .ico { width: 14px; height: 14px; transition: transform .3s cubic-bezier(.2,.8,.2,1); }
+.ds-c .pv-mini-details[open]:not(.pv-closing) > summary .ico { transform: rotate(180deg); }
+/* 使用须知：原站的 max-height 关键帧动画交给 v4.js 的真实高度动画（.pv-js 由脚本加上，脚本不可用时仍走原动画） */
+details.tutorial-details.pv-js > div:last-child { animation: none !important; }
+details.tutorial-details.pv-js.pv-closing summary .dropdown-icon { transform: none; }
 @media (max-width: 849px) {
   .ds-c .site-footer { gap: 0; margin-top: 24px; padding: 2px 16px; border-radius: var(--r-lg);
     background-color: var(--surface); background-image: linear-gradient(180deg, rgba(255, 255, 255, .045), rgba(255, 255, 255, 0) 140px);
@@ -1401,7 +1426,7 @@ body.ds-c.performance-mode .dropdown-menu { -webkit-backdrop-filter: none; backd
     </noscript>
 
 
-<div class="ds-ambient" aria-hidden="true" data-html2canvas-ignore="true"><img id="dsAmbientImg" alt=""><img id="dsAmbientImg2" alt=""></div>
+<div class="ds-ambient" aria-hidden="true" data-html2canvas-ignore="true"><canvas id="dsAmbientImg"></canvas><canvas id="dsAmbientImg2"></canvas></div>
 <div class="app-container">
   <div class="top-bar" data-html2canvas-ignore="true">
     <div class="top-left">
@@ -2048,7 +2073,7 @@ body.ds-c.performance-mode .dropdown-menu { -webkit-backdrop-filter: none; backd
         d.className = inp.className + ' pv-x-val';
         var v = inp.value;
         if (v === '' && inp.placeholder) { d.textContent = inp.placeholder; d.classList.add('pv-x-ph'); } else d.textContent = v;
-        d.style.setProperty('font-family', 'Arial, "Helvetica Neue", Helvetica, sans-serif', 'important');
+        d.style.setProperty('font-family', '"AceRacer Sans", Arial, "Helvetica Neue", Helvetica, sans-serif', 'important');
         inp.parentNode.replaceChild(d, inp);
       }
     });
@@ -2064,6 +2089,62 @@ body.ds-c.performance-mode .dropdown-menu { -webkit-backdrop-filter: none; backd
     }
     return k ? '<span class="pv-toast pv-toast-' + k + '">' + svg(IC[k]) + '<span>' + m + '</span></span>' : m;
   }
+
+  /* ---------- 开合动画（折叠卡片 / 计算过程 / 上榜条件 / 使用须知 共用） ----------
+     做法：先量出「起点」和「终点」的真实高度，再用 Web Animations 在两者之间过渡，
+     结束后清掉所有内联样式，交还给 CSS。动画中途再点一次会从当前帧的高度接着反向走，不会跳。
+     系统开了「减少动态效果」或站内性能模式时直接切换，不做动画。 */
+  var RM = window.matchMedia ? window.matchMedia('(prefers-reduced-motion: reduce)') : null;
+  var BOX = ['height', 'paddingTop', 'paddingBottom', 'marginTop', 'marginBottom'];
+  function motionOK(el) {
+    return !!(el && el.animate) && !(RM && RM.matches) && !document.body.classList.contains('performance-mode');
+  }
+  function inView(el) {
+    var r = el.getBoundingClientRect(), vh = window.innerHeight || document.documentElement.clientHeight;
+    return r.bottom > -60 && r.top < vh + 60;
+  }
+  function boxNow(el, keys) {
+    var o = {}, shown = el.getClientRects().length > 0, cs = shown ? getComputedStyle(el) : null;
+    keys.forEach(function (k) { o[k] = !shown ? 0 : k === 'height' ? el.getBoundingClientRect().height : (parseFloat(cs[k]) || 0); });
+    return o;
+  }
+  function stopMorph(el) {
+    if (el.__pvA) { el.__pvA.cancel(); el.__pvA = null; }
+    if (el.__pvK) { el.__pvK.forEach(function (x) { x.cancel(); }); el.__pvK = null; }
+    el.style.overflow = '';
+  }
+  // el：做高度过渡的元素；kids：同时淡入 / 淡出的子元素（可含 el 自己）；
+  // prepare()：在取消旧动画之后调用，把 DOM 切到「终点」状态并返回终点尺寸（省略的键视为 0）；
+  // finish()：动画自然结束（或不做动画）时调用
+  // fromZero：起点按「完全收起」算（<details> 关着时内容可能仍有布局尺寸，不能直接量）
+  function morph(el, opening, keys, kids, prepare, finish, fromZero) {
+    var from = fromZero ? boxNow(document.createElement('i'), keys) : boxNow(el, keys);
+    var op = kids.map(function (k) { return !fromZero && k.getClientRects().length ? parseFloat(getComputedStyle(k).opacity) : 0; });
+    var animate = motionOK(el) && inView(el);
+    stopMorph(el);
+    var to = prepare() || {};
+    keys.forEach(function (k) { if (to[k] == null) to[k] = 0; });
+    if (!animate || Math.abs(to.height - from.height) < 2) { if (finish) finish(); return; }
+    var dist = Math.abs(to.height - from.height);
+    var dur = Math.round(Math.min(420, Math.max(240, 180 + dist * 0.4)));
+    var k0 = {}, k1 = {};
+    keys.forEach(function (k) { k0[k] = from[k] + 'px'; k1[k] = to[k] + 'px'; });
+    el.style.overflow = 'hidden';
+    var a = el.animate([k0, k1], { duration: dur, easing: opening ? 'cubic-bezier(.2,.8,.2,1)' : 'cubic-bezier(.4,0,.2,1)', fill: 'forwards' });
+    el.__pvA = a;
+    el.__pvK = kids.map(function (k, i) {
+      return opening
+        ? k.animate([{ opacity: op[i], translate: '0 -6px' }, { opacity: 1, translate: '0 0' }],
+                    { duration: Math.round(dur * .85), delay: Math.round(dur * .12), easing: 'cubic-bezier(.2,.8,.2,1)', fill: 'both' })
+        : k.animate([{ opacity: op[i] }, { opacity: 0 }], { duration: Math.round(dur * .55), easing: 'ease-out', fill: 'forwards' });
+    });
+    a.onfinish = function () {
+      if (el.__pvA !== a) return;          // 已被新的一次开合打断
+      if (finish) finish();
+      stopMorph(el);
+    };
+  }
+  window.__pvMorph = morph;
 
   /* ---------- 渐进披露（低频卡片） ---------- */
   function val(id) { var e = $(id); return e ? parseFloat(e.value) || 0 : 0; }
@@ -2091,10 +2172,10 @@ body.ds-c.performance-mode .dropdown-menu { -webkit-backdrop-filter: none; backd
       c.el = card; c.s = s; c.touched = false;
       title.addEventListener('click', function (e) {
         if (e.target.closest('input, a')) return;
-        c.touched = true; card.classList.toggle('pv-collapsed');
+        c.touched = true; setShut(c, !isShut(c), true);
       });
     });
-    refreshCollapse(true);
+    refreshCollapse(true, true);
     var soft = function () { refreshCollapse(false); };
     document.addEventListener('input', soft, true);
     document.addEventListener('change', soft, true);
@@ -2102,14 +2183,35 @@ body.ds-c.performance-mode .dropdown-menu { -webkit-backdrop-filter: none; backd
   }
   // 收起规则：有值自动展开；只在首次加载 / 换车时自动收起空卡片 ——
   // 用户正在卡片里操作（例如关掉最后一个赋能）时不会突然收起；用户手动开合过的卡片以后都按用户的来
-  function refreshCollapse(reset) {
+  function refreshCollapse(reset, instant) {
     CARDS.forEach(function (c) {
       if (!c.el) return;
       var r = c.sum(); c.s.textContent = r[0]; c.s.classList.toggle('on', r[1]);
       if (c.touched) return;
-      if (r[1]) c.el.classList.remove('pv-collapsed');
-      else if (reset === true) c.el.classList.add('pv-collapsed');
+      if (r[1]) setShut(c, false, !instant);
+      else if (reset === true) setShut(c, true, !instant);
     });
+  }
+  // 卡片当前「应处于」的开合状态：动画进行中以目标状态为准
+  function isShut(c) { return c.el.__pvA ? !!c.want : c.el.classList.contains('pv-collapsed'); }
+  // .pv-shut 管箭头朝向（立即生效）；.pv-collapsed 管内容隐藏（展开时立即去掉、收起时等动画走完再加）
+  function setShut(c, shut, anim) {
+    var card = c.el;
+    if (isShut(c) === shut && card.classList.contains('pv-shut') === shut) return;
+    c.want = shut;
+    card.classList.toggle('pv-shut', shut);
+    var kids = [].filter.call(card.children, function (k) { return !k.classList.contains('card-title'); });
+    if (!anim) { stopMorph(card); card.classList.toggle('pv-collapsed', shut); return; }
+    if (shut) {
+      morph(card, false, ['height'], kids, function () {
+        card.classList.add('pv-collapsed'); var h = card.getBoundingClientRect().height; card.classList.remove('pv-collapsed');
+        return { height: h };
+      }, function () { card.classList.add('pv-collapsed'); });
+    } else {
+      morph(card, true, ['height'], kids, function () {
+        card.classList.remove('pv-collapsed'); return { height: card.getBoundingClientRect().height };
+      }, null);
+    }
   }
   window.__pvRefreshCollapse = refreshCollapse;
 
@@ -2158,15 +2260,25 @@ body.ds-c.performance-mode .dropdown-menu { -webkit-backdrop-filter: none; backd
       box.classList.add('pv-fold-closed');
       var b = document.createElement('button');
       b.type = 'button'; b.className = 'pv-fold-btn';
-      var paint = function () {
-        var open = !box.classList.contains('pv-fold-closed');
+      var paint = function (o) {
+        var open = typeof o === 'boolean' ? o : box.__pvA ? !box.__pvShut : !box.classList.contains('pv-fold-closed');
         b.innerHTML = '<span>' + (open ? L('收起计算过程', 'Hide breakdown') : L('查看计算过程', 'Show breakdown')) + '</span>' + svg(IC.chevron);
         b.classList.toggle('open', open);
       };
-      b.addEventListener('click', function () { box.classList.toggle('pv-fold-closed'); paint(); });
+      b.addEventListener('click', function () {
+        var opening = box.__pvA ? !!box.__pvShut : box.classList.contains('pv-fold-closed');
+        box.__pvShut = !opening;
+        if (opening) {
+          morph(box, true, BOX, [box], function () { box.classList.remove('pv-fold-closed'); return boxNow(box, BOX); }, null);
+        } else {
+          morph(box, false, BOX, [box], function () { return {}; }, function () { box.classList.add('pv-fold-closed'); });
+        }
+        b.classList.toggle('open', opening);
+        paint(opening);
+      });
       box.parentNode.insertBefore(b, box);
       paint();
-      document.addEventListener('pv-lang', paint);
+      document.addEventListener('pv-lang', function () { paint(); });
     });
     // 页脚：鸣谢里的「上榜条件」长段落收进一个可展开项
     var tc = document.querySelector('.thanks-card .card-text');
@@ -2175,7 +2287,25 @@ body.ds-c.performance-mode .dropdown-menu { -webkit-backdrop-filter: none; backd
       var sm = document.createElement('summary');
       sm.innerHTML = '<span class="zh">上榜条件</span><span class="lang-en">How to get listed</span>' + svg(IC.chevron);
       tc.parentNode.insertBefore(det, tc); det.appendChild(sm); det.appendChild(tc);
+      animDetails(det, tc);
     }
+  }
+  // <details> 的开合动画：打开时先让浏览器展开再从 0 长到实际高度；关闭时先收到 0 再真正关上
+  function animDetails(det, body) {
+    det.addEventListener('click', function (e) {
+      var sm = e.target.closest('summary');
+      if (!sm || sm.parentNode !== det || e.target.closest('button')) return;
+      e.preventDefault(); e.stopPropagation();
+      var opening = body.__pvA ? det.classList.contains('pv-closing') : !det.open;
+      if (opening) {
+        det.classList.remove('pv-closing');
+        var wasShut = !det.open;
+        morph(body, true, BOX, [body], function () { det.open = true; return boxNow(body, BOX); }, null, wasShut);
+      } else {
+        det.classList.add('pv-closing');
+        morph(body, false, BOX, [body], function () { return {}; }, function () { det.open = false; det.classList.remove('pv-closing'); });
+      }
+    }, true);
   }
 
   /* ---------- 手机选车：底部整屏面板 ---------- */
@@ -2300,6 +2430,8 @@ body.ds-c.performance-mode .dropdown-menu { -webkit-backdrop-filter: none; backd
       setupSteppers();
       setupFold();
       setupSheet();
+      var tut = document.querySelector('.tutorial-details'), tb = tut && tut.querySelector(':scope > div:last-child');
+      if (tut && tb && tut.animate) { tut.classList.add('pv-js'); animDetails(tut, tb); }
     }, 0);
   });
 })();
@@ -3226,10 +3358,10 @@ function __tok(n, d) { var v = getComputedStyle(document.body).getPropertyValue(
                    cloneElements[i].style.setProperty('color', compStyle.color, 'important');
                    cloneElements[i].style.setProperty('border-color', compStyle.borderColor, 'important');
                }
-               cloneElements[i].style.setProperty('font-family', 'Arial, "Helvetica Neue", Helvetica, sans-serif', 'important');
+               cloneElements[i].style.setProperty('font-family', '"AceRacer Sans", Arial, "Helvetica Neue", Helvetica, sans-serif', 'important');
                cloneElements[i].style.setProperty('letter-spacing', 'normal', 'important');
            }
-           clone.style.setProperty('font-family', 'Arial, "Helvetica Neue", Helvetica, sans-serif', 'important');
+           clone.style.setProperty('font-family', '"AceRacer Sans", Arial, "Helvetica Neue", Helvetica, sans-serif', 'important');
 
            var origInputs = appContainer.querySelectorAll('input, select, textarea');
            var cloneInputs = clone.querySelectorAll('input, select, textarea');
@@ -3392,13 +3524,13 @@ function __tok(n, d) { var v = getComputedStyle(document.body).getPropertyValue(
                    ctx.stroke();
                    
                    ctx.fillStyle = __tok('--export-accent', isLight ? '#007bb5' : '#00f2fe');
-                   ctx.font = 'bold ' + (22 * scaleMultiplier) + 'px -apple-system, BlinkMacSystemFont, sans-serif';
+                   ctx.font = 'bold ' + (22 * scaleMultiplier) + 'px "AceRacer Sans", -apple-system, BlinkMacSystemFont, sans-serif';
                    ctx.textAlign = 'center';
                    ctx.textBaseline = 'middle';
                    ctx.fillText('aceracercalc.top', newCanvas.width / 2, canvas.height + (30 * scaleMultiplier));
                    
                    ctx.fillStyle = isLight ? '#4a5568' : '#8e9aaf';
-                   ctx.font = (13 * scaleMultiplier) + 'px -apple-system, BlinkMacSystemFont, sans-serif';
+                   ctx.font = (13 * scaleMultiplier) + 'px "AceRacer Sans", -apple-system, BlinkMacSystemFont, sans-serif';
                    ctx.fillText(_('王牌竞速芯片计算器', 'Ace Racer Chip Calculator'), newCanvas.width / 2, canvas.height + (52 * scaleMultiplier));
                    
                    var link = document.createElement('a');
@@ -4627,74 +4759,88 @@ if (typeof CAR_DATABASE !== 'undefined') {
   }
 
   // ---------- 环境光背景：跟随当前车图，换车时两层交叉淡入淡出 ----------
-  // 背景的「流动感」= 取当前车图做大半径模糊后渐显。要让每次换车都有这个效果，
-  // 不能只改同一张图的 src（那样是硬切），得用 A/B 两层：新图先放进当前暗着的那层，
-  // 再切 .is-on —— 旧车淡出与新车淡入同时进行，就是背景里的交叉溶解。
+  // 背景的「流动感」= 取当前车图做大半径模糊后渐显；A/B 两层轮换，旧车淡出与新车淡入同时进行。
+  //
+  // 性能：原来是 <img> + CSS filter: blur(34px) saturate()，再 scale(2.6) 铺满屏幕。CSS 模糊是「每一帧」由合成器
+  // 重新计算的，放大 2.6 倍 × 手机 3 倍像素密度后模糊半径约 260 个物理像素 —— 滑动时每帧都要算一遍，
+  // 手机上就是「一卡一卡、直接跳到下一屏」。实测去掉这一层，滑动帧间隔从 ~70ms 回到 16.7ms。
+  // 现在改成：换车时只在一块 200px 宽的小 canvas 上模糊一次（等效半径按比例换算，看起来完全一样），
+  // 之后屏幕上只是把这张已经糊好的小图放大显示 —— 合成器每帧只做一次贴图，几乎零开销。
   var ambLayers = null, ambOn = 0, ambToken = 0;
+  var AMB_W = 200;                               // 模糊图工作宽度；CSS 仍按 1120px 显示
+  function ambKey(url) { return url + '|' + (document.body.classList.contains('light-mode') ? 'l' : 'd'); }
+  function paintAmb(cv, img, key) {
+    var nw = img.naturalWidth, nh = img.naturalHeight;
+    if (!nw || !nh) return false;
+    var W = AMB_W, H = Math.max(1, Math.round(W * nh / nw));
+    if (cv.width !== W) cv.width = W;
+    if (cv.height !== H) cv.height = H;
+    var ctx = cv.getContext('2d');
+    if (!ctx) return false;
+    ctx.clearRect(0, 0, W, H);
+    var sat = document.body.classList.contains('light-mode') ? 2.2 : 1.7;
+    var ok = false;
+    if ('filter' in ctx) {
+      try {
+        ctx.filter = 'blur(' + (34 * W / 1120).toFixed(2) + 'px) saturate(' + sat + ')';   // ≈ 原 1120px 宽上的 blur(34px)
+        ctx.drawImage(img, 0, 0, W, H);
+        ctx.filter = 'none';
+        ok = true;
+      } catch (e) { ok = false; }
+    }
+    if (!ok) {
+      // 不支持 canvas filter 的内核（老版 Safari 等）：先缩到 20px 宽再放大，同样得到柔和的色块
+      ctx.clearRect(0, 0, W, H);
+      var t = document.createElement('canvas');
+      t.width = 20; t.height = Math.max(1, Math.round(20 * H / W));
+      t.getContext('2d').drawImage(img, 0, 0, t.width, t.height);
+      ctx.imageSmoothingEnabled = true;
+      try { ctx.imageSmoothingQuality = 'high'; } catch (e) {}
+      ctx.drawImage(t, 0, 0, W, H);
+    }
+    cv.dataset.key = key;
+    return true;
+  }
   function syncAmbient() {
     if (!ambLayers) {
       var l0 = $('dsAmbientImg'), l1 = $('dsAmbientImg2');
-      if (!l0) return;
+      if (!l0 || !l0.getContext) return;
       ambLayers = l1 ? [l0, l1] : [l0];
     }
     var car = $('carImage');
     if (!car) return;
     var has = !!(typeof _selectedCar !== 'undefined' && _selectedCar && car.src && car.style.display !== 'none');
     if (!has) {                        // 未上线车辆 / 未选车：两层都淡出，背景回到中性灰
+      ambToken++;
       for (var i = 0; i < ambLayers.length; i++) ambLayers[i].classList.remove('is-on');
       document.body.classList.remove('ds-has-car');
       return;
     }
     document.body.classList.add('ds-has-car');
+    var url = car.src, key = ambKey(url);
     var cur = ambLayers[ambOn];
-    if (cur.classList.contains('is-on') && cur.src === car.src) return;   // 没换车
-    if (ambLayers.length < 2) { cur.src = car.src; cur.classList.add('is-on'); return; }
-    var next = ambLayers[1 - ambOn], url = car.src, token = ++ambToken;
-    var swap = function () {
-      if (token !== ambToken) return;   // 期间又换过车，交给后来那次
+    if (cur.classList.contains('is-on') && cur.dataset.key === key) return;   // 没换车、没换主题
+    var next = ambLayers.length < 2 ? cur : ambLayers[1 - ambOn];
+    if (next.dataset.pending === key) return;                                // 同一张图已经在加载
+    var token = ++ambToken;
+    next.dataset.pending = key;
+    // 单独用一个 Image 加载（不依赖页面上那张 loading=lazy 的车图：用户在页面下方换车时它可能还没加载）
+    var im = new Image(), done = false;
+    var go = function () {
+      if (done) return;
+      done = true;
+      next.dataset.pending = '';
+      if (token !== ambToken) return;  // 期间又换过车，交给后来那次
+      if (!paintAmb(next, im, key)) return;
+      if (next === cur) { cur.classList.add('is-on'); return; }
       next.classList.add('is-on');
       cur.classList.remove('is-on');
       ambOn = 1 - ambOn;
-      // 少数派生内核（夸克等）在换层后会继续沿用旧的模糊位图，轻推一下强制重绘，无副作用
-      next.style.transform = 'translateZ(0)';
-      void next.offsetWidth;
-      next.style.transform = '';
     };
-    if (next.src !== url) {
-      next.src = url;
-      // 等解码完再淡入，避免淡入到一半才出图。但绝不能把换层「绑死」在 decode() 上：
-      // 实测（打桩复现）decode() 可能永不落定、同步抛错、或返回非 Promise —— 那样背景会永久
-      // 卡在旧车上（夸克浏览器换车背景不跟着变就是这个原因）。所以三重保险：
-      //   ① 已在缓存（complete 且有尺寸）→ 立刻换，不等 decode
-      //   ② decode 正常回调 → 立刻换
-      //   ③ 最多等 400ms → 无论如何都换（宁可硬切也不能卡住）
-      var settled = false, timer = 0;
-      var fire = function () {
-        if (settled) return;
-        settled = true;
-        if (timer) clearTimeout(timer);
-        swap();
-      };
-      timer = setTimeout(fire, 400);
-      if (next.complete && next.naturalWidth > 0) {
-        fire();
-      } else {
-        try {
-          if (typeof next.decode === 'function') {
-            var pr = next.decode();
-            if (pr && typeof pr.then === 'function') pr.then(fire, fire);
-            else fire();                     // 返回了非 Promise：别等它
-          } else {
-            next.addEventListener('load', fire, { once: true });
-            next.addEventListener('error', fire, { once: true });
-          }
-        } catch (e) {
-          fire();                            // decode 同步抛错：直接换
-        }
-      }
-    } else {
-      swap();
-    }
+    im.onload = go;
+    im.onerror = function () { done = true; next.dataset.pending = ''; };
+    im.src = url;
+    if (im.complete && im.naturalWidth > 0) go();
   }
 
   // ---------- 液态玻璃折射（仅 Chromium：只有它支持 backdrop-filter: url(#svg)） ----------
