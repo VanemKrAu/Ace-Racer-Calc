@@ -890,13 +890,13 @@ body.ds-c.performance-mode .ds-ambient canvas { display: none; }
 body.ds-c.ds-lg-refract .ds-dock { -webkit-backdrop-filter: none; backdrop-filter: none; }
 body.ds-c.ds-lg-refract .ds-dock::before { content: ""; position: absolute; inset: 0; border-radius: inherit; z-index: -1; pointer-events: none;
   backdrop-filter: url(#ds-lg-filter) blur(3px) saturate(1.9); }
-/* 滚动期降级：暂停「SVG 位移折射」。
+/* 滚动期「按需」降级：只有在真的掉帧时才暂停「SVG 位移折射」（class 由 view.js 实测帧率决定挂不挂）。
    形如 url(#svg) 的 backdrop-filter，只要它下面有内容在动，合成器每帧都得重新采样这一块、
    重跑一遍 feDisplacementMap 逐像素位移。自带内核的 Chrome 有独立 GPU 进程 + Input Vizard
    （输入事件不经浏览器主线程），扛得住；套壳浏览器（Via / 夸克这类把渲染交给系统 WebView 的）
-   这条滤镜链常落到主线程上，于是「一滑动就一步一卡」。这里在滚动期间只摘掉位移、保留同半径
-   磨砂与提饱和 —— 少的只是边缘那圈约 20px 的弯折，滚动中肉眼分辨不出；手一停 160ms 立刻
-   恢复完整折射，静止观感与改动前完全一致。 */
+   这条滤镜链常落到主线程上，于是「一滑动就一步一卡」。
+   判据：滚动中掉到 45fps 以下才摘掉边缘位移（同半径磨砂、提饱和都留着），
+   回升到 55fps 以上或手一停就立刻恢复 —— 流畅设备全程都用完整折射，不做无谓让步。 */
 body.ds-c.ds-scrolling.ds-lg-refract .ds-dock::before {
   -webkit-backdrop-filter: blur(3px) saturate(1.9);
   backdrop-filter: blur(3px) saturate(1.9);
@@ -5022,21 +5022,50 @@ if (typeof CAR_DATABASE !== 'undefined') {
     }, 220);
   }, { passive: true });
 
-  // ---------- 滚动期降级：暂停最贵的合成滤镜 ----------
+  // ---------- 滚动期「按需」降级：只在真的掉帧时才摘掉折射 ----------
   // dock 的液态玻璃折射是 backdrop-filter: url(#svg)。只要它下面有内容在动，合成器每帧都得
   // 重新采样这一块、重跑一遍 feDisplacementMap 位移。自带内核的 Chrome 有独立 GPU 进程 +
   // Input Vizard（输入事件不走浏览器主线程）扛得住；套壳浏览器（Via 这类把渲染交给系统
-  // WebView 的）这条链常常落到主线程上，滑动就一步一卡。
-  // 这里在滚动期间只摘掉「位移」、保留同半径的磨砂与提饱和 —— 少的仅是边缘那圈约 20px 的
-  // 弯折，滚动中肉眼分辨不出；手一停 160ms 立刻复原，静止观感与改动前完全一致。
+  // WebView 的）这条链常落到主线程上，滑动就一步一卡。
+  //
+  // 「滚动期间一律摘掉」对流畅设备属于无谓的视觉让步，所以这里改成实测驱动：
+  // 只在滚动过程中采样帧率，掉到 45fps 以下才摘掉边缘位移（同半径磨砂与提饱和都保留），
+  // 回升到 55fps 以上、或者手一停下来，立刻恢复完整折射。两个阈值之间留 10fps 迟滞，
+  // 免得在临界值上反复横跳。
   // 用捕获阶段监听：选车面板里的列表是独立滚动容器，scroll 事件不冒泡，只有捕获才收得到。
-  var scrollIdleTimer = 0, isScrolling = false;
+  var scrollIdleTimer = 0, isScrolling = false, refractDropped = false, fpsWatching = false;
+  var sFrames = 0, sT0 = 0;
+  var DROP_BELOW = 45, RESTORE_ABOVE = 55;
+
+  function setRefractDrop(drop) {
+    if (refractDropped === drop) return;
+    refractDropped = drop;
+    document.body.classList.toggle('ds-scrolling', drop);
+  }
+  function scrollFpsWatch(now) {
+    if (!isScrolling) { fpsWatching = false; return; }   // 不滚动就停掉，别常驻一个 rAF
+    if (!sT0) { sT0 = now; sFrames = 0; }
+    else {
+      sFrames++;
+      var dt = now - sT0;
+      if (dt >= 400) {
+        var fps = sFrames * 1000 / dt;
+        sFrames = 0; sT0 = now;
+        if (fps < DROP_BELOW) setRefractDrop(true);
+        else if (fps > RESTORE_ABOVE) setRefractDrop(false);
+      }
+    }
+    requestAnimationFrame(scrollFpsWatch);
+  }
   function markScrolling() {
-    if (!isScrolling) { isScrolling = true; document.body.classList.add('ds-scrolling'); }
+    if (!isScrolling) {
+      isScrolling = true; sFrames = 0; sT0 = 0;
+      if (!fpsWatching) { fpsWatching = true; requestAnimationFrame(scrollFpsWatch); }
+    }
     clearTimeout(scrollIdleTimer);
     scrollIdleTimer = setTimeout(function () {
       isScrolling = false;
-      document.body.classList.remove('ds-scrolling');
+      setRefractDrop(false);        // 手一停就立刻恢复完整折射
     }, 160);
   }
   document.addEventListener('scroll', markScrolling, { passive: true, capture: true });
