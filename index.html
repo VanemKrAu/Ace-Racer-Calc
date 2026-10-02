@@ -2547,64 +2547,98 @@ body.diag-bare .card, body.diag-bare .tutorial-details, body.diag-bare .footer-l
       sheet.style.transform = 'translateY(' + drag.dy.toFixed(1) + 'px)';
       if (mask) mask.style.opacity = String(Math.max(0, 1 - Math.max(0, drag.dy) / (drag.h * .8)));
     }
-    function takeOver(d) {                                         // 从列表接管为面板拖动
+    function takeOver(d) {                                         // 接管为面板拖动（列表会一并冻住）
       drag = d; pending = null;
       if (drag.list) { drag.list.style.overflowY = 'hidden'; drag.list.style.touchAction = 'none'; }
       sheet.style.transition = 'none';
     }
 
-    // ① 小横条 / 头部：pointer
+    // ① 小横条 / 头部：pointer（这两个区域不可滚动，可以直接跟手）
     sheet.addEventListener('pointerdown', function (e) {
       if (drag || pending || e.button > 0) return;
       if (e.target.closest('button, input, a')) return;            // 头部里的按钮不参与拖拽
       if (!e.target.closest('.pv-sheet-grab, .pv-sheet-head')) return;
-      drag = { id: e.pointerId, ptr: true, y0: e.clientY, t0: e.timeStamp, dy: 0,
+      drag = { zone: 'head', id: e.pointerId, y0: e.clientY, t0: e.timeStamp, dy: 0,
                h: sheet.offsetHeight || 480, list: null };
       sheet.style.transition = 'none';
       try { sheet.setPointerCapture(e.pointerId); } catch (err) {}
     });
     sheet.addEventListener('pointermove', function (e) {
-      if (!drag || !drag.ptr || e.pointerId !== drag.id) return;
+      if (!drag || drag.zone !== 'head' || e.pointerId !== drag.id) return;
       applyDrag(e.clientY);
     });
     sheet.addEventListener('pointerup', function (e) {
-      if (!drag || !drag.ptr || e.pointerId !== drag.id) return;
+      if (!drag || drag.zone !== 'head' || e.pointerId !== drag.id) return;
       var d = drag; drag = null; finishDrag(d, e.timeStamp);
     });
     sheet.addEventListener('pointercancel', function (e) {
-      if (!drag || !drag.ptr || e.pointerId !== drag.id) return;
+      if (!drag || drag.zone !== 'head' || e.pointerId !== drag.id) return;
       var d = drag; drag = null; finishDrag(d, e.timeStamp);
     });
 
-    // ② 车辆列表：touch（到顶后继续下拉才接管）
+    // ② 车辆列表：touch。列表本身可滚动，所以先不接管，等「滚到最顶还继续下拉」才抢；
+    //    并且必须用 touch（pointer 会被浏览器用 pointercancel 掐断，见上）。
     listHost.addEventListener('touchstart', function (e) {
       if (drag || pending || e.touches.length !== 1) return;
-      pending = { id: -1, ptr: false, y0: e.touches[0].clientY, t0: e.timeStamp, dy: 0,
+      pending = { zone: 'list', y0: e.touches[0].clientY, t0: e.timeStamp, dy: 0,
                   h: sheet.offsetHeight || 480, list: listHost };
     }, { passive: true });
     listHost.addEventListener('touchmove', function (e) {
       if (!e.touches.length) return;
       var y = e.touches[0].clientY;
-      if (pending && !pending.ptr) {
+      if (pending && pending.zone === 'list') {
         if (listHost.scrollTop > 0 || (y - pending.y0) < 8) return;  // 还在列表里滚、或在往上滑 → 不接管
         var d = pending;
         d.y0 = y; d.dy = 0; d.t0 = e.timeStamp;                      // 以当前点为起点，避免跳一下
         takeOver(d);
       }
-      if (!drag || drag.ptr) return;
+      if (!drag || drag.zone !== 'list') return;
       e.preventDefault();                                            // 掐断列表自己的滚动
       applyDrag(y);
     }, { passive: false });
     listHost.addEventListener('touchend', function (e) {
-      if (pending && !pending.ptr) { pending = null; return; }
-      if (!drag || drag.ptr) return;
+      if (pending && pending.zone === 'list') { pending = null; return; }
+      if (!drag || drag.zone !== 'list') return;
       var d = drag; drag = null; finishDrag(d, e.timeStamp);
     });
     listHost.addEventListener('touchcancel', function (e) {
-      if (pending && !pending.ptr) { pending = null; return; }
-      if (!drag || drag.ptr) return;
+      if (pending && pending.zone === 'list') { pending = null; return; }
+      if (!drag || drag.zone !== 'list') return;
       var d = drag; drag = null; finishDrag(d, e.timeStamp);
     });
+
+    // ③ 头部工具栏：搜索框 / 筛选下拉 / 品质 chip —— 这些同样可以下拉把面板收起。
+    //    它们都没有纵向滚动，不会跟面板抢手势，所以用 passive 监听就够：手指往下移动超过阈值
+    //    才接管；只是点一下（位移不到阈值就松手）等于没接管，不会影响输入框聚焦和下拉展开。
+    var TOOLBAR_ZONES = '.pv-sheet-search, .pv-sheet-tools, .pv-sheet-qual';
+    sheet.addEventListener('touchstart', function (e) {
+      if (drag || pending || e.touches.length !== 1) return;
+      if (!e.target.closest(TOOLBAR_ZONES)) return;
+      pending = { zone: 'tool', y0: e.touches[0].clientY, t0: e.timeStamp, dy: 0,
+                  h: sheet.offsetHeight || 480, list: null };
+    }, { passive: true });
+    sheet.addEventListener('touchmove', function (e) {
+      if (!e.touches.length) return;
+      var y = e.touches[0].clientY;
+      if (pending && pending.zone === 'tool') {
+        if ((y - pending.y0) < 8) return;                            // 往上滑 / 只是点了下 → 不接管
+        var d = pending;
+        d.y0 = y; d.dy = 0; d.t0 = e.timeStamp;
+        takeOver(d);
+      }
+      if (!drag || drag.zone !== 'tool') return;
+      applyDrag(y);
+    }, { passive: true });
+    sheet.addEventListener('touchend', function (e) {
+      if (pending && pending.zone === 'tool') { pending = null; return; }
+      if (!drag || drag.zone !== 'tool') return;
+      var d = drag; drag = null; finishDrag(d, e.timeStamp);
+    }, { passive: true });
+    sheet.addEventListener('touchcancel', function (e) {
+      if (pending && pending.zone === 'tool') { pending = null; return; }
+      if (!drag || drag.zone !== 'tool') return;
+      var d = drag; drag = null; finishDrag(d, e.timeStamp);
+    }, { passive: true });
   }
 
   document.addEventListener('DOMContentLoaded', function () {
