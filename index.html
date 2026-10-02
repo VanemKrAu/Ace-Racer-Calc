@@ -988,13 +988,17 @@ body.ds-c.performance-mode .ds-dock { background: var(--cell); }
 .ds-c.light-mode .top-bar .nav-btn { background-image: none; }
 .ds-c .top-bar .nav-btn:hover { background-color: var(--surface); background-image: linear-gradient(var(--fill-hover), var(--fill-hover)); }
 .ds-c .top-bar .nav-btn:active { transform: scale(.96); }
-/* 「动画效果」开关：菜单项右侧显示当前状态（开=品质色胶囊，关=灰胶囊） */
-.ds-c .pv-fx-opt .pv-fx-state {
-  margin-left: auto; padding: 2px 9px; border-radius: 999px;
-  font-size: 11.5px; font-weight: 700; color: var(--ink-3); background: var(--fill);
-  transition: background-color .15s, color .15s;
+/* 「动画效果」开关：菜单项右侧一个迷你开关（与页面里其他开关同一套画法，只是缩小一号），
+   不再用写着「开 / 关」的胶囊 —— 那颗胶囊太占宽度，会把「动画效果」挤成两行。 */
+.ds-c #authorMenu .dropdown-option { white-space: nowrap; }
+.ds-c .pv-fx-opt .pv-fx-sw {
+  flex: none; width: 36px; height: 22px; margin-left: auto; border-radius: 999px;
+  background: var(--fill-2) var(--knob) no-repeat 2px 50% / 18px 18px;
+  transition: background-color .2s, background-position .2s cubic-bezier(.3, .7, .4, 1);
 }
-.ds-c .pv-fx-opt .pv-fx-state.on { color: var(--cell); background: var(--acc); }
+.ds-c .pv-fx-opt .pv-fx-sw.on { background-color: var(--acc); background-position: 16px 50%; }
+.ds-c .pv-fx-opt { gap: 10px; }
+.ds-c .pv-fx-opt > span.zh, .ds-c .pv-fx-opt > span.lang-en { margin-right: 14px; }
 /* 卡片里的「凸起层」也改成半透明，避免在玻璃上出现一块块实心黑洞 */
 .ds-c:not(.light-mode) .nitro-item.selected,
 .ds-c:not(.light-mode) .empower-sub-options,
@@ -1410,6 +1414,77 @@ details.tutorial-details.pv-js.pv-closing summary .dropdown-icon { transform: no
 .ds-c:not(.light-mode)[data-quality="epic"] .car-stage::after { opacity: .62; }
 
 /* ============================================================================
+   桌面端同步（≥850px）：手机端这几轮的改进搬到电脑上
+   1) 选车下拉：每行带车图缩略图，顶部吸顶一排品质筛选（与手机选车面板同一套）；列表更高
+   2) 下拉菜单底色调实：浮在正文上时，背后的文字不再透出来
+   3) 选车卡：原来挤成一行的「名称 | 定位 / 专精 | ace_charge | 大招时长 | SP」改成六格出厂数据，
+      计算说明收进卡片底部当脚注 —— 右栏下方那块空白没了，车辆展示卡与选车卡等高、下沿对齐
+   4) 页脚三张卡等高；可点击的行在鼠标悬停时给反馈
+   ============================================================================ */
+.ds-c .pv-dd-qual, .ds-c .pv-specs { display: none; }
+.ds-c #carDropdown .pv-dd-empty { padding: 18px 12px; font-size: 13px; color: var(--ink-3); text-align: center; }
+@media (min-width: 850px) {
+  .ds-c { --dd-bg: rgba(250, 250, 252, .95); --dd-head: #fbfbfd; }
+  .ds-c:not(.light-mode) { --dd-bg: rgba(28, 29, 36, .93); --dd-head: #1d1e25; }
+  @supports (color: color-mix(in oklab, red, blue)) {
+    .ds-c:not(.light-mode) { --dd-bg: color-mix(in oklab, var(--acc) 7%, rgba(26, 27, 34, .93)); --dd-head: color-mix(in oklab, var(--acc) 7%, #1c1d23); }
+    .ds-c.light-mode { --dd-bg: color-mix(in oklab, var(--acc) 3%, rgba(255, 255, 255, .95)); --dd-head: color-mix(in oklab, var(--acc) 3%, #fff); }
+  }
+  .ds-c .dropdown-menu { background-color: var(--dd-bg); }
+  /* 长截图：html2canvas 不认 color-mix 算出来的 oklab()，导出克隆里换回纯色（同 .pv-export 里的 --menu-bg） */
+  .ds-c .pv-export { --dd-bg: var(--cell); --dd-head: var(--cell); }
+
+  /* 选车下拉 */
+  .ds-c #carDropdown { max-height: min(560px, 64vh); padding: 0 6px 6px; overscroll-behavior: contain; scrollbar-width: thin; }
+  .ds-c #carDropdown > .pv-dd-qual { display: flex; gap: 6px; position: sticky; top: 0; z-index: 2; margin: 0 -6px 6px; padding: 10px 12px;
+    background: var(--dd-head); border-bottom: 1px solid var(--sep); }
+  .ds-c .pv-dd-qual .pv-qchip { flex: none; height: 30px; padding: 0 12px; border: 0; border-radius: 999px; background: var(--fill); color: var(--ink-2);
+    font: 500 13px var(--sans); cursor: pointer; transition: background-color .15s, color .15s; }
+  .ds-c .pv-dd-qual .pv-qchip span { margin-left: 5px; font-size: 11.5px; color: var(--ink-3); font-variant-numeric: tabular-nums; }
+  .ds-c .pv-dd-qual .pv-qchip.on { background: var(--ink); color: var(--cell); }
+  .ds-c .pv-dd-qual .pv-qchip.on span { color: inherit; opacity: .6; }
+  .ds-c #carDropdown .dropdown-option { min-height: 56px; padding: 7px 12px 7px 8px; gap: 14px; }
+  .ds-c #carDropdown .pv-thumb { display: block; flex: none; width: 76px; height: 42px; border-radius: 10px; overflow: hidden; background: var(--fill); }
+  .ds-c #carDropdown .pv-thumb img { width: 100% !important; height: 100% !important; object-fit: contain; display: block; }
+  .ds-c.light-mode #carDropdown .pv-thumb { background: #fff; box-shadow: inset 0 0 0 1px rgba(20, 24, 40, .06); }
+
+  /* 车辆展示卡与选车卡等高 */
+  .ds-c .cp-hero { align-items: stretch; }
+  .ds-c .cp-hero > .desktop-col:first-child { display: flex; }
+  .ds-c .cp-hero #carPreview { flex: 1; display: flex; flex-direction: column; }
+  .ds-c .cp-hero .car-hero { flex: 1; display: flex; flex-direction: column; }
+  .ds-c .cp-hero .car-stage { flex: 1; min-height: 250px; }
+  .ds-c .cp-hero #carImage { max-height: 224px; }
+  .ds-c .cp-hero .car-select { flex: 1; display: flex; flex-direction: column; }
+  .ds-c .car-select > .calc-note { margin-top: auto; padding: 14px 2px 0; border-top: 1px solid var(--sep); font-size: 12px; }
+  .ds-c .car-select > .pv-specs:not([hidden]) { margin-bottom: 16px; }
+
+  /* 出厂数据 */
+  .ds-c #carSelectInfo { display: none !important; }
+  .ds-c .pv-specs { display: block; margin-top: 14px; }
+  .ds-c .pv-specs[hidden] { display: none; }
+  .ds-c .pv-specs-head { display: flex; align-items: baseline; justify-content: space-between; margin: 0 2px 8px; font-size: 13px; font-weight: 700; color: var(--ink-2); }
+  .ds-c .pv-specs-head span { font-size: 12px; font-weight: 500; color: var(--ink-3); }
+  .ds-c .pv-spec-grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 8px; }
+  .ds-c .pv-spec { min-width: 0; padding: 10px 14px 11px; border-radius: var(--r-md); background: var(--fill); }
+  .ds-c .pv-spec-k { font-size: 12px; color: var(--ink-3); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .ds-c .pv-spec-v { margin-top: 3px; font: 700 21px/1.2 var(--round); color: var(--ink); font-variant-numeric: tabular-nums; white-space: nowrap; }
+  .ds-c .pv-spec-v small { margin-left: 2px; font-size: 13px; font-weight: 500; color: var(--ink-3); }
+  .ds-c .pv-spec.is-none .pv-spec-v { color: var(--ink-3); font-weight: 500; }
+
+  /* 页脚三张卡等高 */
+  .ds-c .site-footer { align-items: stretch; }
+}
+/* 鼠标悬停反馈（只给有鼠标的设备，触屏上 :hover 会粘住） */
+@media (hover: hover) and (pointer: fine) {
+  .ds-c .nitro-item:not(.selected):hover { background-color: var(--fill-hover); }
+  .ds-c .empower-item:not(.active):hover { background-color: var(--fill-hover); }
+  .ds-c .social-tag:hover .ico { background-color: var(--fill-2); }
+  .ds-c .social-tag:hover::after { color: var(--ink); }
+  .ds-c .pv-dd-qual .pv-qchip:not(.on):hover { background-color: var(--fill-hover); color: var(--ink); }
+}
+
+/* ============================================================================
    真机诊断开关（URL 参数，配合 <body> 开头那段脚本）
    用途：在真实手机上逐个排除「到底哪一层在拖慢这类套壳内核」。
      ?diag=1    左上角实时帧率浮层（含最低帧率与当前降级状态）
@@ -1503,7 +1578,7 @@ body.diag-bare .card, body.diag-bare .tutorial-details, body.diag-bare .footer-l
     <a href="https://github.com/VanemKrAu/Ace-Racer-Calc" target="_blank" class="dropdown-option"><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 4.5A1.5 1.5 0 0 1 6.5 3H19v15H6.5A1.5 1.5 0 0 0 5 19.5v-15Z"/><path d="M5 19.5A1.5 1.5 0 0 0 6.5 21H19"/></svg><span class="zh">项目地址</span><span class="lang-en">GitHub Repo</span></a>
     <a href="https://i0.hdslb.com/bfs/openplatform/07d46fa9619f7ae4fa275da96d3c34d78e552624.png" target="_blank" class="dropdown-option"><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 20s-7-4.4-7-10a4 4 0 0 1 7-2.6A4 4 0 0 1 19 10c0 5.6-7 10-7 10Z"/></svg><span class="zh">支持作者</span><span class="lang-en">Support Author</span></a>
     <div class="dropdown-option" onclick="resetTutorial()"><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 12a8 8 0 1 0 2.4-5.7"/><path d="M4 4v4h4"/></svg><span class="zh">恢复教程提示</span><span class="lang-en">Restore tutorial prompt</span></div>
-    <div class="dropdown-option pv-fx-opt" id="animFxOption" onclick="toggleAnimFx()"><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3v3M12 18v3M5.6 5.6l2.1 2.1M16.3 16.3l2.1 2.1M3 12h3M18 12h3M5.6 18.4l2.1-2.1M16.3 7.7l2.1-2.1"/><circle cx="12" cy="12" r="3.2"/></svg><span class="zh">动画效果</span><span class="lang-en">Animations</span><span class="pv-fx-state" id="animFxState">开</span></div>
+    <div class="dropdown-option pv-fx-opt" id="animFxOption" role="switch" aria-checked="true" onclick="toggleAnimFx()"><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 3.5 11.6 8 16 9.5l-4.4 1.6L10 15.5 8.4 11.1 4 9.5 8.4 8z"/><path d="M17.5 13.5l.8 2.2 2.2.8-2.2.8-.8 2.2-.8-2.2-2.2-.8 2.2-.8z"/></svg><span class="zh">动画效果</span><span class="lang-en">Animations</span><span class="pv-fx-sw on" id="animFxState" aria-hidden="true"></span></div>
   </div>
 </div></div>
     <div class="top-right">
@@ -2395,6 +2470,13 @@ body.diag-bare .card, body.diag-bare .tutorial-details, body.diag-bare .footer-l
       }
       o.insertBefore(t, o.firstChild);
     });
+    // 桌面下拉顶部的品质筛选（手机上同一个列表会被搬进选车面板，那里有自己的品质行，这一行由 CSS 隐藏）
+    var dd = $('carDropdown');
+    if (dd && !dd.querySelector(':scope > .pv-dd-qual')) {
+      var dq = document.createElement('div'); dq.className = 'pv-dd-qual';
+      dd.insertBefore(dq, dd.firstChild);
+      paintQual();
+    }
   }
   function applyQual() {
     if (!qualFilter) return;
@@ -2404,13 +2486,30 @@ body.diag-bare .card, body.diag-bare .tutorial-details, body.diag-bare .footer-l
     });
   }
   function paintQual() {
-    if (!qualRow) return;
     var counts = {};
     CAR_DATABASE.forEach(function (c) { counts[c.quality] = (counts[c.quality] || 0) + 1; });
-    qualRow.innerHTML = QUAL.map(function (q) {
+    var html = QUAL.map(function (q) {
       var n = q[0] ? (counts[q[0]] || 0) : CAR_DATABASE.length;
       return '<button type="button" class="pv-qchip' + (q[0] === qualFilter ? ' on' : '') + '" data-q="' + q[0] + '">' + L(q[1], q[2]) + '<span>' + n + '</span></button>';
     }).join('');
+    if (qualRow) qualRow.innerHTML = html;
+    var dq = document.querySelector('#carDropdown > .pv-dd-qual');
+    if (dq) dq.innerHTML = html;
+  }
+  // 品质筛选生效时，按钮上「N 辆匹配」要按筛选后的结果重数；全部筛没了给一句提示
+  function fixCount() {
+    var dd = $('carDropdown'); if (!dd) return;
+    var n = [].filter.call(dd.querySelectorAll('.dropdown-option'), function (o) {
+      return o.getAttribute('data-id') !== '-1' && o.style.display !== 'none';
+    }).length;
+    var empty = dd.querySelector(':scope > .pv-dd-empty');
+    if (!n) {
+      if (!empty) { empty = document.createElement('div'); empty.className = 'pv-dd-empty'; dd.appendChild(empty); }
+      empty.textContent = L('没有符合条件的车辆', 'No cars match');
+    } else if (empty) empty.remove();
+    if (!qualFilter) return;
+    var label = $('carListLabel');
+    if (label && /\d+\s*(辆匹配| matched)/.test(label.textContent)) label.textContent = n + L(' 辆匹配', ' matched');
   }
   // 「全部定位 / 全部专精」这两个筛选器本来就是从主界面搬进面板的。直接 appendChild 会让主界面
   // 瞬间塌掉一块（生硬），所以打开时先在原处做高度收缩、动画结束再搬进面板；
@@ -2494,8 +2593,25 @@ body.diag-bare .card, body.diag-bare .tutorial-details, body.diag-bare .footer-l
     var origToggle = window.toggleCarDropdown;
     window.toggleCarDropdown = function () {
       if (isMobile()) { openSheet(); return; }
-      return origToggle.apply(this, arguments);
+      var r = origToggle.apply(this, arguments);
+      // 桌面：打开时把已选车辆滚到列表中间，不用每次从头翻
+      var dd = $('carDropdown');
+      if (dd.classList.contains('show')) {
+        var sel = dd.querySelector('.dropdown-option.selected');
+        var head = dd.querySelector(':scope > .pv-dd-qual'), hh = head ? head.offsetHeight : 0;
+        dd.scrollTop = sel && sel.style.display !== 'none'
+          ? Math.max(0, sel.offsetTop - hh - (dd.clientHeight - hh - sel.offsetHeight) / 2) : 0;
+      }
+      return r;
     };
+    // 桌面下拉里的品质筛选。重绘会把被点的按钮换掉，必须拦住冒泡 ——
+    // 否则原站「点到下拉外面就收起」的判断会因为目标已脱离文档而误判、把下拉关掉
+    $('carDropdown').addEventListener('click', function (e) {
+      var b = e.target.closest('.pv-dd-qual .pv-qchip'); if (!b) return;
+      e.stopPropagation();
+      qualFilter = b.dataset.q; paintQual(); filterCarList();
+      this.scrollTop = 0;
+    });
     $('carSearch').addEventListener('focus', function () {
       if (!isMobile()) return;
       this.blur(); openSheet(); setTimeout(function () { proxy.focus(); }, 30);
@@ -2507,7 +2623,7 @@ body.diag-bare .card, body.diag-bare .tutorial-details, body.diag-bare .footer-l
     var origPop = window.populateCarGrid;
     window.populateCarGrid = function () { var r = origPop.apply(this, arguments); decorateList(); return r; };
     var origFilter = window.filterCarList;
-    window.filterCarList = function () { var r = origFilter.apply(this, arguments); applyQual(); return r; };
+    window.filterCarList = function () { var r = origFilter.apply(this, arguments); applyQual(); fixCount(); return r; };
     decorateList();
 
     // ---------- 拖拽收起面板 ----------
@@ -5215,16 +5331,19 @@ if (typeof CAR_DATABASE !== 'undefined') {
     var el = $('animFxState');
     if (!el) return;
     var off = document.body.classList.contains('performance-mode');
-    el.textContent = off ? L('关', 'Off') : L('开', 'On');
     el.classList.toggle('on', !off);
+    var opt = $('animFxOption');
+    if (opt) opt.setAttribute('aria-checked', off ? 'false' : 'true');
   }
   window.paintAnimFx = paintAnimFx;
   window.toggleAnimFx = function () {
     var off = document.body.classList.toggle('performance-mode');
     try { localStorage.setItem('animFx', off ? 'off' : 'on'); } catch (e) {}
     paintAnimFx();
+    // 先让开关滑过去（看得见切换结果），再收起菜单，好看清页面上的变化
     var m = $('authorMenu');
-    if (m) m.classList.remove('show');            // 收起菜单，好看清页面上的变化
+    clearTimeout(window.__pvFxClose);
+    window.__pvFxClose = setTimeout(function () { if (m) m.classList.remove('show'); }, off ? 0 : 260);
     if (typeof showToast === 'function') {
       showToast(off ? L('已关闭动画效果', 'Animations off') : L('已开启动画效果', 'Animations on'));
     }
@@ -5261,6 +5380,58 @@ if (typeof CAR_DATABASE !== 'undefined') {
   sync();
 })();
 
+</script>
+<script>
+/* desk.js：桌面端（≥850px）选车卡里的「出厂数据」六格（手机端由 CSS 隐藏），以及计算说明脚注的位置。
+   只读原站写出的数据，不改任何计算逻辑。 */
+(function () {
+  var $ = function (id) { return document.getElementById(id); };
+  var L = function (zh, en) { return (typeof currentLang !== 'undefined' && currentLang === 'en') ? en : zh; };
+  var info = $('carSelectInfo');
+  if (!info || typeof CAR_DATABASE === 'undefined') return;
+
+  var box = document.createElement('div');
+  box.className = 'pv-specs'; box.hidden = true;
+  info.parentNode.insertBefore(box, info.nextSibling);
+
+  function fmt(v) { return String(Math.round(v * 10) / 10); }
+  function tile(k, v, unit) {
+    return '<div class="pv-spec' + (v == null ? ' is-none' : '') + '"><div class="pv-spec-k">' + k + '</div>'
+      + '<div class="pv-spec-v">' + (v == null ? '—' : v + (unit ? '<small>' + unit + '</small>' : '')) + '</div></div>';
+  }
+  function render() {
+    var car = null;
+    if (info.style.display !== 'none' && typeof _selectedCarId === 'number' && _selectedCarId > 0) {
+      for (var i = 0; i < CAR_DATABASE.length; i++) if (CAR_DATABASE[i].id === _selectedCarId) { car = CAR_DATABASE[i]; break; }
+    }
+    if (!car) { box.hidden = true; box.innerHTML = ''; return; }
+    var ace = car.ace_charge;
+    // 与选车时的自动填充同一套换算（见 pickCar）：单次氮气 = ace_charge / 100，起步 = (ace_charge + init_ratio) / 100，封顶 100
+    box.innerHTML = '<div class="pv-specs-head">' + L('出厂数据', 'Stock stats') + '<span>' + L('选车时已自动填入下方参数', 'Auto-filled into the inputs below') + '</span></div>'
+      + '<div class="pv-spec-grid">'
+      + tile(L('大招阈值', 'Ult threshold'), car.ult_threshold ? fmt(car.ult_threshold) : null, '%')
+      + tile(L('起步充能', 'Start charge'), ace ? fmt(Math.min(100, (ace + (car.init_ratio || 0)) / 100)) : null, '%')
+      + tile(L('单次氮气充能', 'Nitro charge'), ace ? fmt(ace / 100) : null, '%')
+      + tile(L('氮气时长 1×6', 'Nitro 1×6'), car.nitro_duration ? fmt(car.nitro_duration) : null, 's')
+      + tile(L('大招时长', 'Ult duration'), car.ult_duration ? fmt(car.ult_duration) : null, 's')
+      + tile(L('SP 自充能', 'SP charge'), car.sp_charge ? '+' + fmt(car.sp_charge) : (car.has_sp ? 'SP' : null), car.sp_charge ? '%' : '')
+      + '</div>';
+    box.hidden = false;
+  }
+  // 计算说明的小字：桌面放进选车卡底部当脚注，两张卡的下沿才能对齐；手机放回原位
+  var MQ = window.matchMedia('(min-width: 850px)');
+  var card = document.querySelector('.ds-c .car-select'), note = document.querySelector('.ds-c .calc-note');
+  var home = note && note.parentNode, homeNext = note && note.nextSibling;
+  function placeNote() {
+    if (!card || !note || !home) return;
+    if (MQ.matches) { if (note.parentNode !== card) card.appendChild(note); }
+    else if (note.parentNode !== home) home.insertBefore(note, homeNext);
+  }
+  new MutationObserver(render).observe(info, { childList: true, subtree: true, attributes: true, attributeFilter: ['style'] });
+  document.addEventListener('pv-lang', render);
+  if (MQ.addEventListener) MQ.addEventListener('change', placeNote); else if (MQ.addListener) MQ.addListener(placeNote);
+  placeNote(); render();
+})();
 </script>
 </body>
 </html>
