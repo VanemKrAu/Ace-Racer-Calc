@@ -11,8 +11,9 @@
     screenshot-desktop-1.png ~ 3.png   2560×1516（1280×758 视口 @2x）
     screenshot-mobile-1.png  ~ 3.png   1440×3200（720×1600 视口 @2x）
 
-截图状态：布加迪 Bolide（飞火流星）· 对手反制 0% · 先机 20.5 / 汇能 50
-          · 释放一大所需氮气 1 个 · 勾选「能源回收」赋能 → 首发✅ 循环✅
+截图状态：炎龙驹 · 对手反制 0% · 先机 30 / 汇能 50
+          · 释放一大所需氮气 1 个 · 大招内释放氮气 2 个 · 勾选「能源回收」赋能
+          → 首发 ✅ 135.0% / 循环 ✅ 120.0%（双轨达成，截图里结论区全绿）
 
 依赖：python3 + playwright（chromium）
 """
@@ -23,7 +24,7 @@ import sys
 from playwright.sync_api import sync_playwright
 
 DEFAULT_URL = "https://aceracercalc.top/"
-CAR_NAME = "布加迪 Bolide"
+CAR_NAME = "炎龙驹"
 
 # 把页面调成「双轨达成」的展示状态
 SETUP_JS = """() => {
@@ -39,10 +40,11 @@ SETUP_JS = """() => {
   }
   const cr = document.getElementById('counterRange');
   if (cr) { cr.value = '0'; if (window.updateCounterSlider) updateCounterSlider(); }
-  setVal('inputXianji', 20.5);
-  setVal('inputHuineng', 50);
-  setVal('inputFirstNitroCount', 1);
+  setVal('inputXianji', 30);           // 先机 30%（上限）
+  setVal('inputHuineng', 50);          // 汇能 50%（上限）
+  setVal('inputFirstNitroCount', 1);   // 释放一大所需氮气 1 个
   check('chk_huishou', true);          // 能源回收（仅循环生效 +10%）
+  setVal('inputNitroCount', 2);        // 大招内释放氮气 2 个 —— 炎龙驹要 2 个才够循环自洽
   if (window.calculate) calculate();
   return true;
 }"""
@@ -108,10 +110,13 @@ def prepare(pg, url):
         pg.wait_for_timeout(400)
     except Exception:
         pass
-    pg.click("#carListBtn")
-    pg.wait_for_timeout(900)
-    pg.click(f"text={CAR_NAME}", timeout=8000)
-    pg.wait_for_timeout(1800)
+    # 直接按名字调 pickCar：比点下拉稳得多 —— 车辆库有近 200 项，
+    # 移动视口下还会走底部面板，靠 text= 点击容易在长列表里超时。
+    cid = pg.evaluate("(n) => { const c = CAR_DATABASE.find(x => x.name === n); return c ? c.id : null; }", CAR_NAME)
+    if cid is None:
+        raise SystemExit(f"car-database.js 里找不到车辆：{CAR_NAME}")
+    pg.evaluate("(id) => { if (window.pickCar) pickCar(id); }", cid)
+    pg.wait_for_timeout(2000)
     pg.evaluate(SETUP_JS)
     pg.wait_for_timeout(1000)
 
