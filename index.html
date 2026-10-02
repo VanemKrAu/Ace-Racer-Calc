@@ -996,6 +996,13 @@ body.ds-c.performance-mode .ds-dock { background: var(--cell); }
 .ds-c.light-mode .top-bar .nav-btn { background-image: none; }
 .ds-c .top-bar .nav-btn:hover { background-color: var(--surface); background-image: linear-gradient(var(--fill-hover), var(--fill-hover)); }
 .ds-c .top-bar .nav-btn:active { transform: scale(.96); }
+/* 「动画效果」开关：菜单项右侧显示当前状态（开=品质色胶囊，关=灰胶囊） */
+.ds-c .pv-fx-opt .pv-fx-state {
+  margin-left: auto; padding: 2px 9px; border-radius: 999px;
+  font-size: 11.5px; font-weight: 700; color: var(--ink-3); background: var(--fill);
+  transition: background-color .15s, color .15s;
+}
+.ds-c .pv-fx-opt .pv-fx-state.on { color: var(--cell); background: var(--acc); }
 /* 卡片里的「凸起层」也改成半透明，避免在玻璃上出现一块块实心黑洞 */
 .ds-c:not(.light-mode) .nitro-item.selected,
 .ds-c:not(.light-mode) .empower-sub-options,
@@ -1448,6 +1455,9 @@ body.diag-bare .card, body.diag-bare .tutorial-details, body.diag-bare .footer-l
   if (on('noamb') || on('bare')) cls.push('diag-noamb');
   if (on('bare')) cls.push('diag-bare');
   if (on('perf') || on('bare')) cls.push('performance-mode');
+  // 菜单里那个「动画效果」开关（localStorage 持久化）：默认开；关掉就等于无动画性能模式。
+  // 之前那套「按帧率自动判断卡顿」的逻辑已经删掉了 —— 读数在真机上不可靠，老误报。
+  try { if (localStorage.getItem('animFx') === 'off') cls.push('performance-mode'); } catch (e) {}
   if (cls.length && document.body) document.body.className += ' ' + cls.join(' ');
 
   if (!on('diag')) return;
@@ -1500,6 +1510,7 @@ body.diag-bare .card, body.diag-bare .tutorial-details, body.diag-bare .footer-l
     <a href="https://github.com/VanemKrAu/Ace-Racer-Calc" target="_blank" class="dropdown-option"><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 4.5A1.5 1.5 0 0 1 6.5 3H19v15H6.5A1.5 1.5 0 0 0 5 19.5v-15Z"/><path d="M5 19.5A1.5 1.5 0 0 0 6.5 21H19"/></svg><span class="zh">项目地址</span><span class="lang-en">GitHub Repo</span></a>
     <a href="https://i0.hdslb.com/bfs/openplatform/07d46fa9619f7ae4fa275da96d3c34d78e552624.png" target="_blank" class="dropdown-option"><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 20s-7-4.4-7-10a4 4 0 0 1 7-2.6A4 4 0 0 1 19 10c0 5.6-7 10-7 10Z"/></svg><span class="zh">支持作者</span><span class="lang-en">Support Author</span></a>
     <div class="dropdown-option" onclick="resetTutorial()"><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 12a8 8 0 1 0 2.4-5.7"/><path d="M4 4v4h4"/></svg><span class="zh">恢复教程提示</span><span class="lang-en">Restore tutorial prompt</span></div>
+    <div class="dropdown-option pv-fx-opt" id="animFxOption" onclick="toggleAnimFx()"><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3v3M12 18v3M5.6 5.6l2.1 2.1M16.3 16.3l2.1 2.1M3 12h3M18 12h3M5.6 18.4l2.1-2.1M16.3 7.7l2.1-2.1"/><circle cx="12" cy="12" r="3.2"/></svg><span class="zh">动画效果</span><span class="lang-en">Animations</span><span class="pv-fx-state" id="animFxState">开</span></div>
   </div>
 </div></div>
     <div class="top-right">
@@ -2651,6 +2662,7 @@ body.diag-bare .card, body.diag-bare .tutorial-details, body.diag-bare .footer-l
       setupSteppers();
       setupFold();
       setupSheet();
+      paintAnimFx();          // 菜单里「动画效果」开关的当前状态
       var tut = document.querySelector('.tutorial-details'), tb = tut && tut.querySelector(':scope > div:last-child');
       if (tut && tb && tut.animate) { tut.classList.add('pv-js'); animDetails(tut, tb); }
     }, 0);
@@ -4713,56 +4725,13 @@ function __tok(n, d) { var v = getComputedStyle(document.body).getPropertyValue(
 </script>
 <script>
 
-(function() {
-    // 交互期帧率哨兵。
-    // 旧逻辑是「开机满 3 秒后开始，每秒统计一次总帧率」——可空闲时 rAF 本来就是满帧，
-    // 于是无论滑动卡成什么样，判据都永远漂亮：套壳浏览器上滚成幻灯片也不会降级。
-    // 现在只在「最近 200ms 内有过滚动 / 触摸 / 滚轮」时才采样，连续几个采样都不达标才降级。
-    var FPS_THRESHOLD = 30;      // 交互中低于 30fps 才算卡
-    var WINDOW_MS = 600;         // 每 600ms 出一个采样
-    var TOLERANCE = 3;           // 连续 3 个采样（约 1.8 秒滑动）都不达标才降级
-    var lastInput = 0, frames = 0, t0 = 0, slow = 0, isActive = true;
+/* 「检测到卡顿 → 自动切换无动画模式」这段逻辑已移除（连同那条 toast 提示）。
+   原因：它按 rAF 帧率判断，而这个读数在真机上并不可靠 —— 后台切回、滚动惯性、
+   省电降频、高刷屏调度、甚至只是某一帧被长任务顶掉，都会让读数偏离真实体感，
+   实际表现就是用户明明没觉得卡，却被告知「已自动降级」。
 
-    function markInput() { lastInput = performance.now(); }
-    ['scroll', 'touchstart', 'touchmove', 'pointerdown', 'pointermove', 'wheel', 'keydown'].forEach(function (ev) {
-        document.addEventListener(ev, markInput, { passive: true, capture: true });
-    });
-
-    function checkFPS(now) {
-        if (!isActive) return;
-        if (!t0) t0 = now;
-
-        if (now - lastInput < 200) {
-            frames++;
-            var dt = now - t0;
-            if (dt >= WINDOW_MS) {
-                var fps = frames * 1000 / dt;
-                if (fps < FPS_THRESHOLD) {
-                    slow++;
-                    if (slow >= TOLERANCE) {
-                        document.body.classList.add('performance-mode');
-                        if (typeof showToast === 'function') {
-                            showToast(_("⚠️ 检测到滑动持续卡顿，已自动切换至【无动画性能模式】", "⚠️ Persistent scroll lag detected, auto-switched to [Performance Mode]"));
-                        }
-                        isActive = false;
-                        return;
-                    }
-                } else {
-                    slow = 0;
-                }
-                frames = 0; t0 = now;
-            }
-        } else if (now - t0 > WINDOW_MS) {
-            frames = 0; t0 = now;     // 空闲期不计入，免得把空闲帧率混进判据
-        }
-        requestAnimationFrame(checkFPS);
-    }
-    requestAnimationFrame(checkFPS);
-
-    document.addEventListener('visibilitychange', function() {
-        frames = 0; t0 = 0; slow = 0;   // 切回前台重新开始，别把后台停顿算成掉帧
-    });
-})();
+   降级权改回用户手动：需要时用 ?perf=1（无动画性能模式）或 ?bare=1（最彻底）。
+   performance-mode 的样式与这两个 URL 开关都保留，只是不再自动触发。 */
 
 </script>
 <script>
@@ -5244,6 +5213,29 @@ if (typeof CAR_DATABASE !== 'undefined') {
       requestAnimationFrame(buildGlass);
     }, 220);
   }, { passive: true });
+
+  // ---------- 菜单里的「动画效果」开关 ----------
+  // 完全由用户手动控制，不再做任何自动判断（原来那套按帧率自动降级的逻辑已删，
+  // 它在真机上读数不可靠，老误报「检测到卡顿」）。关掉 = 给 body 加 performance-mode。
+  // 状态写进 localStorage，下次打开保持。
+  function paintAnimFx() {
+    var el = $('animFxState');
+    if (!el) return;
+    var off = document.body.classList.contains('performance-mode');
+    el.textContent = off ? L('关', 'Off') : L('开', 'On');
+    el.classList.toggle('on', !off);
+  }
+  window.paintAnimFx = paintAnimFx;
+  window.toggleAnimFx = function () {
+    var off = document.body.classList.toggle('performance-mode');
+    try { localStorage.setItem('animFx', off ? 'off' : 'on'); } catch (e) {}
+    paintAnimFx();
+    var m = $('authorMenu');
+    if (m) m.classList.remove('show');            // 收起菜单，好看清页面上的变化
+    if (typeof showToast === 'function') {
+      showToast(off ? L('已关闭动画效果', 'Animations off') : L('已开启动画效果', 'Animations on'));
+    }
+  };
 
   // ---------- 滚动期「按需」降级：只在真的掉帧时才摘掉折射 ----------
   // dock 的液态玻璃折射是 backdrop-filter: url(#svg)。只要它下面有内容在动，合成器每帧都得
