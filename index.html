@@ -60,7 +60,6 @@
    
     <script src="./html2canvas.min.js" async></script>
     <script src="./car-database.js"></script>
-
 <script>
 // Bilibili CDN image URLs (auto-generated)
 var _BILI_CDN = true;
@@ -278,7 +277,6 @@ var _CAR_IMG = {
   10000: "https://i0.hdslb.com/bfs/openplatform/abf98f2297c3089641367c8920ff1b149c975819.png",
 };
 </script>
-
 
 
 
@@ -908,6 +906,487 @@ body.ds-c.performance-mode .ds-dock { background: var(--cell); }
   .ds-c #specGrid { grid-template-columns: 1fr; }
 }
 
+/* =====================================================================
+   C-4 · V4 视觉层（叠加在 c-1/2/3 之后，不改任何 id / class）
+   由 build.mjs 按文件名排序自动收集进正式版 <style>。
+   核心思路：
+   1) 卡片从「不透明纯色」改成「带品质色调的半透明玻璃」——背景本身已经是模糊过的车图，
+      所以卡片不需要 backdrop-filter，纯 alpha 透出即可，零额外 GPU 成本。
+   2) 背景从「一块固定的光」改成「随滚动漂移的分区光」：首发区=点火橙，循环区=回路青。
+   3) 首屏车辆在手机上去掉卡片框、出血铺满，品质字样做描边大字作为舞台背景。
+   4) 结果卡成为每个测算区的视觉主角：状态色辉光 + 270° 转速表式读数（JS 在 proto.js）。
+   ===================================================================== */
+
+/* ---------- 0. 新 token ---------- */
+.ds-c {
+  --zone-first: #ff8a1f;            /* 首发 · 点火橙 */
+  --zone-loop: #14c4e3;             /* 循环 · 回路青 */
+  --surface: rgba(255, 255, 255, .74);
+  --surface-rim: rgba(255, 255, 255, .95);
+  --surface-edge: rgba(20, 24, 40, .06);
+  --surface-drop: 0 14px 34px -18px rgba(30, 34, 70, .22);
+  --raise: rgba(255, 255, 255, .78);
+  --fill: rgba(118, 118, 128, .11); --fill-2: rgba(118, 118, 128, .22); --fill-hover: rgba(118, 118, 128, .16);
+  --sep: rgba(60, 60, 67, .12);
+}
+.ds-c:not(.light-mode) {
+  --bg: #05060a;
+  --surface: rgba(22, 23, 29, .62);
+  --surface-rim: rgba(255, 255, 255, .09);
+  --surface-edge: rgba(255, 255, 255, .055);
+  --surface-drop: 0 22px 44px -22px rgba(0, 0, 0, .7);
+  --raise: rgba(255, 255, 255, .075);
+  --fill: rgba(255, 255, 255, .065); --fill-2: rgba(255, 255, 255, .16); --fill-hover: rgba(255, 255, 255, .1);
+  --sep: rgba(255, 255, 255, .08);
+}
+/* 表面带一点当前赛车的品质色（传说金 / 史诗紫 / 稀有蓝 / 普通绿），整页跟着车「换皮」 */
+@supports (color: color-mix(in oklab, red, blue)) {
+  .ds-c:not(.light-mode) { --surface: color-mix(in oklab, var(--acc) 8%, rgba(18, 19, 25, .6)); }
+  .ds-c.light-mode { --surface: color-mix(in oklab, var(--acc) 3%, rgba(255, 255, 255, .86)); }
+}
+
+/* ---------- 1. 玻璃卡片 ---------- */
+.ds-c .card, .ds-c .tutorial-details, .ds-c .footer-legal, .ds-c .bottom-image-wrapper {
+  background-color: var(--surface);
+  background-image: linear-gradient(180deg, rgba(255, 255, 255, .045), rgba(255, 255, 255, 0) 140px);
+  box-shadow: inset 0 1px 0 var(--surface-rim), inset 0 0 0 1px var(--surface-edge), var(--surface-drop);
+}
+.ds-c.light-mode .card, .ds-c.light-mode .tutorial-details, .ds-c.light-mode .footer-legal, .ds-c.light-mode .bottom-image-wrapper { background-image: none; }
+/* 卡片里的「凸起层」也改成半透明，避免在玻璃上出现一块块实心黑洞 */
+.ds-c:not(.light-mode) .nitro-item.selected,
+.ds-c:not(.light-mode) .empower-sub-options,
+.ds-c:not(.light-mode) .extra-active-nitro .extra-body,
+.ds-c:not(.light-mode) .extra-active-ult .extra-body,
+.ds-c:not(.light-mode) .extra-active-persec .extra-body,
+.ds-c:not(.light-mode) .car-list-btn,
+.ds-c:not(.light-mode) .share-btn .ico,
+.ds-c:not(.light-mode) .cp-split > span { background-color: var(--raise); }
+.ds-c .nitro-item.selected { background-image: linear-gradient(180deg, color-mix(in oklab, var(--acc) 16%, transparent), transparent); }
+
+/* ---------- 2. 背景：分区光随滚动漂移 ---------- */
+.ds-c .ds-ambient {
+  background:
+    radial-gradient(70% 42% at 50% -6%, color-mix(in oklab, var(--acc) 26%, transparent), transparent 72%),
+    radial-gradient(55% 40% at 108% 30%, color-mix(in oklab, var(--acc) 12%, transparent), transparent 70%),
+    var(--bg);
+}
+.ds-c.light-mode .ds-ambient {
+  background:
+    radial-gradient(70% 42% at 50% -6%, color-mix(in oklab, var(--acc) 22%, transparent), transparent 72%),
+    radial-gradient(55% 40% at 108% 30%, color-mix(in oklab, var(--acc) 10%, transparent), transparent 70%),
+    #f3f4f8;
+}
+body.ds-c .ds-ambient img.is-on { opacity: .62; }
+body.ds-c.light-mode .ds-ambient img.is-on { opacity: .34; }
+/* 两团分区光：用 body 的两个伪元素，小尺寸绘制再 scale 放大（纹理小、只做合成） */
+body.ds-c::before, body.ds-c::after {
+  content: ""; position: fixed; z-index: -1; pointer-events: none;
+  left: 50%; top: 50%; width: 120px; height: 120px; margin: -60px 0 0 -60px; border-radius: 50%;
+  opacity: 0; will-change: transform, opacity;
+}
+body.ds-c::before { background: radial-gradient(closest-side, color-mix(in oklab, var(--zone-first) 70%, transparent), transparent); }
+body.ds-c::after { background: radial-gradient(closest-side, color-mix(in oklab, var(--zone-loop) 70%, transparent), transparent); }
+@supports (animation-timeline: scroll()) {
+  body.ds-c::before { animation: dsZoneA linear both; animation-timeline: scroll(root); }
+  body.ds-c::after { animation: dsZoneB linear both; animation-timeline: scroll(root); }
+}
+/* 滚动进度 → 光团位置：首发区（约 45%~65%）亮起橙光，循环区（约 62%~85%）亮起青光 */
+@keyframes dsZoneA {
+  0%, 38% { transform: translate(-40vw, 70vh) scale(7); opacity: 0; }
+  52% { transform: translate(-28vw, 10vh) scale(7.5); opacity: .5; }
+  64% { transform: translate(-20vw, -30vh) scale(7); opacity: .35; }
+  76%, 100% { transform: translate(-30vw, -90vh) scale(6); opacity: 0; }
+}
+@keyframes dsZoneB {
+  0%, 56% { transform: translate(40vw, 80vh) scale(7); opacity: 0; }
+  70% { transform: translate(30vw, 5vh) scale(7.5); opacity: .45; }
+  84% { transform: translate(22vw, -35vh) scale(7); opacity: .3; }
+  96%, 100% { transform: translate(30vw, -90vh) scale(6); opacity: 0; }
+}
+body.ds-c.light-mode::before, body.ds-c.light-mode::after { mix-blend-mode: multiply; }
+body.ds-c.performance-mode::before, body.ds-c.performance-mode::after { display: none; }
+
+/* ---------- 3. 区块标题：中英双层 kicker，给每段一个身份 ---------- */
+.ds-c .section-divider > span::before {
+  display: block; margin-bottom: 4px;
+  font: 800 10.5px/1 var(--round); letter-spacing: .22em; color: var(--ink-3);
+}
+.ds-c .cp-base .section-divider > span::before { content: "SETUP · 基础"; }
+.ds-c .cp-group-first .section-divider > span::before { content: "IGNITION · 首发"; color: var(--zone-first); }
+.ds-c .cp-group-loop .section-divider > span::before { content: "LOOP · 循环"; color: var(--zone-loop); }
+.ds-c .share-block .section-divider > span::before { content: "EXPORT · 分享"; }
+
+/* ---------- 4. 首屏车辆：手机上出血铺满 + 品质描边大字舞台 ---------- */
+.ds-c .car-stage { isolation: isolate; overflow: hidden; }
+.ds-c .car-stage::before {      /* 地面聚光 */
+  content: ""; position: absolute; z-index: -1; left: 50%; bottom: 6%; width: 86%; height: 34%;
+  transform: translateX(-50%); border-radius: 50%;
+  background: radial-gradient(closest-side, color-mix(in oklab, var(--acc) 55%, transparent), transparent);
+  opacity: .55;
+}
+.ds-c .car-stage::after {       /* 品质描边大字 */
+  position: absolute; z-index: -1; left: 0; right: 0; top: 8%; text-align: center; white-space: nowrap;
+  font: 900 clamp(64px, 22vw, 120px)/1 var(--round); letter-spacing: .04em; font-style: italic;
+  color: transparent; -webkit-text-stroke: 1.2px color-mix(in oklab, var(--acc) 60%, transparent); opacity: .55;
+}
+.ds-c[data-quality="legend"] .car-stage::after { content: "LEGEND"; }
+.ds-c[data-quality="epic"] .car-stage::after { content: "EPIC"; }
+.ds-c[data-quality="rare"] .car-stage::after { content: "RARE"; }
+.ds-c[data-quality="common"] .car-stage::after { content: "COMMON"; }
+.ds-c #carImage { position: relative; }
+.ds-c #carPreviewName { font-size: 22px; letter-spacing: -.2px; }
+@media (max-width: 849px) {
+  .ds-c .car-hero { background: transparent !important; background-image: none !important; box-shadow: none !important; margin: 0 -14px; border-radius: 0; }
+  .ds-c .car-stage { min-height: 250px; padding-top: 18px; }
+  .ds-c #carImage { max-height: 230px; transform: scale(1.1); }
+  .ds-c .car-meta { padding: 4px 18px 8px; }
+  .ds-c #carPreviewAutoMsg { background: color-mix(in oklab, var(--pass) 12%, var(--surface)); box-shadow: inset 0 0 0 1px color-mix(in oklab, var(--pass) 22%, transparent); }
+}
+
+/* ---------- 5. 两个测算区：分区色托盘 + 发光序号 ---------- */
+.ds-c .cp-group-first { --zone: var(--zone-first); }
+.ds-c .cp-group-loop { --zone: var(--zone-loop); }
+.ds-c .cp-group {
+  position: relative;
+  background: linear-gradient(180deg, color-mix(in oklab, var(--zone) 13%, transparent), transparent 320px), var(--tray);
+  border-color: color-mix(in oklab, var(--zone) 30%, transparent);
+}
+.ds-c .cp-group::before {
+  content: ""; position: absolute; left: 28px; right: 28px; top: -1px; height: 2px; border-radius: 2px;
+  background: linear-gradient(90deg, transparent, var(--zone), transparent);
+}
+.ds-c .cp-step {
+  background: var(--zone); color: #0b0b0e;
+  box-shadow: 0 0 0 4px color-mix(in oklab, var(--zone) 22%, transparent), 0 0 22px color-mix(in oklab, var(--zone) 55%, transparent);
+}
+
+/* ---------- 6. 结果卡：状态色辉光，成为每个区的主角 ---------- */
+.ds-c .result-card {
+  background-color: var(--surface);
+  background-image: radial-gradient(120% 60% at 0% 0%, color-mix(in oklab, var(--st-fill) 20%, transparent), transparent 62%);
+  box-shadow: inset 0 0 0 1px color-mix(in oklab, var(--st-fill) 32%, transparent), inset 0 1px 0 var(--surface-rim),
+              0 24px 50px -26px color-mix(in oklab, var(--st-fill) 55%, transparent);
+}
+.ds-c .ds-gauge[data-state="idle"] { --st-fill: var(--ink-3); }
+.ds-c .ds-ring-fill { filter: drop-shadow(0 0 5px color-mix(in oklab, var(--st-fill) 70%, transparent)); }
+.ds-c .ds-value { font-size: 44px; }
+@media (max-width: 849px) { .ds-c .ds-value { font-size: 40px; } }
+
+/* ---------- 7. 可读性修正 ---------- */
+/* 运算解析盒：不再逐字符硬折（3\n5.260 / nit\nros），等宽改为 tabular 数字的无衬线 */
+.ds-c .formula-box { word-break: normal; overflow-wrap: anywhere; font-family: var(--sans); font-variant-numeric: tabular-nums; font-size: 12.5px; line-height: 1.8; }
+/* 单位「个」在小号浅灰下像一个 ↑ 箭头：提高对比 */
+.ds-c .input-unit { color: var(--ink-2); font-size: 13.5px; }
+/* 标题副文：中文不在词中间断行 */
+.ds-c .header p { word-break: keep-all; overflow-wrap: anywhere; }
+/* 被互斥锁住的赋能：0.4 透明度下几乎读不出来 */
+.ds-c .empower-item[style*="opacity: 0.4"] { opacity: .58 !important; }
+
+/* ---------- 8. 底部胶囊 ---------- */
+/* 标签文字保持中性墨色（不用分区色）；状态点沿用 V3：达成绿点、失败红点 */
+/* 打开下拉 / 正在输入时让位，不再盖住车辆列表与软键盘上方的输入框 */
+body.ds-c:has(.dropdown-menu.show) .ds-dock,
+body.ds-c:has(input[type="number"]:focus, input[type="text"]:focus) .ds-dock { transform: translate(-50%, 150%); opacity: 0; pointer-events: none; }
+
+/* ---------- 9. 手机端渐进披露（proto.js 给低频卡片加 .pv-collapsible） ---------- */
+.ds-c .pv-collapsible > .card-title { cursor: pointer; }
+.ds-c .pv-collapsible > .card-title::after {
+  content: ""; width: 22px; height: 22px; margin-left: 8px; flex: none; border-radius: 50%;
+  background: var(--fill) url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%238e8e93' stroke-width='2.4' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='m6 9 6 6 6-6'/%3E%3C/svg%3E") no-repeat center / 14px;
+  transition: transform .25s;
+}
+.ds-c .pv-collapsible:not(.pv-collapsed) > .card-title::after { transform: rotate(180deg); }
+.ds-c .pv-collapsed > :not(.card-title) { display: none !important; }
+.ds-c .pv-collapsed > .card-title { margin-bottom: 0; }
+.ds-c .pv-sum { margin-left: auto; font-size: 12px; font-weight: 600; color: var(--ink-3); white-space: nowrap; }
+.ds-c .pv-sum.on { color: var(--acc-ink); }
+.ds-c .pv-collapsible .limit-badge { margin-left: 8px; }
+
+@media (prefers-reduced-motion: reduce) { body.ds-c::before, body.ds-c::after { animation: none !important; opacity: 0 !important; } }
+
+/* ---------- V4.1 微调 ---------- */
+/* 手机：环境光车图放到视口中部、更饱和，让每一屏卡片后面都有颜色起伏 */
+@media (max-width: 849px) {
+  .ds-c .ds-ambient img { top: 48%; }
+  body.ds-c:not(.light-mode) .ds-ambient img.is-on { opacity: .72; }
+}
+/* 浅色：凸起层与标签保持实白，避免「脏玻璃」发灰 */
+.ds-c.light-mode #carPreviewTags > span:not(:first-child),
+.ds-c.light-mode .nitro-item.selected,
+.ds-c.light-mode .car-list-btn { background-color: rgba(255,255,255,.9) !important; }
+.ds-c.light-mode .car-stage::after { -webkit-text-stroke-color: color-mix(in oklab, var(--acc) 75%, transparent); opacity: .5; }
+.ds-c.light-mode .car-stage::before { opacity: .8; }
+/* 卡片标题与徽标在窄屏换行时，徽标单独一行，不再把标题挤成两行 */
+@media (max-width: 480px) {
+  .ds-c .card-title:has(.limit-badge) { flex-wrap: wrap; row-gap: 6px; }
+  .ds-c .card-title:has(.limit-badge) .limit-badge { margin-left: 0; order: 3; flex-basis: auto; }
+  .ds-c .pv-collapsible .card-title:has(.limit-badge) .limit-badge { display: none; }
+}
+/* 第三团光：基础属性区跟随品质色（放在 .ds-ambient::before，才能读到 body 上的 --acc） */
+.ds-c .ds-ambient::before {
+  content: ""; position: absolute; z-index: 0; pointer-events: none;
+  left: 50%; top: 50%; width: 120px; height: 120px; margin: -60px 0 0 -60px; border-radius: 50%; opacity: 0;
+  background: radial-gradient(closest-side, color-mix(in oklab, var(--acc) 75%, transparent), transparent);
+}
+@supports (animation-timeline: scroll()) {
+  .ds-c .ds-ambient::before { animation: dsZoneC linear both; animation-timeline: scroll(root); }
+}
+@keyframes dsZoneC {
+  0%, 10% { transform: translate(35vw, 70vh) scale(7); opacity: 0; }
+  24% { transform: translate(28vw, 0vh) scale(8); opacity: .42; }
+  38% { transform: translate(-25vw, -20vh) scale(8); opacity: .36; }
+  48%, 100% { transform: translate(-30vw, -90vh) scale(6); opacity: 0; }
+}
+.ds-c.light-mode .ds-ambient::before { mix-blend-mode: multiply; }
+.ds-c.performance-mode .ds-ambient::before { display: none; }
+@media (prefers-reduced-motion: reduce) { .ds-c .ds-ambient::before { animation: none !important; opacity: 0 !important; } }
+
+/* ---------- 分区标识去掉橙 / 青：只留品质色，测算区回到中性 ---------- */
+.ds-c { --zone-first: var(--acc); --zone-loop: var(--acc); }
+.ds-c .cp-group-first .section-divider > span::before,
+.ds-c .cp-group-loop .section-divider > span::before { color: var(--ink-3); }
+.ds-c .cp-step { background: var(--ink); color: var(--cell); box-shadow: none; }
+.ds-c .cp-group { background: var(--tray); border-color: var(--tray-line); }
+.ds-c .cp-group::before { display: none; }
+/* 随滚动的背景光：一团品质色 + 一团中性白光，靠明暗起伏而不是换色 */
+body.ds-c:not(.light-mode)::after { background: radial-gradient(closest-side, rgba(255, 255, 255, .2), transparent); }
+
+/* ---------- 下拉菜单也换成玻璃材质 ----------
+   下拉浮在内容上方，单靠半透明会让底下的文字透出来、读不清，
+   所以这里用真正的 backdrop-filter 模糊（菜单面积小、只在打开时存在，成本可以忽略）。 */
+.ds-c { --menu-bg: rgba(255, 255, 255, .72); --menu-rim: rgba(255, 255, 255, .9); --menu-edge: rgba(20, 24, 40, .08); }
+.ds-c:not(.light-mode) { --menu-bg: rgba(30, 31, 38, .66); --menu-rim: rgba(255, 255, 255, .1); --menu-edge: rgba(255, 255, 255, .07); }
+@supports (color: color-mix(in oklab, red, blue)) {
+  .ds-c:not(.light-mode) { --menu-bg: color-mix(in oklab, var(--acc) 8%, rgba(26, 27, 34, .66)); }
+  .ds-c.light-mode { --menu-bg: color-mix(in oklab, var(--acc) 3%, rgba(255, 255, 255, .74)); }
+}
+.ds-c .dropdown-menu {
+  background-color: var(--menu-bg);
+  background-image: linear-gradient(180deg, rgba(255, 255, 255, .05), rgba(255, 255, 255, 0) 120px);
+  -webkit-backdrop-filter: blur(26px) saturate(1.7); backdrop-filter: blur(26px) saturate(1.7);
+  box-shadow: inset 0 1px 0 var(--menu-rim), inset 0 0 0 1px var(--menu-edge), 0 18px 48px rgba(0, 0, 0, .28);
+}
+.ds-c.light-mode .dropdown-menu { background-image: none; box-shadow: inset 0 1px 0 var(--menu-rim), inset 0 0 0 1px var(--menu-edge), 0 16px 40px rgba(30, 34, 70, .18); }
+/* 不支持 backdrop-filter / 性能模式 / 减弱透明度：退回实色，保证可读 */
+@supports not ((backdrop-filter: blur(1px)) or (-webkit-backdrop-filter: blur(1px))) { .ds-c .dropdown-menu { background-color: var(--cell); } }
+body.ds-c.performance-mode .dropdown-menu { -webkit-backdrop-filter: none; backdrop-filter: none; background-color: var(--cell); }
+@media (prefers-reduced-transparency: reduce) { .ds-c .dropdown-menu { -webkit-backdrop-filter: none; backdrop-filter: none; background-color: var(--cell); } }
+/* 菜单里的悬停 / 选中底色同样用半透明填充 */
+.ds-c .dropdown-option:hover { background: var(--fill-hover); }
+.ds-c .dropdown-option.selected { background: var(--fill); }
+/* 聚焦的输入框：深色下不再变成一块实心深灰 */
+.ds-c:not(.light-mode) .form-control:focus { background: var(--raise); }
+
+/* =====================================================================
+   第二轮：表情换图标 / 芯片图形 / 字重 / 手机选车面板 / 步进按钮 / 页面压缩 / 长截图
+   ===================================================================== */
+
+/* ---------- 字重减负：标题不再一律特粗，只有结果数字保留 800 ---------- */
+.ds-c .header h1 { font-weight: 700; }
+.ds-c .section-divider { font-weight: 700; }
+.ds-c .card-title { font-weight: 600; }
+.ds-c #carPreviewName { font-weight: 700; }
+.ds-c .form-group.is-key .form-label { font-weight: 600; }
+.ds-c .nitro-left { font-weight: 500; }
+.ds-c .nitro-item.selected .nitro-left { font-weight: 600; }
+.ds-c .empower-info .title { font-weight: 500; }
+.ds-c .extra-toggle { font-weight: 500; }
+.ds-c .tut-head { font-weight: 600; }
+.ds-c .tut-video, .ds-c .mode-btn, .ds-c .share-btn, .ds-c .bug-btn, .ds-c #gh-support-link, .ds-c .car-list-btn { font-weight: 600; }
+.ds-c .limit-badge, .ds-c .result-req, .ds-c .social-tag, .ds-c .thanks-item, .ds-c .copy-toast { font-weight: 500; }
+.ds-c .ds-status, .ds-c .ds-delta { font-weight: 600; }
+.ds-c .cp-step { font-weight: 700; }
+.ds-c .section-divider > span::before { font-weight: 700; }
+.ds-c .pv-arc .pv-arc-lbl { font-weight: 700; }
+
+/* ---------- 图标：提示条 / 选车提示 / 未上线车辆 ---------- */
+.ds-c .pv-toast { display: inline-flex; align-items: center; gap: 8px; }
+.ds-c .pv-toast .ico { width: 18px; height: 18px; flex: none; }
+.ds-c .pv-warn { width: 15px; height: 15px; margin: 0 4px 0 0; vertical-align: -2px; }
+.ds-c .pv-q { width: 16px; height: 16px; vertical-align: -3px; }
+
+/* ---------- 芯片槽位：线性图形 ---------- */
+.ds-c .pv-chip { display: inline-flex; align-items: center; justify-content: center; width: 30px; height: 30px; border-radius: 50%;
+  background: var(--fill); box-shadow: inset 0 0 0 1px var(--sep); color: var(--ink-2); }
+.ds-c .pv-chip svg { width: 18px; height: 18px; display: block; }
+
+/* ---------- 整数输入的 − / + ---------- */
+.ds-c .pv-has-step .form-control { padding-right: 104px; }
+.ds-c .pv-has-step .input-unit { right: 86px; }
+.ds-c .pv-step { position: absolute; right: 6px; top: 50%; transform: translateY(-50%); display: flex; gap: 4px; }
+.ds-c .pv-step-btn, .ds-c .pv-sub-btn { display: inline-flex; align-items: center; justify-content: center; flex: none; padding: 0; border: 0; cursor: pointer;
+  background: var(--raise); color: var(--ink); box-shadow: inset 0 0 0 1px var(--sep); transition: transform .1s, background .15s; }
+.ds-c.light-mode .pv-step-btn, .ds-c.light-mode .pv-sub-btn { background: #fff; }
+.ds-c .pv-step-btn { width: 34px; height: 34px; border-radius: 10px; }
+.ds-c .pv-sub-btn { width: 30px; height: 30px; border-radius: 50%; }
+.ds-c .pv-step-btn .ico, .ds-c .pv-sub-btn .ico { width: 15px; height: 15px; }
+.ds-c .pv-step-btn:active, .ds-c .pv-sub-btn:active { transform: scale(.92); background: var(--fill-hover); }
+.ds-c .sub-row { gap: 6px; }
+
+/* ---------- 手机端：计算过程默认收起 ---------- */
+.ds-c .pv-fold-btn { display: flex; align-items: center; justify-content: center; gap: 6px; width: 100%; height: 40px; border: 0; border-radius: var(--r-md);
+  background: var(--fill); color: var(--ink-2); font: 500 13px var(--sans); cursor: pointer; }
+.ds-c .pv-fold-btn .ico { width: 15px; height: 15px; transition: transform .2s; }
+.ds-c .pv-fold-btn.open { margin-bottom: 8px; }
+.ds-c .pv-fold-btn.open .ico { transform: rotate(180deg); }
+.ds-c .formula-box.pv-fold-closed { display: none; }
+
+/* ---------- 手机端：页脚合并成一张卡 ---------- */
+.ds-c .pv-mini-details > summary { list-style: none; display: inline-flex; align-items: center; gap: 4px; margin-bottom: 10px; font-size: 13px; color: var(--ink-2); cursor: pointer; }
+.ds-c .pv-mini-details > summary::-webkit-details-marker { display: none; }
+.ds-c .pv-mini-details > summary .ico { width: 14px; height: 14px; transition: transform .2s; }
+.ds-c .pv-mini-details[open] > summary .ico { transform: rotate(180deg); }
+@media (max-width: 849px) {
+  .ds-c .site-footer { gap: 0; margin-top: 24px; padding: 2px 16px; border-radius: var(--r-lg);
+    background-color: var(--surface); background-image: linear-gradient(180deg, rgba(255, 255, 255, .045), rgba(255, 255, 255, 0) 140px);
+    box-shadow: inset 0 1px 0 var(--surface-rim), inset 0 0 0 1px var(--surface-edge), var(--surface-drop); }
+  .ds-c.light-mode .site-footer { background-image: none; }
+  .ds-c .site-footer > .card, .ds-c .site-footer > .footer-legal, .ds-c .site-footer > .bottom-image-wrapper {
+    background: none !important; box-shadow: none !important; border-radius: 0; padding: 16px 0; }
+  .ds-c .site-footer > * + * { border-top: 1px solid var(--sep); }
+  .ds-c .site-footer .card-text { margin-bottom: 10px; }
+  .ds-c .bottom-msg-text { font-size: 13px; margin-bottom: 12px; }
+  .ds-c #imgDark, .ds-c #imgLight { width: 176px; }
+  .ds-c .share-block { margin-top: 24px; }
+}
+
+/* ---------- 手机选车：底部整屏面板 ---------- */
+.pv-sheet, .pv-sheet-mask { display: none; }
+.ds-c .pv-thumb { display: none; }
+@media (max-width: 849px) {
+  .ds-c .pv-sheet-mask { display: block; position: fixed; inset: 0; z-index: 4000; background: rgba(0, 0, 0, .42); opacity: 0; pointer-events: none; transition: opacity .25s; }
+  body.ds-c.pv-sheet-open .pv-sheet-mask { opacity: 1; pointer-events: auto; }
+  .ds-c .pv-sheet.dropdown-container { display: flex; flex-direction: column; position: fixed; left: 0; right: 0; bottom: 0; top: 7vh; z-index: 4001;
+    border-radius: 22px 22px 0 0; background-color: var(--menu-bg);
+    -webkit-backdrop-filter: blur(30px) saturate(1.7); backdrop-filter: blur(30px) saturate(1.7);
+    box-shadow: inset 0 1px 0 var(--menu-rim), 0 -12px 40px rgba(0, 0, 0, .35);
+    transform: translateY(102%); visibility: hidden; transition: transform .34s cubic-bezier(.2, .8, .2, 1), visibility 0s .34s; }
+  body.ds-c.pv-sheet-open .pv-sheet.dropdown-container { transform: none; visibility: visible; transition: transform .34s cubic-bezier(.2, .8, .2, 1), visibility 0s; }
+  body.ds-c.pv-sheet-open { overflow: hidden; }
+  body.ds-c.pv-sheet-open .ds-dock { transform: translate(-50%, 150%); opacity: 0; pointer-events: none; }
+  .ds-c .pv-sheet-grab { flex: none; width: 38px; height: 5px; margin: 8px auto 2px; border-radius: 3px; background: var(--fill-2); }
+  .ds-c .pv-sheet-head { flex: none; display: flex; align-items: center; justify-content: space-between; padding: 6px 16px 10px; }
+  .ds-c .pv-sheet-head b { font-size: 17px; font-weight: 600; }
+  .ds-c .pv-sheet-done { height: 32px; padding: 0 14px; border: 0; border-radius: 999px; background: var(--fill); color: var(--ink); font: 600 14px var(--sans); cursor: pointer; }
+  .ds-c .pv-sheet-search { flex: none; position: relative; margin: 0 16px 10px; }
+  .ds-c .pv-sheet-search .ico { position: absolute; left: 13px; top: 50%; transform: translateY(-50%); width: 18px; height: 18px; color: var(--ink-3); pointer-events: none; }
+  .ds-c .pv-sheet-search input { width: 100%; height: 44px; padding: 0 14px 0 40px; border: 0; border-radius: 12px; background: var(--fill); color: var(--ink); font: 500 16px var(--sans); outline: none; }
+  .ds-c .pv-sheet-search input:focus { box-shadow: inset 0 0 0 2px var(--acc); }
+  .ds-c .pv-sheet-search input::placeholder { color: var(--ink-3); }
+  .ds-c .pv-sheet-tools { flex: none; padding: 0 16px; }
+  .ds-c .pv-sheet .car-filters { margin-bottom: 10px; }
+  .ds-c .pv-sheet .car-filters .select-btn { height: 40px; }
+  .ds-c .pv-sheet-qual { flex: none; display: flex; gap: 6px; padding: 0 16px 12px; overflow-x: auto; scrollbar-width: none; }
+  .ds-c .pv-sheet-qual::-webkit-scrollbar { display: none; }
+  .ds-c .pv-qchip { flex: none; height: 32px; padding: 0 12px; border: 0; border-radius: 999px; background: var(--fill); color: var(--ink-2); font: 500 13.5px var(--sans); cursor: pointer; }
+  .ds-c .pv-qchip span { margin-left: 5px; font-size: 12px; color: var(--ink-3); font-variant-numeric: tabular-nums; }
+  .ds-c .pv-qchip.on { background: var(--ink); color: var(--cell); }
+  .ds-c .pv-qchip.on span { color: inherit; opacity: .6; }
+  .ds-c .pv-sheet-list { flex: 1; min-height: 0; overflow-y: auto; overscroll-behavior: contain; -webkit-overflow-scrolling: touch;
+    border-top: 1px solid var(--sep); padding: 6px 8px calc(16px + env(safe-area-inset-bottom)); }
+  .ds-c .pv-sheet #carDropdown { display: block !important; position: static; width: auto; max-height: none; margin: 0; padding: 0; overflow: visible;
+    background: none; box-shadow: none; -webkit-backdrop-filter: none; backdrop-filter: none; animation: none; }
+  .ds-c .pv-sheet #carDropdown .dropdown-option { min-height: 60px; padding: 8px 10px; gap: 12px; font-size: 15px; }
+  .ds-c .pv-sheet .pv-thumb { display: block; flex: none; width: 76px; height: 42px; border-radius: 10px; overflow: hidden; background: var(--fill); }
+  .ds-c .pv-sheet .pv-thumb img { width: 100%; height: 100%; object-fit: contain; display: block; }
+  .ds-c .pv-sheet .dropdown-option[data-id="-1"] .pv-thumb { background: var(--fill); }
+}
+
+/* ---------- 长截图：导出克隆里用这些替换原生控件；并去掉 html2canvas 不认识的 color-mix / oklab ---------- */
+.ds-c .pv-x-sw { position: relative; display: inline-block; flex: none; width: 44px; height: 26px; border-radius: 13px; background: var(--fill-2); }
+.ds-c .pv-x-sw.on { background: var(--acc); }
+.ds-c .pv-x-sw i { position: absolute; top: 2px; left: 2px; width: 22px; height: 22px; border-radius: 50%; background: #fff; box-shadow: 0 1px 2px rgba(0, 0, 0, .25); }
+.ds-c .pv-x-sw.on i { left: 20px; }
+.ds-c .pv-x-ck { position: relative; display: inline-block; flex: none; width: 20px; height: 20px; border-radius: 50%; border: 1.5px solid var(--ink-3); }
+.ds-c .pv-x-ck.on { background: var(--acc); border-color: var(--acc); }
+.ds-c .pv-x-ck.on i { position: absolute; left: 50%; top: 45%; width: 5px; height: 9px; margin: -5px 0 0 -2.5px; border: solid var(--on-acc); border-width: 0 2px 2px 0; transform: rotate(45deg); }
+.ds-c .pv-x-val { display: flex; align-items: center; }
+.ds-c .sub-input.pv-x-val { justify-content: center; }
+.ds-c .pv-x-ph { color: var(--ink-3); font-weight: 500 !important; }
+.ds-c .pv-export { --surface: rgba(28, 29, 35, .94); --menu-bg: var(--cell); --raise: rgba(255, 255, 255, .075); }
+.ds-c.light-mode .pv-export { --surface: #ffffff; --raise: #ffffff; }
+.ds-c .pv-export .card { background-image: none; }
+.ds-c .pv-export .nitro-item.selected { background-image: none; }
+.ds-c .pv-export .car-stage::before, .ds-c .pv-export .car-stage::after { content: none; }
+.ds-c .pv-export #carPreviewAutoMsg { background: var(--pass-soft) !important; box-shadow: none !important; }
+.ds-c .pv-export .result-card { background-image: none; box-shadow: inset 0 0 0 1px var(--st-soft); }
+.ds-c .pv-export .ds-ring-fill { filter: none; }
+.ds-c .pv-export .pv-step, .ds-c .pv-export .pv-sub-btn, .ds-c .pv-export .pv-fold-btn, .ds-c .pv-export .pv-thumb { display: none !important; }
+.ds-c .pv-export .pv-has-step .form-control { padding-right: 44px; }
+.ds-c .pv-export .pv-has-step .input-unit { right: 14px; }
+.ds-c .pv-export .car-stage::before { background: none; }
+.ds-c .pv-export .car-stage::after { -webkit-text-stroke: 0 transparent; }
+
+/* ---------- 270° 仪表（原来由脚本注入，挪到样式表里） ---------- */
+.ds-c .pv-arc .ds-ring-track, .ds-c .pv-arc .ds-ring-fill, .ds-c .pv-arc .pv-mark { transform: rotate(135deg); transform-origin: 50% 50%; }
+.ds-c .pv-arc .ds-ring-fill { transition: stroke-dasharray .6s cubic-bezier(.2, .8, .2, 1); }
+.ds-c .pv-arc .pv-ticks { stroke: var(--ink-3); stroke-width: .9; stroke-linecap: round; opacity: .55; fill: none; }
+.ds-c .pv-arc .pv-mark { fill: none; stroke: var(--ink); stroke-width: 15; }
+.ds-c .pv-arc .pv-arc-lbl { font: 700 11px var(--round); fill: var(--ink-2); }
+
+/* ---------- 第二轮微调 ---------- */
+/* 选车面板：原站给下拉里的所有 img 强制了 20px（定位 / 专精小图标用），车图要单独放开 */
+@media (max-width: 849px) {
+  .ds-c .pv-sheet .pv-thumb img { width: 100% !important; height: 100% !important; object-fit: contain; }
+  .ds-c .pv-qchip { padding: 0 10px; font-size: 13px; }
+}
+/* 赋能子选项：标题单独一行，− 数字 + 永远在同一行 */
+.ds-c .empower-sub-options .sub-label { flex: 1 0 100%; }
+.ds-c .empower-sub-options .sub-input { width: 48px; }
+/* 长截图：html2canvas 会把 inset 阴影画成粗色带 —— 导出时去掉所有阴影与折叠箭头 */
+.ds-c .pv-export, .ds-c .pv-export * { box-shadow: none !important; }
+.ds-c .pv-export .pv-collapsible > .card-title::after { content: none; }
+
+/* =====================================================================
+   第三轮：浅色模式车图 / 专精图标 / 品质描边字 / 芯片恢复原版
+   ===================================================================== */
+/* 芯片：原版图标抠图（无底盘），按主题切换浅 / 深两版；覆盖掉上一轮的线性图形样式 */
+.ds-c .pv-chip { width: 28px; height: 28px; border-radius: 0; background: none; box-shadow: none; }
+.ds-c .pv-chip img { width: 28px !important; height: 28px !important; display: block; filter: none !important; }
+.ds-c .pv-chip .pv-chip-l { display: none; }
+.ds-c.light-mode .pv-chip .pv-chip-d { display: none; }
+.ds-c.light-mode .pv-chip .pv-chip-l { display: block; }
+.ds-c #carPreviewChips { gap: 8px; }
+
+/* 浅色：车辆背后不再是灰色的模糊层，给车一块干净的亮底（中心白、向四周淡出） */
+@media (max-width: 849px) {
+  .ds-c.light-mode .car-stage {
+    background: radial-gradient(70% 62% at 50% 52%, rgba(255, 255, 255, .96) 0%, rgba(255, 255, 255, .82) 42%, rgba(255, 255, 255, 0) 76%);
+  }
+}
+.ds-c.light-mode .car-hero { background-color: rgba(255, 255, 255, .9); }
+
+/* 浅色：品质描边大字加深（用更深的品质墨色 + 稍粗的描边） */
+.ds-c.light-mode .car-stage::after { -webkit-text-stroke: 1.5px var(--acc-ink); opacity: .55; }
+.ds-c.light-mode[data-quality="none"] .car-stage::after { opacity: 0; }
+
+/* 浅色：专精图标（城市 / 场地 / 山路，原图是白色剪影）改成清晰的深色剪影 */
+.ds-c.light-mode img[src*="6b03fddcf523615f"], .ds-c.light-mode img[src*="7708febb380440f4"], .ds-c.light-mode img[src*="1c3fdf64e6be6a83"],
+.ds-c.light-mode img[src*="new_carport_icon_city"], .ds-c.light-mode img[src*="new_carport_icon_court"], .ds-c.light-mode img[src*="new_carport_icon_mountainroad"] {
+  filter: brightness(0) opacity(.74) !important;
+}
+
+/* 选车面板缩略图：原站给浅色下拉里的所有 img 加了 brightness(.6)（本意是压暗定位 / 专精小图标），
+   车图也被一起压暗成了「黑黢黢」—— 车图单独豁免，并在浅色下给一块白底 */
+.ds-c .pv-thumb img { filter: none !important; }
+.ds-c.light-mode .pv-sheet .pv-thumb { background: #fff; box-shadow: inset 0 0 0 1px rgba(20, 24, 40, .06); }
+
+/* 深色：品级描边大字 —— 只有描边、不填充；用品质色的亮色版、中等粗细与透明度，
+   亮背景上看得清，暗背景上也不抢车的视线 */
+.ds-c:not(.light-mode) .car-stage::after {
+  -webkit-text-stroke: 1.3px var(--acc-ink);
+  color: transparent;
+  opacity: .5;
+}
+.ds-c:not(.light-mode)[data-quality="none"] .car-stage::after { opacity: 0; }
+/* COMMON 字母最宽，窄屏会溢出：单独缩小一档 */
+.ds-c[data-quality="common"] .car-stage::after { font-size: clamp(52px, 17.5vw, 100px); top: 10%; }
+/* 四种品质色亮度不同（金、绿天然更亮，紫、蓝更暗），按感知亮度分别配透明度，让四种看起来一样「轻」 */
+.ds-c:not(.light-mode)[data-quality="legend"] .car-stage::after { opacity: .46; }
+.ds-c:not(.light-mode)[data-quality="common"] .car-stage::after { opacity: .5; }
+.ds-c:not(.light-mode)[data-quality="rare"] .car-stage::after { opacity: .56; }
+.ds-c:not(.light-mode)[data-quality="epic"] .car-stage::after { opacity: .62; }
+
 </style>
    <base target="_blank">
 </head>
@@ -1439,7 +1918,7 @@ body.ds-c.performance-mode .ds-dock { background: var(--cell); }
     <p class="card-text thanks-foot"><span class="zh">非常感谢以上车友在网站早期的开发中提供了功能灵感和宝贵的测试数据。<br>如果有更多关于功能的建议或者发现了遗漏的BUG，欢迎随时交流！</span><span class="lang-en">Thanks to players above for inspiration and test data.<br>Any suggestions or bug reports are welcome!</span></p>
   </div>
   <div class="bottom-image-wrapper">
-    <div class="bottom-msg-text"><span class="zh">如果觉得这个工具做的还不错的话，可以通过微信赞赏码来支持我，您的赞赏就是我更新的最大动力，感谢🌹</span><span class="lang-en">If you like this tool, please consider supporting me via GitHub Sponsors. Your sponsorship is my greatest motivation to keep updating! Thanks 🌹</span></div>
+    <div class="bottom-msg-text"><span class="zh">如果觉得这个工具做的还不错的话，可以通过微信赞赏码来支持我，您的赞赏就是我更新的最大动力，感谢</span><span class="lang-en">If you like this tool, please consider supporting me via GitHub Sponsors. Your sponsorship is my greatest motivation to keep updating! Thanks</span></div>
     <img id="imgDark" src="https://i0.hdslb.com/bfs/openplatform/07d46fa9619f7ae4fa275da96d3c34d78e552624.png" alt="微信赞赏码" crossorigin="anonymous">
     <img id="imgLight" src="https://i0.hdslb.com/bfs/openplatform/0a2da617afc377db4eb2cc9cc3a6fbef73d49013.png" alt="微信赞赏码" crossorigin="anonymous">
     <a id="gh-support-link" href="https://github.com/sponsors/VanemKrAu" target="_blank"><svg class="ico" viewBox="0 0 16 16" fill="currentColor" aria-hidden="true"><path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0 0 16 8c0-4.42-3.58-8-8-8Z"/></svg><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 20s-7-4.4-7-10a4 4 0 0 1 7-2.6A4 4 0 0 1 19 10c0 5.6-7 10-7 10Z"/></svg><span>Sponsor VanemKrAu on GitHub</span></a>
@@ -1452,6 +1931,380 @@ body.ds-c.performance-mode .ds-dock { background: var(--cell); }
   <button type="button" class="ds-dock-item" data-gauge="loop" data-target="calcAreaLoop" data-target-fallback="resultCardLoop" data-state="idle"><span class="ds-dock-k"><span class="zh">循环</span><span class="lang-en">Loop</span></span><span class="ds-dock-v">--</span></button>
 </nav>
 <div id="copyToast" class="copy-toast"><span class="zh">操作成功！</span><span class="lang-en">Operation Successful!</span></div>
+<script>
+/* v4.js：V4 交互层（由 build.mjs 放在业务脚本之前；需要包装的业务函数都在 DOMContentLoaded 之后再接管）
+   - 270° 转速表式读数（量程 = 阈值 × 1.5，阈值刻度 + 达成率）
+   - 手机端渐进披露：低频卡片默认收起，标题旁显示摘要
+   - 芯片槽位：线性 SVG 图形，替代游戏截图位图
+   - 提示条：去掉 emoji，换成同一套线性图标
+   - 长截图：导出前把开关 / 单选 / 输入框换成能被 html2canvas 正确画出的元素
+   - 整数输入：− / + 步进按钮
+   - 手机选车：底部整屏面板（顶部固定搜索 + 筛选 + 品质切换，列表带车图）
+   - 手机页面压缩：计算过程默认收起、页脚合并为一张卡 */
+(function () {
+  var MQ = window.matchMedia('(max-width: 849px)');
+  function isMobile() { return MQ.matches; }
+  function zh() { return typeof currentLang === 'undefined' || currentLang !== 'en'; }
+  function L(a, b) { return zh() ? a : b; }
+  function $(id) { return document.getElementById(id); }
+
+  /* ---------- 线性图标（与全站 ICON 同一套笔画：24 视窗、1.8 线宽、圆角端点） ---------- */
+  function svg(paths, cls) {
+    return '<svg class="ico ' + (cls || '') + '" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">' + paths + '</svg>';
+  }
+  var IC = {
+    ok: '<circle cx="12" cy="12" r="9"/><path d="m8 12.3 2.7 2.7L16.2 9.4"/>',
+    err: '<circle cx="12" cy="12" r="9"/><path d="m9 9 6 6M15 9l-6 6"/>',
+    warn: '<path d="M12 3.5 2.8 19.5h18.4L12 3.5z"/><path d="M12 10v4.2M12 17v.01"/>',
+    link: '<path d="M10 14a4.5 4.5 0 0 0 6.4 0l2.8-2.8a4.5 4.5 0 0 0-6.4-6.4l-1 1"/><path d="M14 10a4.5 4.5 0 0 0-6.4 0l-2.8 2.8a4.5 4.5 0 0 0 6.4 6.4l1-1"/>',
+    minus: '<path d="M6 12h12"/>',
+    plus: '<path d="M12 6v12M6 12h12"/>',
+    search: '<circle cx="11" cy="11" r="6.5"/><path d="m20 20-4.2-4.2"/>',
+    chevron: '<path d="m6 9 6 6 6-6"/>'
+  };
+  window.__pvIcon = function (k, cls) { return svg(IC[k], cls); };
+
+  /* ---------- 270° 仪表 ---------- */
+  var C = 2 * Math.PI * 42, A = C * 0.75;
+  var TICKS = (function () {
+    var d = '';
+    for (var i = 0; i <= 30; i++) {
+      var a = (135 + i * 9) * Math.PI / 180, r1 = (i % 5 === 0) ? 29.5 : 32, r2 = 34.5;
+      d += 'M' + (50 + r1 * Math.cos(a)).toFixed(2) + ' ' + (50 + r1 * Math.sin(a)).toFixed(2) +
+           'L' + (50 + r2 * Math.cos(a)).toFixed(2) + ' ' + (50 + r2 * Math.sin(a)).toFixed(2);
+    }
+    return d;
+  })();
+  window.__pvRingSvg = function () {
+    return '<svg class="ds-ring pv-arc" viewBox="0 0 100 100" aria-hidden="true">' +
+      '<path class="pv-ticks" d="' + TICKS + '"/>' +
+      '<circle class="ds-ring-track" cx="50" cy="50" r="42" stroke-dasharray="' + A.toFixed(2) + ' ' + C.toFixed(2) + '"/>' +
+      '<circle class="ds-ring-fill" data-r="ring" cx="50" cy="50" r="42" stroke-dasharray="0 ' + C.toFixed(2) + '"/>' +
+      '<circle class="pv-mark" cx="50" cy="50" r="42" stroke-dasharray="1.8 ' + C.toFixed(2) + '" stroke-dashoffset="' + (-(A * 2 / 3 - 0.9)).toFixed(2) + '"/>' +
+      '<text class="pv-arc-lbl" x="50" y="88" text-anchor="middle" data-r="pct"></text>' +
+      '</svg>';
+  };
+  window.__pvRing = function (g, total, target) {
+    var ring = g.querySelector('[data-r="ring"]'), lbl = g.querySelector('[data-r="pct"]');
+    if (!ring) return;
+    if (!isFinite(total) || !isFinite(target) || target <= 0) {
+      ring.style.strokeDasharray = '0 ' + C.toFixed(2);
+      if (lbl) lbl.textContent = '';
+      return;
+    }
+    var f = Math.max(0, Math.min(1, total / (target * 1.5)));
+    ring.style.strokeDasharray = (A * f).toFixed(2) + ' ' + C.toFixed(2);
+    if (lbl) lbl.textContent = Math.round(total / target * 100) + '%';
+  };
+
+  /* ---------- 芯片槽位：游戏原版图标，去掉圆形底盘，只保留形状描边 + 内部填充 ----------
+     由 data/icon/carport_new_skill_chip_none_icon_1~5.png 抠出（按灰度把底盘去掉，保留描边与半透明填充），
+     各做一份浅色版（深色模式用）和深色版（浅色模式用），由 CSS 按主题显示其中一张。 */
+  var CHIP_IMG = {"1d": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACgAAAAoCAYAAACM/rhtAAACb0lEQVR42u3YX2jNcRjH8deOWS4mN4iVPyvUJApjbrjwb6WkWEm2tAtFXFBCcqnk1oW0G4q1Oxe7QS1/w2SURIaLYVpacjHFrM3NszqddnJ+51+jPfV0zvec7++c9+/5Pd/n+3m+Fa/fD5jMljLJbQpwCvAvtgRH8RA/MBb+E49xBnWF/EFFnqu4GW34hEfoxkA41GAm6rEL89GC6xgtJWAD7uIBLmMwPh/OmFeZMV6EI1iHTbhfikd8LuCOx/vBBNf24URE8R7O5nphZY7z2rAZOzE0wY1ljkezfN+HHRH9lWgqRgQPBlxrwBVqQ5HDDThVaA7Wowt7MuBSBVaLFKrRidV4kW8Eu3AgDa6qiCVuKH77eb6PuDlqWX/a3JEiFfeR8A+xog/n84gHcQy9mFYEsFSWRTQP1zAjSQSXx2tv2rzRAtwE41T4V3zB0iSAu3GjjFvszcjHnAG3xMqaHl5sy4zwS2xPArgRH8soWgawLOkq/l5GwP4QF/+XHpxbRo45+JUEsAcLywi4GM+SAHZmS9oS2YqQYTkDdmBrGQEbcSUJ4NvoN2bHnlmK3B/3GtTiXdJF0hJ7camtGfvz1YNjOIRXSZudHPSgyPO2GI/lUwfX4lKIy2JbdcBtyAaXC2APTuIifqd5oXtvKm78NJ4U2pNcCND2KKiZSZ6Lj6vxqojc1VDr54vVdu6NprsjalY+Nhz98a2IXmspGvc1uBMnCe3ZSsMEtiD03jasCnlV1L44PSdnYV/I9M8hNrtD/XxLWwC1Ee3GqHXN2TRfKc5mxq0uotKE9Rk3/DSifBtvyn149M8cv00BTgEWan8A7a+nNrWdsXAAAAAASUVORK5CYII=", "1l": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACgAAAAoCAYAAACM/rhtAAACbElEQVR42u3YS4jNcRTA8c8MZjWy8cgsjCkUyaNmPDaUd5GNlGSkWQixYINsbEQSCwsxG/LIimLjkTzzylA2YrLwTJKoIcYYNkfdbvO4//v/39uke+p0+9/f739/39+555zfOb+qKY3zDGSpNsClAlgB7EfGYQvu4Bv+hP7APezCxDQLDC7yvWa04g3u4gwO4kOM12EomnANo7EWp9GdZKGqhGlmFm7gNo7iU3zf2c/G67EZMzAXtwpdcNCouoZC5+7BMWzDOXzPGfvdj+t8xVVcx4Ww4q0s/+JWzMdydPQAkP/c3cv4KywN60/ByiyCZH3AtQRcWukIH56FHWkBm3AAG3rws7SyEXsxPQ3gNazLsVxNhoAd8duPiwVsjlz2LmduV0bJvSv0ZQTLpmIAD+FURtbqK/cdjhyaCHBSfL7ImdedQvXwXB36Ee8xPgngCpwv4xF7KfyxYMAFeIIhoVlLvoWfYnESwDl4Xcai5QMmJA2SL2UEfBfFxf9VD44sI8cI/EwC2IYxZQQci0dJAC/25rQlksm4mQTwLBaWEXAJjicBfB79xvA4M0vh+/+0Dg1oTxoka7G1DNZrxppiovhkJOxpJYSbgGXRdBVVDzbiCGpLAFcbrcTsaFWLAmzD9iiJfuVo2rO3Oja+E/fT9iT7A/RMJNR8Jy9E/1XjNWG5E1Gt78vqZmFVNN1nI2cVI53RH18O67VkfbOwOxL4dTwIi7YX+G591HuLMDXKq5JcfbRhGFZHO/A2is0HUf18zgmAhrD2ksh1zb3VfFlefeTLxLDKSszM2/DDsPIVPCt2garKFXAFsALYt/wF27OSYNlRVKIAAAAASUVORK5CYII=", "2d": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACgAAAAoCAYAAACM/rhtAAADQUlEQVR42u3YXYhVVRQH8N8dZbKylz5Qo4d6VMKHILG3yqfBUUFGiwIrRLAvI5M+EEHU8uPBCCIIRHSQkPAliCRJmJJ6GGugJtRASR+GJswxSGi8zky+rAOHwz5z7517zHmYBYezz177nPU/a6/PXTtzfth0pg7TnGYAzgCcAdiAZufGC/HAJOB/wUhFch/EosLceG78FwaLAOFbfIcruLvAewp34L8KAA7iAq7m5uq4H0uxOKXBsziBH3A8AX4e1uNAm+BexK/YVpi/C08E0MFsslbIJHNjG1cntvMRHAkt1qcIrhPX0YPLCYDHcV9edtHOruF9vJ74+BA+xdE2tNeLj8OEivQedhQVU0vk4ln4Fy/gUuHvhRk8jp9bBLcIP6ErnidyvIdxGLVmwsw4urEHY4nrXXyf+lgD6sf2kNkRNp5dO7G8lTh4Iu4rSwSdwRstgNuE8zid4HXH/avUi7VJyq35+AOrMJzb4syjj+FOjDYANydMZm2J7Z3EgpDRUiYZDrtYneD9iYNNOsxnEZpS4F7Gh2XgGmlQhJRRrMDfiZBxFE/Glpc5Rh+ezSkjc46HQgGThq1Gufg6XsKuBK8ejtQ3yft9sSYF4J2IFPV2i4VDkTuXlDjMRWxO8DYHrz/BWxoa7G0kvNZkT7IQAxHDxnJbXMe9+AL3RKDPMtI/4WAjsbYjp5Sv45vnqiq3zuLLCDudOXACwEcFbfRG1hnJ2V12bYgIcK4ZwbUWurosXDwXXlwv/Og3eCyeB/B0oazriDz7eUHblRWso3gLbyZ4E3g7gA3EOEU7IxNda1ZoqxX1/sib8xK8H8Mh+mNcpEfDMfZOtaJulpaHDT2f4O0reWcMH+TS2i3tSU5HNbwqwRspaQuewW8NYmZlGoQ10TecbMKe5uK1KOf/t67uSpTsrzaxdiN2l+TiSsOMknT3SnR8nQneYnwSDdiN29EXd2NLIhhnBcGWWHNjqgLaBZgVtl0JXldhTduN+1RpGX7HqVzxOgdboxO87UcfQ9Gprcvl6XVhe0PtfrxW0QnrrAjGPfF8LOYmqjybaYfGA1x2WtBTBbgqNZiPj6Jqqfx0qwpaciuP36qgC1UDnPYHmDcBJl7SkRCGok8AAAAASUVORK5CYII=", "2l": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACgAAAAoCAYAAACM/rhtAAADQ0lEQVR42u3YTYiVVRgH8N8dI610URpT0iKXigwtSgzcVKvJIUHsAyLGaFFRFJlWEEZg9LWoZZuIkooRJYggSRLGoqCZEnJiKmiwVk00MwVK6nVG2zwvHF7O/Zp7r97F/OHlPfc85z3nf5/zfJ1TGbj1Tr2MPj2OJYJLBJcINsAVSXs9rq9D/gTmOrTuWmwo9S0k7RlMlAnCMXyFWVxTkt2B5bjYAYITmMI/SV8Va7AZAzkN/owj+BaHM+T78QjebZPcTvyEvaX+q3F7EJ0oOiulTLIytnF7ZjvX4cPQYnWR5K7EOezA3xmCh7E6XXtZ/9p1SmruiwmOlSb4LyYfxoFFEvwIo/ghYyov4YMgqZYGYRnOBJE/Sv9emMFt+LFFchuC2GD8vpDIbg5ylWbCzAKG8DrmM88L+CY3WQOM4eVYsy9svHj2YWsrcfBIvO+psdAknm6B3FP4DeMZ2VC8P899WKlTbt2AP7EN08kWFx59CFfhbANyK8Jk7ovwVcZR3BhrtJRJpsMutmdkf+E9jDShvY8jNOXIPY63a5HLBeoyHg0NHcK/GY8cCeOfrOMYW/BAoozCOW6KaLG8nVx8Dg/jlYysGo40Wuf70RiTi5vPR6SotlssvB+5c1MNh/kduzKyXSEby8g2hwb3N1q80uSZZD2ORwybT+JiFdfhU6zC6SQjnQoHm4uxfYlSvog5f2m0cDmT1MIMbglvm4pgXmzNmSCzM8kwI1F0fFcoIt4Xw64n8U6r5VYjPBRkxsOLU3yCL7ExiW25rVkdjrGqGwXrWTyLZzKyC3guzOB4tHPYF5nodLcq6rcib/ZnZN+HQ4xFu4yN4RhvLLaibhZbIy4+mJG9WeObebyapLWunknGw1G2ZWRzNY4F9+PXBjGzYxqEe8OzjzZhTyvxZJTzl+xUNxsl+xNNjH0Mr9XIxV3ToEh/1QjSJ0rVTpEKB3B3aPyynIuHsDsJNekjZEM4f7kIFoXtYEY2WBrjUm9xgbtwEl8nxesKvBgnwbbQbC6uh1O4NiqUicjTw0H4YCevPtrBngjGn8Xv4SCqVwguRBFQ3BbsKB0rF41Kh++oZ5OqRS9psMCmbl6/dQJTnSbY8xeY/wOSRrvy8y87GgAAAABJRU5ErkJggg==", "3d": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACgAAAAoCAYAAACM/rhtAAACLklEQVR42u3YO2hUURAG4G9jsJCIoCBELbQQbUQLxVZRTGVQCyttIoitaAhamFKw0sJK8IGKlUQIIkh84QMMWKQwBAkKghBBgxi2SIwbm1lYlnVf995N0B04nHu55zI//8z558zJjU9OWcrWYYlbG2Ab4GJbZ4Pr1+NjE37mSp434Vu9P+YalJnXGMeLBgEWYt6LHdiVBcADGMZBzDcIsHT9Q/TgTdo5OIyzKaRVP14ilybAU5F775tgr+inOCYwhjNphbgTv3AU35tkrVD2vg530YV8UgZv4HoCcJWATmEI15IyuBZfsS8lYOXEPMFmTDarg68wUKZjEuRguV3ECDY2E+I92IDRYGAuwSiUbZSijaA7fDXEYA7P0NeCanY6fHVgoV4G+/Ecn1oAcCJ89de7SVbiJ3oxU1JL5xOAWB6j2vdHWBW+qzJ4B7dKwLXKhnDznzhuHQua77eYxcMR4poMzoT2XQh5KLQA3ADOl+dfrUqygOP4HBskq02yFVexrBIZ1XKwB5dbkKuDUUoLjVaSxzEfyRDc/pifNluLt0eIH6RQjyuF/Ry2JDlufcE9nMiAvZOhfR+SdnV9mMVt/EgJ3JqQla40jvxzAXIwRfauhKzk0+zqFiIsYzXq6t/yrWjbQh3qapoaadx3420cIvJ1sA4rKrSdl7Azi5uF0ejsDtXRuJdr2mzMvXG8epfVzcLqaJ5+11hX7Xs3prO6m5muN3f+m9utNsA2wMW2P+v0lvjLNzbhAAAAAElFTkSuQmCC", "3l": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACgAAAAoCAYAAACM/rhtAAACOklEQVR42u3YO2hUQRQG4G+TmEIiFoKSKGoK0UbTJAhWvtAuqIVYCEIEsRUfQQuDVdBKa8H4RBAkgkVAoiI+wICFhSAiFoKgEEUMKbImq81ZWC7LZh93N0H3wDD3MjPMzz9nzjn/ZLb07rSYrcUitybAJsCFtrYK56/Gpyr2yRZ8d2OyXgDv4SaeVbguF/0OjKGvHgD3oBcXMFshwPz8WziEbXiVtg8+xKkU3Oo0niOTJsDj4XvvqmAvv0++vcdbnCxnYaaMVNeG3ziI71Wylkv8d+EOOjBdK4MjuFYDuGJAv2IUV2tlcCW+YVdKwJLEPMYGfKz2Fr/AYCKOqcEHkzaMcayv5oi3Yw0mgoFsDS2XuCh5G0dn7FURgxk8xUADstmJ2KsFf5KDrau6uostOoMleBD/c0X8qBJrjVbMJrEu/P1lOZdkGX6hH1MFuXS2BoDt0UqNj2F57F3SB2/jRgG4Rtkorv8T5dbhoPl+g1ncH0c8L4NTEfvOx8XINQDcIM4l/a/UEV+K0mptA8Btijh4sdJAvReXG+CrQ5FKc5UCfBT9gTqC2x39k2pzcQ8+R8DOpgyuHWexsZZy6wvu4mgd2DsWse9DrZpkADOhJ36mBG5FhJWONEr+bIAcSpG9KxFWptPSJCOhxHoSubWSlrfNUWINpy07t+J1FBHTZbAOSxOyszDGpq6LJ0LZ7StDuCdj2kz0/aHq3tTrZaEvxNOReebNlRjrrOfbzI9yBfd/87rVBNgEuND2F0SpfRqpBoaDAAAAAElFTkSuQmCC", "4d": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACgAAAAoCAYAAACM/rhtAAACCUlEQVR42u3YT6hMcRQH8M88UySl1Eti9WSJEgkLGyQ7ySP/kn/Pn/JnQcoCGwtbSSkbJUtJsmDBRhJF9DboZSGvp0QsvN48Y3OmbtO8mXtn7nizuN863e6ce8/v+zv3/M6fKQ1/HNXL6NPjKAgWBAuCBcGC4NS4ju8JqXZZfuJaPYlSk1I3E1+xJe7/1l2zbL4PlSb62biPhfid1oPjOIu9DQynkSzYgfP15NLE4C2sQX+dB9NIWizAetxo95AcwVDEyWSGmEqSnUjYq+n/hJzG/k5O8au4rsSMhJRaSD1qxJJYFYfj5VSLl1N+hkN4gcEcM8hcXMDaPPLgKO5ia3zmyRwIbsKdsK1TD8KlSDvP8a1B2miF5KbmRdwN5FlJxnEQh3Pw3rE4fBN5l7p7WBRpp10sDnnUrVq8D5c7IHgSB7rZLLzHJ6zLWDlmYTPG8CbtYuU2vXACr7GtjfeW/492awy3sSvDOzsTHZJuexAuYgTP8KXFs/3h7YGsi3TSsFZwHNsjBVUbbL4mp3A0TVrJu6N+gKVY1uSZJZiPh9PV8u/BuSb6M9HvTdtM8hbvsLGBbnXoPrRrvCwfDGEYTxO/zYnYW9ELU90vXI1UUsMgbuJHJ4bz8qBo2UfwOO43RM3VKwQrMWBdSYwK1V4iKGKwNjA9ycNg3gRhd57GukHwc/HfTEEwA/4B152SQQ39k8cAAAAASUVORK5CYII=", "4l": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACgAAAAoCAYAAACM/rhtAAACCUlEQVR42u3YT6hMcRQH8M88UySl1Eti9WTpKT0JCyUkO8kj/5J/z5/yZ0HKAhsLW0kpGyVLSbJgwUYSRWQjvSxET4lYeL15xuZM3aZ5M/fO3PFmcb91ut05957f93fu+Z0/UxocWqeX0afHURAsCBYEC4IFwalxDd8TUu2y/MTVehKlJqVuJr5gc9z/rbtm2XwfKk30s3EPC/E7rQfHcQZ7GhhOI1mwHefqyaWJwZtYhf46D6aRtFiAtbje7iE5jJGIk8kMMZUkO5GwV9P/CTmFfZ2c4pdxHcKMhJRaSD1qxJJYEYfjxVSLl1N+hoN4juEcM8hcnMfqPPLgV9zBlvjMkzkQ3IjbYVunHoSLkXae4VuDtNEKyU3Ni7gbyLOSjOMADuXgvaNx+CbyLnV3sSjSTrtYHPKwW7V4Ly51QPAE9nezWXiHj1iTsXLMwiaM4XXaxcpteuE4XmFrG+8t+x/t1hhuYWeGd3YkOiTd9iBcwCie4nOLZ/vD2wNZF+mkYa3gGLZFCqo22HxNTuJImrSSd0d9H0sx2OSZJZiPB9PV8u/G2Sb609HvTdtM8gZvsaGBbmXoPrRrvCwfjOA9niR+mxOxt7wXprpfuBKppIZh3MCPTgzn5UHRso/iUdyvj5qrVwhWYsC6nBgVqr1EUMRgbWB6nIfBvAnCrjyNdYPgp+K/mYJgBvwDwmiOVeV+yTkAAAAASUVORK5CYII=", "5d": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACgAAAAoCAYAAACM/rhtAAAB6UlEQVR42uWXz0rDQBCHP8uiBy9SxIfyIFUrFqWID+AT9WCttShtRTz4KJ58AAkSilTBIsXLBIaQ2PyZjQEHSnbZsP34zWT2t2vPL6/UORrUPP4l4DFwYrWZ8wB3q+ajOgFGcLsyf7KAdJ7gkHFpSGcEdwW0gXlsrQ3cyP8M/gIwUq4NBAnrAXAKTGQ+qBJQp3X+y3sBsAc8FoF0hjW3KgpBOuOaS4s5sAQOgPs8kM645pIOgqWah3khnYeaWxVhnnQ7jzVHTL1GkZrMArgvNdcqodx3DHCm+uRE1vpFAPeBoSgYejAWgYIkCdJlgGsBnx6tWQB0lMnoZwHUcFXEWxpkEuChnJ9HwLsnW9ZYAbmIDEbtHXWSMlN5jkXFoCKWbVHvXNuztNTFIcMK4fpZ7yRTsUqXsoFlLNVvS+C6eduMVvLOUy9syt5d6RqFTpKp2sgSMtrzIg0uT/voGSup4XpWbqYHfMgX1lHn6QJYz2EcmsADcGZtt/TtLPq6Zxnh4splgit6QoyATYHMk26dVq+Wv0hNZq45y1tdT1KcBLlQ4x1551S1rcruxWN5XqcouSPvFIKzciljYEM13FAULA1naaOGSsmutJTScNY+bwh8iZII6LTsptZGdJwyrg2gGVgWu1WLqD3gD188ku4wXrJ7AAAAAElFTkSuQmCC", "5l": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACgAAAAoCAYAAACM/rhtAAAB6klEQVR42uWXz0rDQBCHP8uiBy8i0sfw5BN49CBVKxaliA/gE/VgrVWUtCIefKggQaQKFileJjCExObPbAw4ULLLhu3Hbyazv13Z3tmlydGi4fEvAU+AU6vNnAe4ezW/axJgDLcn8xcLSOcJDhlXhnRGcNdAF5gl1rrArfzP6C8AY+W6QJiyHgJnwETmozoBdVpnv7wXAvvAcxlIZ1hzy6IUpDOuuayYAQvgEHgsAumMay7tIFioeVQU0nmouWURFUm381hzJNRrlanJPIAHUnOdCsp9JwDfVJ+cyNqwDOABMBYFIw/GIlSQpEG6HHAd4NOjNQuBnjIZwzyAGq6OeM2CTAM8kvPzGHj3ZMtaSyDnscFovKNOU2Yqz0BUDGti2RL1LrQ9y0pdEjKqEW6Y904yFat0JRtYxkL9NgSuX7TNaCUfPPXCTdm7L12j1EkyVRtZQsZ7XmbBFWkfA2MlNdzAys0MgA/5wnrqPJ0DqwWMwybwBJxb2y19O4u/7reccEnlcsGVPSHugHWBLJJunVavlr9MTeauOctb3UBSnAY5V+O2vHOm2lZt9+JAnjcZSrblnVJwVi4lANZUw41EwcpwljZqrJTsS0upDGft88bAlyiJgE6rbmptRIOMcWMAzcDy2K1GROMBfwAL15D4dBA4GwAAAABJRU5ErkJggg=="};
+  var CHIP_NUM = { '\u25CB': '1', 'V': '2', 'v': '2', '\u25E3': '3', '\u25B3': '4', '\u25C7': '5' };
+  var CHIP_NAME = { '\u25CB': '圆', '\u25B3': '三角', '\u25C7': '菱形', '\u25E3': '六边形', 'V': 'V', 'v': 'V' };
+  window.__pvChip = function (sym) {
+    var n = CHIP_NUM[sym] || '1';
+    return '<span class="pv-chip" title="' + (CHIP_NAME[sym] || sym) + '">' +
+      '<img class="pv-chip-d" src="' + CHIP_IMG[n + 'd'] + '" alt="">' +
+      '<img class="pv-chip-l" src="' + CHIP_IMG[n + 'l'] + '" alt="">' +
+      '</span>';
+  };
+
+  var SPEC_DARK = {"6b03fddcf523615f": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAEAAAABACAYAAACqaXHeAAAEY0lEQVR42u2ZTWxUVRSAvzedNmNLFNMpJdKFVkBAEoqEakJcWBpjYpq4MCGwwCgbjQsgbAyVlSVsS9zAhgWYmKjRmGgw4AIDCcak0cSa1qhJIQoI1WKZQunfuOBMPFzv67x5fx1m7kle3psz973c85177jn3Xq+n5yXqWTLUuTgADoAD4AA4AA6AA1C/kn1A+vgu8BYwJZet355F16SeOx9UAAAdwIp6HQGmfAvMGLqngStyNYpuFlgLPFFLAK4DzwNzhv4j4ATwlaHvBwbqYRKcAMZrNQS0t1cAx4CC0eZFmeSGDf0LltESCMA+YA9wrYKOfgkMRjDUA4oB2u0B5g3dLPA40LsIvIoAbAE2yhVUrqU4Km4CDQpEq08ILA8LYFzdtWErLcauBPJhY1B53wPagFVAC/AP8KNlEnwV+FmM/kv0nwCfAh8YfRwEdoQBkJf7TuBr9btf7vuVrgs4GzEVPyVx/CywBmgHvgf6LO3HBMR1A8ywOEE74qewI+CucS999I5llBRCGJwHuoHVwCbgGUu4/aKep+XeAPxt+ea0pTaINAfELctkpKwWbz8HbAVyYpRNbAblgINS8GjZALwmMLXsigrgz5AG58TYLunUOjE6HxFkiwCwyeY4R0Bpdn1fTTSI15CUg5SdHZb3jwCvqHZxyZRASG0tcA4YUfPBMnk+pTyyTbyrpSsB40ux/gbwu6EfAL6RkrhNdDeAd8qFgR+ABgXgotJvk/tppStI4ZQtszSN4qRG5YSzUvpquQGcF2eNKP2lck5Oai1QJDm5lWYIBClufk2xAnxIQuCKOG9BzUm9lvlhfVgApby7Vw2peRXrbxpFTFryKHDc57/uJEbA2z767TWyjPYFsFBFcT8H3FYhediSBQ4AQ8AFQ/+6lNixV4ILS7ihYlty7wBOAt8Z+lVxASga6S0TcpRUIq2WxVleJrtRS/tO4A9D92SSa4G4cv0E8Jvlm0PGc5c8f6gm6ZJ0iKcnLfpYAHgJAvgC2B1g2A/KCBjxMexhuWLNAjrmPWPrKi4A49zbuu4zhrvO/ZdkTXIGuBxiUTVj9L0iAEV1ZVRNUFQlahSZFOOPSul93jBwSmr6VuDltNKgX3rzEk577wkALbNi/M406wBbrHvKcG+RjYwocshSft8ql8rSAqB/J5X/PwM+VkvaUiHUDvQsFQA/CHFJRn1vGniE+7fD5kSfSwJ8tZwMzcr9qE8Gyllyf00BKE2ouTK7QbFLNRyOegFDKpsmgDBgGnyeg/QhkzCApko/eof/H3hkjNxv1gG3jeKlYAFStKwoJ2SiK5RpV5B2k/x3QGOrUbSuWUKn4Fe7+AE4DnweIAZ1zOrzwv3cO5jMynuZRbwyJoYNYz8MaVLZYFS+3RTQ882EPB4fI9pe32iId4KeLv+QRhbotXg8E2HnKOi7UdpR5t1zlQA4Te2JV61pcEnFAah3AH5zwNUasW8+LIDHXAg4AA6AA+AAOAAOgAPgANS4/AvM9OjMVYcPNAAAAABJRU5ErkJggg==", "7708febb380440f4": "data:image/png;base64,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", "1c3fdf64e6be6a83": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAEAAAABACAYAAACqaXHeAAAETUlEQVR42u2ZXYhUZRjHf2d2cUcRNZySchUXthDcagTFMKVlHUyQoEiJaEVE6UMvUlQUFaFYKS3UQLrQIkVBuupCkAovhIryzotRsS79CGGCFfHb2eOF/4HXt3Nm5nzMztmZ88Bhd59595zz/N7n633GGRhYRjtLhjaXFEAKIAWQAkgBpABSALGLA+SBXv3edgDmAJuBDcDUJAPobMA9c8ABoGDoNrWTB9jGbwQG2wXAVh9jDwB9rQ7gLeDzGmGRa1UAc4FvgGyVNQWFQ9iq4iQVwIvA10CPpS/qMmU9MGBViznN9ICOnp7eqPfYB7zrYfz7wE3AnLiMB2YAvwELBWSpdvfCWCyDO4G1Hvq9glDwCZfvgGeBlw0vugWcHksA3gaGPPQHgRNV/u8ZKwwQiC+Bf3QlPgm+AvzgoT9uQbkDXK9yn7IFYfdoV4owAJ4DvgemWPrfgS+A/yI8f1BhFQTCDGAR0D1aAA4B8yzdFeAz4JKHu79Qo7zhAWEwAIRdwClgRZiQDgpgG7DSw/gh4IzH+udDniV21tk97hKsKcBqYHYjAawBtnvojwEnLd1U4EOVunrFtSAMqsJM9lm/CvgEmKC/84LQkD4gDxz1cMuDwFfAsPHiBR2FNwKzAgJwgIdAh3Q9wG3gL2vtSvUf0z3y0581Em/gMphXxp9m6c8Ae4CSDK/swJuq8WHkvmE8euZaPatotNSbfZJet96hCNyLC8AGGWfKDbW/Jb3QanV8UUqYC3TVWNNn5IZzwI/Ae8ACfZ7V+7wGnI0DwBFgnU+9N8/+UY+6ro/+mtFV5gzjr2rIcg543QCAEuFy4LwRmqGS4Dof428ou29RnMd1znesxug28K26SnPKVAL2y3iAP3y61HzUKrDCZ6cmAe8AS2Juylwr/n8CDhtnjsqg5WflpAwwTr2HvdO9QH9UAB0+u5RV6XFiMNi+zAS7V7ttjtSK0g8Dj+TuSzy60ooX9EfJAeUA3VsUCI4FvGTEvdkalxT3RRn8sWLdz9VfFYCzjTwORzG8LOMzFthN8oCCMUYrqeRW9B/JuFpV541aEDJNBODlBSd09fH0DPG8EQ4nlZ/qKbn9tcKgGQBGdHUYz3c1B9gPzNTApFJdbirvfKqZQdBe4wMlxcQAKHvkl7uK++uCYNb1LDBfJ9CuEM/r9qloTckBI8reJvgHitG7wA7+P1/sivjMLFUGr80A0GmV2AfAZWCxMnsjJJcEACPa+YxHIgw90Ykqowkg49NPTFSMN1LuJ60MNqqxSrQHVOsC6/nc9QHmRoHbmeCdd+pc78QZl6ZMoHUkG9QDHOBXnkx8ax2OkiwV+y6GCYEhy8VcWlAySc3OSagCOaNTG6tAhvXzJeDvIABc4Jc6ByRJFnPT5gX1gLntHgJxyqOk2tfZYqBjfbF/efrrpXJMsTja7XY2TCME1b/Xb4s+gBRACiAFkAJIAaQAUgApgFaWx2rnzAMhQc5TAAAAAElFTkSuQmCC", "new_carport_icon_city": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAEAAAABACAYAAACqaXHeAAAEY0lEQVR42u2ZTWxUVRSAvzedNmNLFNMpJdKFVkBAEoqEakJcWBpjYpq4MCGwwCgbjQsgbAyVlSVsS9zAhgWYmKjRmGgw4AIDCcak0cSa1qhJIQoI1WKZQunfuOBMPFzv67x5fx1m7kle3psz973c85177jn3Xq+n5yXqWTLUuTgADoAD4AA4AA6AA1C/kn1A+vgu8BYwJZet355F16SeOx9UAAAdwIp6HQGmfAvMGLqngStyNYpuFlgLPFFLAK4DzwNzhv4j4ATwlaHvBwbqYRKcAMZrNQS0t1cAx4CC0eZFmeSGDf0LltESCMA+YA9wrYKOfgkMRjDUA4oB2u0B5g3dLPA40LsIvIoAbAE2yhVUrqU4Km4CDQpEq08ILA8LYFzdtWErLcauBPJhY1B53wPagFVAC/AP8KNlEnwV+FmM/kv0nwCfAh8YfRwEdoQBkJf7TuBr9btf7vuVrgs4GzEVPyVx/CywBmgHvgf6LO3HBMR1A8ywOEE74qewI+CucS999I5llBRCGJwHuoHVwCbgGUu4/aKep+XeAPxt+ea0pTaINAfELctkpKwWbz8HbAVyYpRNbAblgINS8GjZALwmMLXsigrgz5AG58TYLunUOjE6HxFkiwCwyeY4R0Bpdn1fTTSI15CUg5SdHZb3jwCvqHZxyZRASG0tcA4YUfPBMnk+pTyyTbyrpSsB40ux/gbwu6EfAL6RkrhNdDeAd8qFgR+ABgXgotJvk/tppStI4ZQtszSN4qRG5YSzUvpquQGcF2eNKP2lck5Oai1QJDm5lWYIBClufk2xAnxIQuCKOG9BzUm9lvlhfVgApby7Vw2peRXrbxpFTFryKHDc57/uJEbA2z767TWyjPYFsFBFcT8H3FYhediSBQ4AQ8AFQ/+6lNixV4ILS7ihYlty7wBOAt8Z+lVxASga6S0TcpRUIq2WxVleJrtRS/tO4A9D92SSa4G4cv0E8Jvlm0PGc5c8f6gm6ZJ0iKcnLfpYAHgJAvgC2B1g2A/KCBjxMexhuWLNAjrmPWPrKi4A49zbuu4zhrvO/ZdkTXIGuBxiUTVj9L0iAEV1ZVRNUFQlahSZFOOPSul93jBwSmr6VuDltNKgX3rzEk577wkALbNi/M406wBbrHvKcG+RjYwocshSft8ql8rSAqB/J5X/PwM+VkvaUiHUDvQsFQA/CHFJRn1vGniE+7fD5kSfSwJ8tZwMzcr9qE8Gyllyf00BKE2ouTK7QbFLNRyOegFDKpsmgDBgGnyeg/QhkzCApko/eof/H3hkjNxv1gG3jeKlYAFStKwoJ2SiK5RpV5B2k/x3QGOrUbSuWUKn4Fe7+AE4DnweIAZ1zOrzwv3cO5jMynuZRbwyJoYNYz8MaVLZYFS+3RTQ882EPB4fI9pe32iId4KeLv+QRhbotXg8E2HnKOi7UdpR5t1zlQA4Te2JV61pcEnFAah3AH5zwNUasW8+LIDHXAg4AA6AA+AAOAAOgAPgANS4/AvM9OjMVYcPNAAAAABJRU5ErkJggg==", "new_carport_icon_court": "data:image/png;base64,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", "new_carport_icon_mountainroad": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAEAAAABACAYAAACqaXHeAAAETUlEQVR42u2ZXYhUZRjHf2d2cUcRNZySchUXthDcagTFMKVlHUyQoEiJaEVE6UMvUlQUFaFYKS3UQLrQIkVBuupCkAovhIryzotRsS79CGGCFfHb2eOF/4HXt3Nm5nzMztmZ88Bhd59595zz/N7n633GGRhYRjtLhjaXFEAKIAWQAkgBpABSALGLA+SBXv3edgDmAJuBDcDUJAPobMA9c8ABoGDoNrWTB9jGbwQG2wXAVh9jDwB9rQ7gLeDzGmGRa1UAc4FvgGyVNQWFQ9iq4iQVwIvA10CPpS/qMmU9MGBViznN9ICOnp7eqPfYB7zrYfz7wE3AnLiMB2YAvwELBWSpdvfCWCyDO4G1Hvq9glDwCZfvgGeBlw0vugWcHksA3gaGPPQHgRNV/u8ZKwwQiC+Bf3QlPgm+AvzgoT9uQbkDXK9yn7IFYfdoV4owAJ4DvgemWPrfgS+A/yI8f1BhFQTCDGAR0D1aAA4B8yzdFeAz4JKHu79Qo7zhAWEwAIRdwClgRZiQDgpgG7DSw/gh4IzH+udDniV21tk97hKsKcBqYHYjAawBtnvojwEnLd1U4EOVunrFtSAMqsJM9lm/CvgEmKC/84LQkD4gDxz1cMuDwFfAsPHiBR2FNwKzAgJwgIdAh3Q9wG3gL2vtSvUf0z3y0581Em/gMphXxp9m6c8Ae4CSDK/swJuq8WHkvmE8euZaPatotNSbfZJet96hCNyLC8AGGWfKDbW/Jb3QanV8UUqYC3TVWNNn5IZzwI/Ae8ACfZ7V+7wGnI0DwBFgnU+9N8/+UY+6ro/+mtFV5gzjr2rIcg543QCAEuFy4LwRmqGS4Dof428ou29RnMd1znesxug28K26SnPKVAL2y3iAP3y61HzUKrDCZ6cmAe8AS2Juylwr/n8CDhtnjsqg5WflpAwwTr2HvdO9QH9UAB0+u5RV6XFiMNi+zAS7V7ttjtSK0g8Dj+TuSzy60ooX9EfJAeUA3VsUCI4FvGTEvdkalxT3RRn8sWLdz9VfFYCzjTwORzG8LOMzFthN8oCCMUYrqeRW9B/JuFpV541aEDJNBODlBSd09fH0DPG8EQ4nlZ/qKbn9tcKgGQBGdHUYz3c1B9gPzNTApFJdbirvfKqZQdBe4wMlxcQAKHvkl7uK++uCYNb1LDBfJ9CuEM/r9qloTckBI8reJvgHitG7wA7+P1/sivjMLFUGr80A0GmV2AfAZWCxMnsjJJcEACPa+YxHIgw90Ykqowkg49NPTFSMN1LuJ60MNqqxSrQHVOsC6/nc9QHmRoHbmeCdd+pc78QZl6ZMoHUkG9QDHOBXnkx8ax2OkiwV+y6GCYEhy8VcWlAySc3OSagCOaNTG6tAhvXzJeDvIABc4Jc6ByRJFnPT5gX1gLntHgJxyqOk2tfZYqBjfbF/efrrpXJMsTja7XY2TCME1b/Xb4s+gBRACiAFkAJIAaQAUgApgFaWx2rnzAMhQc5TAAAAAElFTkSuQmCC"};
+
+  /* ---------- 长截图修正：html2canvas 无视 appearance:none，会把开关画成原生方框、输入框数字贴顶 ---------- */
+  window.__pvExportFix = function (clone) {
+    clone.classList.add('pv-export');
+    // 原站导出逻辑会把「原元素的计算色」以 !important 写回克隆；V4 的玻璃表面用了 color-mix，
+    // 计算结果是 oklab()，html2canvas 不认识会直接报错 —— 这里把这类行内色值清掉，交给 .pv-export 的纯 rgba 样式
+    [clone].concat([].slice.call(clone.querySelectorAll('[style]'))).forEach(function (el) {
+      var st = el.style;
+      for (var i = st.length - 1; i >= 0; i--) {
+        var k = st[i], v = st.getPropertyValue(k);
+        if (/oklab|oklch|color\(/.test(v)) st.removeProperty(k);
+      }
+    });
+    // 收起的计算过程在长图里全部展开
+    [].forEach.call(clone.querySelectorAll('.pv-fold-closed'), function (e) { e.classList.remove('pv-fold-closed'); });
+    // 浅色：专精图标原图是白色剪影，屏幕上靠 CSS filter 压暗，但 html2canvas 不认 filter → 导出图里白底白图看不见。换成预先压暗的版本
+    if (document.body.classList.contains('light-mode')) {
+      [].forEach.call(clone.querySelectorAll('img'), function (im) {
+        var src = im.getAttribute('src') || '';
+        for (var k in SPEC_DARK) if (src.indexOf(k) >= 0) { im.setAttribute('src', SPEC_DARK[k]); break; }
+      });
+    }
+    [].forEach.call(clone.querySelectorAll('input'), function (inp) {
+      var orig = inp.id ? document.getElementById(inp.id) : null;
+      if (inp.type === 'checkbox' || inp.type === 'radio') {
+        var isSwitch = inp.classList.contains('empower-checkbox') || inp.id === 'isSpec' || !!inp.closest('.extra-toggle');
+        var s = document.createElement('span');
+        s.className = (isSwitch ? 'pv-x-sw' : 'pv-x-ck') + (inp.checked ? ' on' : '');
+        if (!isSwitch && orig && orig.offsetWidth) { s.style.width = s.style.height = orig.offsetWidth + 'px'; }
+        s.appendChild(document.createElement('i'));
+        inp.parentNode.replaceChild(s, inp);
+      } else if (inp.type === 'text' || inp.type === 'number') {
+        var d = document.createElement('div');
+        d.className = inp.className + ' pv-x-val';
+        var v = inp.value;
+        if (v === '' && inp.placeholder) { d.textContent = inp.placeholder; d.classList.add('pv-x-ph'); } else d.textContent = v;
+        d.style.setProperty('font-family', 'Arial, "Helvetica Neue", Helvetica, sans-serif', 'important');
+        inp.parentNode.replaceChild(d, inp);
+      }
+    });
+  };
+
+  /* ---------- 提示条：emoji → 线性图标 ---------- */
+  function iconizeToast(msg) {
+    var m = String(msg), k = null;
+    var lead = m.match(/^\s*(✅|❌|⚠️|⚠|🔗)\s*/);
+    if (lead) {
+      k = { '✅': 'ok', '❌': 'err', '⚠️': 'warn', '⚠': 'warn', '🔗': 'link' }[lead[1]];
+      m = m.slice(lead[0].length);
+    }
+    return k ? '<span class="pv-toast pv-toast-' + k + '">' + svg(IC[k]) + '<span>' + m + '</span></span>' : m;
+  }
+
+  /* ---------- 渐进披露（低频卡片） ---------- */
+  function val(id) { var e = $(id); return e ? parseFloat(e.value) || 0 : 0; }
+  function chk(id) { var e = $(id); return !!(e && e.checked); }
+  var CARDS = [
+    { sel: '.empower-card', sum: function () {
+        var t = [].map.call(document.querySelectorAll('.empower-item.active .title'), function (x) { return (x.querySelector(zh() ? '.zh' : '.lang-en') || x).textContent.replace(/\s*[(（].*$/, ''); });
+        return t.length ? [t.join(' + '), true] : [L('未启用', 'Off'), false]; } },
+    { sel: '.extra-card', sum: function () {
+        var n = ['hasExtraNitro', 'hasExtraUlt', 'hasExtraPerSec'].filter(chk).length;
+        return n ? [L('已开启 ', 'On: ') + n, true] : [L('未启用', 'Off'), false]; } },
+    { sel: '#extraCustomSection', sum: function () {
+        var v = val('valCustomTrig');
+        return v ? ['+' + v + '% · ' + val('customTrigFirstCount') + ' / ' + val('customTrigLoopCount'), true] : [L('未启用', 'Off'), false]; } },
+    { sel: '.eff-card-mobile', sum: function () {
+        var v = val('extraEfficiency'); return [(v ? '+' : '') + v + '%', !!v]; } }
+  ];
+  function setupCollapse() {
+    if (!isMobile()) return;
+    CARDS.forEach(function (c) {
+      var card = document.querySelector('.ds-c ' + c.sel); if (!card) return;
+      var title = card.querySelector('.card-title'); if (!title) return;
+      card.classList.add('pv-collapsible');
+      var s = document.createElement('span'); s.className = 'pv-sum'; title.insertBefore(s, title.querySelector('.limit-badge'));
+      c.el = card; c.s = s; c.touched = false;
+      title.addEventListener('click', function (e) {
+        if (e.target.closest('input, a')) return;
+        c.touched = true; card.classList.toggle('pv-collapsed');
+      });
+    });
+    refreshCollapse(true);
+    var soft = function () { refreshCollapse(false); };
+    document.addEventListener('input', soft, true);
+    document.addEventListener('change', soft, true);
+    new MutationObserver(soft).observe($('resultValueFirst'), { childList: true, characterData: true, subtree: true });
+  }
+  // 收起规则：有值自动展开；只在首次加载 / 换车时自动收起空卡片 ——
+  // 用户正在卡片里操作（例如关掉最后一个赋能）时不会突然收起；用户手动开合过的卡片以后都按用户的来
+  function refreshCollapse(reset) {
+    CARDS.forEach(function (c) {
+      if (!c.el) return;
+      var r = c.sum(); c.s.textContent = r[0]; c.s.classList.toggle('on', r[1]);
+      if (c.touched) return;
+      if (r[1]) c.el.classList.remove('pv-collapsed');
+      else if (reset === true) c.el.classList.add('pv-collapsed');
+    });
+  }
+  window.__pvRefreshCollapse = refreshCollapse;
+
+  /* ---------- 整数输入：− / + 步进 ---------- */
+  var STEP_MAIN = ['inputFirstNitroCount', 'inputNitroCount', 'customTrigFirstCount', 'customTrigLoopCount'];
+  var STEP_SUB = ['jiezou_sub_first', 'jiezou_sub_loop', 'huaxin_sub_first', 'huaxin_sub_loop'];
+  function bump(inp, d) {
+    var v = (parseFloat(inp.value) || 0) + d;
+    var min = inp.min !== '' ? parseFloat(inp.min) : 0, max = inp.max !== '' ? parseFloat(inp.max) : Infinity;
+    v = Math.max(min, Math.min(max, v));
+    if (String(v) === inp.value) return;
+    inp.value = String(v);
+    inp.dispatchEvent(new Event('input', { bubbles: true }));
+  }
+  function stepBtn(d, cls) {
+    var b = document.createElement('button');
+    b.type = 'button'; b.className = cls; b.setAttribute('aria-label', d > 0 ? '加 1' : '减 1');
+    b.innerHTML = svg(IC[d > 0 ? 'plus' : 'minus']);
+    b.dataset.d = d;
+    return b;
+  }
+  function setupSteppers() {
+    STEP_MAIN.forEach(function (id) {
+      var inp = $(id); if (!inp) return;
+      var w = inp.closest('.input-wrapper'); if (!w) return;
+      w.classList.add('pv-has-step');
+      var g = document.createElement('span'); g.className = 'pv-step';
+      g.appendChild(stepBtn(-1, 'pv-step-btn')); g.appendChild(stepBtn(1, 'pv-step-btn'));
+      w.appendChild(g);
+      g.addEventListener('click', function (e) { var b = e.target.closest('button'); if (b) bump(inp, +b.dataset.d); });
+    });
+    STEP_SUB.forEach(function (id) {
+      var inp = $(id); if (!inp) return;
+      var m = stepBtn(-1, 'pv-sub-btn'), p = stepBtn(1, 'pv-sub-btn');
+      inp.parentNode.insertBefore(m, inp); inp.parentNode.insertBefore(p, inp.nextSibling);
+      m.addEventListener('click', function () { bump(inp, -1); });
+      p.addEventListener('click', function () { bump(inp, 1); });
+    });
+  }
+
+  /* ---------- 手机端页面压缩：计算过程收起 / 页脚合一 ---------- */
+  function setupFold() {
+    if (!isMobile()) return;
+    ['formulaDisplayFirst', 'formulaDisplayLoop'].forEach(function (id) {
+      var box = $(id); if (!box) return;
+      box.classList.add('pv-fold-closed');
+      var b = document.createElement('button');
+      b.type = 'button'; b.className = 'pv-fold-btn';
+      var paint = function () {
+        var open = !box.classList.contains('pv-fold-closed');
+        b.innerHTML = '<span>' + (open ? L('收起计算过程', 'Hide breakdown') : L('查看计算过程', 'Show breakdown')) + '</span>' + svg(IC.chevron);
+        b.classList.toggle('open', open);
+      };
+      b.addEventListener('click', function () { box.classList.toggle('pv-fold-closed'); paint(); });
+      box.parentNode.insertBefore(b, box);
+      paint();
+      document.addEventListener('pv-lang', paint);
+    });
+    // 页脚：鸣谢里的「上榜条件」长段落收进一个可展开项
+    var tc = document.querySelector('.thanks-card .card-text');
+    if (tc) {
+      var det = document.createElement('details'); det.className = 'pv-mini-details';
+      var sm = document.createElement('summary');
+      sm.innerHTML = '<span class="zh">上榜条件</span><span class="lang-en">How to get listed</span>' + svg(IC.chevron);
+      tc.parentNode.insertBefore(det, tc); det.appendChild(sm); det.appendChild(tc);
+    }
+  }
+
+  /* ---------- 手机选车：底部整屏面板 ---------- */
+  var QUAL = [['', '全部', 'All'], ['传说', '传说', 'Legend'], ['史诗', '史诗', 'Epic'], ['稀有', '稀有', 'Rare'], ['普通', '普通', 'Common']];
+  var qualFilter = '';
+  var sheet, mask, proxy, listHost, toolsHost, qualRow, home = {};
+  function carById(id) { for (var i = 0; i < CAR_DATABASE.length; i++) if (CAR_DATABASE[i].id === id) return CAR_DATABASE[i]; return null; }
+  function decorateList() {
+    [].forEach.call(document.querySelectorAll('#carDropdown .dropdown-option'), function (o) {
+      var id = parseInt(o.getAttribute('data-id'), 10);
+      if (o.querySelector('.pv-thumb')) return;
+      var t = document.createElement('span'); t.className = 'pv-thumb';
+      var src = id > 0 ? (typeof _CAR_IMG !== 'undefined' && _CAR_IMG[id]) : ((typeof _ICONS !== 'undefined' && _ICONS['icon_mhyck_m.png']) || 'data/icon/icon_mhyck_m.png');
+      if (src) {
+        var im = document.createElement('img'); im.loading = 'lazy'; im.decoding = 'async'; im.alt = '';
+        im.src = src;
+        im.onerror = function () { this.remove(); };
+        t.appendChild(im);
+      }
+      o.insertBefore(t, o.firstChild);
+    });
+  }
+  function applyQual() {
+    if (!qualFilter) return;
+    [].forEach.call(document.querySelectorAll('#carDropdown .dropdown-option'), function (o) {
+      var id = parseInt(o.getAttribute('data-id'), 10);
+      if (id > 0) { var c = carById(id); if (c && c.quality !== qualFilter) o.style.display = 'none'; }
+    });
+  }
+  function paintQual() {
+    if (!qualRow) return;
+    var counts = {};
+    CAR_DATABASE.forEach(function (c) { counts[c.quality] = (counts[c.quality] || 0) + 1; });
+    qualRow.innerHTML = QUAL.map(function (q) {
+      var n = q[0] ? (counts[q[0]] || 0) : CAR_DATABASE.length;
+      return '<button type="button" class="pv-qchip' + (q[0] === qualFilter ? ' on' : '') + '" data-q="' + q[0] + '">' + L(q[1], q[2]) + '<span>' + n + '</span></button>';
+    }).join('');
+  }
+  function openSheet() {
+    if (!sheet || document.body.classList.contains('pv-sheet-open')) return;
+    var dd = $('carDropdown'), filters = document.querySelector('.car-filters');
+    home.dd = dd.parentNode; home.ddNext = dd.nextSibling;
+    home.f = filters.parentNode; home.fNext = filters.nextSibling;
+    toolsHost.appendChild(filters);
+    listHost.appendChild(dd);
+    dd.classList.add('show');
+    proxy.value = $('carSearch').value;
+    paintQual();
+    filterCarList();
+    document.body.classList.add('pv-sheet-open');
+    var sel = dd.querySelector('.dropdown-option.selected');
+    requestAnimationFrame(function () { if (sel) sel.scrollIntoView({ block: 'center' }); });
+  }
+  function closeSheet() {
+    if (!document.body.classList.contains('pv-sheet-open')) return;
+    document.body.classList.remove('pv-sheet-open');
+    var dd = $('carDropdown'), filters = document.querySelector('.car-filters');
+    ['filterPosMenu', 'filterSpecMenu'].forEach(function (m) { $(m).classList.remove('show'); });
+    dd.classList.remove('show');
+    home.dd.insertBefore(dd, home.ddNext);
+    home.f.insertBefore(filters, home.fNext);
+    qualFilter = '';
+    filterCarList();
+    if (document.activeElement === proxy) proxy.blur();
+  }
+  function setupSheet() {
+    mask = document.createElement('div'); mask.className = 'pv-sheet-mask';
+    sheet = document.createElement('div');
+    sheet.className = 'pv-sheet dropdown-container';   // 带上 dropdown-container：原站的「点外面关下拉」逻辑不会把面板里的点击当成点外面
+    sheet.setAttribute('role', 'dialog'); sheet.setAttribute('aria-modal', 'true');
+    sheet.innerHTML =
+      '<div class="pv-sheet-grab"></div>' +
+      '<div class="pv-sheet-head"><b><span class="zh">选择赛车</span><span class="lang-en">Select Car</span></b>' +
+      '<button type="button" class="pv-sheet-done"><span class="zh">完成</span><span class="lang-en">Done</span></button></div>' +
+      '<div class="pv-sheet-search">' + svg(IC.search) + '<input type="search" autocomplete="off" enterkeyhint="search"></div>' +
+      '<div class="pv-sheet-tools"></div>' +
+      '<div class="pv-sheet-qual"></div>' +
+      '<div class="pv-sheet-list"></div>';
+    document.body.appendChild(mask); document.body.appendChild(sheet);
+    proxy = sheet.querySelector('.pv-sheet-search input');
+    toolsHost = sheet.querySelector('.pv-sheet-tools');
+    qualRow = sheet.querySelector('.pv-sheet-qual');
+    listHost = sheet.querySelector('.pv-sheet-list');
+    proxy.placeholder = L('搜索车名 / 拼音首字母', 'Search name / pinyin');
+    proxy.addEventListener('input', function () { $('carSearch').value = proxy.value; filterCarList(); });
+    mask.addEventListener('click', closeSheet);
+    sheet.querySelector('.pv-sheet-done').addEventListener('click', closeSheet);
+    qualRow.addEventListener('click', function (e) {
+      var b = e.target.closest('.pv-qchip'); if (!b) return;
+      qualFilter = b.dataset.q; paintQual(); filterCarList(); listHost.scrollTop = 0;
+    });
+    document.addEventListener('keydown', function (e) { if (e.key === 'Escape') closeSheet(); });
+
+    // 接管：手机上点「选择车辆」或聚焦卡片里的搜索框 → 打开面板
+    var origToggle = window.toggleCarDropdown;
+    window.toggleCarDropdown = function () {
+      if (isMobile()) { openSheet(); return; }
+      return origToggle.apply(this, arguments);
+    };
+    $('carSearch').addEventListener('focus', function () {
+      if (!isMobile()) return;
+      this.blur(); openSheet(); setTimeout(function () { proxy.focus(); }, 30);
+    });
+    // 选中一辆车后自动收起
+    var origPick = window.pickCar;
+    window.pickCar = function () { var r = origPick.apply(this, arguments); closeSheet(); refreshCollapse(true); return r; };
+    // 列表重建时补车图、套品质筛选
+    var origPop = window.populateCarGrid;
+    window.populateCarGrid = function () { var r = origPop.apply(this, arguments); decorateList(); return r; };
+    var origFilter = window.filterCarList;
+    window.filterCarList = function () { var r = origFilter.apply(this, arguments); applyQual(); return r; };
+    decorateList();
+  }
+
+  document.addEventListener('DOMContentLoaded', function () {
+    var st0 = window.showToast;
+    if (typeof st0 === 'function') window.showToast = function (m) { return st0(iconizeToast(m)); };
+    var tl = window.toggleLanguage;
+    if (typeof tl === 'function') window.toggleLanguage = function () { var r = tl.apply(this, arguments); document.dispatchEvent(new Event('pv-lang')); if (proxy) proxy.placeholder = L('搜索车名 / 拼音首字母', 'Search name / pinyin'); paintQual(); return r; };
+    setTimeout(function () {
+      setupCollapse();
+      setupSteppers();
+      setupFold();
+      setupSheet();
+    }, 0);
+  });
+})();
+
+</script>
 <script>
 
    function generateHash(str) {
@@ -1671,7 +2524,7 @@ body.ds-c.performance-mode .ds-dock { background: var(--cell); }
         // Add "Unreleased car" as first option
         var sel0 = (_selectedCarId === -1) ? ' selected' : '';
         html += '<div class="dropdown-option' + sel0 + '" data-id="-1" onclick="pickCar(-1);document.getElementById(\'carDropdown\').classList.remove(\'show\');">'
-            + '<span style="flex:1;"><span style="opacity:0.5;">\u2753</span> ' + _("未上线车辆", "Unreleased Car") + '</span>'
+            + '<span style="flex:1;"><span style="opacity:0.5;"><svg class=\"ico pv-q\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"1.8\" stroke-linecap=\"round\" stroke-linejoin=\"round\" aria-hidden=\"true\"><circle cx=\"12\" cy=\"12\" r=\"9\"/><path d=\"M9.6 9.3a2.5 2.5 0 0 1 4.8.9c0 1.7-2.4 2.2-2.4 3.6M12 17v.01\"/></svg></span> ' + _("未上线车辆", "Unreleased Car") + '</span>'
             + '<span style="font-size:11px;color:var(--text-muted);">' + _("手动填写", "Manual Input") + '</span>'
             + '</div>';
         var sortedCars = sortCarsByAdded();
@@ -1731,7 +2584,7 @@ body.ds-c.performance-mode .ds-dock { background: var(--cell); }
         }
         var label = document.getElementById('carListLabel');
         if (_selectedCarId === -1) {
-            label.innerHTML = '<span style=\"opacity:0.5;\">\u2753</span> ' + _("未上线车辆", "Unreleased Car");
+            label.innerHTML = '<span style=\"opacity:0.5;\"><svg class=\"ico pv-q\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"1.8\" stroke-linecap=\"round\" stroke-linejoin=\"round\" aria-hidden=\"true\"><circle cx=\"12\" cy=\"12\" r=\"9\"/><path d=\"M9.6 9.3a2.5 2.5 0 0 1 4.8.9c0 1.7-2.4 2.2-2.4 3.6M12 17v.01\"/></svg></span> ' + _("未上线车辆", "Unreleased Car");
         } else if (_selectedCarId && _selectedCarId > 0) {
             for (var i = 0; i < CAR_DATABASE.length; i++) {
                 if (CAR_DATABASE[i].id === _selectedCarId) {
@@ -1766,9 +2619,9 @@ body.ds-c.performance-mode .ds-dock { background: var(--cell); }
         document.getElementById('carPreviewAutoMsg').style.display = '';
         var msgHtml = _('\u2713 \u5DF2\u81EA\u52A8\u586B\u5145\uFF1A', '\u2713 Auto-filled: ') + filledItems.join(_('\u3001', ', '));
         if (!car.ult_duration) {
-            msgHtml += _('<br><span style=\"color:var(--warning);font-weight:bold;\">⚠️ 该车无固定大招时长，大招时长和其他参数请手动填写</span>', '<br><span style=\"color:var(--warning);font-weight:bold;\">⚠️ This car has no fixed ult duration, ult and other params need manual input</span>');
+            msgHtml += _('<br><span style=\"color:var(--warning);font-weight:bold;\"><svg class=\"ico pv-warn\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"1.8\" stroke-linecap=\"round\" stroke-linejoin=\"round\" aria-hidden=\"true\"><path d=\"M12 3.5 2.8 19.5h18.4L12 3.5z\"/><path d=\"M12 10v4.2M12 17v.01\"/></svg>该车无固定大招时长，大招时长和其他参数请手动填写</span>', '<br><span style=\"color:var(--warning);font-weight:bold;\"><svg class=\"ico pv-warn\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"1.8\" stroke-linecap=\"round\" stroke-linejoin=\"round\" aria-hidden=\"true\"><path d=\"M12 3.5 2.8 19.5h18.4L12 3.5z\"/><path d=\"M12 10v4.2M12 17v.01\"/></svg>This car has no fixed ult duration, ult and other params need manual input</span>');
         } else {
-            msgHtml += _('<br><span style=\"color:var(--warning);font-weight:bold;\">⚠️ 其他参数请手动调整</span>', '<br><span style=\"color:var(--warning);font-weight:bold;\">⚠️ Other params need manual tuning</span>');
+            msgHtml += _('<br><span style=\"color:var(--warning);font-weight:bold;\"><svg class=\"ico pv-warn\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"1.8\" stroke-linecap=\"round\" stroke-linejoin=\"round\" aria-hidden=\"true\"><path d=\"M12 3.5 2.8 19.5h18.4L12 3.5z\"/><path d=\"M12 10v4.2M12 17v.01\"/></svg>其他参数请手动调整</span>', '<br><span style=\"color:var(--warning);font-weight:bold;\"><svg class=\"ico pv-warn\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"1.8\" stroke-linecap=\"round\" stroke-linejoin=\"round\" aria-hidden=\"true\"><path d=\"M12 3.5 2.8 19.5h18.4L12 3.5z\"/><path d=\"M12 10v4.2M12 17v.01\"/></svg>Other params need manual tuning</span>');
         }
         msgHtml += _('<br>\u8BE6\u7EC6\u8F66\u8F86\u6280\u80FD\u8BF7\u53C2\u8003 \u2192', '<br>Details \u2192') + ' <a href=\"https://reca.seimu.cn/ace-racer/vehicles/' + car.id + '\" target=\"_blank\" style=\"color:var(--primary);text-decoration:underline;font-weight:bold;\">' + _('瑞卡情报站-', 'Racer Wiki-') + _n(car) + '</a>';
         document.getElementById('carPreviewAutoMsg').innerHTML = msgHtml;
@@ -1784,7 +2637,7 @@ body.ds-c.performance-mode .ds-dock { background: var(--cell); }
                 else if (sym === '\u25E3') iconNum = '3';
                 else if (sym === '\u25B3') iconNum = '4';
                 else if (sym === '\u25C7') iconNum = '5';
-                chipInfo.innerHTML += '<img loading=\"lazy\" src=\"' + _ICONS['carport_new_skill_chip_none_icon_' + iconNum + '.png'] + '\" style=\"width:30px;height:30px;object-fit:contain;\">';
+                chipInfo.innerHTML += (window.__pvChip ? __pvChip(sym) : '<img loading=\"lazy\" src=\"' + _ICONS['carport_new_skill_chip_none_icon_' + iconNum + '.png'] + '\" style=\"width:30px;height:30px;object-fit:contain;\">');
             }
         }
         var img = document.getElementById('carImage');
@@ -1986,9 +2839,9 @@ body.ds-c.performance-mode .ds-dock { background: var(--cell); }
         if (car.sp_charge) filledItems.push(_("SP自充能","SP Charge"));
         var msgHtml = _('\u2713 \u5DF2\u81EA\u52A8\u586B\u5145\uFF1A', '\u2713 Auto-filled: ') + filledItems.join(_('\u3001', ', '));
         if (!car.ult_duration) {
-            msgHtml += _('<br><span style=\"color:var(--warning);font-weight:bold;\">⚠️ 该车无固定大招时长，大招时长和其他参数请手动填写</span>', '<br><span style=\"color:var(--warning);font-weight:bold;\">⚠️ This car has no fixed ult duration, ult and other params need manual input</span>');
+            msgHtml += _('<br><span style=\"color:var(--warning);font-weight:bold;\"><svg class=\"ico pv-warn\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"1.8\" stroke-linecap=\"round\" stroke-linejoin=\"round\" aria-hidden=\"true\"><path d=\"M12 3.5 2.8 19.5h18.4L12 3.5z\"/><path d=\"M12 10v4.2M12 17v.01\"/></svg>该车无固定大招时长，大招时长和其他参数请手动填写</span>', '<br><span style=\"color:var(--warning);font-weight:bold;\"><svg class=\"ico pv-warn\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"1.8\" stroke-linecap=\"round\" stroke-linejoin=\"round\" aria-hidden=\"true\"><path d=\"M12 3.5 2.8 19.5h18.4L12 3.5z\"/><path d=\"M12 10v4.2M12 17v.01\"/></svg>This car has no fixed ult duration, ult and other params need manual input</span>');
         } else {
-            msgHtml += _('<br><span style=\"color:var(--warning);font-weight:bold;\">⚠️ 其他参数请手动调整</span>', '<br><span style=\"color:var(--warning);font-weight:bold;\">⚠️ Other params need manual tuning</span>');
+            msgHtml += _('<br><span style=\"color:var(--warning);font-weight:bold;\"><svg class=\"ico pv-warn\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"1.8\" stroke-linecap=\"round\" stroke-linejoin=\"round\" aria-hidden=\"true\"><path d=\"M12 3.5 2.8 19.5h18.4L12 3.5z\"/><path d=\"M12 10v4.2M12 17v.01\"/></svg>其他参数请手动调整</span>', '<br><span style=\"color:var(--warning);font-weight:bold;\"><svg class=\"ico pv-warn\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"1.8\" stroke-linecap=\"round\" stroke-linejoin=\"round\" aria-hidden=\"true\"><path d=\"M12 3.5 2.8 19.5h18.4L12 3.5z\"/><path d=\"M12 10v4.2M12 17v.01\"/></svg>Other params need manual tuning</span>');
         }
         msgHtml += _('<br>\u8BE6\u7EC6\u8F66\u8F86\u6280\u80FD\u8BF7\u53C2\u8003 \u2192', '<br>Details \u2192') + ' <a href=\"https://reca.seimu.cn/ace-racer/vehicles/' + car.id + '\" target=\"_blank\" style=\"color:var(--primary);text-decoration:underline;font-weight:bold;\">' + _('瑞卡情报站-', 'Racer Wiki-') + _n(car) + '</a>';
         document.getElementById('carPreviewAutoMsg').innerHTML = msgHtml;
@@ -2004,7 +2857,7 @@ body.ds-c.performance-mode .ds-dock { background: var(--cell); }
                 else if (sym === '\u25E3') iconNum = '3';
                 else if (sym === '\u25B3') iconNum = '4';
                 else if (sym === '\u25C7') iconNum = '5';
-                chipInfo.innerHTML += '<img loading=\"lazy\" src=\"' + _ICONS['carport_new_skill_chip_none_icon_' + iconNum + '.png'] + '\" style=\"width:30px;height:30px;object-fit:contain;\">';
+                chipInfo.innerHTML += (window.__pvChip ? __pvChip(sym) : '<img loading=\"lazy\" src=\"' + _ICONS['carport_new_skill_chip_none_icon_' + iconNum + '.png'] + '\" style=\"width:30px;height:30px;object-fit:contain;\">');
             }
         }
         var img = document.getElementById('carImage');
@@ -2025,6 +2878,7 @@ body.ds-c.performance-mode .ds-dock { background: var(--cell); }
             + ' &nbsp;|&nbsp; ace_charge: <b>' + (car.ace_charge || '?') + '</b>'
             + (car.ult_duration ? ' &nbsp;|&nbsp; ' + _("大招时长:","Ult Dur:") + ' <b>' + car.ult_duration + 's</b>' : '')
             + (car.has_sp ? ' &nbsp;|&nbsp; <span class="car-badge">SP</span>' : '');
+        calculate();   // 自动填充全部写完之后再算一次
     }
 
     function populateFilters() {
@@ -2474,6 +3328,7 @@ function __tok(n, d) { var v = getComputedStyle(document.body).getPropertyValue(
                }
            }
            
+           if (window.__pvExportFix) window.__pvExportFix(clone);
            var tempWrapper = document.createElement('div');
            tempWrapper.style.position = 'absolute';
            tempWrapper.style.left = '0px';
@@ -2554,6 +3409,7 @@ function __tok(n, d) { var v = getComputedStyle(document.body).getPropertyValue(
                    
                    showToast(_("✅ 高清长图已保存到您的设备！", "✅ HD image saved to your device!"));
                }).catch(function(err) {
+                   console.error('[export]', err);
                    cleanup();
                    showToast(_("❌ 生成失败，请重试或更换浏览器。", "❌ Generation failed, try again."));
                });
@@ -3602,7 +4458,7 @@ if (typeof CAR_DATABASE !== 'undefined') {
     g.innerHTML =
       '<div class="ds-gauge-top"><span class="ds-status" data-r="status"></span><span class="ds-target" data-r="target"></span></div>' +
       '<div class="ds-gauge-main">' +
-        '<svg class="ds-ring" viewBox="0 0 100 100" aria-hidden="true"><circle class="ds-ring-track" cx="50" cy="50" r="42"/><circle class="ds-ring-fill" data-r="ring" cx="50" cy="50" r="42" stroke-dasharray="' + RING_C.toFixed(2) + '" stroke-dashoffset="' + RING_C.toFixed(2) + '"/></svg>' +
+        __pvRingSvg() +   // V4：270° 转速表（v4.js）
         '<div class="ds-readout"><span class="ds-value" data-r="value" aria-live="polite">--</span><span class="ds-delta" data-r="delta"></span></div>' +
       '</div>' +
       '<div class="ds-bar"><div class="ds-bar-fill" data-r="fill"></div><div class="ds-bar-mark"></div></div>';
@@ -3622,7 +4478,7 @@ if (typeof CAR_DATABASE !== 'undefined') {
     if (r.idle) {
       q('status').textContent = L('等待测算', 'Waiting');
       q('value').innerHTML = '--'; q('delta').textContent = ''; q('target').textContent = '';
-      q('fill').style.width = '0%'; q('ring').style.strokeDashoffset = RING_C.toFixed(2);
+      q('fill').style.width = '0%'; __pvRing(g, NaN, NaN);
       return r;
     }
     q('status').textContent = r.label;
@@ -3633,7 +4489,7 @@ if (typeof CAR_DATABASE !== 'undefined') {
       q('delta').textContent = d >= 0 ? L('余量 +', 'Margin +') + d.toFixed(3) + '%' : L('缺口 ', 'Gap ') + d.toFixed(3) + '%';
       var ratio = r.target > 0 ? r.total / r.target : 0;
       q('fill').style.width = Math.max(0, Math.min(100, ratio / 1.6 * 100)).toFixed(2) + '%';
-      q('ring').style.strokeDashoffset = (RING_C * (1 - Math.max(0, Math.min(1, ratio)))).toFixed(2);
+      __pvRing(g, r.total, r.target);
     }
     return r;
   }
