@@ -348,6 +348,12 @@ a { color: inherit; }
 /* 长截图导出的加载遮罩转圈（导出的那段 JS 会用；原来那里是个相机 emoji，与全站 SVG 图标不一致） */
 @keyframes dsSpin { to { transform: rotate(360deg); } }
 @media (prefers-reduced-motion: reduce) { @keyframes dsSpin { to { transform: none; } } }
+/* 补上的图标：结果说明开头（颜色跟随结果卡状态色）、联动 / 自动计算状态条、页脚标题与赞赏语 */
+.ds-c .pv-det-ico { display: inline-flex; vertical-align: -3px; margin-right: 6px; color: var(--st, currentColor); }
+.ds-c .pv-det-ico .ico { width: 17px; height: 17px; stroke-width: 2; }
+.ds-c .pv-mode-ico { width: 15px; height: 15px; margin-right: 5px; vertical-align: -2.5px; stroke-width: 2; }
+.ds-c .footer-legal .card-title { margin-bottom: 10px; color: var(--ink); }
+.ds-c .bottom-msg-text .pv-heart { width: 15px; height: 15px; margin-left: 4px; vertical-align: -2px; color: var(--ink-2); }
 /* 长截图生成中的全屏遮罩：中间放「保存长截图」按钮上的同一个图标，外圈一道细弧转动表示进行中 */
 .ds-c .pv-shot-load { position: relative; display: flex; align-items: center; justify-content: center; width: 72px; height: 72px; margin-bottom: 22px;
   border-radius: 50%; background: var(--fill); color: var(--ink); }
@@ -2072,6 +2078,7 @@ body.diag-bare .card, body.diag-bare .tutorial-details, body.diag-bare .footer-l
   
 <footer class="site-footer" data-html2canvas-ignore="true">
   <div class="footer-note footer-legal">
+    <div class="card-title"><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3 5 6v5c0 4.5 3 8.2 7 9.5 4-1.3 7-5 7-9.5V6z"/><path d="m9 12 2.2 2.2L15.5 10"/></svg><span class="zh">关于本站</span><span class="lang-en">About</span></div>
     <p><span class="zh">本项目完全本地运行，不进行任何联网行为，不收集任何隐私数据，请放心使用。</span><span class="lang-en">Runs fully locally, no network needed, no data collected.</span></p>
     <p><span class="zh">由Vanem开发，个人公益制作，严禁倒卖，付费传播，以及任何形式的商用。更多内容请关注作者主页：</span><span class="lang-en">Dev by Vanem, non-profit. Resale/commercial use prohibited. Author:</span></p>
     <div class="social-row">
@@ -2086,13 +2093,13 @@ body.diag-bare .card, body.diag-bare .tutorial-details, body.diag-bare .footer-l
     <a href="https://github.com/VanemKrAu/Ace-Racer-Calc/issues" target="_blank" class="bug-btn"><svg class="ico" viewBox="0 0 16 16" fill="currentColor" aria-hidden="true"><path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0 0 16 8c0-4.42-3.58-8-8-8Z"/></svg><span><span class="zh">前往 GitHub 提交 Issue</span><span class="lang-en">Submit Issue on GitHub</span></span><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 17 17 7M9 7h8v8"/></svg></a>
   </div>
   <div class="card thanks-card">
-    <div class="card-title"><span class="zh">特别鸣谢</span><span class="lang-en">Special Thanks</span></div>
+    <div class="card-title"><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="9" r="5.5"/><path d="m8.6 13.6-1.6 7 5-2.6 5 2.6-1.6-7"/></svg><span class="zh">特别鸣谢</span><span class="lang-en">Special Thanks</span></div>
     <p class="card-text"><span class="zh">上榜条件（三项满足任一即可）：<br>①在GitHub Issues中提交一次可复现的严重影响正常使用的技术性BUG（有详细操作过程），②提出一次被采纳的新功能建议，③累积打赏超过30元（请将打赏记录发送至我的邮箱 vanemmailbox@qq.com，否则无法统计）。</span><span class="lang-en">Listing conditions (meet any one):<br>① Submit a reproducible technical bug that seriously affects normal use in GitHub Issues (with detailed steps), ② Submit a new feature suggestion that is adopted, ③ Accumulate more than 30 RMB in donations (please send donation records to my email vanemmailbox@qq.com, otherwise it cannot be counted).</span></p>
     <div class="thanks-list"><span class="thanks-item">清秒</span><span class="thanks-item">残梦</span><span class="thanks-item">野马、YT</span><span class="thanks-item">柏拉图plato</span></div>
     <p class="card-text thanks-foot"><span class="zh">非常感谢以上车友在网站早期的开发中提供了功能灵感和宝贵的测试数据。<br>如果有更多关于功能的建议或者发现了遗漏的BUG，欢迎随时交流！</span><span class="lang-en">Thanks to players above for inspiration and test data.<br>Any suggestions or bug reports are welcome!</span></p>
   </div>
   <div class="bottom-image-wrapper">
-    <div class="bottom-msg-text"><span class="zh">如果觉得这个工具做的还不错的话，可以通过微信赞赏码来支持我，您的赞赏就是我更新的最大动力，感谢</span><span class="lang-en">If you like this tool, please consider supporting me via GitHub Sponsors. Your sponsorship is my greatest motivation to keep updating! Thanks</span></div>
+    <div class="bottom-msg-text"><span class="zh">如果觉得这个工具做的还不错的话，可以通过微信赞赏码来支持我，您的赞赏就是我更新的最大动力，感谢</span><span class="lang-en">If you like this tool, please consider supporting me via GitHub Sponsors. Your sponsorship is my greatest motivation to keep updating! Thanks</span><svg class="ico pv-heart" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 20s-7-4.4-7-10a4 4 0 0 1 7-2.6A4 4 0 0 1 19 10c0 5.6-7 10-7 10Z"/></svg></div>
     <img id="imgDark" src="https://i0.hdslb.com/bfs/openplatform/07d46fa9619f7ae4fa275da96d3c34d78e552624.png" alt="微信赞赏码" crossorigin="anonymous">
     <img id="imgLight" src="https://i0.hdslb.com/bfs/openplatform/0a2da617afc377db4eb2cc9cc3a6fbef73d49013.png" alt="微信赞赏码" crossorigin="anonymous">
     <a id="gh-support-link" href="https://github.com/sponsors/VanemKrAu" target="_blank"><svg class="ico" viewBox="0 0 16 16" fill="currentColor" aria-hidden="true"><path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0 0 16 8c0-4.42-3.58-8-8-8Z"/></svg><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 20s-7-4.4-7-10a4 4 0 0 1 7-2.6A4 4 0 0 1 19 10c0 5.6-7 10-7 10Z"/></svg><span>Sponsor VanemKrAu on GitHub</span></a>
@@ -2134,7 +2141,10 @@ body.diag-bare .card, body.diag-bare .tutorial-details, body.diag-bare .footer-l
     minus: '<path d="M6 12h12"/>',
     plus: '<path d="M12 6v12M6 12h12"/>',
     search: '<circle cx="11" cy="11" r="6.5"/><path d="m20 20-4.2-4.2"/>',
-    chevron: '<path d="m6 9 6 6 6-6"/>'
+    chevron: '<path d="m6 9 6 6 6-6"/>',
+    lock: '<rect x="5" y="11" width="14" height="9" rx="2"/><path d="M8 11V8a4 4 0 0 1 8 0v3"/>',
+    auto: '<path d="M19.5 10.5A7.5 7.5 0 0 0 6.2 6.6L4.5 8.3"/><path d="M4.5 4.5v3.8h3.8"/><path d="M4.5 13.5a7.5 7.5 0 0 0 13.3 3.9l1.7-1.7"/><path d="M19.5 19.5v-3.8h-3.8"/>',
+    edit: '<path d="M4 20h4L19 9a2.1 2.1 0 0 0-3-3L5 17z"/><path d="m14 7 3 3"/>'
   };
   window.__pvIcon = function (k, cls) { return svg(IC[k], cls); };
 
@@ -4369,9 +4379,9 @@ function __tok(n, d) { var v = getComputedStyle(document.body).getPropertyValue(
        function updateNitroCountUI() {
            var info = document.getElementById('nitroCountModeInfo');
            if (!isManualNitroCount) {
-               info.innerHTML = '<span style="color:var(--success); font-weight:bold;">▶ ' + _("自动计算就绪", "Auto-calc Ready") + '</span> <span style="color: var(--text-muted); font-weight: normal;">(' + _("根据大招时长和氮时计算氮气个数", "Calc nitros by Ult & nitro duration") + ')</span>';
+               info.innerHTML = '<span style="color:var(--success); font-weight:bold;">' + (window.__pvIcon ? __pvIcon('auto', 'pv-mode-ico') : '▶ ') + _("自动计算就绪", "Auto-calc Ready") + '</span> <span style="color: var(--text-muted); font-weight: normal;">(' + _("根据大招时长和氮时计算氮气个数", "Calc nitros by Ult & nitro duration") + ')</span>';
            } else {
-               info.innerHTML = '<span style="color:var(--warning); font-weight:bold;">▶ ' + _("手动覆盖中", "Manual Override") + '</span> <span style="color: var(--text-muted); font-weight: normal;">(' + _("当前为自由微调，需点重置恢复", "Manual override, click reset to restore") + ')</span>';
+               info.innerHTML = '<span style="color:var(--warning); font-weight:bold;">' + (window.__pvIcon ? __pvIcon('edit', 'pv-mode-ico') : '▶ ') + _("手动覆盖中", "Manual Override") + '</span> <span style="color: var(--text-muted); font-weight: normal;">(' + _("当前为自由微调，需点重置恢复", "Manual override, click reset to restore") + ')</span>';
            }
        }
 
@@ -4398,8 +4408,8 @@ function __tok(n, d) { var v = getComputedStyle(document.body).getPropertyValue(
 
        function updateAutoCalcUI() {
            var info = document.getElementById('autoCalcInfo');
-           if (autoLinked) info.innerHTML = '<span style="color:var(--success); font-weight:bold;">▶ ' + _("联动就绪", "Linkage Ready") + '</span> <span style="color: var(--text-muted); font-weight: normal;">(' + _("修改一项自动算另一项", "Modify one to auto-calc the other") + ')</span>';
-           else info.innerHTML = '<span style="color:var(--warning); font-weight:bold;">▶ ' + _("联动锁定", "Linkage Locked") + '</span> <span style="color: var(--text-muted); font-weight: normal;">(' + _("当前为自由微调，需点重置恢复", "Manual override, click reset to restore") + ')</span>';
+           if (autoLinked) info.innerHTML = '<span style="color:var(--success); font-weight:bold;">' + (window.__pvIcon ? __pvIcon('link', 'pv-mode-ico') : '▶ ') + _("联动就绪", "Linkage Ready") + '</span> <span style="color: var(--text-muted); font-weight: normal;">(' + _("修改一项自动算另一项", "Modify one to auto-calc the other") + ')</span>';
+           else info.innerHTML = '<span style="color:var(--warning); font-weight:bold;">' + (window.__pvIcon ? __pvIcon('lock', 'pv-mode-ico') : '▶ ') + _("联动锁定", "Linkage Locked") + '</span> <span style="color: var(--text-muted); font-weight: normal;">(' + _("当前为自由微调，需点重置恢复", "Manual override, click reset to restore") + ')</span>';
        }
 
        function triggerAutoCalc(sourceField) {
@@ -4965,12 +4975,24 @@ if (typeof CAR_DATABASE !== 'undefined') {
   }
 
   // 结果说明里的 emoji 前缀去掉（只动首个文本节点，文字内容不变）
+  // 结果说明开头的 emoji（✨ ✅ ⚠️ ❌）换成同一套线性图标：✨ ✅ → 对勾，⚠️ → 三角，❌ → 叉；
+  // 图标颜色跟随结果卡的状态色（CSS 里 .pv-det-ico 读 --st）。原站每次重算都会整段重写，这里每次同步都会再换一遍。
   function stripLeadEmoji(el) {
     if (!el) return;
     var w = document.createTreeWalker(el, NodeFilter.SHOW_TEXT, null);
     var n = w.nextNode();
     while (n && !n.nodeValue.trim()) n = w.nextNode();
-    if (n && EMOJI_HEAD.test(n.nodeValue)) n.nodeValue = n.nodeValue.replace(EMOJI_HEAD, '');
+    if (!n || !EMOJI_HEAD.test(n.nodeValue)) return;
+    var lead = n.nodeValue.match(EMOJI_HEAD)[0];
+    var kind = /[✨✅]/.test(lead) ? 'ok' : /❌/.test(lead) ? 'err' : /⚠/.test(lead) ? 'warn' : '';
+    n.nodeValue = n.nodeValue.replace(EMOJI_HEAD, '');
+    // emoji 单独包在一层 span 里时（如「全盘跑通」），它后面那个空格在下一个文本节点，也一并去掉，免得图标后多一格空
+    if (!n.nodeValue) { var nx = w.nextNode(); if (nx && /^\s/.test(nx.nodeValue)) nx.nodeValue = nx.nodeValue.replace(/^\s+/, ''); }
+    if (!kind || !window.__pvIcon || el.querySelector('.pv-det-ico')) return;
+    var ic = document.createElement('span');
+    ic.className = 'pv-det-ico';
+    ic.innerHTML = window.__pvIcon(kind);
+    n.parentNode.insertBefore(ic, n);
   }
 
   // ---------- 结果速览 dock ----------
