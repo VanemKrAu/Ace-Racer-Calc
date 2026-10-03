@@ -771,13 +771,14 @@ const CAR_DATABASE = [
     "ult_threshold": 100,
     "nitro_charge": null,
     "ult_charge_first": 15,
-    "ult_charge_loop": 10,
+    "ult_charge_loop": null,
     "per_sec_charge": 2,
     "sp_charge": null,
     "search_text": "lanbojini revuelto lbjn 雷维托,电牛,雷维尔托",
     "asset_dir": "assets/兰博基尼 Revuelto_12079",
     "added_at": null,
-    "release_at": 1769097600000
+    "release_at": 1769097600000,
+    "custom_charge": 10
   },
   {
     "id": 12078,
@@ -2043,13 +2044,14 @@ const CAR_DATABASE = [
     "ult_threshold": 100,
     "nitro_charge": null,
     "ult_charge_first": null,
-    "ult_charge_loop": 40,
+    "ult_charge_loop": null,
     "per_sec_charge": null,
     "sp_charge": null,
     "search_text": "lanbojini aventador j lbjn 埃文塔多,小火车,火车头,火车",
     "asset_dir": "assets/兰博基尼 Aventador J_12048",
     "added_at": null,
-    "release_at": 1735228800000
+    "release_at": 1735228800000,
+    "custom_charge": 40
   },
   {
     "id": 12047,
@@ -2412,13 +2414,14 @@ const CAR_DATABASE = [
     "ult_threshold": 100,
     "nitro_charge": null,
     "ult_charge_first": null,
-    "ult_charge_loop": 4,
+    "ult_charge_loop": null,
     "per_sec_charge": null,
     "sp_charge": null,
     "search_text": "danzichuji dzcj",
     "asset_dir": "assets/蛋仔出击_12039",
     "added_at": null,
-    "release_at": 1714060800000
+    "release_at": 1714060800000,
+    "custom_charge": 4
   },
   {
     "id": 12038,
@@ -4216,13 +4219,14 @@ const CAR_DATABASE = [
     "ult_threshold": 100,
     "nitro_charge": null,
     "ult_charge_first": null,
-    "ult_charge_loop": 15,
+    "ult_charge_loop": null,
     "per_sec_charge": null,
     "sp_charge": null,
     "search_text": "jihuaerfas quanxinhiban jhaefqxb 极狐s",
     "asset_dir": "assets/极狐阿尔法S 全新HI版_10095",
     "added_at": null,
-    "release_at": 1670515200000
+    "release_at": 1670515200000,
+    "custom_charge": 15
   },
   {
     "id": 10094,
@@ -4626,13 +4630,14 @@ const CAR_DATABASE = [
     "ult_threshold": 100,
     "nitro_charge": null,
     "ult_charge_first": null,
-    "ult_charge_loop": 10,
+    "ult_charge_loop": null,
     "per_sec_charge": null,
     "sp_charge": null,
     "search_text": "jiluguan jlg",
     "asset_dir": "assets/记录官_10085",
     "added_at": null,
-    "release_at": 1660233600000
+    "release_at": 1660233600000,
+    "custom_charge": 10
   },
   {
     "id": 10084,
@@ -5364,13 +5369,14 @@ const CAR_DATABASE = [
     "ult_threshold": 100,
     "nitro_charge": null,
     "ult_charge_first": null,
-    "ult_charge_loop": 37,
+    "ult_charge_loop": null,
     "per_sec_charge": null,
     "sp_charge": null,
     "search_text": "masuoladi alfieri msld 阿尔菲里",
     "asset_dir": "assets/玛莎拉蒂 Alfieri_10067",
     "added_at": null,
-    "release_at": 1644508800000
+    "release_at": 1644508800000,
+    "custom_charge": 37
   },
   {
     "id": 10066,
@@ -5405,13 +5411,14 @@ const CAR_DATABASE = [
     "ult_threshold": 100,
     "nitro_charge": null,
     "ult_charge_first": null,
-    "ult_charge_loop": 22,
+    "ult_charge_loop": null,
     "per_sec_charge": null,
     "sp_charge": null,
     "search_text": "shengqishi sqs",
     "asset_dir": "assets/圣骑士_10066",
     "added_at": null,
-    "release_at": 1639670400000
+    "release_at": 1639670400000,
+    "custom_charge": 22
   },
   {
     "id": 10065,
@@ -5938,13 +5945,14 @@ const CAR_DATABASE = [
     "ult_threshold": 70,
     "nitro_charge": null,
     "ult_charge_first": null,
-    "ult_charge_loop": 1,
+    "ult_charge_loop": null,
     "per_sec_charge": null,
     "sp_charge": null,
     "search_text": "wulinghongguang mini ev wlhg mini ev,五菱mini",
     "asset_dir": "assets/五菱宏光 MINI EV_10053",
     "added_at": null,
-    "release_at": 1627574400000
+    "release_at": 1627574400000,
+    "custom_charge": 1
   },
   {
     "id": 10052,
@@ -6061,13 +6069,14 @@ const CAR_DATABASE = [
     "ult_threshold": 100,
     "nitro_charge": null,
     "ult_charge_first": null,
-    "ult_charge_loop": 90,
+    "ult_charge_loop": null,
     "per_sec_charge": null,
     "sp_charge": null,
     "search_text": "kenisaige regera knsg regera,瑞哥,五五开",
     "asset_dir": "assets/柯尼塞格 Regera_10050",
     "added_at": null,
-    "release_at": 1628179200000
+    "release_at": 1628179200000,
+    "custom_charge": 90
   },
   {
     "id": 10049,
@@ -6102,13 +6111,14 @@ const CAR_DATABASE = [
     "ult_threshold": 100,
     "nitro_charge": null,
     "ult_charge_first": null,
-    "ult_charge_loop": 5,
+    "ult_charge_loop": null,
     "per_sec_charge": null,
     "sp_charge": null,
     "search_text": "huojianhu hjh",
     "asset_dir": "assets/火箭狐_10049",
     "added_at": null,
-    "release_at": 1633017600000
+    "release_at": 1633017600000,
+    "custom_charge": 5
   },
   {
     "id": 10048,
@@ -6184,13 +6194,14 @@ const CAR_DATABASE = [
     "ult_threshold": 100,
     "nitro_charge": null,
     "ult_charge_first": null,
-    "ult_charge_loop": 15,
+    "ult_charge_loop": null,
     "per_sec_charge": null,
     "sp_charge": null,
     "search_text": "shanling sl",
     "asset_dir": "assets/闪灵_10047",
     "added_at": null,
-    "release_at": 1629993600000
+    "release_at": 1629993600000,
+    "custom_charge": 15
   },
   {
     "id": 10046,
@@ -6225,13 +6236,14 @@ const CAR_DATABASE = [
     "ult_threshold": 100,
     "nitro_charge": null,
     "ult_charge_first": null,
-    "ult_charge_loop": 4,
+    "ult_charge_loop": null,
     "per_sec_charge": null,
     "sp_charge": null,
     "search_text": "kenisaige jesko knsg jesko,杰哥",
     "asset_dir": "assets/柯尼塞格 Jesko_10046",
     "added_at": null,
-    "release_at": 1637856000000
+    "release_at": 1637856000000,
+    "custom_charge": 4
   },
   {
     "id": 10045,
@@ -6266,13 +6278,14 @@ const CAR_DATABASE = [
     "ult_threshold": 100,
     "nitro_charge": null,
     "ult_charge_first": null,
-    "ult_charge_loop": 5,
+    "ult_charge_loop": null,
     "per_sec_charge": null,
     "sp_charge": null,
     "search_text": "yingfeinidi prototype yfnd 肥皂,鼠标",
     "asset_dir": "assets/英菲尼迪 Prototype_10045",
     "added_at": null,
-    "release_at": 1631808000000
+    "release_at": 1631808000000,
+    "custom_charge": 5
   },
   {
     "id": 10044,
@@ -6881,13 +6894,14 @@ const CAR_DATABASE = [
     "ult_threshold": 100,
     "nitro_charge": null,
     "ult_charge_first": null,
-    "ult_charge_loop": 4,
+    "ult_charge_loop": null,
     "per_sec_charge": null,
     "sp_charge": null,
     "search_text": "asidunmading vanquish asdmd 征服",
     "asset_dir": "assets/阿斯顿马丁 Vanquish_10030",
     "added_at": null,
-    "release_at": null
+    "release_at": null,
+    "custom_charge": 4
   },
   {
     "id": 10029,
@@ -7373,13 +7387,14 @@ const CAR_DATABASE = [
     "ult_threshold": 100,
     "nitro_charge": 5,
     "ult_charge_first": null,
-    "ult_charge_loop": 15,
+    "ult_charge_loop": null,
     "per_sec_charge": null,
     "sp_charge": null,
     "search_text": "biyadi han bydh 汉",
     "asset_dir": "assets/比亚迪 汉_10018",
     "added_at": null,
-    "release_at": 1647100800000
+    "release_at": 1647100800000,
+    "custom_charge": 15
   },
   {
     "id": 10017,

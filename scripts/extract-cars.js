@@ -28,6 +28,30 @@ const RELEASE_PATCH = {
 const FIELD_OVERRIDE = {
   10019: { nitro_charge: null }, // 丰田 86：没有「每次释放氮气时的自充能」，提取到的 7 是错的；
                                  // 留着会让选车时自动勾选并填入「氮气自充能」。
+
+  // ── 条件 / 行为触发类自充能：不是「每次放大招都给」，一律迁到 custom_charge ──────
+  //   前端把它填进「自定义触发自充能 → 每次触发附加百分比」，
+  //   触发次数留 0，由用户按自己的跑法手填；数值与原 ult_charge_loop 一致。
+  10018: { ult_charge_loop: null, custom_charge: 15 }, // 比亚迪 汉：第 5 名及以后放大招时自充能 15%
+  10030: { ult_charge_loop: null, custom_charge: 4 },  // 阿斯顿马丁 Vanquish：每次进入漂移自充能 4%
+  10045: { ult_charge_loop: null, custom_charge: 5 },  // 英菲尼迪 Prototype：每次用涡轮 2.5%（紫涡轮翻倍 = 5%）
+  10046: { ult_charge_loop: null, custom_charge: 4 },  // 柯尼塞格 Jesko：每 7 秒自充能 4%
+  10047: { ult_charge_loop: null, custom_charge: 15 }, // 闪灵：每次受到封禁效果时自充能 15%
+  10049: { ult_charge_loop: null, custom_charge: 5 },  // 火箭狐：每次使用涡轮获得 5% 大招能量
+  10050: { ult_charge_loop: null, custom_charge: 90 }, // 柯尼塞格 Regera：闪现中超越车辆时自充能 90%
+  10053: { ult_charge_loop: null, custom_charge: 1 },  // 五菱宏光 MINI EV：每次使用涡轮自充能 1%
+  10066: { ult_charge_loop: null, custom_charge: 22 }, // 圣骑士：圣印-充能「第 1 次使用大招时解锁获得 22%」——一次性，
+                                                      //   首发填 1 次、循环填 0 次，不该按每次大招都给
+  10067: { ult_charge_loop: null, custom_charge: 37 }, // 玛莎拉蒂 Alfieri：大招期间超 300km/h 立即自充能 37%
+  10085: { ult_charge_loop: null, custom_charge: 10 }, // 记录官：每次超越其他车辆时自充能 10%
+  10095: { ult_charge_loop: null, custom_charge: 15 }, // 极狐阿尔法S 全新HI版：第 5 名及以后放大招时自充能 15%
+  12039: { ult_charge_loop: null, custom_charge: 4 },  // 蛋仔出击：每隔 5 秒随机增益里有「获得 4% 大招能量」
+  12048: { ult_charge_loop: null, custom_charge: 40 }, // 兰博基尼 Aventador J：大招期间未成功合体则大招结束自充能 40%
+  12079: { ult_charge_loop: null, custom_charge: 10 }, // 兰博基尼 Revuelto：大招期间超越/被超越时获得 10%
+  // 故意没迁的两辆：
+  //   10011 蔚来 EP9「每次大招结束时自充能 20%」—— 每次放大招必触发，留在 ult_charge_loop 才对；
+  //   12067 奥迪 RS 3「大招自动充能 13%」—— 面板值，但技能描述里那 13% 是给队友的状态效果，待确认，暂不动。
+
   // 柯尼塞格 One:1：技能「主动大招结束后自动释放一次无消耗的大招」——一管能量实得两段大招。
   //   面板里的「加速时长 6 秒」只是单段值，实战口径要按两段算 12 秒；
   //   ult_chain 供前端在自动填充提示里标明「大招连发」。

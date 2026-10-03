@@ -3152,9 +3152,11 @@ body.diag-bare .card, body.diag-bare .tutorial-details, body.diag-bare .footer-l
         }
         // 条件触发类自充能 (custom_charge)：数值自动填，「触发次数」必须由用户按跑法手填
         if (car.custom_charge) {
-            var _everyN = car.custom_charge_every || 1;
-            msgHtml += _('<br><span style="color:var(--warning);font-weight:bold;">' + _WARN_ICO + '该车自充能为条件触发（每 ' + _everyN + ' 次触发记 1 次），「首发一大触发次数 / 循环内触发次数」请按跑法手动填写</span>',
-                '<br><span style="color:var(--warning);font-weight:bold;">' + _WARN_ICO + 'This self-charge is conditional (1 trigger per ' + _everyN + ' events) — fill the 1st-ult / loop trigger counts manually.</span>');
+            var _trigDesc = car.custom_charge_every
+                ? _('每 ' + car.custom_charge_every + ' 次触发记 1 次', '1 trigger per ' + car.custom_charge_every + ' events')
+                : _('每次触发均生效', 'every trigger counts');
+            msgHtml += _('<br><span style="color:var(--warning);font-weight:bold;">' + _WARN_ICO + '该车自充能不是「每次放大招必给」，而是条件触发（' + _trigDesc + '）：「首发一大触发次数 / 循环内触发次数」请按跑法手动填写</span>',
+                '<br><span style="color:var(--warning);font-weight:bold;">' + _WARN_ICO + 'This self-charge is conditional, not granted on every ult (' + _trigDesc + ') — fill the 1st-ult / loop trigger counts manually.</span>');
         }
         // 大招连发 (ult_chain)：一管能量实得两段大招，时长已按两段累计填入
         if (car.ult_chain) {
@@ -3392,9 +3394,11 @@ body.diag-bare .card, body.diag-bare .tutorial-details, body.diag-bare .footer-l
         }
         // 条件触发类自充能 (custom_charge)：数值自动填，「触发次数」必须由用户按跑法手填
         if (car.custom_charge) {
-            var _everyN = car.custom_charge_every || 1;
-            msgHtml += _('<br><span style="color:var(--warning);font-weight:bold;">' + _WARN_ICO + '该车自充能为条件触发（每 ' + _everyN + ' 次触发记 1 次），「首发一大触发次数 / 循环内触发次数」请按跑法手动填写</span>',
-                '<br><span style="color:var(--warning);font-weight:bold;">' + _WARN_ICO + 'This self-charge is conditional (1 trigger per ' + _everyN + ' events) — fill the 1st-ult / loop trigger counts manually.</span>');
+            var _trigDesc = car.custom_charge_every
+                ? _('每 ' + car.custom_charge_every + ' 次触发记 1 次', '1 trigger per ' + car.custom_charge_every + ' events')
+                : _('每次触发均生效', 'every trigger counts');
+            msgHtml += _('<br><span style="color:var(--warning);font-weight:bold;">' + _WARN_ICO + '该车自充能不是「每次放大招必给」，而是条件触发（' + _trigDesc + '）：「首发一大触发次数 / 循环内触发次数」请按跑法手动填写</span>',
+                '<br><span style="color:var(--warning);font-weight:bold;">' + _WARN_ICO + 'This self-charge is conditional, not granted on every ult (' + _trigDesc + ') — fill the 1st-ult / loop trigger counts manually.</span>');
         }
         // 大招连发 (ult_chain)：一管能量实得两段大招，时长已按两段累计填入
         if (car.ult_chain) {
