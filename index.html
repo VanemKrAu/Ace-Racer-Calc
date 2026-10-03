@@ -2305,24 +2305,51 @@ body.diag-bare .card, body.diag-bare .tutorial-details, body.diag-bare .footer-l
     { sel: '.eff-card-mobile', sum: function () {
         var v = val('extraEfficiency'); return [(v ? '+' : '') + v + '%', !!v]; } }
   ];
-  function setupCollapse() {
-    if (!isMobile()) return;
+  // 折叠只在手机端（窄屏）启用。横竖屏切换 / 窗口跨过 850px 断点时必须跟着装或卸，
+  // 否则平板横屏后仍是竖屏那套折叠状态，得刷新才恢复成 PC 版式。
+  var collapseReady = false, softBound = false;
+  function bindCollapseSoft() {
+    if (softBound) return;
+    softBound = true;
+    var soft = function () { if (collapseReady) refreshCollapse(false); };
+    document.addEventListener('input', soft, true);
+    document.addEventListener('change', soft, true);
+    var rv = $('resultValueFirst');
+    if (rv) new MutationObserver(soft).observe(rv, { childList: true, characterData: true, subtree: true });
+  }
+  function mountCollapse() {                       // 装：进入窄屏
+    if (collapseReady) return;
+    collapseReady = true;
     CARDS.forEach(function (c) {
       var card = document.querySelector('.ds-c ' + c.sel); if (!card) return;
       var title = card.querySelector('.card-title'); if (!title) return;
       card.classList.add('pv-collapsible');
       var s = document.createElement('span'); s.className = 'pv-sum'; title.insertBefore(s, title.querySelector('.limit-badge'));
       c.el = card; c.s = s; c.touched = false;
-      title.addEventListener('click', function (e) {
+      c.onTitle = function (e) {                   // 存下引用，卸下时才 remove 得掉
         if (e.target.closest('input, a')) return;
         c.touched = true; setShut(c, !isShut(c), true);
-      });
+      };
+      title.addEventListener('click', c.onTitle);
     });
     refreshCollapse(true, true);
-    var soft = function () { refreshCollapse(false); };
-    document.addEventListener('input', soft, true);
-    document.addEventListener('change', soft, true);
-    new MutationObserver(soft).observe($('resultValueFirst'), { childList: true, characterData: true, subtree: true });
+    bindCollapseSoft();
+  }
+  function unmountCollapse() {                     // 卸：回到宽屏
+    if (!collapseReady) return;
+    collapseReady = false;
+    CARDS.forEach(function (c) {
+      if (!c.el) return;
+      stopMorph(c.el);
+      var title = c.el.querySelector('.card-title');
+      if (title && c.onTitle) title.removeEventListener('click', c.onTitle);
+      c.el.classList.remove('pv-collapsible', 'pv-collapsed', 'pv-shut');
+      if (c.s && c.s.parentNode) c.s.parentNode.removeChild(c.s);
+      c.el = null; c.s = null; c.onTitle = null; c.touched = false;
+    });
+  }
+  function setupCollapse() {
+    if (isMobile()) mountCollapse(); else unmountCollapse();
   }
   // 收起规则：有值自动展开；只在首次加载 / 换车时自动收起空卡片 ——
   // 用户正在卡片里操作（例如关掉最后一个赋能）时不会突然收起；用户手动开合过的卡片以后都按用户的来
@@ -2330,7 +2357,11 @@ body.diag-bare .card, body.diag-bare .tutorial-details, body.diag-bare .footer-l
     CARDS.forEach(function (c) {
       if (!c.el) return;
       var r = c.sum(); c.s.textContent = r[0]; c.s.classList.toggle('on', r[1]);
-      if (c.touched) return;
+      // 换车（reset === true）时无视「用户手动开合过」这条：新车会自动填一批值，
+      // 若沿用上一辆车的手动折叠状态，用户就看不到刚填进去的内容（这正是之前反馈的问题）。
+      // 其余时机（用户自己改输入）仍然尊重用户的手动开合。
+      if (c.touched && reset !== true) return;
+      if (reset === true) c.touched = false;
       if (r[1]) setShut(c, false, !instant);
       else if (reset === true) setShut(c, true, !instant);
     });
@@ -2357,6 +2388,12 @@ body.diag-bare .card, body.diag-bare .tutorial-details, body.diag-bare .footer-l
     }
   }
   window.__pvRefreshCollapse = refreshCollapse;
+  // 断点变化（平板横竖屏切换、窗口缩放）时重新决定折叠机制的装或卸。
+  // 用 MQ 的 change 最准 —— 它正好在跨过 850px 时触发；orientationchange 只是兜底，
+  // 因为有些内核对旋转后 innerWidth 的更新有延迟。
+  if (MQ.addEventListener) MQ.addEventListener('change', setupCollapse);
+  else if (MQ.addListener) MQ.addListener(setupCollapse);
+  window.addEventListener('orientationchange', function () { setTimeout(setupCollapse, 150); }, { passive: true });
 
   /* ---------- 整数输入：− / + 步进 ---------- */
   var STEP_MAIN = ['inputFirstNitroCount', 'inputNitroCount', 'customTrigFirstCount', 'customTrigLoopCount'];
