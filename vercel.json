@@ -10,13 +10,23 @@
         }
       ],
       "destination": "/crawler.html"
-    }
+    },
+    { "source": "/v1", "destination": "/v1.html" },
+    { "source": "/V1", "destination": "/v1.html" },
+    { "source": "/v2", "destination": "/v2.html" },
+    { "source": "/V2", "destination": "/v2.html" }
   ],
   "headers": [
     {
       "source": "/share-icon.png",
       "headers": [
         { "key": "Cache-Control", "value": "public, max-age=86400" }
+      ]
+    },
+    {
+      "source": "/(v1|V1|v2|V2)(\\.html)?",
+      "headers": [
+        { "key": "X-Robots-Tag", "value": "noindex, nofollow" }
       ]
     }
   ]
