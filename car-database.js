@@ -1197,7 +1197,7 @@ const CAR_DATABASE = [
     "specialization": "城市",
     "quality": "传说",
     "ace_charge": 3450,
-    "ult_duration": 6,
+    "ult_duration": 12,
     "ult_type": "N2O_BACK",
     "cost_ratio": 1666,
     "has_sp": false,
@@ -1228,7 +1228,8 @@ const CAR_DATABASE = [
     "search_text": "kenisaige one:1 knsg one1",
     "asset_dir": "assets/柯尼塞格 One:1_12068",
     "added_at": null,
-    "release_at": 1752163200000
+    "release_at": 1752163200000,
+    "ult_chain": true
   },
   {
     "id": 12067,
@@ -7700,9 +7701,11 @@ const CAR_DATABASE = [
     "ult_threshold": 100,
     "nitro_charge": null,
     "ult_charge_first": null,
-    "ult_charge_loop": 6,
+    "ult_charge_loop": null,
     "per_sec_charge": null,
     "sp_charge": null,
+    "custom_charge": 6,
+    "custom_charge_every": 2,
     "search_text": "bujiadi lvn bjd 拉瓦诺",
     "asset_dir": "assets/布加迪 LVN_10010",
     "added_at": null,

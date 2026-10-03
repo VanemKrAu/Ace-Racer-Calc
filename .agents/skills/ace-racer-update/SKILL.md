@@ -64,6 +64,9 @@ vehicle JSON → data.item
   │     Source 1: v.levels[最高级].rich_text.passive_skill_effect 含"持续时间"/"时长" → 对应 value
   │     Source 2: v.skills.ultimate.instructions 中最先找到的 1-30s 合理 duration
   │     (前端填入 baseUltDuration, 无值填 0)
+  │     ★ 大招连发（技能描述含「大招结束后自动释放一次无大招」这类，一管能量实得两段）
+  │       面板只给单段值 → 在 FIELD_OVERRIDE 里按两段登记，并标 ult_chain: true
+  │       例：柯尼塞格 One:1 面板 6 秒 → 登记 12 秒（改前它被填成 6 秒，少算一段）
   ├── ult_type     → v.skills.ultimate.type
   ├── ult_threshold→ ace_time_effect 文本 /达到(\d+)%/ 提取
   │                  → 失败时从 ultimate.value_texts 取 min_charge/100
@@ -91,6 +94,11 @@ vehicle JSON → data.item
   │     skillPanelGroups.sp 中 "充能" (排除友方、冷却、集气、自动、压缩)
   │     → 失败时从 sp_skill_desc 取 "获得XXX集气量和X%大招能量"
   │     (前端填入 valCustomTrig, 首发/循环各计 1 次)
+  ├── custom_charge (条件触发自充能) →
+  │     文本 /每N次[^。；\n]{0,24}?自充能X%/ → custom_charge = X, custom_charge_every = N
+  │     ★ 「每 N 次触发一次」的条件充能**不是**大招自充能，绝不能让 ult_charge_loop 收走
+  │     (前端填入 valCustomTrig；触发次数不预设，留 0 由用户按跑法手填)
+  │     例：布加迪 LVN 大招「加速期间每 2 次进入漂移时自充能 6%」
   ├── search_text  → 中文转拼音 + 常用别名 (aliases 字典, 99 辆车有)
   ├── added_at     → ADDED_AT 登记表 (extract-cars.js 顶部)
   │                  → 无登记的车为 null
@@ -105,6 +113,33 @@ vehicle JSON → data.item
 ### 大招自充能 敌方依赖过滤
 
 如果车辆文本（feature_desc / ace_time_effect / special_passive_skill_desc）包含 "敌方"，则 `ult_charge_loop` 强制为 null（不在前端自动填入，因为依赖敌方站位/数量）
+
+### 条件触发自充能「每N次…自充能X%」（不是大招自充能）
+
+「每 2 次进入漂移时自充能 6%」这类条件充能，长得像自充能，但它不随大招释放，
+必须归 `custom_charge`（前端「自定义触发自充能 → 每次触发附加百分比」）：
+
+- 文本规则：`/每\s*(\d+(?:\.\d+)?)\s*次[^。；\n]{0,24}?自充能\s*(\d+(?:\.\d+)?)\s*%/`
+  → `custom_charge` = X、`custom_charge_every` = N
+- `ult_charge_loop` 的文本 fallback 与面板判定都要排除「每N次」命中（`isEveryNTrigger`），
+  否则等于「每放一次大招白拿 X%」，算出的循环产出会虚高
+- 前端只填「每次触发附加百分比」，**首发/循环触发次数留 0**，由用户按自己跑法手填
+- 例：布加迪 LVN `custom_charge: 6` / `custom_charge_every: 2`
+
+### 人工字段覆盖表 FIELD_OVERRIDE（scripts/extract-cars.js 顶部）
+
+数据能提取出来、但已确认与实战口径不符的，登记在 `FIELD_OVERRIDE`：
+
+```js
+const FIELD_OVERRIDE = {
+  10019: { nitro_charge: null },                // 丰田 86：7% 是「氮气损失充能」，不是自充能
+  12068: { ult_duration: 12, ult_chain: true }, // 柯尼塞格 One:1：单段 6 秒 × 两段大招 = 12 秒
+};
+```
+
+★ `car-database.js` 由 `extract-cars.js` 全量重建，**直接手改会在下次更新时被打回**；
+  凡是「提取值/归属不对」的问题，一律登记到本表或修正提取规则，不要只改生成物。
+  `ult_chain: true` 只作前端提示（「该车大招连发，时长按两段计」），不影响计算。
 
 ### 文本提取的跨段误匹配防护
 

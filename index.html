@@ -1632,7 +1632,7 @@ body.diag-bare .card, body.diag-bare .tutorial-details, body.diag-bare .footer-l
       <a id="tutorialBtnInner" class="tut-video" href="https://www.bilibili.com/video/BV14XEc6hEcz" target="_blank"><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="m10 8.5 5 3.5-5 3.5v-7Z"/></svg><span class="zh">前往观看：网站使用教程</span><span class="lang-en">Watch: Website Tutorial</span></a>
       <div class="tut-notes-title"><span class="zh">注意事项：</span><span class="lang-en">Notes:</span></div>
       <ul id="notesContent">
-                                 <li><span class="zh">选车后自动填充：大招阈值、基础双充（起手+氮气）、氮气时长、大招时长、起步额外充能、氮气自充能、大招自充能、每秒自充能、SP自充能。其他参数（芯片、赋能等）需手动调整。</span><span class="lang-en">Auto-filled on car select: ult threshold, base dual charge, nitro duration, ult duration, start bonus, nitro self-charge, ult self-charge, per-sec charge, SP charge. Other params (chips, empowers) need manual tuning.</span></li>
+                                 <li><span class="zh">选车后自动填充：大招阈值、基础双充（起手+氮气）、氮气时长、大招时长、起步额外充能、氮气自充能、大招自充能、每秒自充能、SP自充能、自定义触发自充能（触发次数需手填）。其他参数（芯片、赋能等）需手动调整。</span><span class="lang-en">Auto-filled on car select: ult threshold, base dual charge, nitro duration, ult duration, start bonus, nitro self-charge, ult self-charge, per-sec charge, SP charge, custom-trigger self-charge (fill the trigger counts yourself). Other params (chips, empowers) need manual tuning.</span></li>
                                 <li><span class="zh">赛车选择器：点击顶部“选择赛车”标签，即可从完整赛车列表中挑选车辆，选中后点击“应用并返回”自动填充基础氮气充能值和大招时长。注意：自动填充仅覆盖基础参数，芯片、赋能等配置仍需手动微调。</span><span class="lang-en">Car Selector: Tap "Select Car" tab to browse the full car list. Pick one, then click "Apply & Return" to auto-fill base nitro charge and ult duration. Note: chips, empowers still need manual tuning.</span></li>
                                 <li><span class="zh">关于偶发无法访问的情况：由于网站部署在境外服务器（GitHub）上，且部分省市运营商会对GitHub做间歇性SNI阻断（具体表现为昨天访问的好好的，今天突然进不去，过了一小会自己又好了），因此有小概率出现无法访问的情况。目前网站接入了第三方中转节点，但依旧存在极小的访问失败概率，这属于正常现象，遇到这种情况时，多刷新几次即可进入网站。另外，网站是无后端运行的，因此在域名过期前基本不可能突然关门（除非被GFW主动阻断），请放心使用。</span><span class="lang-en">Regarding occasional access issues: Since the site is hosted on overseas servers (GitHub), some regional ISPs may intermittently block SNI - meaning it works fine one day, then suddenly won't load the next, only to fix itself shortly after. So there's a small chance you might not be able to reach it. We've now added third-party relay nodes, but there's still a very slim chance of access failure. That's perfectly normal - just refresh a few times and you'll get in. Also, because the site runs entirely on the frontend with no backend, it's basically not going to disappear before the domain expires (unless the GFW actively blocks it). So rest assured.</span></li>
                             </ul>
@@ -3150,6 +3150,17 @@ body.diag-bare .card, body.diag-bare .tutorial-details, body.diag-bare .footer-l
         } else {
             msgHtml += _('<br><span style=\"color:var(--warning);font-weight:bold;\"><svg class=\"ico pv-warn\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"1.8\" stroke-linecap=\"round\" stroke-linejoin=\"round\" aria-hidden=\"true\"><path d=\"M12 3.5 2.8 19.5h18.4L12 3.5z\"/><path d=\"M12 10v4.2M12 17v.01\"/></svg>其他参数请手动调整</span>', '<br><span style=\"color:var(--warning);font-weight:bold;\"><svg class=\"ico pv-warn\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"1.8\" stroke-linecap=\"round\" stroke-linejoin=\"round\" aria-hidden=\"true\"><path d=\"M12 3.5 2.8 19.5h18.4L12 3.5z\"/><path d=\"M12 10v4.2M12 17v.01\"/></svg>Other params need manual tuning</span>');
         }
+        // 条件触发类自充能 (custom_charge)：数值自动填，「触发次数」必须由用户按跑法手填
+        if (car.custom_charge) {
+            var _everyN = car.custom_charge_every || 1;
+            msgHtml += _('<br><span style="color:var(--warning);font-weight:bold;">' + _WARN_ICO + '该车自充能为条件触发（每 ' + _everyN + ' 次触发记 1 次），「首发一大触发次数 / 循环内触发次数」请按跑法手动填写</span>',
+                '<br><span style="color:var(--warning);font-weight:bold;">' + _WARN_ICO + 'This self-charge is conditional (1 trigger per ' + _everyN + ' events) — fill the 1st-ult / loop trigger counts manually.</span>');
+        }
+        // 大招连发 (ult_chain)：一管能量实得两段大招，时长已按两段累计填入
+        if (car.ult_chain) {
+            msgHtml += _('<br><span style="color:var(--warning);font-weight:bold;">' + _WARN_ICO + '该车大招连发：大招时长已按两段累计填入</span>',
+                '<br><span style="color:var(--warning);font-weight:bold;">' + _WARN_ICO + 'Ult chain: ult duration filled as two stacked ults.</span>');
+        }
         msgHtml += _('<br>\u8BE6\u7EC6\u8F66\u8F86\u6280\u80FD\u8BF7\u53C2\u8003 \u2192', '<br>Details \u2192') + ' <a href=\"https://reca.seimu.cn/ace-racer/vehicles/' + car.id + '\" target=\"_blank\" style=\"color:var(--primary);text-decoration:underline;font-weight:bold;\">' + _('瑞卡情报站-', 'Racer Wiki-') + _n(car) + '</a>';
         document.getElementById('carPreviewAutoMsg').innerHTML = msgHtml;
         var chipInfo = document.getElementById('carPreviewChips');
@@ -3187,6 +3198,8 @@ body.diag-bare .card, body.diag-bare .tutorial-details, body.diag-bare .footer-l
 
     // Flash system for auto-filled sections (persistent across car switches)
     var _flashTimers = {};
+    // 自动填充提示里的警示图标（原先是各条警告内联一长串 svg，统一抽出来）
+    var _WARN_ICO = '<svg class="ico pv-warn" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3.5 2.8 19.5h18.4L12 3.5z"/><path d="M12 10v4.2M12 17v.01"/></svg>';
     function flashSection(sectionId, inputIds) {
         var sec = document.getElementById(sectionId);
         if (!sec) return;
@@ -3350,6 +3363,12 @@ body.diag-bare .card, body.diag-bare .tutorial-details, body.diag-bare .footer-l
             document.getElementById('customTrigLoopCount').value = 1;
             flashSection('extraCustomSection', ['valCustomTrig', 'customTrigFirstCount', 'customTrigLoopCount']);
         }
+        // Auto-fill custom trigger self-charge（条件触发类，例：布加迪 LVN「每2次进入漂移时自充能6%」）
+        // 只填「每次触发附加百分比」，触发次数不预设（留 0），由用户按跑法手填
+        if (car.custom_charge) {
+            document.getElementById('valCustomTrig').value = car.custom_charge;
+            flashSection('extraCustomSection', ['valCustomTrig', 'customTrigFirstCount', 'customTrigLoopCount']);
+        }
 
         document.getElementById('carPreviewPlaceholder').style.display = 'none';
         document.getElementById('carPreviewName').style.display = '';
@@ -3364,11 +3383,23 @@ body.diag-bare .card, body.diag-bare .tutorial-details, body.diag-bare .footer-l
         if (car.ult_charge_loop) filledItems.push(_("大招自充能","Ult SC"));
         if (car.per_sec_charge) filledItems.push(_("每秒自充能","PerSec SC"));
         if (car.sp_charge) filledItems.push(_("SP自充能","SP Charge"));
+        if (car.custom_charge) filledItems.push(_("自定义触发自充能","Custom Trig SC"));
         var msgHtml = _('\u2713 \u5DF2\u81EA\u52A8\u586B\u5145\uFF1A', '\u2713 Auto-filled: ') + filledItems.join(_('\u3001', ', '));
         if (!car.ult_duration) {
             msgHtml += _('<br><span style=\"color:var(--warning);font-weight:bold;\"><svg class=\"ico pv-warn\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"1.8\" stroke-linecap=\"round\" stroke-linejoin=\"round\" aria-hidden=\"true\"><path d=\"M12 3.5 2.8 19.5h18.4L12 3.5z\"/><path d=\"M12 10v4.2M12 17v.01\"/></svg>该车无固定大招时长，大招时长和其他参数请手动填写</span>', '<br><span style=\"color:var(--warning);font-weight:bold;\"><svg class=\"ico pv-warn\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"1.8\" stroke-linecap=\"round\" stroke-linejoin=\"round\" aria-hidden=\"true\"><path d=\"M12 3.5 2.8 19.5h18.4L12 3.5z\"/><path d=\"M12 10v4.2M12 17v.01\"/></svg>This car has no fixed ult duration, ult and other params need manual input</span>');
         } else {
             msgHtml += _('<br><span style=\"color:var(--warning);font-weight:bold;\"><svg class=\"ico pv-warn\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"1.8\" stroke-linecap=\"round\" stroke-linejoin=\"round\" aria-hidden=\"true\"><path d=\"M12 3.5 2.8 19.5h18.4L12 3.5z\"/><path d=\"M12 10v4.2M12 17v.01\"/></svg>其他参数请手动调整</span>', '<br><span style=\"color:var(--warning);font-weight:bold;\"><svg class=\"ico pv-warn\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"1.8\" stroke-linecap=\"round\" stroke-linejoin=\"round\" aria-hidden=\"true\"><path d=\"M12 3.5 2.8 19.5h18.4L12 3.5z\"/><path d=\"M12 10v4.2M12 17v.01\"/></svg>Other params need manual tuning</span>');
+        }
+        // 条件触发类自充能 (custom_charge)：数值自动填，「触发次数」必须由用户按跑法手填
+        if (car.custom_charge) {
+            var _everyN = car.custom_charge_every || 1;
+            msgHtml += _('<br><span style="color:var(--warning);font-weight:bold;">' + _WARN_ICO + '该车自充能为条件触发（每 ' + _everyN + ' 次触发记 1 次），「首发一大触发次数 / 循环内触发次数」请按跑法手动填写</span>',
+                '<br><span style="color:var(--warning);font-weight:bold;">' + _WARN_ICO + 'This self-charge is conditional (1 trigger per ' + _everyN + ' events) — fill the 1st-ult / loop trigger counts manually.</span>');
+        }
+        // 大招连发 (ult_chain)：一管能量实得两段大招，时长已按两段累计填入
+        if (car.ult_chain) {
+            msgHtml += _('<br><span style="color:var(--warning);font-weight:bold;">' + _WARN_ICO + '该车大招连发：大招时长已按两段累计填入</span>',
+                '<br><span style="color:var(--warning);font-weight:bold;">' + _WARN_ICO + 'Ult chain: ult duration filled as two stacked ults.</span>');
         }
         msgHtml += _('<br>\u8BE6\u7EC6\u8F66\u8F86\u6280\u80FD\u8BF7\u53C2\u8003 \u2192', '<br>Details \u2192') + ' <a href=\"https://reca.seimu.cn/ace-racer/vehicles/' + car.id + '\" target=\"_blank\" style=\"color:var(--primary);text-decoration:underline;font-weight:bold;\">' + _('瑞卡情报站-', 'Racer Wiki-') + _n(car) + '</a>';
         document.getElementById('carPreviewAutoMsg').innerHTML = msgHtml;

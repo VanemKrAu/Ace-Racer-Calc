@@ -28,6 +28,11 @@ const RELEASE_PATCH = {
 const FIELD_OVERRIDE = {
   10019: { nitro_charge: null }, // 丰田 86：没有「每次释放氮气时的自充能」，提取到的 7 是错的；
                                  // 留着会让选车时自动勾选并填入「氮气自充能」。
+  // 柯尼塞格 One:1：技能「主动大招结束后自动释放一次无消耗的大招」——一管能量实得两段大招。
+  //   面板里的「加速时长 6 秒」只是单段值，实战口径要按两段算 12 秒；
+  //   ult_chain 供前端在自动填充提示里标明「大招连发」。
+  //   （布加迪 LVN 也有「大招连发」标签，但那来自「漂移 4 次进黑夜领域」，不适用翻倍。）
+  12068: { ult_duration: 12, ult_chain: true },
 };
 
 // Load raw JSONL data for nitro durations
@@ -197,6 +202,8 @@ for (const file of files) {
     let ultChargeLoop = null;  // 释放大招时自充能
     let perSecCharge = null;   // 每秒自充能
     let spCharge = null;       // SP自充能
+    let customCharge = null;      // 自定义触发自充能（条件触发，每次触发附加百分比）
+    let customChargeEvery = null; // 触发间隔：每 N 次触发事件记 1 次（无间隔时为 null）
 
     // Build combined text for enemy-dependency check
     const allText = [
@@ -217,6 +224,8 @@ for (const file of files) {
     //   · 不排除「友方」—— 实测口径：友方效果通常包含自己那辆车（已确认）
     const BAD_CHARGE = /损失|消耗|扣除|降低|减少|削减|上限|范围/;
     const isPerSecTxt = (name, value) => /每秒/.test(name + ' ' + value);
+    // 「每N次…」是条件触发（归 custom_charge），不能被当成「每次放大招都自充能」
+    const isEveryNTrigger = (name, value) => /每\s*\d+(?:\.\d+)?\s*次/.test(name + ' ' + value);
     const selfChargeOk = (name, value, num) => !BAD_CHARGE.test(name + ' ' + value) && !(num > 100);
 
     const spg = v.skillPanelGroups;
@@ -240,9 +249,9 @@ for (const file of files) {
           if (n.includes('氮气') && n.includes('充能') && selfChargeOk(n, val, num) && !isPerSecTxt(n, val)) {
             nitroCharge = num;
           }
-          // 大招自充/自身充能 (self, not ally/enemy, not per-sec)
+          // 大招自充/自身充能 (self, not ally/enemy, not per-sec, not every-N-trigger)
           if ((n.includes('大招') || n.includes('自身')) && n.includes('充能') && !n.includes('友方') && !n.includes('敌方') && !n.includes('每秒')
-              && selfChargeOk(n, val, num) && !isPerSecTxt(n, val)) {
+              && selfChargeOk(n, val, num) && !isPerSecTxt(n, val) && !isEveryNTrigger(n, val)) {
             if (!isEnemyDependent) ultChargeLoop = num;
           }
           // 起步额外充能
@@ -283,7 +292,7 @@ for (const file of files) {
             nitroCharge = num;
           }
           if ((n.includes('大招') || n.includes('自身')) && n.includes('充能') && !n.includes('友方') && !n.includes('敌方')
-              && selfChargeOk(n, val, num) && !isPerSecTxt(n, val)) {
+              && selfChargeOk(n, val, num) && !isPerSecTxt(n, val) && !isEveryNTrigger(n, val)) {
             if (!isEnemyDependent) ultChargeLoop = num;
           }
         }
@@ -384,21 +393,40 @@ for (const file of files) {
       }
     }
 
+    // ── 条件触发自充能：「每N次…自充能X%」不是「每次释放大招都自充能」────────
+    // 例：布加迪 LVN 大招「加速期间每 2 次进入漂移时自充能 6%」——
+    //   6% 属于前端的「自定义触发自充能 (每次触发附加百分比)」，
+    //   触发次数由用户按跑法手填；若当 ult_charge_loop 处理，等于每放一次大招白拿 6%。
+    var chargeTextBlocks = [
+      v.richText?.special_passive_skill_desc?.raw || '',
+      v.richText?.feature_desc?.raw || '',
+      v.richText?.sp_skill_desc?.raw || '',
+      v.richText?.ace_time_effect || '',
+    ];
+    var RE_EVERY_TRIGGER = /每\s*(\d+(?:\.\d+)?)\s*次[^。；\n]{0,24}?自充能\s*(\d+(?:\.\d+)?)\s*%/;
+    if (!customCharge) {
+      for (var ti3 = 0; ti3 < chargeTextBlocks.length; ti3++) {
+        var eM = chargeTextBlocks[ti3].match(RE_EVERY_TRIGGER);
+        if (eM && parseFloat(eM[2]) > 0 && parseFloat(eM[2]) <= 100) {
+          customCharge = parseFloat(eM[2]);
+          customChargeEvery = parseFloat(eM[1]);
+          break;
+        }
+      }
+    }
+
     // Ult charge loop from text: "自充能X%" or "大招自充X%"
     if (!ultChargeLoop && !isEnemyDependent) {
       var reLoop = /自充能(\d+(?:\.\d+)?)\s*%/;
-      var textBlocks2 = [
-        v.richText?.special_passive_skill_desc?.raw || '',
-        v.richText?.feature_desc?.raw || '',
-        v.richText?.sp_skill_desc?.raw || '',
-        v.richText?.ace_time_effect || '',
-      ];
-      for (var ti2 = 0; ti2 < textBlocks2.length; ti2++) {
-        var uM = textBlocks2[ti2].match(reLoop);
+      for (var ti2 = 0; ti2 < chargeTextBlocks.length; ti2++) {
+        var uM = chargeTextBlocks[ti2].match(reLoop);
         if (uM && parseFloat(uM[1]) > 0 && parseFloat(uM[1]) <= 100) {
           // Skip "每秒自充能" (per-second), that's a different field
-          var before = textBlocks2[ti2].slice(Math.max(0, uM.index - 4), uM.index);
+          var before = chargeTextBlocks[ti2].slice(Math.max(0, uM.index - 4), uM.index);
           if (before.includes('每秒')) continue;
+          // Skip「每N次…自充能X%」：条件触发，归 custom_charge，不是大招自充能
+          var seg = chargeTextBlocks[ti2].slice(Math.max(0, uM.index - 24), uM.index + uM[0].length);
+          if (/每\s*\d+(?:\.\d+)?\s*次/.test(seg)) continue;
           ultChargeLoop = parseFloat(uM[1]); break;
         }
       }
@@ -528,6 +556,8 @@ for (const file of files) {
       ult_charge_loop: ultChargeLoop,
       per_sec_charge: perSecCharge,
       sp_charge: spCharge,
+      // 条件触发自充能只在命中时才写进数据（保持其余车原有字段集，避免整库无谓 diff）
+      ...(customCharge !== null ? { custom_charge: customCharge, custom_charge_every: customChargeEvery } : {}),
       search_text: (() => {
         // For pinyin search: convert Chinese chars to pinyin, keep ASCII as-is
         var chars = v.name.split('');
