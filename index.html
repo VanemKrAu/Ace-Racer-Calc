@@ -348,6 +348,12 @@ a { color: inherit; }
 /* 长截图导出的加载遮罩转圈（导出的那段 JS 会用；原来那里是个相机 emoji，与全站 SVG 图标不一致） */
 @keyframes dsSpin { to { transform: rotate(360deg); } }
 @media (prefers-reduced-motion: reduce) { @keyframes dsSpin { to { transform: none; } } }
+/* 长截图生成中的全屏遮罩：中间放「保存长截图」按钮上的同一个图标，外圈一道细弧转动表示进行中 */
+.ds-c .pv-shot-load { position: relative; display: flex; align-items: center; justify-content: center; width: 72px; height: 72px; margin-bottom: 22px;
+  border-radius: 50%; background: var(--fill); color: var(--ink); }
+.ds-c .pv-shot-load .ico { width: 30px; height: 30px; }
+.ds-c .pv-shot-load i { position: absolute; inset: -6px; border-radius: 50%; border: 2.5px solid rgba(142, 154, 175, .22);
+  border-top-color: var(--export-accent, currentColor); animation: dsSpin .9s linear infinite; }
 
 /* 中英切换 */
 .lang-en { display: none !important; }
@@ -3720,7 +3726,7 @@ function __tok(n, d) { var v = getComputedStyle(document.body).getPropertyValue(
            loaderOverlay.style.flexDirection = 'column';
            loaderOverlay.style.justifyContent = 'center';
            loaderOverlay.style.alignItems = 'center';
-           loaderOverlay.innerHTML = '<div style="width:38px;height:38px;margin-bottom:16px;border-radius:50%;border:3px solid rgba(142,154,175,.35);border-top-color:var(--export-accent,#00f2fe);animation:dsSpin .9s linear infinite;"></div><div style="font-size:18px; font-weight:bold; color:'+__tok('--export-accent', isLight?'#007bb5':'#00f2fe')+';">' + _("正在生成超清长图...", "Generating HD screenshot...") + '</div><div style="font-size:12px; color:#8e9aaf; margin-top:8px;">' + _("(极速渲染引擎运转中，请稍候)", "(Rendering engine running, please wait...)") + '</div>';
+           loaderOverlay.innerHTML = '<div class="pv-shot-load"><i></i><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="4" width="18" height="16" rx="2"/><circle cx="9" cy="10" r="1.8"/><path d="m21 16-5-5-9 9"/></svg></div><div style="font-size:18px; font-weight:bold; color:'+__tok('--export-accent', isLight?'#007bb5':'#00f2fe')+';">' + _("正在生成超清长图...", "Generating HD screenshot...") + '</div><div style="font-size:12px; color:#8e9aaf; margin-top:8px;">' + _("(极速渲染引擎运转中，请稍候)", "(Rendering engine running, please wait...)") + '</div>';
            document.body.appendChild(loaderOverlay);
 
         setTimeout(function() {
