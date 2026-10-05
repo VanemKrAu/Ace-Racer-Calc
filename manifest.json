@@ -1,4 +1,5 @@
 {
+  "id": "/app/",
   "name": "王牌竞速芯片计算器",
   "short_name": "王牌计算器",
   "start_url": "./",

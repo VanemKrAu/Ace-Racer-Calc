@@ -4847,11 +4847,9 @@ function __tok(n, d) { var v = getComputedStyle(document.body).getPropertyValue(
         }
 
        if ('serviceWorker' in navigator) {
-           window.addEventListener('load', function() {
-               navigator.serviceWorker.register('sw.js').then(function(registration) {
-               }, function(err) {
-               });
-           });
+           // 不再等 window.load：等到 load 时页面资源早已下载完毕，SW 接管不到任何请求，
+           // 第一次访问结束后缓存桶是空的，用户装完应用一断网打开就是白屏。
+           navigator.serviceWorker.register('sw.js').catch(function() {});
        }
 
         function toggleLanguage() {
