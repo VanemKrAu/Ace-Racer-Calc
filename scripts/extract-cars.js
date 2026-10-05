@@ -272,7 +272,18 @@ for (const file of files) {
       v.richText?.ace_time_effect || '',
       v.richText?.special_passive_skill_desc?.raw || '',
     ].join(' ');
-    const isEnemyDependent = allText.includes('敌方');
+
+    // 敌方依赖判定（2026-10-05 收窄）
+    // 原先是「全车文本里出现『敌方』就丢弃 ult_charge_loop」，太粗暴。狻猊的 feature_desc
+    // 写的是「若照亮自身则立即获得100%大招能量 / 若照亮队友则… / 若照亮敌方则…」，
+    // 「敌方」只出现在第三个分支，与自身的 100% 充能毫无关系，却把整车充能一起废了；
+    // 狄安娜、大买特买号、魔王同样被误伤（实测这 4 辆的面板「大招充能」被整条丢掉）。
+    // 现改为只看「含充能 / 大招能量」的那些句子 —— 那才是这份充能的归属现场。
+    const chargeSentences = allText
+      .split(/[。；\n]/)
+      .filter(s => /充能|大招能量/.test(s))
+      .join(' ');
+    const isEnemyDependent = chargeSentences.includes('敌方');
 
     // ── 「自身充能」类字段的统一防线（2026-10-01 全量审查后加）────────────────
     // 背景：丰田 86 的面板行名是「氮气损失充能 = 7%」（损失量），而 nitro_charge 当时

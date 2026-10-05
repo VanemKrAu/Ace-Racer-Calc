@@ -160,6 +160,144 @@
       "evidence": {
         "custom_charge": "面板上写着「大招充能 10%」，紧挨着一条灰字「(超越/被超越)」—— 这 10% 要靠超越或者被超越才给。脚本只读到「大招充能 10%」，看不见灰字条件，于是当成每次放大招必给填进了 ult_charge_loop。"
       }
+    },
+
+    "12050": {
+      "name": "法拉利 SF90 XX Stradale",
+      "audited_at": "2026-10-05",
+      "fields": {},
+      "evidence": {
+        "结论": "沿用脚本提取值，无需改动。",
+        "ult_charge_first": "ace_time_effect「跃马烙印可以充能两次并在开局时获得20%大招能量」后半句 → 20%，已填对。",
+        "per_sec_charge": "被动「每秒自动获得1500集气量」是集气量，不是大招能量，不填。（同理「可以充能两次」是通用模板句，全库上百辆车都有，指能量槽能存两管，不对应任何字段。）",
+        "ult_duration": "指令表 209961 大招加速 duration=10s → 10，已填对。",
+        "sp_charge": "SP「剃刀切线」的指令只有「剃刀切线加速」和「自动集气翻倍」，没有充能节点，不填。"
+      }
+    },
+    "12089": {
+      "name": "狻猊",
+      "audited_at": "2026-10-05",
+      "fields": { "ult_charge_loop": null, "custom_charge": 100 },
+      "evidence": {
+        "custom_charge": "feature_desc 写「加速开始时并为场上随机3台赛车绽放盛世人间烟火：·若照亮自身则立即获得100%大招能量」。要照亮自身才给，而照亮哪三台是随机的 —— 不是每次放大招必得，归条件触发。面板上那条「大招充能 100%」就是对它的总结，后面没有灰色条件小字。",
+        "ult_charge_loop": "同上，不能按「每次放大招必给 100%」算 —— 那等于无限连发。",
+        "per_sec_charge": "面板「自动集气 1500每秒」对应的是「若照亮队友则使其5秒内每秒自动获得1500集气量」，是给队友的集气量，不是自身大招充能。",
+        "备注": "脚本原先因 feature_desc 里出现「敌方」二字（那是「若照亮敌方则…」这个分支）把整车 ult_charge_loop 丢弃了，属于误伤，已在 extract-cars.js 里修正判定范围。"
+      }
+    },
+    "12094": {
+      "name": "罗刹",
+      "audited_at": "2026-10-05",
+      "fields": {},
+      "evidence": {
+        "结论": "沿用脚本提取值。这辆车面板上确实有两条带「充能」的字样，但都不是自身收益，不能填。",
+        "ult_charge_loop": "面板「友方充能共享 50%」是给友方的；「敌方扣能共享 50%」是扣敌方能量的负面效果。被动「摄魂」的「能量损耗 +25%」同理，是让被链接的敌方损失更多能量。三者都填不得。"
+      }
+    },
+    "12102": {
+      "name": "货拉拉多拉",
+      "audited_at": "2026-10-05",
+      "fields": {},
+      "evidence": {
+        "结论": "沿用脚本提取值。全车没有任何充能机制，ace_time_effect 里的「货从天降可以充能两次」是通用模板句。",
+        "feature_desc": "只有货箱机制（放置永久货箱、实体箱阻挡、空箱不影响），没有充能条目。"
+      }
+    },
+    "12104": {
+      "name": "炎龙驹",
+      "audited_at": "2026-10-05",
+      "fields": {},
+      "evidence": {
+        "结论": "沿用脚本提取值，无需改动。",
+        "ult_charge_first": "ace_time_effect「封魔斩可以充能两次并在开局时获得20%大招能量」后半句 → 20%，已填对。",
+        "per_sec_charge": "feature_desc 里的「7秒内每秒自动获得1000集气量」是集气量，不是大招能量，不填。",
+        "ult_duration": "feature_desc「7秒内极速+40km/h」→ 7，已填对。"
+      }
+    },
+
+    "12062": {
+      "name": "狄安娜",
+      "audited_at": "2026-10-05",
+      "fields": { "ult_charge_loop": null, "custom_charge": 50 },
+      "evidence": {
+        "custom_charge": "feature_desc「加速开始时将一名敌方标记为猎物并清除600米范围内召唤物，每成功清除一个召唤物自充能50%」。要给得先有召唤物可清，不是每次放大招必得。面板「大招充能 50%」无灰色条件小字。",
+        "备注": "与 12089 同一个脚本缺陷：special_passive 里出现「敌方」，导致这 50% 被整条丢弃，此前任何字段都没有它。"
+      }
+    },
+    "12074": {
+      "name": "大买特买号",
+      "audited_at": "2026-10-05",
+      "fields": { "ult_charge_loop": null, "custom_charge": 100 },
+      "evidence": {
+        "custom_charge": "feature_desc「大招结束时若已经全部集齐，则立即获得100%大招能量」。要集齐鸡蛋、鸡腿、蛋糕三种才给，归条件触发。面板「大招充能 100%」。",
+        "ult_charge_first": "ace_time_effect「我都想要可以充能两次并在开局时获得20%大招能量」→ 20%，脚本已填对，不动。"
+      }
+    },
+    "12076": {
+      "name": "魔王",
+      "audited_at": "2026-10-05",
+      "fields": { "ult_charge_loop": null, "custom_charge": 50 },
+      "evidence": {
+        "custom_charge": "feature_desc「自身则根据装备魔器获得增益：·狂魔镰-自充能50%·三叉戟-恢复15点耐久值…·瘟疫剑-极速+25km/h·索魂刀-获得10000集气量」。50% 只在装备狂魔镰时给，而魔器是开局随机装备的（special_passive 明写「开局时随机装备一种魔器」），中不中看运气，归条件触发。",
+        "ult_charge_loop": "不能按每次放大招必给 50% 算。"
+      }
+    },
+    "12098": {
+      "name": "布加迪 Veyron",
+      "audited_at": "2026-10-05",
+      "fields": { "ult_charge_loop": null, "custom_charge": 5 },
+      "evidence": {
+        "custom_charge": "feature_desc「加速期间：·敌方车辆每次使用大招时为自身提供5%大招能量」。虽是自己收的充能，但要敌方放大招才触发，属于可计数的外部事件（用户按敌方放了几次大招填触发次数），与闪灵「每次受到封禁效果时自充能15%」同构，归条件触发。",
+        "ult_charge_loop": "不是每次自己放大招必给，脚本原先直接丢弃、任何字段都没留，用户完全看不到这辆车有这条机制。",
+        "备注": "口径补充：依赖敌方「站位/数量」这类持续性的、数不清的条件才置 null；依赖敌方「具体行为」（放大招、撞击等可计数的）走 custom_charge。"
+      }
+    },
+
+    "12041": {
+      "name": "阿斯顿马丁 Valkyrie AMR Pro",
+      "audited_at": "2026-10-05",
+      "fields": { "ult_charge_loop": null, "custom_charge": 1, "custom_charge_every": 2 },
+      "evidence": {
+        "custom_charge": "被动面板「自身充能 1%」紧跟着一条灰色小字「(队友每2次氮气)」，special_passive 也写「队友每2次使用氮气时，为自身提供1%大招能量」。要靠队友的次数攒，跟放不放自己大招无关。",
+        "custom_charge_every": "同上，队友每 2 次氮气记 1 次。",
+        "ult_charge_first": "ace_time_effect「命运连结可以充能两次并在开局时获得20%大招能量」→ 20%，脚本已填对，不动。",
+        "备注": "收窄敌方依赖判定后，脚本把这 1% 救回了 ult_charge_loop —— 但位置不对，它不是每次放大招必给。"
+      }
+    },
+    "12022": {
+      "name": "捷豹 F-TYPE SVR Convertible",
+      "audited_at": "2026-10-05",
+      "fields": { "ult_charge_loop": null, "custom_charge": 8, "custom_charge_every": 3, "ult_charge_first": 15 },
+      "evidence": {
+        "custom_charge": "feature_desc「友方全体每累计使用3次氮气则自充能8%（CD4秒）」，面板条目叫「大招自充」但来源是友方氮气次数，跟放大招无关。",
+        "custom_charge_every": "友方每累计 3 次氮气记 1 次。",
+        "ult_charge_first": "special_passive「开局时获得3500集气量和15%大招能量」→ 15%。脚本此前整条漏掉，原因是它只按「起步」二字去找文本，而这辆车写的是「开局时」——顺手补上。"
+      }
+    },
+    "12000": {
+      "name": "雪佛兰 Corvette ZR1",
+      "audited_at": "2026-10-05",
+      "fields": { "ult_charge_loop": null, "custom_charge": 25 },
+      "evidence": {
+        "custom_charge": "special_passive「若使用大招后10秒内没有再次使用大招，则自充能25%」。这是断续放大招才给的补偿，不是每次必给。",
+        "备注": "面板上的「充能效率降低 12/20%」是干扰敌方用的负面效果，不是自身收益，不填。"
+      }
+    },
+    "10032": {
+      "name": "泰坦",
+      "audited_at": "2026-10-05",
+      "fields": { "ult_charge_loop": null, "custom_charge": 50 },
+      "evidence": {
+        "custom_charge": "feature_desc「落地时激起震荡波震飞周围敌方车辆：·成功命中目标时，自充能50%」。要命中才给。"
+      }
+    },
+    "10013": {
+      "name": "福特 F150",
+      "audited_at": "2026-10-05",
+      "fields": { "ult_charge_loop": null, "custom_charge": 50 },
+      "evidence": {
+        "custom_charge": "与泰坦同为「质量效应」大招：feature_desc「成功命中目标时，自充能50%」。要命中才给。"
+      }
     }
   }
 }

@@ -159,7 +159,22 @@ function renderCar(id, db) {
     console.log('  passive_skill_effect');
     pe.forEach((t, i) => { if (t) console.log(`      ｜ ${stripRich(t)} = ${stripRich(pv[i] || '')}`); });
   }
-  if (item.skills?.sp) console.log(`\n【SP 技能】${item.skills.sp.name || '?'}（该车有 SP）`);
+  const sp = item.skills?.sp;
+  if (sp) {
+    console.log(`\n【SP 技能 · ${sp.name || '?'} (${sp.type || '?'})】`);
+    let spChargeHint = false;
+    for (const it of sp.instructions || []) {
+      const nm = it.inst_name || it.name || '';
+      if (/充能/.test(nm)) spChargeHint = true;
+      if (typeof it.duration === 'number' && it.duration >= 999) continue;
+      console.log(`      ${it.id}  ${nm}  duration=${it.duration ?? '?'}s`);
+    }
+    if (spChargeHint) console.log('      ✱ 指令里出现「充能」字样 —— 这下要核对 sp_charge 该不该有值');
+  }
+  const passives = Array.isArray(item.skills?.passive) ? item.skills.passive : [];
+  if (passives.length) {
+    console.log('\n【其它被动技能对象】' + passives.map(x => x.name).filter(Boolean).join('、'));
+  }
 
   // 特性 / 简介
   const descBits = [];

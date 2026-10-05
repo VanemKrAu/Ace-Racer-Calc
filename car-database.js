@@ -162,7 +162,8 @@ const CAR_DATABASE = [
     "search_text": "bujiadi veyron bjd 威龙",
     "asset_dir": "assets/布加迪 Veyron_12098",
     "added_at": null,
-    "release_at": 1783008000000
+    "release_at": 1783008000000,
+    "custom_charge": 5
   },
   {
     "id": 12097,
@@ -490,7 +491,8 @@ const CAR_DATABASE = [
     "search_text": "suanni sn",
     "asset_dir": "assets/狻猊_12089",
     "added_at": 1789736122761,
-    "release_at": 1789660800000
+    "release_at": 1789660800000,
+    "custom_charge": 100
   },
   {
     "id": 12088,
@@ -901,7 +903,8 @@ const CAR_DATABASE = [
     "search_text": "mowang mw",
     "asset_dir": "assets/魔王_12076",
     "added_at": null,
-    "release_at": 1768492800000
+    "release_at": 1768492800000,
+    "custom_charge": 50
   },
   {
     "id": 12075,
@@ -983,7 +986,8 @@ const CAR_DATABASE = [
     "search_text": "damaitemaihao dmtmh",
     "asset_dir": "assets/大买特买号_12074",
     "added_at": null,
-    "release_at": 1750348800000
+    "release_at": 1750348800000,
+    "custom_charge": 100
   },
   {
     "id": 12073,
@@ -1476,7 +1480,8 @@ const CAR_DATABASE = [
     "search_text": "dianna dan",
     "asset_dir": "assets/狄安娜_12062",
     "added_at": null,
-    "release_at": 1748534400000
+    "release_at": 1748534400000,
+    "custom_charge": 50
   },
   {
     "id": 12061,
@@ -2338,7 +2343,9 @@ const CAR_DATABASE = [
     "search_text": "asidunmading valkyrie amr pro asdmd 女武神",
     "asset_dir": "assets/阿斯顿马丁 Valkyrie AMR Pro_12041",
     "added_at": null,
-    "release_at": 1737648000000
+    "release_at": 1737648000000,
+    "custom_charge": 1,
+    "custom_charge_every": 2
   },
   {
     "id": 12040,
@@ -3111,14 +3118,16 @@ const CAR_DATABASE = [
     "nitro_duration": 5.6,
     "ult_threshold": 100,
     "nitro_charge": null,
-    "ult_charge_first": null,
+    "ult_charge_first": 15,
     "ult_charge_loop": null,
     "per_sec_charge": null,
     "sp_charge": null,
     "search_text": "jiebao f-type svr convertible jb ftype",
     "asset_dir": "assets/捷豹 F-TYPE SVR Convertible_12022",
     "added_at": null,
-    "release_at": 1712246400000
+    "release_at": 1712246400000,
+    "custom_charge": 8,
+    "custom_charge_every": 3
   },
   {
     "id": 12021,
@@ -4020,7 +4029,8 @@ const CAR_DATABASE = [
     "search_text": "xuefolan corvette zr1 xfl 科尔维特",
     "asset_dir": "assets/雪佛兰 Corvette ZR1_12000",
     "added_at": null,
-    "release_at": 1675353600000
+    "release_at": 1675353600000,
+    "custom_charge": 25
   },
   {
     "id": 10099,
@@ -6818,7 +6828,8 @@ const CAR_DATABASE = [
     "search_text": "taitan tt",
     "asset_dir": "assets/泰坦_10032",
     "added_at": null,
-    "release_at": 1629993600000
+    "release_at": 1629993600000,
+    "custom_charge": 50
   },
   {
     "id": 10031,
@@ -7599,7 +7610,8 @@ const CAR_DATABASE = [
     "search_text": "fute f150 ft 猛禽,f150",
     "asset_dir": "assets/福特 F150_10013",
     "added_at": null,
-    "release_at": 1629993600000
+    "release_at": 1629993600000,
+    "custom_charge": 50
   },
   {
     "id": 10012,
