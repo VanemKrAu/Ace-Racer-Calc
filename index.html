@@ -1994,12 +1994,12 @@ body.diag-bare .card, body.diag-bare .tutorial-details, body.diag-bare .footer-l
         <div class="cp-group-head"><span class="cp-step">1</span><div class="section-divider"><span><span class="zh">首发一大交互测算区</span><span class="lang-en">First Ult Calculation Area</span></span></div></div>
         <div class="cp-group-body">
 <div class="card chip-card">
-  <div class="card-title"><span class="zh">智能芯片联动面板</span><span class="lang-en">Smart Chip Linkage</span><span class="limit-badge"><span class="zh">上限：先机30% | 汇能50%</span><span class="lang-en">Limit: Xianji 30% | Huineng 50%</span></span></div>
+  <div class="card-title"><span class="zh">智能芯片联动面板</span><span class="lang-en">Smart Chip Linkage</span><span class="limit-badge" id="chipLimitBadge"><span class="zh">上限：先机30% | 汇能50%</span><span class="lang-en">Limit: Xianji 30% | Huineng 50%</span></span></div>
   
 <div class="form-group ">
   <label class="form-label " for="inputFirstNitroCount"><span class="zh">释放一大所需氮气个数</span><span class="lang-en">Nitros needed for 1st Ult</span></label>
   <div class="input-wrapper">
-    <input type="number" id="inputFirstNitroCount" class="form-control" value="1" min="0" step="1" inputmode="decimal" oninput="triggerAutoCalc(currentActiveField); calculate();">
+    <input type="number" id="inputFirstNitroCount" class="form-control" value="1" min="0" max="50" step="1" inputmode="decimal" oninput="clampInput('inputFirstNitroCount'); triggerAutoCalc(currentActiveField); calculate();">
     <span class="input-unit"><span class="zh">个</span><span class="lang-en"> nitro(s)</span></span>
   </div>
 </div>
@@ -2048,7 +2048,7 @@ body.diag-bare .card, body.diag-bare .tutorial-details, body.diag-bare .footer-l
 <div class="form-group flush">
   <label class="form-label " for="inputNitroCount"><span class="zh">大招内释放氮气个数</span><span class="lang-en">Nitros per Ult</span></label>
   <div class="input-wrapper">
-    <input type="number" id="inputNitroCount" class="form-control" value="0" min="0" step="1" inputmode="decimal" oninput="onNitroCountInput()">
+    <input type="number" id="inputNitroCount" class="form-control" value="0" min="0" max="50" step="1" inputmode="decimal" oninput="onNitroCountInput()">
     <span class="input-unit"><span class="zh">个</span><span class="lang-en"> nitro(s)</span></span>
   </div>
 </div>
@@ -3137,6 +3137,8 @@ body.diag-bare .card, body.diag-bare .tutorial-details, body.diag-bare .footer-l
     }
 
     function updateCarPreview(car) {
+        // 打开带配置的分享链接走的是这条分支（不经过 pickCar），上限与夹取也得跟着刷新
+        if (typeof applyChipLimits === 'function') applyChipLimits(car);
         document.getElementById('carPreviewPlaceholder').style.display = 'none';
         document.getElementById('carPreviewName').style.display = '';
         document.getElementById('carPreviewName').textContent = _n(car) + ' (' + _pos(car.position) + ')';
@@ -3325,12 +3327,8 @@ body.diag-bare .card, body.diag-bare .tutorial-details, body.diag-bare .footer-l
             if (typeof handleNitroRadioChange === 'function') handleNitroRadioChange();
             if (typeof syncNitroTimes === 'function') syncNitroTimes('1x6');
         }
-        var maxH = calcMaxHuineng(car.chip_slots);
-        document.getElementById('inputHuineng').max = maxH;
-        document.querySelectorAll('.limit-badge')[1].innerHTML = '<span class="zh">\u4E0A\u9650\uFF1A\u5148\u673A30% | \u6C47\u80FD' + maxH + '%</span><span class="lang-en">Limit: Xianji 30% | Huineng ' + maxH + '%</span>';
-        if (parseFloat(document.getElementById('inputHuineng').value) > maxH) {
-            document.getElementById('inputHuineng').value = maxH;
-        }
+        // 先机 / 汇能上限：刷新卡片右上角提示 + 更新汇能框 max + 把超限值夹回范围内
+        if (typeof applyChipLimits === 'function') applyChipLimits(car);
         calculate();
         populateCarGrid();
 
@@ -4237,6 +4235,10 @@ function __tok(n, d) { var v = getComputedStyle(document.body).getPropertyValue(
                 }
             }
 
+            // 分享链接里带来的先机 / 汇能 / 氮气次数同样受上限约束，先夹一遍。
+            // 后面若还按 car 参数选车，applyChipLimits 会用那辆车的上限再夹一次。
+            if (typeof clampAllLimited === 'function') clampAllLimited();
+
             // Handle car parameter after config (if any)
             if (urlParams.has('car')) {
                 var carId = parseInt(urlParams.get('car'), 10);
@@ -4400,6 +4402,7 @@ function __tok(n, d) { var v = getComputedStyle(document.body).getPropertyValue(
        }
 
        function onNitroCountInput() {
+           clampInput('inputNitroCount');
            isManualNitroCount = true;
            updateNitroCountUI();
            if (!isRestoringConfig) calculate();
@@ -4420,10 +4423,58 @@ function __tok(n, d) { var v = getComputedStyle(document.body).getPropertyValue(
            }
        }
 
+       // ── 数字输入框的硬上限 ──────────────────────────────────────────────
+       // 光靠 <input max="..."> 拦不住超限值：浏览器只在表单校验时拿 max 做判断，
+       // 手打或粘贴照样能塞进去。所以每次输入都要在这里夹一遍。
+       // 各框的上限：先机 30%（固定）、汇能随车型的芯片槽变化（换车时写进 el.max）、
+       // 氮气次数 50 个。
+       function clampInput(idOrEl) {
+           var el = typeof idOrEl === 'string' ? document.getElementById(idOrEl) : idOrEl;
+           if (!el) return;
+           var raw = String(el.value);
+           if (raw === '' || raw === '-' || raw === '.') return;   // 半输入状态，别打断用户
+           var v = parseFloat(raw);
+           if (isNaN(v)) return;
+           var max = parseFloat(el.max);
+           var min = parseFloat(el.min);
+           if (isNaN(min)) min = 0;
+           var out = v;
+           if (!isNaN(max) && out > max) out = max;
+           if (out < min) out = min;
+           if (out !== v) el.value = out;
+       }
+
+       // 受上限约束的四个框一次性夹完（选车、导入分享配置后调用）
+       function clampAllLimited() {
+           clampInput('inputXianji');
+           clampInput('inputHuineng');
+           clampInput('inputFirstNitroCount');
+           clampInput('inputNitroCount');
+       }
+
+       // 按车型刷新「先机 / 汇能」上限：卡片右上角的提示文字、汇能框的 max、超限值的夹取。
+       // pickCar（正常选车）和 updateCarPreview（打开带配置的分享链接）都要走这条，
+       // 否则从分享链接进来时上限既不刷新、超限值也拦不住。
+       function applyChipLimits(car) {
+           if (!car) return;
+           var maxH = calcMaxHuineng(car.chip_slots);
+           var hnEl = document.getElementById('inputHuineng');
+           if (hnEl) hnEl.max = maxH;
+           var badge = document.getElementById('chipLimitBadge');
+           if (badge) {
+               badge.innerHTML = '<span class="zh">\u4E0A\u9650\uFF1A\u5148\u673A30% | \u6C47\u80FD' + maxH + '%</span>'
+                   + '<span class="lang-en">Limit: Xianji 30% | Huineng ' + maxH + '%</span>';
+           }
+           clampAllLimited();
+       }
+
        var autoLinked = true;
        var currentActiveField = null;
 
        function onFieldInput(field) {
+           // 先过上限：先机固定 30%，汇能上限由车型芯片槽决定
+           if (field === 'xianji') clampInput('inputXianji');
+           else if (field === 'huineng') clampInput('inputHuineng');
            if (autoLinked) {
                if (currentActiveField === null) currentActiveField = field;
                if (currentActiveField === field) triggerAutoCalc(field);
