@@ -3017,6 +3017,30 @@ body.diag-bare .card, body.diag-bare .tutorial-details, body.diag-bare .footer-l
         return maxH;
     }
 
+    // 带上核心增幅之后的汇能上限 —— 只用来放宽「手动输入」的口子。
+    // 核心增幅一次只能带一个：菱形增幅抬菱形芯片、三角形增幅抬三角芯片、六边形增幅抬六边形
+    // 芯片，三种的幅度都是 +50%（所以三角、六边从 9 抬到 13.5，菱形从 18 抬到 27）。
+    // 这里不知道用户带的是哪一种，就三种各算一遍取最大值 —— 这样带哪个都不会被误拦。
+    // ★ 卡片右上角显示的、以及自动反算封顶用的，仍是没增幅的基础值 calcMaxHuineng()。
+    function calcMaxHuinengBoosted(chipSlots) {
+        if (!chipSlots) return 50;
+        function total(boostDiamond, boostTriangle, boostHex) {
+            var t = 0;
+            for (var ci = 0; ci < chipSlots.length; ci++) {
+                var sym = chipSlots[ci];
+                if (sym === '\u25C7') t += boostDiamond ? 27 : 18;
+                else if (sym === '\u25B3') t += boostTriangle ? 13.5 : 9;
+                else if (sym === '\u25E3') t += boostHex ? 13.5 : 9;
+            }
+            return t;
+        }
+        return Math.max(
+            total(true, false, false),
+            total(false, true, false),
+            total(false, false, true)
+        );
+    }
+
     function getPosIcon(pos) {
         if (!pos) return '';
         if (pos.indexOf('\u7ADE\u901F') >= 0) return (_ICONS||{})['commonnew_icon_racing1.png'] || '';
@@ -4457,13 +4481,18 @@ function __tok(n, d) { var v = getComputedStyle(document.body).getPropertyValue(
        // 否则从分享链接进来时上限既不刷新、超限值也拦不住。
        function applyChipLimits(car) {
            if (!car) return;
-           var maxH = calcMaxHuineng(car.chip_slots);
+           var baseMax = calcMaxHuineng(car.chip_slots);
            var hnEl = document.getElementById('inputHuineng');
-           if (hnEl) hnEl.max = maxH;
+           if (hnEl) {
+               // 手动输入的口子放宽到「带了核心增幅之后」的上限
+               hnEl.max = calcMaxHuinengBoosted(car.chip_slots);
+               // 没增幅的基础值另存一份：卡片显示和自动反算都用它
+               hnEl.dataset.baseMax = baseMax;
+           }
            var badge = document.getElementById('chipLimitBadge');
            if (badge) {
-               badge.innerHTML = '<span class="zh">\u4E0A\u9650\uFF1A\u5148\u673A30% | \u6C47\u80FD' + maxH + '%</span>'
-                   + '<span class="lang-en">Limit: Xianji 30% | Huineng ' + maxH + '%</span>';
+               badge.innerHTML = '<span class="zh">\u4E0A\u9650\uFF1A\u5148\u673A30% | \u6C47\u80FD' + baseMax + '%</span>'
+                   + '<span class="lang-en">Limit: Xianji 30% | Huineng ' + baseMax + '%</span>';
            }
            clampAllLimited();
        }
@@ -4548,7 +4577,10 @@ function __tok(n, d) { var v = getComputedStyle(document.body).getPropertyValue(
 
             var currentBaseNitro = baseNitroInput * nitroRatioMult;
             var specBonus = document.getElementById('isSpec').checked ? (10.0 * nitroRatioMult) : 0;
-            var _maxHuineng = parseFloat(document.getElementById('inputHuineng').max) || 50;
+            var _hnEl = document.getElementById('inputHuineng');
+            // 自动反算按「没增幅」的基础上限封顶 —— 核心增幅只是把手动输入的口子放宽，
+            // 不参与反算（卡片右上角显示的也还是这个基础值）
+            var _maxHuineng = parseFloat(_hnEl.dataset.baseMax) || parseFloat(_hnEl.max) || 50;
 
             var initFixedBase = startCharge + (jiezouFirstCount * 4.0 * defenseMult);
            var initMultBase = (huaxinFirstCount * 7.0) * defenseMult * efficiencyMult;
