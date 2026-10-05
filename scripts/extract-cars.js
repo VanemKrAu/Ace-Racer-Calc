@@ -23,8 +23,11 @@ const RELEASE_PATCH = {
   12099: 1783008000, // 百变小鹦：数据中无排期时间，暂借 ID 邻居 12098 的排期（2026-07-02）
 };
 
-// 人工字段覆盖表：字段从游戏数据里能提取到、但已确认与实战不符的，登记在这里。
-// 必须登记在本表 —— car-database.js 是每次重建生成的，直接手改会在下次更新时被打回。
+// 内建字段覆盖表（历史遗留存档）。
+// ⚠ 不要再往这里加新条目 —— 新裁决一律写 data/car-overrides.json，那份表优先级更高、
+//   每条能带依据、也不会跟脚本代码搅在一起。本表只作早期条目的留存。
+// 背景：car-database.js 是每次重建生成的，手工改会在下次更新时被打回，所以任何
+//       「提取值不对」的结论都必须落到一张表里才留得住。
 const FIELD_OVERRIDE = {
   10019: { nitro_charge: null }, // 丰田 86：没有「每次释放氮气时的自充能」，提取到的 7 是错的；
                                  // 留着会让选车时自动勾选并填入「氮气自充能」。
@@ -59,6 +62,28 @@ const FIELD_OVERRIDE = {
   12068: { ult_duration: 12, ult_chain: true },
 };
 
+// ── 人工裁决表 data/car-overrides.json ────────────────────────────────────────
+// 由 agent 读懂技能原文后填写，优先于脚本提取值，也优先于上面的 FIELD_OVERRIDE。
+// 脚本只做字面提取，读不懂「(超越/被超越)」这类条件限定词，所以凡是需要看语义的
+// 字段归属，结论都得住在这份表里。流程见 .agents/skills/ace-racer-update/SKILL.md。
+const OVERRIDES_FILE = path.join(__dirname, '..', 'data', 'car-overrides.json');
+const CAR_OVERRIDES = (() => {
+  try {
+    return JSON.parse(fs.readFileSync(OVERRIDES_FILE, 'utf-8'));
+  } catch (e) {
+    console.warn('[warn] 读不到 data/car-overrides.json（' + e.message + '），本次生成将不使用人工裁决。');
+    return { cars: {} };
+  }
+})();
+
+// 摊平成 id → {字段: 值}，跳过 _README 之类的非车辆键
+const OVERRIDE_FIELDS = {};
+for (const key of Object.keys(CAR_OVERRIDES.cars || {})) {
+  if (!/^\d+$/.test(key)) continue;
+  const entry = CAR_OVERRIDES.cars[key];
+  if (entry && entry.fields) OVERRIDE_FIELDS[key] = Object.assign({}, entry.fields);
+}
+
 // Load raw JSONL data for nitro durations
 const rawVehicleLines = fs.existsSync(rawDataDir + '/vehicle_data.jsonl')
   ? fs.readFileSync(rawDataDir + '/vehicle_data.jsonl', 'utf-8').split('\n').filter(Boolean)
@@ -72,6 +97,18 @@ const rawInstLines = fs.existsSync(rawDataDir + '/vehicle_skill_instruction_data
 const rawSkillValueLines = fs.existsSync(rawDataDir + '/skill_value_details_data.jsonl')
   ? fs.readFileSync(rawDataDir + '/skill_value_details_data.jsonl', 'utf-8').split('\n').filter(Boolean)
   : [];
+
+// 这几份 JSONL 只躺在开发机的 E: 盘上，换台机器就没了。
+// 缺了它们，nitro_duration 等字段会整列失真 —— 必须在生成前喊出来，
+// 免得一份缺数据的 car-database.js 被当成正常产物提交上去。
+if (rawVehicleLines.length === 0 || rawInstLines.length === 0) {
+  console.warn('');
+  console.warn('⚠ 读不到 JSONL 原始数据包：' + rawDataDir);
+  console.warn(`  vehicle_data.jsonl ${rawVehicleLines.length} 行，vehicle_skill_instruction_data.jsonl ${rawInstLines.length} 行`);
+  console.warn('  本次生成里 nitro_duration 等依赖 JSONL 的字段会失真，产物不要提交。');
+  console.warn('  请回到装有该数据包的开发机上重跑，或在 SKILL.md 里补充数据包位置。');
+  console.warn('');
+}
 
 // Build lookup: skillId -> instruction IDs
 const skillToInsts = {};
@@ -732,10 +769,12 @@ for (const file of files) {
 
 cars.sort((a, b) => b.id - a.id);
 
-// 应用人工字段覆盖（见文件顶部 FIELD_OVERRIDE 的说明）
+// 应用人工裁决：先套内建补丁表，再套 data/car-overrides.json（后者覆盖前者）
 for (const c of cars) {
-  const ov = FIELD_OVERRIDE[c.id];
-  if (ov) Object.assign(c, ov);
+  const legacy = FIELD_OVERRIDE[c.id];
+  if (legacy) Object.assign(c, legacy);
+  const ruled = OVERRIDE_FIELDS[c.id];
+  if (ruled) Object.assign(c, ruled);
 }
 
 const jsContent = `// Auto-generated car database - DO NOT EDIT MANUALLY
@@ -744,3 +783,21 @@ const CAR_DATABASE = ${JSON.stringify(cars, null, 2)};
 
 fs.writeFileSync(outputFile, jsContent, 'utf-8');
 console.log(`Extracted ${cars.length} cars to ${outputFile}`);
+console.log(`Applied ${Object.keys(OVERRIDE_FIELDS).length} human rulings from data/car-overrides.json`);
+
+// ── 关卡：已登记入库的新车，必须有裁决记录 ──────────────────────────────────
+// 脚本提取只能做字面活，新车的数据归属必须有人（agent）读过全文再拍板。
+// 这条警告就是提醒「有车还没过目」，别让它悄悄混进数据库。
+const addedIds = Object.keys(ADDED_AT);
+const unaudited = addedIds.filter(id => !OVERRIDE_FIELDS[id]);
+if (unaudited.length) {
+  console.warn('');
+  console.warn(`⚠ 有 ${unaudited.length} 辆已入库的新车还没有人工裁决记录：`);
+  for (const id of unaudited) {
+    const c = cars.find(x => String(x.id) === String(id));
+    console.warn(`    ${id}  ${c ? c.name : '(数据库里找不到)'}`);
+  }
+  console.warn('    请先读技能原文再下结论，写进 data/car-overrides.json，流程见');
+  console.warn('    .agents/skills/ace-racer-update/SKILL.md');
+  console.warn('');
+}

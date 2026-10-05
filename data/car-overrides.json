@@ -1,0 +1,165 @@
+{
+  "_README": "车辆字段人工裁决表。agent 读懂一辆车的技能原文之后，把每个字段该填什么、为什么这么填，登记在这里。extract-cars.js 生成 car-database.js 时，本表优先级最高（脚本提取值 < 本表）。完整流程见 .agents/skills/ace-racer-update/SKILL.md。",
+  "_为什么要有这张表": "car-database.js 是每次重建生成的，手改会被打回。而脚本只能做字面提取，读不懂语义 —— 面板上「大招充能 10%」后面跟着一行灰色小字「(超越/被超越)」，脚本只看得见前面的 10%，看不见后面的条件，于是把条件触发的充能当成「每次放大招必给」填进 ult_charge_loop，算出来的循环产出直接虚高。这类判断只能靠读原文，结论必须落在本表里才留得住。",
+  "_三条硬规矩": [
+    "1. 每辆新车入库前必须在本表留下一条记录（哪怕结论是「脚本提取值正确」也要留），fields 可以为空对象。",
+    "2. 每个被改动的字段都要在 evidence 里写清依据 —— 引哪句原文、为什么这么归。不要只写「修正为 X」。",
+    "3. 数值本身不在这里发明。写到 fields 里的数必须能在原文或面板里找到出处。"
+  ],
+  "_可裁决字段": {
+    "ace_charge": "基础双充（面板万分比）",
+    "init_ratio": "起步充能加成（万分比）",
+    "ult_duration": "大招时长（秒）。★ 大招连发的车要按两段累计",
+    "ult_chain": "true = 一管能量实得两段大招，前端会在绿框里提示",
+    "ult_threshold": "大招阈值（%）",
+    "cost_ratio": "大招消耗万分比",
+    "nitro_charge": "氮气自充能（%）★ 别把「氮气损失充能」填进来",
+    "nitro_duration": "氮气时长（秒）",
+    "ult_charge_first": "起步额外充能（%）",
+    "ult_charge_loop": "大招自充能（%）★ 只放「每次放大招必给」的",
+    "per_sec_charge": "每秒自充能（%）",
+    "sp_charge": "SP 技能充能（%）",
+    "custom_charge": "条件触发自充能（%）。★ 凡是要满足条件才给的，都填这里",
+    "custom_charge_every": "每 N 次触发记 1 次。不填 = 每次触发均生效"
+  },
+  "cars": {
+    "10019": {
+      "name": "丰田 86",
+      "audited_at": "2026-10-01",
+      "fields": { "nitro_charge": null },
+      "evidence": {
+        "nitro_charge": "面板里提取到的 7% 是「氮气损失充能」，不是「每次释放氮气时的自充能」。留着会让选车时自动勾选并填入「氮气自充能」，把损失当成收益算。"
+      }
+    },
+    "12068": {
+      "name": "柯尼塞格 One:1",
+      "audited_at": "2026-10-03",
+      "fields": { "ult_duration": 12, "ult_chain": true },
+      "evidence": {
+        "ult_duration": "技能写「主动大招结束后自动释放一次无消耗的大招」，一管能量实得两段。面板里的「加速时长 6 秒」只是单段值，实战口径按两段累计 = 12 秒。",
+        "ult_chain": "标记大招连发，供前端在绿框里提示「时长已按两段累计填入」。注意布加迪 LVN 也有「大招连发」字样，但那来自「漂移 4 次进入黑夜领域」，不适用时长翻倍。"
+      }
+    },
+
+    "10018": {
+      "name": "比亚迪 汉",
+      "audited_at": "2026-10-03",
+      "fields": { "ult_charge_loop": null, "custom_charge": 15 },
+      "evidence": {
+        "custom_charge": "原文是「第 5 名及以后放大招时自充能 15%」，带名次条件，不是每次放大招必给。数值沿用原值，改归到条件触发。"
+      }
+    },
+    "10030": {
+      "name": "阿斯顿马丁 Vanquish",
+      "audited_at": "2026-10-03",
+      "fields": { "ult_charge_loop": null, "custom_charge": 4 },
+      "evidence": {
+        "custom_charge": "「每次进入漂移自充能 4%」，触发条件是漂移，与放大招无关。"
+      }
+    },
+    "10045": {
+      "name": "英菲尼迪 Prototype",
+      "audited_at": "2026-10-03",
+      "fields": { "ult_charge_loop": null, "custom_charge": 5 },
+      "evidence": {
+        "custom_charge": "「每次使用涡轮获得 2.5%」，紫涡轮翻倍后按 5% 计。触发条件是使用涡轮。"
+      }
+    },
+    "10046": {
+      "name": "柯尼塞格 Jesko",
+      "audited_at": "2026-10-03",
+      "fields": { "ult_charge_loop": null, "custom_charge": 4 },
+      "evidence": {
+        "custom_charge": "「每 7 秒自充能 4%」，按时间走，不是每次大招结算一次。"
+      }
+    },
+    "10047": {
+      "name": "闪灵",
+      "audited_at": "2026-10-03",
+      "fields": { "ult_charge_loop": null, "custom_charge": 15 },
+      "evidence": {
+        "custom_charge": "「每次受到封禁效果时自充能 15%」，要靠对手给状态才触发。"
+      }
+    },
+    "10049": {
+      "name": "火箭狐",
+      "audited_at": "2026-10-03",
+      "fields": { "ult_charge_loop": null, "custom_charge": 5 },
+      "evidence": {
+        "custom_charge": "「每次使用涡轮获得 5% 大招能量」，触发条件是使用涡轮。"
+      }
+    },
+    "10050": {
+      "name": "柯尼塞格 Regera",
+      "audited_at": "2026-10-03",
+      "fields": { "ult_charge_loop": null, "custom_charge": 90 },
+      "evidence": {
+        "custom_charge": "「闪现中超越车辆时自充能 90%」，要超越才给，路况依赖极大。"
+      }
+    },
+    "10053": {
+      "name": "五菱宏光 MINI EV",
+      "audited_at": "2026-10-03",
+      "fields": { "ult_charge_loop": null, "custom_charge": 1 },
+      "evidence": {
+        "custom_charge": "「每次使用涡轮自充能 1%」，触发条件是使用涡轮。"
+      }
+    },
+    "10066": {
+      "name": "圣骑士",
+      "audited_at": "2026-10-03",
+      "fields": { "ult_charge_loop": null, "custom_charge": 22 },
+      "evidence": {
+        "custom_charge": "圣印-充能「第 1 次使用大招时解锁获得 22%」，一辈子只给一次。用户按跑法填「首发 1 次、循环 0 次」，按每次大招都给是错的。"
+      }
+    },
+    "10067": {
+      "name": "玛莎拉蒂 Alfieri",
+      "audited_at": "2026-10-03",
+      "fields": { "ult_charge_loop": null, "custom_charge": 37 },
+      "evidence": {
+        "custom_charge": "「大招期间超过 300km/h 时立即自充能 37%」，要跑到速度门槛才给。"
+      }
+    },
+    "10085": {
+      "name": "记录官",
+      "audited_at": "2026-10-03",
+      "fields": { "ult_charge_loop": null, "custom_charge": 10 },
+      "evidence": {
+        "custom_charge": "「每次超越其他车辆时自充能 10%」，超越依赖，不是放大招结算。"
+      }
+    },
+    "10095": {
+      "name": "极狐阿尔法S 全新HI版",
+      "audited_at": "2026-10-03",
+      "fields": { "ult_charge_loop": null, "custom_charge": 15 },
+      "evidence": {
+        "custom_charge": "「第 5 名及以后放大招时自充能 15%」，带名次条件。"
+      }
+    },
+    "12039": {
+      "name": "蛋仔出击",
+      "audited_at": "2026-10-03",
+      "fields": { "ult_charge_loop": null, "custom_charge": 4 },
+      "evidence": {
+        "custom_charge": "「每隔 5 秒的随机增益里有「获得 4% 大招能量」」，随机性较大，按时间走。"
+      }
+    },
+    "12048": {
+      "name": "兰博基尼 Aventador J",
+      "audited_at": "2026-10-03",
+      "fields": { "ult_charge_loop": null, "custom_charge": 40 },
+      "evidence": {
+        "custom_charge": "「大招期间未成功合体则大招结束时自充能 40%」，要不要给取决于合体成不成功。"
+      }
+    },
+    "12079": {
+      "name": "兰博基尼 Revuelto",
+      "audited_at": "2026-10-03",
+      "fields": { "ult_charge_loop": null, "custom_charge": 10 },
+      "evidence": {
+        "custom_charge": "面板上写着「大招充能 10%」，紧挨着一条灰字「(超越/被超越)」—— 这 10% 要靠超越或者被超越才给。脚本只读到「大招充能 10%」，看不见灰字条件，于是当成每次放大招必给填进了 ult_charge_loop。"
+      }
+    }
+  }
+}
