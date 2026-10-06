@@ -649,7 +649,7 @@ const CAR_DATABASE = [
     "nitro_duration": 5.2,
     "ult_threshold": 100,
     "nitro_charge": null,
-    "ult_charge_first": null,
+    "ult_charge_first": 100,
     "ult_charge_loop": null,
     "per_sec_charge": null,
     "sp_charge": null,
@@ -2793,7 +2793,7 @@ const CAR_DATABASE = [
     "ult_charge_first": null,
     "ult_charge_loop": null,
     "per_sec_charge": null,
-    "sp_charge": null,
+    "sp_charge": 60,
     "search_text": "xingjuezhiyu xjzy",
     "asset_dir": "assets/醒觉之羽_12030",
     "added_at": null,
@@ -3906,7 +3906,8 @@ const CAR_DATABASE = [
     "search_text": "aima qingtian amqt",
     "asset_dir": "assets/爱玛 晴天_12003",
     "added_at": null,
-    "release_at": 1676563200000
+    "release_at": 1676563200000,
+    "custom_charge": 21
   },
   {
     "id": 12002,
@@ -5421,14 +5422,14 @@ const CAR_DATABASE = [
     "ult_threshold": 100,
     "nitro_charge": null,
     "ult_charge_first": null,
-    "ult_charge_loop": null,
+    "ult_charge_loop": 22,
     "per_sec_charge": null,
     "sp_charge": null,
     "search_text": "shengqishi sqs",
     "asset_dir": "assets/圣骑士_10066",
     "added_at": null,
     "release_at": 1639670400000,
-    "custom_charge": 22
+    "custom_charge": null
   },
   {
     "id": 10065,
@@ -5551,7 +5552,8 @@ const CAR_DATABASE = [
     "search_text": "aodi tt rs ad ttrs",
     "asset_dir": "assets/奥迪 TT RS_10063",
     "added_at": null,
-    "release_at": 1639670400000
+    "release_at": 1639670400000,
+    "custom_charge": 21
   },
   {
     "id": 10062,
