@@ -3381,16 +3381,22 @@ body.diag-bare .card, body.diag-bare .tutorial-details, body.diag-bare .footer-l
             flashSection('extraPerSecSection', ['valExtraPerSec', 'hasExtraPerSec']);
         }
         // Auto-fill SP charge into custom trigger section
+        // SP 技能要先用过大招才会就绪，开局那一发（首发一大）根本按不出来，
+        // 所以首发计 0 次；进入循环之后每轮可用一次，循环计 1 次。
         if (car.sp_charge) {
             document.getElementById('valCustomTrig').value = car.sp_charge;
-            document.getElementById('customTrigFirstCount').value = 1;
+            document.getElementById('customTrigFirstCount').value = 0;
             document.getElementById('customTrigLoopCount').value = 1;
             flashSection('extraCustomSection', ['valCustomTrig', 'customTrigFirstCount', 'customTrigLoopCount']);
         }
         // Auto-fill custom trigger self-charge（条件触发类，例：布加迪 LVN「每2次进入漂移时自充能6%」）
-        // 只填「每次触发附加百分比」，触发次数不预设（留 0），由用户按跑法手填
+        // 只填「每次触发附加百分比」，触发次数不预设（留 0），由用户按跑法手填。
+        // 这里把两个次数显式写 0：万一某辆车同时带 sp_charge 和 custom_charge（目前还没有），
+        // 上面那支会把循环次数设成 1，得在这里清掉，否则条件触发的次数会被 SP 的默认值顶掉。
         if (car.custom_charge) {
             document.getElementById('valCustomTrig').value = car.custom_charge;
+            document.getElementById('customTrigFirstCount').value = 0;
+            document.getElementById('customTrigLoopCount').value = 0;
             flashSection('extraCustomSection', ['valCustomTrig', 'customTrigFirstCount', 'customTrigLoopCount']);
         }
 

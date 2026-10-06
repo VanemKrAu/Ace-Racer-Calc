@@ -285,7 +285,8 @@ vehicle JSON → data.item
   ├── sp_charge (SP自充能) →
   │     skillPanelGroups.sp 中 "充能" (排除友方、冷却、集气、自动、压缩)
   │     → 失败时从 sp_skill_desc 取 "获得XXX集气量和X%大招能量"
-  │     (前端填入 valCustomTrig, 首发/循环各计 1 次)
+  │     (前端填入 valCustomTrig；**首发不计、循环计 1 次** —— SP 技能要先用过大招
+  │      才就绪，开局那一发按不出来)
   ├── custom_charge (条件触发自充能) →
   │     文本 /每N次[^。；\n]{0,24}?自充能X%/ → custom_charge = X, custom_charge_every = N
   │     ★ 「每 N 次触发一次」的条件充能**不是**大招自充能，绝不能让 ult_charge_loop 收走
