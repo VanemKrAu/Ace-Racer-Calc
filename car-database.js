@@ -3696,7 +3696,7 @@ const CAR_DATABASE = [
     "nitro_charge": null,
     "ult_charge_first": 20,
     "ult_charge_loop": null,
-    "per_sec_charge": null,
+    "per_sec_charge": 2.5,
     "sp_charge": null,
     "search_text": "huandie hd",
     "asset_dir": "assets/幻蝶_12008",
