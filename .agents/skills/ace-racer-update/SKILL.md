@@ -9,6 +9,10 @@ user-invocable: true
 
 项目路径: 仓库根目录 (clone 后进入项目目录)
 
+> ⚠ **改了这个文件本身，记得同步到本机已安装的 skill 目录。**
+> `/skills/ace-racer-update/` 才是 agent 实际加载的那一份；只改仓库里的，agent 读到的还是旧的。
+> 一条命令：`sh scripts/sync-skill.sh`
+
 ---
 
 ## 0 · 铁律：字段填到哪个格子，由 agent 读原文判定，脚本只负责搬数据
@@ -407,6 +411,10 @@ git push
 
 推送前检查：暂存区文件清单里没有 `.env` / `.pem` / `.key` / `credentials.json` / `*.secret` 等敏感文件。
 
+★ 如果这次动的是 `SKILL.md` 本身，推之前先跑一遍 `sh scripts/sync-skill.sh` ——
+  它会把这份 skill 同步到 `/skills/ace-racer-update/`（agent 实际加载的那份）。
+  漏了这一步，agent 下次加载到的还是旧流程。
+
 ---
 
 ## 8 · 文件说明
@@ -416,6 +424,7 @@ git push
 | `scripts/update.mjs` | 主工作流脚本，一键完成复制数据、重建、传图 |
 | `scripts/extract-cars.js` | 从 `full/vehicles/*.json` 提取数据生成 `car-database.js`；顶部 `ADDED_AT` 表登记入库时间（列表排序 + 审核名单）；顶部 `FIELD_OVERRIDE` 是早期覆盖存档，**不要再往里加条目** |
 | `scripts/dump-car-skills.mjs` | **证据包生成器** —— 把一辆车的技能原文摊开（含灰色条件小字）+ 打印当前库值 + 归属自检。`--added` / `--unaudited` 可批量 |
+| `scripts/sync-skill.sh` | 把本 skill 同步到本机已安装目录 `/skills/ace-racer-update/`（**改完 SKILL.md 就要跑**） |
 | `scripts/upload-bili.mjs` | 上传新图片到 B站 CDN，保存 URL 映射 |
 | `data/car-overrides.json` | **人工裁决表** —— agent 读原文后的结论与依据，生成时优先级最高 |
 | `data/bili-url-mapping.json` | CDN URL → 本地路径映射表 |
