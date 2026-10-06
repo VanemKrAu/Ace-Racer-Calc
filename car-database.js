@@ -3455,7 +3455,8 @@ const CAR_DATABASE = [
     "search_text": "mengxingkaidi mxkd",
     "asset_dir": "assets/萌星凯蒂_12014",
     "added_at": null,
-    "release_at": 1691856000000
+    "release_at": 1691856000000,
+    "custom_charge": 50
   },
   {
     "id": 12013,
