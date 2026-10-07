@@ -6312,7 +6312,7 @@ const CAR_DATABASE = [
     "ult_type": "SKILL_MGY",
     "cost_ratio": 1000,
     "has_sp": false,
-    "chip_slots": "○○△◇◣V",
+    "chip_slots": "○○◇◣◣V",
     "speed_limit": 193,
     "speedup_ratio": 1.004,
     "drift_coef": 600,
