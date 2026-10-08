@@ -62,6 +62,74 @@ const FIELD_OVERRIDE = {
   12068: { ult_duration: 12, ult_chain: true },
 };
 
+// 辅助充能覆盖表（给队友的大招能量，供前端「辅助」模式自动填入，以及「团魂」模式的队友辅助车下拉）。
+// 字段：assist_charge 单次给的百分比（满管记 100）；assist_kind 给法：
+//   once = 大招开始时给一次 · per_sec = 大招期间每秒给 · per_nitro = 大招状态下自己每用一次氮气给一次 · full = 直接补满一管
+// assist_hits：一次大招默认给几次（不写时前端按给法推：once / per_nitro / full = 1，per_sec = 大招秒数）
+// assist_note / assist_note_en：自动填入时给用户看的补充说明（条件触发、附带效果等）
+// 大部分辅助车直接从大招面板「友方充能」读出来（见 extractAssist），这里只登记读不到或需要补说明的。
+const ASSIST_OVERRIDE = {
+  // 面板里没有「友方充能」行，但大招确实给队友能量：
+  12036: { assist_charge: 7.5, assist_kind: 'once', assist_hits: 4,   // 游龙惊鸿：「游龙大招充能 7.5%」
+    assist_note: '游龙在赛道中存在 10 秒，每 3 秒给一次（CD 3 秒），一次大招最多 4 次',
+    assist_note_en: 'The dragon lasts 10s and charges every 3s (CD 3s): up to 4 hits per ult' },
+  12067: { assist_charge: 13, assist_kind: 'once', assist_hits: 2,    // 奥迪 RS 3：「大招自动充能 13%」是给队友的状态效果
+    assist_note: '队友进入 7 秒鬼斧神工状态，状态开始和结束时各得 13%（期间大招 50% 能量即可使用）',
+    assist_note_en: 'Allies enter a 7s state and get 13% when it starts and again when it ends (ult usable at 50% meanwhile)' },
+  12008: { assist_charge: 7.5, assist_kind: 'once', assist_hits: 1,   // 幻蝶：大招只给充能效率翻倍
+    assist_note: '大招本身不直接给能量（飞行结束让队友 4 秒内充能效率翻倍）；这里取的是被动「每 3 秒为队友充能 7.5%」',
+    assist_note_en: 'The ult itself gives no energy (it doubles allies\' efficiency for 4s); this is the passive "7.5% to allies every 3s"' },
+  // 能读出数值，但给法有附加条件 / 附带效果：
+  12072: { assist_note: '另有被动：开局暖车结束（第 10 秒）为队友提供 33%',
+    assist_note_en: 'Passive: +33% to allies when the 10s warm-up ends' },
+  10072: { assist_note: '队友若在加速期间点击大招，还会额外获得 35%',
+    assist_note_en: 'Allies who tap ult during the boost get an extra 35%' },
+  10063: { assist_note: '队友在 10 秒直线赋能内首次漂移时才获得',
+    assist_note_en: 'Granted on the ally\'s first drift within the 10s state' },
+  12003: { assist_note: '队友在 10 秒直线赋能内首次漂移时才获得',
+    assist_note_en: 'Granted on the ally\'s first drift within the 10s state' },
+  12084: { assist_note: '队友通过换电站时获得',
+    assist_note_en: 'Granted when the ally drives through the swap station' },
+  10020: { assist_note: '另外让队友立即获得一个时长 50% 的额外大招',
+    assist_note_en: 'Also gives allies an extra ult at 50% duration' },
+  10057: { assist_note: '旗舰支援状态下，自己每用一次氮气给队友一次（同时给 3000 集气）',
+    assist_note_en: 'In Flagship Support, each of your nitros charges allies (plus 3000 nitro gauge)' },
+  10089: { assist_note: '旗舰支援状态下，自己每用一次氮气给队友一次（同时给 3000 集气）',
+    assist_note_en: 'In Flagship Support, each of your nitros charges allies (plus 3000 nitro gauge)' },
+  12060: { assist_note: '友方累计 15 次涡轮、15 次氮气、15 次大招后，开大时额外再辅助一次',
+    assist_note_en: 'After the team uses 15 turbos, nitros and ults, each ult assists once more' },
+  12054: { assist_note: '收到辅助的队友下一次腾空时再得 15%',
+    assist_note_en: 'Allies who received it get another 15% on their next jump' },
+  10030: { assist_note: '队友收到后 6 秒内开大，第 6 秒能量回溯到收到时',
+    assist_note_en: 'If the ally ults within 6s, their energy rewinds to the moment they received it' },
+  10086: { assist_note: '另外强化队友下一次氮气：使用时额外充能 8%',
+    assist_note_en: 'Also empowers the ally\'s next nitro: +8% when used' },
+  10043: { assist_note: '另有被动：起步时全部队友获得 10% 大招能量',
+    assist_note_en: 'Passive: all allies get 10% ult energy at the start' },
+};
+
+// 从大招面板读「友方充能」（只看辅助位）。值有三种写法：
+//   「33%」= 大招开始时给一次；「5%每秒」= 大招期间每秒给；「充满一管」= 直接补满
+// 旗舰支援类（平行巡洋舰 / 问界 M5）面板写的是单次值，但给法是「大招状态下自己每用一次氮气给一次」
+function extractAssist(v) {
+  if (!/辅助/.test(v.positionLabel || v.position || '')) return null;
+  const rows = (v.skillPanelGroups && v.skillPanelGroups.ultimate) || [];
+  const fd = (v.richText && v.richText.feature_desc && v.richText.feature_desc.raw) || '';
+  for (const g of rows) {
+    const n = (g.name_rich && g.name_rich.raw) || '';
+    const val = g.value_text || '';
+    if (!/友方充能/.test(n)) continue;              // 「一段友方充能」也算（摇尾萌萌虎）
+    if (/充满/.test(val)) return { assist_charge: 100, assist_kind: 'full' };
+    const m = val.match(/(\d+(?:\.\d+)?)/);
+    if (!m) continue;
+    const num = parseFloat(m[1]);
+    if (!(num > 0 && num <= 100)) continue;
+    const kind = /每秒/.test(n + ' ' + val) ? 'per_sec' : /每次使用氮气/.test(fd) ? 'per_nitro' : 'once';
+    return { assist_charge: num, assist_kind: kind };
+  }
+  return null;
+}
+
 // ── 人工裁决表 data/car-overrides.json ────────────────────────────────────────
 // 由 agent 读懂技能原文后填写，优先于脚本提取值，也优先于上面的 FIELD_OVERRIDE。
 // 脚本只做字面提取，读不懂「(超越/被超越)」这类条件限定词，所以凡是需要看语义的
@@ -630,6 +698,8 @@ for (const file of files) {
       sp_charge: spCharge,
       // 条件触发自充能只在命中时才写进数据（保持其余车原有字段集，避免整库无谓 diff）
       ...(customCharge !== null ? { custom_charge: customCharge, custom_charge_every: customChargeEvery } : {}),
+      // 辅助充能（给队友）：只在辅助位读到「友方充能」时写入
+      ...(extractAssist(v) || {}),
       search_text: (() => {
         // For pinyin search: convert Chinese chars to pinyin, keep ASCII as-is
         var chars = v.name.split('');
@@ -786,6 +856,11 @@ for (const c of cars) {
   if (legacy) Object.assign(c, legacy);
   const ruled = OVERRIDE_FIELDS[c.id];
   if (ruled) Object.assign(c, ruled);
+}
+// 应用辅助充能覆盖表（见 ASSIST_OVERRIDE 的说明）
+for (const c of cars) {
+  const ov = ASSIST_OVERRIDE[c.id];
+  if (ov) Object.assign(c, ov);
 }
 
 const jsContent = `// Auto-generated car database - DO NOT EDIT MANUALLY
