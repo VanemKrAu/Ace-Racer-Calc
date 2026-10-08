@@ -1787,6 +1787,11 @@ body[data-calc-mode="team"] .chip-card .chip-t-team { display: inline; }
   box-shadow: inset 0 0 0 1px color-mix(in oklab, var(--st-fill) 32%, transparent), inset 0 1px 0 var(--surface-rim),
               0 24px 50px -26px color-mix(in oklab, var(--st-fill) 55%, transparent); }
 .ds-c .tm-result.is-idle .ds-status { color: var(--ink-3); background: var(--fill); }
+/* 空态：弧长 0 + 圆头线帽（stroke-linecap: round）会在 135° 起点画出一个实心圆点。
+   首发 / 循环卡有 .ds-gauge[data-state="idle"] 兜着，这两张蓝卡挂在 .tm-result 上没有 data-state，这里同样藏掉 */
+.ds-c .tm-result.is-idle .ds-ring-fill { stroke: transparent; }
+/* 空态的解析盒是个只有内边距的空色块：没内容就先别显示（有内容后 is-idle 会被摘掉） */
+.ds-c .tm-result.is-idle .formula-box:empty { display: none; }
 .ds-c .tm-gauge-top { margin: 12px 0 10px; }
 .ds-c .tm-gauge-top { flex-wrap: wrap; align-items: center; row-gap: 6px; }
 .ds-c .tm-gauge-top .ds-status { max-width: 100%; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
@@ -2212,12 +2217,12 @@ body[data-calc-mode="team"] .chip-card .chip-t-team { display: inline; }
 </div>
 <!-- 结果卡：和首发 / 循环结果卡同一套 270° 仪表（刻度、阈值标记、辉光），状态色用蓝色 -->
 <div class="card tm-result" id="teamInSum" data-modes="team">
-  <div class="result-title" id="teamInTitle"></div>
-  <div class="ds-gauge-top tm-gauge-top"><span class="ds-status" id="teamInStatus"></span><span class="ds-target" id="teamInTag"></span></div>
+  <div class="result-title" id="teamInTitle"><span class="zh">我合计实收</span><span class="lang-en">My total received</span></div>
+  <div class="ds-gauge-top tm-gauge-top"><span class="ds-status" id="teamInStatus"><span class="zh">等待测算</span><span class="lang-en">Waiting</span></span><span class="ds-target" id="teamInTag"></span></div>
   <div class="tm-res-row">
     <div class="ds-gauge-main tm-gauge" id="teamInGauge"><span class="tm-ring-slot"></span><div class="ds-readout"><span class="ds-value" id="teamInHitValue">--</span><span class="ds-delta" id="teamInHint"></span></div></div>
-    <div class="tm-stat"><div class="tm-stat-k" id="teamInFirstLabel"></div><div class="tm-stat-v" id="teamInFirstValue">--</div><div class="tm-stat-s"><span class="zh">已并入首发核算</span><span class="lang-en">added to 1st Ult</span></div></div>
-    <div class="tm-stat"><div class="tm-stat-k" id="teamInLoopLabel"></div><div class="tm-stat-v" id="teamInLoopValue">--</div><div class="tm-stat-s"><span class="zh">已并入循环核算</span><span class="lang-en">added to Loop</span></div></div>
+    <div class="tm-stat"><div class="tm-stat-k" id="teamInFirstLabel"><span class="zh">首发前合计</span><span class="lang-en">Before 1st Ult</span></div><div class="tm-stat-v" id="teamInFirstValue">--</div><div class="tm-stat-s"><span class="zh">已并入首发核算</span><span class="lang-en">added to 1st Ult</span></div></div>
+    <div class="tm-stat"><div class="tm-stat-k" id="teamInLoopLabel"><span class="zh">每轮循环合计</span><span class="lang-en">Per loop</span></div><div class="tm-stat-v" id="teamInLoopValue">--</div><div class="tm-stat-s"><span class="zh">已并入循环核算</span><span class="lang-en">added to Loop</span></div></div>
   </div>
   <div id="formulaTeamIn" class="formula-box"></div>
 </div>
@@ -2267,11 +2272,11 @@ body[data-calc-mode="team"] .chip-card .chip-t-team { display: inline; }
 </div>
 <div class="card tm-result" id="resultCardSupport" data-modes="support">
   <div class="result-title"><span class="zh">队友合计实收</span><span class="lang-en">Ally receives in total</span></div>
-  <div class="ds-gauge-top tm-gauge-top"><span class="ds-status" id="supportStatus"></span><span class="ds-target" id="supportTag"></span></div>
+  <div class="ds-gauge-top tm-gauge-top"><span class="ds-status" id="supportStatus"><span class="zh">等待测算</span><span class="lang-en">Waiting</span></span><span class="ds-target" id="supportTag"></span></div>
   <div class="tm-res-row">
     <div class="ds-gauge-main tm-gauge" id="supportGauge"><span class="tm-ring-slot"></span><div class="ds-readout"><span class="ds-value" id="supportHitValue">--</span><span class="ds-delta" id="supportHint"></span></div></div>
-    <div class="tm-stat"><div class="tm-stat-k"><span class="zh">辅助给出</span><span class="lang-en">Support gives</span></div><div class="tm-stat-v" id="supportRawValue">--</div><div class="tm-stat-s" id="supportRawSub"></div></div>
-    <div class="tm-stat"><div class="tm-stat-k" id="supportTotalLabel"></div><div class="tm-stat-v" id="supportTotalValue">--</div><div class="tm-stat-s"><span class="zh">队友实收 × 次数</span><span class="lang-en">received × hits</span></div></div>
+    <div class="tm-stat"><div class="tm-stat-k"><span class="zh">辅助给出</span><span class="lang-en">Support gives</span></div><div class="tm-stat-v" id="supportRawValue">--</div><div class="tm-stat-s" id="supportRawSub"><span class="zh">单次辅助充能</span><span class="lang-en">per hit</span></div></div>
+    <div class="tm-stat"><div class="tm-stat-k" id="supportTotalLabel"><span class="zh">1 次合计</span><span class="lang-en">1 hit total</span></div><div class="tm-stat-v" id="supportTotalValue">--</div><div class="tm-stat-s"><span class="zh">队友实收 × 次数</span><span class="lang-en">received × hits</span></div></div>
   </div>
   <div id="formulaSupport" class="formula-box"></div>
 </div>
@@ -7744,6 +7749,19 @@ if (typeof CAR_DATABASE !== 'undefined') {
   var queued = false;
   function sync() {
     queued = false;
+    // 团魂获能 / 辅助供能那两张蓝卡的 270° 仪表，是业务脚本里 renderTeamPanels() → _tmGauge() 建出来的，
+    // 而它挂在 calculate() 的后半段 —— 没选车又没动过任何数值时 calculate() 会提前 return（「保持等待测算」），
+    // 于是空态下这两张卡只剩一个空的 .tm-ring-slot 占位，仪表盘整个不见。首发 / 循环那两张卡有 renderGauge
+    // 的兜底（gaugeSkeleton），所以不受影响 —— 这里给蓝卡补一次同一层级的兜底：只管把骨架建出来，
+    // 数值仍旧交给 _tmGauge() 后续更新。
+    [].forEach.call(document.querySelectorAll('.tm-gauge'), function (g) {
+      var slot = g.querySelector('.tm-ring-slot');
+      if (!slot || !window.__pvRingSvg || !window.__pvRing) return;   // 骨架已建过 → 别插手，免得把算好的状态又按回空态
+      slot.outerHTML = window.__pvRingSvg();
+      window.__pvRing(g, NaN, NaN);
+      var card = g.closest('.tm-result');
+      if (card) card.classList.add('is-idle');   // 空态：状态胶囊跟着变灰，别留一个空的蓝色胶囊
+    });
     var res = { first: renderGauge('first'), loop: renderGauge('loop') };
     stripLeadEmoji($('resultDetailFirst')); stripLeadEmoji($('resultDetailLoop'));
     renderDock(res); syncSliders(); syncTheme(); syncQuality(); syncAmbient(); zgSchedule();
