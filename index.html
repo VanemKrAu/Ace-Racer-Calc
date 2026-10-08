@@ -951,7 +951,7 @@ body.ds-c.performance-mode .ds-dock { background: var(--cell); }
 .ds-c .ds-dock-item.is-active { background: var(--dock-2); box-shadow: inset 0 0 0 1px var(--dock-2-rim); }
 @media (hover: hover) { .ds-c .ds-dock-item:not(.is-active):hover { background: var(--dock-hover); } }
 .ds-c .ds-dock-item:focus-visible { outline: 2px solid var(--acc); outline-offset: 1px; }
-.ds-c .ds-dock-item + .ds-dock-item::after { content: ""; position: absolute; left: -3px; top: 12px; bottom: 12px; width: 1px; background: var(--dock-sep); transition: opacity .15s; }
+.ds-c .ds-dock-item:not(.is-gone) ~ .ds-dock-item:not(.is-gone)::after { content: ""; position: absolute; left: -3px; top: 12px; bottom: 12px; width: 1px; background: var(--dock-sep); transition: opacity .15s; }
 .ds-c .ds-dock-item.is-active + .ds-dock-item::after, .ds-c .ds-dock-item + .ds-dock-item.is-active::after { opacity: 0; }
 .ds-c .ds-dock-item::before { content: ""; width: 10px; height: 10px; border-radius: 50%; background: var(--ink-3); }
 .ds-c .ds-dock-item[data-state="pass"]::before { background: var(--pass-fill); box-shadow: 0 0 0 3px rgba(52,199,89,.2); }
@@ -1920,6 +1920,7 @@ body[data-calc-mode="team"] .chip-card .chip-t-team { display: inline; }
 .ds-c:not(.light-mode) { --info: #409cff; --info-ring: rgba(64, 156, 255, .24); }
 .ds-c .ds-dock-item[data-state="info"]::before { background: var(--info); box-shadow: 0 0 0 3px var(--info-ring); }
 .ds-c .ds-dock { max-width: calc(100vw - 16px); }
+.ds-c .ds-dock.is-morphing { overflow: hidden; justify-content: center; }
 
 /* 长截图：克隆里不要动画 */
 .ds-c .pv-export .mode-thumb { transition: none; }
@@ -5857,19 +5858,56 @@ function __tok(n, d) { var v = getComputedStyle(document.body).getPropertyValue(
            // 选车卡里「已自动填充 / 其余手调」那段提示：辅助供能里用不上，收起（原先是 CSS 直接 display:none，下面的内容会硬跳 100px）
            if (!closingOnly || m === 'support') slideShow(document.getElementById('carPreviewAutoMsg'), m !== 'support', instant);
        }
-       // 底部胶囊：先淡出、换格子、再淡入，不让它硬跳
+       // 底部胶囊：格子真的换了（进出「辅助供能」）才过渡 —— 胶囊本身一直在，宽度从旧值平滑变到新值，
+       // 里面的格子先淡出、换好再淡入；先机汇能 ⇄ 团魂获能 两边格子一样，什么都不动。
+       // 以前每次切模式都让整个胶囊淡出再淡入：
+       //   · 格子没变也闪一下；
+       //   · 这段动画压着「滚到结果区时胶囊收起」的样式 —— 切换途中结果卡从视口里路过，胶囊会先淡入、动画一完又突然消失。
        function syncDock(animate) {
            var m = getCalcMode(), dock = document.querySelector('.ds-dock');
-           var items = document.querySelectorAll('.ds-dock-item[data-modes]');
-           var apply = function () { for (var i = 0; i < items.length; i++) items[i].classList.toggle('is-gone', !_inMode(items[i], m)); };
-           if (!animate || !dock || !dock.animate || !_motionOK() || document.body.classList.contains('ds-results-visible')) { apply(); return; }
-           var hide = [{ opacity: 1, transform: 'translate(-50%, 0) scale(1)' }, { opacity: 0, transform: 'translate(-50%, 10px) scale(.96)' }];
-           var a = dock.animate(hide, { duration: 150, easing: 'cubic-bezier(.4,0,1,1)', fill: 'forwards' });
-           a.onfinish = function () {
-               apply();
-               dock.animate(hide.slice().reverse(), { duration: 280, easing: 'cubic-bezier(.2,.8,.2,1)' });
-               a.cancel();
+           var items = [].slice.call(document.querySelectorAll('.ds-dock-item[data-modes]'));
+           var want = items.map(function (it) { return _inMode(it, m); });
+           // 上一次过渡还没做完：从「眼下看到的」宽度 / 透明度接着走，不跳回起点
+           var w0 = dock ? dock.getBoundingClientRect().width : 0;
+           var op = items.map(function (it) { return it.getClientRects().length ? parseFloat(getComputedStyle(it).opacity) || 0 : 0; });
+           if (dock && dock.__dm) dock.__dm();
+           var vis = items.filter(function (it) { return !it.classList.contains('is-gone'); });
+           var same = items.every(function (it, i) { return it.classList.contains('is-gone') === !want[i]; });
+           var still = !animate || !dock || !dock.animate || !_motionOK() || document.body.classList.contains('ds-results-visible');
+           if (same) {
+               // 格子没变；若刚才淡出到一半被打断，淡回来
+               if (!still) items.forEach(function (it, i) { if (want[i] && op[i] < .99) it.animate([{ opacity: op[i] }, { opacity: 1 }], { duration: 160, easing: 'ease-out' }); });
+               return;
+           }
+           var apply = function () { items.forEach(function (it, i) { it.classList.toggle('is-gone', !want[i]); }); };
+           if (still) { apply(); return; }
+           var anims = [], aw = null, over = false;
+           var fin = function () {
+               if (over) return;
+               over = true;
+               anims.forEach(function (a) { a.cancel(); });
+               if (aw) aw.cancel();
+               dock.style.width = '';
+               dock.classList.remove('is-morphing');
+               dock.__dm = null;
            };
+           dock.__dm = fin;
+           dock.style.width = w0 + 'px';               // 换格子前先按住当前宽度
+           dock.classList.add('is-morphing');
+           var out = vis.map(function (it) { var i = items.indexOf(it); return it.animate([{ opacity: op[i] }, { opacity: 0 }], { duration: 120, easing: 'ease-in', fill: 'forwards' }); });
+           anims = anims.concat(out);
+           var swap = function () {
+               if (over) return;
+               apply();
+               dock.style.width = '';
+               var w1 = dock.getBoundingClientRect().width;  // 新格子的自然宽度（数值已经算完）
+               aw = dock.animate([{ width: w0 + 'px' }, { width: w1 + 'px' }], { duration: 300, easing: 'cubic-bezier(.2,.8,.2,1)' });
+               items.forEach(function (it, i) {
+                   if (want[i]) anims.push(it.animate([{ opacity: 0 }, { opacity: 1 }], { duration: 220, delay: 60, easing: 'ease-out', fill: 'backwards' }));
+               });
+               aw.onfinish = fin;
+           };
+           if (out.length) out[0].onfinish = swap; else swap();
        }
        // 进入辅助供能时把车辆列表筛成辅助位（用户自己选过定位就不动）；离开时还原
        function syncSupportFilter(prev, m) {
@@ -6019,6 +6057,7 @@ function __tok(n, d) { var v = getComputedStyle(document.body).getPropertyValue(
        function setCalcMode(m, silent, instant) {
            if (CALC_MODES.indexOf(m) < 0) m = 'solo';
            var prev = getCalcMode(), changed = prev !== m;
+           if (changed && !instant && window.__dsHoldResults) window.__dsHoldResults();
            if (changed) _swapChipOwner(prev, m);   // 先机汇能 / 团魂获能 各有一套先机、汇能和联动状态，切换时换着用
            if (changed || instant) closeMateDropdown();
            if (changed && !instant) syncModeBlocks(false, m, true);
@@ -7280,14 +7319,38 @@ if (typeof CAR_DATABASE !== 'undefined') {
     });
   })();
   if (window.IntersectionObserver) {
-    var seen = {};
-    var io = new IntersectionObserver(function (es) {
-      es.forEach(function (e) { seen[e.target.id] = e.isIntersecting; });
-      var inside = !!(seen.resultCardFirst || seen.resultCardLoop || seen.resultCardSupport);
+    var seen = {}, holdUntil = 0, holdT = null;
+    var applyResultsVisible = function () {
+      var inside = !!(seen.resultCardFirst || seen.resultCardLoop || seen.resultCardChain || seen.resultCardSupport);
       document.body.classList.toggle('ds-results-visible', inside);
       if (!inside) clearDockActive();   // 离开结果区 → dock 重新出现，顺手清掉临时高亮
+    };
+    var io = new IntersectionObserver(function (es) {
+      es.forEach(function (e) { seen[e.target.id] = e.isIntersecting; });
+      if (performance.now() < holdUntil) return;   // 正在切模式：先记下，开合做完再统一定
+      applyResultsVisible();
     }, { threshold: 0.25 });
-    ['resultCardFirst', 'resultCardLoop', 'resultCardSupport'].forEach(function (id) { if ($(id)) io.observe($(id)); });
+    ['resultCardFirst', 'resultCardLoop', 'resultCardChain', 'resultCardSupport'].forEach(function (id) { if ($(id)) io.observe($(id)); });
+    // 切模式时调用：等页面上的高度过渡都做完（最多 1.5 秒），再按结果卡的最终位置决定胶囊显不显示
+    var heightMoving = function () {
+      if (!document.getAnimations) return false;
+      return document.getAnimations().some(function (a) {
+        if (a.playState !== 'running' || !a.effect || !a.effect.getKeyframes) return false;
+        var k = a.effect.getKeyframes();
+        return k.length && k[0].height != null;
+      });
+    };
+    window.__dsHoldResults = function () {
+      var t0 = performance.now();
+      holdUntil = t0 + 1600;
+      clearTimeout(holdT);
+      (function wait() {
+        holdT = setTimeout(function () {
+          if (heightMoving() && performance.now() - t0 < 1500) return wait();
+          requestAnimationFrame(function () { holdUntil = 0; applyResultsVisible(); });
+        }, 100);
+      })();
+    };
   }
 
   var onScroll = function () { document.body.classList.toggle('ds-scrolled', (window.scrollY || 0) > 260); };
@@ -7547,13 +7610,8 @@ if (typeof CAR_DATABASE !== 'undefined') {
     if (d && d.brands) return d.brands.some(function (b) { return /Chromium|Google Chrome|Microsoft Edge/.test(b.brand); });
     return /Chrome\/\d/.test(navigator.userAgent) && !/Edg?iOS|CriOS|FxiOS|Firefox/.test(navigator.userAgent);
   })();
-  var glassKey = '';
-  function buildGlass() {
-    var dock = document.querySelector('.ds-c .ds-dock');
-    if (!dock || !isChromium) return;
-    var w = Math.round(dock.offsetWidth), h = Math.round(dock.offsetHeight);
-    if (!w || !h || glassKey === w + 'x' + h) return;
-    glassKey = w + 'x' + h;
+  // 胶囊位移贴图：边缘一圈（bezel）按「凸透镜」把采样点往外推，中心不动 → 边缘处背景被弯折。
+  function capsuleMap(w, h) {
     var r = h / 2, bezel = Math.min(18, r * .9), c = document.createElement('canvas');
     c.width = w; c.height = h;
     var ctx = c.getContext('2d'), img = ctx.createImageData(w, h), px = img.data;
@@ -7569,20 +7627,68 @@ if (typeof CAR_DATABASE !== 'undefined') {
       px[i + 2] = 128; px[i + 3] = 255;
     }
     ctx.putImageData(img, 0, 0);
-    var svg = $('dsLgSvg');
-    if (!svg) {
-      svg = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
-      svg.id = 'dsLgSvg'; svg.setAttribute('aria-hidden', 'true');
-      svg.style.cssText = 'position:absolute;width:0;height:0;overflow:hidden';
-      document.body.appendChild(svg);
-    }
-    svg.innerHTML = '<filter id="ds-lg-filter" x="0" y="0" width="' + w + '" height="' + h + '" filterUnits="userSpaceOnUse" color-interpolation-filters="sRGB">' +
-      '<feImage href="' + c.toDataURL() + '" x="0" y="0" width="' + w + '" height="' + h + '" result="map"/>' +
-      '<feDisplacementMap in="SourceGraphic" in2="map" scale="-22" xChannelSelector="R" yChannelSelector="G"/></filter>';
-    document.body.classList.add('ds-lg-refract');
+    return c;
+  }
+  // 贴图拆成两块：「左端帽 + 很长的中段」一张、「右端帽」一张。中段每一列都一样，
+  // 所以胶囊变宽 / 变窄时只要把第一张裁短一点、右端帽挪个位置 —— 改几个属性，不用重画贴图。
+  // （以前宽度一变就整张重画、换上一张新的 data: 图；新图解码出来之前那一两帧位移贴图是空的，
+  //   整块背景会被推开十来个像素 —— dock 换格子、数值位数变化时看着就是闪一下）
+  var glassH = 0, glassRc = 0, glassW = 0, glassFx = null, glassGen = 0, GLASS_LONG = 2048;
+  function sizeGlass(w) {
+    if (!glassFx || w === glassW) return;
+    glassW = w;
+    var x = Math.max(glassRc, w - glassRc);
+    glassFx.f.setAttribute('width', w);
+    glassFx.a.setAttribute('width', x);
+    glassFx.b.setAttribute('x', x);
+  }
+  function makeGlass(h) {
+    var rc = Math.floor(h / 2), w0 = 2 * rc + 1, full = capsuleMap(w0, h), gen = ++glassGen;
+    var part = function (sx, sw, dw) {
+      var c = document.createElement('canvas'), x = c.getContext('2d');
+      c.width = sw + dw; c.height = h;
+      x.imageSmoothingEnabled = false;
+      x.drawImage(full, sx, 0, sw, h, 0, 0, sw, h);
+      if (dw) x.drawImage(full, rc, 0, 1, h, sw, 0, dw, h);   // 中段：把正中那一列铺开
+      return c.toDataURL();
+    };
+    var urls = [part(0, rc, GLASS_LONG), part(w0 - rc, rc, 0)];
+    // 两张图先解码好再挂上滤镜：挂上去的那一帧就有图
+    Promise.all(urls.map(function (u) {
+      var im = new Image(); im.src = u;
+      return im.decode ? im.decode().catch(function () {}) : Promise.resolve();
+    })).then(function () {
+      if (gen !== glassGen) return;
+      var svg = $('dsLgSvg');
+      if (!svg) {
+        svg = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
+        svg.id = 'dsLgSvg'; svg.setAttribute('aria-hidden', 'true');
+        svg.style.cssText = 'position:absolute;width:0;height:0;overflow:hidden';
+        document.body.appendChild(svg);
+      }
+      svg.innerHTML = '<filter id="ds-lg-filter" x="0" y="0" width="' + w0 + '" height="' + h + '" filterUnits="userSpaceOnUse" primitiveUnits="userSpaceOnUse" color-interpolation-filters="sRGB">' +
+        '<feImage href="' + urls[0] + '" x="0" y="0" width="' + (w0 - rc) + '" height="' + h + '" preserveAspectRatio="xMinYMin slice" result="a"/>' +
+        '<feImage href="' + urls[1] + '" x="' + (w0 - rc) + '" y="0" width="' + rc + '" height="' + h + '" preserveAspectRatio="none" result="b"/>' +
+        '<feMerge result="map"><feMergeNode in="a"/><feMergeNode in="b"/></feMerge>' +
+        '<feDisplacementMap in="SourceGraphic" in2="map" scale="-22" xChannelSelector="R" yChannelSelector="G"/></filter>';
+      var f = svg.querySelector('filter'), im = f.querySelectorAll('feImage');
+      glassFx = { f: f, a: im[0], b: im[1] }; glassRc = rc; glassW = 0;
+      buildGlass();
+    });
+  }
+  function buildGlass() {
+    var dock = document.querySelector('.ds-c .ds-dock');
+    if (!dock || !isChromium) return;
+    var w = Math.round(dock.offsetWidth), h = Math.round(dock.offsetHeight);
+    if (!w || !h) return;
+    if (h !== glassH) { glassH = h; makeGlass(h); }      // 高度变了（几乎不会）才重画贴图
+    if (!glassFx) return;
+    sizeGlass(Math.min(w, GLASS_LONG));
+    if (!refractPaused) document.body.classList.add('ds-lg-refract');
   }
   if (window.ResizeObserver && document.querySelector('.ds-c .ds-dock')) {
-    new ResizeObserver(function () { requestAnimationFrame(buildGlass); }).observe(document.querySelector('.ds-c .ds-dock'));
+    // 同一帧里就把滤镜尺寸跟上（只改属性，很便宜）；胶囊宽度过渡时每一帧都对得上
+    new ResizeObserver(function () { buildGlass(); }).observe(document.querySelector('.ds-c .ds-dock'));
   }
   // 拖动窗口 / DevTools 分隔条时，backdrop-filter: url(#svg) 每帧都要重新光栅化位移贴图，
   // 是这页最贵的一步（DevTools 打开时更明显）。拖动期间先退回通用的磨砂玻璃层，停下来再重建折射层。
@@ -7597,7 +7703,7 @@ if (typeof CAR_DATABASE !== 'undefined') {
     resizeTimer = setTimeout(function () {
       if (!refractPaused) return;
       refractPaused = false;
-      glassKey = '';                       // 强制重建：尺寸没变也必须把折射层贴回去
+      glassW = 0;                          // 尺寸没变也要把折射层贴回去
       requestAnimationFrame(buildGlass);
     }, 220);
   }, { passive: true });
