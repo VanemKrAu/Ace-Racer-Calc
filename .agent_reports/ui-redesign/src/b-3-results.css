@@ -1,0 +1,71 @@
+/* B · 结论 / 分享 / 版权页 */
+.ds-b .result-card { --st: var(--pass); padding: 18px 0 0; border-top: 3px solid var(--st); border-bottom: 0; margin-bottom: 0; }
+.ds-b .result-card.error-state { --st: var(--fail); }
+.ds-b .result-title { font-size: 12px; font-weight: 800; letter-spacing: 2px; color: var(--ink-2); }
+.ds-b .result-req { margin-top: 6px; font-size: 12.5px; font-weight: 700; color: var(--warn); }
+.ds-b .ds-gauge { padding: 12px 0 18px; }
+.ds-b .ds-status { font-size: 15px; font-weight: 900; color: var(--st); }
+.ds-b .ds-gauge[data-state="idle"] .ds-status { color: var(--ink-3); }
+.ds-b .ds-target { font-size: 12.5px; color: var(--ink-2); }
+.ds-b .ds-gauge-main { margin: 4px 0 14px; }
+.ds-b .ds-value { font: 400 76px/1 var(--serif); letter-spacing: -2px; color: var(--ink); font-variant-numeric: lining-nums tabular-nums; }
+.ds-b .ds-value small { font-size: 30px; letter-spacing: -.5px; color: var(--ink-2); }
+.ds-b .ds-delta { margin-top: 8px; font-size: 13px; font-weight: 700; color: var(--st); }
+.ds-b .ds-bar { height: 10px; background: repeating-linear-gradient(90deg, var(--field) 0 1px, transparent 1px 6.25%); border-bottom: 1px solid var(--ink); }
+.ds-b .ds-bar-fill { background: var(--st); height: 4px; margin-top: 6px; }
+.ds-b .ds-bar-mark { width: 2px; background: var(--ink); top: -4px; margin-left: -1px; }
+.ds-b .result-desc { margin-bottom: 16px; font-size: 13.5px; line-height: 1.7; color: var(--ink); padding-left: 12px; border-left: 2px solid var(--st); }
+.ds-b .result-desc b, .ds-b .result-desc strong { font-weight: 800; }
+.ds-b .formula-box { padding: 14px 16px; background: var(--paper-2); font: 12px/1.8 var(--mono); color: var(--ink-2); }
+.ds-b .formula-box b { color: var(--ink); }
+
+/* 分享（第 05 章） */
+.ds-b .share-card { padding: 0; margin: 0; border: 0; }
+.ds-b .share-btn-group { gap: 0; border: 1px solid var(--rule-strong); }
+.ds-b .share-btn { gap: 10px; padding: 22px 10px; background: transparent; border: 0; border-right: 1px solid var(--rule-strong); color: var(--ink); font-size: 14px; font-weight: 800; transition: background .15s, color .15s; }
+.ds-b .share-btn:last-child { border-right: 0; }
+.ds-b .share-btn .ico { width: 22px; height: 22px; }
+.ds-b .share-btn:hover { background: var(--ink); color: var(--paper); }
+
+/* 版权页 */
+.ds-b .site-footer { margin-top: 40px; padding-top: 26px; border-top: 3px solid var(--rule-strong); display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 36px; align-items: start; }
+.ds-b .footer-legal { font-size: 12.5px; color: var(--ink-2); line-height: 1.75; }
+.ds-b .footer-legal p + p { margin-top: 10px; }
+.ds-b .social-row { justify-content: flex-start; gap: 4px 16px; margin-top: 12px; }
+.ds-b .social-tag { gap: 6px; font-size: 13px; font-weight: 700; color: var(--ink); text-decoration: underline; text-underline-offset: 4px; text-decoration-color: var(--field); }
+.ds-b .social-tag:hover { text-decoration-color: var(--spot); color: var(--spot); }
+.ds-b .social-tag .ico { width: 15px; height: 15px; }
+.ds-b .site-footer .card { padding: 0; margin: 0; border: 0; }
+.ds-b .site-footer .card-title { font-size: 14px; margin-bottom: 10px; gap: 8px; }
+.ds-b .site-footer .card-title .ico { width: 16px; height: 16px; }
+.ds-b .card-text { font-size: 12.5px; color: var(--ink-2); line-height: 1.75; margin-bottom: 14px; }
+.ds-b .bug-btn { width: 100%; justify-content: space-between; gap: 10px; height: 44px; padding: 0 14px; background: var(--ink); color: var(--paper); font-size: 13.5px; font-weight: 800; }
+.ds-b .bug-btn > span { flex: 1; }
+.ds-b .bug-btn:hover { background: var(--spot); color: var(--on-spot); }
+.ds-b .thanks-list { justify-content: flex-start; gap: 0; margin-bottom: 12px; }
+.ds-b .thanks-item { font-size: 15px; font-weight: 800; }
+.ds-b .thanks-item + .thanks-item::before { content: "·"; margin: 0 10px; color: var(--ink-3); font-weight: 400; }
+.ds-b .thanks-foot { margin: 0; }
+.ds-b .bottom-image-wrapper { grid-column: 1 / -1; padding: 30px 0 10px; border-top: 1px solid var(--rule); }
+.ds-b .bottom-msg-text { font-size: 14px; color: var(--ink-2); margin: 0 auto 18px; max-width: 46ch; line-height: 1.7; }
+.ds-b #imgDark, .ds-b #imgLight { border: 1px solid var(--rule-strong); }
+.ds-b #gh-support-link { height: 46px; padding: 0 22px; border: 1.5px solid var(--ink); font-weight: 800; color: var(--ink); }
+
+.ds-b .copy-toast { background: var(--ink); color: var(--paper); padding: 12px 18px; font-size: 13px; font-weight: 700; min-width: 220px; text-align: center; }
+
+@media (max-width: 849px) {
+  .ds-b .app-container { padding: 12px 18px 72px; }
+  .ds-b .sheet-mast span { display: none; }
+  .ds-b .top-bar .nav-btn-text, .ds-b #langBtnText { display: none; }
+  .ds-b .header { padding: 26px 0 16px; }
+  .ds-b .header h1 { font-size: 29px; }
+  .ds-b .sheet-sec, .ds-b .share-block { grid-template-columns: 1fr; gap: 18px; padding: 24px 0 20px; margin-top: 18px; }
+  .ds-b .sheet-head .section-divider { position: static; display: flex; align-items: baseline; gap: 12px; }
+  .ds-b .section-divider::before { font-size: 44px; margin: 0; }
+  .ds-b .desktop-col > .card:last-child:not(.result-card) { margin-bottom: 26px; border-bottom: 1px solid var(--rule); padding-bottom: 24px; }
+  .ds-b .sheet-calc .result-card { margin-top: 4px; }
+  .ds-b .ds-value { font-size: 62px; }
+  .ds-b #specGrid { grid-template-columns: 1fr; }
+  .ds-b .site-footer { grid-template-columns: 1fr; gap: 28px; }
+  .ds-b .share-btn { font-size: 12.5px; padding: 18px 4px; }
+}

@@ -1,6 +1,10 @@
 # 临时文件
 .agent_tmp/
-.agent_reports/
+.agent_reports/*
+# 但 UI 构建源码必须入库：index.html 是它的产物，源码不入库 = 产出没有版本历史
+!.agent_reports/ui-redesign/
+.agent_reports/ui-redesign/*
+!.agent_reports/ui-redesign/src/
 *.tmp
 node_modules/
 
@@ -30,3 +34,6 @@ updata/
 
 # 演示视频（不进仓库）
 video/
+
+# Claude 导出产物（本地保留、不入库）
+Claude outputs/

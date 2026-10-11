@@ -1,0 +1,178 @@
+/* ============ base.css：三套设计共用的「功能性」样式 ============
+   只放 JS 依赖的显隐 / 展开 / 语言切换机制，不放任何视觉风格。 */
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
+html { -webkit-text-size-adjust: 100%; }
+body { min-height: 100vh; }
+img { max-width: 100%; }
+button { font: inherit; color: inherit; }
+a { color: inherit; }
+
+/* 长截图导出的加载遮罩转圈（导出的那段 JS 会用；原来那里是个相机 emoji，与全站 SVG 图标不一致） */
+@keyframes dsSpin { to { transform: rotate(360deg); } }
+@media (prefers-reduced-motion: reduce) { @keyframes dsSpin { to { transform: none; } } }
+
+/* 中英切换 */
+.lang-en { display: none !important; }
+body.en-mode .zh { display: none !important; }
+body.en-mode .lang-en { display: unset !important; }
+body.en-mode span.lang-en, body.en-mode b.lang-en { display: inline-block !important; }
+
+/* 下拉菜单：JS 通过 .show 控制 */
+.dropdown-container { position: relative; }
+.dropdown-menu { display: none; position: absolute; top: 100%; z-index: 99999; min-width: 150px; max-height: 40vh; overflow-y: auto; margin-top: 6px; }
+.dropdown-menu.left { left: 0; right: auto; }
+.dropdown-menu.right { right: 0; left: auto; }
+.dropdown-menu.show { display: block; animation: dsMenuIn .18s ease-out; }
+@keyframes dsMenuIn { from { opacity: 0; transform: translateY(-4px); } to { opacity: 1; transform: none; } }
+.dropdown-option { display: flex; align-items: center; gap: 8px; cursor: pointer; text-decoration: none; }
+
+/* 使用前必看：details 展开 / 收起动画（JS 加 .closing） */
+details.tutorial-details summary { list-style: none; cursor: pointer; }
+details.tutorial-details summary::-webkit-details-marker { display: none; }
+details.tutorial-details > div:last-child { overflow: hidden; }
+details.tutorial-details[open]:not(.closing) summary .dropdown-icon { transform: rotate(180deg); }
+details.tutorial-details[open]:not(.closing) > div:last-child { animation: dsOpen .32s cubic-bezier(.4,0,.2,1) forwards; }
+details.tutorial-details.closing > div:last-child { animation: dsClose .32s cubic-bezier(.4,0,.2,1) forwards !important; }
+@keyframes dsOpen { from { max-height: 0; opacity: 0; } to { max-height: 1200px; opacity: 1; } }
+@keyframes dsClose { from { max-height: 1200px; opacity: 1; } to { max-height: 0; opacity: 0; } }
+#updateBadge { display: none; }
+
+/* 赋能子选项 / 扩展自充能：按父级激活态展开（JS 切 .active / .extra-active-*） */
+.empower-sub-options, #extraNitroContainer, #extraUltContainer, #extraPerSecContainer {
+  display: flex !important; flex-direction: column; max-height: 0; opacity: 0; visibility: hidden; overflow: hidden;
+  margin-top: 0 !important; margin-bottom: 0 !important; padding-top: 0 !important; padding-bottom: 0 !important; border-width: 0 !important;
+  transition: max-height .32s cubic-bezier(.4,0,.2,1), opacity .25s ease, margin .25s ease, padding .25s ease, visibility .32s;
+}
+.empower-item.active .empower-sub-options,
+.extra-active-nitro #extraNitroContainer, .extra-active-ult #extraUltContainer, .extra-active-persec #extraPerSecContainer {
+  max-height: 320px; opacity: 1; visibility: visible;
+}
+
+/* 赞赏码 / GitHub Sponsors 随主题与语言切换 */
+#imgLight { display: none; }
+body.light-mode #imgDark { display: none; }
+body.light-mode #imgLight { display: inline-block; }
+body.en-mode #imgDark, body.en-mode #imgLight { display: none !important; }
+#gh-support-link { display: none; }
+body.en-mode #gh-support-link { display: inline-flex !important; }
+
+/* Toast */
+.copy-toast { visibility: hidden; opacity: 0; position: fixed; z-index: 3000; left: 50%; bottom: 28px; transform: translateX(-50%); transition: opacity .25s, bottom .25s; pointer-events: none; }
+.copy-toast.show { visibility: visible; opacity: 1; bottom: 48px; }
+
+/* 原始结果文字保留在 DOM（导出文本 / 长图都读它），视觉上由 .ds-gauge 取代 */
+.result-num.ds-sr { position: absolute !important; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
+
+/* 专精地图复选框：原 JS 会写行内 flex/width/font-size，新布局下统一接管 */
+#specLeft, #specRight { flex: 1 1 0 !important; width: auto !important; max-width: none !important; min-width: 0; }
+#specLabel { font-size: inherit !important; white-space: normal !important; height: auto !important; }
+
+/* 数字输入：去掉步进箭头；滚轮不误改（原 JS 已处理 blur） */
+input[type="number"]::-webkit-outer-spin-button, input[type="number"]::-webkit-inner-spin-button { -webkit-appearance: none; margin: 0; }
+input[type="number"] { -moz-appearance: textfield; appearance: textfield; }
+label, .nav-btn, .dropdown-option, .card-title, .slider-header, .empower-info, .empower-sub-options { user-select: none; -webkit-user-select: none; }
+
+/* 滑块：仅拇指可拖（沿用原站防误触设计） */
+.slider-control { width: 100%; pointer-events: none; }
+.slider-control::-webkit-slider-thumb { pointer-events: auto; cursor: grab; }
+.slider-control::-moz-range-thumb { pointer-events: auto; cursor: grab; }
+
+/* 移动端：车辆技能附加充能效率卡片沉底（原站行为） */
+@media (max-width: 849px) {
+  #topLayout { display: flex; flex-direction: column; }
+  #topLayout > .desktop-col { display: contents; }
+  .eff-card-mobile { order: 10; }
+}
+
+/* 性能模式 / 减弱动效 */
+body.performance-mode *, body.performance-mode *::before, body.performance-mode *::after { transition: none !important; animation: none !important; }
+body.performance-mode details.tutorial-details.closing > div:last-child { display: none !important; }
+@media (prefers-reduced-motion: reduce) { *, *::before, *::after { transition-duration: .01ms !important; animation-duration: .01ms !important; } }
+
+/* ---------- 结构骨架（三套共用，只管排布） ---------- */
+.ico { width: 18px; height: 18px; flex: none; display: inline-block; vertical-align: middle; }
+.desktop-layout { display: flex; flex-direction: column; }
+.desktop-col { display: flex; flex-direction: column; min-width: 0; }
+@media (min-width: 850px) { .desktop-layout { flex-direction: row; align-items: flex-start; } .desktop-col { flex: 1; } }
+.row-grid { display: grid; grid-template-columns: 1fr 1fr; }
+.input-wrapper { position: relative; display: flex; align-items: center; }
+.form-control { width: 100%; min-width: 0; }
+.input-unit { position: absolute; pointer-events: none; }
+.header { display: flex; align-items: center; }
+.header h1 { margin: 0; }
+.top-bar, .top-right, .top-left { display: flex; align-items: center; }
+.nav-btn { display: inline-flex; align-items: center; cursor: pointer; }
+.theme-ico .ico { display: none; }
+.theme-ico .ico:nth-child(3) { display: inline-block; }
+body[data-theme-mode="light"] .theme-ico .ico:nth-child(3), body[data-theme-mode="dark"] .theme-ico .ico:nth-child(3) { display: none; }
+body[data-theme-mode="light"] .theme-ico .ico:nth-child(1), body[data-theme-mode="dark"] .theme-ico .ico:nth-child(2) { display: inline-block; }
+.tutorial-details summary { display: flex; align-items: center; justify-content: space-between; gap: 12px; }
+.tut-head, .tut-actions { display: flex; align-items: center; gap: 8px; }
+.tut-head { flex-wrap: wrap; }
+.tut-actions button { background: none; border: 0; cursor: pointer; display: flex; }
+.dropdown-icon { display: flex; transition: transform .3s; }
+#tutorialBtnInner { transform: none !important; box-shadow: none !important; }
+.car-select { position: relative; z-index: 100; }
+.car-search-box { position: relative; }
+.car-search-box > .ico { position: absolute; top: 50%; transform: translateY(-50%); pointer-events: none; }
+.car-filters { display: grid; grid-template-columns: 1fr 1fr; }
+.car-filters .dropdown-menu, .car-list-box .dropdown-menu { width: 100%; }
+#carDropdown { max-height: 52vh; }
+.select-btn { width: 100%; justify-content: space-between; }
+.select-btn > span { min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; text-align: left; }
+.car-info-bar { flex-wrap: wrap; align-items: center; }
+#carImgWrap { position: relative; }
+#carImage { display: block; margin: 0 auto; object-fit: contain; }
+#carQualityBar { z-index: 2; }
+#carPreviewTags, #carPreviewChips { flex-wrap: wrap; }
+.card-title { display: flex; align-items: center; }
+.card-title .limit-badge { margin-left: auto; }
+.nitro-grid { display: grid; grid-template-columns: 1fr; }
+@media (min-width: 850px) { .nitro-grid { grid-template-columns: 1fr 1fr; } }
+.nitro-item { display: flex; align-items: center; justify-content: space-between; }
+.nitro-left { display: flex; align-items: center; flex: 1; min-width: 0; }
+.nitro-left label { cursor: pointer; flex: 1; }
+.nitro-right-wrapper { position: relative; display: flex; align-items: center; }
+.nitro-right-unit { position: absolute; pointer-events: none; }
+#specGrid { display: grid; grid-template-columns: 1fr 1fr; align-items: end; }
+.check-line { display: flex; align-items: center; cursor: pointer; }
+.slider-header { display: flex; justify-content: space-between; align-items: baseline; }
+.empower-list { display: flex; flex-direction: column; }
+.empower-flex { display: flex; align-items: flex-start; }
+.empower-info { flex: 1; min-width: 0; display: block; cursor: pointer; }
+.empower-info > label { display: block; cursor: pointer; }
+.sub-row { display: flex; align-items: center; flex-wrap: wrap; }
+.sub-checkbox-label { display: flex; align-items: center; cursor: pointer; }
+.extra-toggle { display: flex; align-items: center; cursor: pointer; width: 100%; }
+.scope-row { display: flex; flex-wrap: wrap; }
+.mode-bar { display: flex; align-items: center; justify-content: space-between; }
+.mode-info { flex: 1; min-width: 0; line-height: 1.45; }
+.mode-btn { flex: none; cursor: pointer; max-width: 42%; }
+.ds-gauge-top { display: flex; justify-content: space-between; align-items: baseline; gap: 8px; }
+.ds-gauge-main { display: flex; align-items: center; }
+.ds-readout { display: flex; flex-direction: column; min-width: 0; }
+.ds-bar { position: relative; overflow: hidden; }
+.ds-bar-fill { height: 100%; width: 0; transition: width .45s cubic-bezier(.2,.8,.2,1); }
+.ds-bar-mark { position: absolute; top: 0; bottom: 0; left: 62.5%; }
+.ds-ring { display: none; }
+.ds-ring circle { fill: none; }
+.ds-ring-fill { transform: rotate(-90deg); transform-origin: 50% 50%; transition: stroke-dashoffset .5s cubic-bezier(.2,.8,.2,1); }
+.formula-box { word-break: break-all; }
+.share-btn-group { display: grid; grid-template-columns: repeat(3, 1fr); }
+.share-btn { display: flex; flex-direction: column; align-items: center; justify-content: center; cursor: pointer; }
+.social-row, .thanks-list { display: flex; flex-wrap: wrap; justify-content: center; }
+.social-tag, .bug-btn { display: inline-flex; align-items: center; text-decoration: none; }
+.bottom-image-wrapper { text-align: center; }
+#imgDark, #imgLight { width: 320px; max-width: 80%; height: auto; aspect-ratio: 1 / 1; }
+#gh-support-link { align-items: center; justify-content: center; gap: 8px; text-decoration: none; }
+.ds-dock { display: none; }
+.ds-dock-item { display: flex; align-items: center; cursor: pointer; border: 0; font: inherit; }
+
+/* 预览专用：版本切换条 */
+.ds-switch { position: fixed; z-index: 5000; left: 50%; transform: translateX(-50%); top: 10px; display: flex; gap: 2px; padding: 3px; border-radius: 999px; background: rgba(20,20,20,.86); box-shadow: 0 4px 16px rgba(0,0,0,.25); font: 600 12px/1 system-ui, "PingFang SC", "Microsoft YaHei", sans-serif; }
+.ds-switch a { color: #bbb; text-decoration: none; padding: 7px 12px; border-radius: 999px; white-space: nowrap; }
+.ds-switch a[aria-current="page"] { background: #fff; color: #111; }
+.ds-switch a:hover:not([aria-current]) { color: #fff; }
+.ds-switch .ds-switch-tag { color: #777; padding: 7px 8px 7px 10px; }
+@media (max-width: 560px) { .ds-switch { top: auto; bottom: 10px; } .ds-switch .ds-switch-tag { display: none; } }
+body.ds-shot .ds-switch { display: none; }

@@ -1,0 +1,151 @@
+/* ================= C · 车机 Cockpit =================
+   思路：像一个原生 App —— 分组列表、开关、圆环读数、底部结果胶囊。
+   强调色跟随所选赛车的品质（传说金 / 史诗紫 / 稀有蓝 / 普通绿），没选车时为中性灰。 */
+.ds-c {
+  --bg: #f2f2f6; --cell: #ffffff; --fill: #f2f2f5; --fill-2: #dcdce2; --fill-hover: #e8e8ee; --sep: #e6e6eb;
+  --ink: #111114; --ink-2: #5f5f67; --ink-3: #6f6f78;
+  --acc: #1d1d1f; --acc-ink: #1d1d1f; --on-acc: #fff; --flash-rgb: 29, 29, 31;
+  --acc-soft: rgba(29,29,31,.07); --acc-glow: rgba(29,29,31,.07);
+  --pass: #1a8f45; --pass-fill: #34c759; --fail: #d92d20; --fail-fill: #ff3b30; --warn: #8a4f00;
+  --pass-soft: rgba(52,199,89,.13); --fail-soft: rgba(255,59,48,.11); --warn-soft: rgba(184,110,0,.14); --dock-2: rgba(255,255,255,.14);
+  /* 勾选 / 开关用背景图绘制（不用 input::after —— html2canvas 会因此导出失败） */
+  --check-w: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 12 12'%3E%3Cpath d='M2.6 6.2 5 8.5l4.4-4.8' fill='none' stroke='%23ffffff' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
+  --check-k: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 12 12'%3E%3Cpath d='M2.6 6.2 5 8.5l4.4-4.8' fill='none' stroke='%23111114' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
+  --knob: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 22 22'%3E%3Ccircle cx='11' cy='11.8' r='10.2' fill='%23000' fill-opacity='.16'/%3E%3Ccircle cx='11' cy='11' r='10' fill='%23fff'/%3E%3C/svg%3E");
+  --check-acc: var(--check-w);
+  --shadow: 0 1px 2px rgba(0,0,0,.04), 0 0 0 1px rgba(0,0,0,.035);
+  --r-lg: 20px; --r-md: 14px; --r-sm: 10px;
+  --sans: "Noto Sans SC", system-ui, -apple-system, "PingFang SC", "HarmonyOS Sans SC", "MiSans", "Microsoft YaHei UI", "Microsoft YaHei", "Segoe UI", sans-serif;
+  --round: "Noto Sans SC", ui-rounded, "SF Pro Rounded", "HarmonyOS Sans SC", "MiSans", system-ui, "Segoe UI Variable Display", "Segoe UI", sans-serif;
+  --mono: ui-monospace, "SF Mono", "Cascadia Mono", Consolas, "Noto Sans SC", monospace;
+}
+.ds-c[data-quality="legend"] { --acc: #f2a900; --acc-ink: #9a6400; --flash-rgb: 242, 169, 0; --acc-soft: rgba(242,169,0,.14); --acc-glow: rgba(242,169,0,.22); }
+.ds-c[data-quality="epic"] { --acc: #9b5de5; --acc-ink: #7a3fc4; --flash-rgb: 155, 93, 229; --acc-soft: rgba(155,93,229,.13); --acc-glow: rgba(155,93,229,.2); }
+.ds-c[data-quality="rare"] { --acc: #1e90e8; --acc-ink: #0f6fb8; --flash-rgb: 30, 144, 232; --acc-soft: rgba(30,144,232,.13); --acc-glow: rgba(30,144,232,.2); }
+.ds-c[data-quality="common"] { --acc: #2fb872; --acc-ink: #15814a; --flash-rgb: 47, 184, 114; --acc-soft: rgba(47,184,114,.14); --acc-glow: rgba(47,184,114,.2); }
+.ds-c:not(.light-mode) {
+  --bg: #000000; --cell: #1c1c1e; --fill: #2a2a2d; --fill-2: #3a3a3d; --fill-hover: #343438; --sep: #2c2c2f;
+  --ink: #f5f5f7; --ink-2: #a3a3aa; --ink-3: #6c6c73;
+  --acc: #8e8e93; --acc-ink: #f5f5f7; --flash-rgb: 142, 142, 147; --acc-soft: rgba(142,142,147,.16); --acc-glow: rgba(142,142,147,.14);
+  --pass: #30d158; --pass-fill: #30d158; --fail: #ff453a; --fail-fill: #ff453a; --warn: #ffb340;
+  --pass-soft: rgba(48,209,88,.15); --fail-soft: rgba(255,69,58,.15); --warn-soft: rgba(255,179,64,.16); --dock-2: rgba(28,28,30,.1);
+  --shadow: none;
+}
+.ds-c:not(.light-mode)[data-quality="legend"] { --acc: #ffbf2e; --acc-ink: #ffc94d; --flash-rgb: 255, 191, 46; --acc-soft: rgba(255,191,46,.15); --acc-glow: rgba(255,191,46,.2); }
+.ds-c:not(.light-mode)[data-quality="epic"] { --acc: #b77bff; --acc-ink: #c99bff; --flash-rgb: 183, 123, 255; --acc-soft: rgba(183,123,255,.15); --acc-glow: rgba(183,123,255,.2); }
+.ds-c:not(.light-mode)[data-quality="rare"] { --acc: #4aaeff; --acc-ink: #6fbfff; --flash-rgb: 74, 174, 255; --acc-soft: rgba(74,174,255,.15); --acc-glow: rgba(74,174,255,.2); }
+.ds-c:not(.light-mode)[data-quality="common"] { --acc: #3ccf84; --acc-ink: #5edc9b; --flash-rgb: 60, 207, 132; --acc-soft: rgba(60,207,132,.15); --acc-glow: rgba(60,207,132,.2); }
+.ds-c {
+  --primary: var(--acc-ink); --secondary: var(--ink); --accent: var(--fail); --success: var(--pass); --warning: var(--warn);
+  --text-color: var(--ink); --text-muted: var(--ink-2); --border: var(--sep);
+  --inner-bg: var(--fill); --box-bg: var(--fill); --box-bg-light: var(--fill); --input-bg: var(--fill); --card-bg: var(--cell);
+  --btn-shadow: none; --nitro-active-bg: var(--acc-soft); --ult-active-bg: var(--acc-soft);
+  --export-bg: var(--bg); --export-accent: var(--ink); --export-pass: var(--pass); --export-fail: var(--fail); --export-range: var(--acc);
+  background: var(--bg); color: var(--ink); font: 15px/1.5 var(--sans);
+}
+.ds-c input, .ds-c button { font-family: inherit; }
+.ds-c .app-container { max-width: 1320px; margin: 0 auto; padding: 14px 24px 60px; }
+
+/* 顶栏：圆形图标按钮 */
+.ds-c .top-bar { justify-content: space-between; position: relative; z-index: 1000; margin-bottom: 10px; }
+.ds-c .top-right { gap: 8px; }
+.ds-c .nav-btn { height: 38px; gap: 7px; padding: 0 14px; background: var(--cell); border: 0; border-radius: 999px; box-shadow: var(--shadow); color: var(--ink); font-size: 13.5px; font-weight: 600; transition: background .15s; }
+.ds-c .top-bar .nav-btn:hover { background: var(--fill); }
+.ds-c .top-bar #authorBtn, .ds-c .top-bar #themeBtn { width: 38px; padding: 0; justify-content: center; }
+.ds-c .top-bar .nav-btn-text { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); }
+.ds-c .top-bar .nav-btn .ico { width: 18px; height: 18px; }
+.ds-c .dropdown-menu { background: var(--cell); border-radius: var(--r-md); padding: 6px; box-shadow: 0 12px 40px rgba(0,0,0,.18), 0 0 0 1px var(--sep); }
+.ds-c .dropdown-option { padding: 10px 12px; border-radius: var(--r-sm); font-size: 14px; color: var(--ink); }
+.ds-c .dropdown-option .ico { width: 17px; height: 17px; color: var(--ink-2); }
+.ds-c .dropdown-option:hover { background: var(--fill-hover); }
+.ds-c .dropdown-option.selected { background: var(--fill); font-weight: 600; }
+.ds-c .dropdown-option.sel-common { --qcs: rgba(47,184,114,.16); } .ds-c .dropdown-option.sel-rare { --qcs: rgba(30,144,232,.16); }
+.ds-c .dropdown-option.sel-epic { --qcs: rgba(155,93,229,.16); } .ds-c .dropdown-option.sel-legend { --qcs: rgba(242,169,0,.18); }
+.ds-c .dropdown-option[class*="sel-"] { background: var(--qcs); font-weight: 600; color: var(--ink); }
+.ds-c .dropdown-option img { width: 20px !important; height: 20px !important; }
+/* 浅色下这几个位置的图标：定位图标原图是「淡蓝色天平」、专精图标是「白色」剪影。
+   绝不能用 invert —— 反色会把蓝色变成橙黄、白色变成纯黑（V3 设计稿原来的 invert(1) brightness(.35)
+   就是这么把彩色图标弄成黑块的）。这里只压亮度、保留色相：蓝的仍是蓝、白的变成中灰，都不发死。 */
+.ds-c.light-mode .dropdown-option img, .ds-c.light-mode .select-btn img { filter: brightness(.6); }
+
+/* 大标题 */
+.ds-c .header { gap: 16px; padding: 10px 2px 22px; }
+.ds-c .brand-mark { width: 60px; height: 60px; border-radius: 15px; flex: none; box-shadow: 0 4px 14px rgba(80, 40, 200, .25); }
+.ds-c .header h1 { font-size: 30px; font-weight: 800; letter-spacing: -.3px; line-height: 1.2; }
+.ds-c .header p { margin-top: 4px; font-size: 14px; color: var(--ink-2); }
+.ds-c .header p a { color: var(--ink); font-weight: 700; text-decoration: none; }
+
+/* 提示卡 */
+.ds-c #tutorialWrapper { margin-bottom: 18px; }
+.ds-c .tutorial-details { background: var(--cell); border-radius: var(--r-lg); box-shadow: var(--shadow); }
+.ds-c .tutorial-details summary { padding: 14px 16px; }
+.ds-c .tut-head { font-size: 15px; font-weight: 700; gap: 10px; }
+.ds-c .tut-head .ico { width: 30px; height: 30px; padding: 6px; border-radius: 50%; background: var(--warn-soft); color: var(--warn); }
+.ds-c #updateBadge { background: var(--fail-fill); color: #fff; font-size: 11.5px; font-weight: 700; padding: 2px 9px; border-radius: 999px; }
+.ds-c .tut-actions { gap: 4px; color: var(--ink-3); }
+.ds-c #closeTutorialBtn { width: 30px; height: 30px; border-radius: 50%; background: var(--fill); color: var(--ink-2); align-items: center; justify-content: center; }
+.ds-c #closeTutorialBtn .ico { width: 15px; height: 15px; }
+.ds-c .tut-body { padding: 0 16px 16px; }
+.ds-c .tut-video { display: flex; width: fit-content; align-items: center; gap: 8px; height: 40px; padding: 0 20px; margin: 4px auto 16px; border-radius: 999px; background: var(--ink); color: var(--cell); font-size: 13.5px; font-weight: 700; text-decoration: none; }
+.ds-c .tut-notes-title { font-size: 13px; font-weight: 700; color: var(--ink-2); margin: 0 0 6px; padding: 12px 0 0 40px; border-top: 1px solid var(--sep); }
+.ds-c #notesContent { margin-left: 40px; }
+@media (max-width: 849px) { .ds-c .tut-notes-title { padding-left: 0; } .ds-c #notesContent { margin-left: 0; } }
+.ds-c #notesContent { font-size: 13.5px; color: var(--ink-2); line-height: 1.7; padding-left: 18px; }
+.ds-c #notesContent li + li { margin-top: 6px; }
+.ds-c .calc-note { padding: 4px 6px 0; font-size: 12.5px; color: var(--ink-3); line-height: 1.7; }
+
+/* 版式：选车 → 基础属性 → 两个独立测算组（各自「输入 + 结果」成对，中间明显隔断） */
+.ds-c .desktop-layout { gap: 16px; }
+.ds-c .desktop-col { gap: 16px; }
+.ds-c .cp-hero { margin-bottom: 26px; }
+.ds-c .cp-base { display: flex; flex-direction: column; gap: 16px; }
+.ds-c { --tray: rgba(0,0,0,.045); --tray-line: rgba(0,0,0,.06); }
+.ds-c:not(.light-mode) { --tray: rgba(255,255,255,.035); --tray-line: rgba(255,255,255,.08); }
+.ds-c .cp-calc { display: grid; grid-template-columns: minmax(0, 1fr); gap: 0; margin-top: 34px; }
+.ds-c .cp-group { background: var(--tray); border-radius: 26px; padding: 15px; border: 1px solid var(--tray-line); min-width: 0; }
+.ds-c .cp-group-head { display: flex; align-items: center; gap: 10px; margin: 2px 4px 14px; }
+.ds-c .cp-group-head .section-divider { padding: 0; }
+.ds-c .cp-step { width: 30px; height: 30px; flex: none; display: inline-flex; align-items: center; justify-content: center; border-radius: 50%; background: var(--ink); color: var(--cell); font: 800 15px/1 var(--round); }
+.ds-c .cp-group-body { display: flex; flex-direction: column; gap: 14px; }
+.ds-c .cp-group-body > * { flex: none; }
+/* 隔断：窄屏为横向分隔条，≥850px 两组左右并排、中间竖向分隔 */
+.ds-c .cp-split { display: flex; align-items: center; gap: 12px; margin: 22px 6px; color: var(--ink-3); font-size: 12.5px; font-weight: 700; }
+.ds-c .cp-split::before, .ds-c .cp-split::after { content: ""; flex: 1; height: 0; border-top: 2px dashed var(--fill-2); }
+.ds-c .cp-split > span { white-space: nowrap; padding: 5px 12px; border-radius: 999px; background: var(--cell); box-shadow: var(--shadow); }
+.ds-c .cp-split-short { display: none; }
+@media (min-width: 850px) {
+  .ds-c .cp-calc { grid-template-columns: minmax(0, 1fr) 44px minmax(0, 1fr); align-items: stretch; }
+  .ds-c .cp-split { flex-direction: column; margin: 18px 0; font-size: 12px; }
+  .ds-c .cp-split::before, .ds-c .cp-split::after { width: 0; height: auto; border-top: 0; border-left: 2px dashed var(--fill-2); }
+  .ds-c .cp-split > span { writing-mode: vertical-rl; letter-spacing: 4px; padding: 12px 5px; }
+  .ds-c .cp-split-long { display: none; }
+  .ds-c .cp-split-short { display: inline; }
+}
+@media (min-width: 1100px) { .ds-c .cp-calc { grid-template-columns: minmax(0, 1fr) 60px minmax(0, 1fr); } }
+
+/* 环境光背景：取当前赛车图做大半径模糊（先缩小再放大，省 GPU）+ 品质色辉光 + 细颗粒。
+   只在屏幕上渲染（fixed、z-index:-1、不在 .app-container 内），长图导出仍是纯色底。 */
+/* 打光颜色单独一套 token（--amb-*），不直接用 --acc-*：
+   浅色跟随品质色（看着还行）；深色不用品质色 —— 没选车时留一层中性白光，选了车就把打光收掉。 */
+.ds-c { --amb-glow: var(--acc-glow); --amb-soft: var(--acc-soft); }
+.ds-c:not(.light-mode) { --amb-glow: rgba(255,255,255,.10); --amb-soft: rgba(255,255,255,.05); }
+.ds-c:not(.light-mode).ds-has-car { --amb-glow: transparent; --amb-soft: transparent; }
+.ds-c .ds-ambient { position: fixed; inset: 0; z-index: -1; pointer-events: none; overflow: hidden;
+  background: radial-gradient(55% 45% at 12% -5%, var(--amb-glow), transparent 72%),
+              radial-gradient(45% 40% at 105% 35%, var(--amb-soft), transparent 70%),
+              radial-gradient(60% 50% at 40% 112%, var(--amb-soft), transparent 70%); }
+/* 固定像素宽度（不再用 vmax）：拖动窗口时这层的盒子不变，浏览器无需重新栅格化这块大模糊，
+   这是「拖宽度卡顿」里最贵的一项；覆盖面积靠 scale(2.6)。 */
+.ds-c .ds-ambient canvas { position: absolute; left: 50%; top: 30%; width: 1120px; max-width: none; height: auto; transform: translate(-50%, -50%) scale(2.6); opacity: 0; transition: opacity .9s ease; }
+/* 模糊与提饱和已在 view.js 里预先画进 canvas（浅色 2.2 / 深色 1.7），这里不再用 CSS filter */
+/* 换车交叉淡入：两层 A/B 轮换，view.js 把新图放到「暗着的那层」再切 .is-on —— 旧车淡出、新车淡入 */
+body.ds-c .ds-ambient canvas.is-on { opacity: .55; }
+/* 浅色底本身亮，模糊车辆要更实一点才看得见；.3 让背景的亮度起伏与深色模式 .55 基本持平
+   （实测 浅色 .3 起伏 std 15.5 / 深色 .55 std 15.7） */
+body.ds-c.light-mode .ds-ambient canvas.is-on { opacity: .3; }
+/* 只有选了车才把这层提升为独立合成层（省一块大纹理），拖窗口时它就只做合成、不再重新模糊 */
+body.ds-c.ds-has-car .ds-ambient canvas { will-change: transform, opacity; }
+.ds-c .ds-ambient::after { content: ""; position: absolute; inset: 0; opacity: .07; background-size: 170px 170px;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='170' height='170'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='2' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 .5 0 0 0 0 .5 0 0 0 0 .5 0 0 0 1 0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E"); }
+body.ds-c.light-mode .ds-ambient::after { opacity: .05; }
+body.ds-c.performance-mode .ds-ambient canvas { display: none; }

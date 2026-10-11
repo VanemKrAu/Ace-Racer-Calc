@@ -4,7 +4,12 @@ const pinyin = require('pinyin');
 
 const vehiclesDir = path.join(__dirname, '..', 'data', '26-07-15_29734784_android', 'full', 'vehicles');
 const outputFile = path.join(__dirname, '..', 'car-database.js');
-const rawDataDir = 'E:/AceRacer/AceRacing-Workbench/data/26-09-18_29825663_android';
+// 原始 JSONL 数据包位置：它不在本仓库内，默认按目录布局推算（工作区同级），
+// 换机器 / 换版本时用环境变量覆盖，不必改脚本：
+//     ACE_RAWDATA_DIR=<数据包目录> node scripts/extract-cars.js
+const RAW_PACKAGE = '26-09-18_29825663_android';
+const rawDataDir = process.env.ACE_RAWDATA_DIR
+  || path.resolve(__dirname, '..', '..', '..', 'AceRacer', 'AceRacing-Workbench', 'data', RAW_PACKAGE);
 
 // 车辆添加时间登记表（新增车辆时在此登记，用于列表"新车在上"排序）
 // 时间戳 = 该车加入网站的时间 (Date.now())

@@ -1,0 +1,126 @@
+/* B · 条目与控件：去卡片化，只靠细线与留白分组 */
+.ds-b .card { padding: 0 0 24px; margin-bottom: 26px; border-bottom: 1px solid var(--rule); }
+.ds-b .desktop-col > .card:last-child, .ds-b .desktop-col > #carPreview:last-child .card { margin-bottom: 0; border-bottom: 0; padding-bottom: 0; }
+/* 选车后原 JS 会给这几块加呼吸描边（行内 !important），留出内边距让描边不贴字 */
+.ds-b #cardCoreParams, .ds-b #cardNitro, .ds-b #extraCustomSection { margin-left: -14px; margin-right: -14px; padding: 14px 14px 24px; margin-top: -14px; }
+.ds-b .card-title { gap: 12px; font-size: 15px; font-weight: 800; margin-bottom: 16px; }
+.ds-b .limit-badge { font: 600 11px/1.3 var(--sans); letter-spacing: 1px; color: var(--ink-2); padding: 3px 8px; border: 1px solid var(--rule); }
+.ds-b .card-hint { font-size: 12.5px; line-height: 1.7; margin: -6px 0 14px; color: var(--ink-2); }
+.ds-b .card-hint b { display: block; color: var(--ink); font-weight: 600; }
+
+/* 输入框 */
+.ds-b .form-group { margin-bottom: 16px; }
+.ds-b .form-group.flush, .ds-b .card > .form-group:last-child, .ds-b .row-grid .form-group { margin-bottom: 0; }
+.ds-b .row-grid { gap: 16px; margin-bottom: 16px; }
+.ds-b .card > .row-grid:last-child { margin-bottom: 0; }
+.ds-b .form-label { display: block; font-size: 12.5px; color: var(--ink-2); margin-bottom: 6px; line-height: 1.5; }
+.ds-b .form-group.is-key .form-label { color: var(--ink); font-weight: 800; }
+.ds-b .form-group.is-key .form-label::after { content: " ●"; color: var(--spot); font-size: 9px; vertical-align: 2px; }
+.ds-b .form-control { height: 44px; background: var(--sheet); border: 1px solid var(--field); border-radius: 0; padding: 0 42px 0 12px; color: var(--ink); font: 700 17px/1 var(--sans); font-variant-numeric: tabular-nums lining-nums; transition: border-color .15s, box-shadow .15s; }
+.ds-b .form-control:hover { border-color: var(--ink-3); }
+.ds-b .form-control:focus { outline: none; border-color: var(--spot); box-shadow: inset 0 0 0 1px var(--spot); }
+.ds-b .input-unit { right: 12px; font-size: 12px; color: var(--ink-3); }
+.ds-b #carSearch { font-weight: 500; font-size: 14px; padding-left: 38px; }
+.ds-b #carSearch::placeholder { color: var(--ink-3); }
+
+/* 氮气规格：表格行 */
+.ds-b .nitro-grid { gap: 0 32px; margin-bottom: 18px; border-top: 1px solid var(--rule); }
+.ds-b .nitro-item { padding: 9px 2px; border-bottom: 1px solid var(--rule); }
+.ds-b .nitro-left { gap: 11px; font-size: 14px; }
+.ds-b .nitro-left input[type="radio"] { appearance: none; width: 15px; height: 15px; border: 1.5px solid var(--ink-3); border-radius: 50%; margin: 0; flex: none; cursor: pointer; }
+.ds-b .nitro-left input[type="radio"]:checked { border-color: var(--spot); background: radial-gradient(circle, var(--spot) 0 3.6px, transparent 4.6px); }
+.ds-b .nitro-item.selected .nitro-left { font-weight: 800; }
+.ds-b .nitro-right-input { width: 76px; height: 32px; background: transparent; border: 0; border-bottom: 1px solid var(--field); padding: 0 22px 0 4px; color: var(--ink); text-align: right; font: 400 19px var(--serif); font-variant-numeric: lining-nums tabular-nums; }
+.ds-b .nitro-right-input:focus { outline: none; border-bottom-color: var(--spot); }
+.ds-b .nitro-item.selected .nitro-right-input { color: var(--spot); border-bottom-color: var(--spot); }
+.ds-b .nitro-right-unit { right: 2px; font-size: 11.5px; color: var(--ink-3); }
+.ds-b #specGrid { gap: 16px; }
+.ds-b #actualUltTimeSpan { font-size: 12px; color: var(--pass); margin: -2px 0 6px; }
+.ds-b #actualUltTimeSpan:empty { display: none; }
+.ds-b .spec-box { display: flex; align-items: center; min-height: 44px; border: 1px solid var(--field); background: var(--sheet); padding: 6px 12px; }
+.ds-b .check-line { gap: 9px; font-size: 13.5px; color: var(--ink); line-height: 1.35; }
+.ds-b .check-line.small { font-size: 12.5px; color: var(--ink-2); }
+
+/* 方框勾选 */
+/* 勾选标记用背景图（不用 input::after，避免 html2canvas 导出报错） */
+.ds-b { --check: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 12 12'%3E%3Cpath d='M2.5 6.2 5 8.6l4.6-5' fill='none' stroke='%23121315' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E"); }
+.ds-b.light-mode { --check: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 12 12'%3E%3Cpath d='M2.5 6.2 5 8.6l4.6-5' fill='none' stroke='%23ffffff' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E"); }
+.ds-b input[type="checkbox"] { appearance: none; width: 16px; height: 16px; border: 1.5px solid var(--ink-2); border-radius: 0; margin: 0; flex: none; cursor: pointer; background: no-repeat center / 12px 12px; }
+.ds-b input[type="checkbox"]:checked { background-color: var(--spot); border-color: var(--spot); background-image: var(--check); }
+.ds-b input[type="checkbox"]:disabled { cursor: not-allowed; }
+
+/* 滑块 */
+.ds-b .slider-wrapper { padding: 4px 0 8px; }
+.ds-b .slider-wrapper + .slider-wrapper { margin-top: 14px; }
+.ds-b .slider-header { font-size: 13px; color: var(--ink-2); margin-bottom: 8px; gap: 12px; }
+.ds-b .slider-value { font: 400 30px/1 var(--serif); color: var(--ink); font-variant-numeric: lining-nums; }
+.ds-b .slider-control { appearance: none; height: 20px; background: transparent; margin: 0; }
+.ds-b .slider-control::-webkit-slider-runnable-track { height: 2px; background: linear-gradient(90deg, var(--spot) var(--fill, 0%), var(--field) var(--fill, 0%)); }
+.ds-b .slider-control::-moz-range-track { height: 2px; background: linear-gradient(90deg, var(--spot) var(--fill, 0%), var(--field) var(--fill, 0%)); }
+.ds-b .slider-control::-webkit-slider-thumb { appearance: none; width: 16px; height: 16px; margin-top: -7px; background: var(--paper); border: 2px solid var(--spot); border-radius: 50%; }
+.ds-b .slider-control::-moz-range-thumb { width: 12px; height: 12px; background: var(--paper); border: 2px solid var(--spot); border-radius: 50%; }
+
+/* 赋能：清单 */
+.ds-b .empower-group-title { font-size: 11.5px; font-weight: 800; letter-spacing: 3px; color: var(--ink-3); margin: 0 0 4px; }
+.ds-b .empower-list { margin-bottom: 20px; border-top: 1px solid var(--rule-strong); }
+.ds-b .empower-list:last-of-type { margin-bottom: 0; }
+.ds-b .empower-item { padding: 12px 10px 12px 12px; border-bottom: 1px solid var(--rule); box-shadow: inset 0 0 0 transparent; transition: background .15s, box-shadow .15s, opacity .2s; }
+.ds-b .empower-item.active { background: var(--spot-soft); box-shadow: inset 3px 0 0 var(--spot); }
+.ds-b .empower-checkbox-wrapper { margin: 3px 12px 0 0; }
+.ds-b .empower-info .title { font-size: 14px; font-weight: 700; margin-bottom: 2px; }
+.ds-b .empower-info .desc { font-size: 12.5px; color: var(--ink-2); line-height: 1.6; }
+.ds-b .empower-info .desc strong { color: var(--ink); font-weight: 800; }
+.ds-b .empower-item.active .desc strong { color: var(--spot); }
+.ds-b .empower-sub-options { gap: 8px; border-left: 1px solid var(--rule-strong); }
+.ds-b .empower-item.active .empower-sub-options { margin-top: 10px !important; padding: 2px 0 2px 12px !important; border-width: 0 0 0 1px !important; }
+.ds-b .sub-row { gap: 8px; font-size: 12.5px; color: var(--ink-2); }
+.ds-b .sub-input { width: 48px; height: 28px; background: transparent; color: var(--ink); border: 0; border-bottom: 1px solid var(--field); text-align: center; font: 400 17px var(--serif); font-variant-numeric: lining-nums; }
+.ds-b .sub-input:focus { outline: none; border-bottom-color: var(--spot); }
+.ds-b .sub-checkbox-label { gap: 9px; font-size: 13px; color: var(--ink-2); }
+.ds-b .empower-limit-tip { margin-top: 12px; font-size: 12.5px; font-weight: 700; color: var(--fail); }
+
+/* 扩展自充能 */
+.ds-b .extra-card .card-title { margin-bottom: 4px; }
+.ds-b .extra-section { padding: 13px 0; border-bottom: 1px solid var(--rule); }
+.ds-b .extra-toggle { gap: 12px; font-size: 13.5px; font-weight: 700; line-height: 1.45; }
+.ds-b .extra-active-nitro .extra-body, .ds-b .extra-active-ult .extra-body, .ds-b .extra-active-persec .extra-body { margin-top: 12px !important; padding: 2px 0 2px 28px !important; }
+.ds-b .scope-row { gap: 20px; }
+
+/* 联动 / 自动计算 */
+.ds-b .mode-bar { gap: 12px; padding: 10px 0; margin-bottom: 16px; border-top: 1px dashed var(--field); border-bottom: 1px dashed var(--field); font-size: 12.5px; }
+.ds-b .mode-btn { height: 32px; padding: 0 14px; background: transparent; color: var(--ink); border: 1.5px solid var(--ink); border-radius: 0; font-size: 12.5px; font-weight: 800; line-height: 1.2; }
+.ds-b .mode-btn:hover { background: var(--ink); color: var(--paper); }
+
+/* 车辆 */
+.ds-b .car-hero { padding-bottom: 0; border-bottom: 0; }
+.ds-b .car-stage { position: relative; background: var(--paper-2); border: 1px solid var(--rule); min-height: 220px; display: flex; align-items: center; justify-content: center; padding: 22px 16px; }
+.ds-b #carImgWrap { position: static !important; }
+.ds-b #carQualityBar { height: 3px !important; border-radius: 0 !important; background: var(--q, var(--ink)) !important; }
+.ds-b[data-quality="legend"] { --q: var(--q-legend); } .ds-b[data-quality="epic"] { --q: var(--q-epic); }
+.ds-b[data-quality="rare"] { --q: var(--q-rare); } .ds-b[data-quality="common"] { --q: var(--q-common); }
+.ds-b #carImage { max-height: 196px; }
+.ds-b #carPreviewPlaceholder { font-size: 13px; color: var(--ink-3); }
+.ds-b .car-meta { padding-top: 14px; display: flex; flex-direction: column; gap: 10px; }
+.ds-b #carPreviewName { font-size: 22px; font-weight: 900; letter-spacing: -.2px; }
+.ds-b #carPreviewTags { gap: 0; }
+.ds-b #carPreviewTags > span { background: none !important; border: 0 !important; border-radius: 0 !important; padding: 0 12px 0 0 !important; margin-right: 12px; border-right: 1px solid var(--rule) !important; font-size: 13px !important; color: var(--ink-2) !important; }
+.ds-b #carPreviewTags > span:first-child { color: var(--q, var(--ink)) !important; font-weight: 800 !important; }
+.ds-b #carPreviewTags > span:last-child { border-right: 0 !important; }
+.ds-b.light-mode #carPreviewTags img { filter: invert(1) brightness(.3); }
+.ds-b #carPreviewChips { gap: 4px; }
+.ds-b #carPreviewChips img { width: 26px !important; height: 26px !important; }
+.ds-b.light-mode #carPreviewChips img { filter: invert(1) opacity(.5); }
+.ds-b #carPreviewAutoMsg { font-size: 12.5px; line-height: 1.75; color: var(--pass); padding: 2px 0 2px 12px; border-left: 2px solid var(--pass); }
+.ds-b #carPreviewAutoMsg a { color: var(--spot) !important; }
+
+.ds-b .car-search-box { margin-bottom: 12px; }
+.ds-b .car-search-box > .ico { left: 12px; width: 16px; height: 16px; color: var(--ink-3); }
+.ds-b .car-filters { gap: 12px; margin-bottom: 12px; }
+.ds-b .select-btn { height: 44px; padding: 0 12px; background: var(--sheet); border: 1px solid var(--field); color: var(--ink); font-size: 13.5px; font-weight: 600; }
+.ds-b .select-btn:hover { border-color: var(--ink-3); }
+.ds-b .select-btn .ico { width: 15px; height: 15px; color: var(--ink-2); }
+.ds-b .select-btn img { width: 16px !important; height: 16px !important; }
+.ds-b .car-list-btn { height: 50px; font-size: 15px; font-weight: 800; border: 1.5px solid var(--ink); }
+.ds-b .car-info-bar { margin-top: 14px; padding: 10px 0; gap: 4px 8px; font-size: 12.5px; color: var(--ink-2); border-top: 1px dashed var(--field); border-bottom: 1px dashed var(--field); }
+.ds-b .car-info-bar b { color: var(--ink); font-weight: 800; }
+.ds-b .car-info-bar .car-badge { border: 1px solid var(--ink); padding: 0 5px; font-size: 10.5px; font-weight: 800; color: var(--ink); }

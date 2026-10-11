@@ -1,0 +1,96 @@
+/* ================= A · 计时塔 Timing Tower =================
+   思路：赛车计时屏 / 遥测界面。纯色面板 + 发丝线，唯一强调色是信号黄；
+   数字一律等宽对齐；无毛玻璃、无发光、无渐变字。 */
+.ds-a {
+  --bg: #0b0c0e; --panel: #131519; --well: #0d0f12; --raise: #1a1d22;
+  --line: #24272e; --line-2: #33373f;
+  --ink: #eceef1; --ink-2: #a3a8b1; --ink-3: #6c717b;
+  --sig: #ffd400; --sig-ink: #ffd400; --on-sig: #0b0c0e; --sig-soft: rgba(255, 212, 0, .09);
+  --pass: #27d17f; --fail: #ff4d3d; --warn: #ff9f1a;
+  --flash-rgb: 255, 212, 0;
+  --q-common: #55b685; --q-rare: #38bdf8; --q-epic: #c084fc; --q-legend: #fbbf24;
+  --stage: radial-gradient(120% 90% at 50% 100%, #1d2127 0%, #121418 55%, #0d0f12 100%);
+  /* 原站行内样式引用的变量 */
+  --primary: var(--sig-ink); --secondary: var(--ink); --accent: var(--fail); --success: var(--pass); --warning: var(--warn);
+  --text-color: var(--ink); --text-muted: var(--ink-2); --border: var(--line-2);
+  --inner-bg: var(--well); --box-bg: var(--raise); --box-bg-light: var(--well); --input-bg: var(--well); --card-bg: var(--panel);
+  --btn-shadow: none; --nitro-active-bg: var(--sig-soft); --ult-active-bg: var(--sig-soft);
+  /* 长图导出 */
+  --export-bg: #0b0c0e; --export-accent: #ffd400; --export-pass: #27d17f; --export-fail: #ff4d3d; --export-range: #ffd400;
+  --num: "DIN Alternate", "Bahnschrift", "Roboto Condensed", "Helvetica Neue", "Segoe UI", sans-serif;
+  --mono: "JetBrains Mono", "SF Mono", "Cascadia Mono", Consolas, "Roboto Mono", "Microsoft YaHei", monospace;
+  --sans: -apple-system, BlinkMacSystemFont, "PingFang SC", "HarmonyOS Sans SC", "MiSans", "Microsoft YaHei UI", "Microsoft YaHei", "Segoe UI", sans-serif;
+}
+.ds-a.light-mode {
+  --bg: #eceae4; --panel: #fbfaf7; --well: #f1efe9; --raise: #e6e3dc;
+  --line: #d9d5cc; --line-2: #c6c1b6;
+  --ink: #15161a; --ink-2: #545863; --ink-3: #868a93;
+  --sig: #ffd400; --sig-ink: #8a6d00; --on-sig: #15161a; --sig-soft: rgba(255, 212, 0, .22);
+  --pass: #0e8a4f; --fail: #d33222; --warn: #b85f00;
+  --flash-rgb: 196, 150, 0;
+  --stage: radial-gradient(120% 90% at 50% 100%, #ffffff 0%, #f1efe9 60%, #e6e3dc 100%);
+  --export-bg: #eceae4; --export-accent: #15161a; --export-pass: #0e8a4f; --export-fail: #d33222; --export-range: #15161a;
+}
+
+.ds-a { background: var(--bg); color: var(--ink); font: 14px/1.5 var(--sans); }
+.ds-a input, .ds-a button { font-family: inherit; }
+.ds-a .app-container { max-width: 1320px; margin: 0 auto; padding: 20px 24px 48px; position: relative; }
+.ds-a #captureArea { counter-reset: blk; }
+
+/* 顶栏：浮在标题右侧 */
+.ds-a .top-bar { position: absolute; top: 22px; right: 24px; z-index: 1000; }
+.ds-a .top-right { gap: 6px; }
+.ds-a .nav-btn { height: 34px; padding: 0 12px; gap: 7px; background: transparent; border: 1px solid var(--line-2); border-radius: 4px; color: var(--ink-2); font-size: 13px; font-weight: 600; transition: border-color .15s, color .15s, background .15s; }
+.ds-a .nav-btn:hover { border-color: var(--ink-3); color: var(--ink); }
+.ds-a .top-bar .nav-btn .ico { width: 16px; height: 16px; }
+.ds-a .dropdown-menu { background: var(--raise); border: 1px solid var(--line-2); border-radius: 4px; padding: 4px; box-shadow: 0 12px 32px rgba(0,0,0,.35); }
+.ds-a .dropdown-option { padding: 9px 10px; border-radius: 3px; font-size: 13px; color: var(--ink); }
+.ds-a .dropdown-option .ico { width: 16px; height: 16px; color: var(--ink-3); }
+.ds-a .dropdown-option:hover { background: var(--line); }
+.ds-a .dropdown-option.selected { background: var(--sig-soft); color: var(--ink); box-shadow: inset 2px 0 0 var(--sig); }
+.ds-a .dropdown-option.sel-common { --qc: var(--q-common); --qcs: rgba(85,182,133,.14); } .ds-a .dropdown-option.sel-rare { --qc: var(--q-rare); --qcs: rgba(56,189,248,.14); }
+.ds-a .dropdown-option.sel-epic { --qc: var(--q-epic); --qcs: rgba(192,132,252,.14); } .ds-a .dropdown-option.sel-legend { --qc: var(--q-legend); --qcs: rgba(251,191,36,.16); }
+.ds-a .dropdown-option[class*="sel-"] { background: var(--qcs); box-shadow: inset 2px 0 0 var(--qc); color: var(--ink); }
+.ds-a .dropdown-option img { width: 18px !important; height: 18px !important; }
+
+/* 标题 */
+.ds-a .header { gap: 14px; padding: 4px 360px 22px 0; border-bottom: 1px solid var(--line); margin-bottom: 18px; }
+.ds-a .brand-mark { width: 44px; height: 44px; border-radius: 10px; flex: none; }
+.ds-a .header h1 { font-size: 22px; font-weight: 800; letter-spacing: .5px; line-height: 1.25; }
+.ds-a .header p { margin-top: 3px; font-size: 12.5px; color: var(--ink-2); }
+.ds-a .header p a { color: var(--ink); text-decoration: none; border-bottom: 2px solid var(--sig); font-weight: 700; }
+
+/* 使用前必看 */
+.ds-a #tutorialWrapper { margin-bottom: 18px; }
+.ds-a .tutorial-details { background: var(--panel); border: 1px solid var(--line); border-left: 3px solid var(--sig); border-radius: 4px; }
+.ds-a .tutorial-details summary { padding: 11px 12px 11px 14px; }
+.ds-a .tut-head { font-weight: 700; font-size: 13.5px; }
+.ds-a .tut-head .ico { color: var(--sig-ink); width: 17px; height: 17px; }
+.ds-a #updateBadge { background: var(--fail); color: #fff; font-size: 11px; font-weight: 700; padding: 2px 7px; border-radius: 3px; }
+.ds-a .tut-actions { color: var(--ink-3); }
+.ds-a .tut-actions .ico { width: 17px; height: 17px; }
+.ds-a #closeTutorialBtn { color: var(--ink-3); padding: 2px; border-left: 1px solid var(--line-2); padding-left: 10px; }
+.ds-a #closeTutorialBtn:hover { color: var(--ink); }
+.ds-a .tut-body { padding: 2px 16px 16px; }
+.ds-a .tut-video { display: inline-flex; align-items: center; gap: 8px; padding: 8px 14px; margin: 4px 0 14px; background: var(--sig); color: var(--on-sig); font-weight: 700; font-size: 13px; text-decoration: none; border-radius: 3px; }
+.ds-a .tut-video:hover { filter: brightness(1.06); }
+.ds-a .tut-notes-title { font-size: 12px; font-weight: 700; color: var(--ink-2); margin-bottom: 6px; letter-spacing: 1px; }
+.ds-a #notesContent { font-size: 12.5px; color: var(--ink-2); line-height: 1.7; padding-left: 18px; word-break: break-word; }
+.ds-a #notesContent li + li { margin-top: 6px; }
+.ds-a #notesContent li::marker { color: var(--sig-ink); }
+.ds-a .calc-note { margin-top: 14px; font-size: 12px; color: var(--ink-3); line-height: 1.7; }
+
+/* 版式 */
+.ds-a .tt-grid { display: grid; grid-template-columns: minmax(0, 1fr); gap: 24px; }
+@media (min-width: 1180px) {
+  .ds-a .tt-grid { grid-template-columns: minmax(0, 1fr) 372px; align-items: start; }
+  body.ds-a > .app-container .tt-rail { position: sticky; top: 16px; max-height: calc(100vh - 32px); overflow-y: auto; scrollbar-width: thin; scrollbar-color: var(--line-2) transparent; }
+}
+@media (min-width: 850px) and (max-width: 1179px) {
+  .ds-a .tt-rail { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; align-items: start; }
+}
+.ds-a .desktop-layout { gap: 16px; }
+.ds-a .desktop-col { gap: 16px; }
+.ds-a .tt-main { display: flex; flex-direction: column; gap: 16px; min-width: 0; }
+.ds-a .tt-rail { display: flex; flex-direction: column; gap: 16px; min-width: 0; }
+.ds-a .tt-rail > * { flex: none; }

@@ -1,0 +1,498 @@
+/* =====================================================================
+   C-4 · V4 视觉层（叠加在 c-1/2/3 之后，不改任何 id / class）
+   由 build.mjs 按文件名排序自动收集进正式版 <style>。
+   核心思路：
+   1) 卡片从「不透明纯色」改成「带品质色调的半透明玻璃」——背景本身已经是模糊过的车图，
+      所以卡片不需要 backdrop-filter，纯 alpha 透出即可，零额外 GPU 成本。
+   2) 背景从「一块固定的光」改成「随滚动漂移的分区光」：首发区=点火橙，循环区=回路青。
+   3) 首屏车辆在手机上去掉卡片框、出血铺满，品质字样做描边大字作为舞台背景。
+   4) 结果卡成为每个测算区的视觉主角：状态色辉光 + 270° 转速表式读数（JS 在 proto.js）。
+   ===================================================================== */
+
+/* ---------- 字体：由 build.mjs 注入的 npmmirror（国内可直连）分片 CSS 提供 ----------
+   字符表是全的，浏览器按 unicode-range 只下载实际用到的片，网站增删文字无需重新裁剪字体。 */
+.ds-c select, .ds-c textarea { font-family: inherit; }
+
+/* ---------- 0. 新 token ---------- */
+.ds-c {
+  --zone-first: #ff8a1f;            /* 首发 · 点火橙 */
+  --zone-loop: #14c4e3;             /* 循环 · 回路青 */
+  --surface: rgba(255, 255, 255, .74);
+  --surface-rim: rgba(255, 255, 255, .95);
+  --surface-edge: rgba(20, 24, 40, .06);
+  --surface-drop: 0 14px 34px -18px rgba(30, 34, 70, .22);
+  --raise: rgba(255, 255, 255, .78);
+  --fill: rgba(118, 118, 128, .11); --fill-2: rgba(118, 118, 128, .22); --fill-hover: rgba(118, 118, 128, .16);
+  --sep: rgba(60, 60, 67, .12);
+}
+.ds-c:not(.light-mode) {
+  --bg: #05060a;
+  --surface: rgba(22, 23, 29, .62);
+  --surface-rim: rgba(255, 255, 255, .09);
+  --surface-edge: rgba(255, 255, 255, .055);
+  --surface-drop: 0 22px 44px -22px rgba(0, 0, 0, .7);
+  --raise: rgba(255, 255, 255, .075);
+  --fill: rgba(255, 255, 255, .065); --fill-2: rgba(255, 255, 255, .16); --fill-hover: rgba(255, 255, 255, .1);
+  --sep: rgba(255, 255, 255, .08);
+}
+/* 表面带一点当前赛车的品质色（传说金 / 史诗紫 / 稀有蓝 / 普通绿），整页跟着车「换皮」 */
+@supports (color: color-mix(in oklab, red, blue)) {
+  .ds-c:not(.light-mode) { --surface: color-mix(in oklab, var(--acc) 8%, rgba(18, 19, 25, .6)); }
+  .ds-c.light-mode { --surface: color-mix(in oklab, var(--acc) 3%, rgba(255, 255, 255, .86)); }
+}
+
+/* ---------- 1. 玻璃卡片 ---------- */
+.ds-c .card, .ds-c .tutorial-details, .ds-c .footer-legal, .ds-c .bottom-image-wrapper {
+  background-color: var(--surface);
+  background-image: linear-gradient(180deg, rgba(255, 255, 255, .045), rgba(255, 255, 255, 0) 140px);
+  box-shadow: inset 0 1px 0 var(--surface-rim), inset 0 0 0 1px var(--surface-edge), var(--surface-drop);
+}
+.ds-c.light-mode .card, .ds-c.light-mode .tutorial-details, .ds-c.light-mode .footer-legal, .ds-c.light-mode .bottom-image-wrapper { background-image: none; }
+/* 顶栏三个按钮（菜单 / 主题 / 语言）：与卡片同一套半透明玻璃，不再是实心块 */
+.ds-c .top-bar .nav-btn {
+  background-color: var(--surface);
+  background-image: linear-gradient(180deg, rgba(255, 255, 255, .07), rgba(255, 255, 255, 0));
+  box-shadow: inset 0 1px 0 var(--surface-rim), inset 0 0 0 1px var(--surface-edge), var(--surface-drop);
+  transition: background-color .15s, transform .15s;
+}
+.ds-c.light-mode .top-bar .nav-btn { background-image: none; }
+.ds-c .top-bar .nav-btn:hover { background-color: var(--surface); background-image: linear-gradient(var(--fill-hover), var(--fill-hover)); }
+.ds-c .top-bar .nav-btn:active { transform: scale(.96); }
+/* 卡片里的「凸起层」也改成半透明，避免在玻璃上出现一块块实心黑洞 */
+.ds-c:not(.light-mode) .nitro-item.selected,
+.ds-c:not(.light-mode) .empower-sub-options,
+.ds-c:not(.light-mode) .extra-active-nitro .extra-body,
+.ds-c:not(.light-mode) .extra-active-ult .extra-body,
+.ds-c:not(.light-mode) .extra-active-persec .extra-body,
+.ds-c:not(.light-mode) .car-list-btn,
+.ds-c:not(.light-mode) .share-btn .ico,
+.ds-c:not(.light-mode) .cp-split > span { background-color: var(--raise); }
+.ds-c .nitro-item.selected { background-image: linear-gradient(180deg, color-mix(in oklab, var(--acc) 16%, transparent), transparent); }
+
+/* ---------- 2. 背景：分区光随滚动漂移 ---------- */
+.ds-c .ds-ambient {
+  background:
+    radial-gradient(70% 42% at 50% -6%, color-mix(in oklab, var(--acc) 26%, transparent), transparent 72%),
+    radial-gradient(55% 40% at 108% 30%, color-mix(in oklab, var(--acc) 12%, transparent), transparent 70%),
+    var(--bg);
+}
+.ds-c.light-mode .ds-ambient {
+  background:
+    radial-gradient(70% 42% at 50% -6%, color-mix(in oklab, var(--acc) 22%, transparent), transparent 72%),
+    radial-gradient(55% 40% at 108% 30%, color-mix(in oklab, var(--acc) 10%, transparent), transparent 70%),
+    #f3f4f8;
+}
+body.ds-c .ds-ambient canvas.is-on { opacity: .62; }
+body.ds-c.light-mode .ds-ambient canvas.is-on { opacity: .34; }
+/* 两团分区光：用 body 的两个伪元素，小尺寸绘制再 scale 放大（纹理小、只做合成） */
+body.ds-c::before, body.ds-c::after {
+  content: ""; position: fixed; z-index: -1; pointer-events: none;
+  left: 50%; top: 50%; width: 120px; height: 120px; margin: -60px 0 0 -60px; border-radius: 50%;
+  opacity: 0; will-change: transform, opacity;
+}
+body.ds-c::before { background: radial-gradient(closest-side, color-mix(in oklab, var(--zone-first) 70%, transparent), transparent); }
+body.ds-c::after { background: radial-gradient(closest-side, color-mix(in oklab, var(--zone-loop) 70%, transparent), transparent); }
+@supports (animation-timeline: scroll()) {
+  body.ds-c::before { animation: dsZoneA linear both; animation-timeline: scroll(root); }
+  body.ds-c::after { animation: dsZoneB linear both; animation-timeline: scroll(root); }
+}
+/* 滚动进度 → 光团位置：首发区（约 45%~65%）亮起橙光，循环区（约 62%~85%）亮起青光 */
+@keyframes dsZoneA {
+  0%, 38% { transform: translate(-40vw, 70vh) scale(7); opacity: 0; }
+  52% { transform: translate(-28vw, 10vh) scale(7.5); opacity: .5; }
+  64% { transform: translate(-20vw, -30vh) scale(7); opacity: .35; }
+  76%, 100% { transform: translate(-30vw, -90vh) scale(6); opacity: 0; }
+}
+@keyframes dsZoneB {
+  0%, 56% { transform: translate(40vw, 80vh) scale(7); opacity: 0; }
+  70% { transform: translate(30vw, 5vh) scale(7.5); opacity: .45; }
+  84% { transform: translate(22vw, -35vh) scale(7); opacity: .3; }
+  96%, 100% { transform: translate(30vw, -90vh) scale(6); opacity: 0; }
+}
+body.ds-c.light-mode::before, body.ds-c.light-mode::after { mix-blend-mode: multiply; }
+body.ds-c.performance-mode::before, body.ds-c.performance-mode::after { display: none; }
+
+/* ---------- 3. 区块标题：中英双层 kicker，给每段一个身份 ---------- */
+.ds-c .section-divider > span::before {
+  display: block; margin-bottom: 4px;
+  font: 800 10.5px/1 var(--round); letter-spacing: .22em; color: var(--ink-3);
+}
+.ds-c .cp-base .section-divider > span::before { content: "SETUP · 基础"; }
+.ds-c .cp-group-first .section-divider > span::before { content: "IGNITION · 首发"; color: var(--zone-first); }
+.ds-c .cp-group-loop .section-divider > span::before { content: "LOOP · 循环"; color: var(--zone-loop); }
+.ds-c .share-block .section-divider > span::before { content: "EXPORT · 分享"; }
+
+/* ---------- 4. 首屏车辆：手机上出血铺满 + 品质描边大字舞台 ---------- */
+.ds-c .car-stage { isolation: isolate; overflow: hidden; }
+.ds-c .car-stage::before {      /* 地面聚光 */
+  content: ""; position: absolute; z-index: -1; left: 50%; bottom: 6%; width: 86%; height: 34%;
+  transform: translateX(-50%); border-radius: 50%;
+  background: radial-gradient(closest-side, color-mix(in oklab, var(--acc) 55%, transparent), transparent);
+  opacity: .55;
+}
+.ds-c .car-stage::after {       /* 品质描边大字 */
+  position: absolute; z-index: -1; left: 0; right: 0; top: 8%; text-align: center; white-space: nowrap;
+  font: 900 clamp(64px, 22vw, 120px)/1 var(--round); letter-spacing: .04em; font-style: italic;
+  color: transparent; -webkit-text-stroke: 1.2px color-mix(in oklab, var(--acc) 60%, transparent); opacity: .55;
+}
+.ds-c[data-quality="legend"] .car-stage::after { content: "LEGEND"; }
+.ds-c[data-quality="epic"] .car-stage::after { content: "EPIC"; }
+.ds-c[data-quality="rare"] .car-stage::after { content: "RARE"; }
+.ds-c[data-quality="common"] .car-stage::after { content: "COMMON"; }
+.ds-c #carImage { position: relative; }
+.ds-c #carPreviewName { font-size: 22px; letter-spacing: -.2px; }
+@media (max-width: 849px) {
+  .ds-c .car-hero { background: transparent !important; background-image: none !important; box-shadow: none !important; margin: 0 -14px; border-radius: 0; }
+  .ds-c .car-stage { min-height: 250px; padding-top: 18px; }
+  .ds-c #carImage { max-height: 230px; transform: scale(1.1); }
+  .ds-c .car-meta { padding: 4px 18px 8px; }
+  .ds-c #carPreviewAutoMsg { background: color-mix(in oklab, var(--pass) 12%, var(--surface)); box-shadow: inset 0 0 0 1px color-mix(in oklab, var(--pass) 22%, transparent); }
+}
+
+/* ---------- 5. 两个测算区：分区色托盘 + 发光序号 ---------- */
+.ds-c .cp-group-first { --zone: var(--zone-first); }
+.ds-c .cp-group-loop { --zone: var(--zone-loop); }
+.ds-c .cp-group {
+  position: relative;
+  background: linear-gradient(180deg, color-mix(in oklab, var(--zone) 13%, transparent), transparent 320px), var(--tray);
+  border-color: color-mix(in oklab, var(--zone) 30%, transparent);
+}
+.ds-c .cp-group::before {
+  content: ""; position: absolute; left: 28px; right: 28px; top: -1px; height: 2px; border-radius: 2px;
+  background: linear-gradient(90deg, transparent, var(--zone), transparent);
+}
+.ds-c .cp-step {
+  background: var(--zone); color: #0b0b0e;
+  box-shadow: 0 0 0 4px color-mix(in oklab, var(--zone) 22%, transparent), 0 0 22px color-mix(in oklab, var(--zone) 55%, transparent);
+}
+
+/* ---------- 6. 结果卡：状态色辉光，成为每个区的主角 ---------- */
+.ds-c .result-card {
+  background-color: var(--surface);
+  background-image: radial-gradient(120% 60% at 0% 0%, color-mix(in oklab, var(--st-fill) 20%, transparent), transparent 62%);
+  box-shadow: inset 0 0 0 1px color-mix(in oklab, var(--st-fill) 32%, transparent), inset 0 1px 0 var(--surface-rim),
+              0 24px 50px -26px color-mix(in oklab, var(--st-fill) 55%, transparent);
+}
+.ds-c .ds-gauge[data-state="idle"] { --st-fill: var(--ink-3); }
+.ds-c .ds-ring-fill { filter: drop-shadow(0 0 5px color-mix(in oklab, var(--st-fill) 70%, transparent)); }
+.ds-c .ds-value { font-size: 44px; }
+@media (max-width: 849px) { .ds-c .ds-value { font-size: 40px; } }
+
+/* ---------- 7. 可读性修正 ---------- */
+/* 运算解析盒：不再逐字符硬折（3\n5.260 / nit\nros），等宽改为 tabular 数字的无衬线 */
+.ds-c .formula-box { word-break: normal; overflow-wrap: anywhere; font-family: var(--sans); font-variant-numeric: tabular-nums; font-size: 12.5px; line-height: 1.8; }
+/* 单位「个」在小号浅灰下像一个 ↑ 箭头：提高对比 */
+.ds-c .input-unit { color: var(--ink-2); font-size: 13.5px; }
+/* 标题副文：中文不在词中间断行 */
+.ds-c .header p { word-break: keep-all; overflow-wrap: anywhere; }
+/* 被互斥锁住的赋能：0.4 透明度下几乎读不出来 */
+.ds-c .empower-item[style*="opacity: 0.4"] { opacity: .58 !important; }
+
+/* ---------- 8. 底部胶囊 ---------- */
+/* 标签文字保持中性墨色（不用分区色）；状态点沿用 V3：达成绿点、失败红点 */
+/* 打开下拉 / 正在输入时让位，不再盖住车辆列表与软键盘上方的输入框 */
+body.ds-c:has(.dropdown-menu.show) .ds-dock,
+body.ds-c:has(input[type="number"]:focus, input[type="text"]:focus) .ds-dock { transform: translate(-50%, 150%); opacity: 0; pointer-events: none; }
+
+/* ---------- 9. 手机端渐进披露（proto.js 给低频卡片加 .pv-collapsible） ---------- */
+.ds-c .pv-collapsible > .card-title { cursor: pointer; }
+.ds-c .pv-collapsible > .card-title::after {
+  content: ""; width: 22px; height: 22px; margin-left: 8px; flex: none; border-radius: 50%;
+  background: var(--fill) url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%238e8e93' stroke-width='2.4' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='m6 9 6 6 6-6'/%3E%3C/svg%3E") no-repeat center / 14px;
+  transition: transform .32s cubic-bezier(.2,.8,.2,1);
+}
+.ds-c .pv-collapsible:not(.pv-shut) > .card-title::after { transform: rotate(180deg); }
+.ds-c .pv-collapsed > :not(.card-title) { display: none !important; }
+.ds-c .pv-collapsed > .card-title { margin-bottom: 0; }
+.ds-c .pv-sum { margin-left: auto; font-size: 12px; font-weight: 600; color: var(--ink-3); white-space: nowrap; }
+.ds-c .pv-sum.on { color: var(--acc-ink); }
+.ds-c .pv-collapsible .limit-badge { margin-left: 8px; }
+
+@media (prefers-reduced-motion: reduce) { body.ds-c::before, body.ds-c::after { animation: none !important; opacity: 0 !important; } }
+
+/* ---------- V4.1 微调 ---------- */
+/* 手机：环境光车图放到视口中部、更饱和，让每一屏卡片后面都有颜色起伏 */
+@media (max-width: 849px) {
+  .ds-c .ds-ambient canvas { top: 48%; }
+  body.ds-c:not(.light-mode) .ds-ambient canvas.is-on { opacity: .72; }
+}
+/* 浅色：凸起层与标签保持实白，避免「脏玻璃」发灰 */
+.ds-c.light-mode #carPreviewTags > span:not(:first-child),
+.ds-c.light-mode .nitro-item.selected,
+.ds-c.light-mode .car-list-btn { background-color: rgba(255,255,255,.9) !important; }
+.ds-c.light-mode .car-stage::after { -webkit-text-stroke-color: color-mix(in oklab, var(--acc) 75%, transparent); opacity: .5; }
+.ds-c.light-mode .car-stage::before { opacity: .8; }
+/* 卡片标题与徽标在窄屏换行时，徽标单独一行，不再把标题挤成两行 */
+@media (max-width: 480px) {
+  .ds-c .card-title:has(.limit-badge) { flex-wrap: wrap; row-gap: 6px; }
+  .ds-c .card-title:has(.limit-badge) .limit-badge { margin-left: 0; order: 3; flex-basis: auto; }
+  .ds-c .pv-collapsible .card-title:has(.limit-badge) .limit-badge { display: none; }
+}
+/* 第三团光：基础属性区跟随品质色（放在 .ds-ambient::before，才能读到 body 上的 --acc） */
+.ds-c .ds-ambient::before {
+  content: ""; position: absolute; z-index: 0; pointer-events: none;
+  left: 50%; top: 50%; width: 120px; height: 120px; margin: -60px 0 0 -60px; border-radius: 50%; opacity: 0;
+  background: radial-gradient(closest-side, color-mix(in oklab, var(--acc) 75%, transparent), transparent);
+}
+@supports (animation-timeline: scroll()) {
+  .ds-c .ds-ambient::before { animation: dsZoneC linear both; animation-timeline: scroll(root); }
+}
+@keyframes dsZoneC {
+  0%, 10% { transform: translate(35vw, 70vh) scale(7); opacity: 0; }
+  24% { transform: translate(28vw, 0vh) scale(8); opacity: .42; }
+  38% { transform: translate(-25vw, -20vh) scale(8); opacity: .36; }
+  48%, 100% { transform: translate(-30vw, -90vh) scale(6); opacity: 0; }
+}
+.ds-c.light-mode .ds-ambient::before { mix-blend-mode: multiply; }
+.ds-c.performance-mode .ds-ambient::before { display: none; }
+@media (prefers-reduced-motion: reduce) { .ds-c .ds-ambient::before { animation: none !important; opacity: 0 !important; } }
+
+/* ---------- 分区标识去掉橙 / 青：只留品质色，测算区回到中性 ---------- */
+.ds-c { --zone-first: var(--acc); --zone-loop: var(--acc); }
+.ds-c .cp-group-first .section-divider > span::before,
+.ds-c .cp-group-loop .section-divider > span::before { color: var(--ink-3); }
+.ds-c .cp-step { background: var(--ink); color: var(--cell); box-shadow: none; }
+.ds-c .cp-group { background: var(--tray); border-color: var(--tray-line); }
+.ds-c .cp-group::before { display: none; }
+/* 随滚动的背景光：一团品质色 + 一团中性白光，靠明暗起伏而不是换色 */
+body.ds-c:not(.light-mode)::after { background: radial-gradient(closest-side, rgba(255, 255, 255, .2), transparent); }
+
+/* ---------- 下拉菜单也换成玻璃材质 ----------
+   下拉浮在内容上方，单靠半透明会让底下的文字透出来、读不清，
+   所以这里用真正的 backdrop-filter 模糊（菜单面积小、只在打开时存在，成本可以忽略）。 */
+.ds-c { --menu-bg: rgba(255, 255, 255, .72); --menu-rim: rgba(255, 255, 255, .9); --menu-edge: rgba(20, 24, 40, .08); }
+.ds-c:not(.light-mode) { --menu-bg: rgba(30, 31, 38, .66); --menu-rim: rgba(255, 255, 255, .1); --menu-edge: rgba(255, 255, 255, .07); }
+@supports (color: color-mix(in oklab, red, blue)) {
+  .ds-c:not(.light-mode) { --menu-bg: color-mix(in oklab, var(--acc) 8%, rgba(26, 27, 34, .66)); }
+  .ds-c.light-mode { --menu-bg: color-mix(in oklab, var(--acc) 3%, rgba(255, 255, 255, .74)); }
+}
+.ds-c .dropdown-menu {
+  background-color: var(--menu-bg);
+  background-image: linear-gradient(180deg, rgba(255, 255, 255, .05), rgba(255, 255, 255, 0) 120px);
+  -webkit-backdrop-filter: blur(26px) saturate(1.7); backdrop-filter: blur(26px) saturate(1.7);
+  box-shadow: inset 0 1px 0 var(--menu-rim), inset 0 0 0 1px var(--menu-edge), 0 18px 48px rgba(0, 0, 0, .28);
+}
+.ds-c.light-mode .dropdown-menu { background-image: none; box-shadow: inset 0 1px 0 var(--menu-rim), inset 0 0 0 1px var(--menu-edge), 0 16px 40px rgba(30, 34, 70, .18); }
+/* 不支持 backdrop-filter / 性能模式 / 减弱透明度：退回实色，保证可读 */
+@supports not ((backdrop-filter: blur(1px)) or (-webkit-backdrop-filter: blur(1px))) { .ds-c .dropdown-menu { background-color: var(--cell); } }
+body.ds-c.performance-mode .dropdown-menu { -webkit-backdrop-filter: none; backdrop-filter: none; background-color: var(--cell); }
+@media (prefers-reduced-transparency: reduce) { .ds-c .dropdown-menu { -webkit-backdrop-filter: none; backdrop-filter: none; background-color: var(--cell); } }
+/* 菜单里的悬停 / 选中底色同样用半透明填充 */
+.ds-c .dropdown-option:hover { background: var(--fill-hover); }
+.ds-c .dropdown-option.selected { background: var(--fill); }
+/* 聚焦的输入框：深色下不再变成一块实心深灰 */
+.ds-c:not(.light-mode) .form-control:focus { background: var(--raise); }
+
+/* =====================================================================
+   第二轮：表情换图标 / 芯片图形 / 字重 / 手机选车面板 / 步进按钮 / 页面压缩 / 长截图
+   ===================================================================== */
+
+/* ---------- 字重减负：标题不再一律特粗，只有结果数字保留 800 ---------- */
+.ds-c .header h1 { font-weight: 700; }
+.ds-c .section-divider { font-weight: 700; }
+.ds-c .card-title { font-weight: 600; }
+.ds-c #carPreviewName { font-weight: 700; }
+.ds-c .form-group.is-key .form-label { font-weight: 600; }
+.ds-c .nitro-left { font-weight: 500; }
+.ds-c .nitro-item.selected .nitro-left { font-weight: 600; }
+.ds-c .empower-info .title { font-weight: 500; }
+.ds-c .extra-toggle { font-weight: 500; }
+.ds-c .tut-head { font-weight: 600; }
+.ds-c .tut-video, .ds-c .mode-btn, .ds-c .share-btn, .ds-c .bug-btn, .ds-c #gh-support-link, .ds-c .car-list-btn { font-weight: 600; }
+.ds-c .limit-badge, .ds-c .result-req, .ds-c .social-tag, .ds-c .thanks-item, .ds-c .copy-toast { font-weight: 500; }
+.ds-c .ds-status, .ds-c .ds-delta { font-weight: 600; }
+.ds-c .cp-step { font-weight: 700; }
+.ds-c .section-divider > span::before { font-weight: 700; }
+.ds-c .pv-arc .pv-arc-lbl { font-weight: 700; }
+
+/* ---------- 图标：提示条 / 选车提示 / 未上线车辆 ---------- */
+.ds-c .pv-toast { display: inline-flex; align-items: center; gap: 8px; }
+.ds-c .pv-toast .ico { width: 18px; height: 18px; flex: none; }
+.ds-c .pv-warn { width: 15px; height: 15px; margin: 0 4px 0 0; vertical-align: -2px; }
+.ds-c .pv-q { width: 16px; height: 16px; vertical-align: -3px; }
+
+/* ---------- 芯片槽位：线性图形 ---------- */
+.ds-c .pv-chip { display: inline-flex; align-items: center; justify-content: center; width: 30px; height: 30px; border-radius: 50%;
+  background: var(--fill); box-shadow: inset 0 0 0 1px var(--sep); color: var(--ink-2); }
+.ds-c .pv-chip svg { width: 18px; height: 18px; display: block; }
+
+/* ---------- 整数输入的 − / + ---------- */
+.ds-c .pv-has-step .form-control { padding-right: 104px; }
+.ds-c .pv-has-step .input-unit { right: 86px; }
+.ds-c .pv-step { position: absolute; right: 6px; top: 50%; transform: translateY(-50%); display: flex; gap: 4px; }
+.ds-c .pv-step-btn, .ds-c .pv-sub-btn { display: inline-flex; align-items: center; justify-content: center; flex: none; padding: 0; border: 0; cursor: pointer;
+  background: var(--raise); color: var(--ink); box-shadow: inset 0 0 0 1px var(--sep); transition: transform .1s, background .15s; }
+.ds-c.light-mode .pv-step-btn, .ds-c.light-mode .pv-sub-btn { background: #fff; }
+.ds-c .pv-step-btn { width: 34px; height: 34px; border-radius: 10px; }
+.ds-c .pv-sub-btn { width: 30px; height: 30px; border-radius: 50%; }
+.ds-c .pv-step-btn .ico, .ds-c .pv-sub-btn .ico { width: 15px; height: 15px; }
+.ds-c .pv-step-btn:active, .ds-c .pv-sub-btn:active { transform: scale(.92); background: var(--fill-hover); }
+.ds-c .sub-row { gap: 6px; }
+
+/* ---------- 手机端：计算过程默认收起 ---------- */
+.ds-c .pv-fold-btn { display: flex; align-items: center; justify-content: center; gap: 6px; width: 100%; height: 40px; border: 0; border-radius: var(--r-md);
+  background: var(--fill); color: var(--ink-2); font: 500 13px var(--sans); cursor: pointer; }
+.ds-c .pv-fold-btn { transition: margin-bottom .3s cubic-bezier(.2,.8,.2,1); }
+.ds-c .pv-fold-btn .ico { width: 15px; height: 15px; transition: transform .3s cubic-bezier(.2,.8,.2,1); }
+.ds-c .pv-fold-btn.open { margin-bottom: 8px; }
+.ds-c .pv-fold-btn.open .ico { transform: rotate(180deg); }
+.ds-c .formula-box.pv-fold-closed { display: none; }
+
+/* ---------- 手机端：页脚合并成一张卡 ---------- */
+.ds-c .pv-mini-details > summary { list-style: none; display: inline-flex; align-items: center; gap: 4px; margin-bottom: 10px; font-size: 13px; color: var(--ink-2); cursor: pointer; }
+.ds-c .pv-mini-details > summary::-webkit-details-marker { display: none; }
+.ds-c .pv-mini-details > summary .ico { width: 14px; height: 14px; transition: transform .3s cubic-bezier(.2,.8,.2,1); }
+.ds-c .pv-mini-details[open]:not(.pv-closing) > summary .ico { transform: rotate(180deg); }
+/* 使用须知：原站的 max-height 关键帧动画交给 v4.js 的真实高度动画（.pv-js 由脚本加上，脚本不可用时仍走原动画） */
+details.tutorial-details.pv-js > div:last-child { animation: none !important; }
+details.tutorial-details.pv-js.pv-closing summary .dropdown-icon { transform: none; }
+@media (max-width: 849px) {
+  .ds-c .site-footer { gap: 0; margin-top: 24px; padding: 2px 16px; border-radius: var(--r-lg);
+    background-color: var(--surface); background-image: linear-gradient(180deg, rgba(255, 255, 255, .045), rgba(255, 255, 255, 0) 140px);
+    box-shadow: inset 0 1px 0 var(--surface-rim), inset 0 0 0 1px var(--surface-edge), var(--surface-drop); }
+  .ds-c.light-mode .site-footer { background-image: none; }
+  .ds-c .site-footer > .card, .ds-c .site-footer > .footer-legal, .ds-c .site-footer > .bottom-image-wrapper {
+    background: none !important; box-shadow: none !important; border-radius: 0; padding: 16px 0; }
+  .ds-c .site-footer > * + * { border-top: 1px solid var(--sep); }
+  .ds-c .site-footer .card-text { margin-bottom: 10px; }
+  .ds-c .bottom-msg-text { font-size: 13px; margin-bottom: 12px; }
+  .ds-c #imgDark, .ds-c #imgLight { width: 176px; }
+  .ds-c .share-block { margin-top: 24px; }
+}
+
+/* ---------- 手机选车：底部整屏面板 ---------- */
+.pv-sheet, .pv-sheet-mask { display: none; }
+.ds-c .pv-thumb { display: none; }
+@media (max-width: 849px) {
+  .ds-c .pv-sheet-mask { display: block; position: fixed; inset: 0; z-index: 4000; background: rgba(0, 0, 0, .42); opacity: 0; pointer-events: none; transition: opacity .25s; }
+  body.ds-c.pv-sheet-open .pv-sheet-mask { opacity: 1; pointer-events: auto; }
+  .ds-c .pv-sheet.dropdown-container { display: flex; flex-direction: column; position: fixed; left: 0; right: 0; bottom: 0; top: 7vh; z-index: 4001;
+    border-radius: 22px 22px 0 0; background-color: var(--menu-bg);
+    -webkit-backdrop-filter: blur(30px) saturate(1.7); backdrop-filter: blur(30px) saturate(1.7);
+    box-shadow: inset 0 1px 0 var(--menu-rim), 0 -12px 40px rgba(0, 0, 0, .35);
+    transform: translateY(102%); visibility: hidden; transition: transform .34s cubic-bezier(.2, .8, .2, 1), visibility 0s .34s; }
+  body.ds-c.pv-sheet-open .pv-sheet.dropdown-container { transform: none; visibility: visible; transition: transform .34s cubic-bezier(.2, .8, .2, 1), visibility 0s; }
+  body.ds-c.pv-sheet-open { overflow: hidden; }
+  body.ds-c.pv-sheet-open .ds-dock { transform: translate(-50%, 150%); opacity: 0; pointer-events: none; }
+  .ds-c .pv-sheet-grab { flex: none; width: 38px; height: 5px; margin: 8px auto 2px; border-radius: 3px; background: var(--fill-2); }
+  .ds-c .pv-sheet-head { flex: none; display: flex; align-items: center; justify-content: space-between; padding: 6px 16px 10px; }
+  .ds-c .pv-sheet-head b { font-size: 17px; font-weight: 600; }
+  .ds-c .pv-sheet-done { height: 32px; padding: 0 14px; border: 0; border-radius: 999px; background: var(--fill); color: var(--ink); font: 600 14px var(--sans); cursor: pointer; }
+  .ds-c .pv-sheet-search { flex: none; position: relative; margin: 0 16px 10px; }
+  .ds-c .pv-sheet-search .ico { position: absolute; left: 13px; top: 50%; transform: translateY(-50%); width: 18px; height: 18px; color: var(--ink-3); pointer-events: none; }
+  .ds-c .pv-sheet-search input { width: 100%; height: 44px; padding: 0 14px 0 40px; border: 0; border-radius: 12px; background: var(--fill); color: var(--ink); font: 500 16px var(--sans); outline: none; }
+  .ds-c .pv-sheet-search input:focus { box-shadow: inset 0 0 0 2px var(--acc); }
+  .ds-c .pv-sheet-search input::placeholder { color: var(--ink-3); }
+  .ds-c .pv-sheet-tools { flex: none; padding: 0 16px; }
+  .ds-c .pv-sheet .car-filters { margin-bottom: 10px; }
+  .ds-c .pv-sheet .car-filters .select-btn { height: 40px; }
+  .ds-c .pv-sheet-qual { flex: none; display: flex; gap: 6px; padding: 0 16px 12px; overflow-x: auto; scrollbar-width: none; }
+  .ds-c .pv-sheet-qual::-webkit-scrollbar { display: none; }
+  .ds-c .pv-qchip { flex: none; height: 32px; padding: 0 12px; border: 0; border-radius: 999px; background: var(--fill); color: var(--ink-2); font: 500 13.5px var(--sans); cursor: pointer; }
+  .ds-c .pv-qchip span { margin-left: 5px; font-size: 12px; color: var(--ink-3); font-variant-numeric: tabular-nums; }
+  .ds-c .pv-qchip.on { background: var(--ink); color: var(--cell); }
+  .ds-c .pv-qchip.on span { color: inherit; opacity: .6; }
+  .ds-c .pv-sheet-list { flex: 1; min-height: 0; overflow-y: auto; overscroll-behavior: contain; -webkit-overflow-scrolling: touch;
+    border-top: 1px solid var(--sep); padding: 6px 8px calc(16px + env(safe-area-inset-bottom)); }
+  .ds-c .pv-sheet #carDropdown { display: block !important; position: static; width: auto; max-height: none; margin: 0; padding: 0; overflow: visible;
+    background: none; box-shadow: none; -webkit-backdrop-filter: none; backdrop-filter: none; animation: none; }
+  .ds-c .pv-sheet #carDropdown .dropdown-option { min-height: 60px; padding: 8px 10px; gap: 12px; font-size: 15px; }
+  .ds-c .pv-sheet .pv-thumb { display: block; flex: none; width: 76px; height: 42px; border-radius: 10px; overflow: hidden; background: var(--fill); }
+  .ds-c .pv-sheet .pv-thumb img { width: 100%; height: 100%; object-fit: contain; display: block; }
+  .ds-c .pv-sheet .dropdown-option[data-id="-1"] .pv-thumb { background: var(--fill); }
+}
+
+/* ---------- 长截图：导出克隆里用这些替换原生控件；并去掉 html2canvas 不认识的 color-mix / oklab ---------- */
+.ds-c .pv-x-sw { position: relative; display: inline-block; flex: none; width: 44px; height: 26px; border-radius: 13px; background: var(--fill-2); }
+.ds-c .pv-x-sw.on { background: var(--acc); }
+.ds-c .pv-x-sw i { position: absolute; top: 2px; left: 2px; width: 22px; height: 22px; border-radius: 50%; background: #fff; box-shadow: 0 1px 2px rgba(0, 0, 0, .25); }
+.ds-c .pv-x-sw.on i { left: 20px; }
+.ds-c .pv-x-ck { position: relative; display: inline-block; flex: none; width: 20px; height: 20px; border-radius: 50%; border: 1.5px solid var(--ink-3); }
+.ds-c .pv-x-ck.on { background: var(--acc); border-color: var(--acc); }
+.ds-c .pv-x-ck.on i { position: absolute; left: 50%; top: 45%; width: 5px; height: 9px; margin: -5px 0 0 -2.5px; border: solid var(--on-acc); border-width: 0 2px 2px 0; transform: rotate(45deg); }
+.ds-c .pv-x-val { display: flex; align-items: center; }
+.ds-c .sub-input.pv-x-val { justify-content: center; }
+.ds-c .pv-x-ph { color: var(--ink-3); font-weight: 500 !important; }
+.ds-c .pv-export { --surface: rgba(28, 29, 35, .94); --menu-bg: var(--cell); --raise: rgba(255, 255, 255, .075); }
+.ds-c.light-mode .pv-export { --surface: #ffffff; --raise: #ffffff; }
+.ds-c .pv-export .card { background-image: none; }
+.ds-c .pv-export .nitro-item.selected { background-image: none; }
+.ds-c .pv-export .car-stage::before, .ds-c .pv-export .car-stage::after { content: none; }
+.ds-c .pv-export #carPreviewAutoMsg { background: var(--pass-soft) !important; box-shadow: none !important; }
+.ds-c .pv-export .result-card { background-image: none; box-shadow: inset 0 0 0 1px var(--st-soft); }
+.ds-c .pv-export .ds-ring-fill { filter: none; }
+.ds-c .pv-export .pv-step, .ds-c .pv-export .pv-sub-btn, .ds-c .pv-export .pv-fold-btn, .ds-c .pv-export .pv-thumb { display: none !important; }
+.ds-c .pv-export .pv-has-step .form-control { padding-right: 44px; }
+.ds-c .pv-export .pv-has-step .input-unit { right: 14px; }
+.ds-c .pv-export .car-stage::before { background: none; }
+.ds-c .pv-export .car-stage::after { -webkit-text-stroke: 0 transparent; }
+
+/* ---------- 270° 仪表（原来由脚本注入，挪到样式表里） ---------- */
+.ds-c .pv-arc .ds-ring-track, .ds-c .pv-arc .ds-ring-fill, .ds-c .pv-arc .pv-mark { transform: rotate(135deg); transform-origin: 50% 50%; }
+.ds-c .pv-arc .ds-ring-fill { transition: stroke-dasharray .6s cubic-bezier(.2, .8, .2, 1); }
+.ds-c .pv-arc .pv-ticks { stroke: var(--ink-3); stroke-width: .9; stroke-linecap: round; opacity: .55; fill: none; }
+.ds-c .pv-arc .pv-mark { fill: none; stroke: var(--ink); stroke-width: 15; }
+.ds-c .pv-arc .pv-arc-lbl { font: 700 11px var(--round); fill: var(--ink-2); }
+
+/* ---------- 第二轮微调 ---------- */
+/* 选车面板：原站给下拉里的所有 img 强制了 20px（定位 / 专精小图标用），车图要单独放开 */
+@media (max-width: 849px) {
+  .ds-c .pv-sheet .pv-thumb img { width: 100% !important; height: 100% !important; object-fit: contain; }
+  .ds-c .pv-qchip { padding: 0 10px; font-size: 13px; }
+}
+/* 赋能子选项：标题单独一行，− 数字 + 永远在同一行 */
+.ds-c .empower-sub-options .sub-label { flex: 1 0 100%; }
+.ds-c .empower-sub-options .sub-input { width: 48px; }
+/* 长截图：html2canvas 会把 inset 阴影画成粗色带 —— 导出时去掉所有阴影与折叠箭头 */
+.ds-c .pv-export, .ds-c .pv-export * { box-shadow: none !important; }
+.ds-c .pv-export .pv-collapsible > .card-title::after { content: none; }
+
+/* =====================================================================
+   第三轮：浅色模式车图 / 专精图标 / 品质描边字 / 芯片恢复原版
+   ===================================================================== */
+/* 芯片：原版图标抠图（无底盘），按主题切换浅 / 深两版；覆盖掉上一轮的线性图形样式 */
+.ds-c .pv-chip { width: 28px; height: 28px; border-radius: 0; background: none; box-shadow: none; }
+.ds-c .pv-chip img { width: 28px !important; height: 28px !important; display: block; filter: none !important; }
+.ds-c .pv-chip .pv-chip-l { display: none; }
+.ds-c.light-mode .pv-chip .pv-chip-d { display: none; }
+.ds-c.light-mode .pv-chip .pv-chip-l { display: block; }
+.ds-c #carPreviewChips { gap: 8px; }
+
+/* 浅色：车辆背后不再是灰色的模糊层，给车一块干净的亮底（中心白、向四周淡出） */
+@media (max-width: 849px) {
+  .ds-c.light-mode .car-stage {
+    background: radial-gradient(70% 62% at 50% 52%, rgba(255, 255, 255, .96) 0%, rgba(255, 255, 255, .82) 42%, rgba(255, 255, 255, 0) 76%);
+  }
+}
+.ds-c.light-mode .car-hero { background-color: rgba(255, 255, 255, .9); }
+
+/* 浅色：品质描边大字加深（用更深的品质墨色 + 稍粗的描边） */
+.ds-c.light-mode .car-stage::after { -webkit-text-stroke: 1.5px var(--acc-ink); opacity: .55; }
+.ds-c.light-mode[data-quality="none"] .car-stage::after { opacity: 0; }
+
+/* 浅色：专精图标（城市 / 场地 / 山路，原图是白色剪影）改成清晰的深色剪影 */
+.ds-c.light-mode img[src*="6b03fddcf523615f"], .ds-c.light-mode img[src*="7708febb380440f4"], .ds-c.light-mode img[src*="1c3fdf64e6be6a83"],
+.ds-c.light-mode img[src*="new_carport_icon_city"], .ds-c.light-mode img[src*="new_carport_icon_court"], .ds-c.light-mode img[src*="new_carport_icon_mountainroad"] {
+  filter: brightness(0) opacity(.74) !important;
+}
+
+/* 选车面板缩略图：原站给浅色下拉里的所有 img 加了 brightness(.6)（本意是压暗定位 / 专精小图标），
+   车图也被一起压暗成了「黑黢黢」—— 车图单独豁免，并在浅色下给一块白底 */
+.ds-c .pv-thumb img { filter: none !important; }
+.ds-c.light-mode .pv-sheet .pv-thumb { background: #fff; box-shadow: inset 0 0 0 1px rgba(20, 24, 40, .06); }
+
+/* 深色：品级描边大字 —— 只有描边、不填充；用品质色的亮色版、中等粗细与透明度，
+   亮背景上看得清，暗背景上也不抢车的视线 */
+.ds-c:not(.light-mode) .car-stage::after {
+  -webkit-text-stroke: 1.3px var(--acc-ink);
+  color: transparent;
+  opacity: .5;
+}
+.ds-c:not(.light-mode)[data-quality="none"] .car-stage::after { opacity: 0; }
+/* COMMON 字母最宽，窄屏会溢出：单独缩小一档 */
+.ds-c[data-quality="common"] .car-stage::after { font-size: clamp(52px, 17.5vw, 100px); top: 10%; }
+/* 四种品质色亮度不同（金、绿天然更亮，紫、蓝更暗），按感知亮度分别配透明度，让四种看起来一样「轻」 */
+.ds-c:not(.light-mode)[data-quality="legend"] .car-stage::after { opacity: .46; }
+.ds-c:not(.light-mode)[data-quality="common"] .car-stage::after { opacity: .5; }
+.ds-c:not(.light-mode)[data-quality="rare"] .car-stage::after { opacity: .56; }
+.ds-c:not(.light-mode)[data-quality="epic"] .car-stage::after { opacity: .62; }

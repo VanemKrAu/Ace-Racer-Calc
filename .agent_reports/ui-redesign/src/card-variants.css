@@ -1,0 +1,96 @@
+/* 五种卡片质感方案 - 通过 body[data-card-style] 切换 */
+
+/* === 方案 A：微妙渐变（同色系 2-3% 明度差）=== */
+body[data-card-style="a"].ds-c [class*="cell"],
+body[data-card-style="a"].ds-c .dropdown,
+body[data-card-style="a"].ds-c [class*="card"] {
+  background: linear-gradient(145deg, #fefeff 0%, #f8f9fa 100%);
+  box-shadow: 0 1px 3px rgba(0,0,0,.06), inset 0 1px 0 rgba(255,255,255,.8);
+}
+body[data-card-style="a"].ds-c:not(.light-mode) [class*="cell"],
+body[data-card-style="a"].ds-c:not(.light-mode) .dropdown,
+body[data-card-style="a"].ds-c:not(.light-mode) [class*="card"] {
+  background: linear-gradient(145deg, #1a1a20 0%, #14141a 100%);
+  box-shadow: 0 2px 8px rgba(0,0,0,.5), inset 0 1px 0 rgba(255,255,255,.05);
+}
+
+/* === 方案 B：玻璃拟态（半透明+模糊+高光）=== */
+body[data-card-style="b"].ds-c [class*="cell"],
+body[data-card-style="b"].ds-c .dropdown,
+body[data-card-style="b"].ds-c [class*="card"] {
+  background: rgba(255,255,255,.7);
+  backdrop-filter: blur(16px) saturate(1.4);
+  box-shadow: 0 2px 12px rgba(0,0,0,.08),
+              inset 0 1px 0 rgba(255,255,255,.9),
+              inset 0 0 0 1px rgba(255,255,255,.6);
+}
+body[data-card-style="b"].ds-c:not(.light-mode) [class*="cell"],
+body[data-card-style="b"].ds-c:not(.light-mode) .dropdown,
+body[data-card-style="b"].ds-c:not(.light-mode) [class*="card"] {
+  background: rgba(28,28,34,.6);
+  backdrop-filter: blur(20px) saturate(1.5);
+  box-shadow: 0 4px 20px rgba(0,0,0,.6),
+              inset 0 1px 0 rgba(255,255,255,.12),
+              inset 0 0 0 1px rgba(255,255,255,.08);
+}
+
+/* === 方案 C：多层叠加（底色+径向渐变蒙层）=== */
+body[data-card-style="c"].ds-c [class*="cell"],
+body[data-card-style="c"].ds-c .dropdown,
+body[data-card-style="c"].ds-c [class*="card"] {
+  background:
+    radial-gradient(circle at 20% 30%, rgba(88,86,214,.035), transparent 65%),
+    #fafbfc;
+  box-shadow: 0 2px 8px rgba(0,0,0,.06), inset 0 0 0 1px rgba(0,0,0,.04);
+}
+body[data-card-style="c"].ds-c:not(.light-mode) [class*="cell"],
+body[data-card-style="c"].ds-c:not(.light-mode) .dropdown,
+body[data-card-style="c"].ds-c:not(.light-mode) [class*="card"] {
+  background:
+    radial-gradient(circle at 20% 30%, rgba(94,93,229,.08), transparent 60%),
+    #16161c;
+  box-shadow: 0 4px 16px rgba(0,0,0,.5), inset 0 1px 0 rgba(255,255,255,.04);
+}
+
+/* === 方案 D：材质纹理（噪点）=== */
+body[data-card-style="d"].ds-c [class*="cell"],
+body[data-card-style="d"].ds-c .dropdown,
+body[data-card-style="d"].ds-c [class*="card"] {
+  background:
+    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='200' height='200'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' /%3E%3CfeColorMatrix values='0 0 0 0 0, 0 0 0 0 0, 0 0 0 0 0, 0 0 0 0.015 0'/%3E%3C/filter%3E%3Crect width='200' height='200' filter='url(%23n)'/%3E%3C/svg%3E"),
+    #fafbfc;
+  box-shadow: 0 1px 4px rgba(0,0,0,.06), inset 0 0 0 1px rgba(0,0,0,.05);
+}
+body[data-card-style="d"].ds-c:not(.light-mode) [class*="cell"],
+body[data-card-style="d"].ds-c:not(.light-mode) .dropdown,
+body[data-card-style="d"].ds-c:not(.light-mode) [class*="card"] {
+  background:
+    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='200' height='200'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' /%3E%3CfeColorMatrix values='0 0 0 0 0, 0 0 0 0 0, 0 0 0 0 0, 0 0 0 0.025 0'/%3E%3C/filter%3E%3Crect width='200' height='200' filter='url(%23n)'/%3E%3C/svg%3E"),
+    #16161c;
+  box-shadow: 0 2px 10px rgba(0,0,0,.5), inset 0 1px 0 rgba(255,255,255,.04);
+}
+
+/* === 方案 E：内阴影+外发光（深度感）=== */
+body[data-card-style="e"].ds-c [class*="cell"],
+body[data-card-style="e"].ds-c .dropdown,
+body[data-card-style="e"].ds-c [class*="card"] {
+  background: #ffffff;
+  box-shadow:
+    0 2px 8px rgba(0,0,0,.08),
+    0 0 0 1px rgba(0,0,0,.04),
+    inset 0 2px 4px rgba(0,0,0,.03),
+    inset 0 -1px 2px rgba(255,255,255,.8);
+}
+body[data-card-style="e"].ds-c:not(.light-mode) [class*="cell"],
+body[data-card-style="e"].ds-c:not(.light-mode) .dropdown,
+body[data-card-style="e"].ds-c:not(.light-mode) [class*="card"] {
+  background: #16161c;
+  box-shadow:
+    0 4px 20px rgba(0,0,0,.6),
+    0 0 0 1px rgba(255,255,255,.06),
+    inset 0 2px 6px rgba(0,0,0,.4),
+    inset 0 -1px 2px rgba(255,255,255,.04);
+}
+
+/* 确保切换器本身不受影响 */
+.card-switcher { isolation: isolate; }

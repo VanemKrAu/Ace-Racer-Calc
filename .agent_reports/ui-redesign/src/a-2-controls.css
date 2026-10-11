@@ -1,0 +1,134 @@
+/* A · 面板与控件 */
+.ds-a .card { background: var(--panel); border: 1px solid var(--line); border-radius: 4px; padding: 18px; }
+.ds-a #captureArea .card:not(.result-card):not(.car-hero) { counter-increment: blk; }
+.ds-a .card-title { gap: 10px; font-size: 14px; font-weight: 700; margin-bottom: 14px; letter-spacing: .3px; }
+.ds-a #captureArea .card:not(.result-card) > .card-title::before { content: counter(blk, decimal-leading-zero); font: 600 11px/1 var(--mono); color: var(--sig-ink); padding: 3px 5px; border: 1px solid var(--line-2); border-radius: 2px; }
+.ds-a .limit-badge { font: 500 11px/1.3 var(--sans); color: var(--ink-2); padding: 3px 7px; border: 1px solid var(--line-2); border-radius: 2px; }
+.ds-a .card-hint { font-size: 12.5px; margin: -4px 0 14px; line-height: 1.6; }
+.ds-a .card-hint b { display: block; color: var(--ink); font-weight: 600; }
+.ds-a .card-hint span { color: var(--ink-3); font-size: 12px; }
+
+.ds-a .section-divider { display: flex; align-items: center; gap: 12px; margin: 14px 0 0; font-size: 13px; font-weight: 800; letter-spacing: 2px; color: var(--ink); }
+.ds-a .section-divider::before { content: ""; width: 14px; height: 3px; background: var(--sig); flex: none; }
+.ds-a .section-divider::after { content: ""; flex: 1; height: 1px; background: var(--line); }
+
+/* 输入 */
+.ds-a .form-group { margin-bottom: 14px; }
+.ds-a .form-group.flush, .ds-a .card > .form-group:last-child, .ds-a .row-grid .form-group { margin-bottom: 0; }
+.ds-a .row-grid { gap: 12px; margin-bottom: 14px; }
+.ds-a .card > .row-grid:last-child { margin-bottom: 0; }
+.ds-a .form-label { display: block; font-size: 12.5px; color: var(--ink-2); margin-bottom: 6px; line-height: 1.45; }
+.ds-a .form-group.is-key .form-label { color: var(--ink); font-weight: 700; }
+.ds-a .form-control { height: 42px; background: var(--well); border: 1px solid var(--line-2); border-radius: 3px; padding: 0 44px 0 12px; color: var(--ink); font: 700 18px/1 var(--num); font-variant-numeric: tabular-nums; transition: border-color .15s, box-shadow .15s; }
+.ds-a .form-group.is-key .form-control { border-left: 3px solid var(--sig); }
+.ds-a .form-control:focus { outline: none; border-color: var(--sig); box-shadow: 0 0 0 3px var(--sig-soft); }
+.ds-a .input-unit { right: 12px; font: 600 12px var(--sans); color: var(--ink-3); }
+.ds-a #carSearch { font: 500 14px var(--sans); padding-left: 38px; }
+.ds-a #carSearch::placeholder { color: var(--ink-3); }
+
+/* 氮气规格 */
+.ds-a .nitro-grid { gap: 8px; margin-bottom: 14px; }
+.ds-a .nitro-item { position: relative; background: var(--well); border: 1px solid var(--line); border-radius: 3px; padding: 7px 8px 7px 12px; transition: border-color .15s, background .15s; }
+.ds-a .nitro-item:hover { border-color: var(--line-2); }
+.ds-a .nitro-item.selected { background: var(--sig-soft); border-color: var(--sig); }
+.ds-a .nitro-item.selected::before { content: ""; position: absolute; left: -1px; top: -1px; bottom: -1px; width: 3px; background: var(--sig); }
+.ds-a .nitro-left { gap: 10px; font-size: 13.5px; font-weight: 600; }
+.ds-a .nitro-left input[type="radio"] { appearance: none; width: 14px; height: 14px; border: 1.5px solid var(--ink-3); border-radius: 50%; flex: none; cursor: pointer; margin: 0; }
+.ds-a .nitro-left input[type="radio"]:checked { border-color: var(--sig); background: radial-gradient(circle, var(--sig) 0 3.5px, transparent 4.5px); }
+.ds-a .nitro-left label { padding: 4px 0; }
+.ds-a .nitro-right-input { width: 78px; height: 30px; background: var(--panel); border: 1px solid var(--line-2); border-radius: 3px; padding: 0 22px 0 8px; color: var(--ink); text-align: right; font: 700 14px var(--num); font-variant-numeric: tabular-nums; }
+.ds-a .nitro-right-input:focus { outline: none; border-color: var(--sig); }
+.ds-a .nitro-item.selected .nitro-right-input { color: var(--sig-ink); }
+.ds-a .nitro-right-unit { right: 8px; font-size: 11px; color: var(--ink-3); }
+.ds-a #specGrid { gap: 12px; }
+.ds-a #actualUltTimeSpan { font: 500 11.5px var(--mono); color: var(--pass); margin: -2px 0 6px; }
+.ds-a #actualUltTimeSpan:empty { display: none; }
+.ds-a .spec-box { display: flex; align-items: center; height: 42px; background: var(--well); border: 1px solid var(--line-2); border-radius: 3px; padding: 0 12px; }
+.ds-a .check-line { gap: 8px; font-size: 13px; color: var(--ink); line-height: 1.3; }
+.ds-a .check-line.small { font-size: 12.5px; color: var(--ink-2); }
+
+/* 方形勾选框（赋能 / 专精 / 作用范围 / 缺一不可子项） */
+/* 勾选标记用背景图而非 ::after —— html2canvas 会克隆 input 的伪元素并解析失败（导致长图导出报错） */
+.ds-a input[type="checkbox"] { appearance: none; width: 16px; height: 16px; border: 1.5px solid var(--ink-3); border-radius: 2px; flex: none; margin: 0; cursor: pointer; background: no-repeat center / 12px 12px; transition: background-color .12s, border-color .12s; }
+.ds-a input[type="checkbox"]:checked { background-color: var(--sig); border-color: var(--sig); background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 12 12'%3E%3Cpath d='M2.5 6.2 5 8.6l4.6-5' fill='none' stroke='%230b0c0e' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E"); }
+.ds-a input[type="checkbox"]:disabled { cursor: not-allowed; }
+
+/* 滑块 */
+.ds-a .slider-wrapper { padding: 12px 0 4px; }
+.ds-a .slider-wrapper + .slider-wrapper { border-top: 1px dashed var(--line); margin-top: 8px; padding-top: 14px; }
+.ds-a .slider-header { font-size: 12.5px; color: var(--ink-2); margin-bottom: 10px; gap: 10px; }
+.ds-a .slider-value { font: 700 22px/1 var(--num); color: var(--ink); font-variant-numeric: tabular-nums; }
+.ds-a .slider-control { appearance: none; height: 22px; background: transparent; margin: 0; }
+.ds-a .slider-control::-webkit-slider-runnable-track { height: 4px; border-radius: 0; background: linear-gradient(90deg, var(--sig) var(--fill, 0%), var(--line-2) var(--fill, 0%)); }
+.ds-a .slider-control::-moz-range-track { height: 4px; background: linear-gradient(90deg, var(--sig) var(--fill, 0%), var(--line-2) var(--fill, 0%)); }
+.ds-a .slider-control::-webkit-slider-thumb { appearance: none; width: 10px; height: 22px; margin-top: -9px; background: var(--ink); border: 2px solid var(--bg); border-radius: 1px; }
+.ds-a .slider-control::-moz-range-thumb { width: 10px; height: 22px; background: var(--ink); border: 2px solid var(--bg); border-radius: 1px; }
+
+/* 赋能 */
+.ds-a .empower-group-title { display: flex; align-items: center; gap: 8px; font-size: 12px; font-weight: 700; color: var(--ink-2); letter-spacing: 1.5px; margin: 4px 0 8px; }
+.ds-a .empower-group-title::after { content: ""; flex: 1; height: 1px; background: var(--line); }
+.ds-a .empower-list { gap: 6px; margin-bottom: 14px; }
+.ds-a .empower-list:last-of-type { margin-bottom: 0; }
+.ds-a .empower-item { background: var(--well); border: 1px solid var(--line); border-radius: 3px; padding: 11px 12px; transition: border-color .15s, background .15s, opacity .2s; }
+.ds-a .empower-item:hover { border-color: var(--line-2); }
+.ds-a .empower-item.active { border-color: var(--sig); background: var(--sig-soft); }
+.ds-a .empower-checkbox-wrapper { margin: 2px 12px 0 0; }
+.ds-a .empower-info .title { font-size: 13.5px; font-weight: 700; margin-bottom: 3px; }
+.ds-a .empower-info .desc { font-size: 12px; color: var(--ink-2); line-height: 1.5; }
+.ds-a .empower-info .desc strong { color: var(--ink); font-family: var(--num); }
+.ds-a .empower-item.active .desc strong { color: var(--sig-ink); }
+.ds-a .empower-sub-options { gap: 8px; border: 1px solid var(--line); border-radius: 3px; background: var(--panel); }
+.ds-a .empower-item.active .empower-sub-options { margin-top: 10px !important; padding: 10px 12px !important; }
+.ds-a .sub-row { gap: 8px; font-size: 12px; color: var(--ink-2); }
+.ds-a .sub-input { width: 54px; height: 28px; background: var(--well); color: var(--ink); border: 1px solid var(--line-2); border-radius: 3px; text-align: center; font: 700 14px var(--num); }
+.ds-a .sub-input:focus { outline: none; border-color: var(--sig); }
+.ds-a .sub-checkbox-label { gap: 8px; font-size: 12.5px; color: var(--ink-2); }
+.ds-a .empower-limit-tip { margin-top: 12px; padding: 8px 10px; font-size: 12px; font-weight: 600; color: var(--fail); border: 1px solid var(--fail); border-radius: 3px; }
+
+/* 扩展自充能 */
+.ds-a .extra-section { background: var(--well); border: 1px solid var(--line); border-radius: 3px; padding: 12px; margin-bottom: 8px; transition: border-color .15s, background .15s; }
+.ds-a .extra-section:last-child { margin-bottom: 0; }
+.ds-a .extra-toggle { gap: 10px; font-size: 13px; font-weight: 600; line-height: 1.4; }
+.ds-a .extra-active-nitro, .ds-a .extra-active-ult, .ds-a .extra-active-persec { border-color: var(--sig); background: var(--sig-soft); }
+.ds-a .extra-active-nitro .extra-body, .ds-a .extra-active-ult .extra-body, .ds-a .extra-active-persec .extra-body { margin-top: 12px !important; padding-top: 12px !important; border-top: 1px dashed var(--line-2) !important; border-width: 1px 0 0 !important; }
+.ds-a .scope-row { gap: 18px; }
+
+/* 模式条（联动 / 自动计算） */
+.ds-a .mode-bar { gap: 10px; padding: 9px 10px 9px 12px; margin-bottom: 14px; background: var(--well); border: 1px solid var(--line); border-radius: 3px; font-size: 12px; }
+.ds-a .mode-btn { height: 30px; padding: 0 12px; background: transparent; color: var(--ink); border: 1px solid var(--ink-3); border-radius: 3px; font-size: 12.5px; font-weight: 700; line-height: 1.2; transition: background .15s, color .15s; }
+.ds-a .mode-btn:hover { background: var(--ink); color: var(--bg); border-color: var(--ink); }
+
+/* 车辆 */
+.ds-a .car-hero { padding: 0; overflow: hidden; }
+.ds-a .car-stage { position: relative; background: var(--stage); min-height: 208px; display: flex; align-items: center; justify-content: center; padding: 18px 16px 10px; border-bottom: 1px solid var(--line); }
+.ds-a .car-stage::after { content: ""; position: absolute; left: 12%; right: 12%; bottom: 22px; height: 1px; background: linear-gradient(90deg, transparent, var(--line-2), transparent); }
+.ds-a #carImgWrap { position: static !important; }
+.ds-a #carQualityBar { height: 2px !important; border-radius: 0 !important; }
+.ds-a #carImage { max-height: 190px; position: relative; z-index: 1; filter: drop-shadow(0 14px 14px rgba(0,0,0,.45)); }
+.ds-a.light-mode #carImage { filter: drop-shadow(0 12px 12px rgba(0,0,0,.18)); }
+.ds-a #carPreviewPlaceholder { position: absolute; bottom: 30px; font-size: 13px; color: var(--ink-3); }
+.ds-a .car-meta { padding: 14px 18px 18px; display: flex; flex-direction: column; align-items: center; gap: 10px; text-align: center; }
+.ds-a #carPreviewName { font-size: 17px; font-weight: 800; letter-spacing: .3px; }
+.ds-a #carPreviewTags { gap: 6px; justify-content: center; }
+.ds-a #carPreviewTags > span { border-radius: 2px !important; padding: 3px 9px !important; font-size: 12px !important; }
+.ds-a #carPreviewTags img { filter: none; }
+.ds-a #carPreviewChips { gap: 6px; justify-content: center; }
+.ds-a #carPreviewChips img { width: 28px !important; height: 28px !important; opacity: .85; }
+.ds-a.light-mode #carPreviewTags img, .ds-a.light-mode .select-btn img, .ds-a.light-mode .dropdown-option img { filter: invert(1) brightness(.35); }
+.ds-a.light-mode[data-quality="legend"] { --qd: #946000; } .ds-a.light-mode[data-quality="epic"] { --qd: #7a3fc4; }
+.ds-a.light-mode[data-quality="rare"] { --qd: #0f6fb8; } .ds-a.light-mode[data-quality="common"] { --qd: #15814a; }
+.ds-a.light-mode #carPreviewTags > span:first-child { color: var(--qd, var(--ink)) !important; }
+.ds-a.light-mode #carPreviewChips img { filter: invert(1) opacity(.45); }
+.ds-a #carPreviewAutoMsg { width: 100%; font-size: 12px; line-height: 1.7; color: var(--pass); text-align: left; padding: 10px 12px; background: var(--well); border: 1px solid var(--line); border-left: 3px solid var(--pass); border-radius: 3px; }
+.ds-a #carPreviewAutoMsg a { color: var(--ink) !important; text-decoration-color: var(--sig) !important; text-underline-offset: 3px; }
+
+.ds-a .car-search-box { margin-bottom: 10px; }
+.ds-a .car-search-box > .ico { left: 12px; color: var(--ink-3); width: 16px; height: 16px; }
+.ds-a .car-filters { gap: 10px; margin-bottom: 10px; }
+.ds-a .select-btn { height: 42px; padding: 0 12px; background: var(--well); border-color: var(--line-2); color: var(--ink); font-weight: 600; }
+.ds-a .select-btn .ico { width: 16px; height: 16px; color: var(--ink-3); }
+.ds-a .select-btn img { width: 16px !important; height: 16px !important; }
+.ds-a .car-list-btn { height: 46px; font-size: 14.5px; border-color: var(--ink-3); }
+.ds-a .car-info-bar { margin-top: 12px; padding: 10px 12px; gap: 4px 6px; font: 500 12px/1.6 var(--mono); color: var(--ink-3); background: var(--well); border: 1px solid var(--line); border-radius: 3px; }
+.ds-a .car-info-bar b { color: var(--ink); font-weight: 700; }
+.ds-a .car-info-bar .car-badge { padding: 0 5px; border: 1px solid var(--sig); color: var(--sig-ink); border-radius: 2px; font-size: 10.5px; }

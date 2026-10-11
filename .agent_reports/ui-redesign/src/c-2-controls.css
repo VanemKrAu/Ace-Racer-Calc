@@ -1,0 +1,146 @@
+/* C · 分组列表与原生控件 */
+.ds-c .card { background: var(--cell); border-radius: var(--r-lg); box-shadow: var(--shadow); padding: 18px; }
+.ds-c .card-title { gap: 10px; font-size: 16px; font-weight: 700; margin-bottom: 14px; }
+.ds-c .limit-badge { font-size: 11.5px; font-weight: 600; color: var(--ink-2); background: var(--fill); padding: 4px 10px; border-radius: 999px; }
+.ds-c .card-hint { font-size: 13px; line-height: 1.6; margin: -6px 0 14px; color: var(--ink-2); }
+.ds-c .card-hint b { display: block; color: var(--ink); font-weight: 600; }
+.ds-c .section-divider { padding: 10px 4px 0; font-size: 20px; font-weight: 800; letter-spacing: -.2px; }
+
+/* 输入：填充式圆角框 */
+.ds-c .form-group { margin-bottom: 14px; }
+.ds-c .form-group.flush, .ds-c .card > .form-group:last-child, .ds-c .row-grid .form-group { margin-bottom: 0; }
+.ds-c .row-grid { gap: 12px; margin-bottom: 14px; }
+.ds-c .card > .row-grid:last-child { margin-bottom: 0; }
+.ds-c .form-label { display: block; font-size: 13px; color: var(--ink-2); margin: 0 0 6px 2px; line-height: 1.45; }
+.ds-c .form-group.is-key .form-label { color: var(--ink); font-weight: 700; }
+.ds-c .form-control { height: 46px; background: var(--fill); border: 0; border-radius: var(--r-md); padding: 0 44px 0 14px; color: var(--ink); font: 700 19px/1 var(--round); font-variant-numeric: tabular-nums; box-shadow: inset 0 0 0 1.5px transparent; transition: box-shadow .15s, background .15s; }
+/* 原来这里还给「关键参数」的输入框加了一圈 1.5px 品级色内描边。但它跟聚焦态
+   （下一行的 .form-control:focus，同样是 --acc 描边）长得一模一样，看着就像一直卡在高亮。
+   去掉描边，关键字段只靠加粗变深的 label 区分。 */
+.ds-c .form-control:focus { outline: none; background: var(--cell); box-shadow: inset 0 0 0 2px var(--acc); }
+.ds-c .input-unit { right: 14px; font-size: 13px; font-weight: 600; color: var(--ink-3); }
+.ds-c #carSearch { font: 500 15px var(--sans); padding-left: 40px; }
+.ds-c #carSearch::placeholder { color: var(--ink-3); }
+
+/* 氮气规格：磁贴 */
+.ds-c .nitro-grid { gap: 8px; margin-bottom: 14px; grid-template-columns: 1fr 1fr; }
+.ds-c .nitro-left label { white-space: nowrap; }
+/* 选中描边用真 border 而不是 box-shadow: inset —— html2canvas 会把 inset 阴影画成 16px 粗带
+   （实测隔离图 32px@scale2），长截图导出会变成一圈超粗的框。padding 减 2px 保持外框尺寸不变。 */
+.ds-c .nitro-item { flex-direction: column; align-items: stretch; gap: 6px; padding: 8px; background: var(--fill); border-radius: var(--r-md); border: 2px solid transparent; transition: border-color .15s, background .15s; }
+.ds-c .nitro-item.selected { background: var(--cell); border-color: var(--acc); }
+.ds-c .nitro-left { gap: 8px; font-size: 13px; font-weight: 600; color: var(--ink-2); }
+.ds-c .nitro-item.selected .nitro-left { color: var(--ink); }
+.ds-c .nitro-left input[type="radio"] { appearance: none; width: 18px; height: 18px; margin: 0; border-radius: 50%; border: 1.5px solid var(--ink-3); flex: none; cursor: pointer; background: no-repeat center / 12px 12px; }
+.ds-c .nitro-left input[type="radio"]:checked { background-color: var(--acc); border-color: var(--acc); background-image: var(--check-acc); }
+.ds-c .nitro-right-input { width: 100%; height: 34px; background: transparent; border: 0; padding: 0 22px 0 2px; color: var(--ink); font: 700 22px/1 var(--round); font-variant-numeric: tabular-nums; }
+.ds-c .nitro-right-input:focus { outline: none; }
+.ds-c .nitro-right-unit { right: 2px; font-size: 12px; color: var(--ink-3); font-weight: 600; }
+.ds-c #specGrid { gap: 12px; }
+.ds-c #actualUltTimeSpan { font-size: 12px; color: var(--pass); margin: -2px 0 6px 2px; }
+.ds-c #actualUltTimeSpan:empty { display: none; }
+.ds-c .spec-box { display: flex; align-items: center; min-height: 46px; padding: 6px 12px 6px 14px; background: var(--fill); border-radius: var(--r-md); }
+.ds-c .check-line { gap: 10px; font-size: 14px; color: var(--ink); line-height: 1.35; }
+.ds-c #specLabel { flex-direction: row-reverse; justify-content: space-between; width: 100%; }
+.ds-c .check-line.small { font-size: 13px; color: var(--ink-2); }
+
+/* 开关（赋能 / 专精 / 扩展模块）与圆形勾选（作用范围 / 阵容） */
+/* 开关旋钮 / 勾选都用背景图画（input 上不能用 ::after，否则 html2canvas 长图导出直接报错） */
+.ds-c .empower-checkbox, .ds-c #isSpec, .ds-c .extra-toggle input { appearance: none; width: 44px; height: 26px; border-radius: 999px; margin: 0; flex: none; cursor: pointer; background: var(--fill-2) var(--knob) no-repeat 2px 50% / 22px 22px; transition: background-color .2s, background-position .2s cubic-bezier(.3,.7,.4,1); }
+.ds-c .empower-checkbox:checked, .ds-c #isSpec:checked, .ds-c .extra-toggle input:checked { background-color: var(--acc); background-position: 20px 50%; }
+.ds-c .empower-checkbox:disabled { cursor: not-allowed; }
+.ds-c .scope-row input, .ds-c .sub-checkbox-label input { appearance: none; width: 20px; height: 20px; border-radius: 50%; border: 1.5px solid var(--ink-3); margin: 0; flex: none; cursor: pointer; background: no-repeat center / 13px 13px; }
+.ds-c .scope-row input:checked, .ds-c .sub-checkbox-label input:checked { background-color: var(--acc); border-color: var(--acc); background-image: var(--check-acc); }
+
+/* 滑块 */
+.ds-c .slider-wrapper { padding: 2px 0 6px; }
+.ds-c .slider-wrapper + .slider-wrapper { margin-top: 12px; padding-top: 14px; border-top: 1px solid var(--sep); }
+.ds-c .slider-header { font-size: 13.5px; color: var(--ink-2); margin-bottom: 8px; gap: 10px; }
+.ds-c .slider-value { font: 700 22px/1 var(--round); color: var(--ink); }
+.ds-c .slider-control { appearance: none; height: 28px; background: transparent; margin: 0; }
+.ds-c .slider-control::-webkit-slider-runnable-track { height: 6px; border-radius: 999px; background: linear-gradient(90deg, var(--acc) var(--fill, 0%), var(--fill-2) var(--fill, 0%)); }
+.ds-c .slider-control::-moz-range-track { height: 6px; border-radius: 999px; background: linear-gradient(90deg, var(--acc) var(--fill, 0%), var(--fill-2) var(--fill, 0%)); }
+.ds-c .slider-control::-webkit-slider-thumb { appearance: none; width: 26px; height: 26px; margin-top: -10px; border-radius: 50%; background: #fff; box-shadow: 0 1px 4px rgba(0,0,0,.25), 0 0 0 .5px rgba(0,0,0,.08); }
+.ds-c .slider-control::-moz-range-thumb { width: 26px; height: 26px; border: 0; border-radius: 50%; background: #fff; box-shadow: 0 1px 4px rgba(0,0,0,.25); }
+
+/* 赋能：设置列表行，开关在右 */
+.ds-c .empower-group-title { font-size: 12.5px; font-weight: 600; color: var(--ink-3); margin: 4px 2px 6px; }
+.ds-c .empower-list { margin-bottom: 16px; background: var(--fill); border-radius: var(--r-md); overflow: hidden; }
+.ds-c .empower-list:last-of-type { margin-bottom: 0; }
+.ds-c .empower-item { padding: 12px 14px; transition: background .15s, opacity .2s; }
+.ds-c .empower-item + .empower-item { border-top: 1px solid var(--sep); }
+.ds-c.light-mode .empower-item + .empower-item { border-top-color: var(--fill-2); }
+.ds-c .empower-item.active { background: var(--acc-soft); }
+.ds-c .empower-flex { flex-direction: row-reverse; gap: 14px; }
+.ds-c .empower-checkbox-wrapper { margin-top: 2px; }
+.ds-c .empower-info .title { font-size: 14.5px; font-weight: 600; margin-bottom: 2px; }
+.ds-c .empower-info .desc { font-size: 12.5px; color: var(--ink-2); line-height: 1.55; }
+.ds-c .empower-info .desc strong { color: var(--ink); }
+.ds-c .empower-item.active .desc strong { color: var(--acc-ink); }
+.ds-c .empower-sub-options { gap: 8px; background: var(--cell); border-radius: var(--r-sm); }
+.ds-c .empower-item.active .empower-sub-options { margin-top: 10px !important; padding: 10px 12px !important; }
+.ds-c .sub-row { gap: 8px; font-size: 13px; color: var(--ink-2); }
+.ds-c .sub-input { width: 54px; height: 32px; background: var(--fill); color: var(--ink); border: 0; border-radius: 8px; text-align: center; font: 700 16px var(--round); }
+.ds-c .sub-input:focus { outline: none; box-shadow: inset 0 0 0 2px var(--acc); }
+.ds-c .sub-checkbox-label { gap: 10px; font-size: 13.5px; color: var(--ink); }
+.ds-c .empower-limit-tip { margin-top: 12px; padding: 10px 12px; font-size: 13px; font-weight: 600; color: var(--fail); background: var(--fail-soft); border-radius: var(--r-sm); }
+
+/* 扩展自充能 */
+.ds-c .extra-card .card-title { margin-bottom: 10px; }
+.ds-c .extra-section { background: var(--fill); border-radius: var(--r-md); padding: 12px 14px; margin-bottom: 8px; transition: background .15s; }
+.ds-c .extra-section:last-child { margin-bottom: 0; }
+.ds-c .extra-toggle { flex-direction: row-reverse; justify-content: space-between; gap: 14px; font-size: 14px; font-weight: 600; line-height: 1.4; }
+.ds-c .extra-active-nitro, .ds-c .extra-active-ult, .ds-c .extra-active-persec { background: var(--acc-soft); }
+.ds-c .extra-active-nitro .extra-body, .ds-c .extra-active-ult .extra-body, .ds-c .extra-active-persec .extra-body { margin-top: 12px !important; padding: 12px !important; background: var(--cell); border-radius: var(--r-sm); }
+.ds-c .extra-body .form-control { background: var(--fill); }
+.ds-c .scope-row { gap: 20px; margin-top: 2px; }
+
+/* 联动 / 自动计算 */
+.ds-c .mode-bar { gap: 10px; padding: 10px 10px 10px 14px; margin-bottom: 14px; background: var(--fill); border-radius: var(--r-md); font-size: 12.5px; }
+.ds-c .mode-btn { height: 34px; padding: 0 14px; border: 0; border-radius: 999px; background: var(--ink); color: var(--cell); font-size: 13px; font-weight: 700; line-height: 1.2; transition: opacity .15s; }
+.ds-c .mode-btn:hover { opacity: .85; }
+
+/* 车辆 */
+.ds-c .car-hero { padding: 0; overflow: hidden; background: radial-gradient(72% 36% at 50% 38%, var(--acc-glow), transparent 100%), var(--cell); }
+.ds-c .car-stage { position: relative; min-height: 230px; display: flex; align-items: center; justify-content: center; padding: 22px 16px 8px; }
+.ds-c #carImgWrap { position: static !important; }
+.ds-c #carQualityBar { display: none; }
+.ds-c #carImage { max-height: 200px; filter: drop-shadow(0 16px 14px rgba(0,0,0,.22)); }
+.ds-c #carPreviewPlaceholder { position: absolute; bottom: 24px; font-size: 14px; color: var(--ink-3); }
+.ds-c .car-meta { padding: 12px 18px 18px; display: flex; flex-direction: column; align-items: center; gap: 10px; text-align: center; }
+.ds-c #carPreviewName { font-size: 20px; font-weight: 800; }
+.ds-c #carPreviewTags { gap: 6px; justify-content: center; }
+.ds-c #carPreviewTags > span { border-radius: 999px !important; padding: 4px 12px !important; font-size: 12.5px !important; font-weight: 600 !important; border: 0 !important; }
+.ds-c #carPreviewTags > span:first-child { background: var(--acc) !important; color: var(--on-acc) !important; }
+.ds-c #carPreviewTags > span:not(:first-child) { background: var(--fill) !important; color: var(--ink-2) !important; }
+/* 定位 / 专精图标同理：只压亮度、保留色相（说明见 c-1-tokens.css）。原 V3 设计稿的
+   invert(1) brightness(.35) 会把蓝色的定位图标和白色的专精图标一起弄成黑块。 */
+.ds-c.light-mode #carPreviewTags img { filter: brightness(.6); }
+.ds-c #carPreviewChips { gap: 6px; justify-content: center; }
+.ds-c #carPreviewChips img { width: 30px !important; height: 30px !important; }
+/* 芯片槽位图标是「为深色底设计的半透明灰色软块」（5 种图源外形都是同一个圆，只有内部纹路不同），
+   浅色下直接放会是一团深色污渍、反相又变成没有边界的白块。所以：反相把盘面变浅（220 左右），
+   再用两层 drop-shadow 沿它的 alpha 形状描出一圈深色轮廓（轮廓最暗 ~76）——
+   实测 槽腔 221 / 轮廓清晰度 178，既保持浅色底，形状笔画又看得清。 */
+/* 芯片槽位（浅色）：撤掉 contrast 阈值（它会把「形状」整块压成实心黑），
+   只把原来的橙黄反色改成中性灰 —— 保持设计里那层「圆盘 + 略深一圈形状」的关系。
+   注：原图里的形状是「填充区」（灰度 83 的实心块），不是描边，滤镜造不出描边；
+   若要真正的黑色描边，得把这 5 种形状（○ △ ◇ ◣ V）重画成内联 SVG。 */
+.ds-c.light-mode #carPreviewChips img { filter: grayscale(1) invert(1) brightness(1.3) drop-shadow(0 0 .5px rgba(0,0,0,.55)) drop-shadow(0 0 .5px rgba(0,0,0,.55)); }
+.ds-c #carPreviewAutoMsg { width: 100%; text-align: left; font-size: 13px; line-height: 1.7; color: var(--pass); padding: 12px 14px; background: var(--pass-soft); border-radius: var(--r-md); }
+.ds-c #carPreviewAutoMsg a { color: var(--ink) !important; }
+
+.ds-c .car-search-box { margin-bottom: 10px; }
+.ds-c .car-search-box > .ico { left: 14px; width: 17px; height: 17px; color: var(--ink-3); }
+.ds-c .car-filters { gap: 10px; margin-bottom: 10px; }
+.ds-c .select-btn { height: 46px; padding: 0 14px; background: var(--fill); border-radius: var(--r-md); box-shadow: none; color: var(--ink); font-size: 14px; }
+.ds-c .select-btn:hover { background: var(--fill-hover); }
+.ds-c .select-btn .ico { width: 16px; height: 16px; color: var(--ink-3); }
+.ds-c .select-btn img { width: 18px !important; height: 18px !important; }
+.ds-c .car-list-btn { height: 54px; padding: 0 12px; font-size: 16px; font-weight: 700; background: var(--cell); border: 2px solid var(--acc); }
+/* 「已选车辆」那格：悬停必须看得见反馈，但又不能像之前那样把白底压成灰底（浅色下显得整块发灰）。
+   改成填一层品质色淡底（--acc-soft：传说金 / 史诗紫 / 稀有蓝 / 普通绿，未选车时是中性淡灰）+ 描边保持。 */
+.ds-c .car-list-btn:hover { background: var(--acc-soft); border-color: var(--acc); box-shadow: 0 6px 20px var(--acc-soft); }
+.ds-c .car-info-bar { margin-top: 12px; padding: 12px 14px; gap: 4px 6px; font-size: 13px; color: var(--ink-2); background: var(--fill); border-radius: var(--r-md); }
+.ds-c .car-info-bar b { color: var(--ink); }
+.ds-c .car-info-bar .car-badge { background: var(--acc); color: var(--on-acc); padding: 1px 7px; border-radius: 999px; font-size: 11px; font-weight: 700; }

@@ -1,0 +1,119 @@
+/* C · 结果组件 / 分享 / 页脚 / 底部胶囊 */
+/* 强调色上的前景色：金 / 绿 / 深色模式下的亮色系用深色勾，其余用白勾 */
+.ds-c[data-quality="legend"], .ds-c[data-quality="common"], .ds-c:not(.light-mode)[data-quality] { --on-acc: #111114; --check-acc: var(--check-k); }
+.ds-c:not(.light-mode)[data-quality="none"] { --on-acc: #fff; --check-acc: var(--check-w); }
+
+.ds-c .result-card { --st: var(--pass); --st-fill: var(--pass-fill); --st-soft: var(--pass-soft); padding: 18px; }
+.ds-c .result-card.error-state { --st: var(--fail); --st-fill: var(--fail-fill); --st-soft: var(--fail-soft); }
+.ds-c .result-title { font-size: 13px; font-weight: 600; color: var(--ink-2); }
+.ds-c .result-req { margin-top: 4px; font-size: 12.5px; font-weight: 600; color: var(--warn); }
+.ds-c .ds-gauge { padding: 12px 0 14px; }
+.ds-c .ds-gauge-top { margin-bottom: 10px; }
+.ds-c .ds-gauge-main { gap: 18px; }
+.ds-c .ds-ring { display: block; width: 112px; height: 112px; flex: none; }
+.ds-c .ds-ring-track { stroke: var(--fill); stroke-width: 11; }
+.ds-c .ds-ring-fill { stroke: var(--st-fill); stroke-width: 11; stroke-linecap: round; }
+.ds-c .ds-gauge[data-state="idle"] .ds-ring-fill { stroke: transparent; }
+.ds-c .ds-readout { gap: 2px; }
+.ds-c .ds-value { font: 800 40px/1.05 var(--round); letter-spacing: -.8px; font-variant-numeric: tabular-nums; color: var(--ink); }
+.ds-c .ds-value small { font-size: 18px; letter-spacing: 0; color: var(--ink-2); font-weight: 700; }
+.ds-c .ds-delta { font-size: 13px; font-weight: 700; color: var(--st); }
+.ds-c .ds-bar { display: none; }
+.ds-c .ds-status { display: inline-flex; align-items: center; gap: 6px; height: 26px; padding: 0 11px; border-radius: 999px; font-size: 13px; font-weight: 700; color: var(--st); background: var(--st-soft); }
+.ds-c .ds-gauge[data-state="idle"] .ds-status { color: var(--ink-3); background: var(--fill); }
+.ds-c .ds-target { font-size: 12.5px; font-weight: 600; color: var(--ink-3); }
+.ds-c .result-desc { margin-bottom: 12px; padding: 12px 14px; font-size: 13.5px; line-height: 1.65; background: var(--st-soft); border-radius: var(--r-md); }
+.ds-c .result-desc b, .ds-c .result-desc strong { font-weight: 700; }
+.ds-c .formula-box { padding: 12px 14px; background: var(--fill); border-radius: var(--r-md); font: 12px/1.75 var(--mono); color: var(--ink-2); }
+.ds-c .formula-box b { color: var(--ink); }
+
+/* 分享 */
+.ds-c .share-block { margin-top: 30px; display: flex; flex-direction: column; gap: 12px; }
+.ds-c .share-card { padding: 8px; }
+.ds-c .share-btn-group { gap: 8px; }
+.ds-c .share-btn { gap: 8px; padding: 16px 8px; background: var(--fill); border: 0; border-radius: var(--r-md); color: var(--ink); font-size: 14px; font-weight: 700; transition: background .15s, transform .1s; }
+.ds-c .share-btn:hover { background: var(--fill-hover); }
+.ds-c .share-btn:active { transform: scale(.97); }
+.ds-c .share-btn .ico { width: 30px; height: 30px; padding: 6px; border-radius: 50%; background: var(--cell); color: var(--ink); }
+
+/* 页脚 */
+.ds-c .site-footer { margin-top: 30px; display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 16px; align-items: start; }
+.ds-c .footer-legal { background: var(--cell); border-radius: var(--r-lg); box-shadow: var(--shadow); padding: 18px; font-size: 13px; color: var(--ink-2); line-height: 1.7; }
+.ds-c .footer-legal p + p { margin-top: 8px; }
+.ds-c .social-row { flex-direction: column; gap: 0; margin: 12px -4px -6px; }
+.ds-c .social-tag { gap: 10px; height: 44px; padding: 0 6px; font-size: 14px; font-weight: 600; color: var(--ink); border-top: 1px solid var(--sep); }
+.ds-c .social-tag .ico { width: 28px; height: 28px; padding: 6px; border-radius: 8px; background: var(--fill); }
+.ds-c .social-tag::after { content: "›"; margin-left: auto; font-size: 20px; color: var(--ink-3); }
+.ds-c .site-footer .card-title { font-size: 15px; gap: 8px; }
+.ds-c .site-footer .card-title .ico { width: 18px; height: 18px; color: var(--ink-2); }
+.ds-c .card-text { font-size: 13px; color: var(--ink-2); line-height: 1.7; margin-bottom: 14px; }
+.ds-c .bug-btn { width: 100%; justify-content: space-between; gap: 10px; height: 46px; padding: 0 16px; border-radius: 999px; background: var(--ink); color: var(--cell); font-size: 14px; font-weight: 700; }
+.ds-c .bug-btn > span { flex: 1; }
+.ds-c .thanks-list { justify-content: flex-start; gap: 6px; margin-bottom: 12px; }
+.ds-c .thanks-item { padding: 5px 12px; border-radius: 999px; background: var(--fill); font-size: 13px; font-weight: 600; }
+.ds-c .thanks-foot { margin: 0; }
+.ds-c .bottom-image-wrapper { grid-column: 1 / -1; background: var(--cell); border-radius: var(--r-lg); box-shadow: var(--shadow); padding: 24px 18px; }
+.ds-c .bottom-msg-text { font-size: 14px; color: var(--ink-2); margin-bottom: 16px; }
+.ds-c #imgDark, .ds-c #imgLight { border-radius: var(--r-lg); }
+.ds-c #gh-support-link { height: 46px; padding: 0 22px; border-radius: 999px; background: var(--ink); color: var(--cell); font-weight: 700; }
+.ds-c .copy-toast { background: var(--ink); color: var(--cell); padding: 12px 20px; border-radius: 999px; font-size: 13.5px; font-weight: 600; min-width: 220px; text-align: center; box-shadow: 0 8px 30px rgba(0,0,0,.25); }
+
+/* 底部结果胶囊 · 液态玻璃
+   通用层（所有浏览器）：backdrop 模糊+提饱和、半透明着色、镜面高光描边、柔和投影 —— 即使没有折射也是完整的玻璃质感。
+   增强层（仅 Chromium）：view.js 按胶囊实际尺寸生成位移贴图，SVG feDisplacementMap 做边缘折射（body.ds-lg-refract）。
+   Safari / Firefox 不支持 backdrop-filter: url()，自动停留在通用层。 */
+.ds-c { --glass-tint: rgba(255,255,255,.55); --glass-rim: rgba(255,255,255,.95); --glass-edge: rgba(0,0,0,.08);
+  --glass-shadow: 0 12px 32px rgba(20,20,40,.16), 0 2px 6px rgba(20,20,40,.08);
+  --dock-ink: #111114; --dock-2: rgba(255,255,255,.72); --dock-2-rim: rgba(0,0,0,.06); --dock-hover: rgba(255,255,255,.4); --dock-sep: rgba(0,0,0,.1); }
+.ds-c:not(.light-mode) { --glass-tint: rgba(40,40,46,.5); --glass-rim: rgba(255,255,255,.22); --glass-edge: rgba(255,255,255,.1);
+  --glass-shadow: 0 14px 40px rgba(0,0,0,.6), 0 2px 8px rgba(0,0,0,.4);
+  --dock-ink: #f5f5f7; --dock-2: rgba(255,255,255,.13); --dock-2-rim: rgba(255,255,255,.08); --dock-hover: rgba(255,255,255,.06); --dock-sep: rgba(255,255,255,.14); }
+.ds-c .ds-dock { display: flex; position: fixed; z-index: 1500; left: 50%; bottom: 16px; transform: translate(-50%, 0); gap: 4px; padding: 5px; border-radius: 999px; isolation: isolate;
+  background: var(--glass-tint);
+  -webkit-backdrop-filter: blur(18px) saturate(1.9); backdrop-filter: blur(18px) saturate(1.9);
+  box-shadow: inset 0 1px 0 var(--glass-rim), inset 0 -1px 0 rgba(255,255,255,.08), inset 0 0 0 1px var(--glass-edge), var(--glass-shadow);
+  transition: transform .3s cubic-bezier(.3,.7,.4,1), opacity .2s; }
+/* 顶部高光条：模拟曲面玻璃反光 */
+.ds-c .ds-dock::after { content: ""; position: absolute; inset: 1px; border-radius: inherit; pointer-events: none; z-index: 1;
+  background: linear-gradient(180deg, rgba(255,255,255,.35) 0%, rgba(255,255,255,0) 42%); opacity: .55; }
+.ds-c:not(.light-mode) .ds-dock::after { background: linear-gradient(180deg, rgba(255,255,255,.14) 0%, rgba(255,255,255,0) 45%); opacity: 1; }
+/* Chromium 折射层 */
+body.ds-c.ds-lg-refract .ds-dock { -webkit-backdrop-filter: none; backdrop-filter: none; }
+body.ds-c.ds-lg-refract .ds-dock::before { content: ""; position: absolute; inset: 0; border-radius: inherit; z-index: -1; pointer-events: none;
+  backdrop-filter: url(#ds-lg-filter) blur(3px) saturate(1.9); }
+body.ds-c.ds-results-visible .ds-dock { transform: translate(-50%, 150%); opacity: 0; pointer-events: none; }
+body.ds-c.performance-mode .ds-dock, body.ds-c.performance-mode .ds-dock::before { -webkit-backdrop-filter: none !important; backdrop-filter: none !important; }
+body.ds-c.performance-mode .ds-dock { background: var(--cell); }
+@media (prefers-reduced-transparency: reduce) { .ds-c .ds-dock { background: var(--cell); } body.ds-c .ds-dock::before { backdrop-filter: none; } }
+.ds-c .ds-dock-item { position: relative; z-index: 2; gap: 8px; height: 42px; padding: 0 16px 0 12px; border-radius: 999px; background: transparent; color: var(--dock-ink); transition: background .15s; }
+/* 选中态只跟随「最后点的那一项」（view.js 切 .is-active）；悬停只在有鼠标的设备生效，避免触屏点完后 :hover 粘住 */
+.ds-c .ds-dock-item.is-active { background: var(--dock-2); box-shadow: inset 0 0 0 1px var(--dock-2-rim); }
+@media (hover: hover) { .ds-c .ds-dock-item:not(.is-active):hover { background: var(--dock-hover); } }
+.ds-c .ds-dock-item:focus-visible { outline: 2px solid var(--acc); outline-offset: 1px; }
+.ds-c .ds-dock-item + .ds-dock-item::after { content: ""; position: absolute; left: -3px; top: 12px; bottom: 12px; width: 1px; background: var(--dock-sep); transition: opacity .15s; }
+.ds-c .ds-dock-item.is-active + .ds-dock-item::after, .ds-c .ds-dock-item + .ds-dock-item.is-active::after { opacity: 0; }
+.ds-c .ds-dock-item::before { content: ""; width: 10px; height: 10px; border-radius: 50%; background: var(--ink-3); }
+.ds-c .ds-dock-item[data-state="pass"]::before { background: var(--pass-fill); box-shadow: 0 0 0 3px rgba(52,199,89,.2); }
+.ds-c .ds-dock-item[data-state="fail"]::before { background: var(--fail-fill); box-shadow: 0 0 0 3px rgba(255,59,48,.2); }
+.ds-c .ds-dock-k { font-size: 12.5px; font-weight: 600; opacity: .7; white-space: nowrap; }
+.ds-c .ds-dock-v { font: 800 17px var(--round); font-variant-numeric: tabular-nums; white-space: nowrap; }
+.ds-c .copy-toast.show { bottom: 82px; }
+.ds-c .ds-switch { top: 14px; bottom: auto; }
+@media (max-width: 849px) { .ds-c .ds-switch { top: 18px; } }
+
+@media (max-width: 849px) {
+  .ds-c .app-container { padding: 12px 14px 96px; }
+  .ds-c .top-bar #langBtnText { display: none; }
+  .ds-c .top-bar #langToggleBtn { width: 38px; padding: 0; justify-content: center; }
+  .ds-c .header { padding: 8px 2px 18px; gap: 12px; }
+  .ds-c .brand-mark { width: 52px; height: 52px; border-radius: 13px; }
+  .ds-c .header h1 { font-size: 23px; }
+  .ds-c .card { padding: 16px; }
+  .ds-c .car-hero { padding: 0; }
+  .ds-c .share-card { padding: 8px; }
+  .ds-c .site-footer { grid-template-columns: 1fr; }
+  .ds-c .ds-ring { width: 96px; height: 96px; }
+  .ds-c .ds-value { font-size: 36px; }
+  .ds-c .share-btn { font-size: 12.5px; }
+  .ds-c #specGrid { grid-template-columns: 1fr; }
+}

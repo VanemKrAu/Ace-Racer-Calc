@@ -1,0 +1,86 @@
+/* A · 结果轨道 / 分享 / 页脚 / 移动端 */
+.ds-a { --pass-soft: rgba(39,209,127,.09); --fail-soft: rgba(255,77,61,.1); }
+.ds-a.light-mode { --pass-soft: rgba(14,138,79,.08); --fail-soft: rgba(211,50,34,.08); }
+.ds-a .result-card { --st: var(--pass); --st-soft: var(--pass-soft); padding: 0; border-top: 3px solid var(--st); overflow: hidden; }
+.ds-a .result-card.error-state { --st: var(--fail); --st-soft: var(--fail-soft); }
+.ds-a .result-title { padding: 14px 16px 0; font-size: 13px; font-weight: 700; color: var(--ink-2); letter-spacing: .5px; }
+.ds-a .result-req { margin: 6px 16px 0; font-size: 12px; font-weight: 600; color: var(--warn); }
+.ds-a .ds-gauge { padding: 12px 16px 16px; }
+.ds-a .ds-status { display: inline-flex; align-items: center; gap: 6px; font-size: 13px; font-weight: 800; color: var(--st); }
+.ds-a .ds-status::before { content: ""; width: 8px; height: 8px; background: var(--st); }
+.ds-a .ds-gauge[data-state="idle"] .ds-status { color: var(--ink-3); }
+.ds-a .ds-gauge[data-state="idle"] .ds-status::before { background: var(--ink-3); }
+.ds-a .ds-target { font: 600 11.5px var(--mono); color: var(--ink-3); }
+.ds-a .ds-gauge-main { margin: 6px 0 12px; }
+.ds-a .ds-value { font: 700 52px/1 var(--num); letter-spacing: -1px; font-variant-numeric: tabular-nums; color: var(--ink); }
+.ds-a .ds-value small { font-size: 22px; letter-spacing: 0; color: var(--ink-2); margin-left: 1px; }
+.ds-a .ds-delta { margin-top: 6px; font: 600 12px var(--mono); color: var(--st); }
+.ds-a .ds-bar { height: 6px; background: var(--well); border: 1px solid var(--line); }
+.ds-a .ds-bar-fill { background: var(--st); }
+.ds-a .ds-bar-mark { width: 2px; background: var(--ink); margin-left: -1px; }
+.ds-a .ds-bar-mark::after { content: ""; position: absolute; top: -5px; left: -3px; border: 4px solid transparent; border-top-color: var(--ink); }
+.ds-a .result-desc { margin: 0 16px 12px; padding: 9px 11px; font-size: 12.5px; line-height: 1.6; background: var(--st-soft); border-left: 2px solid var(--st); }
+.ds-a .result-desc strong, .ds-a .result-desc b { color: var(--ink); }
+.ds-a .formula-box { margin: 0; padding: 12px 16px 16px; border-top: 1px solid var(--line); background: var(--well); font: 11.5px/1.75 var(--mono); color: var(--ink-3); }
+.ds-a .formula-box b { color: var(--ink); font-weight: 600; }
+
+/* 分享 */
+.ds-a .share-block { margin-top: 28px; display: flex; flex-direction: column; gap: 14px; }
+.ds-a .share-card { padding: 0; overflow: hidden; }
+.ds-a .share-btn-group { gap: 0; }
+.ds-a .share-btn { gap: 8px; padding: 18px 10px; background: transparent; border: 0; border-right: 1px solid var(--line); color: var(--ink); font-size: 13.5px; font-weight: 700; transition: background .15s; }
+.ds-a .share-btn:last-child { border-right: 0; }
+.ds-a .share-btn .ico { width: 22px; height: 22px; color: var(--sig-ink); }
+.ds-a .share-btn:hover { background: var(--sig-soft); }
+
+/* 页脚 */
+.ds-a .site-footer { margin-top: 32px; padding-top: 24px; border-top: 1px solid var(--line); display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 16px; align-items: start; }
+.ds-a .footer-legal { font-size: 12.5px; color: var(--ink-2); line-height: 1.7; }
+.ds-a .footer-legal p + p { margin-top: 8px; }
+.ds-a .social-row { justify-content: flex-start; gap: 6px; margin-top: 12px; }
+.ds-a .social-tag { gap: 6px; height: 32px; padding: 0 11px; border: 1px solid var(--line-2); border-radius: 3px; font-size: 12.5px; font-weight: 600; color: var(--ink); transition: border-color .15s; }
+.ds-a .social-tag .ico { width: 15px; height: 15px; color: var(--ink-3); }
+.ds-a .social-tag:hover { border-color: var(--sig); }
+.ds-a .site-footer .card-title { font-size: 13.5px; gap: 8px; }
+.ds-a .site-footer .card-title .ico { width: 16px; height: 16px; color: var(--ink-3); }
+.ds-a .card-text { font-size: 12px; color: var(--ink-2); line-height: 1.7; margin-bottom: 12px; }
+.ds-a .bug-btn { width: 100%; justify-content: space-between; gap: 10px; height: 42px; padding: 0 14px; border: 1px solid var(--ink-3); border-radius: 3px; font-size: 13px; font-weight: 700; color: var(--ink); }
+.ds-a .bug-btn > span { flex: 1; }
+.ds-a .bug-btn:hover { background: var(--ink); color: var(--bg); }
+.ds-a .thanks-list { justify-content: flex-start; gap: 6px; margin-bottom: 12px; }
+.ds-a .thanks-item { padding: 4px 10px; background: var(--well); border: 1px solid var(--line); border-radius: 2px; font-size: 12.5px; font-weight: 600; }
+.ds-a .thanks-foot { margin: 0; }
+.ds-a .bottom-image-wrapper { grid-column: 1 / -1; padding: 24px 0 8px; border-top: 1px solid var(--line); }
+.ds-a .bottom-msg-text { font-size: 13.5px; color: var(--ink-2); margin-bottom: 16px; }
+.ds-a #imgDark, .ds-a #imgLight { border-radius: 6px; border: 1px solid var(--line); }
+.ds-a #gh-support-link { height: 44px; padding: 0 20px; border: 1px solid var(--line-2); border-radius: 3px; font-weight: 700; color: var(--ink); }
+.ds-a .lang-toggle-wrapper { display: flex; }
+
+.ds-a .copy-toast { background: var(--ink); color: var(--bg); padding: 11px 16px; border-radius: 3px; font-size: 13px; font-weight: 700; min-width: 220px; text-align: center; }
+
+/* 移动端 / 平板：结果速览条（顶端，滚过标题后出现，结果卡进入视野时收起） */
+@media (max-width: 1179px) {
+  .ds-a .ds-dock { display: flex; position: fixed; z-index: 1500; top: 0; left: 0; right: 0; background: var(--panel); border-bottom: 1px solid var(--line-2); transform: translateY(-110%); transition: transform .22s ease; }
+  body.ds-a.ds-scrolled:not(.ds-results-visible) .ds-dock { transform: none; }
+  .ds-a .ds-dock-item { flex: 1; gap: 8px; justify-content: center; height: 44px; background: transparent; color: var(--ink); }
+  .ds-a .ds-dock-item + .ds-dock-item { border-left: 1px solid var(--line); }
+  .ds-a .ds-dock-k { font-size: 12px; font-weight: 700; color: var(--ink-2); }
+  .ds-a .ds-dock-v { font: 700 18px var(--num); font-variant-numeric: tabular-nums; }
+  .ds-a .ds-dock-item::before { content: ""; width: 8px; height: 8px; background: var(--ink-3); }
+  .ds-a .ds-dock-item[data-state="pass"]::before { background: var(--pass); }
+  .ds-a .ds-dock-item[data-state="fail"]::before { background: var(--fail); }
+}
+@media (max-width: 849px) {
+  .ds-a .app-container { padding: 12px 14px 80px; }
+  .ds-a .top-bar { position: static; justify-content: flex-end; margin-bottom: 12px; }
+  .ds-a .top-bar .nav-btn-text, .ds-a #langBtnText { display: none; }
+  .ds-a .top-bar .nav-btn { width: 36px; padding: 0; justify-content: center; }
+  .ds-a .header { padding: 0 0 16px; }
+  .ds-a .header h1 { font-size: 19px; }
+  .ds-a .card { padding: 16px 14px; }
+  .ds-a .result-card, .ds-a .car-hero, .ds-a .share-card { padding: 0; }
+  .ds-a .ds-value { font-size: 44px; }
+  .ds-a .site-footer { grid-template-columns: 1fr; }
+  .ds-a .share-btn { font-size: 12.5px; padding: 16px 6px; }
+  .ds-a #specGrid { grid-template-columns: 1fr; }
+}

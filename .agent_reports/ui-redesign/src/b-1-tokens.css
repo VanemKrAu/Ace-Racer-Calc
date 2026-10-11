@@ -1,0 +1,89 @@
+/* ================= B · 规格书 Spec Sheet =================
+   思路：赛事技术规程 / 印刷品。暖白纸 + 墨黑 + 唯一专色群青；
+   编号章节、左栏章名右栏正文、细线分隔；大数字用衬线体。无卡片阴影、无圆角。 */
+.ds-b {
+  --paper: #f3f1ec; --paper-2: #e9e6df; --sheet: #fffdf9;
+  --ink: #141414; --ink-2: #4d4b47; --ink-3: #8a877f; --field: #b8b4aa;
+  --rule: #d6d2c8; --rule-strong: #141414;
+  --spot: #2135d9; --spot-soft: rgba(33, 53, 217, .07); --on-spot: #fff;
+  --pass: #13794a; --fail: #c8321f; --warn: #a45a00;
+  --flash-rgb: 33, 53, 217;
+  --q-common: #2f8a5c; --q-rare: #1677b8; --q-epic: #8347c4; --q-legend: #b07d00;
+  --primary: var(--spot); --secondary: var(--ink); --accent: var(--fail); --success: var(--pass); --warning: var(--warn);
+  --text-color: var(--ink); --text-muted: var(--ink-2); --border: var(--rule);
+  --inner-bg: var(--sheet); --box-bg: var(--paper-2); --box-bg-light: var(--paper-2); --input-bg: var(--sheet); --card-bg: var(--paper);
+  --btn-shadow: none; --nitro-active-bg: var(--spot-soft); --ult-active-bg: var(--spot-soft);
+  --export-bg: #f3f1ec; --export-accent: #141414; --export-pass: #13794a; --export-fail: #c8321f; --export-range: #2135d9;
+  --sans: "PingFang SC", "HarmonyOS Sans SC", "MiSans", "Microsoft YaHei UI", "Microsoft YaHei", -apple-system, "Segoe UI", sans-serif;
+  --serif: "Iowan Old Style", "Palatino Linotype", Palatino, "Book Antiqua", "Noto Serif", Georgia, serif;
+  --mono: "SF Mono", "Cascadia Mono", Consolas, "Roboto Mono", "Microsoft YaHei", monospace;
+}
+.ds-b:not(.light-mode) {
+  --paper: #121315; --paper-2: #1b1c1f; --sheet: #17181b;
+  --ink: #ecebe6; --ink-2: #b0aea7; --ink-3: #77756f; --field: #45464b;
+  --rule: #2d2e32; --rule-strong: #ecebe6;
+  --spot: #8e9cff; --spot-soft: rgba(142, 156, 255, .1); --on-spot: #121315;
+  --pass: #4fc38a; --fail: #ff6b57; --warn: #e3a54a;
+  --flash-rgb: 142, 156, 255;
+  --export-bg: #121315; --export-accent: #ecebe6; --export-pass: #4fc38a; --export-fail: #ff6b57; --export-range: #8e9cff;
+}
+
+.ds-b { background: var(--paper); color: var(--ink); font: 14px/1.6 var(--sans); }
+.ds-b input, .ds-b button { font-family: inherit; }
+.ds-b .app-container { max-width: 1200px; margin: 0 auto; padding: 22px 44px 56px; }
+.ds-b #captureArea { counter-reset: sec; }
+
+/* 刊头 */
+.ds-b .top-bar { justify-content: space-between; gap: 16px; padding-bottom: 10px; border-bottom: 1px solid var(--rule-strong); position: relative; z-index: 1000; }
+.ds-b .sheet-mast { font: 600 11px/1 var(--sans); letter-spacing: 3px; color: var(--ink-2); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.ds-b .sheet-mast b { color: var(--ink); font-weight: 800; }
+.ds-b .sheet-mast span { margin-left: 14px; letter-spacing: 1px; color: var(--ink-3); font-family: var(--mono); }
+.ds-b .top-right { gap: 2px; }
+.ds-b .nav-btn { height: 30px; padding: 0 9px; gap: 6px; background: none; border: 0; color: var(--ink); font-size: 12.5px; font-weight: 600; border-radius: 0; }
+.ds-b .top-bar .nav-btn:hover { text-decoration: underline; text-underline-offset: 4px; }
+.ds-b .top-bar .nav-btn .ico { width: 15px; height: 15px; }
+.ds-b .dropdown-menu { background: var(--sheet); border: 1px solid var(--rule-strong); padding: 4px 0; box-shadow: 0 10px 28px rgba(0,0,0,.14); }
+.ds-b .dropdown-option { padding: 9px 14px; font-size: 13px; color: var(--ink); }
+.ds-b .dropdown-option .ico { width: 15px; height: 15px; color: var(--ink-3); }
+.ds-b .dropdown-option:hover { background: var(--paper-2); }
+.ds-b .dropdown-option.selected { box-shadow: inset 3px 0 0 var(--spot); color: var(--ink); background: var(--spot-soft); }
+.ds-b .dropdown-option.sel-common { --qc: var(--q-common); --qcs: rgba(47,138,92,.12); } .ds-b .dropdown-option.sel-rare { --qc: var(--q-rare); --qcs: rgba(22,119,184,.12); }
+.ds-b .dropdown-option.sel-epic { --qc: var(--q-epic); --qcs: rgba(131,71,196,.12); } .ds-b .dropdown-option.sel-legend { --qc: var(--q-legend); --qcs: rgba(176,125,0,.14); }
+.ds-b .dropdown-option[class*="sel-"] { box-shadow: inset 3px 0 0 var(--qc); background: var(--qcs); }
+.ds-b .dropdown-option img { width: 18px !important; height: 18px !important; }
+.ds-b.light-mode .dropdown-option img, .ds-b.light-mode .select-btn img, .ds-b.light-mode #carListLabel img { filter: invert(1) brightness(.3); }
+
+/* 大标题 */
+.ds-b .header { padding: 40px 0 22px; border-bottom: 3px solid var(--rule-strong); }
+.ds-b .brand-mark { display: none; }
+.ds-b .header h1 { font-size: 42px; font-weight: 900; line-height: 1.15; letter-spacing: -.5px; }
+.ds-b .header p { margin-top: 12px; font-size: 14px; color: var(--ink-2); }
+.ds-b .header p a { color: var(--spot); font-weight: 700; text-decoration: underline; text-underline-offset: 3px; }
+
+/* 使用前必看 */
+.ds-b #tutorialWrapper { margin-top: 22px; }
+.ds-b .tutorial-details { border: 1px solid var(--rule-strong); background: var(--sheet); }
+.ds-b .tutorial-details summary { padding: 12px 14px; }
+.ds-b .tut-head { font-weight: 800; font-size: 14px; }
+.ds-b .tut-head .ico { width: 17px; height: 17px; color: var(--spot); }
+.ds-b #updateBadge { background: var(--spot); color: var(--on-spot); font-size: 11px; font-weight: 700; padding: 2px 8px; }
+.ds-b .tut-actions { color: var(--ink-2); }
+.ds-b #closeTutorialBtn { color: var(--ink-2); border-left: 1px solid var(--rule); padding-left: 10px; }
+.ds-b .tut-body { padding: 0 18px 18px; }
+.ds-b .tut-video { display: inline-flex; align-items: center; gap: 8px; margin: 4px 0 16px; color: var(--spot); font-weight: 700; font-size: 13.5px; text-decoration: underline; text-underline-offset: 4px; }
+.ds-b .tut-notes-title { font-size: 12px; font-weight: 800; letter-spacing: 2px; color: var(--ink-2); padding-top: 12px; border-top: 1px solid var(--rule); margin-bottom: 6px; }
+.ds-b #notesContent { font-size: 13px; color: var(--ink-2); line-height: 1.75; padding-left: 20px; max-width: 76ch; }
+.ds-b #notesContent li + li { margin-top: 6px; }
+.ds-b .calc-note { margin: 16px 0 6px; font-size: 12.5px; color: var(--ink-2); line-height: 1.75; padding-left: 12px; border-left: 2px solid var(--rule-strong); }
+
+/* 编号章节 */
+.ds-b .sheet-sec, .ds-b .share-block { display: grid; grid-template-columns: 200px minmax(0, 1fr); gap: 40px; padding: 34px 0 30px; border-top: 1px solid var(--rule-strong); margin-top: 30px; counter-increment: sec; }
+.ds-b #captureArea > .sheet-sec:first-of-type { margin-top: 24px; }
+.ds-b .sheet-head { min-width: 0; }
+.ds-b .sheet-head .section-divider { position: sticky; top: 24px; }
+.ds-b .section-divider span { display: block; font-size: 17px; font-weight: 800; line-height: 1.35; }
+.ds-b .section-divider::before { content: counter(sec, decimal-leading-zero); display: block; font: 400 68px/1 var(--serif); color: var(--spot); letter-spacing: -2px; margin-bottom: 10px; font-variant-numeric: lining-nums; }
+.ds-b .share-block .section-divider::before { content: "05"; }
+.ds-b .sheet-body { min-width: 0; }
+.ds-b .desktop-layout { gap: 0 40px; }
+.ds-b .sheet-calc > .desktop-col:first-child { flex: 0.85; }
