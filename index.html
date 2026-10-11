@@ -2,7 +2,7 @@
 <html lang="zh-CN">
 <head>
    <meta charset="UTF-8">
-   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+   <meta name="viewport" content="width=device-width, initial-scale=1.0">
    <meta name="referrer" content="no-referrer">
    <meta name="bytedance-verification-code" content="9EXZ/oxW+cxbxqsbtMfj" />
    <link rel="canonical" href="https://aceracercalc.top/">
@@ -729,6 +729,8 @@ body.ds-c.performance-mode .ds-ambient canvas { display: none; }
    （下一行的 .form-control:focus，同样是 --acc 描边）长得一模一样，看着就像一直卡在高亮。
    去掉描边，关键字段只靠加粗变深的 label 区分。 */
 .ds-c .form-control:focus { outline: none; background: var(--cell); box-shadow: inset 0 0 0 2px var(--acc); }
+/* 双指缩放已放开（见 viewport）；输入控件上屏蔽双击缩放，避免填数字时画面跳动 */
+input, select, textarea, button { touch-action: manipulation; }
 .ds-c .input-unit { right: 14px; font-size: 13px; font-weight: 600; color: var(--ink-3); }
 .ds-c #carSearch { font: 500 15px var(--sans); padding-left: 40px; }
 .ds-c #carSearch::placeholder { color: var(--ink-3); }
@@ -745,7 +747,7 @@ body.ds-c.performance-mode .ds-ambient canvas { display: none; }
 .ds-c .nitro-left input[type="radio"] { appearance: none; width: 18px; height: 18px; margin: 0; border-radius: 50%; border: 1.5px solid var(--ink-3); flex: none; cursor: pointer; background: no-repeat center / 12px 12px; }
 .ds-c .nitro-left input[type="radio"]:checked { background-color: var(--acc); border-color: var(--acc); background-image: var(--check-acc); }
 .ds-c .nitro-right-input { width: 100%; height: 34px; background: transparent; border: 0; padding: 0 22px 0 2px; color: var(--ink); font: 700 22px/1 var(--round); font-variant-numeric: tabular-nums; }
-.ds-c .nitro-right-input:focus { outline: none; }
+.ds-c .nitro-right-input:focus { outline: none; box-shadow: inset 0 0 0 2px var(--acc); }
 .ds-c .nitro-right-unit { right: 2px; font-size: 12px; color: var(--ink-3); font-weight: 600; }
 .ds-c #specGrid { gap: 12px; }
 .ds-c #actualUltTimeSpan { font-size: 12px; color: var(--pass); margin: -2px 0 6px 2px; }
@@ -3782,7 +3784,7 @@ body[data-calc-mode="team"] .chip-card .chip-t-team { display: inline; }
                 for (var di = 0; di < CAR_DATABASE.length; di++) {
                     if (CAR_DATABASE[di].id === id) {
                         var c = CAR_DATABASE[di];
-                        matchName = c.name.toLowerCase().indexOf(q) >= 0 || (c.search_text && c.search_text.indexOf(q) >= 0);
+                        matchName = c.name.toLowerCase().indexOf(q) >= 0 || (c.name_en && c.name_en.toLowerCase().indexOf(q) >= 0) || (c.search_text && c.search_text.indexOf(q) >= 0);
                         break;
                     }
                 }
@@ -5512,7 +5514,6 @@ function __tok(n, d) { var v = getComputedStyle(document.body).getPropertyValue(
            resCardFirst.classList.remove('error-state');
            resCardLoop.classList.remove('error-state');
 
-           var initFixedBase = startCharge + (jiezouFirstCount * 4.0 * defenseMult);
            var initMultBase = (huaxinFirstCount * 7.0) * defenseMult * efficiencyMult;
 
            var xianji = parseFloat(document.getElementById('inputXianji').value) || 0;
@@ -5614,7 +5615,7 @@ function __tok(n, d) { var v = getComputedStyle(document.body).getPropertyValue(
                resDetFirst.innerHTML = "⚠️ <b>" + _("开局卡壳", "Start Stalled") + "</b>" + _("：距离及格还差 ", ": Short of passing by ") + "<b>" + firstDiff.toFixed(3) + "%</b>" + _("。", ".")
                    + "<span class='pv-need'>" + (minFirstNitros >= 0
                        ? _("其他条件不变，需要 ", "Other things equal, it takes ") + "<b>" + minFirstNitros + "</b>" + _(" 个氮气才能首发（当前填 ", " nitros to open (now ") + firstNitrosCount + _(" 个）。", ").")
-                       : _("其他条件不变，30 个氮气以内都无法首发。", "Other things equal, no first ult within 30 nitros.")) + "</span>";
+                       : _("其他条件不变，30 个氮气以内都无法首发（反算最多只试到 30 个）。", "Other things equal, no first ult within 30 nitros (the solver only tries up to 30).")) + "</span>";
            }
 
            var loopFixedEmpowerBase = (queyiPerSecond * Math.floor(actualUltDuration + 0.000001) + fusuTotalBonus + huishouBonus + jiezouLoopCount * 4.0);
@@ -5651,7 +5652,7 @@ function __tok(n, d) { var v = getComputedStyle(document.body).getPropertyValue(
            }
 
            var reqHuinengLoop = 0;
-           if (nitrosPerUlt > 0 && efficiencyMult > 0) {
+           if (nitrosPerUlt > 0 && efficiencyMult > 0 && currentBaseNitro > 0) {
                var remainForLoopUlt = target - loopFixedEmpower - loopHuaxinOutput - loopExtraUltOutput - loopPerSecOutput - loopCustomTrigOutput - tdx.loop;
                var singleNeeded = remainForLoopUlt / nitrosPerUlt;
                var baseNeeded = singleNeeded / (defenseMult * efficiencyMult);
