@@ -1,13 +1,13 @@
 ---
 name: ace-racer-update
-description: "更新 Ace-Racer-Calc 项目的数据和 CDN。当用户说「更新网站」「加新车」「更新车辆数据」或需要运行 update workflow 时使用。"
+description: "更新 Ace-Racer-Calc 项目的数据和 CDN。当用户说「更新网站」「加新车」「更新车辆数据」或需要运行更新工作流（update workflow）时使用。"
 allowed-tools: Read, Bash, Glob, Grep, Write, Edit
 user-invocable: true
 ---
 
-# Ace-Racer-Calc Update Workflow
+# Ace-Racer-Calc 更新工作流
 
-项目路径: 仓库根目录 (clone 后进入项目目录)
+项目路径：仓库根目录（克隆后进入项目目录）
 
 > ⚠ **改了这个文件本身，记得同步到本机已安装的 skill 目录。**
 > `/skills/ace-racer-update/` 才是 agent 实际加载的那一份；只改仓库里的，agent 读到的还是旧的。
@@ -243,7 +243,7 @@ agent 的经验只有落进 `data/car-overrides.json` 才不会丢。这张表�
 ### 字段解析规则
 
 ```
-vehicle JSON → data.item
+车辆 JSON → data.item
   ├── id           → 文件名去掉 .json
   ├── name         → v.name
   ├── name_en      → 品牌翻译 + 保留型号 / 中文名拼音 / 手动覆盖
@@ -255,8 +255,8 @@ vehicle JSON → data.item
   │                  → 前端 startCharge = (ace_charge + init_ratio)/100, 上限 100%
   │                  ★ 没有 init_ratio 的车 → startCharge = ace_charge/100
   ├── ult_duration →
-  │     Source 1: v.levels[最高级].rich_text.passive_skill_effect 含"持续时间"/"时长" → 对应 value
-  │     Source 2: v.skills.ultimate.instructions 中最先找到的 1-30s 合理 duration
+  │     来源 1：v.levels[最高级].rich_text.passive_skill_effect 含"持续时间"/"时长" → 对应 value
+  │     来源 2：v.skills.ultimate.instructions 中最先找到的 1-30s 合理 duration
   │     (前端填入 baseUltDuration, 无值填 0)
   │     ★ 大招连发（技能描述含「大招结束后自动释放一次无大招」这类，一管能量实得两段）
   │       面板只给单段值 → 在裁决表里按两段登记，并标 ult_chain: true
