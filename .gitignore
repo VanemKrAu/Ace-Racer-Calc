@@ -31,6 +31,8 @@ data/*/full/packages/
 
 # 本地暂存的原始导出包（updata/ 手工投放，不入库）
 updata/
+# 同上，新版投放目录名 update/（single-{id} 数据包，动辄上百 MB）
+update/
 
 # 演示视频（不进仓库）
 video/

@@ -83,6 +83,47 @@ const CAR_DATABASE = [
     "release_at": 1787241600000
   },
   {
+    "id": 12101,
+    "name": "丰田 GR SUPRA",
+    "name_en": "Toyota GR SUPRA",
+    "position": "干扰位",
+    "specialization": "山路",
+    "quality": "传说",
+    "ace_charge": 3200,
+    "ult_duration": 7,
+    "ult_type": "N2O_BULL",
+    "cost_ratio": 1428,
+    "has_sp": false,
+    "chip_slots": "○○△◇◇V",
+    "speed_limit": 182,
+    "speedup_ratio": 1.12,
+    "drift_coef": 600,
+    "drift_min": 1200,
+    "drift_max": 6000,
+    "init_ratio": null,
+    "drift_extra_charge": [
+      [
+        1,
+        0
+      ],
+      [
+        2,
+        1800
+      ]
+    ],
+    "nitro_duration": 5.8,
+    "ult_threshold": 100,
+    "nitro_charge": null,
+    "ult_charge_first": null,
+    "ult_charge_loop": null,
+    "per_sec_charge": null,
+    "sp_charge": null,
+    "search_text": "fengtian gr supra ft",
+    "asset_dir": "assets/丰田 GR SUPRA_12101",
+    "added_at": 1792515865886,
+    "release_at": 1783612799999
+  },
+  {
     "id": 12099,
     "name": "百变小鹦",
     "name_en": "Colorful Parrot",
