@@ -4179,6 +4179,8 @@ body[data-calc-mode="team"] .chip-card .chip-t-team { display: inline; }
         if (id === -1) {
             _selectedCar = null;
             _selectedCarId = -1;
+            CHIP_MAX = 1;
+            if (_chipsOn.length > CHIP_MAX) _chipsOn = _chipsOn.slice(0, CHIP_MAX);
             document.getElementById('carPreviewPlaceholder').style.display = '';
             document.getElementById('carPreviewName').style.display = 'none';
             document.getElementById('carPreviewInfo').style.display = 'none';
@@ -4248,9 +4250,9 @@ body[data-calc-mode="team"] .chip-card .chip-t-team { display: inline; }
             if (typeof handleNitroRadioChange === 'function') handleNitroRadioChange();
             if (typeof syncNitroTimes === 'function') syncNitroTimes('1x6');
         }
-        if (typeof renderChips === 'function') renderChips();
         // 先机 / 汇能上限：刷新卡片右上角提示 + 更新汇能框 max + 把超限值夹回范围内
         if (typeof applyChipLimits === 'function') applyChipLimits(car);
+        if (typeof renderChips === 'function') renderChips();
         calculate();
         populateCarGrid();
 
@@ -5486,6 +5488,15 @@ function __tok(n, d) { var v = getComputedStyle(document.body).getPropertyValue(
                // 没增幅的基础值另存一份：卡片显示和自动反算都用它
                hnEl.dataset.baseMax = baseMax;
            }
+           // 动态计算特殊芯片（V型槽）上限
+           var newChipMax = getCarVSlots(car);
+           if (CHIP_MAX !== newChipMax) {
+               CHIP_MAX = newChipMax;
+               if (_chipsOn.length > CHIP_MAX) {
+                   _chipsOn = _chipsOn.slice(0, CHIP_MAX);
+               }
+               if (typeof renderChips === 'function') renderChips();
+           }
            _chipBadge();   // 上限徽标（团魂获能里多一项团魂上限）
            clampAllLimited();
        }
@@ -6431,7 +6442,13 @@ function __tok(n, d) { var v = getComputedStyle(document.body).getPropertyValue(
            开局连发里放出第 1 / 2 / 3 次大招时获得的能量 ult[]（已乘折算系数）。
            calculate() / _chipEnv() / renderChain() 读它即可；分享链接用 chipSerialize() / chipRestore()。
            ====================================================================== */
-        var CHIP_MAX = 1;                       // 同时可装几枚；改这个数，页面标签与选择逻辑跟着变
+        function getCarVSlots(car) {
+            if (!car || !car.chip_slots) return 1;
+            var matches = String(car.chip_slots).match(/V|v|Ｖ/g);
+            return matches ? Math.max(1, matches.length) : 1;
+        }
+        var CHIP_MAX = 1;                       // 动态根据当前车辆 V 型槽数量调整
+        var _chipSwapTarget = null;             // 换芯片模式下记录目标芯片 id
         var CHIP_ICON_DIR = 'data/icon/';
         var CHIP_REGISTRY = [
             {
@@ -6618,14 +6635,15 @@ function __tok(n, d) { var v = getComputedStyle(document.body).getPropertyValue(
         function _chipRenderGrid() {
             var grid = _chipEl('chipGrid'), q = ((_chipEl('chipSearch') || {}).value || '').trim().toLowerCase();
             if (!grid) return;
-            var full = CHIP_MAX > 1 && _chipsOn.length >= CHIP_MAX;
+            var full = CHIP_MAX > 1 && _chipsOn.length >= CHIP_MAX && !_chipSwapTarget;
             var list = CHIP_REGISTRY.filter(function (d) {
                 return !q || (d.name.zh + ' ' + d.name.en + ' ' + d.desc.zh + ' ' + d.desc.en).toLowerCase().indexOf(q) >= 0;
             });
             grid.innerHTML = list.map(function (d) {
                 var on = _chipIndex(d.id) >= 0;
                 var sub = _chipEnergyTags(d).concat(d.stats || []).map(_chipTxt).join(' · ');
-                return '<button type="button" class="chip-tile' + (on ? ' is-on' : '') + '" data-act="pick" data-id="' + _chipAttr(d.id) + '" aria-pressed="' + on + '"' + (full && !on ? ' disabled' : '') + '>'
+                var disabled = (full && !on) || (_chipSwapTarget && on && d.id !== _chipSwapTarget);
+                return '<button type="button" class="chip-tile' + (on ? ' is-on' : '') + '" data-act="pick" data-id="' + _chipAttr(d.id) + '" aria-pressed="' + on + '"' + (disabled ? ' disabled' : '') + '>'
                     + _chipIcoHtml(d) + '<span class="chip-tile-main"><span class="chip-tile-name">' + _c2(d.name.zh, d.name.en) + '</span><span class="chip-tile-sub">' + _chipAttr(sub) + '</span></span>'
                     + '<span class="chip-tile-check" aria-hidden="true"></span></button>';
             }).join('');
@@ -6660,18 +6678,38 @@ function __tok(n, d) { var v = getComputedStyle(document.body).getPropertyValue(
         /* ---------- 交互 ---------- */
         function _chipPickerSet(open, instant) {
             _chipPickerWant = !!open;
+            if (!open) _chipSwapTarget = null;
             if (open) { var s = _chipEl('chipSearch'); if (s) s.value = ''; _chipRenderGrid(); }
             slideShow(_chipEl('chipPicker'), open, instant);
             _chipSyncOpenFlag();
         }
         function chipEquip(id) {
             if (!_chipDef(id)) return;
-            var at = _chipIndex(id);
-            if (at >= 0) _chipsOn.splice(at, 1);                                   // 再点一次 = 卸下
-            else {
-                if (_chipsOn.length >= CHIP_MAX) { if (CHIP_MAX === 1) _chipsOn.length = 0; else return; }   // 只能装 1 枚：直接换掉
-                _chipsOn.push({ id: id, opts: { loopMode: 'peak' } });
-                _chipNewId = id;
+            if (_chipSwapTarget) {
+                var targetIdx = _chipIndex(_chipSwapTarget);
+                if (targetIdx >= 0) {
+                    if (id === _chipSwapTarget) {
+                        // 点击当前芯片：保持不变
+                    } else if (_chipIndex(id) >= 0) {
+                        // 已经装在其他槽位上：禁止重复装入
+                        return;
+                    } else {
+                        // 替换指定槽位
+                        _chipsOn[targetIdx] = { id: id, opts: { loopMode: 'peak' } };
+                        _chipNewId = id;
+                    }
+                }
+                _chipSwapTarget = null;
+            } else {
+                var at = _chipIndex(id);
+                if (at >= 0) _chipsOn.splice(at, 1);                                   // 再点一次 = 卸下
+                else {
+                    if (_chipsOn.length >= CHIP_MAX) {
+                        if (CHIP_MAX === 1) _chipsOn.length = 0; else return;
+                    }
+                    _chipsOn.push({ id: id, opts: { loopMode: 'peak' } });
+                    _chipNewId = id;
+                }
             }
             _chipPickerSet(false);
             _chipChanged();
@@ -6698,10 +6736,19 @@ function __tok(n, d) { var v = getComputedStyle(document.body).getPropertyValue(
                 var b = e.target.closest ? e.target.closest('[data-act]') : null;
                 if (!b || !card.contains(b) || b.disabled) return;
                 var act = b.getAttribute('data-act'), id = b.getAttribute('data-id');
-                if (act === 'open' || act === 'swap') {
+                if (act === 'open') {
+                    _chipSwapTarget = null;
                     _chipPickerSet(!_chipPickerWant);
                     if (_chipPickerWant && e.detail === 0) { var f = card.querySelector('.chip-tile'); if (f) f.focus({ preventScroll: true }); }
-                } else if (act === 'close') _chipPickerSet(false);
+                } else if (act === 'swap') {
+                    var slot = b.closest ? b.closest('.chip-slot') : null;
+                    _chipSwapTarget = slot ? slot.getAttribute('data-chip') : null;
+                    _chipPickerSet(true);
+                    if (_chipPickerWant && e.detail === 0) { var f = card.querySelector('.chip-tile'); if (f) f.focus({ preventScroll: true }); }
+                } else if (act === 'close') {
+                    _chipSwapTarget = null;
+                    _chipPickerSet(false);
+                }
                 else if (act === 'pick') chipEquip(id);
                 else if (act === 'remove') chipEquip(id);
                 else if (act === 'opt') chipSetOpt(id, b.getAttribute('data-opt'), b.getAttribute('data-val'));
