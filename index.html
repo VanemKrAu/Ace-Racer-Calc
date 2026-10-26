@@ -77,7 +77,14 @@ var _ICONS = {
   "icon_mhyck_m.png": "https://i0.hdslb.com/bfs/openplatform/c3cbb25aa36571d87b86e067683332f530220699.png",
   "new_carport_icon_city.png": "https://i0.hdslb.com/bfs/openplatform/6b03fddcf523615f52c09516e0a5ae941c6c196c.png",
   "new_carport_icon_court.png": "https://i0.hdslb.com/bfs/openplatform/7708febb380440f4a6ad92b5f52c2eeba96eef12.png",
-  "new_carport_icon_mountainroad.png": "https://i0.hdslb.com/bfs/openplatform/1c3fdf64e6be6a831853d493c5d86b68af588fe2.png"
+  "new_carport_icon_mountainroad.png": "https://i0.hdslb.com/bfs/openplatform/1c3fdf64e6be6a831853d493c5d86b68af588fe2.png",
+  "chip_hunter.png": "https://i0.hdslb.com/bfs/openplatform/c1870180ef988a29dc50d112c95da2cd024793dc.png",
+  "chip_catnap.png": "https://i0.hdslb.com/bfs/openplatform/653a62bacf9acfe808561174caa582c50744878b.png",
+  "racer_icon_buff_2.png": "https://i0.hdslb.com/bfs/openplatform/045a7d6908548e62d630d568510a5084acfd2453.png",
+  "racer_icon_buff_4.png": "https://i0.hdslb.com/bfs/openplatform/fab2cdc7f1c92f2f60d8f579b2c80736d88c8437.png",
+  "racer_icon_buff_7.png": "https://i0.hdslb.com/bfs/openplatform/745ccc4db15eb41e513b659098ffadd3d809a0c9.png",
+  "racer_icon_buff_8.png": "https://i0.hdslb.com/bfs/openplatform/37ba44cefac2f05cd66c8e68621b8e4df09e808b.png",
+  "racer_icon_buff_9.png": "https://i0.hdslb.com/bfs/openplatform/3cb2568b1d2a4d8265e912849dba906c668c0cec.png"
 };
 var _CAR_IMG = {
   12104: "https://i0.hdslb.com/bfs/openplatform/91cc4888705d98530f64a17dd24d6677ad09ca7f.png",
@@ -1818,11 +1825,14 @@ body[data-calc-mode="team"] .chip-card .chip-t-team { display: inline; }
 .ds-c .ui-switch { -webkit-appearance: none; appearance: none; width: 44px; height: 26px; border-radius: 999px; margin: 0; flex: none; cursor: pointer;
   background: var(--fill-2) var(--knob) no-repeat 2px 50% / 22px 22px; transition: background-color .2s, background-position .2s cubic-bezier(.3, .7, .4, 1); }
 .ds-c .ui-switch:checked { background-color: var(--acc); background-position: 20px 50%; }
-.ds-c .dev-list { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 8px; }
+.ds-c .dev-list { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 8px; }
 .ds-c .dev-item { display: flex; flex-direction: column; gap: 6px; padding: 12px 14px; border-radius: var(--r-md); background: var(--fill);
   border: 2px solid transparent; transition: background-color .25s, border-color .25s; }
 .ds-c .dev-item.active { background: var(--acc-soft); border-color: var(--acc); }
 .ds-c .dev-head { display: flex; align-items: center; justify-content: space-between; gap: 10px; cursor: pointer; }
+.ds-c .dev-title-wrap { display: flex; align-items: center; gap: 9px; min-width: 0; }
+.ds-c .dev-ico { width: 34px; height: 34px; flex: none; object-fit: contain; filter: drop-shadow(0 2px 5px rgba(0, 0, 0, .28)); transition: transform .25s cubic-bezier(.2,.8,.25,1), filter .25s; }
+.ds-c .dev-item.active .dev-ico { transform: scale(1.08); filter: drop-shadow(0 0 10px var(--acc)); }
 .ds-c .dev-item .title { font-size: 14.5px; font-weight: 600; }
 .ds-c .dev-item .desc { font-size: 12.5px; color: var(--ink-2); line-height: 1.55; cursor: pointer; }
 .ds-c .dev-item .desc strong { color: var(--ink); transition: color .25s; }
@@ -1830,6 +1840,202 @@ body[data-calc-mode="team"] .chip-card .chip-t-team { display: inline; }
 @media (hover: hover) and (pointer: fine) { .ds-c .dev-item:not(.active):hover { background-color: var(--fill-hover); } }
 .ds-c .dev-sub { margin-top: 12px; }
 .ds-c .dev-sub .tm-grid { align-items: start; }
+/* ---------- 特殊芯片：槽位 + 芯片库（全站一致现代毛玻璃卡片设计） ---------- */
+.ds-c .chips-card .card-hint { margin-bottom: 12px; }
+.ds-c #devAccNote { margin-top: 8px; }
+.ds-c .chip-slots { display: flex; flex-direction: column; gap: 8px; }
+.ds-c .chip-slot { position: relative; display: flex; flex-wrap: wrap; align-items: center; gap: 12px 16px; width: 100%; padding: 14px 16px; border-radius: var(--r-md);
+  background-color: var(--surface);
+  background-image: linear-gradient(180deg, rgba(255, 255, 255, .04), rgba(255, 255, 255, 0) 140px);
+  -webkit-backdrop-filter: blur(18px) saturate(1.7); backdrop-filter: blur(18px) saturate(1.7);
+  border: 1px solid var(--surface-edge);
+  box-shadow: inset 0 1px 0 var(--surface-rim), var(--surface-drop);
+  text-align: left; transition: all .25s cubic-bezier(.2, .8, .2, 1); }
+.ds-c .chip-slot.is-filled {
+  background-color: color-mix(in oklab, var(--acc) 7%, var(--surface));
+  background-image: linear-gradient(180deg, rgba(255, 255, 255, .05), rgba(255, 255, 255, 0) 140px);
+  border: 1.5px solid var(--acc);
+  box-shadow: inset 0 1px 0 var(--surface-rim), inset 0 0 0 1px var(--surface-edge), 0 10px 30px -10px color-mix(in oklab, var(--acc) 30%, transparent); }
+
+/* 空槽：通透毛玻璃底 + 虚线；展开时高亮微光 */
+.ds-c .chip-slot.is-empty { align-items: center; justify-content: center; gap: 10px; min-height: 64px;
+  background-color: color-mix(in oklab, var(--surface) 50%, transparent);
+  -webkit-backdrop-filter: blur(14px); backdrop-filter: blur(14px);
+  border: 1.5px dashed var(--surface-rim);
+  color: var(--ink-2); font-size: 14px; font-weight: 600; cursor: pointer; }
+.ds-c .chip-slot.is-empty:not(.is-open):hover {
+  background-color: var(--surface);
+  border-color: color-mix(in oklab, var(--acc) 45%, transparent);
+  color: var(--ink);
+  box-shadow: inset 0 1px 0 var(--surface-rim), 0 6px 18px -6px rgba(0, 0, 0, .25); }
+.ds-c .chip-slot.is-empty.is-open {
+  border-style: solid; border-color: var(--acc);
+  background-color: color-mix(in oklab, var(--acc) 8%, var(--surface));
+  color: var(--ink);
+  box-shadow: inset 0 1px 0 var(--surface-rim), 0 0 0 1px var(--acc), 0 8px 24px -10px color-mix(in oklab, var(--acc) 35%, transparent); }
+
+/* 加号 / 旋转收起圆钮：通透毛玻璃 */
+.ds-c .chip-add-ico { display: inline-flex; align-items: center; justify-content: center; width: 32px; height: 32px; border-radius: 50%;
+  background-color: var(--surface);
+  -webkit-backdrop-filter: blur(14px) saturate(1.6); backdrop-filter: blur(14px) saturate(1.6);
+  border: 1px solid var(--surface-edge);
+  box-shadow: inset 0 1px 0 var(--surface-rim), 0 2px 6px rgba(0, 0, 0, .14);
+  color: var(--ink);
+  transition: transform .25s cubic-bezier(.3, .8, .2, 1), background-color .2s, border-color .2s; }
+.ds-c .chip-add-ico .ico { width: 17px; height: 17px; }
+.ds-c .chip-slot.is-empty.is-open .chip-add-ico {
+  transform: rotate(45deg);
+  background-color: color-mix(in oklab, var(--acc) 14%, var(--surface));
+  border-color: color-mix(in oklab, var(--acc) 60%, transparent); }
+.ds-c .chip-slot.is-empty:focus-visible, .ds-c .chip-act:focus-visible, .ds-c .chip-tile:focus-visible, .ds-c .chip-seg button:focus-visible { outline: 2px solid var(--acc); outline-offset: 2px; }
+
+/* 图标：毛玻璃底台 + 柔和内发光 */
+.ds-c .chip-ico { position: relative; flex: none; display: flex; align-items: center; justify-content: center; width: 52px; height: 52px; border-radius: 14px; overflow: hidden;
+  background-color: var(--surface);
+  background-image: radial-gradient(75% 75% at 50% 42%, var(--acc-glow), transparent 100%);
+  -webkit-backdrop-filter: blur(16px); backdrop-filter: blur(16px);
+  border: 1px solid var(--surface-edge);
+  box-shadow: inset 0 1px 0 var(--surface-rim), 0 4px 12px rgba(0, 0, 0, .18); }
+.ds-c .chip-ico img { display: block; width: 100%; height: 100%; object-fit: contain; pointer-events: none; -webkit-user-drag: none; }
+.ds-c .chip-ico-fb { display: none; font: 800 20px/1 var(--round); color: var(--ink-2); }
+.ds-c .chip-ico.is-fb .chip-ico-fb { display: flex; }
+@keyframes chipPop { 0% { opacity: 0; transform: scale(.7) rotate(-6deg); } 60% { opacity: 1; transform: scale(1.08) rotate(1deg); } 100% { opacity: 1; transform: none; } }
+.ds-c .chip-slot.is-new .chip-ico { animation: chipPop .5s cubic-bezier(.3, .9, .3, 1); }
+
+/* 已装芯片：名称与核心徽章 */
+.ds-c .chip-body { flex: 1 1 0; min-width: 0; }
+.ds-c .chip-head { display: flex; flex-wrap: wrap; align-items: center; gap: 6px 8px; }
+.ds-c .chip-name { font-size: 15px; font-weight: 700; line-height: 1.35; color: var(--ink); }
+.ds-c .chip-tags { display: inline-flex; flex-wrap: wrap; align-items: center; gap: 5px; }
+.ds-c .chip-tag { padding: 2.5px 10px; border-radius: 999px;
+  background-color: var(--surface);
+  -webkit-backdrop-filter: blur(12px); backdrop-filter: blur(12px);
+  border: 1px solid var(--surface-edge);
+  box-shadow: inset 0 1px 0 var(--surface-rim);
+  color: var(--ink-2); font-size: 11.5px; font-weight: 600; line-height: 1.45; white-space: nowrap; }
+.ds-c .chip-tag.is-energy {
+  background-color: color-mix(in oklab, var(--acc) 18%, var(--surface));
+  border-color: color-mix(in oklab, var(--acc) 55%, transparent);
+  color: var(--acc-ink); font-weight: 700; }
+.ds-c .chip-desc { margin-top: 5px; font-size: 12.5px; line-height: 1.55; color: var(--ink-2); }
+.ds-c .chip-desc strong { color: var(--acc-ink); }
+.ds-c .chip-acts { flex: none; display: flex; align-items: center; gap: 6px; margin-left: auto; }
+
+/* 卸下/关闭按钮：毛玻璃悬浮圆钮（解决纯黑硬块） */
+.ds-c .chip-act { position: relative; display: inline-flex; align-items: center; justify-content: center; width: 34px; height: 34px; padding: 0; border-radius: 50%;
+  background-color: var(--surface);
+  -webkit-backdrop-filter: blur(16px) saturate(1.6); backdrop-filter: blur(16px) saturate(1.6);
+  border: 1px solid var(--surface-edge);
+  box-shadow: inset 0 1px 0 var(--surface-rim), 0 3px 8px rgba(0, 0, 0, .16);
+  color: var(--ink-2); cursor: pointer;
+  transition: all .2s cubic-bezier(.2, .8, .2, 1); }
+.ds-c .chip-act .ico { width: 15px; height: 15px; }
+.ds-c .chip-act:hover {
+  background-color: color-mix(in oklab, var(--acc) 14%, var(--surface));
+  border-color: color-mix(in oklab, var(--acc) 50%, var(--surface-edge));
+  color: var(--ink);
+  box-shadow: inset 0 1px 0 var(--surface-rim), 0 4px 12px color-mix(in oklab, var(--acc) 25%, transparent); }
+.ds-c .chip-act:active { transform: scale(.92); }
+.ds-c .chip-sr { position: absolute !important; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
+
+/* 芯片可选项（毛玻璃通透胶囊组，解决纯黑硬底座） */
+.ds-c .chip-opts { flex: 1 0 100%; display: flex; flex-direction: column; gap: 6px; padding-top: 10px; border-top: 1px solid var(--surface-edge); }
+.ds-c .chip-opt { display: flex; flex-direction: column; gap: 6px; }
+.ds-c .chip-opt-label { display: flex; align-items: center; justify-content: space-between; gap: 8px; font-size: 12px; font-weight: 600; color: var(--ink-2); }
+.ds-c .chip-seg { display: flex; gap: 4px; padding: 3.5px; border-radius: 12px;
+  background-color: var(--surface);
+  -webkit-backdrop-filter: blur(18px) saturate(1.7); backdrop-filter: blur(18px) saturate(1.7);
+  border: 1px solid var(--surface-edge);
+  box-shadow: inset 0 1px 0 var(--surface-rim), inset 0 1px 3px rgba(0, 0, 0, .2); }
+.ds-c .chip-seg button { flex: 1 1 0; min-width: 0; padding: 6px 12px; border: 1px solid transparent; border-radius: 9px;
+  background: transparent; color: var(--ink-2);
+  font-size: 12.5px; font-weight: 600; line-height: 1.3; white-space: nowrap; cursor: pointer;
+  transition: all .2s cubic-bezier(.2, .8, .2, 1); }
+.ds-c .chip-seg button:not(.is-on):hover {
+  background-color: rgba(255, 255, 255, .06);
+  color: var(--ink); }
+.ds-c .chip-seg button.is-on {
+  background-color: color-mix(in oklab, var(--acc) 18%, var(--surface));
+  -webkit-backdrop-filter: blur(12px); backdrop-filter: blur(12px);
+  border-color: color-mix(in oklab, var(--acc) 75%, transparent);
+  box-shadow: inset 0 1px 0 var(--surface-rim), 0 2px 8px color-mix(in oklab, var(--acc) 25%, transparent);
+  color: var(--ink);
+  font-weight: 700; }
+
+/* 芯片库：毛玻璃展开卡片（解决纯黑背景） */
+.ds-c .chip-picker { margin-top: 10px; padding: 14px; border-radius: var(--r-md);
+  background-color: var(--menu-bg);
+  background-image: linear-gradient(180deg, rgba(255, 255, 255, .05), rgba(255, 255, 255, 0) 120px);
+  -webkit-backdrop-filter: blur(28px) saturate(1.8); backdrop-filter: blur(28px) saturate(1.8);
+  border: 1px solid var(--menu-edge);
+  box-shadow: inset 0 1px 0 var(--menu-rim), 0 16px 42px rgba(0, 0, 0, .28); }
+.ds-c .chip-picker-head { display: flex; align-items: center; gap: 10px; margin: 0 2px 10px; min-height: 36px; }
+.ds-c .chip-picker-title { flex: 1; min-width: 0; font-size: 13px; font-weight: 700; color: var(--ink); }
+.ds-c .chip-search { flex: 1 1 140px; max-width: 220px; height: 36px; padding: 0 14px; border-radius: 999px;
+  background-color: var(--surface);
+  -webkit-backdrop-filter: blur(16px); backdrop-filter: blur(16px);
+  border: 1px solid var(--surface-edge);
+  box-shadow: inset 0 1px 0 var(--surface-rim), inset 0 1px 2px rgba(0, 0, 0, .15);
+  color: var(--ink); font: 500 13px var(--sans);
+  transition: border-color .2s, box-shadow .2s; }
+.ds-c .chip-search:focus { outline: none; border-color: var(--acc);
+  box-shadow: inset 0 1px 0 var(--surface-rim), 0 0 0 2px color-mix(in oklab, var(--acc) 30%, transparent); }
+.ds-c .chip-search::placeholder { color: var(--ink-3); }
+
+.ds-c .chip-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: 8px; }
+
+/* 芯片候选项：高质感毛玻璃独立卡片（解决纯黑矩形） */
+.ds-c .chip-tile { position: relative; display: flex; align-items: center; gap: 12px; min-width: 0; padding: 10px 38px 10px 10px; border-radius: 14px;
+  background-color: var(--surface);
+  background-image: linear-gradient(180deg, rgba(255, 255, 255, .05), rgba(255, 255, 255, 0) 80px);
+  -webkit-backdrop-filter: blur(16px) saturate(1.6); backdrop-filter: blur(16px) saturate(1.6);
+  border: 1px solid var(--surface-edge);
+  box-shadow: inset 0 1px 0 var(--surface-rim), 0 4px 14px rgba(0, 0, 0, .12);
+  color: var(--ink); text-align: left; cursor: pointer;
+  transition: all .2s cubic-bezier(.2, .8, .2, 1); }
+.ds-c .chip-tile:not(:disabled):not(.is-on):hover {
+  background-color: color-mix(in oklab, var(--acc) 9%, var(--surface));
+  border-color: color-mix(in oklab, var(--acc) 50%, var(--surface-edge));
+  box-shadow: inset 0 1px 0 var(--surface-rim), 0 8px 22px -6px color-mix(in oklab, var(--acc) 25%, transparent);
+  transform: translateY(-1px); }
+.ds-c .chip-tile.is-on {
+  border-color: var(--acc);
+  background-color: color-mix(in oklab, var(--acc) 14%, var(--surface));
+  box-shadow: inset 0 1px 0 var(--surface-rim), 0 0 0 1px var(--acc), 0 8px 24px -6px color-mix(in oklab, var(--acc) 35%, transparent); }
+.ds-c .chip-tile:disabled { opacity: .45; cursor: not-allowed; }
+.ds-c .chip-tile .chip-ico { width: 44px; height: 44px; border-radius: 12px; box-shadow: none;
+  background: color-mix(in oklab, var(--acc) 10%, var(--surface));
+  border: 1px solid var(--surface-edge); }
+.ds-c .chip-tile-main { display: flex; flex-direction: column; gap: 2px; min-width: 0; }
+.ds-c .chip-tile-name { font-size: 13.5px; font-weight: 600; line-height: 1.35; }
+.ds-c .chip-tile-sub { display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; font-size: 12px; line-height: 1.45; color: var(--ink-2); }
+.ds-c .chip-tile-check { position: absolute; top: 50%; right: 10px; width: 20px; height: 20px; margin-top: -10px; border-radius: 50%;
+  background: var(--acc) var(--check-acc) no-repeat center / 13px 13px; opacity: 0; transform: scale(.5); transition: opacity .2s, transform .25s cubic-bezier(.3, 1.4, .5, 1); }
+.ds-c .chip-tile.is-on .chip-tile-check { opacity: 1; transform: none; }
+.ds-c .chip-empty { padding: 14px 8px 6px; text-align: center; font-size: 13px; color: var(--ink-3); }
+/* 全宽横幅（电脑端）：左图标 + 标题/描述，右紧凑分段开关，最右卸下按钮，垂直居中一线排开 */
+@media (min-width: 850px) {
+  .ds-c .chips-card { margin-top: 16px; }
+  .ds-c .chip-slot.is-filled { flex-wrap: nowrap; align-items: center; gap: 18px; padding: 14px 18px; }
+  .ds-c .chip-slot.is-filled .chip-body { flex: 1 1 0; }
+  .ds-c .chip-slot.is-filled .chip-opts { order: 2; flex: 0 0 264px; padding-top: 0; padding-left: 18px; border-top: 0; border-left: 1px solid var(--fill-2); }
+  .ds-c .chip-slot.is-filled .chip-acts { order: 3; margin-left: 0; }
+}
+@media (max-width: 849px) {
+  .ds-c .chip-grid { grid-template-columns: 1fr; }
+  .ds-c .chip-slot.is-filled { display: grid; grid-template-columns: auto 1fr auto; gap: 10px 12px; align-items: center; }
+  .ds-c .chip-slot.is-filled .chip-body { display: contents; }
+  .ds-c .chip-slot.is-filled .chip-head { grid-row: 1; grid-column: 2; min-width: 0; }
+  .ds-c .chip-slot.is-filled .chip-acts { grid-row: 1; grid-column: 3; margin-left: 0; align-self: start; }
+  .ds-c .chip-slot.is-filled .chip-desc { grid-column: 1 / -1; margin-top: 0; }
+  .ds-c .chip-slot.is-filled .chip-opts { grid-column: 1 / -1; }
+  .ds-c .chip-act { width: 34px; height: 34px; }
+  .ds-c .chip-search { max-width: none; }
+}
+@media (max-width: 380px) {
+  .ds-c .chip-slot { padding: 12px; }
+  .ds-c .chip-ico { width: 44px; height: 44px; }
+}
 /* 小屏英文下「大招释放能量阈值」标签折成两行，同一行的两个输入框按底端对齐 */
 .ds-c #cardCoreParams .row-grid { align-items: end; }   /* 两格下面的说明行数不同：按顶端对齐，输入框才在一条线上 */
 
@@ -2145,16 +2351,20 @@ body[data-calc-mode="team"] .chip-card .chip-t-team { display: inline; }
   <div class="tm-group"><span><span class="zh">增益装置</span><span class="lang-en">Buff Devices</span></span><span class="tm-badge"><span class="zh">单人竞速 · 组队竞速 · 巅峰赛 · 限装 1 个</span><span class="lang-en">Solo · Team Race · Peak · max 1</span></span></div>
   <div class="dev-list">
     <div class="dev-item" id="dev_item_loop">
-      <label class="dev-head" for="dev_chk_loop"><span class="title"><span class="zh">循环装置</span><span class="lang-en">Loop Device</span></span><input type="checkbox" class="ui-switch dev-switch" id="dev_chk_loop" value="loop" onchange="onDeviceToggle(this)"></label>
+      <label class="dev-head" for="dev_chk_loop"><span class="dev-title-wrap"><img src="https://i0.hdslb.com/bfs/openplatform/3cb2568b1d2a4d8265e912849dba906c668c0cec.png" onerror="this.src='data/icon/racer_icon_buff_9.png';this.onerror=null;" alt="循环装置" class="dev-ico" loading="lazy"><span class="title"><span class="zh">循环装置</span><span class="lang-en">Loop Device</span></span></span><input type="checkbox" class="ui-switch dev-switch" id="dev_chk_loop" value="loop" onchange="onDeviceToggle(this)"></label>
       <label class="desc" for="dev_chk_loop"><span class="zh">开局起，每次使用氮气获得</span><span class="lang-en">From the start, each nitro use grants</span> <strong>+13%</strong> <span class="zh">大招能量。固定值，不受团魂、反制、充能效率影响；推荐搭配汇能芯片。</span><span class="lang-en">ult energy. Fixed — unaffected by Team Soul, Counter or Efficiency. Pairs well with Huineng.</span></label>
     </div>
     <div class="dev-item" id="dev_item_chg">
-      <label class="dev-head" for="dev_chk_chg"><span class="title"><span class="zh">充能装置</span><span class="lang-en">Charge Device</span></span><input type="checkbox" class="ui-switch dev-switch" id="dev_chk_chg" value="chg" onchange="onDeviceToggle(this)"></label>
+      <label class="dev-head" for="dev_chk_chg"><span class="dev-title-wrap"><img src="https://i0.hdslb.com/bfs/openplatform/fab2cdc7f1c92f2f60d8f579b2c80736d88c8437.png" onerror="this.src='data/icon/racer_icon_buff_4.png';this.onerror=null;" alt="充能装置" class="dev-ico" loading="lazy"><span class="title"><span class="zh">充能装置</span><span class="lang-en">Charge Device</span></span></span><input type="checkbox" class="ui-switch dev-switch" id="dev_chk_chg" value="chg" onchange="onDeviceToggle(this)"></label>
       <label class="desc" for="dev_chk_chg"><span class="zh">开局第 5 秒、第 16 秒，之后每隔 13 秒获得</span><span class="lang-en">At 5s, 16s, then every 13s, grants</span> <strong>+34%</strong> <span class="zh">辅助充能，受团魂与充能效率影响。</span><span class="lang-en">assist charge, affected by Team Soul and Efficiency.</span></label>
     </div>
     <div class="dev-item" id="dev_item_schg">
-      <label class="dev-head" for="dev_chk_schg"><span class="title"><span class="zh">超级充能装置</span><span class="lang-en">Super Charge Device</span></span><input type="checkbox" class="ui-switch dev-switch" id="dev_chk_schg" value="schg" onchange="onDeviceToggle(this)"></label>
+      <label class="dev-head" for="dev_chk_schg"><span class="dev-title-wrap"><img src="https://i0.hdslb.com/bfs/openplatform/745ccc4db15eb41e513b659098ffadd3d809a0c9.png" onerror="this.src='data/icon/racer_icon_buff_7.png';this.onerror=null;" alt="超级充能装置" class="dev-ico" loading="lazy"><span class="title"><span class="zh">超级充能装置</span><span class="lang-en">Super Charge Device</span></span></span><input type="checkbox" class="ui-switch dev-switch" id="dev_chk_schg" value="schg" onchange="onDeviceToggle(this)"></label>
       <label class="desc" for="dev_chk_schg"><span class="zh">开局第 5 秒、第 16 秒，之后每隔 13 秒获得</span><span class="lang-en">At 5s, 16s, then every 13s, grants</span> <strong>+48%</strong> <span class="zh">辅助充能，受团魂与充能效率影响。</span><span class="lang-en">assist charge, affected by Team Soul and Efficiency.</span></label>
+    </div>
+    <div class="dev-item" id="dev_item_acc">
+      <label class="dev-head" for="dev_chk_acc"><span class="dev-title-wrap"><img src="https://i0.hdslb.com/bfs/openplatform/045a7d6908548e62d630d568510a5084acfd2453.png" onerror="this.src='data/icon/racer_icon_buff_2.png';this.onerror=null;" alt="加速装置" class="dev-ico" loading="lazy"><span class="title"><span class="zh">加速装置</span><span class="lang-en">Accel Device</span></span></span><input type="checkbox" class="ui-switch dev-switch" id="dev_chk_acc" value="acc" onchange="onDeviceToggle(this)"></label>
+      <label class="desc" for="dev_chk_acc"><span class="zh">局内极速提升 24km/h，首个大招</span><span class="lang-en">Top speed +24 km/h in the race; the 1st ult fires at</span> <strong>80%</strong> <span class="zh">充能即可释放。只降低首个大招的阈值，不提供充能，不受团魂影响。</span><span class="lang-en">charge. It only lowers the 1st ult’s threshold — no charge, unaffected by Team Soul.</span></label>
     </div>
   </div>
   <div class="dev-sub is-gone" id="devChargeOpts">
@@ -2177,6 +2387,7 @@ body[data-calc-mode="team"] .chip-card .chip-t-team { display: inline; }
       </div>
     </div>
   </div>
+  <div class="tm-note is-gone" id="devAccNote"><span class="zh">已装加速装置：首个大招攒到 80% 就能放，二大起仍按原阈值。装置模式下没有反制、赋能和队友辅助。</span><span class="lang-en">Accel Device equipped: the 1st ult fires at 80%; later ults keep the normal threshold. Device modes have no Counter, empowerments or ally assist.</span></div>
   <div class="tm-note is-gone" id="teamInOff"><span class="zh">已装增益装置：单人竞速、组队竞速、巅峰赛里没有辅助队友，所以「队友辅助充能」不计入。卸下装置即可恢复。</span><span class="lang-en">A device is equipped: Solo, Team Race and Peak Match have no support allies, so ally assist is not counted. Unequip to bring it back.</span></div>
 </div>
 <!-- 团魂获能：队友辅助（装了增益装置时收起）。选车用的是站内同一套选车框：按钮、下拉（车图 / 品质筛选）、手机底部选车面板 -->
@@ -2426,7 +2637,8 @@ body[data-calc-mode="team"] .chip-card .chip-t-team { display: inline; }
     <span class="input-unit">%</span>
   </div>
 </div>
-</div></div>
+</div>
+</div>
   <div class="desktop-col">
 <div class="card empower-card">
   <div class="card-title"><span class="zh">七大赋能系统矩阵</span><span class="lang-en">7 Empowerment Matrices</span><span class="limit-badge"><span class="zh">主/次各最多选1个</span><span class="lang-en">Max 1 per Main/Sub</span></span><span class="lock-tag"><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="5" y="11" width="14" height="9" rx="2"/><path d="M8 11V8a4 4 0 0 1 8 0v3"/></svg><span class="zh">已锁定</span><span class="lang-en">Locked</span></span></div>
@@ -2596,6 +2808,20 @@ body[data-calc-mode="team"] .chip-card .chip-t-team { display: inline; }
 </div>
   </div>
 </div></div>
+</div>
+<!-- 特殊芯片：槽位 / 芯片库 / 每枚芯片的选项都由 CHIP_REGISTRY 渲染（见脚本里 renderChips），这里只留空容器。新增芯片不用改这段 HTML -->
+<div class="card chips-card" id="cardChips">
+  <div class="card-title"><span class="zh">特殊芯片</span><span class="lang-en">Special Chips</span><span class="limit-badge" id="chipsLimitBadge"></span></div>
+  <div class="card-hint"><span class="zh">只收录会改变大招能量的芯片，装上后自动计入首发、循环和开局连发。先机、汇能请在「智能芯片联动面板」里填写。</span><span class="lang-en">Only chips that change ult energy are listed; once equipped they feed the 1st ult, the loop and the opening chain. Fill in Xianji / Huineng in the Smart Chip Linkage panel.</span></div>
+  <div class="chip-slots" id="chipSlots"></div>
+  <div class="chip-picker is-gone" id="chipPicker" role="group" aria-label="芯片库 / Chip library">
+    <div class="chip-picker-head">
+      <span class="chip-picker-title"><span class="zh">选择芯片</span><span class="lang-en">Choose a chip</span></span>
+      <input type="search" class="chip-search is-gone" id="chipSearch" autocomplete="off" spellcheck="false" placeholder="搜索芯片…" aria-label="搜索芯片 / Search chips">
+    </div>
+    <div class="chip-grid" id="chipGrid"></div>
+    <div class="chip-empty is-gone" id="chipEmpty"><span class="zh">没有匹配的芯片</span><span class="lang-en">No matching chips</span></div>
+  </div>
 </div>
     </div>
     <div class="cp-calc" data-modes="solo team">
@@ -2947,6 +3173,7 @@ body[data-calc-mode="team"] .chip-card .chip-t-team { display: inline; }
         if (document.querySelector('.empower-card.is-locked')) return [L('已锁定', 'Locked'), false];
         var t = [].map.call(document.querySelectorAll('.empower-item.active .title'), function (x) { return (x.querySelector(zh() ? '.zh' : '.lang-en') || x).textContent.replace(/\s*[(（].*$/, ''); });
         return t.length ? [t.join(' + '), true] : [L('未启用', 'Off'), false]; } },
+    { sel: '.chips-card', sum: function () { return window.__chipSummary ? window.__chipSummary() : [L('未装备', 'None'), false]; } },
     { sel: '.extra-card', sum: function () {
         var n = ['hasExtraNitro', 'hasExtraUlt', 'hasExtraPerSec'].filter(chk).length;
         return n ? [L('已开启 ', 'On: ') + n, true] : [L('未启用', 'Off'), false]; } },
@@ -4021,6 +4248,7 @@ body[data-calc-mode="team"] .chip-card .chip-t-team { display: inline; }
             if (typeof handleNitroRadioChange === 'function') handleNitroRadioChange();
             if (typeof syncNitroTimes === 'function') syncNitroTimes('1x6');
         }
+        if (typeof renderChips === 'function') renderChips();
         // 先机 / 汇能上限：刷新卡片右上角提示 + 更新汇能框 max + 把超限值夹回范围内
         if (typeof applyChipLimits === 'function') applyChipLimits(car);
         calculate();
@@ -4421,6 +4649,13 @@ function __tok(n, d) { var v = getComputedStyle(document.body).getPropertyValue(
            text += _("🔹 氮气充能：", "🔹 Nitro Charge: ") + baseNitro + "% (" + nitroType + " / " + nitroTime + _("秒)\n", "s)\n");
            text += _("🔹 环境影响：反制", "🔹 Environment: Counter ") + counter + _("% | 降效", "% | Debuff ") + debuff + "%\n";
            text += _("🔹 赋能充能：", "🔹 Empowerment: ") + empowerStr + "\n";
+           if (_chipsOn.length > 0) {
+               var chipNames = _chipsOn.map(function (c) {
+                   var d = _chipDef(c.id);
+                   return d ? (d.name[currentLang === 'en' ? 'en' : 'zh'] || d.id) : c.id;
+               }).join(' + ');
+               text += _("🔹 特殊芯片：", "🔹 Special Chip: ") + chipNames + "\n";
+           }
            if (getCalcMode() === 'team') {
                var _devNow = getDevice();
                text += _("🔹 团魂获能：团魂", "🔹 Team Soul Gain: Soul ") + _mv('inputTuanhun') + "%";
@@ -5308,6 +5543,16 @@ function __tok(n, d) { var v = getComputedStyle(document.body).getPropertyValue(
            if (activeEmpowers.indexOf('weilai') !== -1) {
                target = Math.min(target, 90);
            }
+           for (var ci = 0; ci < _chipsOn.length; ci++) {
+               var cdef = _chipDef(_chipsOn[ci].id);
+               if (cdef && typeof cdef.ultThreshold === 'function') {
+                   var curCar = typeof _selectedCar !== 'undefined' ? _selectedCar : null;
+                   var cth = cdef.ultThreshold(curCar);
+                   if (cth && cth > 0) target = Math.min(target, cth);
+               }
+           }
+           var dev = getDevice();
+           var targetFirst = (dev === 'acc') ? Math.min(target, 80) : target;
 
            var extraNitroBase = (document.getElementById('hasExtraNitro') && document.getElementById('hasExtraNitro').checked) ? (parseFloat(document.getElementById('valExtraNitro').value) || 0) : 0;
            var extraNitroFirstVal = (document.getElementById('chkExtraNitroFirst') && document.getElementById('chkExtraNitroFirst').checked) ? extraNitroBase : 0;
@@ -5324,6 +5569,9 @@ function __tok(n, d) { var v = getComputedStyle(document.body).getPropertyValue(
            var efficiencyMult = ((activeEmpowers.indexOf('yichu') !== -1) ? 1.05 : 1.00) + extraEfficiency - efficiencyReduce;
 
            if (efficiencyMult < 0) efficiencyMult = 0;
+           var chipTriggerRes = chipAgg(defenseMult, efficiencyMult);
+           var chipFirstBonus = chipTriggerRes.first || 0;
+           
 
            var customTrigVal = parseFloat(document.getElementById('valCustomTrig').value) || 0;
            var customTrigFirstCount = parseInt(document.getElementById('customTrigFirstCount').value) || 0;
@@ -5366,7 +5614,7 @@ function __tok(n, d) { var v = getComputedStyle(document.body).getPropertyValue(
 
            if (sourceField === 'xianji') {
                var xianji = parseFloat(document.getElementById('inputXianji').value) || 0;
-               var netFirstUltRemain = target - initFixedBase - initMultBase - (extraUltFirstVal * defenseMult * efficiencyMult) - firstPerSecOutput - firstCustomTrigOutput - (xianji * defenseMult) - firstQueyiOutput - firstTeamDevOutput;
+               var netFirstUltRemain = targetFirst - initFixedBase - initMultBase - (extraUltFirstVal * defenseMult * efficiencyMult) - firstPerSecOutput - firstCustomTrigOutput - (xianji * defenseMult) - firstQueyiOutput - firstTeamDevOutput - chipFirstBonus;
                var reqHuineng = 0;
                if (currentBaseNitro > 0 && netFirstUltRemain > 0 && efficiencyMult > 0 && firstNitrosCount > 0) {
                    var neededBaseOutput = netFirstUltRemain / (defenseMult * efficiencyMult);
@@ -5383,7 +5631,7 @@ function __tok(n, d) { var v = getComputedStyle(document.body).getPropertyValue(
                var huineng = parseFloat(document.getElementById('inputHuineng').value) || 0;
                var netSingleNitroOutput = (currentBaseNitro * (1 + huineng / 100) + specBonus + extraNitroFirstVal) * defenseMult * efficiencyMult;
                var firstNitroTotalOutput = firstNitrosCount * netSingleNitroOutput;
-               var netRemainForXianjiFirst = target - initFixedBase - initMultBase - (extraUltFirstVal * defenseMult * efficiencyMult) - firstPerSecOutput - firstCustomTrigOutput - firstNitroTotalOutput - firstQueyiOutput - firstTeamDevOutput;
+               var netRemainForXianjiFirst = targetFirst - initFixedBase - initMultBase - (extraUltFirstVal * defenseMult * efficiencyMult) - firstPerSecOutput - firstCustomTrigOutput - firstNitroTotalOutput - firstQueyiOutput - firstTeamDevOutput - chipFirstBonus;
                var reqXianji = 0;
                if (netRemainForXianjiFirst > 0) reqXianji = (netRemainForXianjiFirst / defenseMult);
                if (reqXianji < 0) reqXianji = 0;
@@ -5411,8 +5659,19 @@ function __tok(n, d) { var v = getComputedStyle(document.body).getPropertyValue(
            }
 
            if (activeEmpowers.indexOf('weilai') !== -1) {
-               target = Math.min(target, 90);
-           }
+                target = Math.min(target, 90);
+            }
+            for (var ci = 0; ci < _chipsOn.length; ci++) {
+                var cdef = _chipDef(_chipsOn[ci].id);
+                if (cdef && typeof cdef.ultThreshold === 'function') {
+                    var curCar = typeof _selectedCar !== 'undefined' ? _selectedCar : null;
+                    var cth = cdef.ultThreshold(curCar);
+                    if (cth && cth > 0) target = Math.min(target, cth);
+                }
+            }
+            var dev = getDevice();
+            var targetLoop = target;
+            var targetFirst = (dev === 'acc') ? Math.min(targetLoop, 80) : targetLoop;
 
            var extraNitroBase = (document.getElementById('hasExtraNitro') && document.getElementById('hasExtraNitro').checked) ? (parseFloat(document.getElementById('valExtraNitro').value) || 0) : 0;
            var extraNitroFirstVal = (document.getElementById('chkExtraNitroFirst') && document.getElementById('chkExtraNitroFirst').checked) ? extraNitroBase : 0;
@@ -5432,6 +5691,7 @@ function __tok(n, d) { var v = getComputedStyle(document.body).getPropertyValue(
            var efficiencyMult = ((activeEmpowers.indexOf('yichu') !== -1) ? 1.05 : 1.00) + extraEfficiency - efficiencyReduce;
 
            if (efficiencyMult < 0) efficiencyMult = 0;
+           var chipAggRes = chipAgg(defenseMult, efficiencyMult);
 
            var customTrigVal = parseFloat(document.getElementById('valCustomTrig').value) || 0;
            var customTrigFirstCount = parseInt(document.getElementById('customTrigFirstCount').value) || 0;
@@ -5441,11 +5701,22 @@ function __tok(n, d) { var v = getComputedStyle(document.body).getPropertyValue(
            var actualUltDuration = baseUltDuration * (target / 100);
            
            var ultLabel = document.getElementById('actualUltTimeSpan');
-           if (activeEmpowers.indexOf('weilai') !== -1) {
-               if (originalTarget > 90) ultLabel.innerText = _("(未来视界触发：门槛降至 90%，实机时长缩放为: ", " (Future Vision: Threshold 90%, actual scaled to: ") + actualUltDuration.toFixed(2) + _(" 秒)", " s)");
-               else ultLabel.innerText = _("(未来视界未叠加：当前阈值已达标，时长缩放为: ", " (Future Vision inactive: Threshold met, scaled to: ") + actualUltDuration.toFixed(2) + _(" 秒)", " s)");
+           if (target < originalTarget) {
+               var reason = [];
+               if (activeEmpowers.indexOf('weilai') !== -1 && originalTarget > 90) reason.push(_('未来之镜', 'Future Vision'));
+               for (var ci = 0; ci < _chipsOn.length; ci++) {
+                   var cdef = _chipDef(_chipsOn[ci].id);
+                   if (cdef && typeof cdef.ultThreshold === 'function') {
+                       var curCar = typeof _selectedCar !== 'undefined' ? _selectedCar : null;
+                       if (cdef.ultThreshold(curCar) === target) reason.push(cdef.name[currentLang === 'en' ? 'en' : 'zh'] || cdef.id);
+                   }
+               }
+               var reasonStr = reason.length > 0 ? (reason.join('+') + _('生效：', ' Active: ')) : '';
+               ultLabel.innerText = _("（", " (") + reasonStr + _("阈值降为 ", "Threshold lowered to ") + target + _("%，实际时长折算为: ", "%, actual scaled to: ") + actualUltDuration.toFixed(2) + _(" 秒）", " s)");
+           } else if (activeEmpowers.indexOf('weilai') !== -1) {
+               ultLabel.innerText = _("（未来之镜未降低：当前阈值已达标，实际时长为: ", " (Future Vision inactive: Threshold met, actual duration: ") + actualUltDuration.toFixed(2) + _(" 秒）", " s)");
            } else {
-               if (target !== 100) ultLabel.innerText = _("(当前阈值 ", " (Current threshold ") + target + _("%，实机时长缩放为: ", "%, scaled to: ") + actualUltDuration.toFixed(2) + _(" 秒)", " s)");
+               if (target !== 100) ultLabel.innerText = _("（当前阈值 ", " (Current threshold ") + target + _("%，实际时长折算为: ", "%, scaled to: ") + actualUltDuration.toFixed(2) + _(" 秒）", " s)");
                else ultLabel.innerText = '';
            }
 
@@ -5540,7 +5811,8 @@ function __tok(n, d) { var v = getComputedStyle(document.body).getPropertyValue(
            var step5_Nitro = firstNitroTotalOutput.toFixed(3);
 
            var formulaFirstStr = "<b>" + _("【首发大招运算解析盒】", "[First Ult Calc Breakdown]") + "</b><br>";
-           formulaFirstStr += _("及格线目标：", "Passing Target: ") + "<b>" + target + "%</b><br><br>";
+           var firstTargetNote = dev === 'acc' ? _("（加速装置 80%）", " (Accel Device 80%)") : (targetFirst < originalTarget ? _("（降阈生效）", " (Threshold Reduced)") : "");
+           formulaFirstStr += _("及格线目标：", "Passing Target: ") + "<b>" + targetFirst + "%</b>" + firstTargetNote + "<br><br>";
            formulaFirstStr += _("① 起步充能 = ", "1. Start Charge = ") + "<b>" + step1_Start + "</b><br>";
            formulaFirstStr += _("② 先机收益：[先机(", "2. Xianji Gain: [Xianji(") + xianji + _(")] × (1-反制％)(", ")] * (1-Counter%)(") + _d(defenseMult) + ") = <b>" + step2_Xianji + "</b><br>";
            formulaFirstStr += _("③ 复合增益：[花信风(触发", "3. Compound Buff: [Floral(Triggers ") + huaxinFirstCount + _("次×7%)] × (1-反制％) × 充能效率(", " times*7%)] * (1-Counter%) * Eff(") + (efficiencyMult*100).toFixed(0) + "%) = <b>" + step3_MultBase + "</b><br>";
@@ -5583,6 +5855,10 @@ function __tok(n, d) { var v = getComputedStyle(document.body).getPropertyValue(
                firstUltTotal += tdx.teamFirst;
            }
 
+           if (chipAggRes.first > 0) {
+               formulaFirstStr += _("⑪ 特殊芯片首发充能：+", "11. Special Chip 1st Ult: +") + chipAggRes.first.toFixed(3) + "%<br>";
+               firstUltTotal += chipAggRes.first;
+           }
            firstUltTotal = Math.floor(firstUltTotal * 1000 + 0.000001) / 1000;
            // 对账：团魂反算用的是 _tmFirst()（同一套公式的纯函数版）。两边对不上说明有人只改了一边
            if (tdx.mode === 'team') { var _tmE = _chipEnv(), _tmF = _tmFirst(_tmE, xianji, huineng, tdx.soul); if (Math.abs(_tmF - firstUltTotal) > 0.0005) console.warn('[团魂反算] 首发公式与 calculate() 不一致', _tmF, firstUltTotal); }
@@ -5596,17 +5872,18 @@ function __tok(n, d) { var v = getComputedStyle(document.body).getPropertyValue(
                    + dur * queyiPerSecond * defenseMult
                    + (extraUltFirstVal > 0 ? extraUltFirstVal * defenseMult * efficiencyMult : 0)
                    + (customTrigFirstCount > 0 ? firstCustomTrigOutput : 0)
-                   + (tdx.dev === 'loop' ? DEVICE_LOOP_PER_NITRO * n : 0) + tdx.devFirst + tdx.teamFirst;
+                   + (tdx.dev === 'loop' ? DEVICE_LOOP_PER_NITRO * n : 0) + tdx.devFirst + tdx.teamFirst + (chipAggRes.first || 0);
                return Math.floor(t * 1000 + 0.000001) / 1000;
            };
            var minFirstNitros = -1;
-           for (var mn = 0; mn <= 30; mn++) { if (firstTotalAt(mn) >= target) { minFirstNitros = mn; break; } }
+           for (var mn = 0; mn <= 30; mn++) { if (firstTotalAt(mn) >= targetFirst) { minFirstNitros = mn; break; } }
 
            formulaFirstStr += "-------------------------<<br>";
-           formulaFirstStr += "<b>" + _("首发核算：", "First Ult Calc: ") + step1_Start + " + " + step2_Xianji + " + " + step3_MultBase + " + " + step4_Jiezou + " + " + step5_Nitro + (firstQueyiOutput > 0 ? " + " + firstQueyiOutput.toFixed(3) : "") + (extraUltFirstVal > 0 ? " + " + step7_ExtraUlt : "") + (extraPerSecFirstVal > 0 ? " + " + step8_ExtraPerSec : "") + (customTrigFirstCount > 0 ? " + " + step9_CustomTrig : "") + (stepDevFirst ? " + " + stepDevFirst : "") + (stepTeamFirst ? " + " + stepTeamFirst : "") + " = " + firstUltTotal.toFixed(3) + "%</b>";
+            formulaFirstStr += "<b>" + _("及格线判定：当前产出(", "Passing Check: Output(") + firstUltTotal.toFixed(3) + _(")  vs  首发大招阀门(", ") vs 1st Ult Valve(") + targetFirst + "%" + (dev === 'acc' ? _("（加速装置80%）", " (Accel Device 80%)") : "") + ")</b><br>";
+           formulaFirstStr += "<b>" + _("首发核算：", "First Ult Calc: ") + step1_Start + " + " + step2_Xianji + " + " + step3_MultBase + " + " + step4_Jiezou + " + " + step5_Nitro + (firstQueyiOutput > 0 ? " + " + firstQueyiOutput.toFixed(3) : "") + (extraUltFirstVal > 0 ? " + " + step7_ExtraUlt : "") + (extraPerSecFirstVal > 0 ? " + " + step8_ExtraPerSec : "") + (customTrigFirstCount > 0 ? " + " + step9_CustomTrig : "") + (stepDevFirst ? " + " + stepDevFirst : "") + (stepTeamFirst ? " + " + stepTeamFirst : "") + (chipAggRes.first > 0 ? " + " + chipAggRes.first.toFixed(3) : "") + " = " + firstUltTotal.toFixed(3) + "%</b>";
            formulaFirst.innerHTML = formulaFirstStr;
 
-           if (firstUltTotal >= target) {
+           if (firstUltTotal >= targetFirst) {
                resValFirst.innerHTML = "<span class='emoji-fix'>✅</span> " + _("首发达成 (", "1st Ult Achieved (") + firstUltTotal.toFixed(3) + "%)";
                resDetFirst.innerHTML = "✨ <b>" + _("完美起步", "Perfect Start") + "</b>" + _("：总充能已超越目标！", ": Charge exceeds target!")
                    + (minFirstNitros >= 0 && minFirstNitros < firstNitrosCount ? "<span class='pv-need'>" + _("其他条件不变，其实 ", "Other things equal, just ") + "<b>" + minFirstNitros + "</b>" + _(" 个氮气就能首发。", " nitro(s) would do.") + "</span>" : "");
@@ -5614,7 +5891,7 @@ function __tok(n, d) { var v = getComputedStyle(document.body).getPropertyValue(
                resCardFirst.classList.add('error-state');
                resValFirst.innerHTML = "<span class='emoji-fix'>❌</span> " + _("首发失败 (", "1st Ult Failed (") + firstUltTotal.toFixed(3) + "%)";
                
-               var firstDiff = Math.floor((target - firstUltTotal) * 1000 + 0.000001) / 1000;
+               var firstDiff = Math.floor((targetFirst - firstUltTotal) * 1000 + 0.000001) / 1000;
                resDetFirst.innerHTML = "⚠️ <b>" + _("开局卡壳", "Start Stalled") + "</b>" + _("：距离及格还差 ", ": Short of passing by ") + "<b>" + firstDiff.toFixed(3) + "%</b>" + _("。", ".")
                    + "<span class='pv-need'>" + (minFirstNitros >= 0
                        ? _("其他条件不变，需要 ", "Other things equal, it takes ") + "<b>" + minFirstNitros + "</b>" + _(" 个氮气才能首发（当前填 ", " nitros to open (now ") + firstNitrosCount + _(" 个）。", ").")
@@ -5630,7 +5907,7 @@ function __tok(n, d) { var v = getComputedStyle(document.body).getPropertyValue(
            var loopPerSecOutput = Math.floor(actualUltDuration + 0.000001) * extraPerSecLoopVal * defenseMult * efficiencyMult;
            var loopCustomTrigOutput = customTrigVal * customTrigLoopCount * defenseMult * efficiencyMult;
            
-           var loopGrandTotal = loopFixedEmpower + loopHuaxinOutput + loopNitroTotalOutput + loopExtraUltOutput + loopPerSecOutput + loopCustomTrigOutput + tdx.loop;
+           var loopGrandTotal = loopFixedEmpower + loopHuaxinOutput + loopNitroTotalOutput + loopExtraUltOutput + loopPerSecOutput + loopCustomTrigOutput + tdx.loop + (chipAggRes.loop || 0);
 
            loopGrandTotal = Math.floor(loopGrandTotal * 1000 + 0.000001) / 1000;
            // 团魂获能：循环吃不吃团魂、循环至少要多少团魂（整数，上限 200）—— 循环卡的提示改用团魂来说
@@ -5656,7 +5933,7 @@ function __tok(n, d) { var v = getComputedStyle(document.body).getPropertyValue(
 
            var reqHuinengLoop = 0;
            if (nitrosPerUlt > 0 && efficiencyMult > 0 && currentBaseNitro > 0) {
-               var remainForLoopUlt = target - loopFixedEmpower - loopHuaxinOutput - loopExtraUltOutput - loopPerSecOutput - loopCustomTrigOutput - tdx.loop;
+               var remainForLoopUlt = target - loopFixedEmpower - loopHuaxinOutput - loopExtraUltOutput - loopPerSecOutput - loopCustomTrigOutput - tdx.loop - (chipAggRes.loop || 0);
                var singleNeeded = remainForLoopUlt / nitrosPerUlt;
                var baseNeeded = singleNeeded / (defenseMult * efficiencyMult);
                reqHuinengLoop = (((baseNeeded - specBonus - extraNitroLoopVal) / currentBaseNitro) - 1) * 100;
@@ -5687,7 +5964,7 @@ function __tok(n, d) { var v = getComputedStyle(document.body).getPropertyValue(
                var stepLoop_CustomTrig = loopCustomTrigOutput.toFixed(3);
                formulaLoopStr += _("⑥ 自定义触发自充：[触发(", "6. Custom Trigger: [Trig(") + customTrigLoopCount + _("次 × ", " times × ") + customTrigVal + _("%)] × (1-反制％) × 充能效率(", "%)] * (1-Counter%) * Eff(") + (efficiencyMult*100).toFixed(0) + "%) = <b>" + stepLoop_CustomTrig + "</b><br>";
            }
-           var stepLoop_Dev = '', stepLoop_Team = '';
+           var stepLoop_Dev = '', stepLoop_Team = '', stepLoop_Chip = '';
            if (tdx.dev === 'loop') {
                stepLoop_Dev = tdx.devLoopLoop.toFixed(3);
                formulaLoopStr += _("⑦ 循环装置：[每次用氮 13% × <b>", "7. Loop Device: [13% per nitro × <b>") + nitrosPerUlt + _("</b>次]（固定值）= <b>", "</b>] (fixed) = <b>") + stepLoop_Dev + "</b><br>";
@@ -5698,12 +5975,16 @@ function __tok(n, d) { var v = getComputedStyle(document.body).getPropertyValue(
                stepLoop_Team = tdx.teamLoop.toFixed(3);
                formulaLoopStr += assistFormulaLine(_("⑦ ", "7. "), _("队友辅助", "Ally Assist"), tdx.teamBase, tdx.teamCore, tdx.soul, defenseMult, efficiencyMult, tdx.teamLoopCount, tdx.teamLoop, tdx.teamFull);
            }
+           if (chipAggRes.loop > 0) {
+               stepLoop_Chip = chipAggRes.loop.toFixed(3);
+               formulaLoopStr += _("⑧ 特殊芯片循环充能：+", "8. Special Chip Loop: +") + stepLoop_Chip + "%<br>";
+           }
            formulaLoopStr += "-------------------------<<br>";
-           formulaLoopStr += "<b>" + _("循环总产出：", "Loop Total Output: ") + stepLoop_Empower + " + " + stepLoop_Huaxin + " + " + stepLoop_Nitro + (extraUltLoopVal > 0 ? " + " + stepLoop_ExtraUlt : "") + (extraPerSecLoopVal > 0 ? " + " + stepLoop_ExtraPerSec : "") + (customTrigLoopCount > 0 ? " + " + stepLoop_CustomTrig : "") + (stepLoop_Dev ? " + " + stepLoop_Dev : "") + (stepLoop_Team ? " + " + stepLoop_Team : "") + " = " + loopGrandTotal.toFixed(3) + "%</b><br>";
-           formulaLoopStr += "<b>" + _("及格线判定：当前产出(", "Passing Check: Output(") + loopGrandTotal.toFixed(3) + _(")  vs  大招阀门(", ") vs Ult Valve(") + target + "%)</b>";
+           formulaLoopStr += "<b>" + _("循环总产出：", "Loop Total Output: ") + stepLoop_Empower + " + " + stepLoop_Huaxin + " + " + stepLoop_Nitro + (extraUltLoopVal > 0 ? " + " + stepLoop_ExtraUlt : "") + (extraPerSecLoopVal > 0 ? " + " + stepLoop_ExtraPerSec : "") + (customTrigLoopCount > 0 ? " + " + stepLoop_CustomTrig : "") + (stepLoop_Dev ? " + " + stepLoop_Dev : "") + (stepLoop_Team ? " + " + stepLoop_Team : "") + (stepLoop_Chip ? " + " + stepLoop_Chip : "") + " = " + loopGrandTotal.toFixed(3) + "%</b><br>";
+           formulaLoopStr += "<b>" + _("及格线判定：当前产出(", "Passing Check: Output(") + loopGrandTotal.toFixed(3) + _(")  vs  大招阀门(", ") vs Ult Valve(") + targetLoop + "%)</b>";
            formulaLoop.innerHTML = formulaLoopStr;
 
-           if (loopGrandTotal >= target) {
+           if (loopGrandTotal >= targetLoop) {
                resValLoop.innerHTML = "<span class='emoji-fix'>✅</span> " + _("循环跑通 (产出: ", "Loop Completed (Output: ") + loopGrandTotal.toFixed(3) + "%)";
                var diff = huineng - reqHuinengLoop;
                if (diff >= 0) {
@@ -5720,7 +6001,7 @@ function __tok(n, d) { var v = getComputedStyle(document.body).getPropertyValue(
                    resDetLoop.innerHTML = "⚠️ <b>" + _("致命断层", "Fatal Gap") + "</b>" + _("：缩减后的大招期间", ": Reduced Ult fits ") + "<b>" + _("可放氮气数为 0 个", "0 nitros") + "</b>"
                        + (_tmSL !== null ? _("，汇能帮不上忙；团魂至少要 ", " — Huineng can't help; Team Soul needs at least ") + "<strong>" + _tmSL + "%</strong>" + _("。", ".") : _("。接力必然溃败！", ". Relay will fail!"));
                } else {
-                   var loopDiff = Math.floor((target - loopGrandTotal) * 1000 + 0.000001) / 1000;
+                   var loopDiff = Math.floor((targetLoop - loopGrandTotal) * 1000 + 0.000001) / 1000;
                    resValLoop.innerHTML = "<span class='emoji-fix'>❌</span> " + _("循环失败 (缺口: ", "Loop Failed (Gap: ") + loopDiff.toFixed(3) + "%)";
                    resDetLoop.innerHTML = "⚠️ <b>" + _("循环断档", "Loop Disconnected") + "</b>" + (_tmSoulDep
                        ? (_tmSL !== null ? _("：产出未达及格线！要实现连发，团魂至少要提到 ", ": Output missed! Needs Team Soul >= ") + "<strong>" + _tmSL + "%</strong>" + (_tmHL === null ? "" : _("，或汇能至少拉升至 ", ", or Huineng >= "))
@@ -5734,7 +6015,7 @@ function __tok(n, d) { var v = getComputedStyle(document.body).getPropertyValue(
 
            // 开 / 关增益装置会让两张结果卡的内容整块换掉（解析盒行数、状态胶囊都变），高度是瞬变的：
             // 用 _flipHeight 把这段高度差补成过渡，免得下方卡片的位移在收放动画里突然顿一下
-            renderChain(firstUltTotal, loopGrandTotal, target, xianji, huineng, tdx);   // 开局连发：一大 → 二大 → 三大
+            renderChain(firstUltTotal, loopGrandTotal, targetFirst, xianji, huineng, tdx, targetLoop, chipAggRes);   // 开局连发：一大 → 二大 → 三大
             var _rtA = document.getElementById('teamInSum'), _rtB = document.getElementById('resultCardSupport');
             _flipHeight(_rtA, function () {
                 _flipHeight(_rtB, function () { renderTeamPanels(tdx, defenseMult, efficiencyMult, target); });
@@ -5750,7 +6031,7 @@ function __tok(n, d) { var v = getComputedStyle(document.body).getPropertyValue(
           - 团魂获能里，先机 / 汇能两个输入框（连同联动状态条、上限徽标）搬到团魂旁边；离开该模式时搬回原处。
           ====================================================================== */
        var CALC_MODES = ['solo', 'team', 'support'];
-       var DEVICE_TYPES = ['loop', 'chg', 'schg'];
+       var DEVICE_TYPES = ['loop', 'chg', 'schg', 'acc'];
        var DEVICE_CHARGE = { chg: 34, schg: 48 };     // 充能 / 超级充能装置：每次触发的辅助充能
        var DEVICE_LOOP_PER_NITRO = 13;                 // 循环装置：每次使用氮气固定 +13%
        var ASSIST_CORE_MULT = 1.3;                     // 辅助核心：辅助充能 ×1.3
@@ -5852,7 +6133,8 @@ function __tok(n, d) { var v = getComputedStyle(document.body).getPropertyValue(
            var els = [].filter.call(document.querySelectorAll('[data-modes]'), function (el) { return !el.classList.contains('ds-dock-item'); });
            els.forEach(function (el) {
                var on = _inMode(el, m);
-               if (el.id === 'cardTeamIn') on = on && !getDevice();          // 装了增益装置就没有队友辅助
+               if (el.id === 'cardTeamIn') on = on && !getDevice();
+                if (el.id === 'teamInSum') on = on && getDevice() !== 'acc';          // 装了增益装置就没有队友辅助
                el.__modeOn = on;
            });
            for (var i = els.length - 1; i >= 0; i--) {
@@ -5941,84 +6223,108 @@ function __tok(n, d) { var v = getComputedStyle(document.body).getPropertyValue(
           ====================================================================== */
        var _chainRes = null;
        function _chainPass(fi, li, ti) { return fi >= ti && fi + li >= 2 * ti && fi + 2 * li >= 3 * ti; }
-       function renderChain(F, P, T, xianji, huineng, tdx) {
-           var card = document.getElementById('resultCardChain');
-           if (!card) return;
-           var k = function (v) { return Math.round(v * 1000); }, f3 = function (i) { return (i / 1000).toFixed(3); };
-           var Ti = k(T), Fi = k(F), Pi = k(P);
-           var e = [Fi, NaN, NaN], ok = [Fi >= Ti, false, false];
-           if (ok[0]) { e[1] = Fi - Ti + Pi; ok[1] = e[1] >= Ti; }
-           if (ok[1]) { e[2] = e[1] - Ti + Pi; ok[2] = e[2] >= Ti; }
-           var brk = !ok[0] ? 0 : !ok[1] ? 1 : !ok[2] ? 2 : -1;   // 断在第几大（-1 = 三连发成立）
-           var names = [_('一大', '1st'), _('二大', '2nd'), _('三大', '3rd')];
-           // 「最少要多少」：三连发同时成立（木桶效应）—— 每次只动一个量，其余保持当前值
-           var need = [];
-           if (brk >= 0) {
-               // 每个建议值都按「用户在页面上手填它之后，页面会怎么自动补齐」来算（团魂获能的自动反算、先机汇能的联动），
-               // 保证照着填进去就能连放三大
-               var env = _chipEnv(), cur = _tmCur(), team = tdx && tdx.mode === 'team';
-               var pass = function (st) { return _chainPass(k(_tmFirst(env, st.x, st.h, st.s)), k(_tmLoop(env, st.h, st.s)), Ti); };
-               var soulOn = team && !env.na && (_tmFirst(env, cur.x, cur.h, SOUL_MAX) > _tmFirst(env, cur.x, cur.h, 0) || _tmLoop(env, cur.h, SOUL_MAX) > _tmLoop(env, cur.h, 0));
-               var nm = { soul: _('团魂', 'Team Soul'), huineng: _('汇能', 'Huineng'), xianji: _('先机', 'Xianji') };
-               (soulOn ? ['soul', 'huineng'] : ['huineng', 'xianji']).forEach(function (key) {
-                   var v = _tmSuggest(env, key, cur, pass);
-                   need.push({ key: key, name: nm[key], v: v, txt: v === null ? null : (key === 'soul' ? String(v) : v.toFixed(1)) + '%' });
-               });
-           }
-           var steps = card.querySelectorAll('.chain-step');
-           _flipHeight(card, function () {
-               card.classList.remove('is-idle');
-               card.classList.toggle('error-state', brk >= 0);
-               for (var i = 0; i < 3; i++) {
-                   var st = steps[i], reached = i === 0 || ok[i - 1];
-                   st.classList.toggle('is-ok', reached && ok[i]);
-                   st.classList.toggle('is-bad', reached && !ok[i]);
-                   st.classList.toggle('is-off', !reached);
-                   var ico = st.querySelector('.cs-ico'), val = st.querySelector('.cs-val'), how = st.querySelector('.cs-how'), out = st.querySelector('.cs-out');
-                   ico.innerHTML = window.__pvIcon ? __pvIcon(!reached ? 'minus' : ok[i] ? 'ok' : 'err') : '';
-                   if (!reached) {
-                       _setVal('chainVal' + i, '—');
-                       how.textContent = _('上一大没放出来', 'previous ult not fired');
-                       out.textContent = '';
-                       continue;
-                   }
-                   var s3 = f3(e[i]).split('.');
-                   _setVal('chainVal' + i, s3[0] + '<small>.' + s3[1] + '%</small>');
-                   how.textContent = i === 0 ? _('首发核算', 'from the 1st-ult calc')
-                       : _('带入 ', 'carried ') + f3(e[i - 1] - Ti) + _(' + 产出 ', ' + gained ') + f3(Pi);
-                   out.textContent = ok[i] ? (i < 2 ? _('溢出 +', 'overflow +') + f3(e[i] - Ti) + '%' : _('达成', 'fires')) : _('差 ', 'short ') + f3(Ti - e[i]) + '%';
-               }
-               var stEl = document.getElementById('chainStatus');
-               stEl.textContent = brk < 0 ? _('连放三大', '3-ult chain') : brk === 0 ? _('首发未达成', '1st ult not ready') : names[brk] + _('断档', ' breaks');
-               document.getElementById('chainTarget').textContent = _('阈值 ', 'Target ') + T + '%';
-               // 说明
-               var ico = function (kd) { return window.__pvIcon ? '<span class="pv-det-ico">' + __pvIcon(kd) + '</span>' : ''; };
-               var d;
-               if (brk < 0) {
-                   d = ico('ok') + '<b>' + _('开局连放三大', 'Three ults in a row') + '</b>' + (Pi >= Ti
-                       ? _('：每一大期间的产出已够一管（循环跑通），之后每一大也都接得上。', ': each ult already gains a full bar (the loop holds), so later ults keep chaining too.')
-                       : _('：靠一大的溢出撑住了；每一大期间的产出不够一管，溢出会一大比一大少。', ': the 1st ult’s overflow carries it — each ult gains less than a bar, so the overflow shrinks every time.'));
-               } else {
-                   d = ico('err') + '<b>' + (brk === 0 ? _('首发还没凑够', '1st ult not ready') : names[brk] + _('接不上', ' doesn’t follow')) + '</b>'
-                       + (brk === 0 ? _('：一大差 ', ': short by ') : _('：', ': ') + names[brk] + _('差 ', ' is short by ')) + '<b>' + f3(Ti - e[brk]) + '%</b>' + _('。', '.');
-                   var can = need.filter(function (n) { return n.v !== null; });
-                   d += '<span class="pv-chain-need">' + (can.length
-                       ? _('连放三大最少要：', 'To chain three ults you need ') + can.map(function (n) { return n.name + ' ≥ <b>' + n.txt + '</b>'; }).join(_('，或 ', ', or ')) + _('（直接填进去就行，已算上自动反算 / 联动；按卡得最紧的那一大算）', ' (just type it in — auto-solve / linkage already accounted for; set by the tightest ult)')
-                       : need.map(function (n) { return n.name; }).join(_('、', ' / ')) + _('拉到上限也连不上三大。', ' maxed out still can’t chain three ults.')) + '</span>';
-               }
-               document.getElementById('resultDetailChain').innerHTML = d;
-               // 解析盒
-               var fb = '<b>' + _('【开局连发运算解析盒】', '[Opening Chain Breakdown]') + '</b><br>';
-               fb += _('及格线目标：', 'Passing Target: ') + '<b>' + T + '%</b>' + _('；每一大期间产出 = 循环总产出 ', '; gain per ult = loop total ') + '<b>' + f3(Pi) + '</b><br><br>';
-               fb += _('① 一大：首发核算 ', '1. 1st: first-ult calc ') + '<b>' + f3(Fi) + '</b>' + (ok[0] ? _(' → 放出，溢出 ', ' → fires, overflow ') + f3(Fi - Ti) : _(' → 未达成', ' → not ready')) + '<br>';
-               if (ok[0]) fb += _('② 二大：溢出 ', '2. 2nd: overflow ') + f3(Fi - Ti) + ' + ' + _('产出 ', 'gain ') + f3(Pi) + ' = <b>' + f3(e[1]) + '</b>' + (ok[1] ? _(' → 放出，溢出 ', ' → fires, overflow ') + f3(e[1] - Ti) : _(' → 不够', ' → short')) + '<br>';
-               if (ok[1]) fb += _('③ 三大：溢出 ', '3. 3rd: overflow ') + f3(e[1] - Ti) + ' + ' + _('产出 ', 'gain ') + f3(Pi) + ' = <b>' + f3(e[2]) + '</b>' + (ok[2] ? _(' → 放出', ' → fires') : _(' → 不够', ' → short')) + '<br>';
-               fb += '-------------------------<<br><b>' + _('连发判定：', 'Chain Check: ') + (brk < 0 ? _('一大 → 二大 → 三大 全部接上', '1st → 2nd → 3rd all fire') : _('断在', 'breaks at ') + names[brk]) + '</b>';
-               document.getElementById('formulaChain').innerHTML = fb;
-           });
-           _chainRes = { brk: brk, line: names.map(function (n, i) { var r = i === 0 || ok[i - 1]; return n + (!r ? ' —' : ok[i] ? ' ✓' : ' ✗'); }).join(' → ') + (brk >= 0 ? _('（', ' (') + names[brk] + _('差 ', ' short ') + f3(Ti - e[brk]) + '%' + _('）', ')') : '') };
-       }
-       function _flipHeight(el, mutate, instant) {
+       function renderChain(F, P, T, xianji, huineng, tdx, targetLoopParam, chipParam) {
+            var card = document.getElementById('resultCardChain');
+            if (!card) return;
+            var k = function (v) { return Math.round(v * 1000); }, f3 = function (i) { return (i / 1000).toFixed(3); };
+            var T1 = T, T2 = targetLoopParam !== undefined ? targetLoopParam : T;
+            var T1i = k(T1), T2i = k(T2), Fi = k(F), Pi = k(P);
+            var chip = chipParam || null;
+            // chip.ult[0] 是放出一大时触发给二大的能量；chip.ult[1] 是放出二大时触发给三大的能量（隐匿猎手在此触发 +16%）
+            var chipAfter1st = chip && chip.ult ? k(chip.ult[0] || 0) : 0;
+            var chipAfter2nd = chip && chip.ult ? k(chip.ult[1] || 0) : 0;
+            
+            var e = [Fi, NaN, NaN], ok = [Fi >= T1i, false, false];
+            if (ok[0]) { e[1] = Fi - T1i + Pi + chipAfter1st; ok[1] = e[1] >= T2i; }
+            if (ok[1]) { e[2] = e[1] - T2i + Pi + chipAfter2nd; ok[2] = e[2] >= T2i; }
+            var brk = !ok[0] ? 0 : !ok[1] ? 1 : !ok[2] ? 2 : -1;   // 断在第几大（-1 = 三连发成立）
+            var names = [_('一大', '1st'), _('二大', '2nd'), _('三大', '3rd')];
+            // 「最少要多少」：三连发同时成立（木桶效应）—— 每次只动一个量，其余保持当前值
+            var need = [];
+            if (brk >= 0) {
+                // 每个建议值都按「用户在页面上手填它之后，页面会怎么自动补齐」来算（团魂获能的自动反算、先机汇能的联动），
+                // 保证照着填进去就能连放三大
+                var env = _chipEnv(), cur = _tmCur(), team = tdx && tdx.mode === 'team';
+                var pass = function (st) {
+                    var fi = k(_tmFirst(env, st.x, st.h, st.s));
+                    var li = k(_tmLoop(env, st.h, st.s));
+                    var ca1 = env.chip && env.chip.ult ? k(env.chip.ult[0] || 0) : 0;
+                    var ca2 = env.chip && env.chip.ult ? k(env.chip.ult[1] || 0) : 0;
+                    return fi >= T1i && (fi - T1i + li + ca1) >= T2i && (fi - T1i + li + ca1 - T2i + li + ca2) >= T2i;
+                };
+                var soulOn = team && !env.na && (_tmFirst(env, cur.x, cur.h, SOUL_MAX) > _tmFirst(env, cur.x, cur.h, 0) || _tmLoop(env, cur.h, SOUL_MAX) > _tmLoop(env, cur.h, 0));
+                var nm = { soul: _('团魂', 'Team Soul'), huineng: _('汇能', 'Huineng'), xianji: _('先机', 'Xianji') };
+                (soulOn ? ['soul', 'huineng'] : ['huineng', 'xianji']).forEach(function (key) {
+                    var v = _tmSuggest(env, key, cur, pass);
+                    need.push({ key: key, name: nm[key], v: v, txt: v === null ? null : (key === 'soul' ? String(v) : v.toFixed(1)) + '%' });
+                });
+            }
+            var steps = card.querySelectorAll('.chain-step');
+            _flipHeight(card, function () {
+                card.classList.remove('is-idle');
+                card.classList.toggle('error-state', brk >= 0);
+                for (var i = 0; i < 3; i++) {
+                    var st = steps[i], reached = i === 0 || ok[i - 1];
+                    st.classList.toggle('is-ok', reached && ok[i]);
+                    st.classList.toggle('is-bad', reached && !ok[i]);
+                    st.classList.toggle('is-off', !reached);
+                    var ico = st.querySelector('.cs-ico'), val = st.querySelector('.cs-val'), how = st.querySelector('.cs-how'), out = st.querySelector('.cs-out');
+                    ico.innerHTML = window.__pvIcon ? __pvIcon(!reached ? 'minus' : ok[i] ? 'ok' : 'err') : '';
+                    if (!reached) {
+                        _setVal('chainVal' + i, '—');
+                        how.textContent = _('上一大没放出来', 'previous ult not fired');
+                        out.textContent = '';
+                        continue;
+                    }
+                    var s3 = f3(e[i]).split('.');
+                    _setVal('chainVal' + i, s3[0] + '<small>.' + s3[1] + '%</small>');
+                    var thisReq = (i === 0 ? T1i : T2i);
+                    var prevReq = (i === 1 ? T1i : T2i);
+                    var chipExtraText = (i === 1 && chipAfter1st > 0) ? (' + ' + _('芯片', 'chip ') + f3(chipAfter1st) + '%')
+                        : (i === 2 && chipAfter2nd > 0) ? (' + ' + _('芯片', 'chip ') + f3(chipAfter2nd) + '%') : '';
+                    how.textContent = i === 0 ? _('首发核算', 'from the 1st-ult calc')
+                        : _('带入 ', 'carried ') + f3(e[i - 1] - prevReq) + _(' + 产出 ', ' + gained ') + f3(Pi) + chipExtraText;
+                    out.textContent = ok[i] ? (i < 2 ? _('溢出 +', 'overflow +') + f3(e[i] - thisReq) + '%' : _('达成', 'fires')) : _('差 ', 'short ') + f3(thisReq - e[i]) + '%';
+                }
+                var stEl = document.getElementById('chainStatus');
+                stEl.textContent = brk < 0 ? _('连放三大', '3-ult chain') : brk === 0 ? _('首发未达成', '1st ult not ready') : names[brk] + _('断档', ' breaks');
+                var targetText = (T1 !== T2) ? (_('首大 ', '1st ') + T1 + '% / ' + _('循环 ', 'loop ') + T2 + '%') : (_('阈值 ', 'Target ') + T1 + '%');
+                document.getElementById('chainTarget').textContent = targetText;
+                // 说明
+                var ico = function (kd) { return window.__pvIcon ? '<span class="pv-det-ico">' + __pvIcon(kd) + '</span>' : ''; };
+                var d;
+                if (brk < 0) {
+                    d = ico('ok') + '<b>' + _('开局连放三大', 'Three ults in a row') + '</b>' + (Pi >= T2i
+                        ? _('：每一大期间的产出已够一管（循环跑通），之后每一大也都接得上。', ': each ult already gains a full bar (the loop holds), so later ults keep chaining too.')
+                        : _('：靠一大的溢出撑住了；每一大期间的产出不够一管，溢出会一大比一大少。', ': the 1st ult’s overflow carries it — each ult gains less than a bar, so the overflow shrinks every time.'));
+                } else {
+                    var diffBreak = (brk === 0 ? T1i : T2i) - e[brk];
+                    d = ico('err') + '<b>' + (brk === 0 ? _('首发还没凑够', '1st ult not ready') : names[brk] + _('接不上', ' doesn’t follow')) + '</b>'
+                        + (brk === 0 ? _('：一大差 ', ': short by ') : _('：', ': ') + names[brk] + _('差 ', ' is short by ')) + '<b>' + f3(diffBreak) + '%</b>' + _('。', '.');
+                    var can = need.filter(function (n) { return n.v !== null; });
+                    d += '<span class="pv-chain-need">' + (can.length
+                        ? _('连放三大最少要：', 'To chain three ults you need ') + can.map(function (n) { return n.name + ' ≥ <b>' + n.txt + '</b>'; }).join(_('，或 ', ', or ')) + _('（直接填进去就行，已算上自动反算 / 联动；按卡得最紧的那一大算）', ' (just type it in — auto-solve / linkage already accounted for; set by the tightest ult)')
+                        : need.map(function (n) { return n.name; }).join(_('、', ' / ')) + _('拉到上限也连不上三大。', ' maxed out still can’t chain three ults.')) + '</span>';
+                }
+                document.getElementById('resultDetailChain').innerHTML = d;
+                // 解析盒
+                var fb = '<b>' + _('【开局连发运算解析盒】', '[Opening Chain Breakdown]') + '</b><br>';
+                fb += _('及格线目标：一大 ', 'Passing Target: 1st ') + '<b>' + T1 + '%</b>' + _('，二大/三大 ', ', 2nd/3rd ') + '<b>' + T2 + '%</b>' + _('；每一大期间产出 = 循环总产出 ', '; gain per ult = loop total ') + '<b>' + f3(Pi) + '</b><br><br>';
+                fb += _('① 一大：首发核算 ', '1. 1st: first-ult calc ') + '<b>' + f3(Fi) + '</b>' + (ok[0] ? _(' → 放出，溢出 ', ' → fires, overflow ') + f3(Fi - T1i) : _(' → 未达成', ' → not ready')) + '<br>';
+                if (ok[0]) {
+                    var extraText2 = chipAfter1st > 0 ? (' + ' + _('芯片一大放出充能 ', 'chip 1st ult ') + f3(chipAfter1st)) : '';
+                    fb += _('② 二大：溢出 ', '2. 2nd: overflow ') + f3(Fi - T1i) + ' + ' + _('产出 ', 'gain ') + f3(Pi) + extraText2 + ' = <b>' + f3(e[1]) + '</b>' + (ok[1] ? _(' → 放出，溢出 ', ' → fires, overflow ') + f3(e[1] - T2i) : _(' → 不够', ' → short')) + '<br>';
+                }
+                if (ok[1]) {
+                    var extraText3 = chipAfter2nd > 0 ? (' + ' + _('芯片二大放出充能 ', 'chip 2nd ult ') + f3(chipAfter2nd)) : '';
+                    fb += _('③ 三大：溢出 ', '3. 3rd: overflow ') + f3(e[1] - T2i) + ' + ' + _('产出 ', 'gain ') + f3(Pi) + extraText3 + ' = <b>' + f3(e[2]) + '</b>' + (ok[2] ? _(' → 放出', ' → fires') : _(' → 不够', ' → short')) + '<br>';
+                }
+                fb += '-------------------------<<br><b>' + _('连发判定：', 'Chain Check: ') + (brk < 0 ? _('一大 → 二大 → 三大 全部接上', '1st → 2nd → 3rd all fire') : _('断在', 'breaks at ') + names[brk]) + '</b>';
+                document.getElementById('formulaChain').innerHTML = fb;
+            });
+            _chainRes = { brk: brk, line: names.map(function (n, i) { var r = i === 0 || ok[i - 1]; return n + (!r ? ' —' : ok[i] ? ' ✓' : ' ✗'); }).join(' → ') + (brk >= 0 ? _('（', ' (') + names[brk] + _('差 ', ' short ') + f3((brk === 0 ? T1i : T2i) - e[brk]) + '%' + _('）', ')') : '') };
+        }
+        function _flipHeight(el, mutate, instant) {
            var live = !instant && el && el.offsetParent !== null && _motionOK();
            var h0 = live ? el.getBoundingClientRect().height : 0;
            mutate();
@@ -6100,6 +6406,339 @@ function __tok(n, d) { var v = getComputedStyle(document.body).getPropertyValue(
            // 最后再开合：区块里的数值、提示、锁定态都已就位 —— 展开时量到的就是最终高度，展开途中也不会再变灰 / 再弹出提示
            syncModeBlocks(!!instant);
        }
+
+        /* ======================================================================
+           特殊芯片：注册表驱动的「选芯片」卡（#cardChips）
+           ----------------------------------------------------------------------
+           页面上的槽位、芯片库、每枚芯片的选项，全部由下面的 CHIP_REGISTRY 渲染（renderChips），
+           HTML 里只有空容器。往后新增一枚会影响大招能量的芯片，只做两件事：
+             1. 把图标放进 data/icon/（建议 chip_<拼音>.png，正方形透明底 PNG）；
+             2. 在 CHIP_REGISTRY 里加一项。字段：
+                id          唯一英文 id（分享链接里的编码，不要含  - | . , =）
+                icon        图标文件名（相对 CHIP_ICON_DIR）；缺图时自动退回名称首字
+                name / desc { zh, en }；desc 是完整效果原文，可含 strong
+                stats       [{ zh, en }] 只展示、不参与计算的属性（极速、涡轮之类），显示成灰色小标签
+                —— 以下是能量效果（写「原始百分比」；全不写 = 纯展示芯片）——
+                firstCharge   首发一大前一次性获得 %
+                loopCharge    每一轮后续大招循环里固定获得 %
+                ultCharge(k)  第 k 次使用大招时获得 %（k 从 1 数；返回 0 = 不触发）
+                cycle         ultCharge 的周期（每 N 次大招为一个周期；默认 1 = 每次都触发）
+                scale         折算：'DE'（默认，× 反制 × 充能效率）| 'D'（只 × 反制）| 'none'（固定值）
+                options       额外选项（type:'seg' 分段选择），见 _chipOptionDefs
+             周期内有的轮次不触发的芯片（cycle > 1），「后续大招循环」怎么计入由本模块自动给一个
+             「平均每轮 / 触发轮」选项，不用另写。
+           【后端接入点】chipAgg(D, E) 把已装芯片聚合成：首发额外能量 first、每轮循环额外能量 loop、
+           开局连发里放出第 1 / 2 / 3 次大招时获得的能量 ult[]（已乘折算系数）。
+           calculate() / _chipEnv() / renderChain() 读它即可；分享链接用 chipSerialize() / chipRestore()。
+           ====================================================================== */
+        var CHIP_MAX = 1;                       // 同时可装几枚；改这个数，页面标签与选择逻辑跟着变
+        var CHIP_ICON_DIR = 'data/icon/';
+        var CHIP_REGISTRY = [
+            {
+                id: 'hunter', icon: 'chip_hunter.png',
+                name: { zh: '隐匿猎手之芯', en: 'Hidden Hunter Chip' },
+                desc: {
+                    zh: '极速 +18 km/h，但每次使用涡轮 −0.5 km/h（上限减少 30 次。加速不会被驱散，减速无法净化）。每 2 次使用大招时充能 <strong>16%</strong>（隐匿猎手装备时同时清空芯片减速）。',
+                    en: 'Top speed +18 km/h, but each turbo use costs −0.5 km/h (up to 30 stacks; the boost can’t be dispelled and the slow can’t be cleansed). Every 2 ult uses charges <strong>16%</strong> (equipping the Hidden Hunter also clears the chip’s slow).'
+                },
+                stats: [
+                    { zh: '极速 +18 km/h', en: 'Top speed +18 km/h' },
+                    { zh: '涡轮 −0.5 km/h / 次', en: 'Turbo −0.5 km/h each' }
+                ],
+                cycle: 2,
+                ultCharge: function (k) { return k % 2 === 0 ? 16 : 0; }
+            },
+            {
+                id: 'catnap', icon: 'chip_catnap.png',
+                name: { zh: '猫眠梦之芯', en: 'Catnap Dream Chip' },
+                desc: {
+                    zh: '每 6 秒获得 1200 集气量并恢复 6 点耐久值，大招达到 <strong>90%</strong> 能量即可使用（猫眠梦装备时改为 <strong>66%</strong>）。',
+                    en: 'Every 6s gains 1200 nitro charge and restores 6 durability; ult can be used at <strong>90%</strong> energy (lowered to <strong>66%</strong> when equipped on Catnap Dream).'
+                },
+                stats: [
+                    { zh: '每 6 秒集气 +1200', en: '1200 nitro / 6s' },
+                    { zh: '每 6 秒耐久 +6', en: '6 durability / 6s' },
+                    { zh: '大招阈值 90% (猫眠梦 66%)', en: 'Ult threshold 90% (66% for Catnap)' }
+                ],
+                ultThreshold: function (car) {
+                    var isMmm = car && (car.id === 10058 || (car.name && car.name.indexOf('猫眠梦') !== -1));
+                    return isMmm ? 66 : 90;
+                }
+            }
+        ];
+
+        var _chipsOn = [];             // 已装备：[{ id, opts: { loopMode: 'avg' } }]
+        var _chipPickerWant = false;
+        var _chipNewId = '';
+        var _CHIP_SVG = {
+            plus: '<svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 5v14M5 12h14"/></svg>',
+            x: '<svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 6l12 12M18 6 6 18"/></svg>',
+            swap: '<svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 8h15m-4-4 4 4-4 4M20 16H5m4-4-4 4 4 4"/></svg>'
+        };
+
+        function _chipEl(id) { return document.getElementById(id); }
+        function _c2(zh, en) { return '<span class="zh">' + zh + '</span><span class="lang-en">' + en + '</span>'; }
+        function _chipTxt(o) { return currentLang === 'en' ? o.en : o.zh; }
+        function _chipPct(x) { return String(+(+x).toFixed(2)); }
+        function _chipAttr(s) { return String(s).replace(/&/g, '&amp;').replace(/"/g, '&quot;').replace(/</g, '&lt;'); }
+        function _chipDef(id) { for (var i = 0; i < CHIP_REGISTRY.length; i++) if (CHIP_REGISTRY[i].id === id) return CHIP_REGISTRY[i]; return null; }
+        function _chipIndex(id) { for (var i = 0; i < _chipsOn.length; i++) if (_chipsOn[i].id === id) return i; return -1; }
+        function _chipUlts(def, n) { var a = []; for (var k = 1; k <= n; k++) a.push(def.ultCharge ? (+def.ultCharge(k) || 0) : 0); return a; }
+        function _chipLoopStats(def) {
+            var n = Math.max(1, (def.cycle | 0) || 1), v = _chipUlts(def, n), s = 0, p = 0;
+            v.forEach(function (x) { s += x; if (x > p) p = x; });
+            return { n: n, mean: s / n, peak: p, sum: s };
+        }
+
+        /* ---------- 选项：有「周期内有的轮次不触发」的芯片，自动带一个循环口径选项（方案 B：稳妥循环 vs 偶数/触发轮） ---------- */
+        function _chipOptionDefs(def) {
+            var list = [], st = def.ultCharge ? _chipLoopStats(def) : null;
+            if (st && st.n > 1 && st.peak > 0) {
+                var p = _chipPct(st.peak);
+                var peakLabelZh = st.n === 2 ? ('偶数轮 +' + p + '%') : ('触发轮 +' + p + '%');
+                var peakLabelEn = st.n === 2 ? ('Even Loop +' + p + '%') : ('Peak +' + p + '%');
+                list.push({
+                    id: 'loopMode', def: 'peak',
+                    label: { zh: '后续循环计入', en: 'Loop Calc Mode' },
+                    choices: [
+                        { v: 'safe', zh: '稳妥循环 +0%', en: 'Safe Loop +0%' },
+                        { v: 'peak', zh: peakLabelZh, en: peakLabelEn }
+                    ]
+                });
+            }
+            (def.options || []).forEach(function (o) { list.push(o); });
+            return list;
+        }
+        function _chipOptVal(inst, od) {
+            var v = inst.opts && inst.opts[od.id];
+            for (var i = 0; i < od.choices.length; i++) if (od.choices[i].v === v) return v;
+            return od.def;
+        }
+        function _chipLoopMode(inst, def) {
+            var st = def.ultCharge ? _chipLoopStats(def) : null;
+            if (!st || st.n < 2 || st.peak === 0) return 'safe';
+            return inst.opts && inst.opts.loopMode === 'safe' ? 'safe' : 'peak';
+        }
+
+        /* ---------- 后端接入点：已装芯片 → 额外能量（已乘折算系数） ---------- */
+        function chipAgg(D, E) {
+            var r = { on: false, first: 0, loop: 0, loopUlt: 0, ult: [0, 0, 0], items: [] };
+            _chipsOn.forEach(function (inst) {
+                var def = _chipDef(inst.id);
+                if (!def) return;
+                var m = def.scale === 'none' ? 1 : def.scale === 'D' ? D : D * E;
+                var fr = +def.firstCharge || 0, lr = +def.loopCharge || 0, ur = 0, mode = 'safe', u = [0, 0, 0];
+                if (def.ultCharge) {
+                    var st = _chipLoopStats(def);
+                    mode = _chipLoopMode(inst, def);
+                    ur = mode === 'peak' ? st.peak : 0;
+                    u = _chipUlts(def, 3).map(function (x) { return x * m; });
+                }
+                r.on = true;
+                r.first += fr * m; r.loop += (lr + ur) * m; r.loopUlt += ur * m;
+                u.forEach(function (x, i) { r.ult[i] += x; });
+                r.items.push({ def: def, mode: mode, fr: fr, lr: lr, ur: ur, m: m, first: fr * m, loop: (lr + ur) * m, ult: u });
+            });
+            return r;
+        }
+
+        /* ---------- 文案：能量标签与规则简注（都由数值自动生成，不用手写） ---------- */
+        function _chipEnergyTags(def) {
+            var t = [], fc = +def.firstCharge || 0, lc = +def.loopCharge || 0;
+            if (fc) t.push({ zh: '首发前 +' + _chipPct(fc) + '%', en: 'Before 1st ult +' + _chipPct(fc) + '%' });
+            if (lc) t.push({ zh: '每轮循环 +' + _chipPct(lc) + '%', en: 'Per loop +' + _chipPct(lc) + '%' });
+            if (def.ultCharge) {
+                var st = _chipLoopStats(def);
+                if (st.sum > 0) t.push(st.n === 1 ? { zh: '每次大招 +' + _chipPct(st.sum) + '%', en: '+' + _chipPct(st.sum) + '% per ult' }
+                                                  : { zh: '每 ' + st.n + ' 次大招 +' + _chipPct(st.sum) + '%', en: '+' + _chipPct(st.sum) + '% every ' + st.n + ' ults' });
+            }
+            if (def.ultThreshold) {
+                var curCar = typeof _selectedCar !== 'undefined' ? _selectedCar : null;
+                var isMmm = curCar && (curCar.id === 10058 || (curCar.name && curCar.name.indexOf('猫眠梦') !== -1));
+                if (isMmm) {
+                    t.push({ zh: '猫眠梦专属：大招阈值 66%', en: 'Catnap Exclusive: Ult 66%' });
+                } else {
+                    t.push({ zh: '大招阈值 90%', en: 'Ult Threshold 90%' });
+                }
+            }
+            return t;
+        }
+        function _chipRuleTag(def) {
+            var u = def.ultCharge ? _chipUlts(def, 2) : [0, 0], partsZh = [], partsEn = [];
+            if (u[0] > 0) { partsZh.push('一大连发 +' + _chipPct(u[0]) + '%'); partsEn.push('1st chain +' + _chipPct(u[0]) + '%'); }
+            if (u[1] > 0) { partsZh.push('二大连发 +' + _chipPct(u[1]) + '%'); partsEn.push('2nd chain +' + _chipPct(u[1]) + '%'); }
+            if (def.scale !== 'none' && (def.firstCharge || def.loopCharge || def.ultCharge)) {
+                partsZh.push(def.scale === 'D' ? '折算反制' : '折算反制与充能效率');
+                partsEn.push(def.scale === 'D' ? 'Scaled by Counter' : 'Counter & Eff');
+            }
+            return partsZh.length ? { zh: partsZh.join(' · '), en: partsEn.join(' · ') } : null;
+        }
+
+        /* ---------- 渲染 ---------- */
+        function _chipIcoHtml(def) {
+            var ch = (def.name.zh || def.id).charAt(0);
+            var src = def.icon ? ((typeof _ICONS !== 'undefined' && _ICONS[def.icon]) || (CHIP_ICON_DIR + def.icon)) : '';
+            return '<span class="chip-ico' + (src ? '' : ' is-fb') + '" aria-hidden="true">'
+                + (src ? '<img src="' + _chipAttr(src) + '" alt="" draggable="false" onerror="this.parentNode.classList.add(\'is-fb\');this.remove();">' : '')
+                + '<span class="chip-ico-fb">' + ch + '</span></span>';
+        }
+        function _chipTagsHtml(def) {
+            return _chipEnergyTags(def).map(function (t) { return '<span class="chip-tag is-energy">' + _c2(t.zh, t.en) + '</span>'; }).join('');
+        }
+        function _chipOptsHtml(inst, def) {
+            var defs = _chipOptionDefs(def);
+            if (!defs.length) return '';
+            var h = '<div class="chip-opts">';
+            defs.forEach(function (od) {
+                var cur = _chipOptVal(inst, od);
+                h += '<div class="chip-opt"><div class="chip-opt-label"><span>' + _c2(od.label.zh, od.label.en) + '</span></div><div class="chip-seg" role="radiogroup">'
+                    + od.choices.map(function (c) {
+                        return '<button type="button" role="radio" aria-checked="' + (c.v === cur) + '" class="' + (c.v === cur ? 'is-on' : '') + '" data-act="opt" data-id="' + _chipAttr(def.id)
+                            + '" data-opt="' + _chipAttr(od.id) + '" data-val="' + _chipAttr(c.v) + '">' + _c2(c.zh, c.en) + '</button>';
+                    }).join('') + '</div></div>';
+            });
+            return h + '</div>';
+        }
+        function _chipSlotHtml(inst) {
+            var def = _chipDef(inst.id);
+            if (!def) return '';
+            return '<div class="chip-slot is-filled' + (_chipNewId === def.id ? ' is-new' : '') + '" data-chip="' + _chipAttr(def.id) + '">'
+                + _chipIcoHtml(def)
+                + '<div class="chip-body"><div class="chip-head"><span class="chip-name">' + _c2(def.name.zh, def.name.en) + '</span><span class="chip-tags">' + _chipTagsHtml(def) + '</span></div>'
+                + '<div class="chip-desc">' + _c2(def.desc.zh, def.desc.en) + '</div></div>'
+                + '<div class="chip-acts">'
+                + (CHIP_REGISTRY.length > 1 ? '<button type="button" class="chip-act" data-act="swap" aria-expanded="' + _chipPickerWant + '">' + _CHIP_SVG.swap + '<span class="chip-sr zh">更换芯片</span><span class="chip-sr lang-en">Swap chip</span></button>' : '')
+                + '<button type="button" class="chip-act" data-act="remove" data-id="' + _chipAttr(def.id) + '">' + _CHIP_SVG.x + '<span class="chip-sr zh">卸下芯片</span><span class="chip-sr lang-en">Remove chip</span></button>'
+                + '</div>' + _chipOptsHtml(inst, def) + '</div>';
+        }
+        function _chipEmptyHtml() {
+            return '<button type="button" class="chip-slot is-empty' + (_chipPickerWant ? ' is-open' : '') + '" data-act="open" aria-expanded="' + _chipPickerWant + '">'
+                + '<span class="chip-add-ico">' + _CHIP_SVG.plus + '</span><span>' + _c2('选择芯片', 'Choose a chip') + '</span></button>';
+        }
+        function _chipRenderGrid() {
+            var grid = _chipEl('chipGrid'), q = ((_chipEl('chipSearch') || {}).value || '').trim().toLowerCase();
+            if (!grid) return;
+            var full = CHIP_MAX > 1 && _chipsOn.length >= CHIP_MAX;
+            var list = CHIP_REGISTRY.filter(function (d) {
+                return !q || (d.name.zh + ' ' + d.name.en + ' ' + d.desc.zh + ' ' + d.desc.en).toLowerCase().indexOf(q) >= 0;
+            });
+            grid.innerHTML = list.map(function (d) {
+                var on = _chipIndex(d.id) >= 0;
+                var sub = _chipEnergyTags(d).concat(d.stats || []).map(_chipTxt).join(' · ');
+                return '<button type="button" class="chip-tile' + (on ? ' is-on' : '') + '" data-act="pick" data-id="' + _chipAttr(d.id) + '" aria-pressed="' + on + '"' + (full && !on ? ' disabled' : '') + '>'
+                    + _chipIcoHtml(d) + '<span class="chip-tile-main"><span class="chip-tile-name">' + _c2(d.name.zh, d.name.en) + '</span><span class="chip-tile-sub">' + _chipAttr(sub) + '</span></span>'
+                    + '<span class="chip-tile-check" aria-hidden="true"></span></button>';
+            }).join('');
+            _chipEl('chipEmpty').classList.toggle('is-gone', list.length > 0);
+        }
+        function _chipSyncOpenFlag() {
+            var card = _chipEl('cardChips');
+            if (!card) return;
+            [].forEach.call(card.querySelectorAll('[data-act="open"], [data-act="swap"]'), function (b) {
+                b.setAttribute('aria-expanded', _chipPickerWant ? 'true' : 'false');
+                if (b.getAttribute('data-act') === 'open') b.classList.toggle('is-open', _chipPickerWant);
+            });
+        }
+        function renderChips(instant) {
+            var slots = _chipEl('chipSlots');
+            if (!slots) return;
+            _chipBindOnce();
+            var html = _chipsOn.map(_chipSlotHtml).join('') + (_chipsOn.length < CHIP_MAX ? _chipEmptyHtml() : '');
+            if (slots.__html !== html) {
+                var fill = function () { slots.innerHTML = html; slots.__html = html; };
+                if (slots.__html === undefined) fill(); else _flipHeight(slots, fill, instant);
+            }
+            _chipNewId = '';
+            var bd = _chipEl('chipsLimitBadge');
+            if (bd) { var bh = _c2('限装 ' + CHIP_MAX + ' 枚', 'Max ' + CHIP_MAX); if (bd.__html !== bh) { bd.innerHTML = bh; bd.__html = bh; } }
+            var se = _chipEl('chipSearch');
+            if (se) { se.classList.toggle('is-gone', CHIP_REGISTRY.length <= 6); se.placeholder = currentLang === 'en' ? 'Search chips…' : '搜索芯片…'; }
+            _chipRenderGrid();
+            _chipSyncOpenFlag();
+        }
+
+        /* ---------- 交互 ---------- */
+        function _chipPickerSet(open, instant) {
+            _chipPickerWant = !!open;
+            if (open) { var s = _chipEl('chipSearch'); if (s) s.value = ''; _chipRenderGrid(); }
+            slideShow(_chipEl('chipPicker'), open, instant);
+            _chipSyncOpenFlag();
+        }
+        function chipEquip(id) {
+            if (!_chipDef(id)) return;
+            var at = _chipIndex(id);
+            if (at >= 0) _chipsOn.splice(at, 1);                                   // 再点一次 = 卸下
+            else {
+                if (_chipsOn.length >= CHIP_MAX) { if (CHIP_MAX === 1) _chipsOn.length = 0; else return; }   // 只能装 1 枚：直接换掉
+                _chipsOn.push({ id: id, opts: { loopMode: 'peak' } });
+                _chipNewId = id;
+            }
+            _chipPickerSet(false);
+            _chipChanged();
+        }
+        function chipSetOpt(id, opt, val) {
+            var at = _chipIndex(id);
+            if (at < 0) return;
+            _chipsOn[at].opts = _chipsOn[at].opts || {};
+            _chipsOn[at].opts[opt] = val;
+            _chipChanged();
+        }
+        function _chipChanged() {
+            _userInput = true;
+            renderChips();
+            if (window.__pvRefreshCollapse) window.__pvRefreshCollapse(false);   // 手机上卡片标题旁的摘要
+            if (!isRestoringConfig) calculate();
+        }
+        var _chipBound = false;
+        function _chipBindOnce() {
+            var card = _chipEl('cardChips');
+            if (!card || _chipBound) return;
+            _chipBound = true;
+            card.addEventListener('click', function (e) {
+                var b = e.target.closest ? e.target.closest('[data-act]') : null;
+                if (!b || !card.contains(b) || b.disabled) return;
+                var act = b.getAttribute('data-act'), id = b.getAttribute('data-id');
+                if (act === 'open' || act === 'swap') {
+                    _chipPickerSet(!_chipPickerWant);
+                    if (_chipPickerWant && e.detail === 0) { var f = card.querySelector('.chip-tile'); if (f) f.focus({ preventScroll: true }); }
+                } else if (act === 'close') _chipPickerSet(false);
+                else if (act === 'pick') chipEquip(id);
+                else if (act === 'remove') chipEquip(id);
+                else if (act === 'opt') chipSetOpt(id, b.getAttribute('data-opt'), b.getAttribute('data-val'));
+            });
+            card.addEventListener('input', function (e) { if (e.target && e.target.id === 'chipSearch') _chipRenderGrid(); });
+            card.addEventListener('keydown', function (e) {
+                if (e.key !== 'Escape' || !_chipPickerWant) return;
+                _chipPickerSet(false);
+                var t = card.querySelector('[data-act="open"], [data-act="swap"]');
+                if (t) t.focus({ preventScroll: true });
+            });
+        }
+        document.addEventListener('pv-lang', function () { renderChips(true); });
+
+        /* ---------- 摘要 / 分享链接编码（后端接入时用） ---------- */
+        window.__chipSummary = function () {      // 手机端卡片收起时标题旁的摘要（v4.js 的 CARDS 读它）
+            if (!_chipsOn.length) return [_('未装备', 'None'), false];
+            return [_chipsOn.map(function (i) { var d = _chipDef(i.id); return d ? _chipTxt(d.name) : ''; }).join(' + '), true];
+        };
+        function chipSerialize() {                // 'hunter.loopMode=peak' / '0'（无芯片）；多枚用 - 连接
+            if (!_chipsOn.length) return '0';
+            return _chipsOn.map(function (inst) {
+                var o = Object.keys(inst.opts || {}).map(function (k) { return k + '=' + inst.opts[k]; }).join(',');
+                return inst.id + (o ? '.' + o : '');
+            }).join('-');
+        }
+        function chipRestore(str) {
+            _chipsOn = [];
+            if (str && str !== '0') String(str).split('-').forEach(function (part) {
+                var dot = part.indexOf('.'), id = dot < 0 ? part : part.slice(0, dot);
+                if (!_chipDef(id) || _chipIndex(id) >= 0 || _chipsOn.length >= CHIP_MAX) return;
+                var opts = {};
+                if (dot >= 0) part.slice(dot + 1).split(',').forEach(function (kv) { var p = kv.split('='); if (p[0]) opts[p[0]] = p[1]; });
+                _chipsOn.push({ id: id, opts: opts });
+            });
+            renderChips(true);
+        }
 
        /* ---------- 增益装置（团魂获能专用，限装 1 个） ---------- */
        function getDevice() {
@@ -6225,6 +6864,8 @@ function __tok(n, d) { var v = getComputedStyle(document.body).getPropertyValue(
            }
            slideShow(document.getElementById('devChargeOpts'), !!DEVICE_CHARGE[t], instant);
            slideShow(document.getElementById('teamInOff'), !!t, instant);
+            slideShow(document.getElementById('devAccNote'), t === 'acc', instant);
+            slideShow(document.getElementById('teamInSum'), getCalcMode() === 'team' && t !== 'acc', instant || getCalcMode() !== 'team');   // 加速装置没有「实收能量」可展示
            slideShow(document.getElementById('cardTeamIn'), getCalcMode() === 'team' && !t, instant || getCalcMode() !== 'team');
            syncEnvLock();
            updateSoulHint();
@@ -6233,7 +6874,7 @@ function __tok(n, d) { var v = getComputedStyle(document.body).getPropertyValue(
            var h = document.getElementById('soulHint');
            if (!h) return;
            var t = getDevice();
-           h.innerHTML = t === 'loop' ? _('当前装的是<b>循环装置</b>：固定值，团魂对它无效。', 'The <b>Loop Device</b> is a fixed value — Team Soul does not affect it.')
+           h.innerHTML = t === 'acc' ? _('当前装的是<b>加速装置</b>：它不提供充能，团魂对它无效；首个大招攒到 80% 就能放。', 'The <b>Accel Device</b> gives no charge, so Team Soul does nothing for it — the 1st ult fires at 80%.') : t === 'loop' ? _('当前装的是<b>循环装置</b>：固定值，团魂对它无效。', 'The <b>Loop Device</b> is a fixed value — Team Soul does not affect it.')
                : DEVICE_CHARGE[t] ? _('团魂放大<b>', 'Team Soul boosts the <b>') + deviceName(t) + _('</b>的辅助充能：每次 ', '</b> charge: ') + DEVICE_CHARGE[t] + '% × (1 + ' + _('团魂', 'Soul') + ')' + _('。', '.')
                : _('团魂放大<b>队友给你的辅助充能</b>：单次 × (1 + 团魂)。', 'Team Soul boosts the <b>assist charge allies give you</b>: per hit × (1 + Soul).');
            _tmRender();   // 装置 / 队友给法变了，团魂可能变成「不适用」：锁、状态字、状态条跟着换
@@ -6245,7 +6886,7 @@ function __tok(n, d) { var v = getComputedStyle(document.body).getPropertyValue(
            h.textContent = _('大招实机 ', 'Ult lasts ') + ultDur.toFixed(2) + _(' 秒 ÷ 13 秒 ≈ 平均每轮 ', 's ÷ 13s ≈ ') + avg.toFixed(2) + _(' 次，保底每轮 ', ' per loop on average, guaranteed ') + Math.floor(avg + 0.000001) + _(' 次；求稳按保底填。', ' — use that for a safe estimate.');
        }
        function deviceName(t) {
-           return t === 'loop' ? _('循环装置', 'Loop Device') : t === 'chg' ? _('充能装置', 'Charge Device') : t === 'schg' ? _('超级充能装置', 'Super Charge Device') : _('无', 'None');
+           return t === 'acc' ? _('加速装置', 'Accel Device') : t === 'loop' ? _('循环装置', 'Loop Device') : t === 'chg' ? _('充能装置', 'Charge Device') : t === 'schg' ? _('超级充能装置', 'Super Charge Device') : _('无', 'None');
        }
 
        /* ---------- 辅助车数据（car-database 的 assist_* 字段，由 scripts/extract-cars.js 生成） ---------- */
@@ -6568,6 +7209,17 @@ function __tok(n, d) { var v = getComputedStyle(document.body).getPropertyValue(
            var emp = [].map.call(document.querySelectorAll('.empower-checkbox:checked'), function (cb) { return cb.value; });
            var has = function (k) { return emp.indexOf(k) !== -1; };
            var T = has('weilai') ? Math.min(ot, 90) : ot;
+           for (var ci = 0; ci < _chipsOn.length; ci++) {
+               var cdef = _chipDef(_chipsOn[ci].id);
+               if (cdef && typeof cdef.ultThreshold === 'function') {
+                   var curCar = typeof _selectedCar !== 'undefined' ? _selectedCar : null;
+                   var cth = cdef.ultThreshold(curCar);
+                   if (cth && cth > 0) T = Math.min(T, cth);
+               }
+           }
+           var dev = getDevice();
+           var targetLoop = T;
+           var targetFirst = (dev === 'acc') ? Math.min(targetLoop, 80) : targetLoop;
            var E = (has('yichu') ? 1.05 : 1.00) + g('extraEfficiency') / 100 - g('debuffRange') / 100;
            if (E < 0) E = 0;
            var exN = c('hasExtraNitro') ? g('valExtraNitro') : 0, exP = c('hasExtraPerSec') ? g('valExtraPerSec') : 0, exU = c('hasExtraUlt');
@@ -6583,7 +7235,7 @@ function __tok(n, d) { var v = getComputedStyle(document.body).getPropertyValue(
            var queyi = 0;
            if (has('queyi')) { if (c('queyi_sub_self')) queyi += 0.8; if (c('queyi_sub_enemy')) queyi += 1.2; }
            var e = {
-               T: T, D: 1 - (g('counterRange') / 100), E: E, start: g('startCharge'),
+               T: T, targetFirst: targetFirst, targetLoop: targetLoop, D: 1 - (g('counterRange') / 100), E: E, start: g('startCharge'),
                baseNitro: g('baseNitro') * ratio, spec: c('isSpec') ? (10.0 * ratio) : 0,
                exNF: c('chkExtraNitroFirst') ? exN : 0, exNL: c('chkExtraNitroLoop') ? exN : 0,
                exUF: exU ? g('valExtraUltFirst') : 0, exUL: exU ? g('valExtraUltLoop') : 0,
@@ -6615,6 +7267,8 @@ function __tok(n, d) { var v = getComputedStyle(document.body).getPropertyValue(
            if (tdx.dev === 'loop') t += tdx.devLoopFirst;
            else if (tdx.devBase > 0) t += tdx.devFirst;
            else if (tdx.teamOn) t += tdx.teamFirst;
+           var chipA = chipAgg(D, E);
+           if (chipA.first > 0) t += chipA.first;
            return Math.floor(t * 1000 + 0.000001) / 1000;
        }
        // 每轮循环总量（与 calculate() 里 loopGrandTotal 同序）
@@ -6622,8 +7276,9 @@ function __tok(n, d) { var v = getComputedStyle(document.body).getPropertyValue(
            var D = e.D, E = e.E, sec = Math.floor(e.actualUlt + 0.000001);
            var single = (e.baseNitro * (1 + h / 100) + e.spec + e.exNL) * D * E;
            var tdx = e.tt(s);
+           var chipA = chipAgg(D, E);
            var t = ((e.queyi * sec + e.fusu + e.huishou + e.jzL * 4.0) * D) + ((e.hxL * 7.0) * D * E) + (e.npu * single)
-               + (e.exUL * D * E) + (sec * e.exPL * D * E) + (e.ctv * e.ctL * D * E) + tdx.loop;
+               + (e.exUL * D * E) + (sec * e.exPL * D * E) + (e.ctv * e.ctL * D * E) + tdx.loop + (chipA.loop || 0);
            return Math.floor(t * 1000 + 0.000001) / 1000;
        }
        // 在 lo..hi 的 step 网格上找满足 ok 的最小值（ok 随取值单调：小的不满足、大的满足）；都不满足返回 null
@@ -6638,7 +7293,8 @@ function __tok(n, d) { var v = getComputedStyle(document.body).getPropertyValue(
        // 首发里吃不吃团魂：吃不到时给一句原因
        function _tmSoulReason(e) {
            var t = getTeamDeviceTerms(e.D, e.E, e.firstN, e.npu, 0);
-           if (t.dev === 'loop') return _('循环装置是固定值，不受团魂影响', 'the Loop Device is a fixed value');
+           if (t.dev === 'acc') return _('加速装置没有可放大的充能项', 'the Accel Device has no charge to scale');
+            if (t.dev === 'loop') return _('循环装置是固定值，不受团魂影响', 'the Loop Device is a fixed value');
            if (t.devBase > 0) return t.devFirstCount > 0 ? _('反制 / 充能效率把装置充能压成了 0', 'Counter / Efficiency zero the device charge') : _('首发前装置触发 0 次', 'the device triggers 0 times before the 1st ult');
            if (t.teamFull) return _('队友辅助是补满一管，不受团魂影响', 'the ally fills a whole bar, unaffected by Team Soul');
            if (t.teamBase <= 0) return _('还没有队友辅助充能，先选队友辅助车', 'no ally assist yet — pick the ally support car');
@@ -6660,50 +7316,50 @@ function __tok(n, d) { var v = getComputedStyle(document.body).getPropertyValue(
        }
        // 反算规则本体（纯函数）：给定三把锁和当前三个值，返回反算后的三个值 + 说明
        function _tmPlan(e, lock, x, h, s) {
-           var T = e.T, notes = [], xMax = e.xMax, hMax = e.hMax;
-           var F = function (a, b, c) { return _tmFirst(e, a, b, c); }, L = function (b, c) { return _tmLoop(e, b, c); };
-           var gap = function (v) { return '<b>' + (Math.ceil((T - v) * 1000 - 0.000001) / 1000).toFixed(3) + '%</b>'; };
-           if (!e.na && !lock.soul) {
-               // 团魂自动：没锁的先机 / 汇能不参与反算，按 0 计
-               if (!lock.xianji) x = 0;
-               if (!lock.huineng) h = 0;
-               var f0 = F(x, h, 0), fM = F(x, h, SOUL_MAX);
-               if (f0 >= T) { s = 0; notes.push(['ok', _('不靠团魂也能首发，团魂取 0。', 'The 1st ult works without Team Soul, so it stays at 0.')]); }
-               else if (fM >= T) s = _gridMin(0, SOUL_MAX, 1, function (v) { return F(x, h, v) >= T; });
-               else if (fM > f0) { s = SOUL_MAX; notes.push(['warn', _('团魂拉到上限 ', 'Even the ') + SOUL_MAX + _('% 首发仍差 ', '% Team Soul cap leaves the 1st ult short by ') + gap(fM) + _('，再加先机 / 汇能试试。', ' — add some Xianji / Huineng.')]); }
-               else { s = 0; notes.push(['warn', _('团魂补不上首发缺口：', 'Team Soul can’t close the gap: ') + _tmSoulReason(e) + _('。首发还差 ', '. The 1st ult is short by ') + gap(f0) + _('。', '.')]); }
-           } else {
-               var tX = !lock.xianji, tH = !lock.huineng, hL = 0;
-               if (tH) {
-                   // 循环所需的最低汇能；汇能拉满也不够时拉满（循环卡会给出缺口），循环根本不吃汇能时不动它
-                   hL = _gridMin(0, hMax, 0.1, function (v) { return L(v, s) >= T; });
-                   if (hL === null) {
-                       if (L(hMax, s) > L(0, s)) { hL = hMax; notes.push(['warn', _('汇能拉到上限 ', 'Even the ') + hMax + _('% 循环仍差 ', '% Huineng cap leaves the loop short by ') + gap(L(hMax, s)) + _('。', '.')]); }
-                       else hL = 0;
-                   }
-               }
-               if (tX && tH) {
-                   var nx = _gridMin(0, xMax, 0.1, function (v) { return F(v, hL, s) >= T; }), nh = hL;
-                   if (nx === null) {
-                       nx = xMax;
-                       nh = _gridMin(hL, hMax, 0.1, function (v) { return F(xMax, v, s) >= T; });
-                       if (nh === null) { nh = hMax; notes.push(['warn', _('先机、汇能都拉到上限，首发仍差 ', 'Even maxed Xianji and Huineng leave the 1st ult short by ') + gap(F(xMax, hMax, s)) + _('。', '.')]); }
-                   }
-                   x = nx; h = nh;
-               } else if (tH) {
-                   var nh2 = _gridMin(hL, hMax, 0.1, function (v) { return F(x, v, s) >= T; });
-                   if (nh2 === null) { nh2 = hMax; notes.push(['warn', _('汇能拉到上限，首发仍差 ', 'Even maxed Huineng leaves the 1st ult short by ') + gap(F(x, hMax, s)) + _('。', '.')]); }
-                   h = nh2;
-               } else if (tX) {
-                   var nx2 = _gridMin(0, xMax, 0.1, function (v) { return F(v, h, s) >= T; });
-                   if (nx2 === null) { nx2 = xMax; notes.push(['warn', _('先机拉到上限 30%，首发仍差 ', 'Even 30% Xianji leaves the 1st ult short by ') + gap(F(xMax, h, s)) + _('。', '.')]); }
-                   x = nx2;
-               }
-           }
-           return { x: x, h: h, s: s, notes: notes };
-       }
-       // 反算：在 calculate() 读先机 / 汇能 / 团魂之前调用。只写回被反算（或按 0 计）的那几格，手填的原样不动
-       function _tmSolve() {
+            var T1 = e.targetFirst, T2 = e.targetLoop, notes = [], xMax = e.xMax, hMax = e.hMax;
+            var F = function (a, b, c) { return _tmFirst(e, a, b, c); }, L = function (b, c) { return _tmLoop(e, b, c); };
+            var gap1 = function (v) { return '<b>' + (Math.ceil((T1 - v) * 1000 - 0.000001) / 1000).toFixed(3) + '%</b>'; };
+            var gap2 = function (v) { return '<b>' + (Math.ceil((T2 - v) * 1000 - 0.000001) / 1000).toFixed(3) + '%</b>'; };
+            if (!e.na && !lock.soul) {
+                // 团魂自动：没锁的先机 / 汇能不参与反算，按 0 计
+                if (!lock.xianji) x = 0;
+                if (!lock.huineng) h = 0;
+                var f0 = F(x, h, 0), fM = F(x, h, SOUL_MAX);
+                if (f0 >= T1) { s = 0; notes.push(['ok', _('不靠团魂也能首发，团魂取 0。', 'The 1st ult works without Team Soul, so it stays at 0.')]); }
+                else if (fM >= T1) s = _gridMin(0, SOUL_MAX, 1, function (v) { return F(x, h, v) >= T1; });
+                else if (fM > f0) { s = SOUL_MAX; notes.push(['warn', _('团魂拉到上限 ', 'Even the ') + SOUL_MAX + _('% 首发仍差 ', '% Team Soul cap leaves the 1st ult short by ') + gap1(fM) + _('，再加先机 / 汇能试试。', ' — add some Xianji / Huineng.')]); }
+                else { s = 0; notes.push(['warn', _('团魂补不上首发缺口：', 'Team Soul can’t close the gap: ') + _tmSoulReason(e) + _('。首发还差 ', '. The 1st ult is short by ') + gap1(f0) + _('。', '.')]); }
+            } else {
+                var tX = !lock.xianji, tH = !lock.huineng, hL = 0;
+                if (tH) {
+                    // 循环所需的最低汇能；汇能拉满也不够时拉满（循环卡会给出缺口），循环根本不吃汇能时不动它
+                    hL = _gridMin(0, hMax, 0.1, function (v) { return L(v, s) >= T2; });
+                    if (hL === null) {
+                        if (L(hMax, s) > L(0, s)) { hL = hMax; notes.push(['warn', _('汇能拉到上限 ', 'Even the ') + hMax + _('% 循环仍差 ', '% Huineng cap leaves the loop short by ') + gap2(L(hMax, s)) + _('。', '.')]); }
+                        else hL = 0;
+                    }
+                }
+                if (tX && tH) {
+                    var nx = _gridMin(0, xMax, 0.1, function (v) { return F(v, hL, s) >= T1; }), nh = hL;
+                    if (nx === null) {
+                        nx = xMax;
+                        nh = _gridMin(hL, hMax, 0.1, function (v) { return F(xMax, v, s) >= T1; });
+                        if (nh === null) { nh = hMax; notes.push(['warn', _('先机、汇能都拉到上限，首发仍差 ', 'Even maxed Xianji and Huineng leave the 1st ult short by ') + gap1(F(xMax, hMax, s)) + _('。', '.')]); }
+                    }
+                    x = nx; h = nh;
+                } else if (tH) {
+                    var nh2 = _gridMin(hL, hMax, 0.1, function (v) { return F(x, v, s) >= T1; });
+                    if (nh2 === null) { nh2 = hMax; notes.push(['warn', _('汇能拉到上限，首发仍差 ', 'Even maxed Huineng leaves the 1st ult short by ') + gap1(F(x, hMax, s)) + _('。', '.')]); }
+                    h = nh2;
+                } else if (tX) {
+                    var nx2 = _gridMin(0, xMax, 0.1, function (v) { return F(v, h, s) >= T1; });
+                    if (nx2 === null) { nx2 = xMax; notes.push(['warn', _('先机拉到上限 30%，首发仍差 ', 'Even 30% Xianji leaves the 1st ult short by ') + gap1(F(xMax, h, s)) + _('。', '.')]); }
+                    x = nx2;
+                }
+            }
+            return { x: x, h: h, s: s, notes: notes };
+        }
+        function _tmSolve() {
            var e = _chipEnv(), cur = _tmCur(), l = _tm.lock;
            var r = _tmPlan(e, l, cur.x, cur.h, cur.s);
            var soulAuto = !e.na && !l.soul;
@@ -6728,8 +7384,8 @@ function __tok(n, d) { var v = getComputedStyle(document.body).getPropertyValue(
                return { x: r.x, h: r.h, s: r.s };
            }
            if (autoLinked && (currentActiveField === null || currentActiveField === key)) {
-               if (key === 'xianji') { var hh = _gridMin(0, e.hMax, 0.1, function (u) { return _tmFirst(e, v, u, 0) >= e.T; }); st.h = hh === null ? e.hMax : hh; }
-               else if (key === 'huineng') { var xx = _gridMin(0, e.xMax, 0.1, function (u) { return _tmFirst(e, u, v, 0) >= e.T; }); st.x = xx === null ? e.xMax : xx; }
+               if (key === 'xianji') { var hh = _gridMin(0, e.hMax, 0.1, function (u) { return _tmFirst(e, v, u, 0) >= e.targetFirst; }); st.h = hh === null ? e.hMax : hh; }
+               else if (key === 'huineng') { var xx = _gridMin(0, e.xMax, 0.1, function (u) { return _tmFirst(e, u, v, 0) >= e.targetFirst; }); st.x = xx === null ? e.xMax : xx; }
            }
            return st;
        }
@@ -6745,7 +7401,7 @@ function __tok(n, d) { var v = getComputedStyle(document.body).getPropertyValue(
            }
        }
        // 团魂不起作用的能量来源：循环装置（固定 +13%）、队友补满一管 —— 这时改为反算先机 / 汇能
-       function _tmSoulNA() { var d = getDevice(); return d === 'loop' ? 'loop' : (!d && _mateKind === 'full') ? 'full' : ''; }
+       function _tmSoulNA() { var d = getDevice(); return d === 'loop' ? 'loop' : d === 'acc' ? 'acc' : (!d && _mateKind === 'full') ? 'full' : ''; }
        // 当前谁在被反算
        function _tmTargets() {
            var l = _tm.lock;
@@ -6756,7 +7412,7 @@ function __tok(n, d) { var v = getComputedStyle(document.body).getPropertyValue(
            if (typeof _tm === 'undefined' || getCalcMode() !== 'team') return;
            var I = function (k) { return window.__pvIcon ? __pvIcon(k, 'pv-mode-ico') : ''; };
            var l = _tm.lock, tg = _tmTargets(), na = _tmSoulNA(), lead, tail, col = 'var(--success)';
-           var pre = na === 'loop' ? _('循环装置不吃团魂', 'Loop Device ignores Soul') : na === 'full' ? _('补满一管不吃团魂', 'Full-bar assist ignores Soul') : _('团魂已锁', 'Soul locked');
+           var pre = na === 'loop' ? _('循环装置不吃团魂', 'Loop Device ignores Soul') : na === 'acc' ? _('加速装置不吃团魂', 'Accel Device ignores Soul') : na === 'full' ? _('补满一管不吃团魂', 'Full-bar assist ignores Soul') : _('团魂已锁', 'Soul locked');
            if (tg.soul) { lead = I('auto') + _('团魂自动反算', 'Team Soul auto-solved'); tail = _('取首发所需的最低值；先机、汇能填了才算，手改团魂即上锁', 'lowest value for the 1st ult; Xianji / Huineng count once filled; typing Soul locks it'); }
            else if (tg.xianji && tg.huineng) { lead = I('link') + pre + _(' · 反算先机与汇能', ' · solving Xianji & Huineng'); tail = _('汇能保循环，先机补首发', 'Huineng covers the loop, Xianji the opening gap'); }
            else if (tg.huineng) { lead = I('link') + pre + _(' · 反算汇能', ' · solving Huineng'); tail = _('首发与循环都要够', 'enough for both the 1st ult and the loop'); }
@@ -6872,7 +7528,9 @@ function __tok(n, d) { var v = getComputedStyle(document.body).getPropertyValue(
                if (dev === 'loop') {
                    r.devLoopFirst = DEVICE_LOOP_PER_NITRO * firstN;
                    r.devLoopLoop = DEVICE_LOOP_PER_NITRO * loopN;
-               } else if (DEVICE_CHARGE[dev]) {
+               } else if (dev === 'acc') {
+                    // 加速装置：不提供任何充能（只降首个大招阈值，由计算层处理），这里什么都不加
+                } else if (DEVICE_CHARGE[dev]) {
                    r.devBase = DEVICE_CHARGE[dev];
                    r.devHit = r.devBase * r.soulMult * D * E;
                    r.devFirstCount = _mi('dev_sub_first');
@@ -6966,7 +7624,7 @@ function __tok(n, d) { var v = getComputedStyle(document.body).getPropertyValue(
                dockV.textContent = has ? (full ? _('满管', 'Full') : _f3(hit).toFixed(1) + '%') : '--';
            }
            // ---- 团魂获能：我获得的能量 ----（离开团魂获能时不刷：卡片正在收起，内容保持原样）
-           if (t.mode !== 'team') return;
+           if (t.mode !== 'team' || t.dev === 'acc') return;
            var src, perHit, firstSum, loopSum, firstN, loopN, any;
            if (t.dev === 'loop') {
                src = deviceName('loop'); perHit = DEVICE_LOOP_PER_NITRO; firstSum = t.devLoopFirst; loopSum = t.devLoopLoop; any = true;
@@ -7026,7 +7684,8 @@ function __tok(n, d) { var v = getComputedStyle(document.body).getPropertyValue(
            setCalcMode(getCalcMode(), true, true);
            updateDeviceUI(true);
 
-           var isLoadedFromLink = loadConfigFromUrl();
+           renderChips(true);
+            var isLoadedFromLink = loadConfigFromUrl();
            syncSupportFilter('solo', getCalcMode());
            renderSupportSource();
            document.body.classList.remove('calc-boot');
