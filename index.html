@@ -2087,7 +2087,7 @@ body[data-calc-mode="team"] .chip-card .chip-t-team { display: inline; }
 @keyframes lockIn { from { opacity: 0; transform: scale(.85); } to { opacity: 1; transform: none; } }
 .ds-c .is-locked > .card-title .lock-tag { display: inline-flex; animation: lockIn .3s cubic-bezier(.3, .8, .2, 1); }
 .ds-c .is-locked > .card-title .limit-badge { display: none; }
-.ds-c .pv-collapsible.is-locked > .card-title .lock-tag { display: none; }   /* 手机收起态：标题旁摘要已写「已锁定」 */
+.ds-c .pv-collapsible.is-locked > .card-title .pv-sum { display: none; }   /* 锁定态右上角统一显示 lock-tag 锁胶囊，隐藏纯文字摘要避免重复 */
 .ds-c .dev-lock-note { margin: -4px 0 12px; padding: 9px 12px; border-radius: var(--r-sm); font-size: 12.5px; line-height: 1.55; color: var(--ink-2); background: var(--fill); }
 /* 赋能卡：整块变灰、点不动 */
 .ds-c .empower-card > :not(.card-title):not(.dev-lock-note) { transition: opacity .35s, filter .35s; }
@@ -6815,7 +6815,7 @@ function __tok(n, d) { var v = getComputedStyle(document.body).getPropertyValue(
        // 团魂获能 + 装了装置 = 单人竞速 / 组队竞速 / 巅峰赛，这三种模式没有反制、也没有赋能：
        // 反制卡、赋能卡一起变灰锁住（反制归零、赋能全关）；条件不成立时解锁并还原成锁定前的样子
        function syncEnvLock() {
-           var on = getCalcMode() === 'team' && !!getDevice();
+           var on = !!getDevice();
            var card = document.querySelector('.counter-card');
            var cr = document.getElementById('counterRange'), dr = document.getElementById('debuffRange');
            if (!card || !cr || !dr) return;
@@ -6901,7 +6901,14 @@ function __tok(n, d) { var v = getComputedStyle(document.body).getPropertyValue(
        }
        function onDeviceToggle(el) {
            _deviceToggleFlow(el);
-           if (!isRestoringConfig) { triggerAutoCalc(currentActiveField); calculate(); }
+           if (!isRestoringConfig) {
+               if (getCalcMode() === 'team') {
+                   calculate();
+               } else {
+                   triggerAutoCalc(currentActiveField || 'xianji');
+                   calculate();
+               }
+           }
        }
        function updateDeviceUI(instant) {
            var t = getDevice();
@@ -7379,11 +7386,16 @@ function __tok(n, d) { var v = getComputedStyle(document.body).getPropertyValue(
             } else {
                 var tX = !lock.xianji, tH = !lock.huineng, hL = 0;
                 if (tH) {
-                    // 循环所需的最低汇能；汇能拉满也不够时拉满（循环卡会给出缺口），循环根本不吃汇能时不动它
+                    // 循环所需的最低汇能；汇能拉满也不够时：若装备加速装置或未选车，不强行把汇能拉到上限，避免破坏首发80%阈值反算
                     hL = _gridMin(0, hMax, 0.1, function (v) { return L(v, s) >= T2; });
                     if (hL === null) {
-                        if (L(hMax, s) > L(0, s)) { hL = hMax; notes.push(['warn', _('汇能拉到上限 ', 'Even the ') + hMax + _('% 循环仍差 ', '% Huineng cap leaves the loop short by ') + gap2(L(hMax, s)) + _('。', '.')]); }
-                        else hL = 0;
+                        if (e.na === 'acc' || typeof _selectedCar === 'undefined' || !_selectedCar) {
+                            hL = 0;
+                            if (L(hMax, s) > L(0, s)) notes.push(['warn', _('循环缺口较大（汇能拉满仍差 ', 'Loop gap is large (short by ') + gap2(L(hMax, s)) + _('），优先保首发。', ' even if maxed), prioritizing 1st ult.')]);
+                        } else {
+                            if (L(hMax, s) > L(0, s)) { hL = hMax; notes.push(['warn', _('汇能拉到上限 ', 'Even the ') + hMax + _('% 循环仍差 ', '% Huineng cap leaves the loop short by ') + gap2(L(hMax, s)) + _('。', '.')]); }
+                            else hL = 0;
+                        }
                     }
                 }
                 if (tX && tH) {
