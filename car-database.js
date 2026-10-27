@@ -498,6 +498,47 @@ const CAR_DATABASE = [
     "release_at": 1775750400000
   },
   {
+    "id": 12090,
+    "name": "终焉梦魇",
+    "name_en": "Zhong Yan Meng Yan",
+    "position": "干扰位",
+    "specialization": "场地",
+    "quality": "传说",
+    "ace_charge": 3300,
+    "ult_duration": 6,
+    "ult_type": "N2O_NIGHTMARE",
+    "cost_ratio": 1666,
+    "has_sp": true,
+    "chip_slots": "○○△△◇V",
+    "speed_limit": 190,
+    "speedup_ratio": 1.09,
+    "drift_coef": 600,
+    "drift_min": 1200,
+    "drift_max": 6000,
+    "init_ratio": null,
+    "drift_extra_charge": [
+      [
+        1,
+        0
+      ],
+      [
+        2,
+        1800
+      ]
+    ],
+    "nitro_duration": 5.6,
+    "ult_threshold": 100,
+    "nitro_charge": null,
+    "ult_charge_first": null,
+    "ult_charge_loop": null,
+    "per_sec_charge": null,
+    "sp_charge": null,
+    "search_text": "zhongyanmengyan zymy 梦魇",
+    "asset_dir": "assets/终焉梦魇_12090",
+    "added_at": 1793097114796,
+    "release_at": 1793289600000
+  },
+  {
     "id": 12089,
     "name": "狻猊",
     "name_en": "Suan Ni",

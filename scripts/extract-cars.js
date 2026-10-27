@@ -14,6 +14,7 @@ const rawDataDir = process.env.ACE_RAWDATA_DIR
 // 车辆添加时间登记表（新增车辆时在此登记，用于列表"新车在上"排序）
 // 时间戳 = 该车加入网站的时间 (Date.now())
 const ADDED_AT = {
+  12090: 1793097114796, // 终焉梦魇
   12101: 1792515865886, // 丰田 GR SUPRA
   12050: 1790841739849, // 法拉利 SF90 XX Stradale
   12104: 1790841739849, // 炎龙驹
@@ -835,6 +836,7 @@ for (const file of files) {
           'MINI JCW': 'mini',
           'MINI Buggy': 'mini',
           '英菲尼迪 Prototype': '肥皂,鼠标',
+          '终焉梦魇': '梦魇',
         };
         if (aliases[v.name]) result += ' ' + aliases[v.name];
         return result;

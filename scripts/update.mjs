@@ -41,7 +41,7 @@ const fromIdx = process.argv.indexOf('--from');
 const FROM = fromIdx >= 0 ? process.argv[fromIdx + 1] : null;
 const carIds = process.argv.slice(2).filter(a => a !== '--from' && a !== FROM);
 
-const sourceRoots = [FROM, join(ROOT, 'updata'), DATA].filter(Boolean);
+const sourceRoots = [FROM, join(ROOT, 'update'), join(ROOT, 'updata'), DATA].filter(Boolean);
 
 /** 在候选源目录（含一层批次子目录）里找 single-{id} */
 function findSingle(id) {
