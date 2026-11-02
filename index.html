@@ -2306,11 +2306,44 @@ body.ds-c.is-dragging-slider .pv-odo-t { transition-duration: .18s !important; }
 .ds-c .pv-odo-txt.is-roll-a { animation: pvOdoTextInA .32s cubic-bezier(.22, 1, .36, 1); }
 .ds-c .pv-odo-txt.is-roll-b { animation: pvOdoTextInB .32s cubic-bezier(.22, 1, .36, 1); }
 
+/* 内联提示框 / 状态说明条在已显示状态下内容或行数切换时的平滑过渡 */
+.ds-c .tm-solve-note,
+.ds-c .tm-src,
+.ds-c .mode-bar,
+.ds-c .result-desc {
+  transition: background-color .28s cubic-bezier(.22, 1, .36, 1), color .28s cubic-bezier(.22, 1, .36, 1), border-color .28s cubic-bezier(.22, 1, .36, 1);
+}
+.ds-c .pv-box-in { display: block; }
+@keyframes pvBoxSwapA {
+  from { opacity: 0; transform: translate3d(0, 4px, 0); }
+  to   { opacity: 1; transform: translate3d(0, 0, 0); }
+}
+@keyframes pvBoxSwapB {
+  from { opacity: 0; transform: translate3d(0, 4px, 0); }
+  to   { opacity: 1; transform: translate3d(0, 0, 0); }
+}
+.ds-c .pv-box-swap-a:not(.tm-solve-note):not(.tm-src):not(#carPreviewAutoMsg),
+.ds-c .tm-solve-note.pv-box-swap-a > *,
+.ds-c .tm-src.pv-box-swap-a > *,
+.ds-c #carPreviewAutoMsg.pv-box-swap-a > * {
+  animation: pvBoxSwapA .24s cubic-bezier(.22, 1, .36, 1);
+}
+.ds-c .pv-box-swap-b:not(.tm-solve-note):not(.tm-src):not(#carPreviewAutoMsg),
+.ds-c .tm-solve-note.pv-box-swap-b > *,
+.ds-c .tm-src.pv-box-swap-b > *,
+.ds-c #carPreviewAutoMsg.pv-box-swap-b > * {
+  animation: pvBoxSwapB .24s cubic-bezier(.22, 1, .36, 1);
+}
+
 body.ds-c.performance-mode #actualUltTimeSpan,
 body.ds-c.performance-mode .ds-dock-item,
 body.ds-c.performance-mode .ds-dock-item::before,
 body.ds-c.performance-mode .pv-odo-t,
-body.ds-c.performance-mode .pv-odo-txt {
+body.ds-c.performance-mode .pv-odo-txt,
+body.ds-c.performance-mode .pv-box-swap-a,
+body.ds-c.performance-mode .pv-box-swap-b,
+body.ds-c.performance-mode .pv-box-swap-a > *,
+body.ds-c.performance-mode .pv-box-swap-b > * {
   animation: none !important;
   transition: none !important;
 }
@@ -2319,7 +2352,11 @@ body.ds-c.performance-mode .pv-odo-txt {
   .ds-c .ds-dock-item,
   .ds-c .ds-dock-item::before,
   .ds-c .pv-odo-t,
-  .ds-c .pv-odo-txt {
+  .ds-c .pv-odo-txt,
+  .ds-c .pv-box-swap-a,
+  .ds-c .pv-box-swap-b,
+  .ds-c .pv-box-swap-a > *,
+  .ds-c .pv-box-swap-b > * {
     animation: none !important;
     transition: none !important;
   }
@@ -4377,7 +4414,7 @@ body.ds-c.performance-mode .pv-odo-txt {
                 '<br><span style="color:var(--warning);font-weight:bold;">' + _WARN_ICO + 'Ult chain: ult duration filled as two stacked ults.</span>');
         }
         msgHtml += _('<br>\u8BE6\u7EC6\u8F66\u8F86\u6280\u80FD\u8BF7\u53C2\u8003 \u2192', '<br>Details \u2192') + ' <a href=\"https://reca.seimu.cn/ace-racer/vehicles/' + car.id + '\" target=\"_blank\" style=\"color:var(--primary);text-decoration:underline;font-weight:bold;\">' + _('瑞卡情报站-', 'Racer Wiki-') + _n(car) + '</a>';
-        autoEl.innerHTML = msgHtml;
+        if (window._morphInlineBox) window._morphInlineBox(autoEl, '<span class="pv-box-in">' + msgHtml + '</span>'); else autoEl.innerHTML = msgHtml;
         var chipInfo = document.getElementById('carPreviewChips');
         if (car.chip_slots) {
             chipInfo.style.display = 'flex';
@@ -4605,7 +4642,7 @@ body.ds-c.performance-mode .pv-odo-txt {
                 '<br><span style="color:var(--warning);font-weight:bold;">' + _WARN_ICO + 'Ult chain: ult duration filled as two stacked ults.</span>');
         }
         msgHtml += _('<br>\u8BE6\u7EC6\u8F66\u8F86\u6280\u80FD\u8BF7\u53C2\u8003 \u2192', '<br>Details \u2192') + ' <a href=\"https://reca.seimu.cn/ace-racer/vehicles/' + car.id + '\" target=\"_blank\" style=\"color:var(--primary);text-decoration:underline;font-weight:bold;\">' + _('瑞卡情报站-', 'Racer Wiki-') + _n(car) + '</a>';
-        autoEl2.innerHTML = msgHtml;
+        if (window._morphInlineBox) window._morphInlineBox(autoEl2, '<span class="pv-box-in">' + msgHtml + '</span>'); else autoEl2.innerHTML = msgHtml;
         var chipInfo = document.getElementById('carPreviewChips');
         if (car.chip_slots) {
             chipInfo.style.display = 'flex';
@@ -5757,9 +5794,9 @@ function __tok(n, d) { var v = getComputedStyle(document.body).getPropertyValue(
        function updateNitroCountUI() {
            var info = document.getElementById('nitroCountModeInfo');
            if (!isManualNitroCount) {
-               info.innerHTML = '<span style="color:var(--success); font-weight:bold;">' + (window.__pvIcon ? __pvIcon('auto', 'pv-mode-ico') : '▶ ') + _("自动计算就绪", "Auto-calc Ready") + '</span> <span style="color: var(--text-muted); font-weight: normal;">(' + _("根据大招时长和氮时计算氮气个数", "Calc nitros by Ult & nitro duration") + ')</span>';
+               _morphInlineBox(info, '<span style="color:var(--success); font-weight:bold;">' + (window.__pvIcon ? __pvIcon('auto', 'pv-mode-ico') : '▶ ') + _("自动计算就绪", "Auto-calc Ready") + '</span> <span style="color: var(--text-muted); font-weight: normal;">(' + _("根据大招时长和氮时计算氮气个数", "Calc nitros by Ult & nitro duration") + ')</span>', null, info.parentElement);
            } else {
-               info.innerHTML = '<span style="color:var(--warning); font-weight:bold;">' + (window.__pvIcon ? __pvIcon('edit', 'pv-mode-ico') : '▶ ') + _("手动覆盖中", "Manual Override") + '</span> <span style="color: var(--text-muted); font-weight: normal;">(' + _("当前为自由微调，需点重置恢复", "Manual override, click reset to restore") + ')</span>';
+               _morphInlineBox(info, '<span style="color:var(--warning); font-weight:bold;">' + (window.__pvIcon ? __pvIcon('edit', 'pv-mode-ico') : '▶ ') + _("手动覆盖中", "Manual Override") + '</span> <span style="color: var(--text-muted); font-weight: normal;">(' + _("当前为自由微调，需点重置恢复", "Manual override, click reset to restore") + ')</span>', null, info.parentElement);
            }
        }
 
@@ -5851,8 +5888,8 @@ function __tok(n, d) { var v = getComputedStyle(document.body).getPropertyValue(
            var info = document.getElementById('autoCalcInfo');
            _chipBadge();
            if (getCalcMode() === 'team') { _tmRender(); return; }
-           if (autoLinked) info.innerHTML = '<span style="color:var(--success); font-weight:bold;">' + (window.__pvIcon ? __pvIcon('link', 'pv-mode-ico') : '▶ ') + _("联动就绪", "Linkage Ready") + '</span> <span style="color: var(--text-muted); font-weight: normal;">(' + _("修改一项自动算另一项", "Modify one to auto-calc the other") + ')</span>';
-           else info.innerHTML = '<span style="color:var(--warning); font-weight:bold;">' + (window.__pvIcon ? __pvIcon('lock', 'pv-mode-ico') : '▶ ') + _("联动锁定", "Linkage Locked") + '</span> <span style="color: var(--text-muted); font-weight: normal;">(' + _("当前为自由微调，需点重置恢复", "Manual override, click reset to restore") + ')</span>';
+           if (autoLinked) _morphInlineBox(info, '<span style="color:var(--success); font-weight:bold;">' + (window.__pvIcon ? __pvIcon('link', 'pv-mode-ico') : '▶ ') + _("联动就绪", "Linkage Ready") + '</span> <span style="color: var(--text-muted); font-weight: normal;">(' + _("修改一项自动算另一项", "Modify one to auto-calc the other") + ')</span>', null, info.parentElement);
+           else _morphInlineBox(info, '<span style="color:var(--warning); font-weight:bold;">' + (window.__pvIcon ? __pvIcon('lock', 'pv-mode-ico') : '▶ ') + _("联动锁定", "Linkage Locked") + '</span> <span style="color: var(--text-muted); font-weight: normal;">(' + _("当前为自由微调，需点重置恢复", "Manual override, click reset to restore") + ')</span>', null, info.parentElement);
        }
 
        function triggerAutoCalc(sourceField) {
@@ -6118,7 +6155,7 @@ function __tok(n, d) { var v = getComputedStyle(document.body).getPropertyValue(
            var firstNitrosCount = parseInt(document.getElementById('inputFirstNitroCount').value);
            if (isNaN(firstNitrosCount) || firstNitrosCount < 0) firstNitrosCount = 0;
 
-           updateSoulHint();
+           updateSoulHint(typeof deferRender !== 'undefined' ? deferRender : (!(typeof isInit !== 'undefined' && (isInit === true || (!_selectedCar && !_userInput))) && getCalcMode() === 'team'));
            updateDevLoopHint(actualUltDuration);
            renderSupportSource();
 
@@ -6250,14 +6287,14 @@ function __tok(n, d) { var v = getComputedStyle(document.body).getPropertyValue(
 
            if (firstUltTotal >= targetFirst) {
                resValFirst.innerHTML = "<span class='emoji-fix'>✅</span> " + _("首发达成 (", "1st Ult Achieved (") + firstUltTotal.toFixed(3) + "%)";
-               resDetFirst.innerHTML = "✨ <b>" + _("完美起步", "Perfect Start") + "</b>" + _("：总充能已超越目标！", ": Charge exceeds target!")
+               var _detFirstHtml = "✨ <b>" + _("完美起步", "Perfect Start") + "</b>" + _("：总充能已超越目标！", ": Charge exceeds target!")
                    + (minFirstNitros >= 0 && minFirstNitros < firstNitrosCount ? "<span class='pv-need'>" + _("其他条件不变，其实 ", "Other things equal, just ") + "<b>" + minFirstNitros + "</b>" + _(" 个氮气就能首发。", " nitro(s) would do.") + "</span>" : "");
            } else {
                resCardFirst.classList.add('error-state');
                resValFirst.innerHTML = "<span class='emoji-fix'>❌</span> " + _("首发失败 (", "1st Ult Failed (") + firstUltTotal.toFixed(3) + "%)";
                
                var firstDiff = Math.floor((targetFirst - firstUltTotal) * 1000 + 0.000001) / 1000;
-               resDetFirst.innerHTML = "⚠️ <b>" + _("开局卡壳", "Start Stalled") + "</b>" + _("：距离及格还差 ", ": Short of passing by ") + "<b>" + firstDiff.toFixed(3) + "%</b>" + _("。", ".")
+               var _detFirstHtml = "⚠️ <b>" + _("开局卡壳", "Start Stalled") + "</b>" + _("：距离及格还差 ", ": Short of passing by ") + "<b>" + firstDiff.toFixed(3) + "%</b>" + _("。", ".")
                    + "<span class='pv-need'>" + (minFirstNitros >= 0
                        ? _("其他条件不变，需要 ", "Other things equal, it takes ") + "<b>" + minFirstNitros + "</b>" + _(" 个氮气才能首发（当前填 ", " nitros to open (now ") + firstNitrosCount + _(" 个）。", ").")
                        : _("其他条件不变，30 个氮气以内都无法首发（反算最多只试到 30 个）。", "Other things equal, no first ult within 30 nitros (the solver only tries up to 30).")) + "</span>";
@@ -6293,7 +6330,7 @@ function __tok(n, d) { var v = getComputedStyle(document.body).getPropertyValue(
                    : _tmSoulDep ? (_tmSL !== null ? _("团魂要求：循环至少 ", "Team Soul req: the loop needs ") + _tmSL + _("%（团魂同时放大首发与循环）", "% (Soul boosts both the 1st ult and the loop)")
                                                   : _("团魂要求：拉到上限 ", "Team Soul req: even the ") + SOUL_MAX + _("% 循环也不够", "% cap can’t hold the loop"))
                    : _("团魂要求：不适用（循环里没有受团魂影响的能量）", "Team Soul req: N/A (nothing in the loop scales with Soul)");
-               if (_reqLine.textContent !== _rq) _reqLine.textContent = _rq;
+               if (_reqLine.textContent !== _rq) _morphInlineBox(_reqLine, _rq);
            }
 
            var reqHuinengLoop = 0;
@@ -6353,22 +6390,22 @@ function __tok(n, d) { var v = getComputedStyle(document.body).getPropertyValue(
                resValLoop.innerHTML = "<span class='emoji-fix'>✅</span> " + _("循环跑通 (产出: ", "Loop Completed (Output: ") + loopGrandTotal.toFixed(3) + "%)";
                var diff = huineng - reqHuinengLoop;
                if (diff >= 0) {
-                   resDetLoop.innerHTML = "<span style='color:var(--success);'><span class='emoji-fix'>✅</span> <b>" + _("全盘跑通", "Fully Completed") + "</b>" + (_tmSoulDep && _tmSL !== null
+                   var _detLoopHtml = "<span style='color:var(--success);'><span class='emoji-fix'>✅</span> <b>" + _("全盘跑通", "Fully Completed") + "</b>" + (_tmSoulDep && _tmSL !== null
                        ? _("：当前团魂（", ": Current Team Soul (") + tdx.soul + _("%）达到循环底线（底线：团魂 ", "%) meets the loop baseline (Baseline: Soul ") + _tmSL + _("%），火力倾泻不断档！", "%), continuous firepower!")
                        : _("：当前输入的汇能（", ": Current Huineng input (") + huineng.toFixed(1) + _("%）超过循环底线（底线：", "%) exceeds loop baseline (Baseline: ") + Math.max(0, reqHuinengLoop).toFixed(3) + _("%），火力倾泻不断档！", "%), continuous firepower!")) + "</span>";
                } else {
-                   resDetLoop.innerHTML = "<span style='color:var(--warning);'>⚠️ <b>" + _("逻辑异常", "Logic Anomaly") + "</b>" + _("：虽然满足了阈值，但这应该是极端情况的浮点漂移。", ": Met threshold, likely float drift.") + "</span>";
+                   var _detLoopHtml = "<span style='color:var(--warning);'>⚠️ <b>" + _("逻辑异常", "Logic Anomaly") + "</b>" + _("：虽然满足了阈值，但这应该是极端情况的浮点漂移。", ": Met threshold, likely float drift.") + "</span>";
                }
            } else {
                resCardLoop.classList.add('error-state');
                if (nitrosPerUlt === 0) {
                    resValLoop.innerHTML = "<span class='emoji-fix'>❌</span> " + _("循环崩塌 (容纳氮气数为0)", "Loop Collapsed (0 nitros fit)");
-                   resDetLoop.innerHTML = "⚠️ <b>" + _("致命断层", "Fatal Gap") + "</b>" + _("：缩减后的大招期间", ": Reduced Ult fits ") + "<b>" + _("可放氮气数为 0 个", "0 nitros") + "</b>"
+                   var _detLoopHtml = "⚠️ <b>" + _("致命断层", "Fatal Gap") + "</b>" + _("：缩减后的大招期间", ": Reduced Ult fits ") + "<b>" + _("可放氮气数为 0 个", "0 nitros") + "</b>"
                        + (_tmSL !== null ? _("，汇能帮不上忙；团魂至少要 ", " — Huineng can't help; Team Soul needs at least ") + "<strong>" + _tmSL + "%</strong>" + _("。", ".") : _("。接力必然溃败！", ". Relay will fail!"));
                } else {
                    var loopDiff = Math.floor((targetLoop - loopGrandTotal) * 1000 + 0.000001) / 1000;
                    resValLoop.innerHTML = "<span class='emoji-fix'>❌</span> " + _("循环失败 (缺口: ", "Loop Failed (Gap: ") + loopDiff.toFixed(3) + "%)";
-                   resDetLoop.innerHTML = "⚠️ <b>" + _("循环断档", "Loop Disconnected") + "</b>" + (_tmSoulDep
+                   var _detLoopHtml = "⚠️ <b>" + _("循环断档", "Loop Disconnected") + "</b>" + (_tmSoulDep
                        ? (_tmSL !== null ? _("：产出未达及格线！要实现连发，团魂至少要提到 ", ": Output missed! Needs Team Soul >= ") + "<strong>" + _tmSL + "%</strong>" + (_tmHL === null ? "" : _("，或汇能至少拉升至 ", ", or Huineng >= "))
                                          : _("：产出未达及格线！团魂拉到上限 ", ": Output missed! Even the ") + SOUL_MAX + _("% 也补不上，汇能至少需要被拉升至 ", "% Team Soul cap falls short; needs Huineng >= "))
                          + (_tmHL === undefined ? "<strong>" + reqHuinengLoop.toFixed(3) + "%</strong>" + _("。", ".")
@@ -6380,6 +6417,8 @@ function __tok(n, d) { var v = getComputedStyle(document.body).getPropertyValue(
 
            // 开 / 关增益装置会让两张结果卡的内容整块换掉（解析盒行数、状态胶囊都变），高度是瞬变的：
             // 用 _flipHeight 把这段高度差补成过渡，免得下方卡片的位移在收放动画里突然顿一下
+            _morphInlineBox(resDetFirst, _detFirstHtml, function () { if (window.__stripLeadEmoji) window.__stripLeadEmoji(resDetFirst); });
+            _morphInlineBox(resDetLoop, _detLoopHtml, function () { if (window.__stripLeadEmoji) window.__stripLeadEmoji(resDetLoop); });
             renderChain(firstUltTotal, loopGrandTotal, targetFirst, xianji, huineng, tdx, targetLoop, chipAggRes);   // 开局连发：一大 → 二大 → 三大
             if (window.__flipTeamCards) {
                 var _rtA = document.getElementById('teamInSum'), _rtB = document.getElementById('resultCardSupport');
@@ -6449,6 +6488,63 @@ function __tok(n, d) { var v = getComputedStyle(document.body).getPropertyValue(
            if (show) M(el, true, _SLIDE_KEYS, [el], function () { el.classList.remove('is-gone'); return _boxOf(el); }, null, gone);
            else M(el, false, _SLIDE_KEYS, [el], function () { return {}; }, function () { el.classList.add('is-gone'); });
        }
+       // 已显示的内联提示框 / 说明条在内容或行数变化时，平滑过渡外框高度并触发内部文字微浮淡入
+       function _morphInlineBox(el, nextHtml, onMutate, hostEl, noHeight) {
+           if (!el) return;
+           var host = hostEl || el;
+           var prevHtml = el.__rawHtml !== undefined ? el.__rawHtml : el.innerHTML;
+           if (prevHtml === nextHtml) {
+               if (onMutate) onMutate(el);
+               return;
+           }
+           var gone = host.classList.contains('is-gone') || el.classList.contains('is-gone');
+           var canAnim = !gone && host.offsetParent !== null && !isRestoringConfig && _motionOK() && !window.__rangeActive && !document.body.classList.contains('calc-boot');
+           if (!canAnim) {
+               if (host.__pvA && !host.classList.contains('is-gone')) _stopSlide(host);
+               el.innerHTML = nextHtml;
+               el.__rawHtml = nextHtml;
+               el.__sig = nextHtml.replace(/[0-9.+-]+%?/g, '#');
+               if (onMutate) onMutate(el);
+               return;
+           }
+           var h0 = 0;
+           if (!noHeight) {
+               h0 = host.getBoundingClientRect().height;
+               if (host.__pvA) _stopSlide(host);
+           }
+           el.innerHTML = nextHtml;
+           el.__rawHtml = nextHtml;
+           if (onMutate) onMutate(el);
+           if (!noHeight) {
+               var h1 = host.getBoundingClientRect().height;
+               if (Math.abs(h1 - h0) > 1) {
+                   host.style.overflow = 'hidden';
+                   var a = host.animate([{ height: h0 + 'px' }, { height: h1 + 'px' }], { duration: 280, easing: 'cubic-bezier(.22, 1, .36, 1)' });
+                   host.__pvA = a;
+                   a.onfinish = a.oncancel = function () {
+                       if (host.__pvA === a) {
+                           host.__pvA = null;
+                           host.style.overflow = '';
+                       }
+                   };
+               }
+           }
+           var nextSig = nextHtml.replace(/[0-9.+-]+%?/g, '#');
+           var prevSig = el.__sig;
+           el.__sig = nextSig;
+           var act = document.activeElement;
+           var isTyping = !!(act && act.tagName === 'INPUT' && act.type !== 'checkbox' && act.type !== 'radio');
+           if (prevSig !== undefined && (!isTyping || prevSig !== nextSig)) {
+               var now = performance.now();
+               if (!el.__swapAt || now - el.__swapAt > 90 || prevSig !== nextSig) {
+                   el.__swapAt = now;
+                   var useB = el.classList.contains('pv-box-swap-a');
+                   el.classList.remove(useB ? 'pv-box-swap-a' : 'pv-box-swap-b');
+                   el.classList.add(useB ? 'pv-box-swap-b' : 'pv-box-swap-a');
+               }
+           }
+       }
+       window._morphInlineBox = _morphInlineBox;
        // 数值换了就轻轻跳一下（同一个值不动；用 tm-tick / tm-tick-b 交替重播，避免 void el.offsetWidth 强制同步重排）
        function _setVal(id, html) {
            var el = document.getElementById(id);
@@ -6784,7 +6880,7 @@ function __tok(n, d) { var v = getComputedStyle(document.body).getPropertyValue(
                         ? _('连放三大最少要：', 'To chain three ults you need ') + can.map(function (n) { return n.name + ' ≥ <b>' + n.txt + '</b>'; }).join(_('，或 ', ', or ')) + _('（直接填进去就行，已算上自动反算 / 联动；按卡得最紧的那一大算）', ' (just type it in — auto-solve / linkage already accounted for; set by the tightest ult)')
                         : need.map(function (n) { return n.name; }).join(_('、', ' / ')) + _('拉到上限也连不上三大。', ' maxed out still can’t chain three ults.')) + '</span>';
                 }
-                document.getElementById('resultDetailChain').innerHTML = d;
+                _morphInlineBox(document.getElementById('resultDetailChain'), d, null, null, !skipFlip);
                 // 解析盒
                 var fb = '<b>' + _('【开局连发运算解析盒】', '[Opening Chain Breakdown]') + '</b><br>';
                 fb += _('及格线目标：一大 ', 'Passing Target: 1st ') + '<b>' + T1 + '%</b>' + _('，二大/三大 ', ', 2nd/3rd ') + '<b>' + T2 + '%</b>' + _('；每一大期间产出 = 循环总产出 ', '; gain per ult = loop total ') + '<b>' + f3(Pi) + '</b><br><br>';
@@ -6872,7 +6968,7 @@ function __tok(n, d) { var v = getComputedStyle(document.body).getPropertyValue(
            syncDock(!instant && changed);
            syncSupportFilter(prev, m);
            syncEnvLock();
-           updateSoulHint();
+           updateSoulHint(typeof deferRender !== 'undefined' ? deferRender : (!(typeof isInit !== 'undefined' && (isInit === true || (!_selectedCar && !_userInput))) && getCalcMode() === 'team'));
            syncModeDesc(!!instant || !changed);
            if (changed && !instant && _motionOK()) {
                // 组队区标题在「团魂获能 / 辅助供能」之间换字：只做淡入，不位移
@@ -7386,13 +7482,13 @@ function __tok(n, d) { var v = getComputedStyle(document.body).getPropertyValue(
            别改成「让 .tm-stack 容器统一做高度动画」—— 子元素在容器内的位置是布局算出来的，
            容器高度动画管不住它：内部一瞬时切换，下方卡片就直接瞬移到新位置（实测 top 1328→1106 硬跳），
            比现在还糟。真正要处理的是收起动画「慢起步」，见 morph() 里 closing 用的缓动。 */
-        function _deviceToggleFlow(el) {
+        function _deviceToggleFlow(el, deferRender) {
             _devState = el.checked ? el.value : '';
             for (var i = 0; i < DEVICE_TYPES.length; i++) {
                 var cb = document.getElementById('dev_chk_' + DEVICE_TYPES[i]);
                 if (cb) cb.checked = (DEVICE_TYPES[i] === _devState);
             }
-            updateDeviceUI();
+            updateDeviceUI(false, deferRender);
         }
         function setDevice(type, fromRestore) {
            for (var i = 0; i < DEVICE_TYPES.length; i++) {
@@ -7403,7 +7499,7 @@ function __tok(n, d) { var v = getComputedStyle(document.body).getPropertyValue(
            updateDeviceUI(!!fromRestore);
        }
        function onDeviceToggle(el) {
-           _deviceToggleFlow(el);
+           _deviceToggleFlow(el, !isRestoringConfig && getCalcMode() === 'team');
            if (!isRestoringConfig) {
                window.__flipTeamCards = true;
                try {
@@ -7418,7 +7514,7 @@ function __tok(n, d) { var v = getComputedStyle(document.body).getPropertyValue(
                }
            }
        }
-       function updateDeviceUI(instant) {
+       function updateDeviceUI(instant, deferRender) {
            var t = getDevice();
            for (var i = 0; i < DEVICE_TYPES.length; i++) {
                var it = document.getElementById('dev_item_' + DEVICE_TYPES[i]);
@@ -7430,22 +7526,23 @@ function __tok(n, d) { var v = getComputedStyle(document.body).getPropertyValue(
             slideShow(document.getElementById('teamInSum'), getCalcMode() === 'team' && t !== 'acc', instant || getCalcMode() !== 'team');   // 加速装置没有「实收能量」可展示
            slideShow(document.getElementById('cardTeamIn'), getCalcMode() === 'team' && !t, instant || getCalcMode() !== 'team');
            syncEnvLock();
-           updateSoulHint();
+           updateSoulHint(typeof deferRender !== 'undefined' ? deferRender : (!(typeof isInit !== 'undefined' && (isInit === true || (!_selectedCar && !_userInput))) && getCalcMode() === 'team'));
        }
-       function updateSoulHint() {
+       function updateSoulHint(deferRender) {
            var h = document.getElementById('soulHint');
            if (!h) return;
            var t = getDevice();
-           h.innerHTML = t === 'acc' ? _('当前装的是<b>加速装置</b>：它不提供充能，团魂对它无效；首个大招攒到 80% 就能放。', 'The <b>Accel Device</b> gives no charge, so Team Soul does nothing for it — the 1st ult fires at 80%.') : t === 'loop' ? _('当前装的是<b>循环装置</b>：固定值，团魂对它无效。', 'The <b>Loop Device</b> is a fixed value — Team Soul does not affect it.')
+           var _sh = t === 'acc' ? _('当前装的是<b>加速装置</b>：它不提供充能，团魂对它无效；首个大招攒到 80% 就能放。', 'The <b>Accel Device</b> gives no charge, so Team Soul does nothing for it — the 1st ult fires at 80%.') : t === 'loop' ? _('当前装的是<b>循环装置</b>：固定值，团魂对它无效。', 'The <b>Loop Device</b> is a fixed value — Team Soul does not affect it.')
                : DEVICE_CHARGE[t] ? _('团魂放大<b>', 'Team Soul boosts the <b>') + deviceName(t) + _('</b>的辅助充能：每次 ', '</b> charge: ') + DEVICE_CHARGE[t] + '% × (1 + ' + _('团魂', 'Soul') + ')' + _('。', '.')
                : _('团魂放大<b>队友给你的辅助充能</b>：单次 × (1 + 团魂)。', 'Team Soul boosts the <b>assist charge allies give you</b>: per hit × (1 + Soul).');
-           _tmRender();   // 装置 / 队友给法变了，团魂可能变成「不适用」：锁、状态字、状态条跟着换
+           _morphInlineBox(h, _sh);
+           if (!deferRender) _tmRender();   // 装置 / 队友给法变了，团魂可能变成「不适用」：锁、状态字、状态条跟着换
        }
        function updateDevLoopHint(ultDur) {
            var h = document.getElementById('devLoopHint');
            if (!h) return;
            var avg = ultDur > 0 ? ultDur / 13 : 0;
-           h.textContent = _('大招实机 ', 'Ult lasts ') + ultDur.toFixed(2) + _(' 秒 ÷ 13 秒 ≈ 平均每轮 ', 's ÷ 13s ≈ ') + avg.toFixed(2) + _(' 次，保底每轮 ', ' per loop on average, guaranteed ') + Math.floor(avg + 0.000001) + _(' 次；求稳按保底填。', ' — use that for a safe estimate.');
+           _morphInlineBox(h, _('大招实机 ', 'Ult lasts ') + ultDur.toFixed(2) + _(' 秒 ÷ 13 秒 ≈ 平均每轮 ', 's ÷ 13s ≈ ') + avg.toFixed(2) + _(' 次，保底每轮 ', ' per loop on average, guaranteed ') + Math.floor(avg + 0.000001) + _(' 次；求稳按保底填。', ' — use that for a safe estimate.'));
        }
        function deviceName(t) {
            return t === 'acc' ? _('加速装置', 'Accel Device') : t === 'loop' ? _('循环装置', 'Loop Device') : t === 'chg' ? _('充能装置', 'Charge Device') : t === 'schg' ? _('超级充能装置', 'Super Charge Device') : _('无', 'None');
@@ -7525,12 +7622,9 @@ function __tok(n, d) { var v = getComputedStyle(document.body).getPropertyValue(
            } else {
                _html = _('先在上方选择一辆辅助车，会自动读取它给队友的辅助充能。', 'Pick a support car above — its assist charge is filled in automatically.');
            }
-           if (box.innerHTML === _html && box.classList.contains('is-ok') === (_cls === 'is-ok') && box.classList.contains('is-warn') === (_cls === 'is-warn')) return;
-           _flipHeight(document.getElementById('cardSupportOut'), function () {
-               box.classList.remove('is-ok', 'is-warn');
-               if (_cls) box.classList.add(_cls);
-               box.innerHTML = _html;
-           });
+           var _wHtml = '<span class="pv-box-in">' + _html + '</span>';
+           if (box.__rawHtml === _wHtml && box.classList.contains('is-ok') === (_cls === 'is-ok') && box.classList.contains('is-warn') === (_cls === 'is-warn')) return;
+           _morphInlineBox(box, _wHtml, function () { box.classList.remove('is-ok', 'is-warn'); if (_cls) box.classList.add(_cls); });
        }
        /* 团魂获能：辅助车吃不到队友给的团魂能量，主车选了辅助位就提示换掉。
            与「我的辅助输出」里那条反向提示（非辅助车选了辅助供能）共用同一套 .tm-src 样式与开合动画。 */
@@ -7540,8 +7634,8 @@ function __tok(n, d) { var v = getComputedStyle(document.body).getPropertyValue(
             var car = (typeof _selectedCar !== 'undefined') ? _selectedCar : null;
             var bad = getCalcMode() === 'team' && !!car && car.position === '辅助位';
             if (bad) {
-                box.className = 'tm-src is-warn' + (box.classList.contains('is-gone') ? ' is-gone' : '');
-                box.innerHTML = _WARN_ICO2 + _('「', '"') + _n(car) + _('」是辅助位，吃不到队友给的团魂能量。请换一辆非辅助位的车再测算。', '" is a Support car and cannot receive Team Soul energy from allies. Choose a non-Support car.');
+                /* className handled in _morphInlineBox */
+                _morphInlineBox(box, '<span class="pv-box-in">' + _WARN_ICO2 + _('「', '"') + _n(car) + _('」是辅助位，吃不到队友给的团魂能量。请换一辆非辅助位的车再测算。', '" is a Support car and cannot receive Team Soul energy from allies. Choose a non-Support car.') + '</span>', function () { box.className = 'tm-src is-warn' + (box.classList.contains('is-gone') ? ' is-gone' : ''); });
             }
             slideShow(box, bad);
         }
@@ -7714,7 +7808,7 @@ function __tok(n, d) { var v = getComputedStyle(document.body).getPropertyValue(
            var box = document.getElementById('mateSrc');
            var id = mateId(), car = id ? _carById(id) : null;
            if (box) {
-               if (car) { box.className = 'tm-src is-ok' + (box.classList.contains('is-gone') ? ' is-gone' : ''); box.innerHTML = _OK_ICO + _('已读取「', 'Read from "') + '<b>' + _n(car) + '</b>' + _('」：', '": ') + assistKindText(car) + _('。', '.') + assistNote(car); }
+               if (car) _morphInlineBox(box, '<span class="pv-box-in">' + _OK_ICO + _('已读取「', 'Read from "') + '<b>' + _n(car) + '</b>' + _('」：', '": ') + assistKindText(car) + _('。', '.') + assistNote(car) + '</span>', function () { box.className = 'tm-src is-ok' + (box.classList.contains('is-gone') ? ' is-gone' : ''); });
                slideShow(box, !!car);
            }
        }
@@ -7988,7 +8082,7 @@ function __tok(n, d) { var v = getComputedStyle(document.body).getPropertyValue(
            else if (tg.xianji) { lead = I('link') + pre + _(' · 反算先机', ' · solving Xianji'); tail = _('补首发缺口', 'fills the 1st-ult gap'); }
            else { col = 'var(--warning)'; lead = I('lock') + (na ? _('先机、汇能都已锁定', 'Xianji & Huineng locked') : _('三项都已锁定', 'All three locked')); tail = _('按你填的数值校验；点重置恢复自动', 'checking your numbers; reset to go auto'); }
            var info = document.getElementById('autoCalcInfo');
-           if (info) info.innerHTML = '<span style="color:' + col + '; font-weight:bold;">' + lead + '</span> <span style="color: var(--text-muted); font-weight: normal;">(' + tail + ')</span>';
+           if (info) _morphInlineBox(info, '<span style="color:' + col + '; font-weight:bold;">' + lead + '</span> <span style="color: var(--text-muted); font-weight: normal;">(' + tail + ')</span>', null, info.parentElement);
            // 三个框：状态字 + 一把锁（三个框完全同一套）
            ['soul', 'xianji', 'huineng'].forEach(function (k) {
                var inp = document.getElementById(_TM_KEYS[k]), lab = inp && document.querySelector('label[for="' + _TM_KEYS[k] + '"]');
@@ -8031,8 +8125,8 @@ function __tok(n, d) { var v = getComputedStyle(document.body).getPropertyValue(
                var n = (_tm.res && _tm.res.notes[0]) || null;
                if (n) {
                    var nh = (window.__pvIcon ? __pvIcon(n[0] === 'warn' ? 'warn' : 'ok') : '') + '<span>' + n[1] + '</span>';
-                   if (box.__html !== nh) { box.innerHTML = nh; box.__html = nh; }
-                   box.classList.toggle('is-warn', n[0] === 'warn');
+                   _morphInlineBox(box, nh, function () { box.classList.toggle('is-warn', n[0] === 'warn'); });
+                   /* is-warn handled in _morphInlineBox */
                }
                slideShow(box, !!n);
            }
@@ -8499,6 +8593,7 @@ if (typeof CAR_DATABASE !== 'undefined') {
     ic.className = 'pv-det-ico';
     ic.innerHTML = window.__pvIcon(kind);
     n.parentNode.insertBefore(ic, n);
+    window.__stripLeadEmoji = stripLeadEmoji;
   }
 
   // ---------- 结果速览 dock ----------
