@@ -901,7 +901,7 @@ input, select, textarea, button { touch-action: manipulation; }
 .ds-c .ds-gauge[data-state="idle"] .ds-ring-fill { stroke: transparent; }
 .ds-c .ds-readout { gap: 2px; }
 .ds-c .ds-value { font: 800 40px/1.05 var(--round); letter-spacing: -.8px; font-variant-numeric: tabular-nums; color: var(--ink); }
-.ds-c .ds-value small { font-size: 18px; letter-spacing: 0; color: inherit; font-weight: 700; }
+.ds-c .ds-value small { font-size: 18px; letter-spacing: 0; color: var(--ink-2); font-weight: 700; }
 .ds-c .ds-delta { font-size: 13px; font-weight: 700; color: var(--st); }
 .ds-c .ds-bar { display: none; }
 .ds-c .ds-status { display: inline-flex; align-items: center; gap: 6px; height: 26px; padding: 0 11px; border-radius: 999px; font-size: 13px; font-weight: 700; color: var(--st); background: var(--st-soft); }
@@ -2259,9 +2259,6 @@ body.ds-c:has(input[type="number"]:focus, input[type="text"]:focus) .ds-dock {
   vertical-align: middle;
   font-variant-numeric: tabular-nums;
 }
-.ds-c .ds-dock-v {
-  align-items: center;
-}
 .ds-c .pv-odo-txt,
 .ds-c .pv-odo-num {
   display: inline-flex;
@@ -2270,24 +2267,21 @@ body.ds-c:has(input[type="number"]:focus, input[type="text"]:focus) .ds-dock {
   line-height: 1.2em;
   font-variant-numeric: tabular-nums;
 }
-.ds-c .ds-dock-v .pv-odo-txt,
-.ds-c .ds-dock-v .pv-odo-num {
-  align-items: center;
-}
 .ds-c .pv-odo-txt.is-hidden,
 .ds-c .pv-odo-num.is-hidden,
-.ds-c .pv-odo-d.is-hidden {
+.ds-c .pv-odo-d.is-hidden,
+.ds-c .pv-odo-dec.is-hidden,
+.ds-c .pv-odo-pct.is-hidden {
   display: none !important;
 }
+/* 数位盒用 inline-flex：它的 baseline 取内部字形基线，而不是 overflow:hidden 之后的盒子底边。
+   大小字号混排（40px 整数 + 18px 小数）时只有这样才真正落在同一条基线上。 */
 .ds-c .pv-odo-d {
-  display: inline-block;
+  display: inline-flex;
+  flex-direction: column;
   height: 1.2em;
   line-height: 1.2em;
   overflow: hidden;
-  vertical-align: baseline;
-}
-.ds-c .ds-dock-v .pv-odo-d {
-  vertical-align: middle;
 }
 .ds-c .pv-odo-t {
   display: flex;
@@ -2316,21 +2310,53 @@ body.ds-c.is-dragging-slider .pv-odo-t { transition-duration: .18s !important; }
   height: 1.2em;
   line-height: 1.2em;
 }
-.ds-c .ds-value small,
-.ds-c .ds-value small.pv-odo-dec,
-.ds-c .ds-value .pv-odo-dec {
-  font-size: 18px;
-  letter-spacing: 0;
-  color: inherit;
-  font-weight: 700;
+/* 小数尾巴与百分号：默认跟容器同样大小同样颜色（底部胶囊 dock 就是这个样子），
+   结果卡 / 循环卡片再按各自字号压成灰色小字 */
+.ds-c .pv-odo-dec,
+.ds-c .pv-odo-pct {
   display: inline-flex;
   align-items: baseline;
-  line-height: 1;
+  font-size: inherit;
+  font-weight: inherit;
+  color: inherit;
+  letter-spacing: 0;
+  line-height: 1.2em;
 }
-@media (max-width: 640px) {
-  .ds-c .ds-value small,
-  .ds-c .ds-value small.pv-odo-dec,
-  .ds-c .ds-value .pv-odo-dec {
+.ds-c .ds-value .pv-odo-dec,
+.ds-c .ds-value .pv-odo-pct {
+  font-size: 18px;
+  font-weight: 700;
+  color: var(--ink-2);
+}
+.ds-c .cs-val .pv-odo-dec,
+.ds-c .cs-val .pv-odo-pct {
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--ink-2);
+}
+/* 团魂统计：小数同样压成 13px 灰，只有底部胶囊 dock 是例外（见下） */
+.ds-c .tm-stat-v .pv-odo-dec {
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--ink-2);
+}
+.ds-c .tm-stat-v .pv-odo-pct {
+  margin-left: 1px;
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--ink-3);
+}
+/* 底部胶囊 dock：小数点前后同字号、同亮度，不做大小与明暗区分 */
+.ds-c .ds-dock-v .pv-odo-dec,
+.ds-c .ds-dock-v .pv-odo-pct {
+  font-size: inherit;
+  font-weight: inherit;
+  color: inherit;
+  letter-spacing: inherit;
+}
+@media (max-width: 380px) {
+  .ds-c .ds-value .pv-odo-dec,
+  .ds-c .ds-value .pv-odo-pct {
     font-size: 16px;
   }
 }
@@ -6604,13 +6630,13 @@ function __tok(n, d) { var v = getComputedStyle(document.body).getPropertyValue(
            ['d3', 'd2', 'd1', 'd0'].forEach(function (k) {
                numHtml += '<span class="pv-odo-d is-hidden" data-slot="' + k + '"><span class="pv-odo-t">' + digits + '</span></span>';
            });
-           numHtml += '<span class="pv-odo-sym is-hidden" data-slot="dot">.</span>';
            numHtml += '<small class="pv-odo-dec is-hidden" data-slot="dec-wrap">';
+           numHtml += '<span class="pv-odo-sym" data-slot="dot">.</span>';
            ['df0', 'df1', 'df2'].forEach(function (k) {
                numHtml += '<span class="pv-odo-d is-hidden" data-slot="' + k + '"><span class="pv-odo-t">' + digits + '</span></span>';
            });
            numHtml += '</small>';
-           numHtml += '<span class="pv-odo-sym is-hidden" data-slot="pct">%</span>';
+           numHtml += '<small class="pv-odo-pct is-hidden" data-slot="pct">%</small>';
 
            valEl.innerHTML = '<span class="pv-odo-txt">' + initTxt + '</span><span class="pv-odo-num is-hidden" aria-hidden="true">' + numHtml + '</span>';
            var txtNode = valEl.querySelector('.pv-odo-txt');
@@ -6649,6 +6675,15 @@ function __tok(n, d) { var v = getComputedStyle(document.body).getPropertyValue(
            var tmpDiv = document.createElement('div');
            tmpDiv.innerHTML = nextStr;
            var plainTxt = (tmpDiv.textContent || tmpDiv.innerText || '').trim();
+
+           // 底部胶囊 dock 只显示一位小数：不管调用方传进来几位，都四舍五入到 1 位再渲染
+           if (valEl.classList && valEl.classList.contains('ds-dock-v')) {
+               var dockM = plainTxt.match(/^(-?\d+(?:\.\d+)?)(%?)$/);
+               if (dockM && dockM[1].indexOf('.') >= 0) {
+                   var dockNum = parseFloat(dockM[1]);
+                   if (isFinite(dockNum)) plainTxt = (Math.round(dockNum * 10) / 10).toFixed(1) + dockM[2];
+               }
+           }
            valEl.setAttribute('aria-label', plainTxt);
 
            // 匹配纯数值：如 100, 100.0%, 85.2%, 120.500 等
