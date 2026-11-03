@@ -901,7 +901,7 @@ input, select, textarea, button { touch-action: manipulation; }
 .ds-c .ds-gauge[data-state="idle"] .ds-ring-fill { stroke: transparent; }
 .ds-c .ds-readout { gap: 2px; }
 .ds-c .ds-value { font: 800 40px/1.05 var(--round); letter-spacing: -.8px; font-variant-numeric: tabular-nums; color: var(--ink); }
-.ds-c .ds-value small { font-size: 18px; letter-spacing: 0; color: var(--ink-2); font-weight: 700; }
+.ds-c .ds-value small { font-size: 18px; letter-spacing: 0; color: inherit; font-weight: 700; }
 .ds-c .ds-delta { font-size: 13px; font-weight: 700; color: var(--st); }
 .ds-c .ds-bar { display: none; }
 .ds-c .ds-status { display: inline-flex; align-items: center; gap: 6px; height: 26px; padding: 0 11px; border-radius: 999px; font-size: 13px; font-weight: 700; color: var(--st); background: var(--st-soft); }
@@ -1834,8 +1834,8 @@ body[data-calc-mode="team"] .chip-card .chip-t-team { display: inline; }
 .ds-c .tm-stat-v small { margin-left: 1px; font-size: 13px; font-weight: 500; color: var(--ink-3); }
 .ds-c .tm-stat-s { margin-top: 2px; font-size: 11.5px; color: var(--ink-3); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
 /* 数值变化时轻轻跳一下 */
-@keyframes tmTick { from { opacity: .3; transform: translateY(4px); } to { opacity: 1; transform: none; } }
-@keyframes tmTickB { from { opacity: .3; transform: translateY(4px); } to { opacity: 1; transform: none; } }
+@keyframes tmTick { from { opacity: 1; transform: translateY(4px); } to { opacity: 1; transform: none; } }
+@keyframes tmTickB { from { opacity: 1; transform: translateY(4px); } to { opacity: 1; transform: none; } }
 .ds-c .tm-tick { animation: tmTick .34s cubic-bezier(.2, .8, .2, 1); }
 .ds-c .tm-tick-b { animation: tmTickB .34s cubic-bezier(.2, .8, .2, 1); }
 
@@ -2245,32 +2245,49 @@ body.ds-c:has(input[type="number"]:focus, input[type="text"]:focus) .ds-dock {
   transition: background-color .32s cubic-bezier(.22, 1, .36, 1), box-shadow .32s cubic-bezier(.22, 1, .36, 1);
 }
 
-/* Dock 数字按位纵向滚轮（Odometer） */
-.ds-c .ds-dock-v {
+/* 通用数字按位纵向滚轮（Odometer：支持结果卡大数值 ds-value、结果卡数据 cs-val / tm-stat-v 及底部胶囊 dock） */
+.ds-c .ds-dock-v,
+.ds-c .ds-value,
+.ds-c .tm-stat-v,
+.ds-c .cs-val {
+  position: relative !important;
   display: inline-flex;
-  align-items: center;
+  align-items: baseline;
   height: 1.2em;
   line-height: 1.2em;
-  overflow: hidden;
+  overflow: hidden !important;
   vertical-align: middle;
+  font-variant-numeric: tabular-nums;
+}
+.ds-c .ds-dock-v {
+  align-items: center;
 }
 .ds-c .pv-odo-txt,
 .ds-c .pv-odo-num {
   display: inline-flex;
-  align-items: center;
+  align-items: baseline;
   height: 1.2em;
   line-height: 1.2em;
+  font-variant-numeric: tabular-nums;
+}
+.ds-c .ds-dock-v .pv-odo-txt,
+.ds-c .ds-dock-v .pv-odo-num {
+  align-items: center;
 }
 .ds-c .pv-odo-txt.is-hidden,
 .ds-c .pv-odo-num.is-hidden,
 .ds-c .pv-odo-d.is-hidden {
-  display: none;
+  display: none !important;
 }
 .ds-c .pv-odo-d {
   display: inline-block;
   height: 1.2em;
   line-height: 1.2em;
   overflow: hidden;
+  vertical-align: baseline;
+}
+.ds-c .ds-dock-v .pv-odo-d {
+  vertical-align: middle;
 }
 .ds-c .pv-odo-t {
   display: flex;
@@ -2278,9 +2295,13 @@ body.ds-c:has(input[type="number"]:focus, input[type="text"]:focus) .ds-dock {
   will-change: transform;
   transition: transform .42s cubic-bezier(.22, 1, .36, 1);
 }
+.ds-c .pv-odo-d[data-slot="d3"] > .pv-odo-t { transition-duration: .34s; }
 .ds-c .pv-odo-d[data-slot="d2"] > .pv-odo-t { transition-duration: .38s; }
 .ds-c .pv-odo-d[data-slot="d1"] > .pv-odo-t { transition-duration: .42s; }
 .ds-c .pv-odo-d[data-slot="d0"] > .pv-odo-t { transition-duration: .46s; }
+.ds-c .pv-odo-d[data-slot="df0"] > .pv-odo-t,
+.ds-c .pv-odo-d[data-slot="df1"] > .pv-odo-t,
+.ds-c .pv-odo-d[data-slot="df2"] > .pv-odo-t,
 .ds-c .pv-odo-d[data-slot="df"] > .pv-odo-t { transition-duration: .50s; }
 body.ds-c.is-dragging-slider .pv-odo-t { transition-duration: .18s !important; }
 .ds-c .pv-odo-t > i {
@@ -2295,16 +2316,44 @@ body.ds-c.is-dragging-slider .pv-odo-t { transition-duration: .18s !important; }
   height: 1.2em;
   line-height: 1.2em;
 }
-@keyframes pvOdoTextInA {
-  from { opacity: 0; transform: translate3d(0, 60%, 0); }
+.ds-c .ds-value small,
+.ds-c .ds-value small.pv-odo-dec,
+.ds-c .ds-value .pv-odo-dec {
+  font-size: 18px;
+  letter-spacing: 0;
+  color: inherit;
+  font-weight: 700;
+  display: inline-flex;
+  align-items: baseline;
+  line-height: 1;
+}
+@media (max-width: 640px) {
+  .ds-c .ds-value small,
+  .ds-c .ds-value small.pv-odo-dec,
+  .ds-c .ds-value .pv-odo-dec {
+    font-size: 16px;
+  }
+}
+.is-capturing-longshot .pv-odo-num { display: none !important; }
+.is-capturing-longshot .pv-odo-txt { display: inline-block !important; }
+
+/* 文本与数字状态平滑淡入滑入动画（交替播放，绝不脱离文档流） */
+@keyframes pvOdoRollInA {
+  from { opacity: 0; transform: translate3d(0, 40%, 0); }
   to   { opacity: 1; transform: translate3d(0, 0, 0); }
 }
-@keyframes pvOdoTextInB {
-  from { opacity: 0; transform: translate3d(0, 60%, 0); }
+@keyframes pvOdoRollInB {
+  from { opacity: 0; transform: translate3d(0, 40%, 0); }
   to   { opacity: 1; transform: translate3d(0, 0, 0); }
 }
-.ds-c .pv-odo-txt.is-roll-a { animation: pvOdoTextInA .32s cubic-bezier(.22, 1, .36, 1); }
-.ds-c .pv-odo-txt.is-roll-b { animation: pvOdoTextInB .32s cubic-bezier(.22, 1, .36, 1); }
+.ds-c .pv-odo-txt.is-roll-a,
+.ds-c .pv-odo-num.is-roll-a {
+  animation: pvOdoRollInA .32s cubic-bezier(.22, 1, .36, 1);
+}
+.ds-c .pv-odo-txt.is-roll-b,
+.ds-c .pv-odo-num.is-roll-b {
+  animation: pvOdoRollInB .32s cubic-bezier(.22, 1, .36, 1);
+}
 
 /* 内联提示框 / 状态说明条在已显示状态下内容或行数切换时的平滑过渡 */
 .ds-c .tm-solve-note,
@@ -6545,16 +6594,184 @@ function __tok(n, d) { var v = getComputedStyle(document.body).getPropertyValue(
            }
        }
        window._morphInlineBox = _morphInlineBox;
-       // 数值换了就轻轻跳一下（同一个值不动；用 tm-tick / tm-tick-b 交替重播，避免 void el.offsetWidth 强制同步重排）
+
+       /* 通用数字按位纵向滚轮（Odometer：支持结果卡大数值 ds-value、结果卡数据 cs-val / tm-stat-v 及底部胶囊 dock） */
+       function _ensureOdo(valEl) {
+           if (valEl.__odo) return valEl.__odo;
+           var initTxt = (valEl.textContent || valEl.innerText || '').trim() || '--';
+           var digits = '<i>0</i><i>1</i><i>2</i><i>3</i><i>4</i><i>5</i><i>6</i><i>7</i><i>8</i><i>9</i>';
+           var numHtml = '';
+           ['d3', 'd2', 'd1', 'd0'].forEach(function (k) {
+               numHtml += '<span class="pv-odo-d is-hidden" data-slot="' + k + '"><span class="pv-odo-t">' + digits + '</span></span>';
+           });
+           numHtml += '<span class="pv-odo-sym is-hidden" data-slot="dot">.</span>';
+           numHtml += '<small class="pv-odo-dec is-hidden" data-slot="dec-wrap">';
+           ['df0', 'df1', 'df2'].forEach(function (k) {
+               numHtml += '<span class="pv-odo-d is-hidden" data-slot="' + k + '"><span class="pv-odo-t">' + digits + '</span></span>';
+           });
+           numHtml += '</small>';
+           numHtml += '<span class="pv-odo-sym is-hidden" data-slot="pct">%</span>';
+
+           valEl.innerHTML = '<span class="pv-odo-txt">' + initTxt + '</span><span class="pv-odo-num is-hidden" aria-hidden="true">' + numHtml + '</span>';
+           var txtNode = valEl.querySelector('.pv-odo-txt');
+           var numNode = valEl.querySelector('.pv-odo-num');
+           var map = {};
+           ['d3', 'd2', 'd1', 'd0', 'df0', 'df1', 'df2'].forEach(function (k) {
+               var wrap = numNode.querySelector('[data-slot="' + k + '"]');
+               map[k] = { wrap: wrap, track: wrap.firstChild, val: 0, shown: false };
+           });
+           var dotNode = numNode.querySelector('[data-slot="dot"]');
+           var decWrap = numNode.querySelector('[data-slot="dec-wrap"]');
+           var pctNode = numNode.querySelector('[data-slot="pct"]');
+
+           valEl.__odo = {
+               txtNode: txtNode,
+               numNode: numNode,
+               map: map,
+               dotNode: dotNode,
+               decWrap: decWrap,
+               pctNode: pctNode,
+               mode: 'txt',
+               raw: initTxt
+           };
+           valEl.setAttribute('aria-label', initTxt);
+           return valEl.__odo;
+       }
+
+       function _renderOdoValue(valEl, nextHtml) {
+           if (!valEl) return;
+           var nextStr = String(nextHtml === undefined || nextHtml === null ? '' : nextHtml).trim();
+           if (valEl.__html === nextStr && valEl.__odo) return;
+
+           var odo = _ensureOdo(valEl);
+           valEl.__html = nextStr;
+
+           var tmpDiv = document.createElement('div');
+           tmpDiv.innerHTML = nextStr;
+           var plainTxt = (tmpDiv.textContent || tmpDiv.innerText || '').trim();
+           valEl.setAttribute('aria-label', plainTxt);
+
+           // 匹配纯数值：如 100, 100.0%, 85.2%, 120.500 等
+           var m = plainTxt.match(/^(-?\d+)(?:\.(\d+))?(%)?$/);
+           var canAnim = !isRestoringConfig && typeof _motionOK === 'function' && _motionOK() && !document.body.classList.contains('calc-boot');
+
+           var triggerRoll = function (node) {
+               var useB = node.classList.contains('is-roll-a');
+               node.classList.remove(useB ? 'is-roll-a' : 'is-roll-b');
+               void node.offsetWidth;
+               node.classList.add(useB ? 'is-roll-b' : 'is-roll-a');
+           };
+
+           if (!m) {
+               // 目标是文本模式（如 '0 个氮气' 或 '--'）
+               var wasNum = odo.mode === 'num';
+               var prevTxt = odo.txtNode.textContent;
+               odo.mode = 'txt';
+               odo.raw = plainTxt;
+
+               odo.numNode.classList.add('is-hidden');
+               odo.txtNode.textContent = plainTxt;
+               odo.txtNode.classList.remove('is-hidden');
+
+               if (canAnim && (wasNum || prevTxt !== plainTxt)) {
+                   triggerRoll(odo.txtNode);
+               }
+               return;
+           }
+
+           // 目标是数字模式！
+           var wasTxt = odo.mode !== 'num';
+           odo.mode = 'num';
+           odo.raw = plainTxt;
+           odo.txtNode.textContent = plainTxt;
+
+           var intPart = parseInt(m[1], 10);
+           var fracStr = m[2] || '';
+           var hasPct = !!m[3];
+
+           var absInt = Math.abs(intPart);
+           var d3 = Math.floor(absInt / 1000) % 10;
+           var d2 = Math.floor(absInt / 100) % 10;
+           var d1 = Math.floor(absInt / 10) % 10;
+           var d0 = absInt % 10;
+
+           var showD3 = absInt >= 1000;
+           var showD2 = absInt >= 100;
+           var showD1 = absInt >= 10;
+           var showD0 = true;
+
+           var slots = {
+               d3: { val: d3, show: showD3 },
+               d2: { val: d2, show: showD2 },
+               d1: { val: d1, show: showD1 },
+               d0: { val: d0, show: showD0 }
+           };
+
+           slots.df0 = { val: fracStr.length > 0 ? parseInt(fracStr[0], 10) : 0, show: fracStr.length > 0 };
+           slots.df1 = { val: fracStr.length > 1 ? parseInt(fracStr[1], 10) : 0, show: fracStr.length > 1 };
+           slots.df2 = { val: fracStr.length > 2 ? parseInt(fracStr[2], 10) : 0, show: fracStr.length > 2 };
+
+           if (odo.dotNode) odo.dotNode.classList.toggle('is-hidden', !fracStr.length);
+           if (odo.decWrap) odo.decWrap.classList.toggle('is-hidden', !fracStr.length);
+           if (odo.pctNode) odo.pctNode.classList.toggle('is-hidden', !hasPct);
+
+           odo.txtNode.classList.add('is-hidden');
+           odo.numNode.classList.remove('is-hidden');
+
+           if (canAnim && wasTxt) {
+               // 从文本平滑过渡到数字：数字容器触发微浮淡入，各数位从 0 纵向滚入到目标数值
+               triggerRoll(odo.numNode);
+
+               var needRaf = [];
+               for (var slotKey in slots) {
+                   var item = odo.map[slotKey];
+                   var cfg = slots[slotKey];
+                   if (!item) continue;
+                   item.wrap.classList.toggle('is-hidden', !cfg.show);
+                   if (cfg.show) {
+                       item.shown = true;
+                       item.val = cfg.val;
+                       item.track.style.transition = 'none';
+                       item.track.style.transform = 'translate3d(0, 0%, 0)';
+                       needRaf.push({ track: item.track, y: -(cfg.val * 10) });
+                   } else {
+                       item.shown = false;
+                   }
+               }
+               if (needRaf.length) {
+                   requestAnimationFrame(function () {
+                       requestAnimationFrame(function () {
+                           for (var j = 0; j < needRaf.length; j++) {
+                               needRaf[j].track.style.transition = '';
+                               needRaf[j].track.style.transform = 'translate3d(0, ' + needRaf[j].y + '%, 0)';
+                           }
+                       });
+                   });
+               }
+           } else {
+               // 普通数字更新（已经在数字模式）
+               for (var slotKey in slots) {
+                   var item = odo.map[slotKey];
+                   var cfg = slots[slotKey];
+                   if (!item) continue;
+                   item.wrap.classList.toggle('is-hidden', !cfg.show);
+                   if (cfg.show) {
+                       item.track.style.transform = 'translate3d(0, -' + (cfg.val * 10) + '%, 0)';
+                       item.val = cfg.val;
+                       item.shown = true;
+                   } else {
+                       item.shown = false;
+                   }
+               }
+           }
+       }
+       window._renderOdoValue = _renderOdoValue;
+
+       // 数值更新统一通过通用 Odometer 平滑纵向滚动
        function _setVal(id, html) {
            var el = document.getElementById(id);
-           if (!el || el.__html === html) return;
-           el.innerHTML = html;
-           el.__html = html;
-           if (!_motionOK()) { el.classList.remove('tm-tick', 'tm-tick-b'); return; }
-           var useB = el.classList.contains('tm-tick');
-           el.classList.remove(useB ? 'tm-tick' : 'tm-tick-b');
-           el.classList.add(useB ? 'tm-tick-b' : 'tm-tick');
+           if (!el) return;
+           _renderOdoValue(el, html);
        }
 
        /* ---------- 模式切换 ---------- */
@@ -6668,34 +6885,10 @@ function __tok(n, d) { var v = getComputedStyle(document.body).getPropertyValue(
            };
            if (out.length) out[0].onfinish = swap; else swap();
        }
-       function _ensureOdo(valEl) {
-           if (valEl.__odo) return valEl.__odo;
-           var initTxt = valEl.textContent || '--';
-           var digits = '<i>0</i><i>1</i><i>2</i><i>3</i><i>4</i><i>5</i><i>6</i><i>7</i><i>8</i><i>9</i>';
-           var slots = ['d3', 'd2', 'd1', 'd0'];
-           var numHtml = '';
-           for (var i = 0; i < slots.length; i++) {
-               numHtml += '<span class="pv-odo-d' + (slots[i] === 'd0' ? '' : ' is-hidden') + '" data-slot="' + slots[i] + '"><span class="pv-odo-t">' + digits + '</span></span>';
-           }
-           numHtml += '<span class="pv-odo-sym">.</span>';
-           numHtml += '<span class="pv-odo-d" data-slot="df"><span class="pv-odo-t">' + digits + '</span></span>';
-           numHtml += '<span class="pv-odo-sym">%</span>';
-           valEl.innerHTML = '<span class="pv-odo-txt">' + initTxt + '</span><span class="pv-odo-num is-hidden" aria-hidden="true">' + numHtml + '</span>';
-           var txtNode = valEl.querySelector('.pv-odo-txt');
-           var numNode = valEl.querySelector('.pv-odo-num');
-           var map = {};
-           ['d3', 'd2', 'd1', 'd0', 'df'].forEach(function (k) {
-               var wrap = numNode.querySelector('[data-slot="' + k + '"]');
-               map[k] = { wrap: wrap, track: wrap.firstChild, val: 0, shown: k === 'd0' || k === 'df' };
-           });
-           valEl.__odo = { txtNode: txtNode, numNode: numNode, map: map, mode: 'txt', raw: initTxt };
-           valEl.setAttribute('aria-label', initTxt);
-           return valEl.__odo;
-       }
+       /* 底部胶囊 Dock 项更新：复用通用 Odometer 纵向滚动 */
        window._setDockItem = function (itemEl, valEl, nextText, nextState) {
            if (!itemEl || !valEl) return;
            var prevState = itemEl.getAttribute('data-state') || 'idle';
-           var canAnim = !isRestoringConfig && typeof _motionOK === 'function' && _motionOK() && !document.body.classList.contains('calc-boot');
            if (!window.__rangeTrackBound) {
                window.__rangeTrackBound = true;
                document.addEventListener('pointerdown', function (e) { if (e.target && e.target.type === 'range') { window.__rangeActive = true; document.body.classList.add('is-dragging-slider'); } }, { passive: true });
@@ -6703,74 +6896,11 @@ function __tok(n, d) { var v = getComputedStyle(document.body).getPropertyValue(
                document.addEventListener('pointerup', endRange, { passive: true });
                document.addEventListener('pointercancel', endRange, { passive: true });
            }
-           var isDragging = !!window.__rangeActive;
            if (prevState !== nextState) {
                itemEl.setAttribute('data-state', nextState);
            }
-           var odo = _ensureOdo(valEl);
-           if (odo.raw === nextText) return;
-           odo.raw = nextText;
-           valEl.setAttribute('aria-label', nextText);
-           var m = String(nextText).match(/^(\d+)\.(\d)%$/);
-           if (!m) {
-               odo.numNode.classList.add('is-hidden');
-               odo.txtNode.classList.remove('is-hidden');
-               odo.txtNode.textContent = nextText;
-               if (canAnim && odo.mode !== 'txt') {
-                   var useRollB = odo.txtNode.classList.contains('is-roll-a');
-                   odo.txtNode.classList.remove(useRollB ? 'is-roll-a' : 'is-roll-b');
-                   odo.txtNode.classList.add(useRollB ? 'is-roll-b' : 'is-roll-a');
-               }
-               odo.mode = 'txt';
-               return;
-           }
-           var intStr = m[1], decDigit = parseInt(m[2], 10) || 0;
-           var wasTxt = odo.mode !== 'num';
-           odo.mode = 'num';
-           odo.txtNode.classList.add('is-hidden');
-           odo.numNode.classList.remove('is-hidden');
-           var len = intStr.length;
-           var targets = {
-               d0: parseInt(intStr.charAt(len - 1), 10) || 0,
-               d1: len >= 2 ? (parseInt(intStr.charAt(len - 2), 10) || 0) : null,
-               d2: len >= 3 ? (parseInt(intStr.charAt(len - 3), 10) || 0) : null,
-               d3: len >= 4 ? (parseInt(intStr.charAt(len - 4), 10) || 0) : null,
-               df: decDigit
-           };
-           var needRaf = [];
-           ['d3', 'd2', 'd1', 'd0', 'df'].forEach(function (k) {
-               var slot = odo.map[k], t = targets[k];
-               if (t === null) {
-                   slot.wrap.classList.add('is-hidden');
-                   slot.shown = false;
-                   slot.val = 0;
-                   slot.track.style.transform = 'translate3d(0, 0%, 0)';
-               } else {
-                   var newlyShown = wasTxt || !slot.shown;
-                   slot.wrap.classList.remove('is-hidden');
-                   slot.shown = true;
-                   slot.val = t;
-                   if (canAnim && newlyShown) {
-                       slot.track.style.transition = 'none';
-                       slot.track.style.transform = t === 0 ? 'translate3d(0, 12%, 0)' : 'translate3d(0, 0%, 0)';
-                       needRaf.push({ track: slot.track, y: -(t * 10) });
-                   } else {
-                       slot.track.style.transition = '';
-                       slot.track.style.transform = 'translate3d(0, -' + (t * 10) + '%, 0)';
-                   }
-               }
-           });
-           if (needRaf.length) {
-               requestAnimationFrame(function () {
-                   requestAnimationFrame(function () {
-                       for (var j = 0; j < needRaf.length; j++) {
-                           needRaf[j].track.style.transition = '';
-                           needRaf[j].track.style.transform = 'translate3d(0, ' + needRaf[j].y + '%, 0)';
-                       }
-                   });
-               });
-           }
-       }
+           _renderOdoValue(valEl, nextText);
+       };
        // 进入辅助供能时把车辆列表筛成辅助位（用户自己选过定位就不动）；离开时还原
        function syncSupportFilter(prev, m) {
            if (typeof selectFilter !== 'function') return;
@@ -8542,7 +8672,8 @@ if (typeof CAR_DATABASE !== 'undefined') {
     if (r.idle) {
       q('status').textContent = L('等待测算', 'Waiting');
       var vIdle = q('value');
-      vIdle.innerHTML = '--'; vIdle.__html = '--'; vIdle.classList.remove('tm-tick', 'tm-tick-b');
+      _renderOdoValue(vIdle, '--');
+      vIdle.classList.remove('tm-tick', 'tm-tick-b');
       q('delta').textContent = ''; q('target').textContent = '';
       q('fill').style.width = '0%'; __pvRing(g, NaN, NaN);
       return r;
@@ -8550,19 +8681,8 @@ if (typeof CAR_DATABASE !== 'undefined') {
     q('status').textContent = r.label;
     var valEl = q('value');
     var nextValHtml = r.collapsed ? '0<small>&nbsp;' + L('个氮气', 'nitros') + '</small>' : fmt(r.total);
-    if (valEl.__html !== nextValHtml) {
-      var prevWasIdle = !valEl.__html || valEl.__html === '--';
-      valEl.innerHTML = nextValHtml;
-      valEl.__html = nextValHtml;
-      var nowTick = performance.now();
-      var isDraggingSlider = !!window.__rangeActive;
-      if (!prevWasIdle && !isDraggingSlider && (!valEl.__tickAt || nowTick - valEl.__tickAt > 180) && typeof _motionOK === 'function' && _motionOK() && !(typeof isRestoringConfig !== 'undefined' && isRestoringConfig)) {
-        valEl.__tickAt = nowTick;
-        var useB = valEl.classList.contains('tm-tick');
-        valEl.classList.remove(useB ? 'tm-tick' : 'tm-tick-b');
-        valEl.classList.add(useB ? 'tm-tick-b' : 'tm-tick');
-      }
-    }
+    _renderOdoValue(valEl, nextValHtml);
+    valEl.classList.remove('tm-tick', 'tm-tick-b');
     q('target').textContent = isFinite(r.target) ? L('阈值 ', 'Target ') + r.target + '%' : '';
     if (isFinite(r.total) && isFinite(r.target)) {
       var d = Math.round((r.total - r.target) * 1000) / 1000;
