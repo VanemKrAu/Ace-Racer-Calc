@@ -757,7 +757,7 @@ input, select, textarea, button { touch-action: manipulation; }
 .ds-c .nitro-left label { white-space: nowrap; }
 /* 选中描边用真 border 而不是 box-shadow: inset —— html2canvas 会把 inset 阴影画成 16px 粗带
    （实测隔离图 32px@scale2），长截图导出会变成一圈超粗的框。padding 减 2px 保持外框尺寸不变。 */
-.ds-c .nitro-item { flex-direction: column; align-items: stretch; gap: 6px; padding: 8px; background: var(--fill); border-radius: var(--r-md); border: 2px solid transparent; transition: border-color .15s, background .15s; }
+.ds-c .nitro-item { flex-direction: column; align-items: stretch; gap: 6px; padding: 8px; background: var(--fill); border-radius: var(--r-md); border: 2px solid transparent; transition: border-color .22s cubic-bezier(.22, 1, .36, 1), background-color .22s cubic-bezier(.22, 1, .36, 1), box-shadow .22s cubic-bezier(.22, 1, .36, 1); }
 .ds-c .nitro-item.selected { background: var(--cell); border-color: var(--acc); }
 .ds-c .nitro-left { gap: 8px; font-size: 13px; font-weight: 600; color: var(--ink-2); }
 .ds-c .nitro-item.selected .nitro-left { color: var(--ink); }
@@ -1913,7 +1913,7 @@ body[data-calc-mode="team"] .chip-card .chip-t-team { display: inline; }
 .ds-c .chip-ico img { display: block; width: 100%; height: 100%; object-fit: contain; pointer-events: none; -webkit-user-drag: none; }
 .ds-c .chip-ico-fb { display: none; font: 800 20px/1 var(--round); color: var(--ink-2); }
 .ds-c .chip-ico.is-fb .chip-ico-fb { display: flex; }
-@keyframes chipPop { 0% { opacity: 0; transform: scale(.7) rotate(-6deg); } 60% { opacity: 1; transform: scale(1.08) rotate(1deg); } 100% { opacity: 1; transform: none; } }
+@keyframes chipPop { 0% { opacity: .72; transform: scale(.92) rotate(-2deg); } 100% { opacity: 1; transform: none; } }
 .ds-c .chip-slot.is-new .chip-ico { animation: chipPop .5s cubic-bezier(.3, .9, .3, 1); }
 
 /* 已装芯片：名称与核心徽章 */
@@ -2091,8 +2091,8 @@ body[data-calc-mode="team"] .chip-card .chip-t-team { display: inline; }
 .ds-c .lock-tag { display: none; flex: none; margin-left: auto; align-items: center; gap: 4px; padding: 3px 9px; border-radius: 999px;
   font-size: 11.5px; font-weight: 500; color: var(--ink-2); background: var(--fill); }
 .ds-c .lock-tag .ico { width: 13px; height: 13px; }
-@keyframes lockIn { from { opacity: 0; transform: scale(.85); } to { opacity: 1; transform: none; } }
-@keyframes lockInB { from { opacity: 0; transform: scale(.85); } to { opacity: 1; transform: none; } }
+@keyframes lockIn { from { opacity: .72; transform: scale(.94); } to { opacity: 1; transform: none; } }
+@keyframes lockInB { from { opacity: .72; transform: scale(.94); } to { opacity: 1; transform: none; } }
 .ds-c .is-locked > .card-title .lock-tag { display: inline-flex; animation: lockIn .3s cubic-bezier(.3, .8, .2, 1); }
 .ds-c .is-locked > .card-title .limit-badge { display: none; }
 .ds-c .pv-collapsible.is-locked > .card-title .pv-sum { display: none; }   /* 锁定态右上角统一显示 lock-tag 锁胶囊，隐藏纯文字摘要避免重复 */
@@ -2214,12 +2214,12 @@ body[data-calc-mode="team"] .chip-card .chip-t-team { display: inline; }
   to   { opacity: 0; transform: translate3d(-6px, 0, 0) scale(.96); }
 }
 @keyframes pvUltUpdateA {
-  0%   { opacity: .45; transform: translate3d(0, 3px, 0) scale(.985); }
-  100% { opacity: 1;   transform: translate3d(0, 0, 0) scale(1); }
+  0%   { opacity: 1; transform: translate3d(0, 2px, 0); }
+  100% { opacity: 1; transform: translate3d(0, 0, 0); }
 }
 @keyframes pvUltUpdateB {
-  0%   { opacity: .45; transform: translate3d(0, 3px, 0) scale(.985); }
-  100% { opacity: 1;   transform: translate3d(0, 0, 0) scale(1); }
+  0%   { opacity: 1; transform: translate3d(0, 2px, 0); }
+  100% { opacity: 1; transform: translate3d(0, 0, 0); }
 }
 .ds-c #actualUltTimeSpan { transform-origin: left center; will-change: transform, opacity; }
 .ds-c #actualUltTimeSpan.is-entering   { animation: pvUltIn .32s cubic-bezier(.22, 1, .36, 1) both; }
@@ -2365,11 +2365,11 @@ body.ds-c.is-dragging-slider .pv-odo-t { transition-duration: .18s !important; }
 
 /* 文本与数字状态平滑淡入滑入动画（交替播放，绝不脱离文档流） */
 @keyframes pvOdoRollInA {
-  from { opacity: 0; transform: translate3d(0, 40%, 0); }
+  from { opacity: .75; transform: translate3d(0, 15%, 0); }
   to   { opacity: 1; transform: translate3d(0, 0, 0); }
 }
 @keyframes pvOdoRollInB {
-  from { opacity: 0; transform: translate3d(0, 40%, 0); }
+  from { opacity: .75; transform: translate3d(0, 15%, 0); }
   to   { opacity: 1; transform: translate3d(0, 0, 0); }
 }
 .ds-c .pv-odo-txt.is-roll-a,
@@ -2390,11 +2390,11 @@ body.ds-c.is-dragging-slider .pv-odo-t { transition-duration: .18s !important; }
 }
 .ds-c .pv-box-in { display: block; }
 @keyframes pvBoxSwapA {
-  from { opacity: 0; transform: translate3d(0, 4px, 0); }
+  from { opacity: .82; transform: translate3d(0, 2px, 0); }
   to   { opacity: 1; transform: translate3d(0, 0, 0); }
 }
 @keyframes pvBoxSwapB {
-  from { opacity: 0; transform: translate3d(0, 4px, 0); }
+  from { opacity: .82; transform: translate3d(0, 2px, 0); }
   to   { opacity: 1; transform: translate3d(0, 0, 0); }
 }
 .ds-c .pv-box-swap-a:not(.tm-solve-note):not(.tm-src):not(#carPreviewAutoMsg),
