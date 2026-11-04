@@ -5466,9 +5466,17 @@ function __tok(n, d) { var v = getComputedStyle(document.body).getPropertyValue(
                        document.getElementById('isSpec').checked = arr[6 + offset] === '1';
 
                        document.getElementById('counterRange').value = arr[7 + offset];
-                       document.getElementById('counterValue').innerText = arr[7 + offset] + '%';
+                       if (window._renderOdoValue) {
+                           window._renderOdoValue(document.getElementById('counterValue'), arr[7 + offset] + '%');
+                       } else {
+                           document.getElementById('counterValue').innerText = arr[7 + offset] + '%';
+                       }
                        document.getElementById('debuffRange').value = arr[8 + offset];
-                       document.getElementById('debuffValue').innerText = arr[8 + offset] + '%';
+                       if (window._renderOdoValue) {
+                           window._renderOdoValue(document.getElementById('debuffValue'), arr[8 + offset] + '%');
+                       } else {
+                           document.getElementById('debuffValue').innerText = arr[8 + offset] + '%';
+                       }
 
                        var cbs = document.querySelectorAll('.empower-checkbox');
                        for (var i = 0; i < cbs.length; i++) { cbs[i].checked = false; }
@@ -5575,11 +5583,13 @@ function __tok(n, d) { var v = getComputedStyle(document.body).getPropertyValue(
 
                    if(config.cr !== undefined) {
                        document.getElementById('counterRange').value = config.cr;
-                       document.getElementById('counterValue').innerText = config.cr + '%';
+                       if (window._renderOdoValue) window._renderOdoValue(document.getElementById('counterValue'), config.cr + '%');
+                       else document.getElementById('counterValue').innerText = config.cr + '%';
                    }
                    if(config.dr !== undefined) {
                        document.getElementById('debuffRange').value = config.dr;
-                       document.getElementById('debuffValue').innerText = config.dr + '%';
+                       if (window._renderOdoValue) window._renderOdoValue(document.getElementById('debuffValue'), config.dr + '%');
+                       else document.getElementById('debuffValue').innerText = config.dr + '%';
                    }
 
                    var allCbs = document.querySelectorAll('.empower-checkbox');
@@ -5688,12 +5698,16 @@ function __tok(n, d) { var v = getComputedStyle(document.body).getPropertyValue(
        }
 
        function updateCounterSlider() {
-           document.getElementById('counterValue').innerText = document.getElementById('counterRange').value + '%';
+           var cVal = document.getElementById('counterValue'), val = document.getElementById('counterRange').value;
+           if (window._renderOdoValue) window._renderOdoValue(cVal, val + '%');
+           else if (cVal) cVal.innerText = val + '%';
            if (!isRestoringConfig) { triggerAutoCalc(currentActiveField); calculate(); }
        }
 
        function updateDebuffSlider() {
-           document.getElementById('debuffValue').innerText = document.getElementById('debuffRange').value + '%';
+           var dVal = document.getElementById('debuffValue'), val = document.getElementById('debuffRange').value;
+           if (window._renderOdoValue) window._renderOdoValue(dVal, val + '%');
+           else if (dVal) dVal.innerText = val + '%';
            if (!isRestoringConfig) { triggerAutoCalc(currentActiveField); calculate(); }
        }
 
@@ -6802,6 +6816,35 @@ function __tok(n, d) { var v = getComputedStyle(document.body).getPropertyValue(
        }
        window._renderOdoValue = _renderOdoValue;
 
+       // 全局滑块拖动监听：为 body 挂载 is-dragging-slider，使 Odometer 在拖拽时进入 .18s 快速平滑滚轴
+       if (!window.__rangeTrackBound) {
+           window.__rangeTrackBound = true;
+           var _startRange = function (e) {
+               if (e.target && e.target.type === 'range') {
+                   window.__rangeActive = true;
+                   document.body.classList.add('is-dragging-slider');
+               }
+           };
+           var _endRange = function () {
+               if (window.__rangeActive) {
+                   window.__rangeActive = false;
+                   document.body.classList.remove('is-dragging-slider');
+               }
+           };
+           document.addEventListener('pointerdown', _startRange, { passive: true });
+           document.addEventListener('pointerup', _endRange, { passive: true });
+           document.addEventListener('pointercancel', _endRange, { passive: true });
+           document.addEventListener('touchstart', _startRange, { passive: true });
+           document.addEventListener('touchend', _endRange, { passive: true });
+           document.addEventListener('touchcancel', _endRange, { passive: true });
+       }
+
+       // 初始化反制卡片拖动条数值为 Odometer
+       var _cInitEl = document.getElementById('counterValue'), _cInitR = document.getElementById('counterRange');
+       if (_cInitEl && _cInitR) _renderOdoValue(_cInitEl, _cInitR.value + '%');
+       var _dInitEl = document.getElementById('debuffValue'), _dInitR = document.getElementById('debuffRange');
+       if (_dInitEl && _dInitR) _renderOdoValue(_dInitEl, _dInitR.value + '%');
+
        // 数值更新统一通过通用 Odometer 平滑纵向滚动
        function _setVal(id, html) {
            var el = document.getElementById(id);
@@ -7561,8 +7604,13 @@ function __tok(n, d) { var v = getComputedStyle(document.body).getPropertyValue(
        function setEnvSliders(c, d) {
            var cr = document.getElementById('counterRange'), dr = document.getElementById('debuffRange');
            cr.value = c; dr.value = d;
-           document.getElementById('counterValue').innerText = cr.value + '%';
-           document.getElementById('debuffValue').innerText = dr.value + '%';
+           if (window._renderOdoValue) {
+               window._renderOdoValue(document.getElementById('counterValue'), cr.value + '%');
+               window._renderOdoValue(document.getElementById('debuffValue'), dr.value + '%');
+           } else {
+               document.getElementById('counterValue').innerText = cr.value + '%';
+               document.getElementById('debuffValue').innerText = dr.value + '%';
+           }
            [cr, dr].forEach(function (r) {           // 滑块填充色（平时由 view.js 在 input 事件里同步）
                var min = +r.min || 0, max = +r.max || 100;
                r.style.setProperty('--fill', ((+r.value - min) / (max - min) * 100).toFixed(2) + '%');
