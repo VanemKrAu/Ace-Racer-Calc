@@ -2270,9 +2270,35 @@ body.ds-c:has(input[type="number"]:focus, input[type="text"]:focus) .ds-dock {
 .ds-c .pv-odo-txt.is-hidden,
 .ds-c .pv-odo-num.is-hidden,
 .ds-c .pv-odo-d.is-hidden,
-.ds-c .pv-odo-dec.is-hidden,
 .ds-c .pv-odo-pct.is-hidden {
   display: none !important;
+}
+/* 小数点与小数部分展开/收起平滑过渡：避免整数与小数切换时的宽度硬切跳字 */
+.ds-c .pv-odo-dec {
+  display: inline-flex;
+  align-items: baseline;
+  font-size: inherit;
+  font-weight: inherit;
+  color: inherit;
+  letter-spacing: 0;
+  line-height: 1.2em;
+  overflow: hidden;
+  max-width: 4em;
+  opacity: 1;
+  transform: translate3d(0, 0, 0) scale(1);
+  transform-origin: left baseline;
+  transition: max-width .22s cubic-bezier(.22, 1, .36, 1), opacity .18s cubic-bezier(.22, 1, .36, 1), transform .22s cubic-bezier(.22, 1, .36, 1);
+  will-change: max-width, opacity, transform;
+}
+body.ds-c.is-dragging-slider .pv-odo-dec {
+  transition-duration: .15s !important;
+}
+.ds-c .pv-odo-dec.is-hidden {
+  display: inline-flex !important;
+  max-width: 0 !important;
+  opacity: 0 !important;
+  transform: translate3d(-4px, 0, 0) scale(.8) !important;
+  pointer-events: none;
 }
 /* 数位盒用 inline-flex：它的 baseline 取内部字形基线，而不是 overflow:hidden 之后的盒子底边。
    大小字号混排（40px 整数 + 18px 小数）时只有这样才真正落在同一条基线上。 */
