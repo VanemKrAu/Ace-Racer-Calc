@@ -2380,6 +2380,18 @@ body.ds-c.is-dragging-slider .pv-odo-t { transition-duration: .18s !important; }
   color: inherit;
   letter-spacing: inherit;
 }
+/* 反制卡片的数值（.slider-value）行高只有 1（22px）：滚轮盒跟着贴到 1em。
+   默认的 1.2em 会把这一行撑高 2px，数字相对左侧标签看着浮起来 */
+.ds-c .slider-value .pv-odo-txt,
+.ds-c .slider-value .pv-odo-num,
+.ds-c .slider-value .pv-odo-d,
+.ds-c .slider-value .pv-odo-t > i,
+.ds-c .slider-value .pv-odo-sym,
+.ds-c .slider-value .pv-odo-dec,
+.ds-c .slider-value .pv-odo-pct {
+  height: 1em;
+  line-height: 1em;
+}
 @media (max-width: 380px) {
   .ds-c .ds-value .pv-odo-dec,
   .ds-c .ds-value .pv-odo-pct {
