@@ -26,7 +26,8 @@
     {
       "source": "/(v1|V1|v2|V2)(\\.html)?",
       "headers": [
-        { "key": "X-Robots-Tag", "value": "noindex, nofollow" }
+        { "key": "X-Robots-Tag", "value": "noindex, nofollow" },
+        { "key": "Cache-Control", "value": "no-cache, must-revalidate" }
       ]
     }
   ]
