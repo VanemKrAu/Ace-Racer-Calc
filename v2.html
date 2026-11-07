@@ -908,7 +908,9 @@ body.ds-c.performance-mode .ds-dock { background: var(--cell); }
   .ds-c #specGrid { grid-template-columns: 1fr; }
 }
 /* ===== 归档提示条（GitHub 风格）+ 前往最新版 CTA · V2 ===== */
-.archive-wrap { max-width: 1320px; margin: 14px auto 0; padding: 0 24px; display: flex; flex-direction: column; gap: 10px; }
+.archive-bar { position: sticky; top: 0; z-index: 1002; padding: 14px 0 10px; background: rgba(0, 0, 0, 0.86); -webkit-backdrop-filter: blur(16px) saturate(140%); backdrop-filter: blur(16px) saturate(140%); border-bottom: 1px solid rgba(255, 255, 255, 0.08); transition: background-color .3s, border-color .3s; }
+body.light-mode .archive-bar { background: rgba(242, 242, 246, 0.88); border-bottom-color: rgba(0, 0, 0, 0.07); }
+.archive-wrap { max-width: 1320px; margin: 0 auto; padding: 0 24px; display: flex; flex-direction: column; gap: 10px; }
 .archive-banner { display: flex; align-items: center; justify-content: center; gap: 8px; width: 100%; padding: 11px 16px; text-align: center; font-size: 14px; line-height: 1.5; font-weight: 400; color: #e6edf3; background: rgba(187, 128, 9, 0.18); border: 1px solid rgba(212, 167, 44, 0.5); border-radius: 6px; position: relative; z-index: 1001; transition: background-color 0.3s, border-color 0.3s, color 0.3s; }
 .archive-banner .archive-icon { flex: 0 0 16px; width: 16px; height: 16px; fill: #d29922; }
 .archive-banner .archive-text { min-width: 0; }
@@ -919,7 +921,8 @@ body.light-mode .archive-banner .archive-icon { fill: #9a6700; }
 .archive-cta:active { transform: scale(.97); }
 .archive-cta .ico { width: 15px; height: 15px; flex: 0 0 15px; }
 @media (max-width: 1024px) { .archive-cta { width: 100%; } }
-@media (max-width: 849px) { .archive-wrap { margin-top: 12px; padding: 0 14px; } }
+@media (max-height: 480px) and (orientation: landscape) { .archive-bar { padding: 8px 0 7px; } .archive-banner { padding: 8px 14px; } .archive-cta { height: 40px; } }
+@media (max-width: 849px) { .archive-bar { padding: 12px 0 8px; } .archive-wrap { padding: 0 14px; } }
 
 </style>
    <base target="_blank">
@@ -933,12 +936,14 @@ body.light-mode .archive-banner .archive-icon { fill: #9a6700; }
         <p>Please enable JavaScript to use the full calculator. Visit: <a href="https://aceracercalc.top/">aceracercalc.top</a></p>
       </div>
     </noscript>
-<div class="archive-wrap" data-html2canvas-ignore="true">
+<div class="archive-bar" data-html2canvas-ignore="true">
+<div class="archive-wrap">
   <div class="archive-banner" role="note" aria-label="已被 Vanem 归档，只读">
     <svg class="archive-icon" viewBox="0 0 16 16" width="16" height="16" aria-hidden="true" focusable="false"><path d="M0 2.75C0 1.784.784 1 1.75 1h12.5c.966 0 1.75.784 1.75 1.75v1.5A1.75 1.75 0 0 1 14.25 6H1.75A1.75 1.75 0 0 1 0 4.25ZM1.75 7a.75.75 0 0 1 .75.75v5.5c0 .138.112.25.25.25h10.5a.25.25 0 0 0 .25-.25v-5.5a.75.75 0 0 1 1.5 0v5.5A1.75 1.75 0 0 1 13.25 15H2.75A1.75 1.75 0 0 1 1 13.25v-5.5A.75.75 0 0 1 1.75 7Zm0-4.5a.25.25 0 0 0-.25.25v1.5c0 .138.112.25.25.25h12.5a.25.25 0 0 0 .25-.25v-1.5a.25.25 0 0 0-.25-.25ZM6.25 8h3.5a.75.75 0 0 1 0 1.5h-3.5a.75.75 0 0 1 0-1.5Z"/></svg>
     <span class="archive-text"><span class="zh">已被 Vanem 归档 · 只读</span><span class="lang-en">Archived by Vanem · Read-only</span></span>
   </div>
   <a class="archive-cta" href="https://aceracercalc.top/"><span class="zh">前往最新版</span><span class="lang-en">Go to latest</span><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 17 17 7"/><path d="M9 7h8v8"/></svg></a>
+</div>
 </div>
 <div class="ds-ambient" aria-hidden="true" data-html2canvas-ignore="true"><img id="dsAmbientImg" alt=""><img id="dsAmbientImg2" alt=""></div>
 <div class="app-container">
