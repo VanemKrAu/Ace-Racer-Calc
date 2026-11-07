@@ -3470,13 +3470,23 @@ body.ds-c.performance-mode .pv-box-swap-b > * {
   function morph(el, opening, keys, kids, prepare, finish, fromZero) {
     var from = {};
     if (fromZero) keys.forEach(function (k) { from[k] = 0; }); else from = boxNow(el, keys);
-    var hasRunning = !!(el.__pvA || el.__pvK);
-    var op = kids.map(function (k) { return !fromZero && (hasRunning ? parseFloat(getComputedStyle(k).opacity) : 1) || 0; });
+    // 起点透明度：动画进行中取当前动画值，静止时取元素自身计算值。
+    // 不能假设静止态一定是 1 —— 锁定卡片的子块本身就是 opacity .38。
+    var op = kids.map(function (k) {
+        if (fromZero) return 0;
+        var o = parseFloat(getComputedStyle(k).opacity);
+        return isNaN(o) ? 1 : o;
+    });
     var animate = motionOK(el) && inView(el.parentElement || el);
     stopMorph(el);
     var to = prepare() || {};
     keys.forEach(function (k) { if (to[k] == null) to[k] = 0; });
-    var opEnd = kids.map(function () { return 1; });
+    // 终点透明度同样取「DOM 切到终点状态后」的自然值：
+    // 写死成 1 会让锁定卡片（灰态 .38）展开时先亮到不透明、动画结束再滑回灰色，看着像闪了一下。
+    var opEnd = kids.map(function (k) {
+        var o = parseFloat(getComputedStyle(k).opacity);
+        return isNaN(o) ? 1 : o;
+    });
     if (!animate || Math.abs(to.height - from.height) < 2) { if (finish) finish(); return; }
     var dist = Math.abs(to.height - from.height);
     var dur = Math.round(Math.min(420, Math.max(240, 180 + dist * 0.4)));
