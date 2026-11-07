@@ -651,14 +651,21 @@ var _CAR_IMG = {
        .lang-toggle-wrapper { text-align: center; padding: 10px 0 40px; position: relative; z-index: 1000; }
        .lang-btn { background: var(--card-bg); border: 1px solid var(--primary); color: var(--primary); padding: 10px 24px; border-radius: 12px; font-size: 14px; font-weight: bold; cursor: pointer; box-shadow: var(--btn-shadow); transition: background 0.3s, background-color 0.3s, border-color 0.3s, box-shadow 0.3s, color 0.3s, transform 0.3s; backdrop-filter: blur(8px); display: inline-flex; align-items: center; gap: 8px; }
        .lang-btn:hover { background: rgba(0, 242, 254, 0.1); box-shadow: 0 4px 15px var(--hover-glow-primary); transform: translateY(-2px); }
-       /* ===== 归档横幅（GitHub 风格 · V1 只读页） ===== */
-       .archive-wrap { max-width: 480px; margin: 0 auto 14px; }
-       .archive-banner { display: flex; align-items: center; gap: 8px; width: 100%; padding: 12px 16px; text-align: left; font-size: 14px; line-height: 1.5; font-weight: 400; color: #e6edf3; background: rgba(187, 128, 9, 0.18); border: 1px solid rgba(212, 167, 44, 0.5); border-radius: 6px; position: relative; z-index: 1001; transition: background-color 0.3s, border-color 0.3s, color 0.3s; }
+       /* ===== 归档提示条（GitHub 风格）+ 前往最新版 CTA · V1 ===== */
+       .archive-wrap { max-width: 480px; margin: 0 auto 14px; display: flex; flex-direction: column; gap: 10px; }
+       .archive-banner { display: flex; align-items: center; justify-content: center; gap: 8px; width: 100%; padding: 11px 16px; text-align: center; font-size: 14px; line-height: 1.5; font-weight: 400; color: #e6edf3; background: rgba(187, 128, 9, 0.18); border: 1px solid rgba(212, 167, 44, 0.5); border-radius: 6px; position: relative; z-index: 1001; transition: background-color 0.3s, border-color 0.3s, color 0.3s; }
        .archive-banner .archive-icon { flex: 0 0 16px; width: 16px; height: 16px; fill: #d29922; }
        .archive-banner .archive-text { min-width: 0; }
        body.light-mode .archive-banner { color: #1f2328; background: #fff8c5; border-color: rgba(212, 167, 44, 0.4); }
        body.light-mode .archive-banner .archive-icon { fill: #9a6700; }
+       .archive-cta { align-self: center; display: inline-flex; align-items: center; justify-content: center; gap: 7px; padding: 11px 26px; border-radius: 10px; border: 1px solid rgba(0, 242, 254, 0.75); background: linear-gradient(135deg, rgba(0, 242, 254, 0.22) 0%, rgba(155, 81, 224, 0.22) 100%); color: var(--primary); font-size: 14.5px; font-weight: bold; line-height: 1.2; text-decoration: none; white-space: nowrap; box-shadow: 0 2px 10px rgba(0, 242, 254, 0.18); transition: background 0.3s, border-color 0.3s, box-shadow 0.3s, color 0.3s, transform 0.3s; }
+       .archive-cta:hover { background: linear-gradient(135deg, rgba(0, 242, 254, 0.36) 0%, rgba(155, 81, 224, 0.36) 100%); border-color: var(--primary); box-shadow: 0 4px 15px var(--hover-glow-primary); transform: translateY(-2px); }
+       .archive-cta .archive-cta-arrow { font-size: 16px; line-height: 1; transition: transform 0.3s; }
+       .archive-cta:hover .archive-cta-arrow { transform: translateX(3px); }
+       body.light-mode .archive-cta { border-color: rgba(0, 123, 181, 0.6); background: linear-gradient(135deg, rgba(0, 123, 181, 0.12) 0%, rgba(107, 70, 193, 0.12) 100%); box-shadow: 0 2px 8px rgba(0, 123, 181, 0.12); }
+       body.light-mode .archive-cta:hover { border-color: var(--primary); background: linear-gradient(135deg, rgba(0, 123, 181, 0.2) 0%, rgba(107, 70, 193, 0.2) 100%); box-shadow: 0 4px 15px var(--hover-glow-primary); }
        @media (min-width: 850px) { .archive-wrap { max-width: 1100px; padding: 0 20px; } }
+       @media (max-width: 600px) { .archive-cta { align-self: stretch; padding: 13px 16px; font-size: 15px; } }
    </style>
    <base target="_blank">
 </head>
@@ -675,6 +682,7 @@ var _CAR_IMG = {
        <svg class="archive-icon" viewBox="0 0 16 16" width="16" height="16" aria-hidden="true" focusable="false"><path d="M0 2.75C0 1.784.784 1 1.75 1h12.5c.966 0 1.75.784 1.75 1.75v1.5A1.75 1.75 0 0 1 14.25 6H1.75A1.75 1.75 0 0 1 0 4.25ZM1.75 7a.75.75 0 0 1 .75.75v5.5c0 .138.112.25.25.25h10.5a.25.25 0 0 0 .25-.25v-5.5a.75.75 0 0 1 1.5 0v5.5A1.75 1.75 0 0 1 13.25 15H2.75A1.75 1.75 0 0 1 1 13.25v-5.5A.75.75 0 0 1 1.75 7Zm0-4.5a.25.25 0 0 0-.25.25v1.5c0 .138.112.25.25.25h12.5a.25.25 0 0 0 .25-.25v-1.5a.25.25 0 0 0-.25-.25ZM6.25 8h3.5a.75.75 0 0 1 0 1.5h-3.5a.75.75 0 0 1 0-1.5Z"/></svg>
        <span class="archive-text"><span class="zh">已被 Vanem 归档 · 只读</span><span class="lang-en">Archived by Vanem · Read-only</span></span>
      </div>
+     <a class="archive-cta" href="https://aceracercalc.top/"><span class="zh">前往最新版</span><span class="lang-en">Go to latest</span><span class="archive-cta-arrow" aria-hidden="true">→</span></a>
    </div>
    <div class="app-container">
        <div class="top-bar" data-html2canvas-ignore="true">
