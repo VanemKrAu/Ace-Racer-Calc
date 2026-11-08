@@ -39,3 +39,6 @@ video/
 
 # Claude 导出产物（本地保留、不入库）
 Claude outputs/
+
+# 方案文档（含审核策略与部署细节，不入公开仓库）
+docs/
