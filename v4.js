@@ -125,14 +125,18 @@
   };
 
   /* ---------- 提示条：emoji → 线性图标 ---------- */
+  function escToast(s) {
+    return String(s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
+  }
   function iconizeToast(msg) {
-    var m = String(msg), k = null;
+    var m = String(msg == null ? '' : msg), k = null;
     var lead = m.match(/^\s*(✅|❌|⚠️|⚠|🔗)\s*/);
     if (lead) {
       k = { '✅': 'ok', '❌': 'err', '⚠️': 'warn', '⚠': 'warn', '🔗': 'link' }[lead[1]];
       m = m.slice(lead[0].length);
     }
-    return k ? '<span class="pv-toast pv-toast-' + k + '">' + svg(IC[k]) + '<span>' + m + '</span></span>' : m;
+    var safe = escToast(m);
+    return k ? '<span class="pv-toast pv-toast-' + k + '">' + svg(IC[k]) + '<span>' + safe + '</span></span>' : safe;
   }
 
   /* ---------- 开合动画（折叠卡片 / 计算过程 / 上榜条件 / 使用须知 共用） ----------
@@ -766,7 +770,10 @@
 
   document.addEventListener('DOMContentLoaded', function () {
     var st0 = window.showToast;
-    if (typeof st0 === 'function') window.showToast = function (m) { return st0(iconizeToast(m)); };
+    if (typeof st0 === 'function') window.showToast = function (m) {
+      var rendered = iconizeToast(m);
+      return st0(rendered, rendered.indexOf('<span class="pv-toast ') === 0);
+    };
     var tl = window.toggleLanguage;
     if (typeof tl === 'function') window.toggleLanguage = function () { var r = tl.apply(this, arguments); document.dispatchEvent(new Event('pv-lang')); if (proxy) proxy.placeholder = L('搜索车名 / 拼音首字母', 'Search name / pinyin'); paintQual(); return r; };
     setTimeout(function () {

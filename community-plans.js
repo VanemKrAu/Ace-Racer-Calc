@@ -24,6 +24,7 @@
     DRAFT: 'arc_draft_v1',
     VOTES: 'arc_voted_plans_v1',
     CLIENT_ID: 'arc_client_id_v1',
+    DEVICE_FP: 'arc_device_fp_v1',
     SETTINGS: 'arc_user_settings_v1',
     AUTO_DRAFT: 'arc_auto_draft_enabled'
   };
@@ -65,13 +66,293 @@
     return empArr.map(resolveEmpowerLabel).filter(Boolean).join(' · ');
   }
 
+  var DEVICE_LABEL_MAP = {
+    loop: '循环装置',
+    chg: '充能装置',
+    schg: '超级充能装置',
+    acc: '加速装置'
+  };
+
+  var CHIP_NAME_MAP = {
+    hunter: '隐匿猎手之芯',
+    catnap: '猫眠梦之芯'
+  };
+
+  function fmtPlanNum(v) {
+    var n = Number(v);
+    if (!Number.isFinite(n)) return '0';
+    return String(Number(n.toFixed(2)));
+  }
+
+  function formatChipsList(p) {
+    var out = [];
+    if (Array.isArray(p.chips_on) && p.chips_on.length > 0) {
+      p.chips_on.forEach(function (c) {
+        if (!c) return;
+        var id = typeof c === 'object' ? String(c.id || '') : String(c);
+        if (!id) return;
+        var def = typeof window._chipDef === 'function' ? window._chipDef(id) : null;
+        var cname = (def && def.name && (def.name.zh || def.name.en)) || CHIP_NAME_MAP[id] || id;
+        var optLabels = [];
+        if (c && typeof c === 'object' && c.opts && typeof c.opts === 'object') {
+          var optDefs = (def && typeof window._chipOptionDefs === 'function') ? window._chipOptionDefs(def) : [];
+          Object.keys(c.opts).forEach(function (k) {
+            var val = c.opts[k];
+            if (val === undefined || val === null || val === '') return;
+            var matchedText = '';
+            for (var i = 0; i < optDefs.length; i++) {
+              if (optDefs[i].id === k && Array.isArray(optDefs[i].choices)) {
+                for (var j = 0; j < optDefs[i].choices.length; j++) {
+                  if (String(optDefs[i].choices[j].v) === String(val)) {
+                    matchedText = optDefs[i].choices[j].zh || optDefs[i].choices[j].en || String(val);
+                    break;
+                  }
+                }
+              }
+            }
+            if (!matchedText && k === 'loopMode') {
+              matchedText = val === 'safe' ? '稳妥循环+0%' : (val === 'peak' ? '偶数/触发轮' : String(val));
+            }
+            optLabels.push(matchedText || (k + '=' + val));
+          });
+        }
+        out.push(cname + (optLabels.length ? ' (' + optLabels.join(', ') + ')' : ''));
+      });
+    } else if (Array.isArray(p.chips) && p.chips.length > 0) {
+      p.chips.forEach(function (c) {
+        if (!c) return;
+        var cname = c.name || CHIP_NAME_MAP[c.id] || c.id || c.type || '';
+        if (cname) out.push(String(cname));
+      });
+    }
+    return out;
+  }
+
+  function formatEmpsDetailed(p) {
+    var empArr = Array.isArray(p.emps) ? p.emps : (Array.isArray(p.empowers) ? p.empowers : []);
+    if (!empArr.length) return '';
+    return empArr.map(function (empKey) {
+      var k = String(empKey || '').trim();
+      var base = resolveEmpowerLabel(k);
+      if (!base) return '';
+      if (k === 'jiezou') {
+        var jf = Number(p.jiezou_first) || 0;
+        var jl = Number(p.jiezou_loop) || 0;
+        if (jf > 0 || jl > 0) return base + '(首' + fmtPlanNum(jf) + '/循' + fmtPlanNum(jl) + ')';
+      } else if (k === 'queyi') {
+        var qParts = [];
+        if (p.queyi_self) qParts.push('己方');
+        if (p.queyi_enemy) qParts.push('敌方');
+        if (qParts.length) return base + '(' + qParts.join('+') + ')';
+      } else if (k === 'huaxin') {
+        var hf = Number(p.huaxin_first) || 0;
+        var hl = Number(p.huaxin_loop) || 0;
+        if (hf > 0 || hl > 0) return base + '(首' + fmtPlanNum(hf) + '/循' + fmtPlanNum(hl) + ')';
+      }
+      return base;
+    }).filter(Boolean).join(' · ');
+  }
+
+  function resolveCarBaseline(car) {
+    if (!car || typeof car !== 'object') return null;
+    var ace = Number(car.ace_charge) || 0;
+    var baseNitro = ace ? Math.round(ace / 100 * 10) / 10 : null;
+    var initBonus = Number(car.init_ratio) || 0;
+    var startCharge = ace ? Math.min(100, Math.round((ace + initBonus) / 100 * 10) / 10) : null;
+    var ultThreshold = car.ult_threshold ? Number(car.ult_threshold) : 100;
+    var baseUltDur = car.ult_duration !== undefined ? Number(car.ult_duration) || 0 : null;
+    return {
+      baseNitro: baseNitro,
+      startCharge: startCharge,
+      ultThreshold: ultThreshold,
+      baseUltDur: baseUltDur
+    };
+  }
+
+  function isTeamOnlyPlan(p) {
+    var param = p || {};
+    if (param.calc_mode === 'team') return true;
+    if (param.device && DEVICE_LABEL_MAP[param.device] && param.device !== '0') return true;
+    var th = Number(param.tuanhun !== undefined ? param.tuanhun : param.team_spirit) || 0;
+    if (th > 0) return true;
+    if ((Number(param.dev_sub_first) || 0) > 0 || (Number(param.dev_sub_loop) || 0) > 0) return true;
+    return false;
+  }
+
+  function resolvePlanMode(p) {
+    return isTeamOnlyPlan(p) ? 'team' : 'solo';
+  }
+
+  function isPlanCompatibleWithMode(p, calcMode) {
+    if (calcMode === 'solo') {
+      return !isTeamOnlyPlan(p);
+    }
+    return true;
+  }
+
+  function extractAllPlanDetails(p, car) {
+    var param = p || {};
+    var xianji = param.xianji !== undefined ? (Number(param.xianji) || 0) : 0;
+    var huineng = param.huineng !== undefined ? (Number(param.huineng) || 0) : 0;
+    var rawTuanhun = param.tuanhun !== undefined ? param.tuanhun : param.team_spirit;
+    var tuanhun = rawTuanhun !== undefined ? (Number(rawTuanhun) || 0) : 0;
+    var devKey = DEVICE_LABEL_MAP[param.device] ? param.device : '';
+    var counterRange = devKey ? 0 : (Number(param.counter_range) || 0);
+    var debuffRange = devKey ? 0 : (Number(param.debuff_range) || 0);
+    var isTeamPlan = isTeamOnlyPlan(param);
+
+    var nitroRule = param.nitro_rule ? String(param.nitro_rule) : '';
+    var nitroDur = param.nitro_dur !== undefined ? (Number(param.nitro_dur) || 0) : 0;
+    var fnRaw = param.first_nitro_count !== undefined ? param.first_nitro_count : param.start_nitro_count;
+    var firstNitroCount = fnRaw !== undefined ? Number(fnRaw) : 1;
+    var lnRaw = param.loop_nitro_count !== undefined ? param.loop_nitro_count : param.cycle_nitro_count;
+    var loopNitroCount = lnRaw !== undefined ? Number(lnRaw) : 0;
+    var isManualNitro = Number(param.is_manual_nitro) === 1;
+
+    var nitroInfo = nitroRule ? (nitroRule + (nitroDur ? ' · ' + fmtPlanNum(nitroDur) + 's' : '')) : '';
+    if (nitroInfo && (isManualNitro || (Number.isFinite(firstNitroCount) && firstNitroCount !== 1))) {
+      nitroInfo += ' (首' + (Number.isFinite(firstNitroCount) ? firstNitroCount : 1) +
+        (isManualNitro ? '/循' + (Number.isFinite(loopNitroCount) ? loopNitroCount : 0) : '') + ')';
+    }
+
+    // 黄色高亮顶行（先机、汇能、第二模式下的团魂、反制：手机端强制同一行展示）
+    var hlCells = [
+      { lbl: '先机', val: fmtPlanNum(xianji) + '%', cls: 'is-acc' },
+      { lbl: '汇能', val: fmtPlanNum(huineng) + '%', cls: 'is-acc' }
+    ];
+    if (tuanhun > 0 || param.calc_mode === 'team') {
+      hlCells.push({ lbl: '团魂', val: fmtPlanNum(tuanhun) + '%', cls: 'is-acc' });
+    }
+    if (!devKey && counterRange > 0) {
+      hlCells.push({ lbl: '反制', val: fmtPlanNum(counterRange) + '%', cls: 'is-acc' });
+    }
+
+    var specCells = [];
+    if (nitroInfo) {
+      specCells.push({ lbl: '氮气', val: nitroInfo, cls: '' });
+    }
+    if (devKey) {
+      var devText = DEVICE_LABEL_MAP[devKey];
+      var dsf = Number(param.dev_sub_first) || 0;
+      var dsl = Number(param.dev_sub_loop) || 0;
+      if ((devKey === 'chg' || devKey === 'schg') && (dsf > 0 || dsl > 0)) {
+        devText += ' (首+' + fmtPlanNum(dsf) + '%/循+' + fmtPlanNum(dsl) + '%)';
+      }
+      specCells.push({ lbl: '装置', val: devText, cls: 'is-acc' });
+    } else if (debuffRange > 0) {
+      specCells.push({ lbl: '干扰', val: fmtPlanNum(debuffRange) + '%', cls: '' });
+    }
+
+    var extraRows = [];
+    var chipsList = formatChipsList(param);
+    if (chipsList.length > 0) {
+      extraRows.push({ k: '芯片', v: chipsList.join(' + '), acc: true });
+    }
+
+    if (!devKey) {
+      var empsDetailed = formatEmpsDetailed(param);
+      if (empsDetailed) {
+        extraRows.push({ k: '赋能', v: empsDetailed, acc: false });
+      }
+    }
+
+    var traitParts = [];
+    if (param.is_spec !== undefined && Number(param.is_spec) === 0) {
+      traitParts.push('专精: 已关闭');
+    }
+    var extraEff = Number(param.extra_eff) || 0;
+    if (extraEff !== 0) {
+      traitParts.push('额外充能效率 ' + (extraEff > 0 ? '+' : '') + fmtPlanNum(extraEff) + '%');
+    }
+    if (traitParts.length > 0) {
+      extraRows.push({ k: '特性', v: traitParts.join(' · '), acc: false });
+    }
+
+    var extParts = [];
+    if (param.has_extra_nitro && Number(param.val_extra_nitro) > 0) {
+      var enScope = [];
+      if (param.chk_extra_nitro_first === undefined || param.chk_extra_nitro_first) enScope.push('首');
+      if (param.chk_extra_nitro_loop === undefined || param.chk_extra_nitro_loop) enScope.push('循');
+      extParts.push('氮气自充 +' + fmtPlanNum(param.val_extra_nitro) + '%' + (enScope.length === 1 ? '(' + enScope[0] + ')' : ''));
+    }
+    if (param.has_extra_ult && ((Number(param.val_extra_ult_first) || 0) > 0 || (Number(param.val_extra_ult_loop) || 0) > 0)) {
+      extParts.push('大招自充 首+' + fmtPlanNum(param.val_extra_ult_first || 0) + '%/循+' + fmtPlanNum(param.val_extra_ult_loop || 0) + '%');
+    }
+    if (param.has_extra_per_sec && Number(param.val_extra_per_sec) > 0) {
+      var epScope = [];
+      if (param.chk_extra_per_sec_first === undefined || param.chk_extra_per_sec_first) epScope.push('首');
+      if (param.chk_extra_per_sec_loop === undefined || param.chk_extra_per_sec_loop) epScope.push('循');
+      extParts.push('每秒自充 +' + fmtPlanNum(param.val_extra_per_sec) + '%' + (epScope.length === 1 ? '(' + epScope[0] + ')' : ''));
+    }
+    var valCustomTrig = Number(param.val_custom_trig) || 0;
+    if (valCustomTrig > 0) {
+      extParts.push('自定义触发 +' + fmtPlanNum(valCustomTrig) + '%(首' + (Number(param.custom_trig_first) || 0) + '/循' + (Number(param.custom_trig_loop) || 0) + '次)');
+    }
+    if (extParts.length > 0) {
+      extraRows.push({ k: '扩展', v: extParts.join(' · '), acc: false });
+    }
+
+    var tweakParts = [];
+    var baseline = resolveCarBaseline(car);
+    if (baseline) {
+      if (baseline.ultThreshold !== null && param.ult_threshold !== undefined && Math.abs(Number(param.ult_threshold) - baseline.ultThreshold) > 0.05) {
+        tweakParts.push('阈值 ' + fmtPlanNum(param.ult_threshold) + '%');
+      }
+      if (baseline.startCharge !== null && param.start_charge !== undefined && Math.abs(Number(param.start_charge) - baseline.startCharge) > 0.05) {
+        tweakParts.push('起步 ' + fmtPlanNum(param.start_charge) + '%');
+      }
+      if (baseline.baseNitro !== null && param.base_nitro !== undefined && Math.abs(Number(param.base_nitro) - baseline.baseNitro) > 0.05) {
+        tweakParts.push('单氮气 ' + fmtPlanNum(param.base_nitro) + '%');
+      }
+      if (baseline.baseUltDur !== null && param.base_ult_dur !== undefined && Math.abs(Number(param.base_ult_dur) - baseline.baseUltDur) > 0.05) {
+        tweakParts.push('大招时长 ' + fmtPlanNum(param.base_ult_dur) + 's');
+      }
+    }
+    if (tweakParts.length > 0) {
+      extraRows.push({ k: '微调', v: tweakParts.join(' · '), acc: false });
+    }
+
+    var summaryParts = [
+      '先机 ' + fmtPlanNum(xianji) + '%',
+      '汇能 ' + fmtPlanNum(huineng) + '%'
+    ];
+    if (tuanhun > 0) summaryParts.push('团魂 ' + fmtPlanNum(tuanhun) + '%');
+    if (nitroInfo) summaryParts.push('氮气 ' + nitroInfo);
+    if (devKey) {
+      var devSummary = DEVICE_LABEL_MAP[devKey];
+      var sDsf = Number(param.dev_sub_first) || 0;
+      var sDsl = Number(param.dev_sub_loop) || 0;
+      if ((devKey === 'chg' || devKey === 'schg') && (sDsf > 0 || sDsl > 0)) {
+        devSummary += '(+' + fmtPlanNum(sDsf) + '%/+' + fmtPlanNum(sDsl) + '%)';
+      }
+      summaryParts.push(devSummary);
+    } else {
+      if (counterRange > 0) summaryParts.push('反制 ' + fmtPlanNum(counterRange) + '%');
+      if (debuffRange > 0) summaryParts.push('干扰 ' + fmtPlanNum(debuffRange) + '%');
+    }
+    if (chipsList.length > 0) summaryParts.push('芯片: ' + chipsList.join('+'));
+    if (!devKey && extraRows.some(function (r) { return r.k === '赋能'; })) {
+      summaryParts.push(extraRows.find(function (r) { return r.k === '赋能'; }).v);
+    }
+    if (traitParts.length > 0) summaryParts.push(traitParts.join(' · '));
+    if (extParts.length > 0) summaryParts.push(extParts.join(' · '));
+    if (tweakParts.length > 0) summaryParts.push('微调: ' + tweakParts.join('/'));
+
+    return {
+      hlCells: hlCells,
+      specCells: specCells,
+      extraRows: extraRows,
+      isTeamPlan: isTeamPlan,
+      summaryText: summaryParts.join(' · ')
+    };
+  }
+
   // 统一规范 SVG 线性图标集 (与全站 stroke="currentColor" stroke-width="1.8" 100% 对齐)
   var Icons = {
     chip: '<svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="4" y="4" width="16" height="16" rx="2"/><rect x="9" y="9" width="6" height="6"/><path d="M9 1v3M15 1v3M9 20v3M15 20v3M20 9h3M20 14h3M1 9h3M1 14h3"/></svg>',
     save: '<svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"/><polyline points="17 21 17 13 7 13 7 21"/><polyline points="7 3 7 8 15 8"/></svg>',
     undo: '<svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 7v6h6"/><path d="M21 17a9 9 0 0 0-9-9 9 9 0 0 0-6 2.3L3 13"/></svg>',
-    download: '<svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>',
-    upload: '<svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>',
+    megaphone: '<svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m3 11 18-5v12L3 14v-3z"/><path d="M11.6 16.8a3 3 0 1 1-5.8-1.6"/></svg>',
     hot: '<svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M8.5 14.5A2.5 2.5 0 0 0 11 12c0-1.38-.5-2-1-3-1.072-2.143-.224-4.054 2-6 .5 2.5 2 4.9 4 6.5 2 1.6 3 3.5 3 5.5a7 7 0 1 1-14 0c0-1.153.433-2.294 1-3a2.5 2.5 0 0 0 2.5 2.5z"/></svg>',
     clock: '<svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>',
     grid: '<svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="3" width="7" height="7" rx="1.5"/><rect x="14" y="3" width="7" height="7" rx="1.5"/><rect x="14" y="14" width="7" height="7" rx="1.5"/><rect x="3" y="14" width="7" height="7" rx="1.5"/></svg>',
@@ -88,7 +369,8 @@
     emptyCar: '<svg class="ico cp-empty-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M19 17h2c.6 0 1-.4 1-1v-3c0-.9-.7-1.7-1.5-1.9C18.7 10.6 16 10 16 10s-1.3-1.4-2.2-2.3c-.5-.4-1.1-.7-1.8-.7H5c-.6 0-1.1.4-1.4.9l-1.5 2.8C2.1 10.7 2 10.9 2 11v5c0 .6.4 1 1 1h2"/><circle cx="7" cy="17" r="2"/><circle cx="17" cy="17" r="2"/></svg>',
     chevron: '<svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m6 9 6 6 6-6"/></svg>',
     copy: '<svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>',
-    check: '<svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="20 6 9 17 4 12"/></svg>'
+    check: '<svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="20 6 9 17 4 12"/></svg>',
+    partner: '<svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg>'
   };
 
   // 内存状态
@@ -97,12 +379,25 @@
     currentCar: null,
     activeTab: 'all',       // 'all' | 'mine' | 'pro'
     sortMode: 'hot',        // 'hot' | 'latest'
+    filterMode: 'all',      // 'all' | 'solo' | 'team'
+    fetchSeq: 0,            // 防止快速切车/切换排序时并发响应覆盖新列表
     savedPlans: [],         // 本地存储的方案列表
-    proPlans: [],           // 预置/拉取的国服顶尖方案列表
+    proPlans: [],           // 后端过审的国服顶尖方案列表
     remotePlans: [],        // 远程从私有后端 API 拉取的社区方案列表
     votedMap: {},           // 已点赞方案 ID 持久化映射
+    siteMeta: {             // 从后端实时拉取的站点与安全开关元数据
+      maintenance_mode: false,
+      maintenance_message: '',
+      allow_submissions: true,
+      allow_pro_applications: true,
+      allow_voting: true,
+      turnstile_required: true,
+      announcement: ''
+    },
+    deviceFp: '',           // 稳定硬件设备指纹（32~64 位小写 hex）
     lastSnapshot: null,     // 用于一键撤销还原的表单快照
     activeAppliedPlanId: null, // 当前已套用的方案 ID (用于高亮正在生效)
+    appliedSource: null,    // 记录最近一次套用的方案元信息 { id, title, isOther, buildSig }
     hasUndoAvailable: false,
     draftTimer: null,
     isFetchingRemote: false
@@ -162,10 +457,120 @@
         .replace(/"/g, '&quot;')
         .replace(/'/g, '&#039;');
     },
+    extractProfileLink: function (rawInput) {
+      var cleaned = String(rawInput || '').replace(/[\x00-\x1F\x7F]/g, '').trim();
+      if (!cleaned) return { ok: true, empty: true, url: '', platform: '', label: '', changed: false };
+      var rawUrlRegex = /https?:\/\/[A-Za-z0-9.-]+(?::\d+)?(?:\/[A-Za-z0-9._~:/?#[\]@!$&'()*+,;=%-]*)?/ig;
+      var bareStartRegex = /^(?:(?:space|m|www)\.bilibili\.com\/|(?:b23\.tv|bili2233\.cn)\/|(?:v|www|m)\.douyin\.com\/|(?:www\.|m\.)?iesdouyin\.com\/|(?:v|www|live|m|c)\.kuaishou\.com\/)/i;
+      var candidates = [];
+      var matches = cleaned.match(rawUrlRegex);
+      if (matches && matches.length > 0) {
+        candidates = matches;
+      } else if (bareStartRegex.test(cleaned)) {
+        var bare = cleaned.split(/[\s\u3000-\u303F\uFF00-\uFFEF\u4E00-\u9FFF<>"'`\\]/)[0];
+        if (bare) candidates.push('https://' + bare);
+      }
+
+      for (var i = 0; i < candidates.length; i++) {
+        var rawCandidate = String(candidates[i]).replace(/[.,;!?)\]]+$/g, '');
+        var u;
+        try {
+          u = new URL(rawCandidate);
+        } catch (e) {
+          continue;
+        }
+        if ((u.protocol !== 'http:' && u.protocol !== 'https:') || u.username || u.password || u.port) {
+          continue;
+        }
+        var host = u.hostname.toLowerCase();
+        var path = u.pathname || '/';
+        var m;
+
+        // B站
+        if (host === 'space.bilibili.com') {
+          m = path.match(/^\/(\d{1,20})(?:\/.*)?$/);
+          if (m) {
+            var u1 = 'https://space.bilibili.com/' + m[1];
+            return { ok: true, empty: false, platform: 'bili', label: 'B站主页', url: u1, changed: u1 !== cleaned };
+          }
+        }
+        if (host === 'm.bilibili.com' || host === 'www.bilibili.com') {
+          m = path.match(/^\/space\/(\d{1,20})(?:\/.*)?$/);
+          if (m) {
+            var u2 = 'https://space.bilibili.com/' + m[1];
+            return { ok: true, empty: false, platform: 'bili', label: 'B站主页', url: u2, changed: u2 !== cleaned };
+          }
+        }
+        if (host === 'b23.tv' || host === 'bili2233.cn') {
+          m = path.match(/^\/([A-Za-z0-9_-]{4,24})\/?$/);
+          if (m) {
+            var u3 = 'https://' + host + '/' + m[1];
+            return { ok: true, empty: false, platform: 'bili', label: 'B站主页', url: u3, changed: u3 !== cleaned };
+          }
+        }
+
+        // 抖音
+        if (host === 'v.douyin.com') {
+          m = path.match(/^\/([A-Za-z0-9_-]{4,32})(?:\/.*)?$/);
+          if (m) {
+            var u4 = 'https://v.douyin.com/' + m[1] + '/';
+            return { ok: true, empty: false, platform: 'douyin', label: '抖音主页', url: u4, changed: u4 !== cleaned };
+          }
+        }
+        if (host === 'www.douyin.com' || host === 'm.douyin.com') {
+          m = path.match(/^\/user\/([A-Za-z0-9_-]{4,128})(?:\/.*)?$/);
+          if (m) {
+            var u5 = 'https://www.douyin.com/user/' + m[1];
+            return { ok: true, empty: false, platform: 'douyin', label: '抖音主页', url: u5, changed: u5 !== cleaned };
+          }
+        }
+        if (host === 'iesdouyin.com' || host === 'www.iesdouyin.com' || host === 'm.iesdouyin.com') {
+          m = path.match(/^\/share\/user\/([A-Za-z0-9_-]{4,128})(?:\/.*)?$/);
+          if (m) {
+            var secUid = u.searchParams.get('sec_uid') || '';
+            var u6 = /^[A-Za-z0-9_-]{8,128}$/.test(secUid)
+              ? 'https://www.douyin.com/user/' + secUid
+              : 'https://www.iesdouyin.com/share/user/' + m[1];
+            return { ok: true, empty: false, platform: 'douyin', label: '抖音主页', url: u6, changed: u6 !== cleaned };
+          }
+        }
+
+        // 快手
+        if (host === 'v.kuaishou.com') {
+          m = path.match(/^\/((?:f\/)?[A-Za-z0-9_-]{4,32})(?:\/.*)?$/);
+          if (m) {
+            var u7 = 'https://v.kuaishou.com/' + m[1];
+            return { ok: true, empty: false, platform: 'kuaishou', label: '快手主页', url: u7, changed: u7 !== cleaned };
+          }
+        }
+        if (host === 'www.kuaishou.com' || host === 'live.kuaishou.com' || host === 'm.kuaishou.com') {
+          var mp = path.match(/^\/profile\/([A-Za-z0-9_-]{4,64})(?:\/.*)?$/);
+          if (mp) {
+            var u8 = 'https://www.kuaishou.com/profile/' + mp[1];
+            return { ok: true, empty: false, platform: 'kuaishou', label: '快手主页', url: u8, changed: u8 !== cleaned };
+          }
+          var mu = path.match(/^\/u\/([A-Za-z0-9_-]{4,64})(?:\/.*)?$/);
+          if (mu) {
+            var u9 = 'https://www.kuaishou.com/u/' + mu[1];
+            return { ok: true, empty: false, platform: 'kuaishou', label: '快手主页', url: u9, changed: u9 !== cleaned };
+          }
+        }
+        if (host === 'c.kuaishou.com') {
+          var mf = path.match(/^\/fw\/user\/([A-Za-z0-9_-]{4,64})(?:\/.*)?$/);
+          if (mf) {
+            var u10 = 'https://c.kuaishou.com/fw/user/' + mf[1];
+            return { ok: true, empty: false, platform: 'kuaishou', label: '快手主页', url: u10, changed: u10 !== cleaned };
+          }
+        }
+      }
+
+      return { ok: false, empty: false, url: '', platform: '', label: '', changed: false };
+    },
     sanitizeUrl: function (url) {
-      if (!url) return '';
-      var clean = String(url).trim();
-      if (/^https?:\/\//i.test(clean) && clean.length <= 300) return clean;
+      var res = Utils.extractProfileLink(url);
+      if (res && res.ok && !res.empty && res.url && res.url.length <= 200) {
+        return res.url;
+      }
       return '';
     },
     safeId: function (id) {
@@ -182,6 +587,170 @@
       } catch (e) {
         return 'cid_anon_fallback';
       }
+    },
+    _collectFpRaw: function () {
+      var parts = [];
+      try {
+        parts.push(navigator.userAgent || '');
+        parts.push(navigator.language || '');
+        parts.push(Array.isArray(navigator.languages) ? navigator.languages.join(',') : '');
+        parts.push(navigator.platform || '');
+        parts.push(String(navigator.hardwareConcurrency || 0));
+        parts.push(String(navigator.deviceMemory || 0));
+        parts.push(String(navigator.maxTouchPoints || 0));
+        if (window.screen) {
+          parts.push([screen.width, screen.height, screen.colorDepth, screen.pixelDepth, window.devicePixelRatio || 1].join('x'));
+        }
+        try {
+          parts.push(Intl.DateTimeFormat().resolvedOptions().timeZone || '');
+        } catch (_) {}
+        try {
+          var canvas = document.createElement('canvas');
+          canvas.width = 220;
+          canvas.height = 44;
+          var ctx = canvas.getContext('2d');
+          if (ctx) {
+            ctx.textBaseline = 'top';
+            ctx.font = '14px sans-serif';
+            ctx.fillStyle = '#1e90e8';
+            ctx.fillRect(6, 4, 80, 18);
+            ctx.fillStyle = '#0f172a';
+            ctx.fillText('ARC_FP_v1_' + (navigator.platform || ''), 8, 8);
+            parts.push(canvas.toDataURL().slice(-120));
+          }
+        } catch (_) {}
+        try {
+          var glCanvas = document.createElement('canvas');
+          var gl = glCanvas.getContext('webgl') || glCanvas.getContext('experimental-webgl');
+          if (gl) {
+            var dbg = gl.getExtension('WEBGL_debug_renderer_info');
+            if (dbg) {
+              parts.push(String(gl.getParameter(dbg.UNMASKED_VENDOR_WEBGL) || ''));
+              parts.push(String(gl.getParameter(dbg.UNMASKED_RENDERER_WEBGL) || ''));
+            }
+          }
+        } catch (_) {}
+      } catch (_) {}
+      return parts.join('|');
+    },
+    _fnvHex32: function (str) {
+      var seeds = [0x811c9dc5, 0x9e3779b9, 0x243f6a88, 0xb7e15162];
+      var out = '';
+      for (var s = 0; s < seeds.length; s++) {
+        var h = seeds[s] >>> 0;
+        for (var i = 0; i < str.length; i++) {
+          h ^= str.charCodeAt(i);
+          h = Math.imul(h, 0x01000193) >>> 0;
+        }
+        out += ('00000000' + h.toString(16)).slice(-8);
+      }
+      return out.toLowerCase();
+    },
+    getDeviceFingerprint: function () {
+      if (state.deviceFp && /^[a-f0-9]{16,64}$/i.test(state.deviceFp)) {
+        return state.deviceFp;
+      }
+      try {
+        var cached = localStorage.getItem(STORAGE_KEYS.DEVICE_FP);
+        if (cached && /^[a-f0-9]{16,64}$/i.test(cached)) {
+          state.deviceFp = cached.toLowerCase();
+          return state.deviceFp;
+        }
+      } catch (_) {}
+      var raw = Utils._collectFpRaw();
+      var fp = Utils._fnvHex32(raw);
+      state.deviceFp = fp;
+      try { localStorage.setItem(STORAGE_KEYS.DEVICE_FP, fp); } catch (_) {}
+      return fp;
+    },
+    initFingerprintAsync: function () {
+      var raw = Utils._collectFpRaw();
+      if (window.crypto && window.crypto.subtle && typeof TextEncoder !== 'undefined') {
+        try {
+          var buf = new TextEncoder().encode(raw);
+          window.crypto.subtle.digest('SHA-256', buf).then(function (hashBuf) {
+            var arr = Array.from(new Uint8Array(hashBuf));
+            var hex = arr.map(function (b) { return ('0' + b.toString(16)).slice(-2); }).join('');
+            if (/^[a-f0-9]{64}$/.test(hex)) {
+              state.deviceFp = hex;
+              try { localStorage.setItem(STORAGE_KEYS.DEVICE_FP, hex); } catch (_) {}
+            }
+          }).catch(function () {});
+        } catch (_) {}
+      }
+      return Utils.getDeviceFingerprint();
+    },
+    getApiHeaders: function (includeJson) {
+      var h = {
+        'X-Client-ID': Utils.getClientId(),
+        'X-Device-FP': Utils.getDeviceFingerprint()
+      };
+      if (includeJson) h['Content-Type'] = 'application/json';
+      return h;
+    },
+    detectPlatform: function (url) {
+      var res = Utils.extractProfileLink(url);
+      if (res && res.ok && !res.empty) {
+        if (res.platform === 'bili') return { label: 'B站主页', cls: 'is-bili' };
+        if (res.platform === 'douyin') return { label: '抖音主页', cls: 'is-douyin' };
+        if (res.platform === 'kuaishou') return { label: '快手主页', cls: 'is-ks' };
+      }
+      return { label: '作者主页', cls: '' };
+    },
+    computeLocalBuildSig: function (carId, p) {
+      var paramObj = p || {};
+      var num = function (v, d) {
+        var n = Number(v);
+        return Number.isFinite(n) ? Number(n.toFixed(4)) : d;
+      };
+      var emps = Array.isArray(paramObj.emps)
+        ? paramObj.emps.slice()
+        : (Array.isArray(paramObj.empowers) ? paramObj.empowers.slice() : []);
+      emps = emps.map(function (x) { return String(x || '').trim(); }).filter(Boolean).sort();
+      var chipsRaw = Array.isArray(paramObj.chips_on)
+        ? paramObj.chips_on
+        : (Array.isArray(paramObj.chips) ? paramObj.chips : []);
+      var chips = chipsRaw.map(function (c) {
+        if (!c || typeof c !== 'object') return String(c || '').trim();
+        var o = c.opts && typeof c.opts === 'object' ? c.opts : {};
+        var optStr = Object.keys(o).sort().map(function (k) { return k + '=' + String(o[k]); }).join(',');
+        return String(c.id || c.name || c.type || '') + (optStr ? ':' + optStr : '');
+      }).filter(Boolean).sort();
+      var canonical = [
+        'car=' + String(carId || ''),
+        'ut=' + num(paramObj.ult_threshold, 100),
+        'sc=' + num(paramObj.start_charge, 0),
+        'bn=' + num(paramObj.base_nitro, 0),
+        'nr=' + String(paramObj.nitro_rule || '1x5'),
+        'nd=' + num(paramObj.nitro_dur, 0),
+        'bud=' + num(paramObj.base_ult_dur, 0),
+        'spec=' + (paramObj.is_spec === 0 ? 0 : 1),
+        'cr=' + num(paramObj.counter_range, 0),
+        'dr=' + num(paramObj.debuff_range, 0),
+        'xj=' + num(paramObj.xianji, 0),
+        'hn=' + num(paramObj.huineng, 0),
+        'mn=' + (paramObj.is_manual_nitro ? 1 : 0),
+        'fn=' + num(paramObj.first_nitro_count !== undefined ? paramObj.first_nitro_count : paramObj.start_nitro_count, 1),
+        'ln=' + num(paramObj.loop_nitro_count !== undefined ? paramObj.loop_nitro_count : paramObj.cycle_nitro_count, 0),
+        'th=' + num(paramObj.tuanhun !== undefined ? paramObj.tuanhun : paramObj.team_spirit, 0),
+        'dev=' + String(paramObj.device || ''),
+        'dsf=' + num(paramObj.dev_sub_first, 0),
+        'dsl=' + num(paramObj.dev_sub_loop, 0),
+        'jf=' + num(paramObj.jiezou_first, 0),
+        'jl=' + num(paramObj.jiezou_loop, 0),
+        'qs=' + (paramObj.queyi_self ? 1 : 0),
+        'qe=' + (paramObj.queyi_enemy ? 1 : 0),
+        'hf=' + num(paramObj.huaxin_first, 0),
+        'hl=' + num(paramObj.huaxin_loop, 0),
+        'ef=' + num(paramObj.extra_eff, 0),
+        'en=' + (paramObj.has_extra_nitro ? num(paramObj.val_extra_nitro, 0) : 0) + ':' + (paramObj.chk_extra_nitro_first ? 1 : 0) + ':' + (paramObj.chk_extra_nitro_loop ? 1 : 0),
+        'eu=' + (paramObj.has_extra_ult ? 1 : 0) + ':' + num(paramObj.val_extra_ult_first, 0) + ':' + num(paramObj.val_extra_ult_loop, 0),
+        'ep=' + (paramObj.has_extra_per_sec ? num(paramObj.val_extra_per_sec, 0) : 0) + ':' + (paramObj.chk_extra_per_sec_first ? 1 : 0) + ':' + (paramObj.chk_extra_per_sec_loop ? 1 : 0),
+        'ct=' + num(paramObj.val_custom_trig, 0) + ':' + num(paramObj.custom_trig_first, 0) + ':' + num(paramObj.custom_trig_loop, 0),
+        'emps=' + emps.join(','),
+        'chips=' + chips.join(',')
+      ].join('|');
+      return Utils._fnvHex32(canonical);
     }
   };
 
@@ -214,7 +783,7 @@
       if (el) el.checked = !!val;
     },
     capture: function () {
-      var checkedRadio = document.querySelector('input[name="nitro_radio"]:checked');
+      var checkedRadio = document.querySelector('input[name="nitroRadio"]:checked') || document.querySelector('input[name="nitro_radio"]:checked');
       var nr = checkedRadio ? checkedRadio.value : '1x5';
       var nd = ParamsIO.getVal('time_' + nr, 0);
 
@@ -222,10 +791,24 @@
         return cb.value;
       });
 
-      var chipsOn = (window._chipsOn && Array.isArray(window._chipsOn)) ? window._chipsOn.slice() : [];
+      var chipsOn = [];
+      if (window._chipsOn && Array.isArray(window._chipsOn)) {
+        chipsOn = window._chipsOn.map(function (c) {
+          if (!c || typeof c !== 'object') return c;
+          return {
+            id: c.id,
+            opts: c.opts ? Object.assign({}, c.opts) : {}
+          };
+        });
+      }
+
+      var curMode = (typeof window.getCalcMode === 'function')
+        ? window.getCalcMode()
+        : (document.body.getAttribute('data-calc-mode') || 'solo');
 
       return {
-        schema_version: 1,
+        schema_version: 2,
+        calc_mode: curMode === 'team' ? 'team' : 'solo',
         ult_threshold: ParamsIO.getVal('ultThreshold', 100),
         start_charge: ParamsIO.getVal('startCharge', 0),
         base_nitro: ParamsIO.getVal('baseNitro', 0),
@@ -262,7 +845,7 @@
         huineng: ParamsIO.getVal('inputHuineng', 0),
         is_manual_nitro: window.isManualNitroCount ? 1 : 0,
         loop_nitro_count: ParamsIO.getInt('inputNitroCount', 0),
-        device: typeof window.getDevice === 'function' ? window.getDevice() : '0',
+        device: typeof window.getDevice === 'function' ? window.getDevice() : '',
         dev_sub_first: ParamsIO.getVal('dev_sub_first', 0),
         dev_sub_loop: ParamsIO.getVal('dev_sub_loop', 0),
         tuanhun: ParamsIO.getVal('inputTuanhun', 0),
@@ -277,16 +860,18 @@
       ParamsIO.setVal('startCharge', p.start_charge);
       ParamsIO.setVal('baseNitro', p.base_nitro);
       ParamsIO.setVal('baseUltDuration', p.base_ult_dur);
-      ParamsIO.setChk('isSpec', p.is_spec);
-      if (p.counter_range !== undefined) {
-        ParamsIO.setVal('counterRange', p.counter_range);
+      ParamsIO.setChk('isSpec', p.is_spec !== undefined ? p.is_spec : 1);
+      var targetCounter = p.counter_range !== undefined ? p.counter_range : 0;
+      var targetDebuff = p.debuff_range !== undefined ? p.debuff_range : 0;
+      if (typeof window.setEnvSliders === 'function') {
+        window.setEnvSliders(targetCounter, targetDebuff);
+      } else {
+        ParamsIO.setVal('counterRange', targetCounter);
         var cv = document.getElementById('counterValue');
-        if (cv) cv.innerText = p.counter_range + '%';
-      }
-      if (p.debuff_range !== undefined) {
-        ParamsIO.setVal('debuffRange', p.debuff_range);
+        if (cv) cv.innerText = targetCounter + '%';
+        ParamsIO.setVal('debuffRange', targetDebuff);
         var dv = document.getElementById('debuffValue');
-        if (dv) dv.innerText = p.debuff_range + '%';
+        if (dv) dv.innerText = targetDebuff + '%';
       }
 
       if (p.nitro_rule) {
@@ -315,57 +900,76 @@
         });
       }
 
-      ParamsIO.setVal('jiezou_sub_first', p.jiezou_first);
-      ParamsIO.setVal('jiezou_sub_loop', p.jiezou_loop);
-      ParamsIO.setChk('queyi_sub_self', p.queyi_self);
-      ParamsIO.setChk('queyi_sub_enemy', p.queyi_enemy);
-      ParamsIO.setVal('huaxin_sub_first', p.huaxin_first);
-      ParamsIO.setVal('huaxin_sub_loop', p.huaxin_loop);
+      ParamsIO.setVal('jiezou_sub_first', p.jiezou_first !== undefined ? p.jiezou_first : 0);
+      ParamsIO.setVal('jiezou_sub_loop', p.jiezou_loop !== undefined ? p.jiezou_loop : 0);
+      ParamsIO.setChk('queyi_sub_self', p.queyi_self !== undefined ? p.queyi_self : 0);
+      ParamsIO.setChk('queyi_sub_enemy', p.queyi_enemy !== undefined ? p.queyi_enemy : 0);
+      ParamsIO.setVal('huaxin_sub_first', p.huaxin_first !== undefined ? p.huaxin_first : 0);
+      ParamsIO.setVal('huaxin_sub_loop', p.huaxin_loop !== undefined ? p.huaxin_loop : 0);
 
-      if (p.has_extra_nitro !== undefined) {
-        ParamsIO.setChk('hasExtraNitro', p.has_extra_nitro);
-        ParamsIO.setVal('valExtraNitro', p.val_extra_nitro);
-        ParamsIO.setChk('chkExtraNitroFirst', p.chk_extra_nitro_first);
-        ParamsIO.setChk('chkExtraNitroLoop', p.chk_extra_nitro_loop);
-      }
+      ParamsIO.setChk('hasExtraNitro', p.has_extra_nitro !== undefined ? p.has_extra_nitro : 0);
+      ParamsIO.setVal('valExtraNitro', p.val_extra_nitro !== undefined ? p.val_extra_nitro : 0);
+      ParamsIO.setChk('chkExtraNitroFirst', p.chk_extra_nitro_first !== undefined ? p.chk_extra_nitro_first : 1);
+      ParamsIO.setChk('chkExtraNitroLoop', p.chk_extra_nitro_loop !== undefined ? p.chk_extra_nitro_loop : 1);
 
-      if (p.has_extra_ult !== undefined) {
-        ParamsIO.setChk('hasExtraUlt', p.has_extra_ult);
-        ParamsIO.setVal('valExtraUltFirst', p.val_extra_ult_first);
-        ParamsIO.setVal('valExtraUltLoop', p.val_extra_ult_loop);
-      }
+      ParamsIO.setChk('hasExtraUlt', p.has_extra_ult !== undefined ? p.has_extra_ult : 0);
+      ParamsIO.setVal('valExtraUltFirst', p.val_extra_ult_first !== undefined ? p.val_extra_ult_first : 0);
+      ParamsIO.setVal('valExtraUltLoop', p.val_extra_ult_loop !== undefined ? p.val_extra_ult_loop : 0);
 
-      if (p.has_extra_per_sec !== undefined) {
-        ParamsIO.setChk('hasExtraPerSec', p.has_extra_per_sec);
-        ParamsIO.setVal('valExtraPerSec', p.val_extra_per_sec);
-        ParamsIO.setChk('chkExtraPerSecFirst', p.chk_extra_per_sec_first);
-        ParamsIO.setChk('chkExtraPerSecLoop', p.chk_extra_per_sec_loop);
-      }
+      ParamsIO.setChk('hasExtraPerSec', p.has_extra_per_sec !== undefined ? p.has_extra_per_sec : 0);
+      ParamsIO.setVal('valExtraPerSec', p.val_extra_per_sec !== undefined ? p.val_extra_per_sec : 0);
+      ParamsIO.setChk('chkExtraPerSecFirst', p.chk_extra_per_sec_first !== undefined ? p.chk_extra_per_sec_first : 1);
+      ParamsIO.setChk('chkExtraPerSecLoop', p.chk_extra_per_sec_loop !== undefined ? p.chk_extra_per_sec_loop : 1);
 
-      ParamsIO.setVal('valCustomTrig', p.val_custom_trig);
-      ParamsIO.setVal('customTrigFirstCount', p.custom_trig_first);
-      ParamsIO.setVal('customTrigLoopCount', p.custom_trig_loop);
+      ParamsIO.setVal('valCustomTrig', p.val_custom_trig !== undefined ? p.val_custom_trig : 0);
+      ParamsIO.setVal('customTrigFirstCount', p.custom_trig_first !== undefined ? p.custom_trig_first : 0);
+      ParamsIO.setVal('customTrigLoopCount', p.custom_trig_loop !== undefined ? p.custom_trig_loop : 0);
 
       if (typeof window.toggleExtraUI === 'function') window.toggleExtraUI();
 
-      ParamsIO.setVal('extraEfficiency', p.extra_eff);
+      ParamsIO.setVal('extraEfficiency', p.extra_eff !== undefined ? p.extra_eff : 0);
       var firstNitro = p.first_nitro_count !== undefined ? p.first_nitro_count : p.start_nitro_count;
-      ParamsIO.setVal('inputFirstNitroCount', firstNitro);
-      ParamsIO.setVal('inputXianji', p.xianji);
-      ParamsIO.setVal('inputHuineng', p.huineng);
+      ParamsIO.setVal('inputFirstNitroCount', firstNitro !== undefined ? firstNitro : 1);
+      ParamsIO.setVal('inputXianji', p.xianji !== undefined ? p.xianji : 0);
+      ParamsIO.setVal('inputHuineng', p.huineng !== undefined ? p.huineng : 0);
       var tuanhunVal = p.tuanhun !== undefined ? p.tuanhun : p.team_spirit;
-      ParamsIO.setVal('inputTuanhun', tuanhunVal);
+      ParamsIO.setVal('inputTuanhun', tuanhunVal !== undefined ? tuanhunVal : 0);
 
       var loopNitro = p.loop_nitro_count !== undefined ? p.loop_nitro_count : p.cycle_nitro_count;
       if (p.is_manual_nitro !== undefined || loopNitro !== undefined) {
         window.isManualNitroCount = p.is_manual_nitro !== undefined ? !!p.is_manual_nitro : true;
-        ParamsIO.setVal('inputNitroCount', loopNitro);
-        if (typeof window.updateNitroCountUI === 'function') window.updateNitroCountUI();
+        ParamsIO.setVal('inputNitroCount', loopNitro !== undefined ? loopNitro : 0);
+      } else {
+        window.isManualNitroCount = false;
       }
+      if (typeof window.updateNitroCountUI === 'function') window.updateNitroCountUI();
 
-      var chipsList = Array.isArray(p.chips_on) ? p.chips_on : (Array.isArray(p.chips) ? p.chips : null);
-      if (chipsList && typeof window.renderChips === 'function') {
-        window._chipsOn = chipsList.slice();
+      if (typeof window.setDevice === 'function') {
+        var devType = (p.device === '0' || !p.device) ? '' : String(p.device);
+        window.setDevice(devType, true);
+      }
+      ParamsIO.setVal('dev_sub_first', p.dev_sub_first !== undefined ? p.dev_sub_first : 0);
+      ParamsIO.setVal('dev_sub_loop', p.dev_sub_loop !== undefined ? p.dev_sub_loop : 0);
+
+      var chipsList = Array.isArray(p.chips_on) ? p.chips_on : (Array.isArray(p.chips) ? p.chips : []);
+      var normChips = chipsList.map(function (c) {
+        if (typeof c === 'string') return { id: c, opts: { loopMode: 'peak' } };
+        if (c && typeof c === 'object') {
+          return {
+            id: c.id || c.type || c.name || '',
+            opts: c.opts && typeof c.opts === 'object' ? Object.assign({}, c.opts) : {}
+          };
+        }
+        return null;
+      }).filter(function (c) { return c && c.id; });
+      if (typeof window.chipRestore === 'function') {
+        var serialized = normChips.length ? normChips.map(function (inst) {
+          var o = Object.keys(inst.opts || {}).map(function (k) { return k + '=' + inst.opts[k]; }).join(',');
+          return inst.id + (o ? '.' + o : '');
+        }).join('-') : '0';
+        window.chipRestore(serialized);
+      } else if (typeof window.renderChips === 'function') {
+        window._chipsOn = normChips;
         window.renderChips(true);
       }
 
@@ -425,17 +1029,29 @@
         Draft.restore();
       }
     },
+    clear: function () {
+      if (state.draftTimer) {
+        clearTimeout(state.draftTimer);
+        state.draftTimer = null;
+      }
+      try {
+        localStorage.removeItem(STORAGE_KEYS.DRAFT);
+      } catch (e) {}
+    },
     scheduleSave: function () {
-      if (!Draft.isEnabled()) return;
+      if (!Draft.isEnabled() || state._isRestoringDraft || window.isRestoringConfig) return;
       if (state.draftTimer) clearTimeout(state.draftTimer);
       state.draftTimer = setTimeout(function () {
         Draft.save();
       }, 500); // 防抖缩短至 500ms，保证手速快的用户刷新前迅速落盘
     },
     save: function () {
-      if (!Draft.isEnabled()) return;
+      if (!Draft.isEnabled() || state._isRestoringDraft || window.isRestoringConfig) return;
       var curCarId = state.currentCarId || (window._selectedCar ? window._selectedCar.id : null);
-      if (!curCarId || curCarId === -1) return;
+      if (!curCarId || curCarId === -1) {
+        Draft.clear();
+        return;
+      }
       var draftData = {
         car_id: curCarId,
         params: ParamsIO.capture(),
@@ -447,13 +1063,28 @@
       if (!Draft.isEnabled()) return;
       var draft = Utils.getStorage(STORAGE_KEYS.DRAFT, null);
       if (draft && draft.car_id && draft.car_id !== -1 && draft.params) {
-        if (typeof window.pickCar === 'function') {
-          window.pickCar(draft.car_id);
-        }
-        setTimeout(function () {
+        var prevRestoring = window.isRestoringConfig;
+        state._isRestoringDraft = true;
+        window.isRestoringConfig = true;
+        try {
+          if (typeof window.setCalcMode === 'function' && draft.params.calc_mode && (draft.params.calc_mode === 'solo' || draft.params.calc_mode === 'team')) {
+            window.setCalcMode(draft.params.calc_mode, true, true);
+          }
+          if (typeof window.pickCar === 'function') {
+            window.pickCar(draft.car_id);
+          }
           ParamsIO.apply(draft.params);
-          CommunityPlans.toast('已自动恢复上次未保存的草稿');
-        }, 150);
+        } finally {
+          window.isRestoringConfig = prevRestoring;
+          state._isRestoringDraft = false;
+        }
+        if (typeof window.calculate === 'function') {
+          window.calculate();
+        }
+        if (typeof window.__pvRefreshCollapse === 'function') {
+          window.__pvRefreshCollapse(false);
+        }
+        CommunityPlans.toast('已自动恢复上次未保存的草稿');
       }
     }
   };
@@ -520,81 +1151,16 @@
     }
   };
 
-  // 预置官方/国服顶尖方案库 (Pro Plans)
-  var DefaultProPlans = [
-    {
-      id: 'pro_devil_ray_01',
-      car_id: 10044, // 魔鬼鱼
-      car_name: '魔鬼鱼',
-      title: '国服榜首·首发爆发流',
-      author: '国服巅峰组',
-      player_id: '29875931',
-      links: ['https://space.bilibili.com/43438481'],
-      isPro: true,
-      votes: 186,
-      created_at: 1718000000000,
-      params: {
-        xianji: 28,
-        huineng: 35,
-        tuanhun: 0,
-        first_nitro_count: 1,
-        loop_nitro_count: 1,
-        emps: ['yichu', 'jiezou'],
-        nitro_rule: '1x5'
-      }
-    },
-    {
-      id: 'pro_porsche_gt2_01',
-      car_id: 10000, // 保时捷 911 GT2 RS
-      car_name: '保时捷 911 GT2 RS',
-      title: '极限循环·无限大招配装',
-      author: '王牌竞速赛事组',
-      player_id: '10982341',
-      links: ['https://space.bilibili.com/43438481'],
-      isPro: true,
-      votes: 242,
-      created_at: 1718500000000,
-      params: {
-        xianji: 24,
-        huineng: 40,
-        tuanhun: 0,
-        first_nitro_count: 1,
-        loop_nitro_count: 1,
-        emps: ['fusu'],
-        nitro_rule: '1x5'
-      }
-    },
-    {
-      id: 'pro_zen_01',
-      car_id: 10026, // 禅
-      car_name: '禅',
-      title: '天梯国一·极速充能套',
-      author: '车队顶级车神',
-      player_id: '800826',
-      links: ['https://space.bilibili.com/43438481'],
-      isPro: true,
-      votes: 315,
-      created_at: 1719000000000,
-      params: {
-        xianji: 30,
-        huineng: 45,
-        tuanhun: 0,
-        first_nitro_count: 1,
-        loop_nitro_count: 1,
-        emps: ['huishou'],
-        nitro_rule: '1x5'
-      }
-    }
-  ];
+  // 不再硬编码假国服方案，所有国服顶尖方案一律来自后端真实审核池
+  var DefaultProPlans = [];
 
   // 核心对外模块
   var CommunityPlans = {
     init: function () {
       state.savedPlans = Utils.getStorage(STORAGE_KEYS.PLANS, []);
       state.votedMap = Utils.getStorage(STORAGE_KEYS.VOTES, {}) || {};
-      state.proPlans = DefaultProPlans.map(function (p) {
-        return Object.assign({}, p, { isVoted: Boolean(state.votedMap[p.id]) });
-      });
+      state.proPlans = [];
+      Utils.initFingerprintAsync();
 
       // 渲染挂载容器与面板骨架
       CommunityPlans.renderContainer();
@@ -664,51 +1230,59 @@
       CommunityPlans.toggleCollapse();
     },
 
-    // 切换折叠状态
-    toggleCollapse: function (forceState) {
+    // 切换折叠状态 (与全站 v4.js __pvMorph 规范 100% 同步：记录目标态避免重复触发，仅在收起终态才隐藏节点)
+    toggleCollapse: function (forceState, instant) {
       var container = document.getElementById('communityPlansContainer');
       if (!container) return;
       var card = container.querySelector('.cp-plans-card') || container;
-      var isCollapsed = card.classList.contains('pv-collapsed') || card.classList.contains('pv-shut');
-      var shouldShut = (typeof forceState === 'boolean') ? forceState : !isCollapsed;
-
-      if (typeof window.__pvMorph === 'function') {
-        var kids = [].filter.call(card.children, function (k) {
-          return !k.classList.contains('cp-card-title');
-        });
-        card.classList.toggle('pv-shut', shouldShut);
-        container.classList.toggle('pv-shut', shouldShut);
-
-        if (shouldShut) {
-          window.__pvMorph(card, false, ['height'], kids, function () {
-            card.classList.add('pv-collapsed');
-            var h = card.getBoundingClientRect().height;
-            card.classList.remove('pv-collapsed');
-            return { height: h };
-          }, function () {
-            card.classList.add('pv-collapsed');
-            container.classList.add('pv-collapsed');
-          });
-        } else {
-          window.__pvMorph(card, true, ['height'], kids, function () {
-            card.classList.remove('pv-collapsed');
-            container.classList.remove('pv-collapsed');
-            return { height: card.getBoundingClientRect().height };
-          }, function () {
-            card.classList.remove('pv-collapsed');
-            container.classList.remove('pv-collapsed');
-          });
-        }
-      } else {
-        container.classList.toggle('pv-collapsed', shouldShut);
-        container.classList.toggle('pv-shut', shouldShut);
-        card.classList.toggle('pv-collapsed', shouldShut);
-        card.classList.toggle('pv-shut', shouldShut);
+      var curShut = card.__pvA ? Boolean(card.__pvWant) : card.classList.contains('pv-collapsed');
+      var shouldShut = (typeof forceState === 'boolean') ? forceState : !curShut;
+      if (curShut === shouldShut && card.classList.contains('pv-shut') === shouldShut && !instant) {
+        return;
       }
+      card.__pvWant = shouldShut;
+      card.classList.toggle('pv-shut', shouldShut);
+      if (container !== card) container.classList.toggle('pv-shut', shouldShut);
+
+      if (instant || typeof window.__pvMorph !== 'function') {
+        if (card.__pvA) { card.__pvA.cancel(); card.__pvA = null; }
+        if (card.__pvK) { card.__pvK.forEach(function (k) { k.cancel(); }); card.__pvK = null; }
+        card.style.overflow = '';
+        container.classList.toggle('pv-collapsed', shouldShut);
+        card.classList.toggle('pv-collapsed', shouldShut);
+        return;
+      }
+
+      var kids = [].filter.call(card.children, function (k) {
+        return !k.classList.contains('cp-card-title');
+      });
+
+      if (shouldShut) {
+        window.__pvMorph(card, false, ['height'], kids, function () {
+          card.classList.add('pv-collapsed');
+          var h = card.getBoundingClientRect().height;
+          card.classList.remove('pv-collapsed');
+          return { height: h };
+        }, function () {
+          card.classList.add('pv-collapsed');
+          if (container !== card) container.classList.add('pv-collapsed');
+        });
+      } else {
+        window.__pvMorph(card, true, ['height'], kids, function () {
+          card.classList.remove('pv-collapsed');
+          if (container !== card) container.classList.remove('pv-collapsed');
+          return { height: card.getBoundingClientRect().height };
+        }, null);
+      }
+    },
+
+    scheduleDraftSave: function () {
+      Draft.scheduleSave();
     },
 
     // 赛车变更联动
     onCarChanged: function (carOrId) {
+      var prevCarId = state.currentCarId;
       if (!carOrId) {
         state.currentCarId = null;
         state.currentCar = null;
@@ -723,53 +1297,107 @@
           state.currentCar = db.find(function (c) { return c.id === carOrId; }) || null;
         }
       }
+      if (prevCarId !== state.currentCarId && !state._isRestoringDraft && !window.isRestoringConfig) {
+        state.lastSnapshot = null;
+        state.hasUndoAvailable = false;
+        state.activeAppliedPlanId = null;
+        state.appliedSource = null;
+        var undoBtn = document.getElementById('cpBtnUndo');
+        if (undoBtn) undoBtn.style.display = 'none';
+      }
       CommunityPlans.renderPlans();
       if (state.currentCarId) {
         CommunityPlans.fetchRemotePlans(state.currentCarId);
-        // 选车联动调度草稿自动保存
-        Draft.scheduleSave();
+        // 切车后立即覆盖更新新车的洁净草稿，避免旧车改动残留并在未满防抖期刷新时复现
+        if (!state._isRestoringDraft && !window.isRestoringConfig) {
+          Draft.save();
+        }
+      } else if (!state._isRestoringDraft && !window.isRestoringConfig) {
+        Draft.clear();
       }
     },
 
     // 异步从私有后端 Serverless 拉取社区已审核方案
     fetchRemotePlans: function (carId) {
       if (!carId || carId === -1) return;
+      state.fetchSeq = (state.fetchSeq || 0) + 1;
+      var reqSeq = state.fetchSeq;
       state.isFetchingRemote = true;
       var sortParam = state.sortMode || 'hot';
-      var url = '/api/plans?car_id=' + encodeURIComponent(carId) + '&sort_by=' + encodeURIComponent(sortParam);
-      fetch(url)
+      var url = '/api/plans?car_id=' + encodeURIComponent(carId) + '&sort_by=' + encodeURIComponent(sortParam) + '&limit=100';
+      fetch(url, {
+        method: 'GET',
+        headers: Utils.getApiHeaders(false)
+      })
         .then(function (res) {
           if (!res.ok) throw new Error('HTTP ' + res.status);
           return res.json();
         })
         .then(function (json) {
+          if (reqSeq !== state.fetchSeq || String(carId) !== String(state.currentCarId)) return;
+          if (json && json.site_meta && typeof json.site_meta === 'object') {
+            state.siteMeta = Object.assign({}, state.siteMeta, json.site_meta);
+          }
           if (json && json.success && json.data && Array.isArray(json.data.items)) {
             var localUpdated = false;
+            var votesUpdated = false;
             state.remotePlans = json.data.items.map(function (rp) {
-              // 若远程已过审方案命中本地方案的 remote_id，自动同步本地方案的审核通过状态与国服勋标
               var matchedLocal = state.savedPlans.find(function (lp) {
                 return lp.remote_id && lp.remote_id === rp.id;
               });
-              if (matchedLocal && matchedLocal.remote_status !== 'approved') {
-                matchedLocal.remote_status = 'approved';
-                if (rp.is_pro) matchedLocal.isPro = true;
-                localUpdated = true;
+              if (matchedLocal) {
+                if (matchedLocal.remote_status !== 'approved') {
+                  matchedLocal.remote_status = 'approved';
+                  localUpdated = true;
+                }
+                if (rp.is_pro && !matchedLocal.isPro) {
+                  matchedLocal.isPro = true;
+                  localUpdated = true;
+                }
+                if (rp.is_partner && !matchedLocal.isPartner) {
+                  matchedLocal.isPartner = true;
+                  localUpdated = true;
+                }
+                if (typeof rp.votes === 'number' && matchedLocal.votes !== rp.votes) {
+                  matchedLocal.votes = rp.votes;
+                  localUpdated = true;
+                }
               }
-              rp.isVoted = Boolean(state.votedMap[rp.id]);
+              if (typeof rp.viewer_has_voted === 'boolean') {
+                rp.isVoted = rp.viewer_has_voted;
+                if (rp.viewer_has_voted) {
+                  if (!state.votedMap[rp.id]) {
+                    state.votedMap[rp.id] = 1;
+                    votesUpdated = true;
+                  }
+                } else if (state.votedMap[rp.id]) {
+                  delete state.votedMap[rp.id];
+                  votesUpdated = true;
+                }
+              } else {
+                rp.isVoted = Boolean(state.votedMap[rp.id]);
+              }
+              rp.viewer_is_author = Boolean(rp.viewer_is_author || matchedLocal);
               return rp;
             });
             if (localUpdated) {
               Utils.setStorage(STORAGE_KEYS.PLANS, state.savedPlans);
             }
+            if (votesUpdated) {
+              Utils.setStorage(STORAGE_KEYS.VOTES, state.votedMap);
+            }
             CommunityPlans.renderPlans();
           }
         })
         .catch(function (err) {
-          // 离线或服务暂时未连通时静默降级，继续展示本地与预置方案
+          if (reqSeq !== state.fetchSeq) return;
+          // 离线或服务暂时未连通时静默降级，继续展示本地与已缓存方案
           console.log('[CommunityPlans] 社区方案拉取降级:', err.message);
         })
         .finally(function () {
-          state.isFetchingRemote = false;
+          if (reqSeq === state.fetchSeq) {
+            state.isFetchingRemote = false;
+          }
         });
     },
 
@@ -802,13 +1430,6 @@
         '    <button type="button" class="nav-btn cp-btn cp-btn-save" onclick="CommunityPlans.openSaveModal()">',
         '      ' + Icons.save + '<span class="zh">保存当前配装</span><span class="lang-en">Save Setup</span>',
         '    </button>',
-        '    <button type="button" class="nav-btn select-btn cp-icon-btn" onclick="CommunityPlans.exportJSON()" title="导出全量方案备份">',
-        '      ' + Icons.download,
-        '    </button>',
-        '    <button type="button" class="nav-btn select-btn cp-icon-btn" onclick="CommunityPlans.triggerImport()" title="导入备份的方案文件">',
-        '      ' + Icons.upload,
-        '    </button>',
-        '    <input type="file" id="cpFileInput" accept=".json" style="display:none;" onchange="CommunityPlans.handleFileImport(event)">',
         '  </div>',
         '  <button type="button" class="nav-btn select-btn cp-icon-btn cp-fold-btn" onclick="event.stopPropagation(); CommunityPlans.toggleCollapse()" title="折叠/展开方案库">',
         '    <span class="cp-fold-indicator" aria-hidden="true">' + Icons.chevron + '</span>',
@@ -818,30 +1439,23 @@
       ].join('');
     },
 
-    // 排序菜单交互 (完全遵循全站 .dropdown-container / .dropdown-menu 规范)
-    toggleSortMenu: function (e) {
-      if (e) e.stopPropagation();
-      var menu = document.getElementById('cpSortMenu');
-      if (!menu) return;
-      if (menu.classList.contains('show') && !menu.classList.contains('is-closing')) {
-        CommunityPlans.closeSortMenu();
-      } else {
-        if (menu.__closeTimer) { clearTimeout(menu.__closeTimer); menu.__closeTimer = null; }
-        menu.classList.remove('is-closing');
-        menu.classList.add('show');
+    // 切换列表排序（最热 / 最新）
+    setSortMode: function (mode) {
+      var nextMode = mode === 'latest' ? 'latest' : 'hot';
+      if (state.sortMode === nextMode) return;
+      state.sortMode = nextMode;
+      CommunityPlans.renderPlans();
+      if (state.currentCarId && state.currentCarId !== -1) {
+        CommunityPlans.fetchRemotePlans(state.currentCarId);
       }
     },
 
-    closeSortMenu: function () {
-      var menu = document.getElementById('cpSortMenu');
-      if (!menu || !menu.classList.contains('show') || menu.classList.contains('is-closing')) return;
-      menu.classList.add('is-closing');
-      if (menu.__closeTimer) clearTimeout(menu.__closeTimer);
-      menu.__closeTimer = setTimeout(function () {
-        menu.classList.remove('show');
-        menu.classList.remove('is-closing');
-        menu.__closeTimer = null;
-      }, 150);
+    // 切换模式筛选（全部 / 先机汇能 / 团魂获能）
+    setFilterMode: function (mode) {
+      var nextMode = (mode === 'solo' || mode === 'team') ? mode : 'all';
+      if (state.filterMode === nextMode) return;
+      state.filterMode = nextMode;
+      CommunityPlans.renderPlans();
     },
 
     // 渲染方案卡片列表 (按分类流式竖排，优先展示本地方案，无方案自动折叠，第三个模式完全隐藏)
@@ -864,12 +1478,11 @@
 
       var carName = state.currentCar ? (state.currentCar.name || '未知') : '未选赛车';
 
-      // 2. 未选赛车状态 -> 自动折叠
+      // 2. 未选赛车状态 -> 自动折叠（先写入 DOM，再切状态）
       if (!state.currentCarId || state.currentCarId === -1) {
         if (badge) {
           badge.innerHTML = '<span class="zh">未选赛车 · 点击展开</span><span class="lang-en">No Car Selected</span>';
         }
-        CommunityPlans.toggleCollapse(true);
         stream.innerHTML = [
           '<div class="cp-empty-box">',
           '  ' + Icons.emptyCar,
@@ -877,49 +1490,52 @@
           '  <div class="cp-empty-desc"><span class="zh">选好赛车后，这里将直接为您垂直呈现本地方案、国服精选与社区推荐</span><span class="lang-en">Select a car to view setups</span></div>',
           '</div>'
         ].join('');
+        CommunityPlans.toggleCollapse(true, !container.__cpRenderedOnce);
+        container.__cpRenderedOnce = true;
         return;
       }
 
-      // 3. 收集各分类数据（彻底去重，并将远程过审的 is_pro 方案归入国服精选）
+      // 3. 收集各分类数据（严格分级：1. 友站分享 -> 2. 国服顶尖 -> 3. 玩家上传 -> 4. 本机未云端收录方案）
       var curIdStr = String(state.currentCarId);
-      // 分类 1: 我的本地方案 (优先展示)
-      var localList = state.savedPlans.filter(function (p) {
-        return String(p.car_id) === curIdStr;
+      var remotePartnerList = state.remotePlans.filter(function (p) {
+        return String(p.car_id) === curIdStr && Boolean(p.is_partner || p.isPartner);
       });
-      var isSameAsLocal = function (rp) {
-        return localList.some(function (l) {
-          return l.id === rp.id || (l.remote_id && l.remote_id === rp.id);
-        });
-      };
-      // 分类 2: 国服顶尖精选 (官方预置 + 远程过审的国服自证方案)
       var baseProList = state.proPlans.filter(function (p) {
         return String(p.car_id) === curIdStr;
       });
       var remoteProList = state.remotePlans.filter(function (p) {
         if (String(p.car_id) !== curIdStr) return false;
+        if (p.is_partner || p.isPartner) return false;
         if (!p.is_pro && !p.isPro) return false;
-        if (isSameAsLocal(p)) return false;
         if (baseProList.some(function (bp) { return bp.id === p.id || bp.title === p.title; })) return false;
         return true;
       });
+      var partnerList = remotePartnerList;
       var proList = baseProList.concat(remoteProList);
-      // 分类 3: 车友社区推荐 (排除本地与 pro 方案去重)
       var remoteList = state.remotePlans.filter(function (p) {
         if (String(p.car_id) !== curIdStr) return false;
+        if (p.is_partner || p.isPartner) return false;
         if (p.is_pro || p.isPro) return false;
-        if (isSameAsLocal(p)) return false;
         if (proList.some(function (pr) { return pr.id === p.id; })) return false;
         return true;
       });
+      var isShownInRemote = function (lp) {
+        if (!lp || !lp.remote_id) return false;
+        return state.remotePlans.some(function (rp) {
+          return String(rp.car_id) === curIdStr && rp.id === lp.remote_id;
+        });
+      };
+      var localList = state.savedPlans.filter(function (p) {
+        return String(p.car_id) === curIdStr && !isShownInRemote(p);
+      });
 
-      var totalPlans = localList.length + proList.length + remoteList.length;
+      var totalPlans = partnerList.length + proList.length + remoteList.length + localList.length;
 
-      // 4. 更新标题栏徽标与折叠状态联动 (无方案时自动折叠卡片)
+      // 4. 更新标题栏徽标与折叠状态联动 (无方案时自动折叠卡片；先写入 DOM 再切折叠态)
       if (totalPlans === 0) {
         if (badge) {
           badge.innerHTML = '<span class="zh">' + Utils.escapeHtml(carName) + ' · 暂无方案 (点击展开)</span><span class="lang-en">No Setups (Click to expand)</span>';
         }
-        CommunityPlans.toggleCollapse(true);
         stream.innerHTML = [
           '<div class="cp-empty-box">',
           '  ' + Icons.emptyBox,
@@ -928,20 +1544,162 @@
           '  <button type="button" class="nav-btn cp-btn cp-btn-save" onclick="CommunityPlans.openSaveModal()">' + Icons.save + '<span class="zh">立即保存当前配装</span><span class="lang-en">Save Setup Now</span></button>',
           '</div>'
         ].join('');
+        CommunityPlans.toggleCollapse(true, !container.__cpRenderedOnce);
+        container.__cpRenderedOnce = true;
         return;
       }
 
-      // 有方案时默认展开
+      // 有方案时更新标题徽标，待列表写入完成后再统一展开
       if (badge) {
         badge.innerHTML = '<span class="zh">' + Utils.escapeHtml(carName) + ' (' + totalPlans + ' 方案)</span><span class="lang-en">' + Utils.escapeHtml(carName) + '</span>';
       }
-      CommunityPlans.toggleCollapse(false);
 
-      // 5. 纵向流式渲染各个分类 (Section Stream - 参考 TouchGal 分类列表设计)
+      // 5. 模式筛选与智能置底排序（当前模式可用的方案排前，不可用灰态方案沉底；桶内按最热/最新降序）
+      var filterByPlanMode = function (list) {
+        if (state.filterMode === 'all') return list;
+        return list.filter(function (item) {
+          return resolvePlanMode(item.params) === state.filterMode;
+        });
+      };
+      var sortByCompatAndMetric = function (list) {
+        return list.slice().sort(function (a, b) {
+          var compatA = isPlanCompatibleWithMode(a.params, currentMode) ? 1 : 0;
+          var compatB = isPlanCompatibleWithMode(b.params, currentMode) ? 1 : 0;
+          if (compatA !== compatB) return compatB - compatA;
+          if (state.sortMode === 'latest') {
+            return (Number(b.created_at) || 0) - (Number(a.created_at) || 0);
+          }
+          return (Number(b.votes) || 0) - (Number(a.votes) || 0);
+        });
+      };
+
+      partnerList = sortByCompatAndMetric(filterByPlanMode(partnerList));
+      proList = sortByCompatAndMetric(filterByPlanMode(proList));
+      remoteList = sortByCompatAndMetric(filterByPlanMode(remoteList));
+      localList = sortByCompatAndMetric(filterByPlanMode(localList));
+      var filteredTotal = partnerList.length + proList.length + remoteList.length + localList.length;
+
+      // 6. 纵向流式渲染各个分类 (严格优先：1.本地浏览器 -> 2.国服顶尖 -> 3.其他玩家)
       var sectionsHtml = [];
+      var annObj = state.siteMeta && state.siteMeta.announcement;
+      var annText = '';
+      var annCls = '';
+      if (typeof annObj === 'string') {
+        annText = annObj.trim();
+      } else if (annObj && typeof annObj === 'object' && annObj.enabled !== false && annObj.text) {
+        annText = String(annObj.text).trim();
+        annCls = annObj.level === 'warning' ? 'is-warn' : (annObj.level === 'success' ? 'is-success' : '');
+      }
+      if (state.siteMeta && state.siteMeta.maintenance_mode) {
+        var maintText = state.siteMeta.maintenance_message || '社区服务正在维护中，您仍可正常使用本地保存方案';
+        sectionsHtml.push('<div class="cp-site-banner is-warn">' + Icons.megaphone + '<span>' + Utils.escapeHtml(maintText) + '</span></div>');
+      } else if (annText) {
+        sectionsHtml.push('<div class="cp-site-banner ' + annCls + '">' + Icons.megaphone + '<span>' + Utils.escapeHtml(annText) + '</span></div>');
+      }
+
+      sectionsHtml.push([
+        '<div class="cp-controls-bar">',
+        '  <div class="cp-ctrl-group">',
+        '    <span class="cp-controls-hint">模式筛选</span>',
+        '    <div class="chip-seg cp-sort-seg cp-filter-seg">',
+        '      <button type="button" class="' + (state.filterMode === 'all' ? 'is-on' : '') + '" onclick="CommunityPlans.setFilterMode(\'all\')">全部</button>',
+        '      <button type="button" class="' + (state.filterMode === 'solo' ? 'is-on' : '') + '" onclick="CommunityPlans.setFilterMode(\'solo\')">先机汇能</button>',
+        '      <button type="button" class="' + (state.filterMode === 'team' ? 'is-on' : '') + '" onclick="CommunityPlans.setFilterMode(\'team\')">团魂获能</button>',
+        '    </div>',
+        '  </div>',
+        '  <div class="cp-ctrl-group">',
+        '    <span class="cp-controls-hint">排序</span>',
+        '    <div class="chip-seg cp-sort-seg">',
+        '      <button type="button" class="' + (state.sortMode === 'hot' ? 'is-on' : '') + '" onclick="CommunityPlans.setSortMode(\'hot\')">最热</button>',
+        '      <button type="button" class="' + (state.sortMode === 'latest' ? 'is-on' : '') + '" onclick="CommunityPlans.setSortMode(\'latest\')">最新</button>',
+        '    </div>',
+        '  </div>',
+        '</div>'
+      ].join(''));
+
+      if (filteredTotal === 0) {
+        var filterLabel = state.filterMode === 'solo' ? '先机汇能' : '团魂获能';
+        sectionsHtml.push([
+          '<div class="cp-empty-box cp-filter-empty">',
+          '  ' + Icons.emptyBox,
+          '  <div class="cp-empty-title">当前「' + filterLabel + '」模式下暂无方案</div>',
+          '  <div class="cp-empty-desc">该赛车共有 ' + totalPlans + ' 个其他模式方案，点击下方按钮可查看全部</div>',
+          '  <button type="button" class="nav-btn cp-btn cp-btn-save" onclick="CommunityPlans.setFilterMode(\'all\')">显示全部方案</button>',
+          '</div>'
+        ].join(''));
+      }
 
       // ==========================================
-      // 【分类 1】：我的专属配装 (优先显示自己的！)
+      // 【分类 1】：友站分享 (合作友站实测推荐方案，有则首位展示)
+      // ==========================================
+      if (partnerList.length > 0) {
+        sectionsHtml.push([
+          '<div class="cp-section cp-section-partner">',
+          '  <div class="cp-sec-header">',
+          '    <div class="cp-sec-icon-box">' + Icons.partner + '</div>',
+          '    <div class="cp-sec-info">',
+          '      <div class="cp-sec-title-row">',
+          '        <span class="cp-sec-title"><span class="zh">友站分享</span><span class="lang-en">Partner Setups</span></span>',
+          '        <span class="cp-sec-count">' + partnerList.length + '</span>',
+          '      </div>',
+          '      <div class="cp-sec-desc"><span class="zh">合作友站提供的实战芯片搭配参考，可点击作者主页前往查看原站与更多分享</span><span class="lang-en">Partner site curated setups</span></div>',
+          '    </div>',
+          '  </div>',
+          '  <div class="cp-sec-list">',
+          partnerList.map(function (item) { return CommunityPlans.renderPlanItem(item, 'partner', currentMode); }).join(''),
+          '  </div>',
+          '</div>'
+        ].join(''));
+      }
+
+      // ==========================================
+      // 【分类 2】：国服顶尖 (官方推荐与自证认证)
+      // ==========================================
+      if (proList.length > 0) {
+        sectionsHtml.push([
+          '<div class="cp-section cp-section-pro">',
+          '  <div class="cp-sec-header">',
+          '    <img src="data/icon/pro_helmet_m.png" class="cp-sec-pro-icon" alt="" loading="lazy">',
+          '    <div class="cp-sec-info">',
+          '      <div class="cp-sec-title-row">',
+          '        <span class="cp-sec-title"><span class="zh">国服顶尖</span><span class="lang-en">Pro Master Setups</span></span>',
+          '        <span class="cp-sec-count">' + proList.length + '</span>',
+          '      </div>',
+          '      <div class="cp-sec-desc"><span class="zh">官方实战大数据与国服榜首车神认证配装</span><span class="lang-en">National top driver certified setups</span></div>',
+          '    </div>',
+          '  </div>',
+          '  <div class="cp-sec-list">',
+          proList.map(function (item) { return CommunityPlans.renderPlanItem(item, 'pro', currentMode); }).join(''),
+          '  </div>',
+          '</div>'
+        ].join(''));
+      }
+
+      // ==========================================
+      // 【分类 3】：玩家上传 (车友社区推荐)
+      // ==========================================
+      if (remoteList.length > 0) {
+        sectionsHtml.push([
+          '<div class="cp-section cp-section-community">',
+          '  <div class="cp-sec-header">',
+          '    <div class="cp-sec-icon-box">' + Icons.hot + '</div>',
+          '    <div class="cp-sec-info">',
+          '      <div class="cp-sec-title-row">',
+          '        <span class="cp-sec-title"><span class="zh">玩家上传</span><span class="lang-en">Community Setups</span></span>',
+          '        <span class="cp-sec-count">' + remoteList.length + '</span>',
+          '      </div>',
+          '      <div class="cp-sec-desc"><span class="zh">来自全网车友实战分享的方案，经安全初筛认证</span><span class="lang-en">Community contributed setups</span></div>',
+          '    </div>',
+          '  </div>',
+          '  <div class="cp-sec-list">',
+          remoteList.map(function (item) { return CommunityPlans.renderPlanItem(item, 'community', currentMode); }).join(''),
+          '  </div>',
+          '</div>'
+        ].join(''));
+      }
+
+      // ==========================================
+      // 【分类 4】：我的专属配装 (本机自存/待审追踪)
       // ==========================================
       if (localList.length > 0) {
         sectionsHtml.push([
@@ -953,98 +1711,67 @@
           '        <span class="cp-sec-title"><span class="zh">我的专属配装</span><span class="lang-en">My Saved Setups</span></span>',
           '        <span class="cp-sec-count">' + localList.length + '</span>',
           '      </div>',
-          '      <div class="cp-sec-desc"><span class="zh">保存在本机的专属调校方案 (优先展示)，支持一键套用与备份管理</span><span class="lang-en">Your locally saved tuning setups</span></div>',
+          '      <div class="cp-sec-desc"><span class="zh">保存在本机的专属调校方案与云端同步状态追踪</span><span class="lang-en">Your locally saved tuning setups</span></div>',
           '    </div>',
           '  </div>',
           '  <div class="cp-sec-list">',
-          localList.map(function (item) { return CommunityPlans.renderPlanItem(item, 'local'); }).join(''),
-          '  </div>',
-          '</div>'
-        ].join(''));
-      }
-
-      // ==========================================
-      // 【分类 2】：国服顶尖精选 (官方推荐)
-      // ==========================================
-      if (proList.length > 0) {
-        sectionsHtml.push([
-          '<div class="cp-section cp-section-pro">',
-          '  <div class="cp-sec-header">',
-          '    <img src="data/icon/pro_helmet_m.png" class="cp-sec-pro-icon" alt="" loading="lazy">',
-          '    <div class="cp-sec-info">',
-          '      <div class="cp-sec-title-row">',
-          '        <span class="cp-sec-title"><span class="zh">国服顶尖精选 (官方推荐)</span><span class="lang-en">Pro Master Setups</span></span>',
-          '        <span class="cp-sec-count">' + proList.length + '</span>',
-          '      </div>',
-          '      <div class="cp-sec-desc"><span class="zh">官方实战大数据与国服榜首车神认证配装</span><span class="lang-en">National top driver certified setups</span></div>',
-          '    </div>',
-          '  </div>',
-          '  <div class="cp-sec-list">',
-          proList.map(function (item) { return CommunityPlans.renderPlanItem(item, 'pro'); }).join(''),
-          '  </div>',
-          '</div>'
-        ].join(''));
-      }
-
-      // ==========================================
-      // 【分类 3】：车友社区推荐
-      // ==========================================
-      if (remoteList.length > 0) {
-        sectionsHtml.push([
-          '<div class="cp-section cp-section-community">',
-          '  <div class="cp-sec-header">',
-          '    <div class="cp-sec-icon-box">' + Icons.hot + '</div>',
-          '    <div class="cp-sec-info">',
-          '      <div class="cp-sec-title-row">',
-          '        <span class="cp-sec-title"><span class="zh">车友社区推荐</span><span class="lang-en">Community Setups</span></span>',
-          '        <span class="cp-sec-count">' + remoteList.length + '</span>',
-          '      </div>',
-          '      <div class="cp-sec-desc"><span class="zh">来自全网车友实战分享的方案，经安全初筛认证</span><span class="lang-en">Community contributed setups</span></div>',
-          '    </div>',
-          '  </div>',
-          '  <div class="cp-sec-list">',
-          remoteList.map(function (item) { return CommunityPlans.renderPlanItem(item, 'community'); }).join(''),
+          localList.map(function (item) { return CommunityPlans.renderPlanItem(item, 'local', currentMode); }).join(''),
           '  </div>',
           '</div>'
         ].join(''));
       }
 
       stream.innerHTML = sectionsHtml.join('');
+      CommunityPlans.toggleCollapse(false, !container.__cpRenderedOnce);
+      container.__cpRenderedOnce = true;
     },
 
     // 渲染结构化三层方案卡片（全端统一清晰排版，杜绝内部嵌套小方框堆砌）
-    renderPlanItem: function (item, type) {
+    renderPlanItem: function (item, type, calcMode) {
       var p = item.params || {};
-      var xianji = p.xianji !== undefined ? Number(p.xianji) || 0 : 0;
-      var huineng = p.huineng !== undefined ? Number(p.huineng) || 0 : 0;
-      var rawTuanhun = p.tuanhun !== undefined ? p.tuanhun : p.team_spirit;
-      var tuanhun = rawTuanhun !== undefined ? Number(rawTuanhun) || 0 : 0;
-      var empArr = Array.isArray(p.emps) ? p.emps : (Array.isArray(p.empowers) ? p.empowers : []);
-      var empsText = formatEmpsText(empArr);
+      var currentCalcMode = calcMode || ((typeof window.getCalcMode === 'function')
+        ? window.getCalcMode()
+        : (document.body.getAttribute('data-calc-mode') || 'solo'));
+      var details = extractAllPlanDetails(p, state.currentCar);
+      var isModeDisabled = !isPlanCompatibleWithMode(p, currentCalcMode);
       var safePlanId = Utils.safeId(item.id);
       var safeRemoteId = Utils.safeId(item.remote_id);
       var safePlayerId = Utils.safeId(item.player_id);
       var isVoted = Boolean(item.isVoted || state.votedMap[item.id] || (item.remote_id && state.votedMap[item.remote_id]));
       var isApplied = (state.activeAppliedPlanId === item.id);
-      var isProPlan = Boolean(item.isPro || item.is_pro || type === 'pro');
+      var isPartnerPlan = Boolean(item.isPartner || item.is_partner || type === 'partner');
+      var isProPlan = !isPartnerPlan && Boolean(item.isPro || item.is_pro || type === 'pro');
       var isLocalPlan = (type === 'local');
+      var isAuthorSelf = Boolean(item.viewer_is_author || (isLocalPlan && safeRemoteId));
 
-      // 渲染主页链接图标 (支持最多 3 个链接)
+      // 渲染主页链接胶囊（带平台标识与外链图标，严禁中途断行）
       var linksHtml = '';
       if (Array.isArray(item.links) && item.links.length > 0) {
-        linksHtml = '<span class="cp-author-links">';
-        item.links.forEach(function (l, idx) {
+        var validLinks = [];
+        item.links.forEach(function (l) {
           var safeUrl = Utils.sanitizeUrl(l);
           if (safeUrl) {
-            linksHtml += '<a href="' + Utils.escapeHtml(safeUrl) + '" target="_blank" rel="noopener noreferrer" class="cp-author-link-btn" title="作者主页 ' + (idx + 1) + '">' + Icons.link + '</a>';
+            var pf = Utils.detectPlatform(safeUrl);
+            validLinks.push(
+              '<a href="' + Utils.escapeHtml(safeUrl) + '" target="_blank" rel="noopener noreferrer" class="cp-author-link-btn ' + pf.cls + '" title="打开 ' + Utils.escapeHtml(pf.label) + '：' + Utils.escapeHtml(safeUrl) + '">' +
+              Icons.link + '<span>' + Utils.escapeHtml(pf.label) + '</span></a>'
+            );
           }
         });
-        linksHtml += '</span>';
+        if (validLinks.length > 0) {
+          linksHtml = '<div class="cp-author-links">' + validLinks.join('') + '</div>';
+        }
       }
 
-      var badgeText = isProPlan
-        ? '<span class="cp-card-badge cp-badge-pro">' + Icons.crown + ' 国服顶尖</span>'
-        : (isLocalPlan ? '<span class="cp-card-badge cp-badge-local">本地方案</span>' : '<span class="cp-card-badge cp-badge-community">社区推荐</span>');
+      var badgeText = isPartnerPlan
+        ? '<span class="cp-card-badge cp-badge-partner">' + Icons.partner + ' 友站分享</span>'
+        : (isProPlan
+          ? '<span class="cp-card-badge cp-badge-pro">' + Icons.crown + ' 国服顶尖</span>'
+          : (isLocalPlan ? '<span class="cp-card-badge cp-badge-local">本地方案</span>' : '<span class="cp-card-badge cp-badge-community">玩家上传</span>'));
+
+      var modeBadge = details.isTeamPlan
+        ? '<span class="cp-card-badge cp-badge-mode-team' + (isModeDisabled ? ' is-disabled' : '') + '">团魂模式</span>'
+        : '';
 
       var auditStatusBadge = '';
       if (isLocalPlan && safeRemoteId) {
@@ -1057,85 +1784,89 @@
         }
       }
 
-      // 检查特殊芯片和芯片孔型摘要
-      var chipsSummary = '';
-      if (Array.isArray(p.chips_on) && p.chips_on.length > 0) {
-        chipsSummary = p.chips_on.map(function (c) {
-          if (typeof window._chipDef === 'function') {
-            var def = window._chipDef(c.id);
-            if (def && def.name) return (def.name.zh || def.name.en || c.id);
-          }
-          return c.id;
-        }).join(' + ');
-      } else if (Array.isArray(p.chips) && p.chips.length > 0) {
-        chipsSummary = p.chips.map(function (c) { return c.name || c.type; }).slice(0, 3).join(' · ');
-      }
+      // 构建黄色高亮同行区（先机、汇能、团魂(模式2)、反制：手机端稳排同一行）
+      var hlCellsHtml = details.hlCells.map(function (c) {
+        return '<div class="cp-spec-hl-cell"><span class="cp-spec-lbl">' + Utils.escapeHtml(c.lbl) + '</span><span class="cp-spec-val is-acc" title="' + Utils.escapeHtml(c.val) + '">' + Utils.escapeHtml(c.val) + '</span></div>';
+      }).join('');
+      var hlRowHtml = details.hlCells.length > 0
+        ? '<div class="cp-specs-hl-row" style="--hl-cols:' + details.hlCells.length + '">' + hlCellsHtml + '</div>'
+        : '';
 
-      var nitroInfo = '';
-      if (p.nitro_rule) {
-        nitroInfo = p.nitro_rule + (p.nitro_dur ? ' · ' + p.nitro_dur + 's' : '');
-      }
+      // 构建其余矩阵单元格（氮气与发数、增益装置、干扰降效）
+      var specCells = details.specCells.map(function (c) {
+        var wideCls = String(c.val || '').length > 9 ? ' is-wide' : '';
+        return '<div class="cp-spec-cell' + wideCls + '"><span class="cp-spec-lbl">' + Utils.escapeHtml(c.lbl) + '</span><span class="cp-spec-val ' + (c.cls || '') + '" title="' + Utils.escapeHtml(c.val) + '">' + Utils.escapeHtml(c.val) + '</span></div>';
+      });
+      var specGridHtml = specCells.length > 0
+        ? '<div class="cp-specs-grid">' + specCells.join('') + '</div>'
+        : '';
 
-      // 构建统一数值矩阵单元格
-      var specCells = [
-        '<div class="cp-spec-cell"><span class="cp-spec-lbl">先机</span><span class="cp-spec-val is-acc">' + xianji + '%</span></div>',
-        '<div class="cp-spec-cell"><span class="cp-spec-lbl">汇能</span><span class="cp-spec-val is-acc">' + huineng + '%</span></div>'
-      ];
-      if (tuanhun > 0) {
-        specCells.push('<div class="cp-spec-cell"><span class="cp-spec-lbl">团魂</span><span class="cp-spec-val">' + tuanhun + '%</span></div>');
-      }
-      if (nitroInfo) {
-        specCells.push('<div class="cp-spec-cell"><span class="cp-spec-lbl">氮气</span><span class="cp-spec-val">' + Utils.escapeHtml(nitroInfo) + '</span></div>');
-      }
-
-      var extraLines = [];
-      if (empsText) {
-        extraLines.push('<div class="cp-spec-extra-row"><span class="cp-spec-extra-k">赋能</span><span class="cp-spec-extra-v">' + Utils.escapeHtml(empsText) + '</span></div>');
-      }
-      if (chipsSummary) {
-        extraLines.push('<div class="cp-spec-extra-row"><span class="cp-spec-extra-k">芯片</span><span class="cp-spec-extra-v is-acc">' + Utils.escapeHtml(chipsSummary) + '</span></div>');
-      }
+      var extraLines = details.extraRows.map(function (r) {
+        return '<div class="cp-spec-extra-row"><span class="cp-spec-extra-k">' + Utils.escapeHtml(r.k) + '</span><span class="cp-spec-extra-v' + (r.acc ? ' is-acc' : '') + '">' + Utils.escapeHtml(r.v) + '</span></div>';
+      });
 
       var specsExtraHtml = extraLines.length > 0
         ? '<div class="cp-specs-extra">' + extraLines.join('') + '</div>'
         : '';
 
+      var noteText = item.notes ? String(item.notes).trim() : '';
+      var noteHtml = noteText
+        ? '<div class="cp-card-note-box"><span class="cp-note-label">备注</span><span class="cp-note-text">' + Utils.escapeHtml(noteText) + '</span></div>'
+        : '';
+
+      var voteBtnCls = 'nav-btn cp-vote-btn' + (isVoted ? ' is-voted' : '') + (isAuthorSelf ? ' is-author' : '');
+      var voteBtnTitle = isAuthorSelf
+        ? '不能给自己的方案点赞'
+        : (isVoted ? '已点赞，再次点击取消赞' : '点赞支持该方案');
+
+      var applyBtnLabelZh = isModeDisabled ? '需切换团魂模式' : (isApplied ? '已套用' : '一键套用');
+      var applyBtnLabelEn = isModeDisabled ? 'Team Mode Only' : (isApplied ? 'Applied' : 'Apply');
+      var applyBtnAttrs = isModeDisabled
+        ? ' disabled aria-disabled="true" title="该方案含团魂或增益装置，请先切换至「团魂获能」模式"'
+        : ' onclick="CommunityPlans.applyPlanById(\'' + safePlanId + '\')"';
+
+      var partnerAuthorBadge = isPartnerPlan
+        ? '<span class="cp-author-partner-badge" title="合作友站分享创作者">' + Icons.partner + '<span>友站</span></span>'
+        : '';
+
       return [
-        '<article class="cp-card-item ' + (isProPlan ? 'is-pro' : '') + ' ' + (isApplied ? 'is-applied' : '') + '">',
+        '<article class="cp-card-item ' + (isPartnerPlan ? 'is-partner ' : '') + (isProPlan ? 'is-pro' : '') + ' ' + (isApplied ? 'is-applied' : '') + ' ' + (isModeDisabled ? 'is-mode-disabled' : '') + '">',
         '  <div class="cp-card-head">',
         '    <div class="cp-card-header-line">',
         '      <h4 class="cp-card-title">' + Utils.escapeHtml(item.title) + '</h4>',
         '      <div class="cp-card-badges">',
         badgeText,
+        modeBadge,
         auditStatusBadge,
         (isApplied ? '<span class="cp-card-badge cp-badge-active">' + Icons.check + ' 生效中</span>' : ''),
         '      </div>',
         '    </div>',
         '    <div class="cp-card-meta">',
         '      <span class="cp-author-name">' + Utils.escapeHtml(item.author || '热心车友') + '</span>',
+        partnerAuthorBadge,
         (safePlayerId ? '      <button type="button" class="cp-player-id" onclick="CommunityPlans.copyPlayerId(\'' + safePlayerId + '\', event)" title="点击复制游戏ID"><span>ID ' + Utils.escapeHtml(safePlayerId) + '</span><span class="cp-copy-icon">' + Icons.copy + '</span></button>' : ''),
-        linksHtml,
         '      <span class="cp-meta-time">' + Utils.formatTime(item.created_at) + '</span>',
         '    </div>',
+        linksHtml,
         '  </div>',
         '  <div class="cp-specs-panel">',
-        '    <div class="cp-specs-grid">',
-        specCells.join(''),
-        '    </div>',
+        hlRowHtml,
+        specGridHtml,
         specsExtraHtml,
+        noteHtml,
         '  </div>',
         '  <div class="cp-card-foot">',
         '    <div class="cp-foot-left">',
-        '      <button type="button" class="nav-btn cp-vote-btn ' + (isVoted ? 'is-voted' : '') + '" onclick="CommunityPlans.toggleVote(\'' + safePlanId + '\')" title="点赞支持该方案">',
-        '        ' + Icons.thumb(isVoted),
-        '        <span>' + (Number(item.votes) || 0) + '</span>',
-        '      </button>',
+        ((!isLocalPlan || safeRemoteId)
+          ? ('      <button type="button" class="' + voteBtnCls + '" onclick="CommunityPlans.toggleVote(\'' + safePlanId + '\')" title="' + voteBtnTitle + '"' + (isAuthorSelf ? ' aria-disabled="true"' : '') + '>' +
+             Icons.thumb(isVoted) + '<span>' + (Number(item.votes) || 0) + '</span></button>')
+          : ''),
         (isLocalPlan
           ? '      <button type="button" class="nav-btn select-btn cp-del-btn" title="删除该方案" onclick="CommunityPlans.deletePlan(\'' + safePlanId + '\')">' + Icons.trash + '</button>'
           : ''),
         '    </div>',
-        '    <button type="button" class="nav-btn cp-apply-btn ' + (isApplied ? 'is-applied' : '') + '" onclick="CommunityPlans.applyPlanById(\'' + safePlanId + '\')">',
-        '      ' + (isApplied ? Icons.check : Icons.apply) + '<span class="zh">' + (isApplied ? '已套用' : '一键套用') + '</span><span class="lang-en">' + (isApplied ? 'Applied' : 'Apply') + '</span>',
+        '    <button type="button" class="nav-btn cp-apply-btn ' + (isApplied && !isModeDisabled ? 'is-applied' : '') + (isModeDisabled ? ' is-disabled' : '') + '"' + applyBtnAttrs + '>',
+        '      ' + (isModeDisabled ? '' : (isApplied ? Icons.check : Icons.apply)) + '<span class="zh">' + applyBtnLabelZh + '</span><span class="lang-en">' + applyBtnLabelEn + '</span>',
         '    </button>',
         '  </div>',
         '</article>'
@@ -1262,8 +1993,14 @@
     onToggleSyncCommunity: function (isSync) {
       var sec = document.getElementById('cpCommunitySection');
       if (sec) sec.style.display = isSync ? 'flex' : 'none';
+      var tsRequired = state.siteMeta ? state.siteMeta.turnstile_required !== false : true;
       if (isSync) {
-        CommunityPlans.renderTurnstileWidget();
+        if (tsRequired) {
+          CommunityPlans.renderTurnstileWidget();
+        } else {
+          var tsBox = document.getElementById('cpTurnstileBox');
+          if (tsBox) tsBox.style.display = 'none';
+        }
       } else {
         CommunityPlans.turnstileState.token = '';
         if (window.turnstile && CommunityPlans.turnstileState.widgetId !== null) {
@@ -1293,6 +2030,12 @@
       var file = input.files[0];
       if (!file.type.match(/^image\//)) {
         CommunityPlans.toast('请上传有效的图片文件 (JPG/PNG/WEBP)');
+        input.value = '';
+        return;
+      }
+      if (file.size > 2 * 1024 * 1024) {
+        CommunityPlans.toast('单张截图大小不能超过 2 MB，请压缩或裁剪后重新上传');
+        input.value = '';
         return;
       }
       var reader = new FileReader();
@@ -1317,6 +2060,19 @@
           var ctx = canvas.getContext('2d');
           ctx.drawImage(img, 0, 0, w, h);
           var compressed = canvas.toDataURL('image/jpeg', 0.82);
+          var getDecodedBytes = function (dUrl) {
+            var idx = dUrl.indexOf(',');
+            var b64 = idx >= 0 ? dUrl.slice(idx + 1) : dUrl;
+            return Math.floor(b64.length * 0.75);
+          };
+          if (getDecodedBytes(compressed) > 1500000) {
+            compressed = canvas.toDataURL('image/jpeg', 0.65);
+          }
+          if (getDecodedBytes(compressed) > 2 * 1024 * 1024) {
+            CommunityPlans.toast('图片压缩后仍超过 2 MB，请换一张分辨率更低的截图');
+            input.value = '';
+            return;
+          }
           CommunityPlans.proofState[type] = compressed;
 
           var card = document.getElementById('cpProofCard_' + type);
@@ -1330,7 +2086,15 @@
             ].join('');
           }
         };
+        img.onerror = function () {
+          CommunityPlans.toast('图片解码失败，请确认文件未损坏或更换格式 (JPG/PNG)');
+          input.value = '';
+        };
         img.src = dataUrl;
+      };
+      reader.onerror = function () {
+        CommunityPlans.toast('读取截图文件失败，请重新选择');
+        input.value = '';
       };
       reader.readAsDataURL(file);
     },
@@ -1365,8 +2129,7 @@
 
       var carName = state.currentCar ? state.currentCar.name : '当前赛车';
       var params = ParamsIO.capture();
-      var empSummary = formatEmpsText(params.emps) || '无赋能';
-      var summary = '先机 ' + params.xianji + '% · 汇能 ' + params.huineng + '% · ' + empSummary;
+      var summary = extractAllPlanDetails(params, state.currentCar).summaryText;
 
       var modal = document.createElement('div');
       modal.id = 'cpSaveModal';
@@ -1392,6 +2155,10 @@
         }
       };
       document.addEventListener('keydown', CommunityPlans._escKeyHandler);
+      var allowSubmissions = !state.siteMeta || (state.siteMeta.allow_submissions !== false && !state.siteMeta.maintenance_mode);
+      var allowPro = !state.siteMeta || state.siteMeta.allow_pro_applications !== false;
+      var tsRequired = !state.siteMeta || state.siteMeta.turnstile_required !== false;
+
       modal.innerHTML = [
         '<div class="card cp-modal-dialog" onclick="event.stopPropagation()">',
         '  <div class="cp-modal-head">',
@@ -1406,20 +2173,29 @@
         '    </div>',
         '    <div class="form-group cp-form-group">',
         '      <div class="cp-label-row">',
-        '        <label class="form-label" for="cpInputTitle">方案名称 (15字以内)</label>',
+        '        <label class="form-label" for="cpInputTitle">方案名称 <span style="color:var(--fail,#e53935);">*</span> (必填，15字以内)</label>',
         '        <span id="cpTitleCounter" class="cp-input-count">0/15</span>',
         '      </div>',
         '      <div class="input-wrapper">',
         '        <input type="text" id="cpInputTitle" class="form-control cp-modal-input" placeholder="例如：大招连发稳健装" maxlength="15" autocomplete="off" oninput="CommunityPlans.onTitleInput(this)">',
         '      </div>',
         '    </div>',
+        '    <div class="form-group cp-form-group">',
+        '      <div class="cp-label-row">',
+        '        <label class="form-label" for="cpInputNotes">方案备注 (选填，可写跑图思路、细节提醒)</label>',
+        '        <span id="cpNotesCounter" class="cp-input-count">0/300</span>',
+        '      </div>',
+        '      <div class="input-wrapper">',
+        '        <textarea id="cpInputNotes" class="form-control cp-modal-input cp-modal-textarea" rows="3" placeholder="例如：弯道提前踩减速带触发、双氮气起手注意节气（留空不显示）" maxlength="300" oninput="CommunityPlans.onNotesInput(this)"></textarea>',
+        '      </div>',
+        '    </div>',
         '    <!-- 开关 1: 是否上传方案至全网社区库 (规范 Switch，默认关闭) -->',
-        '    <div class="cp-setting-switch-row">',
+        '    <div class="cp-setting-switch-row' + (allowSubmissions ? '' : ' is-disabled') + '">',
         '      <div class="cp-setting-switch-info">',
         '        <span class="cp-setting-switch-title">上传芯片方案至全网社区库</span>',
-        '        <span class="cp-setting-switch-desc">默认关闭（仅保存在本机浏览器中）；开启后经安全初筛共享至全网方案库</span>',
+        '        <span class="cp-setting-switch-desc">' + (allowSubmissions ? '默认关闭（仅保存在本机浏览器中）；开启后经安全初筛共享至全网方案库' : '全站社区投稿当前已暂停，您仍可将方案保存在本地浏览器中') + '</span>',
         '      </div>',
-        '      <input type="checkbox" id="cpChkSyncCommunity" class="ui-switch" onchange="CommunityPlans.onToggleSyncCommunity(this.checked)">',
+        '      <input type="checkbox" id="cpChkSyncCommunity" class="ui-switch"' + (allowSubmissions ? '' : ' disabled') + ' onchange="CommunityPlans.onToggleSyncCommunity(this.checked)">',
         '    </div>',
         '    <!-- 社区上传扩展设置区 (开启上方开关后动态展开) -->',
         '    <div class="cp-community-section" id="cpCommunitySection" style="display: none;">',
@@ -1436,21 +2212,21 @@
         '        </div>',
         '      </div>',
         '      <div class="form-group cp-form-group" id="cpLinksGroup">',
-        '        <label class="form-label">个人主页链接 (选填，最多 3 个，支持 B站/抖音/快手等)</label>',
+        '        <label class="form-label">个人主页链接 (选填，最多 3 个，仅限 B站 / 抖音 / 快手，支持粘贴分享文案自动提取)</label>',
         '        <div class="cp-links-input-list">',
-        '          <div class="cp-link-input-row"><span class="cp-link-idx">1</span><input type="url" id="cpInputLink1" class="form-control cp-modal-input" placeholder="https://space.bilibili.com/..." autocomplete="off"></div>',
-        '          <div class="cp-link-input-row"><span class="cp-link-idx">2</span><input type="url" id="cpInputLink2" class="form-control cp-modal-input" placeholder="https://www.douyin.com/user/..." autocomplete="off"></div>',
-        '          <div class="cp-link-input-row"><span class="cp-link-idx">3</span><input type="url" id="cpInputLink3" class="form-control cp-modal-input" placeholder="https://..." autocomplete="off"></div>',
+        '          <div class="cp-link-input-wrap" id="cpLinkWrap1"><div class="cp-link-input-row"><span class="cp-link-idx">1</span><input type="text" id="cpInputLink1" class="form-control cp-modal-input" placeholder="粘贴 B站主页链接或分享口令 (space.bilibili.com / b23.tv)" autocomplete="off" oninput="CommunityPlans.onLinkInput(this, 1)" onpaste="setTimeout(function(){var el=document.getElementById(\'cpInputLink1\');if(el)CommunityPlans.onLinkInput(el,1,true);},0)" onblur="CommunityPlans.onLinkInput(this, 1, true)"></div><div class="cp-link-parse-msg" id="cpLinkMsg1"></div></div>',
+        '          <div class="cp-link-input-wrap" id="cpLinkWrap2"><div class="cp-link-input-row"><span class="cp-link-idx">2</span><input type="text" id="cpInputLink2" class="form-control cp-modal-input" placeholder="粘贴 抖音主页链接或分享文案 (自动去除中文与乱码)" autocomplete="off" oninput="CommunityPlans.onLinkInput(this, 2)" onpaste="setTimeout(function(){var el=document.getElementById(\'cpInputLink2\');if(el)CommunityPlans.onLinkInput(el,2,true);},0)" onblur="CommunityPlans.onLinkInput(this, 2, true)"></div><div class="cp-link-parse-msg" id="cpLinkMsg2"></div></div>',
+        '          <div class="cp-link-input-wrap" id="cpLinkWrap3"><div class="cp-link-input-row"><span class="cp-link-idx">3</span><input type="text" id="cpInputLink3" class="form-control cp-modal-input" placeholder="粘贴 快手主页链接或分享文案 (支持长/短链接)" autocomplete="off" oninput="CommunityPlans.onLinkInput(this, 3)" onpaste="setTimeout(function(){var el=document.getElementById(\'cpInputLink3\');if(el)CommunityPlans.onLinkInput(el,3,true);},0)" onblur="CommunityPlans.onLinkInput(this, 3, true)"></div><div class="cp-link-parse-msg" id="cpLinkMsg3"></div></div>',
         '        </div>',
         '      </div>',
         '      <!-- 开关 2: 申请入选国服顶尖方案池 (规范 Switch，默认关闭) -->',
-        '      <div class="cp-setting-switch-row cp-pro-apply-row">',
+        '      <div class="cp-setting-switch-row cp-pro-apply-row" style="' + (allowPro ? '' : 'display:none;') + '">',
         '        <div class="cp-setting-switch-info">',
         '          <div class="cp-pro-apply-badge-line">',
         '            <img src="data/icon/pro_helmet_m.png" class="cp-sec-pro-icon" alt="" style="width:20px;height:20px;">',
         '            <span class="cp-setting-switch-title">申请入选「国服顶尖方案池」</span>',
         '          </div>',
-        '          <span class="cp-setting-switch-desc">官方推荐入口已下架，现开放车友自证通道；需审核双截图凭证</span>',
+        '          <span class="cp-setting-switch-desc">开放车友自证通道；需审核双截图凭证，审核通过后置入国服推荐列表</span>',
         '        </div>',
         '        <input type="checkbox" id="cpChkApplyPro" class="ui-switch" onchange="CommunityPlans.onToggleApplyPro(this.checked)">',
         '      </div>',
@@ -1464,8 +2240,8 @@
         '          <ul class="cp-proof-alert-list">',
         '            <li>必须提交与当前配置车辆 (<strong>' + Utils.escapeHtml(carName) + '</strong>) <strong>完全一致</strong>的国服最强荣誉称号/榜单截图。</li>',
         '            <li>必须带有官方<strong>钻石色大国标</strong>（全国前十车神认证）。</li>',
-        '            <li>⚠️ <strong>硬性驳回提示</strong>：全国前100【紫色小国标】、全省前10【金色省标】、全市前100【银色市标】、区县【铜色标】均不满足要求，直接驳回（注意：市标虽呈现类似银色，但为全市排名，绝非全国前十钻石大国标，请仔细核对）。</li>',
         '            <li>个人主页截图必须包含您的游戏昵称与数字 ID，以核验方案归属权。</li>',
+        '            <li>单张截图大小不能超过 <strong>2 MB</strong>（支持 JPG / PNG / WEBP）。</li>',
         '          </ul>',
         '        </div>',
         '        <div class="cp-proof-grid">',
@@ -1474,7 +2250,7 @@
         '            <span class="cp-proof-card-badge">必传凭证 1</span>',
         '            <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" style="width:24px;height:24px;color:var(--acc);margin-bottom:4px;"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg>',
         '            <span style="font-weight:700;font-size:12.5px;color:var(--ink);">本车国服最强荣誉截图</span>',
-        '            <span class="cp-proof-card-desc">需含钻石大国标（全国前十）</span>',
+        '            <span class="cp-proof-card-desc">需含钻石大国标（全国前十）· 单张≤2MB</span>',
         '            <input type="file" id="cpFile_ranking" class="cp-proof-file-input" accept="image/*" onchange="CommunityPlans.handleProofFile(\'ranking\', this)">',
         '          </div>',
         '          <!-- 截图入口 2: 个人主页截图 -->',
@@ -1482,13 +2258,13 @@
         '            <span class="cp-proof-card-badge">必传凭证 2</span>',
         '            <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" style="width:24px;height:24px;color:var(--acc);margin-bottom:4px;"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>',
         '            <span style="font-weight:700;font-size:12.5px;color:var(--ink);">游戏个人主页截图</span>',
-        '            <span class="cp-proof-card-desc">需含游戏昵称与数字ID</span>',
+        '            <span class="cp-proof-card-desc">需含游戏昵称与数字ID · 单张≤2MB</span>',
         '            <input type="file" id="cpFile_profile" class="cp-proof-file-input" accept="image/*" onchange="CommunityPlans.handleProofFile(\'profile\', this)">',
         '          </div>',
         '        </div>',
         '      </div>',
         '      <!-- 提交前安全验证 (Cloudflare Turnstile，点亮对勾后方可提交) -->',
-        '      <div class="cp-turnstile-box" id="cpTurnstileBox">',
+        '      <div class="cp-turnstile-box" id="cpTurnstileBox" style="' + (tsRequired ? '' : 'display:none;') + '">',
         '        <div class="cp-turnstile-head">',
         '          <span class="cp-turnstile-title">提交前安全验证</span>',
         '          <span class="cp-turnstile-status" id="cpTurnstileStatus">等待加载验证框...</span>',
@@ -1524,6 +2300,19 @@
       else countEl.classList.remove('is-limit');
     },
 
+    onNotesInput: function (el) {
+      var countEl = document.getElementById('cpNotesCounter');
+      if (!countEl) return;
+      var len = Utils.charCount(el.value);
+      if (len > 300) {
+        el.value = Utils.truncateChars(el.value, 300);
+        len = 300;
+      }
+      countEl.textContent = len + '/300';
+      if (len >= 300) countEl.classList.add('is-limit');
+      else countEl.classList.remove('is-limit');
+    },
+
     onToggleAnon: function (isAnon) {
       var authorInput = document.getElementById('cpInputAuthor');
       var linksGroup = document.getElementById('cpLinksGroup');
@@ -1542,13 +2331,64 @@
       }
     },
 
+    onLinkInput: function (el, idx, notifyOnExtract) {
+      if (!el) return { ok: true, url: '' };
+      var wrap = document.getElementById('cpLinkWrap' + idx);
+      var msgEl = document.getElementById('cpLinkMsg' + idx);
+      var raw = String(el.value || '');
+      if (!raw.trim()) {
+        if (wrap) wrap.classList.remove('is-valid', 'is-error');
+        if (msgEl) msgEl.textContent = '';
+        return { ok: true, url: '' };
+      }
+
+      var parsed = Utils.extractProfileLink(raw);
+      if (parsed.ok && !parsed.empty && parsed.url) {
+        if (parsed.changed) {
+          el.value = parsed.url;
+        }
+        if (wrap) {
+          wrap.classList.remove('is-error');
+          wrap.classList.add('is-valid');
+        }
+        if (msgEl) {
+          msgEl.textContent = parsed.changed
+            ? '✓ 已自动提取纯净「' + parsed.label + '」（已去除多余文字与追踪尾巴）'
+            : '✓ 已识别「' + parsed.label + '」';
+        }
+        if (notifyOnExtract && parsed.changed) {
+          CommunityPlans.toast('已自动提取纯净' + parsed.label);
+        }
+        return { ok: true, url: parsed.url };
+      }
+
+      // 用户仍在手动输入前缀尚未输完时，只在失焦/粘贴/提交或明显完整 URL 不合白名单时标红提示
+      var looksComplete = notifyOnExtract || /https?:\/\/[^\s]{6,}\.[a-z]{2,}/i.test(raw);
+      if (looksComplete) {
+        if (wrap) {
+          wrap.classList.remove('is-valid');
+          wrap.classList.add('is-error');
+        }
+        if (msgEl) {
+          msgEl.textContent = '仅支持 B站 / 抖音 / 快手 个人主页或官方短链接，已屏蔽其他网址';
+        }
+        return { ok: false, url: '' };
+      } else {
+        if (wrap) wrap.classList.remove('is-valid', 'is-error');
+        if (msgEl) msgEl.textContent = '';
+        return { ok: false, url: '', typing: true };
+      }
+    },
+
     confirmSave: function () {
       var titleInput = document.getElementById('cpInputTitle');
+      var notesInput = document.getElementById('cpInputNotes');
       var authorInput = document.getElementById('cpInputAuthor');
       var chkAnon = document.getElementById('cpChkAnon');
       if (!titleInput) return;
 
       var title = titleInput.value.trim();
+      var notes = notesInput ? Utils.truncateChars(notesInput.value.trim(), 300) : '';
       var params = ParamsIO.capture();
 
       var check = PlanValidator.validate(params, title);
@@ -1558,25 +2398,62 @@
         return;
       }
 
+      var currentSig = Utils.computeLocalBuildSig(state.currentCarId, params);
+
+      // 堵死套用他人方案后直接保存或改名提交：与刚套用且属于他人的方案完全一致时拦截
+      if (
+        state.appliedSource &&
+        state.appliedSource.isOther &&
+        (state.appliedSource.appliedDomSig === currentSig || state.appliedSource.sourceBuildSig === currentSig || state.appliedSource.buildSig === currentSig)
+      ) {
+        CommunityPlans.toast('当前配装直接来自「' + state.appliedSource.title + '」且未作任何参数改动，请先自行调整参数后再保存或提交');
+        return;
+      }
+
+      // 与在线国服/社区池里他人已过审方案配装签名完全一致时同样拦截
+      var dupRemote = state.remotePlans.find(function (rp) {
+        if (String(rp.car_id) !== String(state.currentCarId)) return false;
+        if (rp.viewer_is_author) return false;
+        var matchedOwn = state.savedPlans.some(function (lp) { return lp.remote_id && lp.remote_id === rp.id; });
+        if (matchedOwn) return false;
+        return Utils.computeLocalBuildSig(rp.car_id, rp.params) === currentSig;
+      });
+      if (dupRemote) {
+        CommunityPlans.toast('当前配装参数与社区已有方案「' + dupRemote.title + '」完全一致，请先自行调整参数后再保存或提交');
+        return;
+      }
+
       var isAnon = chkAnon ? chkAnon.checked : false;
       var author = isAnon ? '热心车友' : (authorInput ? authorInput.value.trim() : '');
 
       var links = [];
-      ['cpInputLink1', 'cpInputLink2', 'cpInputLink3'].forEach(function (id) {
-        var el = document.getElementById(id);
-        if (el && el.value) {
-          var clean = Utils.sanitizeUrl(el.value);
-          if (clean && links.length < 3) {
-            links.push(clean);
+      if (!isAnon) {
+        for (var li = 1; li <= 3; li++) {
+          var lEl = document.getElementById('cpInputLink' + li);
+          if (lEl && lEl.value && lEl.value.trim()) {
+            var lRes = CommunityPlans.onLinkInput(lEl, li, true);
+            if (!lRes.ok || !lRes.url) {
+              CommunityPlans.toast('第 ' + li + ' 个主页链接无效：仅支持 B站 / 抖音 / 快手 官方个人主页或短链接');
+              lEl.focus();
+              return;
+            }
+            if (links.indexOf(lRes.url) === -1 && links.length < 3) {
+              links.push(lRes.url);
+            }
           }
         }
-      });
+      }
 
       var chkSync = document.getElementById('cpChkSyncCommunity');
       var isSync = chkSync ? chkSync.checked : false;
 
       var chkApplyPro = document.getElementById('cpChkApplyPro');
       var isApplyPro = isSync && chkApplyPro ? chkApplyPro.checked : false;
+
+      if (isSync && state.siteMeta && state.siteMeta.maintenance_mode) {
+        CommunityPlans.toast(state.siteMeta.maintenance_message || '当前维护中暂不接收社区投稿');
+        return;
+      }
 
       // 申请国服顶尖方案池时的双截图强制阻断校验
       if (isApplyPro) {
@@ -1594,10 +2471,11 @@
         }
       }
 
-      // 同步至社区方案库时，提交前必须先点击完成 Turnstile 人机验证框（变绿勾后放行）
+      var tsRequired = !state.siteMeta || state.siteMeta.turnstile_required !== false;
+      // 同步至社区方案库时，若启用了 Turnstile 则提交前必须先点击完成校验
       if (isSync) {
         if (CommunityPlans.turnstileState.isSubmitting) return;
-        if (!CommunityPlans.turnstileState.token) {
+        if (tsRequired && !CommunityPlans.turnstileState.token) {
           CommunityPlans.toast('请先点击完成人机验证框（勾选通过后再提交）');
           var tsBox = document.getElementById('cpTurnstileBox');
           if (tsBox) {
@@ -1614,11 +2492,14 @@
         car_id: state.currentCarId,
         car_name: state.currentCar ? state.currentCar.name : '',
         title: Utils.truncateChars(title, 15),
+        notes: notes,
         author: author || '热心车友',
         links: links,
-        params: ParamsIO.capture(),
+        params: params,
+        build_sig: currentSig,
         votes: 0,
         isVoted: false,
+        viewer_is_author: true,
         created_at: Utils.now()
       };
 
@@ -1647,44 +2528,36 @@
         saveBtn.innerHTML = Icons.save + ' 提交验证中...';
       }
 
+      var fullParams = Object.assign({}, params, {
+        start_nitro_count: params.first_nitro_count,
+        cycle_nitro_count: params.loop_nitro_count,
+        team_spirit: params.tuanhun,
+        chips: params.chips_on,
+        empowers: params.emps
+      });
+
       var payload = {
         car_id: state.currentCarId,
         car_name: state.currentCar ? state.currentCar.name : '',
         title: title,
+        notes: notes,
         author: author,
         is_anonymous: isAnon,
         apply_pro: isApplyPro,
         pro_proof: proProofData,
         links: links,
-        turnstile_token: CommunityPlans.turnstileState.token,
-        params: {
-          ult_threshold: params.ult_threshold,
-          start_charge: params.start_charge,
-          base_nitro: params.base_nitro,
-          nitro_rule: params.nitro_rule,
-          nitro_dur: params.nitro_dur,
-          xianji: params.xianji,
-          huineng: params.huineng,
-          start_nitro_count: params.first_nitro_count,
-          first_nitro_count: params.first_nitro_count,
-          cycle_nitro_count: params.loop_nitro_count,
-          loop_nitro_count: params.loop_nitro_count,
-          team_spirit: params.tuanhun, // 团魂无论填多少均不拦截
-          tuanhun: params.tuanhun,
-          chips: params.chips_on,
-          chips_on: params.chips_on,
-          empowers: params.emps,
-          emps: params.emps
-        }
+        turnstile_token: CommunityPlans.turnstileState.token || '',
+        params: fullParams
       };
+
+      var reqHeaders = Utils.getApiHeaders(true);
+      if (CommunityPlans.turnstileState.token) {
+        reqHeaders['X-Turnstile-Token'] = CommunityPlans.turnstileState.token;
+      }
 
       fetch('/api/plans', {
         method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          'X-Client-ID': Utils.getClientId(),
-          'X-Turnstile-Token': CommunityPlans.turnstileState.token
-        },
+        headers: reqHeaders,
         body: JSON.stringify(payload)
       })
         .then(function (res) {
@@ -1699,8 +2572,9 @@
             }
             var errMsg = (resObj.data && resObj.data.message) ? resObj.data.message : '提交被阻断';
             CommunityPlans.toast(errMsg);
-            // Turnstile 票据一次性消耗或失效时自动刷新验证框，保留已填表单与截图
-            CommunityPlans.resetTurnstileWidget();
+            if (tsRequired) {
+              CommunityPlans.resetTurnstileWidget();
+            }
             return;
           }
 
@@ -1738,7 +2612,10 @@
       }
 
       CommunityPlans.toast('正在查询方案审核状态...');
-      fetch('/api/plans?check_status=' + encodeURIComponent(remoteId))
+      fetch('/api/plans?check_status=' + encodeURIComponent(remoteId), {
+        method: 'GET',
+        headers: Utils.getApiHeaders(false)
+      })
         .then(function (res) {
           if (!res.ok) throw new Error('HTTP ' + res.status);
           return res.json();
@@ -1756,12 +2633,15 @@
             if (d.status === 'approved' && d.is_pro) {
               localPlan.isPro = true;
             }
+            if (d.status === 'approved' && d.is_partner) {
+              localPlan.isPartner = true;
+            }
             Utils.setStorage(STORAGE_KEYS.PLANS, state.savedPlans);
             CommunityPlans.renderPlans();
           }
 
           if (d.status === 'approved') {
-            CommunityPlans.toast('恭喜！方案已通过审核' + (d.is_pro ? '，并荣获「国服顶尖」勋标！' : '，已全网上线！'));
+            CommunityPlans.toast('恭喜！方案已通过审核' + (d.is_partner ? '，并授予「友站分享」专属勋标！' : (d.is_pro ? '，并荣获「国服顶尖」勋标！' : '，已全网上线！')));
           } else if (d.status === 'rejected') {
             CommunityPlans.showRejectModal(localId);
           } else {
@@ -1825,7 +2705,7 @@
         '      </div>',
         '      <div style="font-weight:700;font-size:13px;color:var(--ink);margin-top:4px;">官方审核组反馈说明：</div>',
         '      <div class="cp-reject-reason-body">' + Utils.escapeHtml(reason) + '</div>',
-        '      <div class="cp-reject-tip">💡 提示：该方案已安全保存在您的本地浏览器中，不受任何影响。您可以根据上述说明修改配装或重新截取符合标准的大国标截图后再次上传。</div>',
+        '      <div class="cp-reject-tip">提示：该方案已安全保存在您的本地浏览器中，不受任何影响。您可以根据上述说明修改配装或重新截取符合标准的大国标截图后再次上传。</div>',
         '    </div>',
         '  </div>',
         '  <div class="cp-modal-foot">',
@@ -1852,25 +2732,44 @@
       }
     },
 
-    // 一键套用并记录当前高亮状态
+    // 一键套用并记录当前高亮状态与防抄袭指纹来源
     applyPlanById: function (planId) {
-      var plan = state.savedPlans.find(function (p) { return p.id === planId; }) ||
-                 state.proPlans.find(function (p) { return p.id === planId; }) ||
-                 state.remotePlans.find(function (p) { return p.id === planId; });
+      var localFound = state.savedPlans.find(function (p) { return p.id === planId; });
+      var remoteFound = state.proPlans.find(function (p) { return p.id === planId; }) ||
+                        state.remotePlans.find(function (p) { return p.id === planId; });
+      var plan = localFound || remoteFound;
       if (!plan || !plan.params) {
         CommunityPlans.toast('找不到该方案数据');
+        return;
+      }
+      var curCalcMode = (typeof window.getCalcMode === 'function')
+        ? window.getCalcMode()
+        : (document.body.getAttribute('data-calc-mode') || 'solo');
+      if (!isPlanCompatibleWithMode(plan.params, curCalcMode)) {
+        CommunityPlans.toast('该方案含团魂或增益装置，请先在顶部切换至「团魂获能」模式', 'warn');
         return;
       }
 
       state.lastSnapshot = ParamsIO.capture();
       state.hasUndoAvailable = true;
       state.activeAppliedPlanId = planId;
+      var isOwnLocal = Boolean(localFound);
+      var isOwnRemote = Boolean(remoteFound && (remoteFound.viewer_is_author || state.savedPlans.some(function (lp) { return lp.remote_id === remoteFound.id; })));
 
       var undoBtn = document.getElementById('cpBtnUndo');
       if (undoBtn) undoBtn.style.display = 'inline-flex';
 
       ParamsIO.apply(plan.params);
+      var appliedCapture = ParamsIO.capture();
+      state.appliedSource = {
+        id: plan.id,
+        title: plan.title || '他人方案',
+        isOther: !isOwnLocal && !isOwnRemote,
+        sourceBuildSig: Utils.computeLocalBuildSig(plan.car_id || state.currentCarId, plan.params),
+        appliedDomSig: Utils.computeLocalBuildSig(state.currentCarId, appliedCapture)
+      };
       CommunityPlans.renderPlans();
+      Draft.scheduleSave();
 
       var cardChips = document.getElementById('cardChips');
       if (cardChips) {
@@ -1891,11 +2790,13 @@
       state.lastSnapshot = null;
       state.hasUndoAvailable = false;
       state.activeAppliedPlanId = null;
+      state.appliedSource = null;
 
       var undoBtn = document.getElementById('cpBtnUndo');
       if (undoBtn) undoBtn.style.display = 'none';
 
       CommunityPlans.renderPlans();
+      Draft.scheduleSave();
       CommunityPlans.toast('已还原之前的配装状态');
     },
 
@@ -1918,175 +2819,123 @@
       CommunityPlans.toast('已删除方案「' + name + '」');
     },
 
-    // 点赞 (双因子防刷并持久化至 VOTES 存储)
+    // 点赞 / 再次点击取消点赞 (绑定设备指纹持久化记忆 + 禁止作者自赞)
     toggleVote: function (planId) {
-      var plan = state.savedPlans.find(function (p) { return p.id === planId; }) ||
-                 state.proPlans.find(function (p) { return p.id === planId; }) ||
-                 state.remotePlans.find(function (p) { return p.id === planId; });
+      var localPlan = state.savedPlans.find(function (p) { return p.id === planId; });
+      var remotePlan = state.proPlans.find(function (p) { return p.id === planId; }) ||
+                       state.remotePlans.find(function (p) { return p.id === planId; });
+      var plan = localPlan || remotePlan;
       if (!plan) return;
 
-      var alreadyVoted = Boolean(plan.isVoted || state.votedMap[plan.id] || (plan.remote_id && state.votedMap[plan.remote_id]));
-      if (alreadyVoted) {
-        CommunityPlans.toast('您已经赞过该方案啦');
+      var isOwnLocalWithRemote = Boolean(localPlan && localPlan.remote_id);
+      if (plan.viewer_is_author || isOwnLocalWithRemote) {
+        CommunityPlans.toast('不能给自己的方案点赞');
         return;
       }
 
-      plan.isVoted = true;
-      plan.votes = (Number(plan.votes) || 0) + 1;
-      state.votedMap[plan.id] = 1;
-      if (plan.remote_id) state.votedMap[plan.remote_id] = 1;
-      Utils.setStorage(STORAGE_KEYS.VOTES, state.votedMap);
+      if (localPlan && !localPlan.remote_id) {
+        CommunityPlans.toast('本地方案仅您自己可见，上传社区后可接收点赞');
+        return;
+      }
 
-      // 如果是本地方案，同步写入 storage
-      if (state.savedPlans.some(function (p) { return p.id === planId; })) {
-        Utils.setStorage(STORAGE_KEYS.PLANS, state.savedPlans);
-        CommunityPlans.renderPlans();
-        CommunityPlans.toast('点赞成功 +1');
+      if (state.siteMeta && state.siteMeta.allow_voting === false) {
+        CommunityPlans.toast('当前站点暂未开放点赞功能');
+        return;
+      }
+
+      var targetRemoteId = plan.remote_id || plan.id;
+      var prevVoted = Boolean(plan.isVoted || state.votedMap[plan.id] || state.votedMap[targetRemoteId]);
+      var prevVotes = Math.max(0, Number(plan.votes) || 0);
+      var nextAction = prevVoted ? 'unvote' : 'vote';
+      var nextVoted = !prevVoted;
+      var optimisticVotes = nextVoted ? prevVotes + 1 : Math.max(0, prevVotes - 1);
+
+      plan.isVoted = nextVoted;
+      plan.votes = optimisticVotes;
+      if (nextVoted) {
+        state.votedMap[plan.id] = 1;
+        state.votedMap[targetRemoteId] = 1;
       } else {
-        CommunityPlans.renderPlans();
-        // 远程/社区方案向后端同步投票（携带匿名持久化 X-Client-ID）
-        var targetRemoteId = plan.remote_id || planId;
-        fetch('/api/vote', {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-            'X-Client-ID': Utils.getClientId()
-          },
-          body: JSON.stringify({ plan_id: targetRemoteId })
+        delete state.votedMap[plan.id];
+        delete state.votedMap[targetRemoteId];
+      }
+      Utils.setStorage(STORAGE_KEYS.VOTES, state.votedMap);
+      CommunityPlans.renderPlans();
+
+      fetch('/api/vote', {
+        method: 'POST',
+        headers: Utils.getApiHeaders(true),
+        body: JSON.stringify({ plan_id: targetRemoteId, action: nextAction })
+      })
+        .then(function (res) {
+          return res.json().then(function (d) { return { ok: res.ok, status: res.status, data: d }; });
         })
-          .then(function (res) {
-            return res.json().then(function (d) { return { ok: res.ok, status: res.status, data: d }; });
-          })
-          .then(function (resObj) {
-            if (!resObj.ok) {
-              if (resObj.status === 403) {
-                plan.votes = Math.max(0, (Number(plan.votes) || 1) - 1);
-                CommunityPlans.renderPlans();
-                CommunityPlans.toast((resObj.data && resObj.data.message) || '您在 24 小时内已经点过赞啦');
-              }
+        .then(function (resObj) {
+          if (!resObj.ok) {
+            // 后端拒绝（例如自赞 403、限流 429 或未找到对应指纹点赞记录）：精确回滚
+            plan.isVoted = prevVoted;
+            plan.votes = prevVotes;
+            if (prevVoted) {
+              state.votedMap[plan.id] = 1;
+              state.votedMap[targetRemoteId] = 1;
             } else {
-              if (resObj.data && resObj.data.data && typeof resObj.data.data.votes === 'number') {
-                plan.votes = resObj.data.data.votes;
-                CommunityPlans.renderPlans();
-              }
-              CommunityPlans.toast('点赞成功 +1');
+              delete state.votedMap[plan.id];
+              delete state.votedMap[targetRemoteId];
             }
-          })
-          .catch(function () {
-            CommunityPlans.toast('点赞成功 +1');
-          });
-      }
-    },
-
-    // 导出备份
-    exportJSON: function () {
-      if (!state.savedPlans || state.savedPlans.length === 0) {
-        CommunityPlans.toast('当前暂无本地保存的方案可供导出');
-        return;
-      }
-      var exportData = {
-        app: 'Ace-Racer-Calc',
-        version: '2.2',
-        exported_at: Utils.now(),
-        plans: state.savedPlans
-      };
-      var jsonStr = JSON.stringify(exportData, null, 2);
-      var blob = new Blob([jsonStr], { type: 'application/json' });
-      var url = URL.createObjectURL(blob);
-      var a = document.createElement('a');
-      a.href = url;
-      a.download = 'ace-racer-plans-' + new Date().toISOString().slice(0, 10) + '.json';
-      document.body.appendChild(a);
-      a.click();
-      document.body.removeChild(a);
-      URL.revokeObjectURL(url);
-      CommunityPlans.toast('已导出 ' + state.savedPlans.length + ' 个本地方案');
-    },
-
-    // 触发导入
-    triggerImport: function () {
-      var fileInput = document.getElementById('cpFileInput');
-      if (fileInput) fileInput.click();
-    },
-
-    // 处理导入文件（带严格白名单净化与安全校验，防恶意 JSON 注入/XSS）
-    handleFileImport: function (e) {
-      var file = e.target.files && e.target.files[0];
-      if (!file) return;
-      if (file.size > 2 * 1024 * 1024) {
-        CommunityPlans.toast('导入失败：备份文件不能超过 2MB');
-        e.target.value = '';
-        return;
-      }
-
-      var reader = new FileReader();
-      reader.onload = function (event) {
-        try {
-          var data = JSON.parse(event.target.result);
-          var plans = Array.isArray(data) ? data : (data && Array.isArray(data.plans) ? data.plans : []);
-          if (!Array.isArray(plans) || plans.length === 0) {
-            CommunityPlans.toast('导入失败：未找到有效方案');
+            Utils.setStorage(STORAGE_KEYS.VOTES, state.votedMap);
+            CommunityPlans.renderPlans();
+            CommunityPlans.toast((resObj.data && resObj.data.message) || '操作失败，请稍后重试');
             return;
           }
-
-          var count = 0;
-          var maxImport = 100;
-          for (var i = 0; i < plans.length && count < maxImport; i++) {
-            var imported = plans[i];
-            if (!imported || typeof imported !== 'object' || !imported.title || !imported.params || typeof imported.params !== 'object') {
-              continue;
+          var d = resObj.data && resObj.data.data ? resObj.data.data : {};
+          if (typeof d.voted === 'boolean') {
+            plan.isVoted = d.voted;
+            if (d.voted) {
+              state.votedMap[plan.id] = 1;
+              state.votedMap[targetRemoteId] = 1;
+            } else {
+              delete state.votedMap[plan.id];
+              delete state.votedMap[targetRemoteId];
             }
-            var cleanTitle = Utils.truncateChars(String(imported.title).trim(), 15);
-            var vCheck = PlanValidator.validate(imported.params, cleanTitle);
-            if (!vCheck.valid) continue;
-
-            var cleanLinks = [];
-            if (Array.isArray(imported.links)) {
-              imported.links.forEach(function (l) {
-                var u = Utils.sanitizeUrl(l);
-                if (u && cleanLinks.length < 3) cleanLinks.push(u);
-              });
-            }
-
-            var safePlan = {
-              id: Utils.uuid(),
-              car_id: Utils.safeId(imported.car_id),
-              car_name: Utils.truncateChars(String(imported.car_name || ''), 24),
-              title: cleanTitle,
-              author: Utils.truncateChars(String(imported.author || '热心车友').trim(), 20) || '热心车友',
-              links: cleanLinks,
-              params: imported.params,
-              votes: Math.max(0, parseInt(imported.votes, 10) || 0),
-              isVoted: false,
-              created_at: parseInt(imported.created_at, 10) || Utils.now()
-            };
-            if (!safePlan.car_id) continue;
-
-            state.savedPlans.push(safePlan);
-            count++;
+            Utils.setStorage(STORAGE_KEYS.VOTES, state.votedMap);
           }
-
-          Utils.setStorage(STORAGE_KEYS.PLANS, state.savedPlans);
+          if (typeof d.votes === 'number') {
+            plan.votes = d.votes;
+          }
           CommunityPlans.renderPlans();
-          CommunityPlans.toast('成功安全导入 ' + count + ' 个方案！');
-        } catch (err) {
-          CommunityPlans.toast('导入失败：文件解析错误');
-        }
-      };
-      reader.readAsText(file);
-      e.target.value = '';
+          CommunityPlans.toast(plan.isVoted ? '点赞成功 +1' : '已取消点赞');
+        })
+        .catch(function () {
+          plan.isVoted = prevVoted;
+          plan.votes = prevVotes;
+          if (prevVoted) {
+            state.votedMap[plan.id] = 1;
+            state.votedMap[targetRemoteId] = 1;
+          } else {
+            delete state.votedMap[plan.id];
+            delete state.votedMap[targetRemoteId];
+          }
+          Utils.setStorage(STORAGE_KEYS.VOTES, state.votedMap);
+          CommunityPlans.renderPlans();
+          CommunityPlans.toast('网络波动，操作已回滚，请重试');
+        });
     },
 
-    // 统一 Toast 提示 (优先复用全站原生 .copy-toast)
+    // 统一 Toast 提示 (优先委托全局 showToast，确保定时器清理、图标装饰与最高层 z-index 一致)
     toast: function (msg) {
+      if (typeof window.showToast === 'function') {
+        window.showToast(msg);
+        return;
+      }
       var toastEl = document.getElementById('copyToast');
       if (toastEl) {
         toastEl.textContent = msg;
         toastEl.classList.add('show');
+        if (toastEl.__hideTimer) clearTimeout(toastEl.__hideTimer);
         if (toastEl.__timer) clearTimeout(toastEl.__timer);
-        toastEl.__timer = setTimeout(function () {
+        toastEl.__hideTimer = setTimeout(function () {
           toastEl.classList.remove('show');
-        }, 2200);
+        }, 2500);
       } else {
         alert(msg);
       }

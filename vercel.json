@@ -26,6 +26,18 @@
       ]
     },
     {
+      "source": "/sw.js",
+      "headers": [
+        { "key": "Cache-Control", "value": "no-cache, must-revalidate" }
+      ]
+    },
+    {
+      "source": "/community-plans.(js|css)",
+      "headers": [
+        { "key": "Cache-Control", "value": "public, max-age=0, must-revalidate" }
+      ]
+    },
+    {
       "source": "/(v1|V1|v2|V2)(\\.html)?",
       "headers": [
         { "key": "X-Robots-Tag", "value": "noindex, nofollow" },

@@ -114,7 +114,7 @@
   font-weight: 600;
   border-radius: var(--r-sm, 10px);
   cursor: pointer;
-  transition: all .15s ease;
+  transition: background-color .15s ease, border-color .15s ease, color .15s ease, transform .15s ease, box-shadow .15s ease;
 }
 
 .ds-c .cp-btn .ico {
@@ -177,53 +177,18 @@ body[data-calc-mode="support"] #communityPlansContainer {
   user-select: none;
 }
 
-.ds-c .cp-plans-card {
-  transition: padding .32s cubic-bezier(.3, .8, .2, 1);
-}
-
-.ds-c .cp-plans-card > .cp-card-title {
-  transition: margin-bottom .32s cubic-bezier(.3, .8, .2, 1);
-}
-
-.ds-c .cp-plans-card.pv-collapsed > .cp-card-title,
-.ds-c .cp-plans-card.pv-shut > .cp-card-title {
-  margin-bottom: 0 !important;
-}
-
-/* 遵循全站统一折叠规范：动画由原生 __pvMorph 驱动，折叠态收起全部非标题子节点 */
+/* 遵循全站统一折叠规范：动画完全由原生 __pvMorph 测量真实起止高度驱动，
+   .pv-shut 仅负责立即旋转箭头，.pv-collapsed 仅在折叠静态生效时隐藏非标题节点与操作栏，
+   严禁给 padding / margin-bottom 额外加 transition，避免高度测量失真造成收尾顿跳 */
 .ds-c .cp-plans-card.pv-collapsed > :not(.cp-card-title) {
   display: none !important;
 }
 
-.ds-c .cp-plans-card.pv-collapsed > .cp-card-title,
-.ds-c .cp-plans-card.pv-shut > .cp-card-title {
+.ds-c .cp-plans-card.pv-collapsed > .cp-card-title {
   margin-bottom: 0 !important;
 }
 
-/* 折叠指示箭头（严格复用全站原生 .pv-collapsible 贝塞尔缓动） */
-.ds-c .cp-fold-indicator {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  transition: transform .32s cubic-bezier(.2, .8, .2, 1);
-}
-
-.ds-c .cp-plans-card.pv-shut .cp-fold-indicator,
-.ds-c #communityPlansContainer.pv-shut .cp-fold-indicator {
-  transform: rotate(180deg);
-}
-
-.ds-c .cp-plans-card:not(.pv-shut) .cp-fold-indicator,
-.ds-c #communityPlansContainer:not(.pv-shut) .cp-fold-indicator {
-  transform: rotate(0deg);
-}
-
-/* 折叠状态下隐藏操作按钮栏，仅保留标题左侧与最右侧折叠指示按钮 */
-.ds-c .cp-plans-card.pv-collapsed .cp-actions-bar,
-.ds-c .cp-plans-card.pv-shut .cp-actions-bar {
-  display: none !important;
-}
-
+/* 折叠指示箭头（严格复用全站原生 .pv-collapsible 贝塞尔缓动，展开向上 180deg，折叠向下 0deg） */
 .ds-c .cp-fold-btn {
   padding: 0;
   width: 32px;
@@ -248,12 +213,19 @@ body[data-calc-mode="support"] #communityPlansContainer {
   height: 16px;
 }
 
-.ds-c .cp-plans-card:not(.pv-shut) .cp-fold-indicator {
+.ds-c .cp-plans-card:not(.pv-shut) .cp-fold-indicator,
+.ds-c #communityPlansContainer:not(.pv-shut) .cp-fold-indicator {
   transform: rotate(180deg);
 }
 
-.ds-c .cp-plans-card.pv-shut .cp-fold-indicator {
+.ds-c .cp-plans-card.pv-shut .cp-fold-indicator,
+.ds-c #communityPlansContainer.pv-shut .cp-fold-indicator {
   transform: rotate(0deg);
+}
+
+/* 仅在静态折叠态 (.pv-collapsed) 隐藏操作按钮栏，避免动画首帧/尾帧布局高度突变 */
+.ds-c .cp-plans-card.pv-collapsed .cp-actions-bar {
+  display: none !important;
 }
 
 /* ==========================================================================
@@ -286,6 +258,17 @@ body[data-calc-mode="support"] #communityPlansContainer {
 .ds-c .cp-section-pro .cp-sec-header {
   background-color: color-mix(in oklab, #ffd700 8%, var(--surface));
   border-color: color-mix(in oklab, #ffd700 30%, var(--surface-edge));
+}
+
+.ds-c .cp-section-partner .cp-sec-header {
+  background-color: color-mix(in oklab, #14b8a6 7%, var(--surface));
+  border-color: color-mix(in oklab, #14b8a6 26%, var(--surface-edge));
+}
+
+.ds-c .cp-section-partner .cp-sec-icon-box {
+  color: #2dd4bf;
+  border-color: color-mix(in oklab, #14b8a6 28%, var(--surface-edge));
+  background-color: color-mix(in oklab, #14b8a6 8%, var(--surface));
 }
 
 .ds-c .cp-section-mine .cp-sec-header {
@@ -380,18 +363,112 @@ body[data-calc-mode="support"] #communityPlansContainer {
   border-color: color-mix(in oklab, #ffd700 55%, transparent);
 }
 
+.ds-c .cp-section-partner .cp-sec-count {
+  background: color-mix(in oklab, #14b8a6 16%, var(--surface));
+  color: #2dd4bf;
+  border-color: color-mix(in oklab, #14b8a6 38%, transparent);
+}
+
 .ds-c .cp-sec-desc {
   font-size: 11.5px;
   color: var(--ink-2);
   line-height: 1.35;
 }
 
-/* 分类下的方案卡片列表：桌面/平板自适应网格，窄屏单列，卡片三层视觉清晰对齐 */
+/* 分类下的方案卡片列表：全端统一流式竖向单列排列 */
+.ds-c .cp-site-banner {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 9px 13px;
+  border-radius: var(--r-sm, 10px);
+  background: color-mix(in oklab, var(--acc) 10%, var(--surface));
+  border: 1px solid color-mix(in oklab, var(--acc) 35%, transparent);
+  color: var(--ink);
+  font-size: 12.5px;
+  line-height: 1.5;
+}
+
+.ds-c .cp-site-banner.is-warn {
+  background: color-mix(in oklab, var(--warn, #e5a14b) 14%, var(--surface));
+  border-color: color-mix(in oklab, var(--warn, #e5a14b) 42%, transparent);
+}
+
+.ds-c .cp-site-banner.is-success {
+  background: color-mix(in oklab, #10b981 12%, var(--surface));
+  border-color: color-mix(in oklab, #10b981 40%, transparent);
+}
+
+.ds-c .cp-site-banner .ico {
+  width: 15px;
+  height: 15px;
+  color: var(--acc);
+  flex-shrink: 0;
+}
+
+.ds-c .cp-site-banner.is-warn .ico {
+  color: var(--warn, #e5a14b);
+}
+
+.ds-c .cp-site-banner.is-success .ico {
+  color: #34d399;
+}
+
+.ds-c .cp-controls-bar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: nowrap;
+  gap: 8px 12px;
+}
+
+.ds-c .cp-ctrl-group {
+  display: inline-flex;
+  align-items: center;
+  flex-wrap: nowrap;
+  gap: 8px;
+  min-width: 0;
+}
+
+.ds-c .cp-controls-hint {
+  font-size: 12px;
+  color: var(--ink-3);
+  font-weight: 500;
+  white-space: nowrap;
+}
+
+.ds-c .cp-sort-seg {
+  display: inline-flex;
+  padding: 3px;
+  border-radius: 10px;
+  background: var(--fill);
+  border: 1px solid var(--surface-edge);
+  gap: 2px;
+}
+
+.ds-c .cp-sort-seg button {
+  border: none;
+  background: transparent;
+  color: var(--ink-2);
+  font-size: 12px;
+  font-weight: 600;
+  padding: 4px 11px;
+  border-radius: 7px;
+  cursor: pointer;
+  white-space: nowrap;
+  transition: background-color .15s ease, color .15s ease, box-shadow .15s ease;
+}
+
+.ds-c .cp-sort-seg button.is-on {
+  background: color-mix(in oklab, var(--acc) 22%, var(--surface));
+  color: var(--acc-ink, var(--acc));
+  box-shadow: inset 0 1px 0 var(--surface-rim);
+}
+
 .ds-c .cp-sec-list {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(min(100%, 330px), 1fr));
+  display: flex;
+  flex-direction: column;
   gap: 12px;
-  align-items: stretch;
 }
 
 /* ==========================================================================
@@ -409,8 +486,9 @@ body[data-calc-mode="support"] #communityPlansContainer {
   flex-direction: column;
   gap: 11px;
   min-width: 0;
-  height: 100%;
-  transition: border-color .18s ease, box-shadow .18s ease, transform .18s ease, background-color .18s ease;
+  width: 100%;
+  contain: layout style;
+  transition: border-color .18s ease, box-shadow .18s ease, transform .18s ease, background-color .18s ease, opacity .18s ease;
 }
 
 .ds-c.light-mode .cp-card-item {
@@ -439,6 +517,26 @@ body[data-calc-mode="support"] #communityPlansContainer {
   border-color: var(--acc);
   background-color: color-mix(in oklab, var(--acc) 12%, var(--surface));
   box-shadow: inset 0 1px 0 var(--surface-rim), 0 0 0 1.5px var(--acc), 0 8px 24px -6px color-mix(in oklab, var(--acc) 32%, transparent);
+}
+
+/* 模式不兼容灰态（如在「先机汇能」模式下查看「团魂获能」专属方案） */
+.ds-c .cp-card-item.is-mode-disabled {
+  opacity: 0.56;
+  filter: grayscale(0.85);
+  background-color: color-mix(in oklab, var(--fill) 65%, var(--surface));
+  border-color: var(--surface-edge);
+}
+
+.ds-c .cp-card-item.is-mode-disabled:hover {
+  transform: none;
+  background-color: color-mix(in oklab, var(--fill) 65%, var(--surface));
+  border-color: var(--surface-edge);
+  box-shadow: inset 0 1px 0 var(--surface-rim), 0 3px 12px rgba(0, 0, 0, .08);
+}
+
+.ds-c .cp-card-item.is-mode-disabled .cp-spec-val.is-acc,
+.ds-c .cp-card-item.is-mode-disabled .cp-spec-extra-v.is-acc {
+  color: var(--ink-2);
 }
 
 /* 第一层：卡片头部 (标题 + 徽章 + 纯文本元数据) */
@@ -495,6 +593,39 @@ body[data-calc-mode="support"] #communityPlansContainer {
   color: var(--ink);
 }
 
+/* 昵称旁友站勋章：柔和清雅的青玉微章，保持存在感同时不抢国服金冠与主站焦点 */
+.ds-c .cp-author-partner-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 3px;
+  height: 18px;
+  padding: 0 6px;
+  border-radius: 6px;
+  font-size: 10.5px;
+  font-weight: 600;
+  letter-spacing: 0.02em;
+  color: #2dd4bf;
+  background: color-mix(in oklab, #14b8a6 11%, var(--surface));
+  border: 1px solid color-mix(in oklab, #14b8a6 28%, transparent);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.06);
+  line-height: 1;
+  white-space: nowrap;
+  flex: none;
+}
+
+.ds-c .cp-author-partner-badge .ico {
+  width: 10.5px;
+  height: 10.5px;
+  opacity: 0.9;
+}
+
+:root[data-theme="light"] .ds-c .cp-author-partner-badge,
+:root[data-theme="light"] .ds-c .cp-section-partner .cp-sec-icon-box,
+:root[data-theme="light"] .ds-c .cp-section-partner .cp-sec-count,
+:root[data-theme="light"] .ds-c .cp-badge-partner {
+  color: #0d9488;
+}
+
 .ds-c .cp-pro-helmet-badge {
   width: 18px;
   height: 18px;
@@ -504,31 +635,68 @@ body[data-calc-mode="support"] #communityPlansContainer {
 }
 
 .ds-c .cp-author-links {
-  display: inline-flex;
+  display: flex;
+  flex-wrap: wrap;
   align-items: center;
-  gap: 2px;
+  gap: 6px;
+  margin-top: 2px;
 }
 
 .ds-c .cp-author-link-btn {
   display: inline-flex;
   align-items: center;
-  justify-content: center;
-  width: 20px;
-  height: 20px;
-  border-radius: 5px;
-  color: var(--ink-3);
-  background: transparent;
-  transition: color .15s, background-color .15s;
+  gap: 4px;
+  height: 24px;
+  padding: 0 9px;
+  border-radius: 999px;
+  border: 1px solid color-mix(in oklab, var(--acc) 32%, var(--surface-edge));
+  background: color-mix(in oklab, var(--acc) 10%, var(--surface));
+  color: var(--acc-ink, var(--acc));
+  font-size: 11.5px;
+  font-weight: 600;
+  text-decoration: none;
+  white-space: nowrap;
+  flex-shrink: 0;
+  word-break: keep-all;
+  line-height: 1;
+  transition: color .15s, background-color .15s, border-color .15s, transform .15s;
 }
 
 .ds-c .cp-author-link-btn .ico {
-  width: 12px;
-  height: 12px;
+  width: 11px;
+  height: 11px;
+  flex-shrink: 0;
 }
 
 .ds-c .cp-author-link-btn:hover {
-  color: var(--acc);
-  background: var(--fill);
+  color: #fff;
+  background: var(--acc);
+  border-color: var(--acc);
+  transform: translateY(-1px);
+}
+
+.ds-c .cp-author-link-btn.is-bili {
+  border-color: color-mix(in oklab, #fb7299 42%, var(--surface-edge));
+  background: color-mix(in oklab, #fb7299 12%, var(--surface));
+  color: #fb7299;
+}
+
+.ds-c .cp-author-link-btn.is-bili:hover {
+  background: #fb7299;
+  border-color: #fb7299;
+  color: #fff;
+}
+
+.ds-c .cp-author-link-btn.is-douyin {
+  border-color: color-mix(in oklab, #38bdf8 40%, var(--surface-edge));
+  background: color-mix(in oklab, #38bdf8 10%, var(--surface));
+  color: #38bdf8;
+}
+
+.ds-c .cp-author-link-btn.is-douyin:hover {
+  background: #0ea5e9;
+  border-color: #0ea5e9;
+  color: #fff;
 }
 
 .ds-c .cp-player-id {
@@ -600,6 +768,17 @@ body[data-calc-mode="support"] #communityPlansContainer {
   height: 12px;
 }
 
+.ds-c .cp-badge-partner {
+  background: color-mix(in oklab, #14b8a6 14%, var(--surface));
+  color: #2dd4bf;
+  border: 1px solid color-mix(in oklab, #14b8a6 34%, transparent);
+}
+
+.ds-c .cp-badge-partner .ico {
+  width: 11px;
+  height: 11px;
+}
+
 .ds-c .cp-badge-local {
   background: var(--fill);
   color: var(--ink-2);
@@ -610,6 +789,18 @@ body[data-calc-mode="support"] #communityPlansContainer {
   background: color-mix(in oklab, #06b6d4 18%, var(--surface));
   color: #06b6d4;
   border: 1px solid color-mix(in oklab, #06b6d4 45%, transparent);
+}
+
+.ds-c .cp-badge-mode-team {
+  background: color-mix(in oklab, #8b5cf6 18%, var(--surface));
+  color: #a78bfa;
+  border: 1px solid color-mix(in oklab, #8b5cf6 42%, transparent);
+}
+
+.ds-c .cp-badge-mode-team.is-disabled {
+  background: var(--fill);
+  color: var(--ink-3);
+  border-color: var(--surface-edge);
 }
 
 .ds-c .cp-badge-active {
@@ -629,7 +820,7 @@ body[data-calc-mode="support"] #communityPlansContainer {
   color: #f59e0b;
   border: 1px solid color-mix(in oklab, #f59e0b 50%, transparent);
   cursor: pointer;
-  transition: all .15s ease;
+  transition: background-color .15s ease, transform .15s ease;
 }
 
 .ds-c .cp-badge-pending:hover {
@@ -643,7 +834,7 @@ body[data-calc-mode="support"] #communityPlansContainer {
   border: 1px solid color-mix(in oklab, #ef4444 55%, transparent);
   cursor: pointer;
   animation: cp-pulse-red 2.5s infinite;
-  transition: all .15s ease;
+  transition: background-color .15s ease, transform .15s ease, box-shadow .15s ease;
 }
 
 .ds-c .cp-badge-rejected:hover {
@@ -718,9 +909,31 @@ body[data-calc-mode="support"] #communityPlansContainer {
   gap: 8px;
 }
 
+/* 顶部黄色高亮同行区（先机、汇能、团魂(模式2)、反制：全端包括手机端始终稳排在同一行） */
+.ds-c .cp-specs-hl-row {
+  display: grid;
+  grid-template-columns: repeat(var(--hl-cols, 3), minmax(0, 1fr));
+  gap: 6px 10px;
+  align-items: end;
+  padding-bottom: 8px;
+  border-bottom: 1px dashed var(--surface-edge);
+}
+
+.ds-c .cp-specs-hl-row:last-child {
+  padding-bottom: 0;
+  border-bottom: none;
+}
+
+.ds-c .cp-spec-hl-cell {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  min-width: 0;
+}
+
 .ds-c .cp-specs-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(56px, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(76px, 1fr));
   gap: 8px 10px;
   align-items: end;
 }
@@ -730,6 +943,10 @@ body[data-calc-mode="support"] #communityPlansContainer {
   flex-direction: column;
   gap: 2px;
   min-width: 0;
+}
+
+.ds-c .cp-spec-cell.is-wide {
+  grid-column: span 2;
 }
 
 .ds-c .cp-spec-lbl {
@@ -748,6 +965,15 @@ body[data-calc-mode="support"] #communityPlansContainer {
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
+}
+
+.ds-c .cp-spec-cell .cp-spec-val {
+  white-space: normal;
+  word-break: break-word;
+  overflow-wrap: anywhere;
+  overflow: visible;
+  text-overflow: clip;
+  line-height: 1.35;
 }
 
 .ds-c .cp-spec-val.is-acc {
@@ -790,6 +1016,53 @@ body[data-calc-mode="support"] #communityPlansContainer {
   font-weight: 600;
 }
 
+/* 方案备注卡片区 */
+.ds-c .cp-card-note-box {
+  display: flex;
+  align-items: flex-start;
+  gap: 8px;
+  padding: 7px 10px;
+  border-radius: 8px;
+  background: color-mix(in oklab, var(--acc) 7%, var(--surface));
+  border: 1px dashed color-mix(in oklab, var(--acc) 28%, var(--surface-edge));
+  font-size: 12px;
+  line-height: 1.5;
+}
+
+.ds-c .cp-note-label {
+  flex-shrink: 0;
+  font-size: 11px;
+  font-weight: 700;
+  color: var(--acc-ink, var(--acc));
+  background: color-mix(in oklab, var(--acc) 16%, transparent);
+  padding: 1px 6px;
+  border-radius: 5px;
+  margin-top: 1px;
+}
+
+.ds-c .cp-note-text {
+  flex: 1;
+  color: var(--ink-2);
+  white-space: pre-wrap;
+  word-break: break-word;
+  overflow-wrap: anywhere;
+  min-width: 0;
+}
+
+.ds-c .cp-modal-textarea {
+  resize: vertical;
+  min-height: 68px;
+  max-height: 160px;
+  line-height: 1.5;
+  padding-top: 8px;
+  padding-bottom: 8px;
+}
+
+.ds-c .cp-setting-switch-row.is-disabled {
+  opacity: 0.65;
+  pointer-events: none;
+}
+
 /* 第三层：卡片底栏交互区 */
 .ds-c .cp-card-foot {
   margin-top: auto;
@@ -818,7 +1091,7 @@ body[data-calc-mode="support"] #communityPlansContainer {
   font-weight: 600;
   color: var(--ink-2);
   cursor: pointer;
-  transition: all .15s;
+  transition: background-color .15s ease, color .15s ease, border-color .15s ease;
 }
 
 .ds-c .cp-vote-btn .ico {
@@ -835,6 +1108,11 @@ body[data-calc-mode="support"] #communityPlansContainer {
   color: #ef4444;
   background-color: rgba(239, 68, 68, 0.12);
   border-color: rgba(239, 68, 68, 0.3);
+}
+
+.ds-c .cp-vote-btn.is-author {
+  opacity: 0.65;
+  cursor: not-allowed;
 }
 
 .ds-c .cp-card-actions {
@@ -879,7 +1157,7 @@ body[data-calc-mode="support"] #communityPlansContainer {
   border: 1px solid color-mix(in oklab, var(--acc) 60%, transparent);
   box-shadow: inset 0 1px 0 var(--surface-rim);
   cursor: pointer;
-  transition: all .15s;
+  transition: background-color .15s ease, border-color .15s ease, color .15s ease, transform .15s ease;
 }
 
 .ds-c .cp-apply-btn .ico {
@@ -902,6 +1180,23 @@ body[data-calc-mode="support"] #communityPlansContainer {
 
 .ds-c .cp-apply-btn.is-applied .ico {
   color: #34d399;
+}
+
+.ds-c .cp-apply-btn.is-disabled,
+.ds-c .cp-apply-btn[disabled] {
+  background-color: var(--fill);
+  border-color: var(--surface-edge);
+  color: var(--ink-3);
+  box-shadow: none;
+  cursor: not-allowed;
+  opacity: 0.78;
+}
+
+.ds-c .cp-apply-btn.is-disabled:hover,
+.ds-c .cp-apply-btn[disabled]:hover {
+  transform: none;
+  background-color: var(--fill);
+  border-color: var(--surface-edge);
 }
 
 /* 空状态占位箱 */
@@ -1199,7 +1494,7 @@ body.cp-modal-locked {
   align-items: center;
   text-align: center;
   cursor: pointer;
-  transition: all .2s;
+  transition: border-color .2s ease, background-color .2s ease;
   min-height: 120px;
   justify-content: center;
 }
@@ -1279,6 +1574,41 @@ body.cp-modal-locked {
   display: flex;
   flex-direction: column;
   gap: 8px;
+}
+
+.cp-link-input-wrap {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.cp-link-input-wrap.is-valid .cp-modal-input {
+  border-color: color-mix(in oklab, #10b981 55%, var(--surface-edge));
+}
+
+.cp-link-input-wrap.is-error .cp-modal-input {
+  border-color: var(--fail, #ff4757);
+  box-shadow: 0 0 0 2px rgba(255, 71, 87, .16);
+}
+
+.cp-link-parse-msg {
+  padding-left: 30px;
+  font-size: 11.5px;
+  line-height: 1.35;
+  color: var(--ink-3);
+  min-height: 0;
+}
+
+.cp-link-parse-msg:empty {
+  display: none;
+}
+
+.cp-link-input-wrap.is-valid .cp-link-parse-msg {
+  color: #10b981;
+}
+
+.cp-link-input-wrap.is-error .cp-link-parse-msg {
+  color: var(--fail, #ff4757);
 }
 
 .cp-link-input-row {
@@ -1454,35 +1784,35 @@ body.cp-modal-locked {
   }
 
   .ds-c .cp-controls-bar {
-    flex-direction: column;
-    align-items: stretch;
-    gap: 10px;
-  }
-
-  .ds-c .cp-tab-seg {
-    width: 100%;
+    flex-wrap: nowrap;
     justify-content: space-between;
+    align-items: center;
+    gap: 6px;
   }
 
-  .ds-c .cp-tab-seg button {
-    flex: 1 1 0;
-    justify-content: center;
-    padding: 6px 4px;
-    font-size: 12px;
+  .ds-c .cp-ctrl-group {
+    flex-wrap: nowrap;
+    min-width: 0;
+    gap: 0;
   }
 
-  .ds-c .cp-sort-container {
-    width: 100%;
+  .ds-c .cp-controls-hint {
+    display: none;
   }
 
-  .ds-c .cp-sort-btn {
-    width: 100%;
-    justify-content: space-between;
+  .ds-c .cp-sort-seg {
+    flex-wrap: nowrap;
+  }
+
+  .ds-c .cp-sort-seg button {
+    padding: 4px 8px;
+    font-size: 11px;
   }
 
   .ds-c .cp-sec-list,
   .ds-c .cp-card-list {
-    grid-template-columns: 1fr;
+    display: flex;
+    flex-direction: column;
   }
 
   .cp-modal-dialog {
@@ -1518,5 +1848,29 @@ body.cp-modal-locked {
 
   .ds-c .cp-proof-grid {
     grid-template-columns: 1fr !important;
+  }
+
+  .ds-c .cp-specs-hl-row {
+    gap: 4px 6px;
+  }
+
+  .ds-c .cp-specs-hl-row .cp-spec-lbl {
+    font-size: 10.5px;
+  }
+
+  .ds-c .cp-specs-hl-row .cp-spec-val {
+    font-size: 13px;
+  }
+
+  .ds-c .cp-card-note-box {
+    flex-direction: column;
+    gap: 5px;
+  }
+}
+
+@media (max-width: 374px) {
+  .ds-c .cp-sort-seg button {
+    padding: 4px 6px;
+    font-size: 10.5px;
   }
 }

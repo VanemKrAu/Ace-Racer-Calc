@@ -71,7 +71,7 @@ body.en-mode #imgDark, body.en-mode #imgLight { display: none !important; }
 body.en-mode #gh-support-link { display: inline-flex !important; }
 
 /* Toast：使用纯 GPU 合成的 transform + opacity 弹性上浮，不触发 bottom 布局重排 */
-.copy-toast { visibility: hidden; opacity: 0; position: fixed; z-index: 3000; left: 50%; bottom: 48px; transform: translate3d(-50%, 14px, 0) scale(.95); transition: opacity .26s cubic-bezier(.2, .8, .2, 1), transform .26s cubic-bezier(.22, 1, .36, 1), visibility 0s linear .26s; pointer-events: none; }
+.copy-toast { visibility: hidden; opacity: 0; position: fixed; z-index: 2147483000; left: 50%; bottom: 48px; transform: translate3d(-50%, 14px, 0) scale(.95); transition: opacity .26s cubic-bezier(.2, .8, .2, 1), transform .26s cubic-bezier(.22, 1, .36, 1), visibility 0s linear .26s; pointer-events: none; }
 .copy-toast.show { visibility: visible; opacity: 1; transform: translate3d(-50%, 0, 0) scale(1); transition: opacity .26s cubic-bezier(.2, .8, .2, 1), transform .26s cubic-bezier(.22, 1, .36, 1), visibility 0s; }
 
 /* 原始结果文字保留在 DOM（导出文本 / 长图都读它），视觉上由 .ds-gauge 取代 */
@@ -203,6 +203,7 @@ body[data-theme-mode="light"] .theme-ico .ico:nth-child(1), body[data-theme-mode
   --round: "Noto Sans SC", ui-rounded, "SF Pro Rounded", "HarmonyOS Sans SC", "MiSans", system-ui, "Segoe UI Variable Display", "Segoe UI", sans-serif;
   --mono: ui-monospace, "SF Mono", "Cascadia Mono", Consolas, "Noto Sans SC", monospace;
 }
+
 .ds-c[data-quality="legend"] { --acc: #f2a900; --acc-ink: #9a6400; --flash-rgb: 242, 169, 0; --acc-soft: rgba(242,169,0,.14); --acc-glow: rgba(242,169,0,.22); }
 .ds-c[data-quality="epic"] { --acc: #9b5de5; --acc-ink: #7a3fc4; --flash-rgb: 155, 93, 229; --acc-soft: rgba(155,93,229,.13); --acc-glow: rgba(155,93,229,.2); }
 .ds-c[data-quality="rare"] { --acc: #1e90e8; --acc-ink: #0f6fb8; --flash-rgb: 30, 144, 232; --acc-soft: rgba(30,144,232,.13); --acc-glow: rgba(30,144,232,.2); }
@@ -537,7 +538,7 @@ input, select, textarea, button { touch-action: manipulation; }
   background: rgba(255, 255, 255, .08);
   color: var(--ink-3);
   font-weight: 500;
-  transition: all .2s;
+  transition: background-color .2s, color .2s, font-weight .2s;
   white-space: nowrap;
   word-break: keep-all;
   flex-shrink: 1;
@@ -621,7 +622,7 @@ input, select, textarea, button { touch-action: manipulation; }
   background: var(--raise);
   color: var(--ink-2);
   cursor: pointer;
-  transition: all .2s;
+  transition: background-color .2s, color .2s, border-color .2s;
   white-space: nowrap;
   word-break: keep-all;
   flex-shrink: 0;
@@ -2200,13 +2201,23 @@ body[data-calc-mode="team"] .chip-card .chip-t-team { display: inline; }
 .ds-c .pv-export .mode-thumb { transition: none; }
 
 /* ---------- 全站动效补齐与曲线升级 ---------- */
-/* 1) 自动填充卡片呼吸高亮（替代原 20fps setInterval 闪烁；仅脉冲 2 次后自动清除，避免 infinite 持续重绘 box-shadow） */
+/* 1) 自动填充卡片呼吸高亮（GPU 合成层 ::after + opacity 呼吸，持续闪烁至用户选中卡片内数值，零 box-shadow 重绘） */
 @keyframes pvCardFlash {
-  0%, 100% { box-shadow: inset 0 0 0 1.5px rgba(var(--flash-rgb), .25), 0 0 4px -2px rgba(var(--flash-rgb), .08); }
-  50% { box-shadow: inset 0 0 0 1.5px rgba(var(--flash-rgb), .82), 0 0 14px -2px rgba(var(--flash-rgb), .34); }
+  0%, 100% { opacity: .28; }
+  50% { opacity: 1; }
 }
-.ds-c .is-flashing { animation: pvCardFlash 1.1s cubic-bezier(.4, 0, .2, 1) 2 !important; }
-.ds-c .pv-export .is-flashing { animation: none !important; }
+.ds-c .is-flashing { position: relative; }
+.ds-c .is-flashing::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  pointer-events: none;
+  box-shadow: inset 0 0 0 1.5px rgba(var(--flash-rgb), .82), 0 0 14px -2px rgba(var(--flash-rgb), .34);
+  animation: pvCardFlash 1.4s cubic-bezier(.4, 0, .2, 1) infinite;
+  will-change: opacity;
+}
+.ds-c .pv-export .is-flashing::after { display: none; animation: none !important; }
 
 /* 2) 选车舞台与车辆信息换车入场动画（双 keyframes 交替重播，避免 void offsetWidth 强制同步重排） */
 @keyframes pvCarEnter {

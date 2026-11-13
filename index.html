@@ -1969,7 +1969,7 @@ CD：45秒
             + (car.has_sp ? ' &nbsp;|&nbsp; <span class="car-badge">SP</span>' : '');
     }
 
-    // Flash system for auto-filled sections (呼吸 2 次后自动清除 .is-flashing，避免 infinite 持续重绘 box-shadow)
+    // Flash system for auto-filled sections（持续呼吸闪烁，直到用户选中/修改卡片内任意数值或切车后停止）
     var _flashTimers = {};
     // 自动填充提示里的警示图标（原先是各条警告内联一长串 svg，统一抽出来）
     var _WARN_ICO = '<svg class="ico pv-warn" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3.5 2.8 19.5h18.4L12 3.5z"/><path d="M12 10v4.2M12 17v.01"/></svg>';
@@ -1978,25 +1978,187 @@ CD：45秒
         if (!sec) return;
         var state = _flashTimers[sectionId];
         if (state && state.stopFlash) state.stopFlash();
-        state = { stopFlash: null, timer: null };
+        state = { stopFlash: null, bindings: [] };
         _flashTimers[sectionId] = state;
         sec.classList.add('is-flashing');
+        var onSecFocus = function(e) {
+            var tg = e.target;
+            if (!tg || !tg.tagName) return;
+            var tag = tg.tagName.toUpperCase();
+            if (tag === 'INPUT' || tag === 'SELECT' || tag === 'TEXTAREA' || tag === 'BUTTON') {
+                state.stopFlash();
+            }
+        };
         state.stopFlash = function() {
-            if (state.timer) { clearTimeout(state.timer); state.timer = null; }
             if (_flashTimers[sectionId] === state) {
                 delete _flashTimers[sectionId];
             }
             sec.classList.remove('is-flashing');
+            for (var bi = 0; bi < state.bindings.length; bi++) {
+                var b = state.bindings[bi];
+                b.el.removeEventListener(b.ev, b.fn);
+            }
+            state.bindings = [];
         };
-        state.timer = setTimeout(state.stopFlash, 2250);
+        var bindStop = function(el, ev, fn) {
+            el.addEventListener(ev, fn);
+            state.bindings.push({ el: el, ev: ev, fn: fn });
+        };
+        bindStop(sec, 'focusin', onSecFocus);
+        bindStop(sec, 'input', state.stopFlash);
+        bindStop(sec, 'change', state.stopFlash);
         for (var fi = 0; fi < inputIds.length; fi++) {
             var el = document.getElementById(inputIds[fi]);
             if (el) {
-                el.addEventListener('input', state.stopFlash, { once: true });
-                el.addEventListener('change', state.stopFlash, { once: true });
-                el.addEventListener('focus', state.stopFlash, { once: true });
-                el.addEventListener('click', state.stopFlash, { once: true });
+                bindStop(el, 'focus', state.stopFlash);
+                bindStop(el, 'click', state.stopFlash);
             }
+        }
+    }
+
+    function _stopAllAutoFlashes() {
+        var ids = ['cardCoreParams', 'cardNitro', 'extraUltSection', 'extraNitroSection', 'extraPerSecSection', 'extraCustomSection', 'cardSupportOut', 'cardTeamIn'];
+        for (var i = 0; i < ids.length; i++) {
+            var st = _flashTimers[ids[i]];
+            if (st && st.stopFlash) st.stopFlash();
+        }
+    }
+
+    // 切车时彻底清除上一辆车的全部手动改动并恢复各计算区出厂默认值
+    function _resetManualCarEdits() {
+        var prevRestoring = isRestoringConfig;
+        isRestoringConfig = true;
+        try {
+            _stopAllAutoFlashes();
+
+            // 1. 清除增益装置锁定前快照与装置状态（先清快照防止解锁时还原旧反制/旧赋能）
+            if (typeof _devSavedEnv !== 'undefined') _devSavedEnv = null;
+            if (typeof _devSavedEmp !== 'undefined') _devSavedEmp = null;
+            if (typeof setDevice === 'function') setDevice('', true);
+            var devF = document.getElementById('dev_sub_first');
+            var devL = document.getElementById('dev_sub_loop');
+            if (devF) devF.value = '1';
+            if (devL) devL.value = '0';
+
+            // 2. 复位核心底座及氮气规格默认值
+            var elUlt = document.getElementById('ultThreshold');
+            var elStart = document.getElementById('startCharge');
+            var elBaseN = document.getElementById('baseNitro');
+            var elUltD = document.getElementById('baseUltDuration');
+            if (elUlt) elUlt.value = '100';
+            if (elStart) elStart.value = '36';
+            if (elBaseN) elBaseN.value = '36';
+            if (elUltD) elUltD.value = '5.0';
+
+            var nitroDefaults = { '1x5': '5.0', '1x6': '6.0', '2x2': '2.0', '2x3': '2.0', '2x25': '2.5', '3x2': '2.0' };
+            for (var nk in nitroDefaults) {
+                if (nitroDefaults.hasOwnProperty(nk)) {
+                    var nEl = document.getElementById('time_' + nk);
+                    if (nEl) nEl.value = nitroDefaults[nk];
+                }
+            }
+            var r1x5 = document.getElementById('r_1x5');
+            if (r1x5) r1x5.checked = true;
+            if (typeof handleNitroRadioChange === 'function') handleNitroRadioChange(true);
+
+            // 3. 复位专精地图、反制/干扰与附加充能效率
+            var specEl = document.getElementById('isSpec');
+            if (specEl) specEl.checked = true;
+            if (typeof setEnvSliders === 'function') setEnvSliders(18, 0);
+            var effEl = document.getElementById('extraEfficiency');
+            if (effEl) effEl.value = '0';
+
+            // 4. 清空全部赋能及子参数默认值
+            var empBoxes = document.querySelectorAll('.empower-checkbox');
+            for (var ei = 0; ei < empBoxes.length; ei++) {
+                empBoxes[ei].checked = false;
+                empBoxes[ei].disabled = false;
+            }
+            var qs = document.getElementById('queyi_sub_self');
+            var qe = document.getElementById('queyi_sub_enemy');
+            var jf = document.getElementById('jiezou_sub_first');
+            var jl = document.getElementById('jiezou_sub_loop');
+            var hf = document.getElementById('huaxin_sub_first');
+            var hl = document.getElementById('huaxin_sub_loop');
+            if (qs) qs.checked = true;
+            if (qe) qe.checked = false;
+            if (jf) jf.value = '0';
+            if (jl) jl.value = '1';
+            if (hf) hf.value = '1';
+            if (hl) hl.value = '0';
+            if (typeof handleEmpowerChange === 'function') handleEmpowerChange(empBoxes[0]);
+
+            // 5. 清空特殊芯片装备与选择状态
+            _chipsOn = [];
+            if (typeof _chipPickerSet === 'function') _chipPickerSet(false);
+            if (typeof _chipSwapTarget !== 'undefined') _chipSwapTarget = null;
+            var chipSearchEl = document.getElementById('chipSearch');
+            if (chipSearchEl) chipSearchEl.value = '';
+
+            // 6. 复位扩展自充能附加模块与生效作用域
+            document.getElementById('hasExtraUlt').checked = false;
+            document.getElementById('valExtraUltFirst').value = 0;
+            document.getElementById('valExtraUltLoop').value = 0;
+            document.getElementById('hasExtraNitro').checked = false;
+            document.getElementById('valExtraNitro').value = 0;
+            document.getElementById('chkExtraNitroFirst').checked = true;
+            document.getElementById('chkExtraNitroLoop').checked = true;
+            document.getElementById('hasExtraPerSec').checked = false;
+            document.getElementById('valExtraPerSec').value = 0;
+            document.getElementById('chkExtraPerSecFirst').checked = true;
+            document.getElementById('chkExtraPerSecLoop').checked = true;
+            document.getElementById('valCustomTrig').value = 0;
+            document.getElementById('customTrigFirstCount').value = 0;
+            document.getElementById('customTrigLoopCount').value = 0;
+            if (typeof toggleExtraUI === 'function') toggleExtraUI();
+
+            // 7. 恢复两个计算区域的氮气数量默认态与联动/团魂状态
+            var firstNEl = document.getElementById('inputFirstNitroCount');
+            var loopNEl = document.getElementById('inputNitroCount');
+            var xjEl = document.getElementById('inputXianji');
+            var hnEl = document.getElementById('inputHuineng');
+            var thEl = document.getElementById('inputTuanhun');
+            if (firstNEl) firstNEl.value = '1';
+            if (loopNEl) loopNEl.value = '0';
+            if (xjEl) xjEl.value = '0';
+            if (hnEl) { hnEl.value = '0'; hnEl.max = 50; hnEl.dataset.baseMax = 50; }
+            if (thEl) thEl.value = '0';
+            isManualNitroCount = false;
+            autoLinked = true;
+            currentActiveField = null;
+            if (typeof _chipStash !== 'undefined') _chipStash = {};
+            if (typeof _tm !== 'undefined') {
+                _tm.lock = { soul: false, xianji: false, huineng: false };
+                _tm.res = null;
+            }
+            if (typeof updateNitroCountUI === 'function') updateNitroCountUI();
+            if (typeof updateAutoCalcUI === 'function') updateAutoCalcUI();
+
+            // 8. 复位队友辅助充能与辅助供能参数
+            var mateCarEl = document.getElementById('teamMateCar');
+            var teamBaseEl = document.getElementById('teamInBase');
+            var teamCoreEl = document.getElementById('teamInCore');
+            var teamFirstEl = document.getElementById('teamInFirst');
+            var teamLoopEl = document.getElementById('teamInLoop');
+            if (mateCarEl) mateCarEl.value = '0';
+            if (teamBaseEl) teamBaseEl.value = '0';
+            if (teamCoreEl) teamCoreEl.checked = true;
+            if (teamFirstEl) teamFirstEl.value = '1';
+            if (teamLoopEl) teamLoopEl.value = '0';
+            if (typeof onMateCarChange === 'function') onMateCarChange(true);
+
+            var supBaseEl = document.getElementById('supBase');
+            var supCoreEl = document.getElementById('supCore');
+            var supCountEl = document.getElementById('supCount');
+            var supSoulEl = document.getElementById('supMateSoul');
+            var supEffEl = document.getElementById('supMateEff');
+            if (supBaseEl) supBaseEl.value = '0';
+            if (supCoreEl) supCoreEl.checked = true;
+            if (supCountEl) supCountEl.value = '1';
+            if (supSoulEl) supSoulEl.value = '0';
+            if (supEffEl) supEffEl.value = '100';
+        } finally {
+            isRestoringConfig = prevRestoring;
         }
     }
 
@@ -2005,6 +2167,7 @@ CD：45秒
         if (id === -1) {
             _selectedCar = null;
             _selectedCarId = -1;
+            _resetManualCarEdits();
             CHIP_MAX = 1;
             if (_chipsOn.length > CHIP_MAX) _chipsOn = _chipsOn.slice(0, CHIP_MAX);
             document.getElementById('carPreviewPlaceholder').style.display = '';
@@ -2028,6 +2191,7 @@ CD：45秒
             if (typeof renderChips === 'function') renderChips(true);
             populateCarGrid();
             if (typeof fillSupportFromCar === 'function') { fillSupportFromCar(null); calculate(); }
+            if (typeof window.__pvRefreshCollapse === 'function') window.__pvRefreshCollapse(false);
             if (window.CommunityPlans && typeof window.CommunityPlans.onCarChanged === "function") { window.CommunityPlans.onCarChanged(null); }
             return;
         }
@@ -2040,26 +2204,8 @@ CD：45秒
         _selectedCar = car;
         _selectedCarId = car.id;
 
-        // Reset all auto-fillable fields before filling new car data
-        function _stopFlash(sid) {
-            var st = _flashTimers[sid];
-            if (st && st.stopFlash) st.stopFlash();
-        }
-        _stopFlash('extraUltSection');
-        _stopFlash('extraNitroSection');
-        _stopFlash('extraPerSecSection');
-        _stopFlash('extraCustomSection');
-        document.getElementById('hasExtraUlt').checked = false;
-        document.getElementById('valExtraUltFirst').value = 0;
-        document.getElementById('valExtraUltLoop').value = 0;
-        document.getElementById('hasExtraNitro').checked = false;
-        document.getElementById('valExtraNitro').value = 0;
-        document.getElementById('hasExtraPerSec').checked = false;
-        document.getElementById('valExtraPerSec').value = 0;
-        document.getElementById('valCustomTrig').value = 0;
-        document.getElementById('customTrigFirstCount').value = 0;
-        document.getElementById('customTrigLoopCount').value = 0;
-        if (typeof toggleExtraUI === 'function') toggleExtraUI();
+        // Reset all previous car edits & auto-fillable fields before filling new car data
+        _resetManualCarEdits();
 
         if (car.ace_charge) {
             var nitroV = Math.round(car.ace_charge / 100 * 10) / 10;
@@ -2200,6 +2346,7 @@ CD：45秒
             + (car.has_sp ? ' &nbsp;|&nbsp; <span class="car-badge">SP</span>' : '');
         if (typeof fillSupportFromCar === 'function') fillSupportFromCar(car);   // 辅助充能：读取这辆车给队友的辅助充能
         calculate();   // 自动填充全部写完之后再算一次
+        if (typeof window.__pvRefreshCollapse === 'function') window.__pvRefreshCollapse(false);
         if (window.CommunityPlans && typeof window.CommunityPlans.onCarChanged === "function") { window.CommunityPlans.onCarChanged(_selectedCar); }
     }
 
@@ -2379,12 +2526,15 @@ function __tok(n, d) { var v = getComputedStyle(document.body).getPropertyValue(
            document.getElementById('themeMenu').classList.remove('show');
        }
 
-       function showToast(message) {
+       function showToast(message, isTrustedHtml) {
            var toast = document.getElementById("copyToast");
-           toast.innerHTML = message;
+           if (!toast) return;
+           if (toast.__hideTimer) clearTimeout(toast.__hideTimer);
+           if (isTrustedHtml === true) toast.innerHTML = message;
+           else toast.textContent = message == null ? "" : String(message);
            toast.className = "copy-toast show";
-           setTimeout(function() {
-               toast.className = toast.className.replace("show", "");
+           toast.__hideTimer = setTimeout(function() {
+               toast.className = "copy-toast";
            }, 2500);
        }
 
@@ -3457,7 +3607,10 @@ function __tok(n, d) { var v = getComputedStyle(document.body).getPropertyValue(
        function resetAutoNitroCount() {
            isManualNitroCount = false;
            updateNitroCountUI();
-           if (!isRestoringConfig) calculate();
+           if (!isRestoringConfig) {
+               calculate();
+               if (window.CommunityPlans && typeof window.CommunityPlans.scheduleDraftSave === 'function') window.CommunityPlans.scheduleDraftSave();
+           }
        }
 
        function updateNitroCountUI() {
@@ -3550,7 +3703,10 @@ function __tok(n, d) { var v = getComputedStyle(document.body).getPropertyValue(
            document.getElementById('inputXianji').value = "0";
            document.getElementById('inputHuineng').value = "0";
            updateAutoCalcUI();
-           if (!isRestoringConfig) calculate();
+           if (!isRestoringConfig) {
+               calculate();
+               if (window.CommunityPlans && typeof window.CommunityPlans.scheduleDraftSave === 'function') window.CommunityPlans.scheduleDraftSave();
+           }
        }
 
        function updateAutoCalcUI() {
@@ -4766,6 +4922,7 @@ function __tok(n, d) { var v = getComputedStyle(document.body).getPropertyValue(
            if (!silent && !isRestoringConfig) {
                triggerAutoCalc(currentActiveField);
                calculate();
+               if (changed && window.CommunityPlans && typeof window.CommunityPlans.scheduleDraftSave === 'function') window.CommunityPlans.scheduleDraftSave();
            }
            // 最后再开合：区块里的数值、提示、锁定态都已就位 —— 展开时量到的就是最终高度，展开途中也不会再变灰 / 再弹出提示
            syncModeBlocks(!!instant);
@@ -5109,6 +5266,7 @@ function __tok(n, d) { var v = getComputedStyle(document.body).getPropertyValue(
             if (!isRestoringConfig) {
                 window.__skipChainFlip = true;
                 try { calculate(); } finally { window.__skipChainFlip = false; }
+                if (window.CommunityPlans && typeof window.CommunityPlans.scheduleDraftSave === 'function') window.CommunityPlans.scheduleDraftSave();
             }
         }
         function _chipChanged(instantSlot) {
@@ -5939,6 +6097,7 @@ function __tok(n, d) { var v = getComputedStyle(document.body).getPropertyValue(
            _userInput = true;
            _tmRender();
            calculate();
+           if (!isRestoringConfig && window.CommunityPlans && typeof window.CommunityPlans.scheduleDraftSave === 'function') window.CommunityPlans.scheduleDraftSave();
        }
        // 手动输入：该值立刻上锁（团魂 / 先机 / 汇能 都一样）
        function _tmTyped(k) {
