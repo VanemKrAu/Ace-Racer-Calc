@@ -1,0 +1,1502 @@
+/**
+ * 王牌竞速芯片计算器 · 社区与本地方案库样式
+ * community-plans.css (v2.2 深度重构版)
+ * 
+ * 100% 遵循宿主 Design System v4 规范体系：
+ * 1. 【第 0 号最高复用准则】：大容器卡片直接复用 .card，无缝继承半透明玻璃底色 (--surface)、
+ *    180°顶光微渐变、--surface-rim 高光内描边与柔和投影，彻底告别突兀实心纯色！
+ * 2. 排序下拉框完全复用 .dropdown-container / .dropdown-menu / .dropdown-option 规范，告别原生 select；
+ * 3. 分段控制完全复用 .chip-seg 规范；
+ * 4. 方案卡片完全对齐 .chip-tile 毛玻璃晶莹质感与品质色微混光悬停上浮；
+ * 5. 全响应式适配：移动端 (≤640px)、平板端 (641px~1024px)、PC 宽屏端 (≥1025px)。
+ */
+
+/* ==========================================================================
+   1. 主卡片容器 (.card.cp-plans-card)
+   严格挂载于「选择车辆」卡片 (.desktop-layout.cp-hero) 正下方
+   ========================================================================== */
+.ds-c .cp-plans-card {
+  margin-top: 4px;
+  margin-bottom: 24px;
+  position: relative;
+  /* 继承宿主 .card 的 background-color: var(--surface)、渐变与投影，绝不写死纯色 */
+}
+
+/* 卡片标题栏微调 (复用 .card-title) */
+.ds-c .cp-plans-card.pv-collapsible > .card-title::after,
+.ds-c .cp-plans-card.pv-collapsible > .cp-card-title::after {
+  content: none !important;
+  display: none !important;
+}
+
+.ds-c .cp-card-title {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  margin-bottom: 16px;
+  width: 100%;
+}
+
+.ds-c .cp-title-left {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  min-width: 0;
+  flex: none;
+}
+
+.ds-c .cp-badge-icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 24px;
+  height: 24px;
+  color: var(--acc);
+}
+
+.ds-c .cp-badge-icon .ico {
+  width: 20px;
+  height: 20px;
+}
+
+.ds-c .cp-title-text {
+  font-size: 16px;
+  font-weight: 700;
+  color: var(--ink);
+  letter-spacing: -0.01em;
+}
+
+.ds-c .cp-car-badge {
+  flex: none;
+  font-size: 11.5px;
+  font-weight: 600;
+  color: var(--acc-ink, var(--ink));
+  background: var(--acc-soft, var(--fill));
+  padding: 3px 10px;
+  border-radius: 999px;
+  border: 1px solid var(--surface-edge);
+}
+
+/* 顶部操作按钮组 (靠死在卡片最右侧) */
+.ds-c .cp-actions-bar {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  margin-left: auto !important; /* 强制靠死在卡片最右侧，绝不居中 */
+  flex: none;
+}
+
+.ds-c .cp-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  height: 34px;
+  padding: 0 12px;
+  font-size: 12.5px;
+  font-weight: 600;
+  border-radius: var(--r-sm, 10px);
+  cursor: pointer;
+  transition: all .15s ease;
+}
+
+.ds-c .cp-btn .ico {
+  width: 15px;
+  height: 15px;
+}
+
+.ds-c .cp-btn-save {
+  background-color: color-mix(in oklab, var(--acc) 22%, var(--surface));
+  border: 1px solid color-mix(in oklab, var(--acc) 60%, transparent);
+  color: var(--ink);
+  box-shadow: inset 0 1px 0 var(--surface-rim), 0 2px 8px color-mix(in oklab, var(--acc) 25%, transparent);
+}
+
+.ds-c .cp-btn-save:hover {
+  background-color: color-mix(in oklab, var(--acc) 30%, var(--surface));
+  border-color: var(--acc);
+  transform: translateY(-1px);
+}
+
+.ds-c .cp-btn-undo {
+  background-color: var(--warn-soft);
+  border: 1px solid color-mix(in oklab, var(--warn) 60%, transparent);
+  color: var(--warn);
+}
+
+.ds-c .cp-btn-undo:hover {
+  background-color: var(--warn);
+  color: #fff;
+  transform: translateY(-1px);
+}
+
+.ds-c .cp-icon-btn {
+  width: 34px;
+  height: 34px;
+  padding: 0;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: var(--r-sm, 10px);
+}
+
+.ds-c .cp-icon-btn .ico {
+  width: 16px;
+  height: 16px;
+}
+
+/* ==========================================================================
+   第三个模式（support 辅助供能模式）物理隐藏方案库
+   ========================================================================== */
+body[data-calc-mode="support"] #communityPlansContainer {
+  display: none !important;
+}
+
+/* ==========================================================================
+   折叠卡片交互 (复用全站 .pv-collapsible)
+   ========================================================================== */
+.ds-c .cp-plans-card.pv-collapsible > .cp-card-title {
+  cursor: pointer;
+  user-select: none;
+}
+
+.ds-c .cp-plans-card {
+  transition: padding .32s cubic-bezier(.3, .8, .2, 1);
+}
+
+.ds-c .cp-plans-card > .cp-card-title {
+  transition: margin-bottom .32s cubic-bezier(.3, .8, .2, 1);
+}
+
+.ds-c .cp-plans-card.pv-collapsed > .cp-card-title,
+.ds-c .cp-plans-card.pv-shut > .cp-card-title {
+  margin-bottom: 0 !important;
+}
+
+/* 遵循全站统一折叠规范：动画由原生 __pvMorph 驱动，折叠态收起全部非标题子节点 */
+.ds-c .cp-plans-card.pv-collapsed > :not(.cp-card-title) {
+  display: none !important;
+}
+
+.ds-c .cp-plans-card.pv-collapsed > .cp-card-title,
+.ds-c .cp-plans-card.pv-shut > .cp-card-title {
+  margin-bottom: 0 !important;
+}
+
+/* 折叠指示箭头（严格复用全站原生 .pv-collapsible 贝塞尔缓动） */
+.ds-c .cp-fold-indicator {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  transition: transform .32s cubic-bezier(.2, .8, .2, 1);
+}
+
+.ds-c .cp-plans-card.pv-shut .cp-fold-indicator,
+.ds-c #communityPlansContainer.pv-shut .cp-fold-indicator {
+  transform: rotate(180deg);
+}
+
+.ds-c .cp-plans-card:not(.pv-shut) .cp-fold-indicator,
+.ds-c #communityPlansContainer:not(.pv-shut) .cp-fold-indicator {
+  transform: rotate(0deg);
+}
+
+/* 折叠状态下隐藏次要操作按钮，仅保留最右侧折叠/展开指示按钮，恢复极简单行 */
+.ds-c .cp-plans-card.pv-collapsed .cp-btn-save,
+.ds-c .cp-plans-card.pv-collapsed .cp-btn-undo,
+.ds-c .cp-plans-card.pv-collapsed .cp-icon-btn:not(.cp-fold-btn),
+.ds-c .cp-plans-card.pv-shut .cp-btn-save,
+.ds-c .cp-plans-card.pv-shut .cp-btn-undo,
+.ds-c .cp-plans-card.pv-shut .cp-icon-btn:not(.cp-fold-btn) {
+  display: none !important;
+}
+
+.ds-c .cp-fold-btn {
+  padding: 0;
+  width: 32px;
+  height: 32px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.ds-c .cp-fold-indicator {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 18px;
+  height: 18px;
+  color: var(--ink-2);
+  transition: transform .25s cubic-bezier(.2, .8, .2, 1);
+}
+
+.ds-c .cp-fold-indicator .ico {
+  width: 16px;
+  height: 16px;
+}
+
+.ds-c .cp-plans-card:not(.pv-shut) .cp-fold-indicator {
+  transform: rotate(180deg);
+}
+
+.ds-c .cp-plans-card.pv-shut .cp-fold-indicator {
+  transform: rotate(0deg);
+}
+
+/* ==========================================================================
+   2. 流式竖排分类组 (Categorized Stream Sections - 参考 TouchGal 分组框设计)
+   ========================================================================== */
+.ds-c .cp-sections-stream {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.ds-c .cp-section {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+/* 分类组头部条 (带图标、主标题、副说明文字) */
+.ds-c .cp-sec-header {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 8px 14px;
+  background-color: color-mix(in oklab, var(--acc) 6%, var(--surface));
+  border: 1px solid color-mix(in oklab, var(--acc) 22%, var(--surface-edge));
+  border-radius: var(--r-md, 12px);
+  box-shadow: inset 0 1px 0 var(--surface-rim);
+}
+
+.ds-c .cp-section-pro .cp-sec-header {
+  background-color: color-mix(in oklab, #ffd700 8%, var(--surface));
+  border-color: color-mix(in oklab, #ffd700 30%, var(--surface-edge));
+}
+
+.ds-c .cp-section-mine .cp-sec-header {
+  background-color: color-mix(in oklab, var(--acc) 10%, var(--surface));
+  border-color: color-mix(in oklab, var(--acc) 38%, var(--surface-edge));
+}
+
+.ds-c .cp-sec-icon-box {
+  width: 32px;
+  height: 32px;
+  flex: none;
+  border-radius: 8px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  background-color: var(--surface);
+  border: 1px solid var(--surface-edge);
+  color: var(--acc);
+  box-shadow: inset 0 1px 0 var(--surface-rim);
+}
+
+.ds-c .cp-section-pro .cp-sec-icon-box {
+  width: auto;
+  height: auto;
+  background: transparent !important;
+  border: none !important;
+  box-shadow: none !important;
+  padding: 0 !important;
+}
+
+.ds-c .cp-sec-icon-pro {
+  background: transparent !important;
+  border: none !important;
+  box-shadow: none !important;
+  padding: 0 !important;
+}
+
+.ds-c .cp-sec-pro-icon {
+  width: 32px;
+  height: 32px;
+  object-fit: contain;
+  display: block;
+  filter: drop-shadow(0 2px 5px rgba(0, 0, 0, 0.35));
+  transition: transform .25s cubic-bezier(.2,.8,.25,1);
+}
+
+.ds-c .cp-sec-icon-box .ico {
+  width: 18px;
+  height: 18px;
+}
+
+.ds-c .cp-sec-info {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  min-width: 0;
+  flex: 1;
+}
+
+.ds-c .cp-sec-title-row {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.ds-c .cp-sec-title {
+  font-size: 14px;
+  font-weight: 700;
+  color: var(--ink);
+  letter-spacing: -0.01em;
+}
+
+.ds-c .cp-sec-count {
+  font-size: 11px;
+  font-weight: 700;
+  padding: 1px 7px;
+  border-radius: 999px;
+  background: var(--fill);
+  color: var(--ink-2);
+  border: 1px solid var(--surface-edge);
+}
+
+.ds-c .cp-section-mine .cp-sec-count {
+  background: color-mix(in oklab, var(--acc) 22%, var(--surface));
+  color: var(--ink);
+  border-color: color-mix(in oklab, var(--acc) 55%, transparent);
+}
+
+.ds-c .cp-section-pro .cp-sec-count {
+  background: color-mix(in oklab, #ffd700 22%, var(--surface));
+  color: #ffd700;
+  border-color: color-mix(in oklab, #ffd700 55%, transparent);
+}
+
+.ds-c .cp-sec-desc {
+  font-size: 11.5px;
+  color: var(--ink-2);
+  line-height: 1.35;
+}
+
+/* 分类下的方案列表 (竖排流式排列) */
+.ds-c .cp-sec-list {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+/* ==========================================================================
+   3. 紧凑型横向条式方案项 (对齐用户截图中带操作按钮的条形卡片)
+   ========================================================================== */
+.ds-c .cp-card-item {
+  position: relative;
+  background-color: var(--surface);
+  background-image: linear-gradient(180deg, rgba(255, 255, 255, .04), rgba(255, 255, 255, 0) 60px);
+  border: 1px solid var(--surface-edge);
+  box-shadow: inset 0 1px 0 var(--surface-rim), 0 3px 10px rgba(0, 0, 0, .08);
+  border-radius: var(--r-md, 12px);
+  padding: 12px 14px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 14px;
+  flex-wrap: wrap;
+  transition: all .18s cubic-bezier(.2, .8, .2, 1);
+}
+
+.ds-c.light-mode .cp-card-item {
+  background-image: none;
+}
+
+.ds-c .cp-card-item:hover {
+  background-color: color-mix(in oklab, var(--acc) 6%, var(--surface));
+  border-color: color-mix(in oklab, var(--acc) 45%, var(--surface-edge));
+  transform: translateY(-1px);
+  box-shadow: inset 0 1px 0 var(--surface-rim), 0 6px 16px -4px color-mix(in oklab, var(--acc) 22%, transparent);
+}
+
+/* PC 端三段式舒展排版：彻底解决“左边挤一坨、中间空空如也”的失衡视觉 */
+@media (min-width: 850px) {
+  .ds-c .cp-card-item {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 18px;
+    padding: 14px 18px;
+    flex-wrap: nowrap;
+  }
+  .ds-c .cp-card-main {
+    flex: 0 0 280px;
+    min-width: 240px;
+    max-width: 320px;
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+  }
+  .ds-c .cp-card-mid {
+    flex: 1 1 auto;
+    min-width: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    padding: 0 16px;
+    border-left: 1px solid var(--surface-edge);
+    border-right: 1px solid var(--surface-edge);
+  }
+  .ds-c .cp-card-right-bar {
+    flex: 0 0 auto;
+    margin-left: 0;
+  }
+}
+@media (max-width: 849px) {
+  .ds-c .cp-card-mid {
+    width: 100%;
+    margin: 4px 0;
+  }
+  .ds-c .cp-card-right-bar {
+    width: 100%;
+    justify-content: flex-end;
+    padding-top: 6px;
+    border-top: 1px dashed var(--surface-edge);
+  }
+}
+
+/* 卡片主内容区 (标题 + 元信息) */
+.ds-c .cp-card-main {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  min-width: 0;
+}
+
+.ds-c .cp-card-header-line {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.ds-c .cp-card-item .cp-card-title {
+  font-size: 14px;
+  font-weight: 700;
+  color: var(--ink);
+  margin: 0;
+}
+
+/* 卡片右侧动作区 (点赞 + 套用 + 删除) */
+.ds-c .cp-card-right-bar {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex: none;
+}
+
+/* 国服顶尖微光质感 */
+.ds-c .cp-card-item.is-pro {
+  border-color: color-mix(in oklab, #ffd700 35%, var(--surface-edge));
+}
+
+.ds-c .cp-card-item.is-pro:hover {
+  border-color: color-mix(in oklab, #ffd700 70%, var(--surface-edge));
+  box-shadow: inset 0 1px 0 var(--surface-rim), 0 8px 24px -6px rgba(255, 215, 0, 0.28);
+}
+
+/* 正在生效/已套用状态 */
+.ds-c .cp-card-item.is-applied {
+  border-color: var(--acc);
+  background-color: color-mix(in oklab, var(--acc) 14%, var(--surface));
+  box-shadow: inset 0 1px 0 var(--surface-rim), 0 0 0 1.5px var(--acc), 0 8px 24px -6px color-mix(in oklab, var(--acc) 35%, transparent);
+}
+
+/* 卡片头部 */
+.ds-c .cp-card-header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 10px;
+}
+
+.ds-c .cp-card-title-col {
+  min-width: 0;
+  flex: 1;
+}
+
+.ds-c .cp-card-title {
+  margin: 0 0 4px 0;
+  font-size: 14.5px;
+  font-weight: 700;
+  color: var(--ink);
+  line-height: 1.35;
+  word-break: break-all;
+}
+
+.ds-c .cp-card-meta {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 6px;
+  font-size: 12px;
+  color: var(--ink-2);
+}
+
+.ds-c .cp-author-name {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  font-weight: 600;
+  color: var(--ink);
+}
+
+/* 官方提取的国服最强头盔勋标 */
+.ds-c .cp-pro-helmet-badge {
+  width: 18px;
+  height: 18px;
+  object-fit: contain;
+  vertical-align: middle;
+  filter: drop-shadow(0 0 4px rgba(255, 215, 0, 0.45));
+}
+
+.ds-c .cp-author-links {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.ds-c .cp-author-link-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 20px;
+  height: 20px;
+  border-radius: 4px;
+  color: var(--ink-2);
+  background: var(--fill);
+  transition: all .15s;
+}
+
+.ds-c .cp-author-link-btn .ico {
+  width: 12px;
+  height: 12px;
+}
+
+.ds-c .cp-author-link-btn:hover {
+  color: var(--acc);
+  background: var(--fill-hover);
+  transform: scale(1.1);
+}
+
+.ds-c .cp-meta-dot {
+  color: var(--ink-3);
+}
+
+.ds-c .cp-player-id {
+  display: inline-flex;
+  align-items: center;
+  gap: 3px;
+  padding: 1px 6px;
+  font-size: 11px;
+  font-family: var(--font-mono, monospace);
+  font-weight: 600;
+  color: var(--ink-2);
+  background: var(--fill);
+  border: 1px solid var(--surface-edge);
+  border-radius: 4px;
+  cursor: pointer;
+  transition: all .15s ease;
+  user-select: all;
+}
+
+.ds-c .cp-player-id:hover {
+  color: var(--acc-ink);
+  background: var(--acc-soft);
+  border-color: var(--acc);
+}
+
+.ds-c .cp-copy-icon .ico {
+  width: 10px;
+  height: 10px;
+  opacity: .7;
+}
+
+.ds-c .cp-meta-time {
+  color: var(--ink-3);
+  font-size: 11.5px;
+}
+
+/* 徽章组 */
+.ds-c .cp-badge-wrap {
+  display: inline-flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 4px;
+  flex: none;
+}
+
+.ds-c .cp-card-badge {
+  font-size: 11px;
+  font-weight: 600;
+  padding: 2px 8px;
+  border-radius: 999px;
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.ds-c .cp-badge-pro {
+  background: color-mix(in oklab, #ffd700 22%, var(--surface));
+  color: #ffd700;
+  border: 1px solid color-mix(in oklab, #ffd700 50%, transparent);
+}
+
+.ds-c .cp-badge-pro .ico {
+  width: 12px;
+  height: 12px;
+}
+
+.ds-c .cp-badge-local {
+  background: var(--fill);
+  color: var(--ink-2);
+  border: 1px solid var(--surface-edge);
+}
+
+.ds-c .cp-badge-community {
+  background: color-mix(in oklab, #06b6d4 18%, var(--surface));
+  color: #06b6d4;
+  border: 1px solid color-mix(in oklab, #06b6d4 45%, transparent);
+}
+
+.ds-c .cp-badge-active {
+  background: color-mix(in oklab, #10b981 20%, var(--surface));
+  color: #10b981;
+  border: 1px solid color-mix(in oklab, #10b981 50%, transparent);
+}
+
+.ds-c .cp-badge-active .ico {
+  width: 11px;
+  height: 11px;
+}
+
+/* 审核状态徽章 (支持交互与反馈查看) */
+.ds-c .cp-badge-pending {
+  background: color-mix(in oklab, #f59e0b 20%, var(--surface));
+  color: #f59e0b;
+  border: 1px solid color-mix(in oklab, #f59e0b 50%, transparent);
+  cursor: pointer;
+  transition: all .15s ease;
+}
+
+.ds-c .cp-badge-pending:hover {
+  background: color-mix(in oklab, #f59e0b 32%, var(--surface));
+  transform: translateY(-1px);
+}
+
+.ds-c .cp-badge-rejected {
+  background: color-mix(in oklab, #ef4444 22%, var(--surface));
+  color: #f87171;
+  border: 1px solid color-mix(in oklab, #ef4444 55%, transparent);
+  cursor: pointer;
+  animation: cp-pulse-red 2.5s infinite;
+  transition: all .15s ease;
+}
+
+.ds-c .cp-badge-rejected:hover {
+  background: color-mix(in oklab, #ef4444 38%, var(--surface));
+  transform: translateY(-1px);
+  box-shadow: 0 2px 8px rgba(239, 68, 68, 0.35);
+}
+
+@keyframes cp-pulse-red {
+  0%, 100% { border-color: color-mix(in oklab, #ef4444 55%, transparent); }
+  50% { border-color: #ef4444; }
+}
+
+.ds-c .cp-badge-approved {
+  background: color-mix(in oklab, #10b981 22%, var(--surface));
+  color: #34d399;
+  border: 1px solid color-mix(in oklab, #10b981 50%, transparent);
+}
+
+/* 审核驳回详情微光弹窗 */
+.ds-c .cp-reject-feedback-box {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.ds-c .cp-reject-status-card {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 10px 14px;
+  border-radius: 8px;
+  background: color-mix(in oklab, #ef4444 14%, var(--surface));
+  border: 1px solid color-mix(in oklab, #ef4444 35%, transparent);
+}
+
+.ds-c .cp-reject-status-label {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-weight: 700;
+  font-size: 13.5px;
+  color: #f87171;
+}
+
+.ds-c .cp-reject-reason-body {
+  padding: 12px 14px;
+  border-radius: 8px;
+  background: var(--fill);
+  border: 1px solid var(--surface-edge);
+  font-size: 13px;
+  line-height: 1.6;
+  color: var(--ink);
+  white-space: pre-wrap;
+  word-break: break-all;
+}
+
+.ds-c .cp-reject-tip {
+  font-size: 12px;
+  color: var(--ink-2);
+  line-height: 1.5;
+}
+
+/* 参数药丸网格 */
+.ds-c .cp-params-row {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+
+.ds-c .cp-pill {
+  font-size: 11.5px;
+  font-weight: 600;
+  padding: 3px 8px;
+  border-radius: 6px;
+  display: inline-flex;
+  align-items: center;
+  white-space: nowrap;
+}
+
+.ds-c .cp-pill-acc {
+  background: color-mix(in oklab, var(--acc) 14%, var(--surface));
+  color: var(--acc-ink, var(--ink));
+  border: 1px solid color-mix(in oklab, var(--acc) 30%, transparent);
+}
+
+.ds-c .cp-pill-sub {
+  background: var(--fill);
+  color: var(--ink-2);
+  border: 1px solid var(--surface-edge);
+  max-width: 100%;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/* 卡片底部操作栏 */
+.ds-c .cp-card-footer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  padding-top: 10px;
+  border-top: 1px solid var(--surface-edge);
+}
+
+.ds-c .cp-vote-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  height: 30px;
+  padding: 0 10px;
+  border-radius: var(--r-sm, 10px);
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--ink-2);
+  cursor: pointer;
+  transition: all .15s;
+}
+
+.ds-c .cp-vote-btn .ico {
+  width: 14px;
+  height: 14px;
+}
+
+.ds-c .cp-vote-btn:hover {
+  color: var(--ink);
+  background-color: var(--fill-hover);
+}
+
+.ds-c .cp-vote-btn.is-voted {
+  color: #ef4444;
+  background-color: rgba(239, 68, 68, 0.12);
+  border-color: rgba(239, 68, 68, 0.3);
+}
+
+.ds-c .cp-card-actions {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.ds-c .cp-del-btn {
+  width: 30px;
+  height: 30px;
+  padding: 0;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 8px;
+  color: var(--ink-3);
+  cursor: pointer;
+}
+
+.ds-c .cp-del-btn .ico {
+  width: 14px;
+  height: 14px;
+}
+
+.ds-c .cp-del-btn:hover {
+  color: var(--warn);
+  background-color: var(--warn-soft);
+}
+
+.ds-c .cp-apply-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  height: 30px;
+  padding: 0 12px;
+  border-radius: var(--r-sm, 10px);
+  font-size: 12px;
+  font-weight: 700;
+  color: var(--ink);
+  background-color: color-mix(in oklab, var(--acc) 20%, var(--surface));
+  border: 1px solid color-mix(in oklab, var(--acc) 60%, transparent);
+  box-shadow: inset 0 1px 0 var(--surface-rim);
+  cursor: pointer;
+  transition: all .15s;
+}
+
+.ds-c .cp-apply-btn .ico {
+  width: 13px;
+  height: 13px;
+  color: var(--acc);
+}
+
+.ds-c .cp-apply-btn:hover {
+  background-color: color-mix(in oklab, var(--acc) 30%, var(--surface));
+  border-color: var(--acc);
+  transform: translateY(-1px);
+}
+
+/* 空状态占位箱 */
+.ds-c .cp-empty-box {
+  grid-column: 1 / -1;
+  padding: 36px 16px;
+  text-align: center;
+  background-color: var(--surface);
+  border: 1px dashed var(--surface-edge);
+  border-radius: var(--r-md, 12px);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+}
+
+.ds-c .cp-empty-icon {
+  width: 44px;
+  height: 44px;
+  color: var(--ink-3);
+  opacity: 0.6;
+}
+
+.ds-c .cp-empty-title {
+  font-size: 14.5px;
+  font-weight: 700;
+  color: var(--ink);
+}
+
+.ds-c .cp-empty-desc {
+  font-size: 12.5px;
+  color: var(--ink-2);
+  max-width: 420px;
+  line-height: 1.6;
+  margin-bottom: 6px;
+}
+
+/* ==========================================================================
+   4. 保存配装弹窗 (Modal)
+   ========================================================================== */
+body.cp-modal-locked {
+  overflow: hidden !important;
+  overscroll-behavior: none !important;
+}
+
+.cp-modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 999999;
+  background: rgba(0, 0, 0, 0.65);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 16px;
+  overscroll-behavior: contain;
+  animation: cpFadeIn .2s ease;
+}
+
+@keyframes cpFadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+.cp-modal-dialog {
+  width: 100%;
+  max-width: 520px;
+  max-height: 90vh;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  border-radius: var(--r-lg, 16px);
+  padding: 20px;
+  animation: cpScaleIn .22s cubic-bezier(.2, .8, .2, 1);
+}
+
+@keyframes cpScaleIn {
+  from { opacity: 0; transform: scale(.95); }
+  to { opacity: 1; transform: none; }
+}
+
+.cp-modal-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 14px;
+}
+
+.cp-modal-title {
+  margin: 0;
+  font-size: 16px;
+  font-weight: 700;
+  color: var(--ink);
+}
+
+.cp-modal-close {
+  width: 32px;
+  height: 32px;
+  padding: 0;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 8px;
+  cursor: pointer;
+}
+
+.cp-modal-close .ico {
+  width: 16px;
+  height: 16px;
+}
+
+.cp-modal-body {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.cp-summary-bar {
+  font-size: 12.5px;
+  color: var(--ink-2);
+  background: var(--fill);
+  padding: 10px 12px;
+  border-radius: var(--r-sm, 10px);
+  border: 1px solid var(--surface-edge);
+}
+
+.cp-summary-val {
+  color: var(--acc);
+  font-weight: 600;
+}
+
+.cp-form-group {
+  margin-bottom: 0 !important;
+}
+
+.cp-label-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 6px;
+}
+
+.cp-input-count {
+  font-size: 11.5px;
+  font-weight: 600;
+  color: var(--ink-3);
+}
+
+.cp-input-count.is-limit {
+  color: var(--warn);
+}
+
+.cp-check-anon {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 12px;
+  color: var(--ink-2);
+  cursor: pointer;
+}
+
+/* 规范开关行组件：100% 对齐 UI-SPEC 规范 */
+.ds-c .cp-setting-switch-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 14px;
+  padding: 12px 14px;
+  border-radius: var(--r-md, 12px);
+  background: var(--fill);
+  border: 1px solid var(--surface-edge);
+  transition: background-color .2s, border-color .2s;
+}
+
+.ds-c .cp-setting-switch-row:hover {
+  background-color: var(--fill-hover);
+}
+
+.ds-c .cp-setting-switch-info {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+  min-width: 0;
+}
+
+.ds-c .cp-setting-switch-title {
+  font-size: 13.5px;
+  font-weight: 700;
+  color: var(--ink);
+}
+
+.ds-c .cp-setting-switch-desc {
+  font-size: 12px;
+  color: var(--ink-2);
+  line-height: 1.4;
+}
+
+.ds-c .cp-switch-label-wrap {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  cursor: pointer;
+  user-select: none;
+}
+
+.ds-c .cp-switch-label-text {
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--ink-2);
+}
+
+/* 社区方案上传配置容器 */
+.ds-c .cp-community-section {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  animation: cpFadeIn .2s ease-out;
+}
+
+/* 国服顶尖申请与双截图凭证卡片 */
+.ds-c .cp-pro-apply-box {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  padding: 14px;
+  border-radius: var(--r-md, 12px);
+  background: color-mix(in oklab, #ffd700 4%, var(--surface));
+  border: 1px solid color-mix(in oklab, #ffd700 30%, var(--surface-edge));
+  box-shadow: inset 0 1px 0 var(--surface-rim);
+  animation: cpFadeIn .22s ease-out;
+}
+
+@keyframes cpFadeIn {
+  from { opacity: 0; transform: translateY(-4px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.ds-c .cp-pro-apply-badge-line {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.ds-c .cp-proof-alert-card {
+  padding: 10px 12px;
+  border-radius: var(--r-sm, 8px);
+  background: rgba(229, 161, 75, 0.08);
+  border: 1px solid rgba(229, 161, 75, 0.25);
+  font-size: 12px;
+  color: var(--ink-2);
+  line-height: 1.5;
+}
+
+.ds-c .cp-proof-alert-title {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-weight: 700;
+  color: var(--warn, #e5a14b);
+  margin-bottom: 4px;
+}
+
+.ds-c .cp-proof-alert-list {
+  margin: 0;
+  padding-left: 18px;
+}
+
+.ds-c .cp-proof-alert-list li + li {
+  margin-top: 3px;
+}
+
+.ds-c .cp-proof-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 10px;
+}
+
+@media (max-width: 600px) {
+  .ds-c .cp-proof-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+.ds-c .cp-proof-card {
+  position: relative;
+  border-radius: var(--r-sm, 10px);
+  border: 1.5px dashed var(--surface-edge);
+  background: var(--fill);
+  padding: 14px 10px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  cursor: pointer;
+  transition: all .2s;
+  min-height: 120px;
+  justify-content: center;
+}
+
+.ds-c .cp-proof-card:hover {
+  border-color: var(--acc);
+  background: var(--fill-hover);
+}
+
+.ds-c .cp-proof-card.has-file {
+  border-style: solid;
+  border-color: var(--pass, #4cd964);
+  background: color-mix(in oklab, var(--pass) 6%, var(--fill));
+  padding: 8px;
+}
+
+.ds-c .cp-proof-card-badge {
+  font-size: 10.5px;
+  font-weight: 700;
+  padding: 2px 6px;
+  border-radius: 4px;
+  background: var(--raise);
+  color: var(--acc);
+  border: 1px solid var(--surface-edge);
+  margin-bottom: 6px;
+}
+
+.ds-c .cp-proof-thumb-box {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
+}
+
+.ds-c .cp-proof-thumb {
+  max-width: 100%;
+  max-height: 100px;
+  border-radius: 6px;
+  object-fit: contain;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.4);
+}
+
+.ds-c .cp-proof-btn-reupload {
+  font-size: 11px;
+  padding: 3px 10px;
+  border-radius: 6px;
+  background: var(--raise);
+  color: var(--ink-2);
+  border: 1px solid var(--surface-edge);
+  cursor: pointer;
+}
+
+.ds-c .cp-proof-btn-reupload:hover {
+  color: var(--ink);
+  background: var(--fill-hover);
+}
+
+.ds-c .cp-proof-card-desc {
+  font-size: 11.5px;
+  color: var(--ink-2);
+  line-height: 1.35;
+  margin-top: 4px;
+}
+
+.ds-c .cp-proof-file-input {
+  display: none;
+}
+
+.cp-modal-input {
+  height: 42px !important;
+  font-size: 14px !important;
+  font-weight: 500 !important;
+}
+
+.cp-links-input-list {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.cp-link-input-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.cp-link-idx {
+  flex: none;
+  width: 22px;
+  height: 22px;
+  border-radius: 50%;
+  background: var(--fill);
+  color: var(--ink-2);
+  font-size: 11.5px;
+  font-weight: 700;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.cp-modal-footer {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 10px;
+  margin-top: 18px;
+  padding-top: 14px;
+  border-top: 1px solid var(--surface-edge);
+}
+
+/* ==========================================================================
+   5. 多端响应式适配 (UI 适配与健壮性)
+   ========================================================================== */
+/* 移动端 (≤640px) */
+@media (max-width: 640px) {
+  .ds-c .cp-plans-card .cp-card-title {
+    flex-wrap: nowrap !important;
+    align-items: center !important;
+    justify-content: space-between !important;
+    gap: 8px !important;
+  }
+
+  .ds-c .cp-plans-card .cp-title-left {
+    min-width: 0;
+    flex: 1 1 auto;
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    overflow: hidden;
+  }
+
+  .ds-c .cp-plans-card .cp-title-text {
+    font-size: 14px;
+    white-space: nowrap;
+  }
+
+  .ds-c .cp-plans-card .cp-car-badge {
+    max-width: 80px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    padding: 2px 6px;
+    font-size: 10px;
+  }
+
+  .ds-c .cp-plans-card .cp-actions-bar {
+    flex: none !important;
+    display: inline-flex !important;
+    align-items: center !important;
+    gap: 4px !important;
+    margin-left: auto !important;
+    flex-wrap: nowrap !important;
+  }
+
+  .ds-c .cp-plans-card .cp-btn-save {
+    padding: 5px 9px !important;
+    font-size: 12px !important;
+    height: 30px !important;
+  }
+
+  .ds-c .cp-plans-card .cp-icon-btn {
+    width: 30px !important;
+    height: 30px !important;
+    min-width: 30px !important;
+    padding: 0 !important;
+    display: inline-flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+  }
+
+  .ds-c .cp-plans-card.pv-shut .cp-card-title,
+  .ds-c .cp-plans-card.pv-collapsed .cp-card-title {
+    flex-direction: row !important;
+    align-items: center !important;
+    justify-content: space-between !important;
+  }
+
+  .ds-c .cp-actions-bar {
+    justify-content: flex-end;
+    width: auto;
+    margin-left: auto !important;
+  }
+
+  .ds-c .cp-controls-bar {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 10px;
+  }
+
+  .ds-c .cp-tab-seg {
+    width: 100%;
+    justify-content: space-between;
+  }
+
+  .ds-c .cp-tab-seg button {
+    flex: 1 1 0;
+    justify-content: center;
+    padding: 6px 4px;
+    font-size: 12px;
+  }
+
+  .ds-c .cp-sort-container {
+    width: 100%;
+  }
+
+  .ds-c .cp-sort-btn {
+    width: 100%;
+    justify-content: space-between;
+  }
+
+  .ds-c .cp-card-list {
+    grid-template-columns: 1fr;
+  }
+
+  .cp-modal-dialog {
+    max-height: 85vh;
+    padding: 16px;
+  }
+}
+
+/* 平板端 (641px ~ 1024px) */
+@media (min-width: 641px) and (max-width: 1024px) {
+  .ds-c .cp-card-list {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+/* PC 宽屏端 (≥1025px) */
+@media (min-width: 1025px) {
+  .ds-c .cp-card-list {
+    grid-template-columns: repeat(auto-fill, minmax(340px, 1fr));
+  }
+}
+
+/* ==========================================================================
+   超窄屏与侧边栏嵌入场景深度适配 (≤480px / 侧边栏 Webview)
+   ========================================================================== */
+@media (max-width: 480px) {
+  .ds-c .cp-plans-card .cp-card-title {
+    flex-direction: column !important;
+    align-items: stretch !important;
+    gap: 8px !important;
+    flex-wrap: wrap !important;
+  }
+
+  .ds-c .cp-plans-card .cp-title-left {
+    width: 100% !important;
+    justify-content: space-between !important;
+  }
+
+  .ds-c .cp-plans-card .cp-title-text {
+    white-space: nowrap !important;
+    font-size: 14px !important;
+  }
+
+  .ds-c .cp-plans-card .cp-car-badge {
+    max-width: none !important;
+    white-space: nowrap !important;
+  }
+
+  .ds-c .cp-plans-card .cp-actions-bar {
+    width: 100% !important;
+    justify-content: flex-end !important;
+  }
+
+  .ds-c .cp-plans-card .cp-btn-save {
+    flex: 1 1 auto !important;
+    justify-content: center !important;
+  }
+
+  .ds-c .cp-card-item {
+    display: flex !important;
+    flex-direction: column !important;
+    align-items: stretch !important;
+    gap: 8px !important;
+    padding: 10px !important;
+  }
+
+  .ds-c .cp-card-main {
+    width: 100% !important;
+    max-width: 100% !important;
+    flex: none !important;
+  }
+
+  .ds-c .cp-card-mid {
+    width: 100% !important;
+    padding: 0 !important;
+    border-left: none !important;
+    border-right: none !important;
+    margin: 4px 0 !important;
+  }
+
+  .ds-c .cp-card-right-bar {
+    width: 100% !important;
+    justify-content: space-between !important;
+    border-top: 1px solid var(--surface-edge) !important;
+    padding-top: 6px !important;
+    margin-top: 2px !important;
+  }
+
+  .ds-c .cp-pill {
+    white-space: nowrap !important;
+    font-size: 11px !important;
+    padding: 2px 6px !important;
+  }
+
+  .cp-modal-dialog {
+    width: 95% !important;
+    max-width: 95% !important;
+    max-height: 90vh !important;
+    padding: 12px 10px !important;
+    overflow-y: auto !important;
+  }
+
+  .ds-c .cp-proof-grid {
+    grid-template-columns: 1fr !important;
+  }
+}

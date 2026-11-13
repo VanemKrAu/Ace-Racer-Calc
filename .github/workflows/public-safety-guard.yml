@@ -1,0 +1,32 @@
+name: Public Frontend Safety Guard
+
+on:
+  push:
+    branches: [ main, master ]
+  pull_request:
+    branches: [ main, master ]
+
+jobs:
+  frontend-purity-check:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Reject non-frontend files and credentials
+        run: |
+          set -e
+          FORBIDDEN=$(git ls-files | grep -E '^(api|lib|bin|docs|plan|\.vercel)/|(^|/)\.env|(^|/)HANDOFF\.md$|(^|/)tokens\.json$|\.(pem|key|p12|pfx)$' || true)
+          if [ -n "$FORBIDDEN" ]; then
+            echo "ERROR: Forbidden non-frontend or sensitive files detected:"
+            echo "$FORBIDDEN"
+            exit 1
+          fi
+          echo "Frontend file tree check passed."
+
+      - name: Gitleaks secret scan
+        uses: gitleaks/gitleaks-action@v2
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

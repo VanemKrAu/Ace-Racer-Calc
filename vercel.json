@@ -14,7 +14,9 @@
     { "source": "/v1", "destination": "/v1.html" },
     { "source": "/V1", "destination": "/v1.html" },
     { "source": "/v2", "destination": "/v2.html" },
-    { "source": "/V2", "destination": "/v2.html" }
+    { "source": "/V2", "destination": "/v2.html" },
+    { "source": "/api/plans", "destination": "https://ace-racer-core.vercel.app/api/plans" },
+    { "source": "/api/vote", "destination": "https://ace-racer-core.vercel.app/api/vote" }
   ],
   "headers": [
     {

@@ -40,5 +40,21 @@ video/
 # Claude 导出产物（本地保留、不入库）
 Claude outputs/
 
-# 方案文档（含审核策略与部署细节，不入公开仓库）
+# 项目规划文档、内部交接书与私有后端文件（严禁进入公开仓库）
+plan/
 docs/
+api/
+lib/
+bin/
+.vercel/
+.env
+.env.*
+*.pem
+*.key
+*.p12
+*.pfx
+*HANDOFF*
+*SECRET*
+*PRIVATE*
+tokens.json
+agent_mailbox.json

@@ -1,8 +1,5 @@
 // 王牌竞速芯片计算器 · Service Worker
 //
-// v11 只做一件事：换缓存桶名，让 v1/v2 顶部归档条改成 fixed 定位后，
-// 旧桶里的历史页面副本随 activate 一起被清掉，避免用户读到没有吸顶条的旧版。
-//
 // v10 相对 v9 改了三处，都是为了「离线真能用」这件事：
 //
 // 1) install 时预缓存首页骨架。
@@ -19,10 +16,17 @@
 
 const CACHE_NAME = 'calc-shell-v11';
 
-// 离线真正要用到的骨架。html2canvas 只在导出长图时用，走运行时缓存即可。
+// 离线真正要用到的核心骨架与静态资源。html2canvas 只在导出长图时用，走运行时缓存即可。
 const PRECACHE = [
     '/',
     '/index.html',
+    '/style.css',
+    '/cdn-icons.js',
+    '/v4.js',
+    '/view.js',
+    '/desk.js',
+    '/community-plans.css',
+    '/community-plans.js',
     '/car-database.js',
     '/manifest.json'
 ];
@@ -81,8 +85,8 @@ self.addEventListener('fetch', (event) => {
         return;
     }
 
-    // Vercel 的统计上报不是站点资产，没必要进缓存桶
-    if (url.pathname.indexOf('/_vercel/') === 0) {
+    // Vercel 的统计上报与后端动态 API 接口绝不进 Service Worker 缓存桶
+    if (url.pathname.indexOf('/_vercel/') === 0 || url.pathname.indexOf('/api/') === 0) {
         return;
     }
 
