@@ -32,6 +32,39 @@
   var TURNSTILE_SITE_KEY = '0x4AAAAAAF_MFEXcXJElnxKc';
   var TURNSTILE_SCRIPT_URL = 'https://challenges.cloudflare.com/turnstile/v0/api.js?render=explicit';
 
+  // 赋能键名 -> 人类可读中文兜底映射表（优先从 window.TALENTS_DATA 实时读取）
+  var EMP_FALLBACK_MAP = {
+    yichu: '拒绝溢出',
+    fusu: '复苏之泉',
+    jiezou: '节奏赋能',
+    queyi: '缺一不可',
+    weilai: '未来视界',
+    huaxin: '花信风',
+    huishou: '能源回收',
+    duanwei: '断位赋能',
+    chaohe: '超核赋能'
+  };
+
+  function resolveEmpowerLabel(empKey) {
+    var k = String(empKey || '').trim();
+    if (!k) return '';
+    var list = window.TALENTS_DATA;
+    if (Array.isArray(list)) {
+      for (var i = 0; i < list.length; i++) {
+        var t = list[i];
+        if (t && (t.key === k || String(t.id) === k)) {
+          return t.name || t.nameEn || k;
+        }
+      }
+    }
+    return EMP_FALLBACK_MAP[k] || k;
+  }
+
+  function formatEmpsText(empArr) {
+    if (!Array.isArray(empArr) || empArr.length === 0) return '';
+    return empArr.map(resolveEmpowerLabel).filter(Boolean).join(' · ');
+  }
+
   // 统一规范 SVG 线性图标集 (与全站 stroke="currentColor" stroke-width="1.8" 100% 对齐)
   var Icons = {
     chip: '<svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="4" y="4" width="16" height="16" rx="2"/><rect x="9" y="9" width="6" height="6"/><path d="M9 1v3M15 1v3M9 20v3M15 20v3M20 9h3M20 14h3M1 9h3M1 14h3"/></svg>',
@@ -506,7 +539,7 @@
         tuanhun: 0,
         first_nitro_count: 1,
         loop_nitro_count: 1,
-        emps: ['duanwei', 'chaohe'],
+        emps: ['yichu', 'jiezou'],
         nitro_rule: '1x5'
       }
     },
@@ -527,7 +560,7 @@
         tuanhun: 0,
         first_nitro_count: 1,
         loop_nitro_count: 1,
-        emps: ['chaohe'],
+        emps: ['fusu'],
         nitro_rule: '1x5'
       }
     },
@@ -548,7 +581,7 @@
         tuanhun: 0,
         first_nitro_count: 1,
         loop_nitro_count: 1,
-        emps: ['duanwei'],
+        emps: ['huishou'],
         nitro_rule: '1x5'
       }
     }
@@ -760,7 +793,7 @@
         '  <div class="cp-title-left">',
         '    <span class="cp-badge-icon" aria-hidden="true">' + Icons.chip + '</span>',
         '    <span class="cp-title-text"><span class="zh">芯片方案库</span><span class="lang-en">Chip Setups</span></span>',
-        '    <span id="cpCurrentCarBadge" class="limit-badge cp-car-badge"><span class="zh">未选赛车</span><span class="lang-en">No Car Selected</span></span>',
+        '    <span id="cpCurrentCarBadge" class="cp-car-badge"><span class="zh">未选赛车</span><span class="lang-en">No Car Selected</span></span>',
         '  </div>',
         '  <div class="cp-actions-bar" onclick="event.stopPropagation()">',
         '    <button type="button" id="cpBtnUndo" class="nav-btn cp-btn cp-btn-undo" style="display:none;" onclick="CommunityPlans.undoApply()">',
@@ -776,10 +809,10 @@
         '      ' + Icons.upload,
         '    </button>',
         '    <input type="file" id="cpFileInput" accept=".json" style="display:none;" onchange="CommunityPlans.handleFileImport(event)">',
-        '    <button type="button" class="nav-btn select-btn cp-icon-btn cp-fold-btn" onclick="CommunityPlans.toggleCollapse()" title="折叠/展开方案库">',
-        '      <span class="cp-fold-indicator" aria-hidden="true">' + Icons.chevron + '</span>',
-        '    </button>',
         '  </div>',
+        '  <button type="button" class="nav-btn select-btn cp-icon-btn cp-fold-btn" onclick="event.stopPropagation(); CommunityPlans.toggleCollapse()" title="折叠/展开方案库">',
+        '    <span class="cp-fold-indicator" aria-hidden="true">' + Icons.chevron + '</span>',
+        '  </button>',
         '</div>',
         '<div id="cpSectionsStream" class="cp-sections-stream"></div>'
       ].join('');
@@ -979,7 +1012,7 @@
       stream.innerHTML = sectionsHtml.join('');
     },
 
-    // 渲染紧凑横向条式方案项
+    // 渲染结构化三层方案卡片（全端统一清晰排版，杜绝内部嵌套小方框堆砌）
     renderPlanItem: function (item, type) {
       var p = item.params || {};
       var xianji = p.xianji !== undefined ? Number(p.xianji) || 0 : 0;
@@ -987,7 +1020,7 @@
       var rawTuanhun = p.tuanhun !== undefined ? p.tuanhun : p.team_spirit;
       var tuanhun = rawTuanhun !== undefined ? Number(rawTuanhun) || 0 : 0;
       var empArr = Array.isArray(p.emps) ? p.emps : (Array.isArray(p.empowers) ? p.empowers : []);
-      var empsText = empArr.length > 0 ? empArr.join('·') : '无赋能';
+      var empsText = formatEmpsText(empArr);
       var safePlanId = Utils.safeId(item.id);
       var safeRemoteId = Utils.safeId(item.remote_id);
       var safePlayerId = Utils.safeId(item.player_id);
@@ -996,7 +1029,7 @@
       var isProPlan = Boolean(item.isPro || item.is_pro || type === 'pro');
       var isLocalPlan = (type === 'local');
 
-      // 渲染主页链接按钮 (支持最多 3 个链接)
+      // 渲染主页链接图标 (支持最多 3 个链接)
       var linksHtml = '';
       if (Array.isArray(item.links) && item.links.length > 0) {
         linksHtml = '<span class="cp-author-links">';
@@ -1011,17 +1044,16 @@
 
       var badgeText = isProPlan
         ? '<span class="cp-card-badge cp-badge-pro">' + Icons.crown + ' 国服顶尖</span>'
-        : (isLocalPlan ? '<span class="cp-card-badge cp-badge-local">我的本地</span>' : '<span class="cp-card-badge cp-badge-community">社区</span>');
+        : (isLocalPlan ? '<span class="cp-card-badge cp-badge-local">本地方案</span>' : '<span class="cp-card-badge cp-badge-community">社区推荐</span>');
 
-      // 若为车友提交过全网审核的本地方案，增加审核状态指示徽章 (支持点击刷新或查看官方审核组驳回说明)
       var auditStatusBadge = '';
       if (isLocalPlan && safeRemoteId) {
         if (item.remote_status === 'rejected') {
-          auditStatusBadge = '<span class="cp-card-badge cp-badge-rejected" onclick="CommunityPlans.showRejectModal(\'' + safePlanId + '\', event)" title="点击查看审核驳回说明">⚠️ 审核未通过 (点击看说明)</span>';
+          auditStatusBadge = '<span class="cp-card-badge cp-badge-rejected" onclick="CommunityPlans.showRejectModal(\'' + safePlanId + '\', event)" title="点击查看审核驳回说明">审核未通过</span>';
         } else if (item.remote_status === 'approved') {
-          auditStatusBadge = '<span class="cp-card-badge cp-badge-approved">✓ 审核通过</span>';
+          auditStatusBadge = '<span class="cp-card-badge cp-badge-approved">已收录</span>';
         } else {
-          auditStatusBadge = '<span class="cp-card-badge cp-badge-pending" onclick="CommunityPlans.checkPlanStatus(\'' + safePlanId + '\', \'' + safeRemoteId + '\', event)" title="点击刷新审核状态">⏳ 审核中 (点击刷新)</span>';
+          auditStatusBadge = '<span class="cp-card-badge cp-badge-pending" onclick="CommunityPlans.checkPlanStatus(\'' + safePlanId + '\', \'' + safeRemoteId + '\', event)" title="点击刷新审核状态">审核中</span>';
         }
       }
 
@@ -1036,7 +1068,7 @@
           return c.id;
         }).join(' + ');
       } else if (Array.isArray(p.chips) && p.chips.length > 0) {
-        chipsSummary = p.chips.map(function (c) { return c.name || c.type; }).slice(0, 3).join('·');
+        chipsSummary = p.chips.map(function (c) { return c.name || c.type; }).slice(0, 3).join(' · ');
       }
 
       var nitroInfo = '';
@@ -1044,48 +1076,69 @@
         nitroInfo = p.nitro_rule + (p.nitro_dur ? ' · ' + p.nitro_dur + 's' : '');
       }
 
+      // 构建统一数值矩阵单元格
+      var specCells = [
+        '<div class="cp-spec-cell"><span class="cp-spec-lbl">先机</span><span class="cp-spec-val is-acc">' + xianji + '%</span></div>',
+        '<div class="cp-spec-cell"><span class="cp-spec-lbl">汇能</span><span class="cp-spec-val is-acc">' + huineng + '%</span></div>'
+      ];
+      if (tuanhun > 0) {
+        specCells.push('<div class="cp-spec-cell"><span class="cp-spec-lbl">团魂</span><span class="cp-spec-val">' + tuanhun + '%</span></div>');
+      }
+      if (nitroInfo) {
+        specCells.push('<div class="cp-spec-cell"><span class="cp-spec-lbl">氮气</span><span class="cp-spec-val">' + Utils.escapeHtml(nitroInfo) + '</span></div>');
+      }
+
+      var extraLines = [];
+      if (empsText) {
+        extraLines.push('<div class="cp-spec-extra-row"><span class="cp-spec-extra-k">赋能</span><span class="cp-spec-extra-v">' + Utils.escapeHtml(empsText) + '</span></div>');
+      }
+      if (chipsSummary) {
+        extraLines.push('<div class="cp-spec-extra-row"><span class="cp-spec-extra-k">芯片</span><span class="cp-spec-extra-v is-acc">' + Utils.escapeHtml(chipsSummary) + '</span></div>');
+      }
+
+      var specsExtraHtml = extraLines.length > 0
+        ? '<div class="cp-specs-extra">' + extraLines.join('') + '</div>'
+        : '';
+
       return [
-        '<div class="cp-card-item ' + (isProPlan ? 'is-pro' : '') + ' ' + (isApplied ? 'is-applied' : '') + '">',
-        '  <div class="cp-card-main">',
+        '<article class="cp-card-item ' + (isProPlan ? 'is-pro' : '') + ' ' + (isApplied ? 'is-applied' : '') + '">',
+        '  <div class="cp-card-head">',
         '    <div class="cp-card-header-line">',
         '      <h4 class="cp-card-title">' + Utils.escapeHtml(item.title) + '</h4>',
+        '      <div class="cp-card-badges">',
         badgeText,
         auditStatusBadge,
-        (isApplied ? '<span class="cp-card-badge cp-badge-active">' + Icons.check + ' 正在生效</span>' : ''),
+        (isApplied ? '<span class="cp-card-badge cp-badge-active">' + Icons.check + ' 生效中</span>' : ''),
+        '      </div>',
         '    </div>',
         '    <div class="cp-card-meta">',
         '      <span class="cp-author-name">' + Utils.escapeHtml(item.author || '热心车友') + '</span>',
-        (safePlayerId ? '      <span class="cp-player-id" onclick="CommunityPlans.copyPlayerId(\'' + safePlayerId + '\', event)" title="点击复制车手游戏ID"><span class="zh">游戏ID: </span>' + Utils.escapeHtml(safePlayerId) + '<span class="cp-copy-icon">' + Icons.copy + '</span></span>' : ''),
+        (safePlayerId ? '      <button type="button" class="cp-player-id" onclick="CommunityPlans.copyPlayerId(\'' + safePlayerId + '\', event)" title="点击复制游戏ID"><span>ID ' + Utils.escapeHtml(safePlayerId) + '</span><span class="cp-copy-icon">' + Icons.copy + '</span></button>' : ''),
         linksHtml,
-        '      <span class="cp-meta-dot">·</span>',
         '      <span class="cp-meta-time">' + Utils.formatTime(item.created_at) + '</span>',
         '    </div>',
         '  </div>',
-        '  <div class="cp-card-mid">',
-        '    <div class="cp-params-row">',
-        '      <span class="cp-pill cp-pill-acc">先机 ' + xianji + '%</span>',
-        '      <span class="cp-pill cp-pill-acc">汇能 ' + huineng + '%</span>',
-        (tuanhun > 0 ? '      <span class="cp-pill cp-pill-acc">团魂 ' + tuanhun + '%</span>' : ''),
-        (nitroInfo ? '      <span class="cp-pill cp-pill-sub">氮气 ' + Utils.escapeHtml(nitroInfo) + '</span>' : ''),
+        '  <div class="cp-specs-panel">',
+        '    <div class="cp-specs-grid">',
+        specCells.join(''),
         '    </div>',
-        '    <div class="cp-params-row cp-params-row-sub">',
-        '      <span class="cp-pill cp-pill-sub">赋能: ' + Utils.escapeHtml(empsText) + '</span>',
-        (chipsSummary ? '      <span class="cp-pill cp-pill-acc" style="color:var(--acc);">芯片: ' + Utils.escapeHtml(chipsSummary) + '</span>' : ''),
-        '    </div>',
+        specsExtraHtml,
         '  </div>',
-        '  <div class="cp-card-right-bar">',
-        '    <button type="button" class="nav-btn cp-vote-btn ' + (isVoted ? 'is-voted' : '') + '" onclick="CommunityPlans.toggleVote(\'' + safePlanId + '\')" title="点赞支持该方案">',
-        '      ' + Icons.thumb(isVoted),
-        '      <span>' + (Number(item.votes) || 0) + '</span>',
-        '    </button>',
+        '  <div class="cp-card-foot">',
+        '    <div class="cp-foot-left">',
+        '      <button type="button" class="nav-btn cp-vote-btn ' + (isVoted ? 'is-voted' : '') + '" onclick="CommunityPlans.toggleVote(\'' + safePlanId + '\')" title="点赞支持该方案">',
+        '        ' + Icons.thumb(isVoted),
+        '        <span>' + (Number(item.votes) || 0) + '</span>',
+        '      </button>',
         (isLocalPlan
-          ? '<button type="button" class="nav-btn select-btn cp-del-btn" title="删除该方案" onclick="CommunityPlans.deletePlan(\'' + safePlanId + '\')">' + Icons.trash + '</button>'
+          ? '      <button type="button" class="nav-btn select-btn cp-del-btn" title="删除该方案" onclick="CommunityPlans.deletePlan(\'' + safePlanId + '\')">' + Icons.trash + '</button>'
           : ''),
-        '    <button type="button" class="nav-btn cp-apply-btn" onclick="CommunityPlans.applyPlanById(\'' + safePlanId + '\')">',
-        '      ' + Icons.apply + '<span class="zh">一键套用</span><span class="lang-en">Apply</span>',
+        '    </div>',
+        '    <button type="button" class="nav-btn cp-apply-btn ' + (isApplied ? 'is-applied' : '') + '" onclick="CommunityPlans.applyPlanById(\'' + safePlanId + '\')">',
+        '      ' + (isApplied ? Icons.check : Icons.apply) + '<span class="zh">' + (isApplied ? '已套用' : '一键套用') + '</span><span class="lang-en">' + (isApplied ? 'Applied' : 'Apply') + '</span>',
         '    </button>',
         '  </div>',
-        '</div>'
+        '</article>'
       ].join('');
     },
 
@@ -1312,7 +1365,8 @@
 
       var carName = state.currentCar ? state.currentCar.name : '当前赛车';
       var params = ParamsIO.capture();
-      var summary = '先机 ' + params.xianji + '% · 汇能 ' + params.huineng + '% · ' + (params.emps.length ? params.emps.join('/') : '无赋能');
+      var empSummary = formatEmpsText(params.emps) || '无赋能';
+      var summary = '先机 ' + params.xianji + '% · 汇能 ' + params.huineng + '% · ' + empSummary;
 
       var modal = document.createElement('div');
       modal.id = 'cpSaveModal';

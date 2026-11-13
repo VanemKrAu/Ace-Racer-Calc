@@ -33,23 +33,27 @@
   display: flex;
   align-items: center;
   justify-content: space-between;
-  gap: 12px;
+  gap: 8px 10px;
   margin-bottom: 16px;
   width: 100%;
+  flex-wrap: nowrap;
 }
 
 .ds-c .cp-title-left {
+  order: 1;
   display: inline-flex;
   align-items: center;
   gap: 8px;
   min-width: 0;
-  flex: none;
+  flex: 1 1 auto;
+  justify-content: flex-start;
 }
 
 .ds-c .cp-badge-icon {
   display: inline-flex;
   align-items: center;
   justify-content: center;
+  flex: none;
   width: 24px;
   height: 24px;
   color: var(--acc);
@@ -61,14 +65,21 @@
 }
 
 .ds-c .cp-title-text {
+  flex: none;
   font-size: 16px;
   font-weight: 700;
   color: var(--ink);
   letter-spacing: -0.01em;
+  white-space: nowrap;
 }
 
 .ds-c .cp-car-badge {
-  flex: none;
+  flex: 0 1 auto;
+  min-width: 0;
+  max-width: 220px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
   font-size: 11.5px;
   font-weight: 600;
   color: var(--acc-ink, var(--ink));
@@ -78,12 +89,18 @@
   border: 1px solid var(--surface-edge);
 }
 
-/* 顶部操作按钮组 (靠死在卡片最右侧) */
+/* 顶部操作按钮组 */
 .ds-c .cp-actions-bar {
+  order: 2;
   display: inline-flex;
   align-items: center;
   gap: 8px;
-  margin-left: auto !important; /* 强制靠死在卡片最右侧，绝不居中 */
+  margin-left: auto;
+  flex: none;
+}
+
+.ds-c .cp-fold-btn {
+  order: 3;
   flex: none;
 }
 
@@ -201,13 +218,9 @@ body[data-calc-mode="support"] #communityPlansContainer {
   transform: rotate(0deg);
 }
 
-/* 折叠状态下隐藏次要操作按钮，仅保留最右侧折叠/展开指示按钮，恢复极简单行 */
-.ds-c .cp-plans-card.pv-collapsed .cp-btn-save,
-.ds-c .cp-plans-card.pv-collapsed .cp-btn-undo,
-.ds-c .cp-plans-card.pv-collapsed .cp-icon-btn:not(.cp-fold-btn),
-.ds-c .cp-plans-card.pv-shut .cp-btn-save,
-.ds-c .cp-plans-card.pv-shut .cp-btn-undo,
-.ds-c .cp-plans-card.pv-shut .cp-icon-btn:not(.cp-fold-btn) {
+/* 折叠状态下隐藏操作按钮栏，仅保留标题左侧与最右侧折叠指示按钮 */
+.ds-c .cp-plans-card.pv-collapsed .cp-actions-bar,
+.ds-c .cp-plans-card.pv-shut .cp-actions-bar {
   display: none !important;
 }
 
@@ -373,30 +386,31 @@ body[data-calc-mode="support"] #communityPlansContainer {
   line-height: 1.35;
 }
 
-/* 分类下的方案列表 (竖排流式排列) */
+/* 分类下的方案卡片列表：桌面/平板自适应网格，窄屏单列，卡片三层视觉清晰对齐 */
 .ds-c .cp-sec-list {
-  display: flex;
-  flex-direction: column;
-  gap: 8px;
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(min(100%, 330px), 1fr));
+  gap: 12px;
+  align-items: stretch;
 }
 
 /* ==========================================================================
-   3. 紧凑型横向条式方案项 (对齐用户截图中带操作按钮的条形卡片)
+   3. 统一三层结构化方案卡片（无碎框堆叠，跨设备 100% 清晰对齐）
    ========================================================================== */
 .ds-c .cp-card-item {
   position: relative;
   background-color: var(--surface);
-  background-image: linear-gradient(180deg, rgba(255, 255, 255, .04), rgba(255, 255, 255, 0) 60px);
+  background-image: linear-gradient(180deg, rgba(255, 255, 255, .035), rgba(255, 255, 255, 0) 68px);
   border: 1px solid var(--surface-edge);
-  box-shadow: inset 0 1px 0 var(--surface-rim), 0 3px 10px rgba(0, 0, 0, .08);
-  border-radius: var(--r-md, 12px);
-  padding: 12px 14px;
+  box-shadow: inset 0 1px 0 var(--surface-rim), 0 3px 12px rgba(0, 0, 0, .08);
+  border-radius: var(--r-md, 14px);
+  padding: 14px;
   display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 14px;
-  flex-wrap: wrap;
-  transition: all .18s cubic-bezier(.2, .8, .2, 1);
+  flex-direction: column;
+  gap: 11px;
+  min-width: 0;
+  height: 100%;
+  transition: border-color .18s ease, box-shadow .18s ease, transform .18s ease, background-color .18s ease;
 }
 
 .ds-c.light-mode .cp-card-item {
@@ -404,60 +418,31 @@ body[data-calc-mode="support"] #communityPlansContainer {
 }
 
 .ds-c .cp-card-item:hover {
-  background-color: color-mix(in oklab, var(--acc) 6%, var(--surface));
+  background-color: color-mix(in oklab, var(--acc) 5%, var(--surface));
   border-color: color-mix(in oklab, var(--acc) 45%, var(--surface-edge));
   transform: translateY(-1px);
-  box-shadow: inset 0 1px 0 var(--surface-rim), 0 6px 16px -4px color-mix(in oklab, var(--acc) 22%, transparent);
+  box-shadow: inset 0 1px 0 var(--surface-rim), 0 8px 20px -6px color-mix(in oklab, var(--acc) 22%, transparent);
 }
 
-/* PC 端三段式舒展排版：彻底解决“左边挤一坨、中间空空如也”的失衡视觉 */
-@media (min-width: 850px) {
-  .ds-c .cp-card-item {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    gap: 18px;
-    padding: 14px 18px;
-    flex-wrap: nowrap;
-  }
-  .ds-c .cp-card-main {
-    flex: 0 0 280px;
-    min-width: 240px;
-    max-width: 320px;
-    display: flex;
-    flex-direction: column;
-    gap: 6px;
-  }
-  .ds-c .cp-card-mid {
-    flex: 1 1 auto;
-    min-width: 0;
-    display: flex;
-    flex-direction: column;
-    gap: 6px;
-    padding: 0 16px;
-    border-left: 1px solid var(--surface-edge);
-    border-right: 1px solid var(--surface-edge);
-  }
-  .ds-c .cp-card-right-bar {
-    flex: 0 0 auto;
-    margin-left: 0;
-  }
-}
-@media (max-width: 849px) {
-  .ds-c .cp-card-mid {
-    width: 100%;
-    margin: 4px 0;
-  }
-  .ds-c .cp-card-right-bar {
-    width: 100%;
-    justify-content: flex-end;
-    padding-top: 6px;
-    border-top: 1px dashed var(--surface-edge);
-  }
+/* 国服顶尖微光质感 */
+.ds-c .cp-card-item.is-pro {
+  border-color: color-mix(in oklab, #ffd700 32%, var(--surface-edge));
 }
 
-/* 卡片主内容区 (标题 + 元信息) */
-.ds-c .cp-card-main {
+.ds-c .cp-card-item.is-pro:hover {
+  border-color: color-mix(in oklab, #ffd700 68%, var(--surface-edge));
+  box-shadow: inset 0 1px 0 var(--surface-rim), 0 8px 24px -6px rgba(255, 215, 0, 0.25);
+}
+
+/* 正在生效/已套用状态 */
+.ds-c .cp-card-item.is-applied {
+  border-color: var(--acc);
+  background-color: color-mix(in oklab, var(--acc) 12%, var(--surface));
+  box-shadow: inset 0 1px 0 var(--surface-rim), 0 0 0 1.5px var(--acc), 0 8px 24px -6px color-mix(in oklab, var(--acc) 32%, transparent);
+}
+
+/* 第一层：卡片头部 (标题 + 徽章 + 纯文本元数据) */
+.ds-c .cp-card-head {
   display: flex;
   flex-direction: column;
   gap: 6px;
@@ -466,72 +451,40 @@ body[data-calc-mode="support"] #communityPlansContainer {
 
 .ds-c .cp-card-header-line {
   display: flex;
-  align-items: center;
+  align-items: flex-start;
+  justify-content: space-between;
   gap: 8px;
   flex-wrap: wrap;
 }
 
 .ds-c .cp-card-item .cp-card-title {
-  font-size: 14px;
-  font-weight: 700;
-  color: var(--ink);
-  margin: 0;
-}
-
-/* 卡片右侧动作区 (点赞 + 套用 + 删除) */
-.ds-c .cp-card-right-bar {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  flex: none;
-}
-
-/* 国服顶尖微光质感 */
-.ds-c .cp-card-item.is-pro {
-  border-color: color-mix(in oklab, #ffd700 35%, var(--surface-edge));
-}
-
-.ds-c .cp-card-item.is-pro:hover {
-  border-color: color-mix(in oklab, #ffd700 70%, var(--surface-edge));
-  box-shadow: inset 0 1px 0 var(--surface-rim), 0 8px 24px -6px rgba(255, 215, 0, 0.28);
-}
-
-/* 正在生效/已套用状态 */
-.ds-c .cp-card-item.is-applied {
-  border-color: var(--acc);
-  background-color: color-mix(in oklab, var(--acc) 14%, var(--surface));
-  box-shadow: inset 0 1px 0 var(--surface-rim), 0 0 0 1.5px var(--acc), 0 8px 24px -6px color-mix(in oklab, var(--acc) 35%, transparent);
-}
-
-/* 卡片头部 */
-.ds-c .cp-card-header {
-  display: flex;
-  align-items: flex-start;
-  justify-content: space-between;
-  gap: 10px;
-}
-
-.ds-c .cp-card-title-col {
+  flex: 1 1 160px;
   min-width: 0;
-  flex: 1;
-}
-
-.ds-c .cp-card-title {
-  margin: 0 0 4px 0;
+  margin: 0;
   font-size: 14.5px;
   font-weight: 700;
   color: var(--ink);
   line-height: 1.35;
-  word-break: break-all;
+  word-break: break-word;
+  width: auto;
+}
+
+.ds-c .cp-card-badges {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  flex-wrap: wrap;
+  flex: none;
 }
 
 .ds-c .cp-card-meta {
   display: flex;
   align-items: center;
   flex-wrap: wrap;
-  gap: 6px;
+  gap: 4px 10px;
   font-size: 12px;
   color: var(--ink-2);
+  line-height: 1.4;
 }
 
 .ds-c .cp-author-name {
@@ -542,7 +495,6 @@ body[data-calc-mode="support"] #communityPlansContainer {
   color: var(--ink);
 }
 
-/* 官方提取的国服最强头盔勋标 */
 .ds-c .cp-pro-helmet-badge {
   width: 18px;
   height: 18px;
@@ -554,7 +506,7 @@ body[data-calc-mode="support"] #communityPlansContainer {
 .ds-c .cp-author-links {
   display: inline-flex;
   align-items: center;
-  gap: 4px;
+  gap: 2px;
 }
 
 .ds-c .cp-author-link-btn {
@@ -563,10 +515,10 @@ body[data-calc-mode="support"] #communityPlansContainer {
   justify-content: center;
   width: 20px;
   height: 20px;
-  border-radius: 4px;
-  color: var(--ink-2);
-  background: var(--fill);
-  transition: all .15s;
+  border-radius: 5px;
+  color: var(--ink-3);
+  background: transparent;
+  transition: color .15s, background-color .15s;
 }
 
 .ds-c .cp-author-link-btn .ico {
@@ -576,46 +528,46 @@ body[data-calc-mode="support"] #communityPlansContainer {
 
 .ds-c .cp-author-link-btn:hover {
   color: var(--acc);
-  background: var(--fill-hover);
-  transform: scale(1.1);
-}
-
-.ds-c .cp-meta-dot {
-  color: var(--ink-3);
+  background: var(--fill);
 }
 
 .ds-c .cp-player-id {
   display: inline-flex;
   align-items: center;
   gap: 3px;
-  padding: 1px 6px;
-  font-size: 11px;
-  font-family: var(--font-mono, monospace);
+  padding: 0;
+  border: none;
+  border-bottom: 1px dashed color-mix(in oklab, var(--ink-3) 45%, transparent);
+  background: transparent;
+  font-size: 11.5px;
+  font-family: var(--font-mono, ui-monospace, monospace);
   font-weight: 600;
-  color: var(--ink-2);
-  background: var(--fill);
-  border: 1px solid var(--surface-edge);
-  border-radius: 4px;
+  color: var(--ink-3);
   cursor: pointer;
-  transition: all .15s ease;
-  user-select: all;
+  transition: color .15s ease, border-color .15s ease;
 }
 
 .ds-c .cp-player-id:hover {
-  color: var(--acc-ink);
-  background: var(--acc-soft);
-  border-color: var(--acc);
+  color: var(--acc);
+  border-bottom-color: var(--acc);
+}
+
+.ds-c .cp-copy-icon {
+  display: inline-flex;
+  align-items: center;
 }
 
 .ds-c .cp-copy-icon .ico {
-  width: 10px;
-  height: 10px;
-  opacity: .7;
+  width: 11px;
+  height: 11px;
+  opacity: .75;
 }
 
 .ds-c .cp-meta-time {
   color: var(--ink-3);
   font-size: 11.5px;
+  margin-left: auto;
+  font-variant-numeric: tabular-nums;
 }
 
 /* 徽章组 */
@@ -755,47 +707,104 @@ body[data-calc-mode="support"] #communityPlansContainer {
   line-height: 1.5;
 }
 
-/* 参数药丸网格 */
-.ds-c .cp-params-row {
-  display: flex;
-  align-items: center;
-  flex-wrap: wrap;
-  gap: 6px;
-}
-
-.ds-c .cp-pill {
-  font-size: 11.5px;
-  font-weight: 600;
-  padding: 3px 8px;
-  border-radius: 6px;
-  display: inline-flex;
-  align-items: center;
-  white-space: nowrap;
-}
-
-.ds-c .cp-pill-acc {
-  background: color-mix(in oklab, var(--acc) 14%, var(--surface));
-  color: var(--acc-ink, var(--ink));
-  border: 1px solid color-mix(in oklab, var(--acc) 30%, transparent);
-}
-
-.ds-c .cp-pill-sub {
-  background: var(--fill);
-  color: var(--ink-2);
+/* 第二层：统一参数矩阵面板 (单层微填充容器，替代零散药丸) */
+.ds-c .cp-specs-panel {
+  background: color-mix(in oklab, var(--fill) 72%, transparent);
   border: 1px solid var(--surface-edge);
-  max-width: 100%;
+  border-radius: 10px;
+  padding: 10px 12px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.ds-c .cp-specs-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(56px, 1fr));
+  gap: 8px 10px;
+  align-items: end;
+}
+
+.ds-c .cp-spec-cell {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  min-width: 0;
+}
+
+.ds-c .cp-spec-lbl {
+  font-size: 11px;
+  font-weight: 500;
+  color: var(--ink-3);
+  line-height: 1.2;
+}
+
+.ds-c .cp-spec-val {
+  font-size: 14px;
+  font-weight: 700;
+  color: var(--ink);
+  font-variant-numeric: tabular-nums;
+  line-height: 1.25;
+  white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
 }
 
-/* 卡片底部操作栏 */
-.ds-c .cp-card-footer {
+.ds-c .cp-spec-val.is-acc {
+  color: var(--acc);
+}
+
+.ds-c .cp-specs-extra {
+  padding-top: 8px;
+  border-top: 1px dashed var(--surface-edge);
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.ds-c .cp-spec-extra-row {
+  display: flex;
+  align-items: baseline;
+  gap: 8px;
+  font-size: 12px;
+  line-height: 1.45;
+}
+
+.ds-c .cp-spec-extra-k {
+  flex: none;
+  font-size: 11px;
+  font-weight: 600;
+  color: var(--ink-3);
+  min-width: 26px;
+}
+
+.ds-c .cp-spec-extra-v {
+  color: var(--ink-2);
+  font-weight: 500;
+  word-break: break-word;
+  min-width: 0;
+}
+
+.ds-c .cp-spec-extra-v.is-acc {
+  color: var(--acc-ink, var(--acc));
+  font-weight: 600;
+}
+
+/* 第三层：卡片底栏交互区 */
+.ds-c .cp-card-foot {
+  margin-top: auto;
   display: flex;
   align-items: center;
   justify-content: space-between;
   gap: 8px;
-  padding-top: 10px;
+  padding-top: 9px;
   border-top: 1px solid var(--surface-edge);
+}
+
+.ds-c .cp-foot-left {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
 }
 
 .ds-c .cp-vote-btn {
@@ -883,6 +892,16 @@ body[data-calc-mode="support"] #communityPlansContainer {
   background-color: color-mix(in oklab, var(--acc) 30%, var(--surface));
   border-color: var(--acc);
   transform: translateY(-1px);
+}
+
+.ds-c .cp-apply-btn.is-applied {
+  background-color: color-mix(in oklab, #10b981 20%, var(--surface));
+  border-color: color-mix(in oklab, #10b981 60%, transparent);
+  color: #34d399;
+}
+
+.ds-c .cp-apply-btn.is-applied .ico {
+  color: #34d399;
 }
 
 /* 空状态占位箱 */
@@ -1361,71 +1380,77 @@ body.cp-modal-locked {
 /* 移动端 (≤640px) */
 @media (max-width: 640px) {
   .ds-c .cp-plans-card .cp-card-title {
-    flex-wrap: nowrap !important;
+    flex-wrap: wrap !important;
     align-items: center !important;
     justify-content: space-between !important;
-    gap: 8px !important;
+    gap: 10px 8px !important;
   }
 
   .ds-c .cp-plans-card .cp-title-left {
+    order: 1;
     min-width: 0;
-    flex: 1 1 auto;
+    flex: 1 1 auto !important;
     display: inline-flex;
     align-items: center;
+    justify-content: flex-start !important;
     gap: 6px;
     overflow: hidden;
   }
 
   .ds-c .cp-plans-card .cp-title-text {
-    font-size: 14px;
+    font-size: 15px;
     white-space: nowrap;
   }
 
   .ds-c .cp-plans-card .cp-car-badge {
-    max-width: 80px;
+    max-width: 125px;
     overflow: hidden;
     text-overflow: ellipsis;
     white-space: nowrap;
-    padding: 2px 6px;
-    font-size: 10px;
+    padding: 2px 8px;
+    font-size: 11px;
   }
 
-  .ds-c .cp-plans-card .cp-actions-bar {
-    flex: none !important;
-    display: inline-flex !important;
-    align-items: center !important;
-    gap: 4px !important;
+  .ds-c .cp-plans-card .cp-fold-btn {
+    order: 2;
     margin-left: auto !important;
-    flex-wrap: nowrap !important;
-  }
-
-  .ds-c .cp-plans-card .cp-btn-save {
-    padding: 5px 9px !important;
-    font-size: 12px !important;
-    height: 30px !important;
-  }
-
-  .ds-c .cp-plans-card .cp-icon-btn {
-    width: 30px !important;
-    height: 30px !important;
-    min-width: 30px !important;
+    width: 32px !important;
+    height: 32px !important;
+    min-width: 32px !important;
     padding: 0 !important;
     display: inline-flex !important;
     align-items: center !important;
     justify-content: center !important;
   }
 
-  .ds-c .cp-plans-card.pv-shut .cp-card-title,
-  .ds-c .cp-plans-card.pv-collapsed .cp-card-title {
-    flex-direction: row !important;
+  .ds-c .cp-plans-card .cp-actions-bar {
+    order: 3;
+    width: 100% !important;
+    flex: none !important;
+    display: flex !important;
     align-items: center !important;
-    justify-content: space-between !important;
+    justify-content: flex-start !important;
+    gap: 6px !important;
+    margin-left: 0 !important;
+    flex-wrap: nowrap !important;
   }
 
-  .ds-c .cp-actions-bar {
-    justify-content: flex-end;
-    width: auto;
-    margin-left: auto !important;
+  .ds-c .cp-plans-card .cp-btn-save {
+    flex: 1 1 auto !important;
+    justify-content: center !important;
+    height: 34px !important;
+    font-size: 12.5px !important;
+    padding: 0 10px !important;
+  }
+
+  .ds-c .cp-plans-card .cp-actions-bar .cp-icon-btn {
+    width: 34px !important;
+    height: 34px !important;
+    min-width: 34px !important;
+    padding: 0 !important;
+    display: inline-flex !important;
+    align-items: center !important;
+    justify-content: center !important;
   }
 
   .ds-c .cp-controls-bar {
@@ -1455,6 +1480,7 @@ body.cp-modal-locked {
     justify-content: space-between;
   }
 
+  .ds-c .cp-sec-list,
   .ds-c .cp-card-list {
     grid-template-columns: 1fr;
   }
@@ -1465,90 +1491,21 @@ body.cp-modal-locked {
   }
 }
 
-/* 平板端 (641px ~ 1024px) */
-@media (min-width: 641px) and (max-width: 1024px) {
-  .ds-c .cp-card-list {
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-  }
-}
-
-/* PC 宽屏端 (≥1025px) */
-@media (min-width: 1025px) {
-  .ds-c .cp-card-list {
-    grid-template-columns: repeat(auto-fill, minmax(340px, 1fr));
-  }
-}
-
 /* ==========================================================================
    超窄屏与侧边栏嵌入场景深度适配 (≤480px / 侧边栏 Webview)
    ========================================================================== */
 @media (max-width: 480px) {
-  .ds-c .cp-plans-card .cp-card-title {
-    flex-direction: column !important;
-    align-items: stretch !important;
-    gap: 8px !important;
-    flex-wrap: wrap !important;
-  }
-
-  .ds-c .cp-plans-card .cp-title-left {
-    width: 100% !important;
-    justify-content: space-between !important;
-  }
-
-  .ds-c .cp-plans-card .cp-title-text {
-    white-space: nowrap !important;
-    font-size: 14px !important;
-  }
-
-  .ds-c .cp-plans-card .cp-car-badge {
-    max-width: none !important;
-    white-space: nowrap !important;
-  }
-
-  .ds-c .cp-plans-card .cp-actions-bar {
-    width: 100% !important;
-    justify-content: flex-end !important;
-  }
-
-  .ds-c .cp-plans-card .cp-btn-save {
-    flex: 1 1 auto !important;
-    justify-content: center !important;
-  }
-
   .ds-c .cp-card-item {
-    display: flex !important;
-    flex-direction: column !important;
-    align-items: stretch !important;
-    gap: 8px !important;
-    padding: 10px !important;
+    padding: 12px;
+    gap: 10px;
   }
 
-  .ds-c .cp-card-main {
-    width: 100% !important;
-    max-width: 100% !important;
-    flex: none !important;
+  .ds-c .cp-specs-panel {
+    padding: 9px 10px;
   }
 
-  .ds-c .cp-card-mid {
-    width: 100% !important;
-    padding: 0 !important;
-    border-left: none !important;
-    border-right: none !important;
-    margin: 4px 0 !important;
-  }
-
-  .ds-c .cp-card-right-bar {
-    width: 100% !important;
-    justify-content: space-between !important;
-    border-top: 1px solid var(--surface-edge) !important;
-    padding-top: 6px !important;
-    margin-top: 2px !important;
-  }
-
-  .ds-c .cp-pill {
-    white-space: nowrap !important;
-    font-size: 11px !important;
-    padding: 2px 6px !important;
+  .ds-c .cp-meta-time {
+    margin-left: 0;
   }
 
   .cp-modal-dialog {
