@@ -28,6 +28,10 @@
     AUTO_DRAFT: 'arc_auto_draft_enabled'
   };
 
+  // Cloudflare Turnstile 公开 Site Key（仅用于前端渲染托管人机校验框，非密钥）
+  var TURNSTILE_SITE_KEY = '0x4AAAAAAF_MFEXcXJElnxKc';
+  var TURNSTILE_SCRIPT_URL = 'https://challenges.cloudflare.com/turnstile/v0/api.js?render=explicit';
+
   // 统一规范 SVG 线性图标集 (与全站 stroke="currentColor" stroke-width="1.8" 100% 对齐)
   var Icons = {
     chip: '<svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="4" y="4" width="16" height="16" rx="2"/><rect x="9" y="9" width="6" height="6"/><path d="M9 1v3M15 1v3M9 20v3M15 20v3M20 9h3M20 14h3M1 9h3M1 14h3"/></svg>',
@@ -1091,10 +1095,128 @@
       profileImg: null
     },
 
+    // Cloudflare Turnstile 人机校验框状态
+    turnstileState: {
+      widgetId: null,
+      token: '',
+      scriptPromise: null,
+      isSubmitting: false
+    },
+
+    _setTurnstileStatus: function (text, mode) {
+      var el = document.getElementById('cpTurnstileStatus');
+      if (!el) return;
+      el.textContent = text;
+      el.className = 'cp-turnstile-status' + (mode ? ' is-' + mode : '');
+    },
+
+    ensureTurnstileScript: function () {
+      if (window.turnstile && typeof window.turnstile.render === 'function') {
+        return Promise.resolve(window.turnstile);
+      }
+      if (CommunityPlans.turnstileState.scriptPromise) {
+        return CommunityPlans.turnstileState.scriptPromise;
+      }
+      CommunityPlans.turnstileState.scriptPromise = new Promise(function (resolve, reject) {
+        var script = document.createElement('script');
+        script.src = TURNSTILE_SCRIPT_URL;
+        script.async = true;
+        script.defer = true;
+        var timer = setTimeout(function () {
+          CommunityPlans.turnstileState.scriptPromise = null;
+          reject(new Error('人机验证组件加载超时'));
+        }, 8000);
+        script.onload = function () {
+          clearTimeout(timer);
+          if (window.turnstile && typeof window.turnstile.render === 'function') {
+            resolve(window.turnstile);
+          } else {
+            CommunityPlans.turnstileState.scriptPromise = null;
+            reject(new Error('人机验证组件初始化异常'));
+          }
+        };
+        script.onerror = function () {
+          clearTimeout(timer);
+          CommunityPlans.turnstileState.scriptPromise = null;
+          reject(new Error('人机验证组件加载失败'));
+        };
+        document.head.appendChild(script);
+      });
+      return CommunityPlans.turnstileState.scriptPromise;
+    },
+
+    renderTurnstileWidget: function () {
+      var wrap = document.getElementById('cpTurnstileWidget');
+      if (!wrap) return;
+      CommunityPlans.turnstileState.token = '';
+      var box = document.getElementById('cpTurnstileBox');
+      if (box) box.classList.remove('is-error');
+      CommunityPlans._setTurnstileStatus('正在加载验证框...', '');
+      wrap.innerHTML = '';
+
+      CommunityPlans.ensureTurnstileScript()
+        .then(function (ts) {
+          var currentWrap = document.getElementById('cpTurnstileWidget');
+          if (!currentWrap) return;
+          if (CommunityPlans.turnstileState.widgetId !== null) {
+            try { ts.remove(CommunityPlans.turnstileState.widgetId); } catch (_) {}
+            CommunityPlans.turnstileState.widgetId = null;
+          }
+          var isLight = document.body.classList.contains('light-mode');
+          var compact = (window.innerWidth || 600) < 360;
+          CommunityPlans._setTurnstileStatus('请点击下方框完成校验', '');
+          CommunityPlans.turnstileState.widgetId = ts.render('#cpTurnstileWidget', {
+            sitekey: TURNSTILE_SITE_KEY,
+            theme: isLight ? 'light' : 'dark',
+            language: 'zh-CN',
+            size: compact ? 'compact' : 'normal',
+            callback: function (token) {
+              CommunityPlans.turnstileState.token = token || '';
+              var b = document.getElementById('cpTurnstileBox');
+              if (b) b.classList.remove('is-error');
+              CommunityPlans._setTurnstileStatus('✓ 验证已通过，可以提交', 'ok');
+            },
+            'expired-callback': function () {
+              CommunityPlans.turnstileState.token = '';
+              CommunityPlans._setTurnstileStatus('验证已过期，请重新勾选', 'err');
+            },
+            'error-callback': function () {
+              CommunityPlans.turnstileState.token = '';
+              CommunityPlans._setTurnstileStatus('验证加载出错，请重试', 'err');
+            }
+          });
+        })
+        .catch(function () {
+          var currentWrap = document.getElementById('cpTurnstileWidget');
+          if (!currentWrap) return;
+          CommunityPlans._setTurnstileStatus('组件加载失败', 'err');
+          currentWrap.innerHTML = '<span style="font-size:12px;color:var(--ink-3);">安全验证组件暂不可用<button type="button" class="cp-turnstile-retry" onclick="CommunityPlans.renderTurnstileWidget()">点击重试</button></span>';
+        });
+    },
+
+    resetTurnstileWidget: function () {
+      CommunityPlans.turnstileState.token = '';
+      if (window.turnstile && CommunityPlans.turnstileState.widgetId !== null) {
+        try {
+          window.turnstile.reset(CommunityPlans.turnstileState.widgetId);
+          CommunityPlans._setTurnstileStatus('请重新点击下方框完成校验', '');
+          return;
+        } catch (_) {}
+      }
+      CommunityPlans.renderTurnstileWidget();
+    },
+
     onToggleSyncCommunity: function (isSync) {
       var sec = document.getElementById('cpCommunitySection');
       if (sec) sec.style.display = isSync ? 'flex' : 'none';
-      if (!isSync) {
+      if (isSync) {
+        CommunityPlans.renderTurnstileWidget();
+      } else {
+        CommunityPlans.turnstileState.token = '';
+        if (window.turnstile && CommunityPlans.turnstileState.widgetId !== null) {
+          try { window.turnstile.remove(CommunityPlans.turnstileState.widgetId); } catch (_) {}
+          CommunityPlans.turnstileState.widgetId = null;
+        }
         var chkApplyPro = document.getElementById('cpChkApplyPro');
         if (chkApplyPro) {
           chkApplyPro.checked = false;
@@ -1160,8 +1282,15 @@
       reader.readAsDataURL(file);
     },
 
-    // 关闭保存方案弹窗并彻底销毁凭证内存与解锁背景滚动（杜绝图床滥用与滚动穿透）
+    // 关闭保存方案弹窗并彻底销毁凭证内存、Turnstile 实例与解锁背景滚动（杜绝图床滥用与滚动穿透）
     closeSaveModal: function () {
+      if (window.turnstile && CommunityPlans.turnstileState.widgetId !== null) {
+        try { window.turnstile.remove(CommunityPlans.turnstileState.widgetId); } catch (_) {}
+      }
+      CommunityPlans.turnstileState.widgetId = null;
+      CommunityPlans.turnstileState.token = '';
+      CommunityPlans.turnstileState.isSubmitting = false;
+
       var modal = document.getElementById('cpSaveModal');
       if (modal) modal.remove();
       document.body.classList.remove('cp-modal-locked');
@@ -1304,11 +1433,19 @@
         '          </div>',
         '        </div>',
         '      </div>',
+        '      <!-- 提交前安全验证 (Cloudflare Turnstile，点亮对勾后方可提交) -->',
+        '      <div class="cp-turnstile-box" id="cpTurnstileBox">',
+        '        <div class="cp-turnstile-head">',
+        '          <span class="cp-turnstile-title">提交前安全验证</span>',
+        '          <span class="cp-turnstile-status" id="cpTurnstileStatus">等待加载验证框...</span>',
+        '        </div>',
+        '        <div class="cp-turnstile-widget-wrap" id="cpTurnstileWidget"></div>',
+        '      </div>',
         '    </div>',
         '  </div>',
         '  <div class="cp-modal-footer">',
         '    <button type="button" class="nav-btn cp-btn" onclick="CommunityPlans.closeSaveModal()">取消</button>',
-        '    <button type="button" class="nav-btn cp-btn cp-btn-save" onclick="CommunityPlans.confirmSave()">' + Icons.save + ' 确认保存</button>',
+        '    <button type="button" id="cpBtnConfirmSave" class="nav-btn cp-btn cp-btn-save" onclick="CommunityPlans.confirmSave()">' + Icons.save + ' 确认保存</button>',
         '  </div>',
         '</div>'
       ].join('');
@@ -1403,6 +1540,21 @@
         }
       }
 
+      // 同步至社区方案库时，提交前必须先点击完成 Turnstile 人机验证框（变绿勾后放行）
+      if (isSync) {
+        if (CommunityPlans.turnstileState.isSubmitting) return;
+        if (!CommunityPlans.turnstileState.token) {
+          CommunityPlans.toast('请先点击完成人机验证框（勾选通过后再提交）');
+          var tsBox = document.getElementById('cpTurnstileBox');
+          if (tsBox) {
+            tsBox.classList.add('is-error');
+            try { tsBox.scrollIntoView({ behavior: 'smooth', block: 'nearest' }); } catch (_) {}
+          }
+          CommunityPlans._setTurnstileStatus('提交前请先点击完成验证', 'err');
+          return;
+        }
+      }
+
       var planItem = {
         id: Utils.uuid(),
         car_id: state.currentCarId,
@@ -1416,8 +1568,15 @@
         created_at: Utils.now()
       };
 
-      state.savedPlans.unshift(planItem);
-      Utils.setStorage(STORAGE_KEYS.PLANS, state.savedPlans);
+      // 不勾选上传社区时，零验证直接保存在本机浏览器
+      if (!isSync) {
+        state.savedPlans.unshift(planItem);
+        Utils.setStorage(STORAGE_KEYS.PLANS, state.savedPlans);
+        CommunityPlans.closeSaveModal();
+        CommunityPlans.renderPlans();
+        CommunityPlans.toast('方案「' + title + '」已成功保存到本机');
+        return;
+      }
 
       // 提取凭证快照（仅供同步请求一次性使用）
       var proProofData = isApplyPro ? {
@@ -1427,73 +1586,93 @@
         car_name: state.currentCar ? state.currentCar.name : ''
       } : null;
 
-      // 立即销毁弹窗并彻底清空内存中的凭证图片（用户上传后不再展示，绝不存入本地方案，防图床外链滥用）
-      CommunityPlans.closeSaveModal();
-      CommunityPlans.renderPlans();
-
-      if (isSync) {
-        var payload = {
-          car_id: state.currentCarId,
-          car_name: state.currentCar ? state.currentCar.name : '',
-          title: title,
-          author: author,
-          is_anonymous: isAnon,
-          apply_pro: isApplyPro,
-          pro_proof: proProofData,
-          links: links,
-          params: {
-            ult_threshold: params.ult_threshold,
-            start_charge: params.start_charge,
-            base_nitro: params.base_nitro,
-            nitro_rule: params.nitro_rule,
-            nitro_dur: params.nitro_dur,
-            xianji: params.xianji,
-            huineng: params.huineng,
-            start_nitro_count: params.first_nitro_count,
-            first_nitro_count: params.first_nitro_count,
-            cycle_nitro_count: params.loop_nitro_count,
-            loop_nitro_count: params.loop_nitro_count,
-            team_spirit: params.tuanhun, // 团魂无论填多少均不拦截
-            tuanhun: params.tuanhun,
-            chips: params.chips_on,
-            chips_on: params.chips_on,
-            empowers: params.emps,
-            emps: params.emps
-          }
-        };
-
-        fetch('/api/plans', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify(payload)
-        })
-          .then(function (res) {
-            return res.json().then(function (d) { return { ok: res.ok, status: res.status, data: d }; });
-          })
-          .then(function (resObj) {
-            if (!resObj.ok) {
-              var errMsg = (resObj.data && resObj.data.message) ? resObj.data.message : '提交被阻断';
-              CommunityPlans.toast('方案已保存至本地，但社区同步被阻断：' + errMsg);
-            } else {
-              if (resObj.data && resObj.data.data && resObj.data.data.id) {
-                planItem.remote_id = resObj.data.data.id;
-                planItem.remote_status = resObj.data.data.status;
-                Utils.setStorage(STORAGE_KEYS.PLANS, state.savedPlans);
-                CommunityPlans.renderPlans();
-              }
-              var msg = isApplyPro
-                ? '方案「' + title + '」已保存并提交国服自证审核！'
-                : '方案「' + title + '」已保存并提交内容安全审核！';
-              CommunityPlans.toast(msg);
-              CommunityPlans.fetchRemotePlans(state.currentCarId);
-            }
-          })
-          .catch(function (e) {
-            CommunityPlans.toast('方案已保存到本机（社区同步接口暂未连通）');
-          });
-      } else {
-        CommunityPlans.toast('方案「' + title + '」已成功保存到本机');
+      var saveBtn = document.getElementById('cpBtnConfirmSave');
+      CommunityPlans.turnstileState.isSubmitting = true;
+      if (saveBtn) {
+        saveBtn.disabled = true;
+        saveBtn.innerHTML = Icons.save + ' 提交验证中...';
       }
+
+      var payload = {
+        car_id: state.currentCarId,
+        car_name: state.currentCar ? state.currentCar.name : '',
+        title: title,
+        author: author,
+        is_anonymous: isAnon,
+        apply_pro: isApplyPro,
+        pro_proof: proProofData,
+        links: links,
+        turnstile_token: CommunityPlans.turnstileState.token,
+        params: {
+          ult_threshold: params.ult_threshold,
+          start_charge: params.start_charge,
+          base_nitro: params.base_nitro,
+          nitro_rule: params.nitro_rule,
+          nitro_dur: params.nitro_dur,
+          xianji: params.xianji,
+          huineng: params.huineng,
+          start_nitro_count: params.first_nitro_count,
+          first_nitro_count: params.first_nitro_count,
+          cycle_nitro_count: params.loop_nitro_count,
+          loop_nitro_count: params.loop_nitro_count,
+          team_spirit: params.tuanhun, // 团魂无论填多少均不拦截
+          tuanhun: params.tuanhun,
+          chips: params.chips_on,
+          chips_on: params.chips_on,
+          empowers: params.emps,
+          emps: params.emps
+        }
+      };
+
+      fetch('/api/plans', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'X-Client-ID': Utils.getClientId(),
+          'X-Turnstile-Token': CommunityPlans.turnstileState.token
+        },
+        body: JSON.stringify(payload)
+      })
+        .then(function (res) {
+          return res.json().then(function (d) { return { ok: res.ok, status: res.status, data: d }; });
+        })
+        .then(function (resObj) {
+          CommunityPlans.turnstileState.isSubmitting = false;
+          if (!resObj.ok) {
+            if (saveBtn) {
+              saveBtn.disabled = false;
+              saveBtn.innerHTML = Icons.save + ' 确认保存';
+            }
+            var errMsg = (resObj.data && resObj.data.message) ? resObj.data.message : '提交被阻断';
+            CommunityPlans.toast(errMsg);
+            // Turnstile 票据一次性消耗或失效时自动刷新验证框，保留已填表单与截图
+            CommunityPlans.resetTurnstileWidget();
+            return;
+          }
+
+          if (resObj.data && resObj.data.data && resObj.data.data.id) {
+            planItem.remote_id = resObj.data.data.id;
+            planItem.remote_status = resObj.data.data.status;
+          }
+          state.savedPlans.unshift(planItem);
+          Utils.setStorage(STORAGE_KEYS.PLANS, state.savedPlans);
+          // 成功后再销毁弹窗与内存截图，绝不保留原图在本地
+          CommunityPlans.closeSaveModal();
+          CommunityPlans.renderPlans();
+          var msg = isApplyPro
+            ? '方案「' + title + '」已保存并提交国服自证审核！'
+            : '方案「' + title + '」已保存并提交内容安全审核！';
+          CommunityPlans.toast(msg);
+          CommunityPlans.fetchRemotePlans(state.currentCarId);
+        })
+        .catch(function () {
+          CommunityPlans.turnstileState.isSubmitting = false;
+          state.savedPlans.unshift(planItem);
+          Utils.setStorage(STORAGE_KEYS.PLANS, state.savedPlans);
+          CommunityPlans.closeSaveModal();
+          CommunityPlans.renderPlans();
+          CommunityPlans.toast('方案已保存到本机（社区同步接口暂未连通）');
+        });
     },
 
     // 检查指定方案的审核进度与官方审核组裁决说明
