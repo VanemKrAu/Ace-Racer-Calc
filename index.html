@@ -3386,12 +3386,18 @@ function __tok(n, d) { var v = getComputedStyle(document.body).getPropertyValue(
        }
 
               // ── 全量赋能系统：核心与次要分类、滑块动画、单选互斥变灰与优先级冲突 ────────────────────────
+       var _empowerAnimUntil = 0;
        function placeEmpowerThumb(noAnim) {
            var seg = document.querySelector('.empower-seg'),
                th = seg && seg.querySelector('.empower-seg-thumb'),
                on = seg && seg.querySelector('.empower-seg-opt.is-on');
            if (!th || !on || !on.offsetWidth) return;
-           if (noAnim) th.classList.add('no-anim');
+           if (noAnim) {
+               th.classList.add('no-anim');
+           } else {
+               th.classList.remove('no-anim');
+               _empowerAnimUntil = (window.performance ? performance.now() : Date.now()) + 520;
+           }
            th.style.width = on.offsetWidth + 'px';
            th.style.height = on.offsetHeight + 'px';
            th.style.transform = 'translate(' + on.offsetLeft + 'px,' + on.offsetTop + 'px)';
@@ -4595,10 +4601,16 @@ function __tok(n, d) { var v = getComputedStyle(document.body).getPropertyValue(
        }
        function _inMode(el, m) { return (' ' + (el.getAttribute('data-modes') || '') + ' ').indexOf(' ' + m + ' ') >= 0; }
        // 分段控件的选中块滑到当前那一段
+       var _modeAnimUntil = 0;
        function placeModeThumb(noAnim) {
            var seg = document.querySelector('.mode-seg'), th = seg && seg.querySelector('.mode-thumb'), on = seg && seg.querySelector('.mode-opt.is-on');
            if (!th || !on || !on.offsetWidth) return;
-           if (noAnim) th.classList.add('no-anim');
+           if (noAnim) {
+               th.classList.add('no-anim');
+           } else {
+               th.classList.remove('no-anim');
+               _modeAnimUntil = (window.performance ? performance.now() : Date.now()) + 520;
+           }
            th.style.width = on.offsetWidth + 'px';
            th.style.height = on.offsetHeight + 'px';
            th.style.transform = 'translate(' + on.offsetLeft + 'px,' + on.offsetTop + 'px)';
@@ -6310,16 +6322,44 @@ function __tok(n, d) { var v = getComputedStyle(document.body).getPropertyValue(
                 placeModeThumb(true);
                 if (typeof placeEmpowerThumb === 'function') placeEmpowerThumb(true);
             });
-            if (window.ResizeObserver && document.querySelector('.mode-seg')) {
-                var __ro = new ResizeObserver(function () {
-                    placeModeThumb(true);
-                    syncModeDesc(true);
-                    if (typeof placeEmpowerThumb === 'function') placeEmpowerThumb(true);
-                });
-                __ro.observe(document.querySelector('.mode-seg'));
-                var empSeg = document.querySelector('.empower-seg');
-                if (empSeg) __ro.observe(empSeg);
-               [].forEach.call(document.querySelectorAll('.mode-desc .md'), function (x) { __ro.observe(x); });   // 字体加载完 / 换行变化时重量高度
+            if (window.ResizeObserver) {
+                var modeSegEl = document.querySelector('.mode-seg');
+                if (modeSegEl) {
+                    var _lastModeW = modeSegEl.offsetWidth, _lastModeH = modeSegEl.offsetHeight;
+                    new ResizeObserver(function () {
+                        var w = modeSegEl.offsetWidth, h = modeSegEl.offsetHeight;
+                        if (!w || (Math.abs(w - _lastModeW) < 0.5 && Math.abs(h - _lastModeH) < 0.5)) return;
+                        _lastModeW = w;
+                        _lastModeH = h;
+                        var now = window.performance ? performance.now() : Date.now();
+                        placeModeThumb(now > _modeAnimUntil);
+                    }).observe(modeSegEl);
+                }
+                var empSegEl = document.querySelector('.empower-seg');
+                if (empSegEl) {
+                    var _lastEmpW = empSegEl.offsetWidth, _lastEmpH = empSegEl.offsetHeight;
+                    new ResizeObserver(function () {
+                        var w = empSegEl.offsetWidth, h = empSegEl.offsetHeight;
+                        if (!w || (Math.abs(w - _lastEmpW) < 0.5 && Math.abs(h - _lastEmpH) < 0.5)) return;
+                        _lastEmpW = w;
+                        _lastEmpH = h;
+                        var now = window.performance ? performance.now() : Date.now();
+                        if (typeof placeEmpowerThumb === 'function') placeEmpowerThumb(now > _empowerAnimUntil);
+                    }).observe(empSegEl);
+                }
+                var modeDescEl = document.querySelector('.mode-desc');
+                if (modeDescEl) {
+                    var _lastDescW = modeDescEl.clientWidth;
+                    var _mdRo = new ResizeObserver(function () {
+                        var w = modeDescEl.clientWidth;
+                        if (!w || Math.abs(w - _lastDescW) < 0.5) return;
+                        _lastDescW = w;
+                        var now = window.performance ? performance.now() : Date.now();
+                        syncModeDesc(now > _modeAnimUntil);
+                    });
+                    _mdRo.observe(modeDescEl);
+                    [].forEach.call(modeDescEl.querySelectorAll('.md'), function (x) { _mdRo.observe(x); });   // 字体加载完 / 换行变化时重量高度
+                }
            }
            syncModeDesc(true);
            document.addEventListener('pv-lang', function () { populateMateList(); renderMateSource(); renderSupportSource(); placeModeThumb(true); syncModeDesc(true); });

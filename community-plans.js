@@ -1691,7 +1691,13 @@
       }
       if (!thumb || !activeBtn || track.offsetWidth === 0 || activeBtn.offsetWidth === 0) return;
 
+      var nextW = activeBtn.offsetWidth + 'px';
+      var nextH = activeBtn.offsetHeight + 'px';
+      var nextT = 'translate3d(' + activeBtn.offsetLeft + 'px, ' + activeBtn.offsetTop + 'px, 0)';
       var wasReady = thumb.classList.contains('is-ready');
+      if (wasReady && thumb.style.width === nextW && thumb.style.height === nextH && thumb.style.transform === nextT) {
+        return;
+      }
       var useAnim = Boolean(animate && wasReady);
       if (!useAnim) {
         thumb.classList.add('no-anim');
@@ -1699,16 +1705,14 @@
         thumb.classList.remove('no-anim');
       }
 
-      thumb.style.width = activeBtn.offsetWidth + 'px';
-      thumb.style.height = activeBtn.offsetHeight + 'px';
-      thumb.style.transform = 'translate3d(' + activeBtn.offsetLeft + 'px, ' + activeBtn.offsetTop + 'px, 0)';
+      thumb.style.width = nextW;
+      thumb.style.height = nextH;
+      thumb.style.transform = nextT;
       thumb.classList.add('is-ready');
 
       if (!useAnim) {
         void thumb.offsetWidth;
-        requestAnimationFrame(function () {
-          thumb.classList.remove('no-anim');
-        });
+        thumb.classList.remove('no-anim');
       }
     },
 
@@ -1810,7 +1814,7 @@
         return;
       }
 
-      // 3. 收集各分类数据（严格分级：1. 友站分享 -> 2. 国服顶尖 -> 3. 玩家上传 -> 4. 本机未云端收录方案）
+      // 3. 收集各分类数据（展示分级：我的专属配装（如有）-> 友站分享 -> 国服顶尖 -> 玩家上传）
       var curIdStr = String(state.currentCarId);
       var remotePartnerList = state.remotePlans.filter(function (p) {
         return String(p.car_id) === curIdStr && Boolean(p.is_partner || p.isPartner);
@@ -1956,7 +1960,30 @@
       }
 
       // ==========================================
-      // 【分类 1】：友站分享 (合作友站实测推荐方案，有则首位展示)
+      // 【分类 1】：我的专属配装 (有本机自存/待审追踪时，排到展示列表最前)
+      // ==========================================
+      if (localList.length > 0) {
+        viewportHtml.push([
+          '<div class="cp-section cp-section-mine">',
+          '  <div class="cp-sec-header">',
+          '    <div class="cp-sec-icon-box">' + Icons.user + '</div>',
+          '    <div class="cp-sec-info">',
+          '      <div class="cp-sec-title-row">',
+          '        <span class="cp-sec-title"><span class="zh">我的专属配装</span><span class="lang-en">My Saved Setups</span></span>',
+          '        <span class="cp-sec-count">' + localList.length + '</span>',
+          '      </div>',
+          '      <div class="cp-sec-desc"><span class="zh">保存在本机的专属调校方案与云端同步状态追踪</span><span class="lang-en">Your locally saved tuning setups</span></div>',
+          '    </div>',
+          '  </div>',
+          '  <div class="cp-sec-list">',
+          localList.map(function (item) { return CommunityPlans.renderPlanItem(item, 'local', currentMode); }).join(''),
+          '  </div>',
+          '</div>'
+        ].join(''));
+      }
+
+      // ==========================================
+      // 【分类 2】：友站分享 (合作友站实测推荐方案)
       // ==========================================
       if (partnerList.length > 0) {
         viewportHtml.push([
@@ -1979,7 +2006,7 @@
       }
 
       // ==========================================
-      // 【分类 2】：国服顶尖 (官方推荐与自证认证)
+      // 【分类 3】：国服顶尖 (官方推荐与自证认证)
       // ==========================================
       if (proList.length > 0) {
         viewportHtml.push([
@@ -2002,7 +2029,7 @@
       }
 
       // ==========================================
-      // 【分类 3】：玩家上传 (车友社区推荐)
+      // 【分类 4】：玩家上传 (车友社区推荐)
       // ==========================================
       if (remoteList.length > 0) {
         viewportHtml.push([
@@ -2019,29 +2046,6 @@
           '  </div>',
           '  <div class="cp-sec-list">',
           remoteList.map(function (item) { return CommunityPlans.renderPlanItem(item, 'community', currentMode); }).join(''),
-          '  </div>',
-          '</div>'
-        ].join(''));
-      }
-
-      // ==========================================
-      // 【分类 4】：我的专属配装 (本机自存/待审追踪)
-      // ==========================================
-      if (localList.length > 0) {
-        viewportHtml.push([
-          '<div class="cp-section cp-section-mine">',
-          '  <div class="cp-sec-header">',
-          '    <div class="cp-sec-icon-box">' + Icons.user + '</div>',
-          '    <div class="cp-sec-info">',
-          '      <div class="cp-sec-title-row">',
-          '        <span class="cp-sec-title"><span class="zh">我的专属配装</span><span class="lang-en">My Saved Setups</span></span>',
-          '        <span class="cp-sec-count">' + localList.length + '</span>',
-          '      </div>',
-          '      <div class="cp-sec-desc"><span class="zh">保存在本机的专属调校方案与云端同步状态追踪</span><span class="lang-en">Your locally saved tuning setups</span></div>',
-          '    </div>',
-          '  </div>',
-          '  <div class="cp-sec-list">',
-          localList.map(function (item) { return CommunityPlans.renderPlanItem(item, 'local', currentMode); }).join(''),
           '  </div>',
           '</div>'
         ].join(''));

@@ -241,8 +241,8 @@ body[data-calc-mode="support"] #communityPlansContainer {
 .ds-c .cp-scroll-viewport {
   display: flex;
   flex-direction: column;
-  gap: 16px;
-  max-height: 460px;
+  gap: 20px;
+  max-height: 860px;
   overflow-y: auto;
   overflow-x: hidden;
   -webkit-overflow-scrolling: touch;
@@ -252,7 +252,7 @@ body[data-calc-mode="support"] #communityPlansContainer {
 }
 @media (max-width: 849px) {
   .ds-c .cp-scroll-viewport {
-    max-height: 400px;
+    max-height: 860px;
   }
 }
 .ds-c .cp-scroll-viewport::-webkit-scrollbar {
@@ -310,60 +310,75 @@ body[data-calc-mode="support"] #communityPlansContainer {
 }
 
 .ds-c .cp-section {
+  --cp-tree-color: #60a5fa;
+  --cp-tree-line: color-mix(in oklab, var(--cp-tree-color) 42%, var(--surface-edge));
+  position: relative;
   display: flex;
   flex-direction: column;
-  gap: 8px;
+  gap: 10px;
+  padding: 12px 12px 14px;
+  border-radius: var(--r-md, 12px);
+  background: linear-gradient(180deg, color-mix(in oklab, var(--cp-tree-color) 6%, var(--fill)), color-mix(in oklab, var(--fill) 45%, transparent) 120px);
+  border: 1px solid color-mix(in oklab, var(--cp-tree-color) 22%, var(--surface-edge));
+  box-shadow: inset 0 1px 0 var(--surface-rim);
 }
 
-/* 分类组头部：紧凑贴左的非等宽分段页眉（不与下方全宽方案卡片等宽堆砌，明确父级标题定位） */
+.ds-c .cp-section-pro {
+  --cp-tree-color: #fbbf24;
+}
+
+.ds-c .cp-section-partner {
+  --cp-tree-color: #2dd4bf;
+}
+
+.ds-c .cp-section-community {
+  --cp-tree-color: #60a5fa;
+}
+
+.ds-c .cp-section-mine {
+  --cp-tree-color: var(--acc);
+}
+
+:root[data-theme="light"] .ds-c .cp-section-pro {
+  --cp-tree-color: #d97706;
+}
+
+:root[data-theme="light"] .ds-c .cp-section-partner {
+  --cp-tree-color: #0d9488;
+}
+
+:root[data-theme="light"] .ds-c .cp-section-community {
+  --cp-tree-color: #2563eb;
+}
+
+/* 分类组头部：树状根节点（左端图标锚点 + 主标题 + 延展章节分割线，绝不与下方卡片等宽混杂） */
 .ds-c .cp-sec-header {
-  display: inline-flex;
-  align-items: center;
-  align-self: flex-start;
-  width: fit-content;
-  max-width: 100%;
-  gap: 9px;
-  padding: 5px 12px 5px 6px;
-  background-color: color-mix(in oklab, var(--acc) 7%, transparent);
+  display: flex;
+  align-items: flex-start;
+  width: 100%;
+  gap: 10px;
+  padding: 0 2px 2px 0;
+  background: transparent;
   border: none;
-  border-left: 3px solid color-mix(in oklab, var(--acc) 75%, transparent);
-  border-radius: 6px 10px 10px 6px;
+  border-radius: 0;
   box-shadow: none;
 }
 
-.ds-c .cp-section-pro .cp-sec-header {
-  background-color: color-mix(in oklab, #ffd700 9%, transparent);
-  border-left-color: #ffd700;
-}
-
-.ds-c .cp-section-partner .cp-sec-header {
-  background-color: color-mix(in oklab, #14b8a6 9%, transparent);
-  border-left-color: #14b8a6;
-}
-
-.ds-c .cp-section-partner .cp-sec-icon-box {
-  color: #2dd4bf;
-  border-color: color-mix(in oklab, #14b8a6 28%, var(--surface-edge));
-  background-color: color-mix(in oklab, #14b8a6 8%, var(--surface));
-}
-
-.ds-c .cp-section-mine .cp-sec-header {
-  background-color: color-mix(in oklab, var(--acc) 10%, transparent);
-  border-left-color: var(--acc);
-}
-
 .ds-c .cp-sec-icon-box {
-  width: 26px;
-  height: 26px;
+  width: 30px;
+  height: 30px;
+  margin-top: 1px;
   flex: none;
-  border-radius: 7px;
+  position: relative;
+  z-index: 2;
+  border-radius: 9px;
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  background-color: var(--surface);
-  border: 1px solid var(--surface-edge);
-  color: var(--acc);
-  box-shadow: inset 0 1px 0 var(--surface-rim);
+  background-color: color-mix(in oklab, var(--cp-tree-color) 14%, var(--surface));
+  border: 1px solid color-mix(in oklab, var(--cp-tree-color) 42%, var(--surface-edge));
+  color: var(--cp-tree-color);
+  box-shadow: inset 0 1px 0 var(--surface-rim), 0 2px 6px rgba(0, 0, 0, 0.16);
 }
 
 .ds-c .cp-section-pro .cp-sec-icon-box {
@@ -383,8 +398,11 @@ body[data-calc-mode="support"] #communityPlansContainer {
 }
 
 .ds-c .cp-sec-pro-icon {
-  width: 28px;
-  height: 28px;
+  width: 30px;
+  height: 30px;
+  margin-top: 1px;
+  position: relative;
+  z-index: 2;
   object-fit: contain;
   display: inline-block;
   flex: none;
@@ -393,8 +411,8 @@ body[data-calc-mode="support"] #communityPlansContainer {
 }
 
 .ds-c .cp-sec-icon-box .ico {
-  width: 18px;
-  height: 18px;
+  width: 16px;
+  height: 16px;
 }
 
 .ds-c .cp-sec-info {
@@ -406,44 +424,42 @@ body[data-calc-mode="support"] #communityPlansContainer {
 }
 
 .ds-c .cp-sec-title-row {
-  display: inline-flex;
+  display: flex;
   align-items: center;
   gap: 8px;
+  width: 100%;
+}
+
+.ds-c .cp-sec-title-row::after {
+  content: '';
+  flex: 1;
+  min-width: 16px;
+  height: 1px;
+  background: linear-gradient(90deg, color-mix(in oklab, var(--cp-tree-color) 45%, transparent), transparent);
+  margin-left: 4px;
 }
 
 .ds-c .cp-sec-title {
-  font-size: 14px;
-  font-weight: 700;
+  font-size: 14.5px;
+  font-weight: 800;
   color: var(--ink);
   letter-spacing: -0.01em;
+  white-space: nowrap;
 }
 
 .ds-c .cp-sec-count {
   font-size: 11px;
   font-weight: 700;
-  padding: 1px 7px;
+  padding: 1px 8px;
   border-radius: 999px;
-  background: var(--fill);
-  color: var(--ink-2);
-  border: 1px solid var(--surface-edge);
+  background: color-mix(in oklab, var(--cp-tree-color) 16%, var(--surface));
+  color: var(--cp-tree-color);
+  border: 1px solid color-mix(in oklab, var(--cp-tree-color) 38%, transparent);
+  flex: none;
 }
 
 .ds-c .cp-section-mine .cp-sec-count {
-  background: color-mix(in oklab, var(--acc) 22%, var(--surface));
   color: var(--ink);
-  border-color: color-mix(in oklab, var(--acc) 55%, transparent);
-}
-
-.ds-c .cp-section-pro .cp-sec-count {
-  background: color-mix(in oklab, #ffd700 22%, var(--surface));
-  color: #ffd700;
-  border-color: color-mix(in oklab, #ffd700 55%, transparent);
-}
-
-.ds-c .cp-section-partner .cp-sec-count {
-  background: color-mix(in oklab, #14b8a6 16%, var(--surface));
-  color: #2dd4bf;
-  border-color: color-mix(in oklab, #14b8a6 38%, transparent);
 }
 
 .ds-c .cp-sec-desc {
@@ -622,22 +638,57 @@ body[data-calc-mode="support"] #communityPlansContainer {
 .ds-c .cp-sec-list {
   display: flex;
   flex-direction: column;
-  gap: 9px;
-  margin-left: 10px;
-  padding-left: 12px;
-  border-left: 2px solid color-mix(in oklab, var(--acc) 22%, var(--surface-edge));
+  gap: 10px;
+  margin-left: 0;
+  padding-left: 34px;
+  border-left: none;
+  position: relative;
 }
 
-.ds-c .cp-section-pro .cp-sec-list {
-  border-left-color: color-mix(in oklab, #ffd700 40%, var(--surface-edge));
+/* 多级树形归属线：主干线贯穿非末项，圆角 L 型分支线接入每张从属方案卡 */
+.ds-c .cp-sec-list > .cp-card-item::before,
+.ds-c .cp-sec-list > .cp-card-item::after {
+  content: '';
+  position: absolute;
+  pointer-events: none;
+  box-sizing: border-box;
 }
 
-.ds-c .cp-section-partner .cp-sec-list {
-  border-left-color: color-mix(in oklab, #14b8a6 40%, var(--surface-edge));
+.ds-c .cp-sec-list > .cp-card-item:not(:last-child)::before {
+  left: -20px;
+  top: -12px;
+  bottom: -12px;
+  width: 0;
+  border-left: 1.5px solid var(--cp-tree-line);
 }
 
-.ds-c .cp-section-mine .cp-sec-list {
-  border-left-color: color-mix(in oklab, var(--acc) 45%, var(--surface-edge));
+.ds-c .cp-sec-list > .cp-card-item:first-child:not(:last-child)::before {
+  top: -18px;
+}
+
+.ds-c .cp-sec-list > .cp-card-item:not(:last-child)::after {
+  left: -20px;
+  top: 0;
+  width: 20px;
+  height: 22px;
+  border-left: 1.5px solid var(--cp-tree-line);
+  border-bottom: 1.5px solid var(--cp-tree-line);
+  border-bottom-left-radius: 10px;
+}
+
+.ds-c .cp-sec-list > .cp-card-item:last-child::after {
+  left: -20px;
+  top: -12px;
+  width: 20px;
+  height: 34px;
+  border-left: 1.5px solid var(--cp-tree-line);
+  border-bottom: 1.5px solid var(--cp-tree-line);
+  border-bottom-left-radius: 10px;
+}
+
+.ds-c .cp-sec-list > .cp-card-item:first-child:last-child::after {
+  top: -18px;
+  height: 40px;
 }
 
 /* ==========================================================================
@@ -656,7 +707,7 @@ body[data-calc-mode="support"] #communityPlansContainer {
   gap: 7px;
   min-width: 0;
   width: 100%;
-  contain: layout style;
+  contain: style;
   transition: border-color .18s ease, box-shadow .18s ease, transform .18s ease, background-color .18s ease, opacity .18s ease;
 }
 
@@ -2201,9 +2252,31 @@ body.cp-modal-locked {
     flex-direction: column;
   }
 
+  .ds-c .cp-section {
+    padding: 10px 10px 12px;
+  }
+
+  .ds-c .cp-sec-icon-box,
+  .ds-c .cp-sec-pro-icon {
+    width: 26px;
+    height: 26px;
+  }
+
   .ds-c .cp-sec-list {
-    margin-left: 6px;
-    padding-left: 9px;
+    margin-left: 0;
+    padding-left: 26px;
+    gap: 8px;
+  }
+
+  .ds-c .cp-sec-list > .cp-card-item:not(:last-child)::before,
+  .ds-c .cp-sec-list > .cp-card-item:not(:last-child)::after,
+  .ds-c .cp-sec-list > .cp-card-item:last-child::after {
+    left: -14px;
+  }
+
+  .ds-c .cp-sec-list > .cp-card-item:not(:last-child)::after,
+  .ds-c .cp-sec-list > .cp-card-item:last-child::after {
+    width: 14px;
   }
 
   .cp-modal-dialog {
@@ -2217,7 +2290,7 @@ body.cp-modal-locked {
    ========================================================================== */
 @media (max-width: 480px) {
   .ds-c .cp-scroll-viewport {
-    max-height: 400px;
+    max-height: 860px;
   }
 
   .ds-c .cp-card-item {
