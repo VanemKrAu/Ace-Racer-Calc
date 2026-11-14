@@ -699,16 +699,22 @@ body[data-calc-mode="support"] #communityPlansContainer {
 }
 
 .ds-c .cp-sec-list {
+  --cp-tree-pad: 28px;
+  --cp-tree-x: 14px;
+  --cp-tree-gap: 10px;
+  --cp-tree-arm: 22px;
+  --cp-tree-r: 10px;
+  --cp-tree-stroke: 1px;
   display: flex;
   flex-direction: column;
-  gap: 10px;
+  gap: var(--cp-tree-gap);
   margin-left: 0;
-  padding-left: 28px;
+  padding-left: var(--cp-tree-pad);
   border-left: none;
   position: relative;
 }
 
-/* 多级树形归属线：主干线贯穿非末项，圆角 L 型分支线接入每张从属方案卡 */
+/* 多级树形归属线：主干按卡距无缝接力，非末项横枝贴主干右壁零重叠接出，末项圆角 L 型收尾 */
 .ds-c .cp-sec-list > .cp-card-item::before,
 .ds-c .cp-sec-list > .cp-card-item::after {
   content: '';
@@ -718,11 +724,11 @@ body[data-calc-mode="support"] #communityPlansContainer {
 }
 
 .ds-c .cp-sec-list > .cp-card-item:not(:last-child)::before {
-  left: -15px;
-  top: -12px;
-  bottom: -12px;
+  left: calc(-1 * var(--cp-tree-x));
+  top: 0;
+  bottom: calc(-1 * var(--cp-tree-gap));
   width: 0;
-  border-left: 1.5px solid var(--cp-tree-line);
+  border-left: var(--cp-tree-stroke) solid var(--cp-tree-line);
 }
 
 .ds-c .cp-sec-list > .cp-card-item:first-child:not(:last-child)::before {
@@ -730,28 +736,26 @@ body[data-calc-mode="support"] #communityPlansContainer {
 }
 
 .ds-c .cp-sec-list > .cp-card-item:not(:last-child)::after {
-  left: -15px;
-  top: 0;
-  width: 15px;
-  height: 22px;
-  border-left: 1.5px solid var(--cp-tree-line);
-  border-bottom: 1.5px solid var(--cp-tree-line);
-  border-bottom-left-radius: 10px;
+  left: calc(-1 * var(--cp-tree-x) + var(--cp-tree-stroke));
+  top: calc(var(--cp-tree-arm) - var(--cp-tree-stroke));
+  width: calc(var(--cp-tree-x) - var(--cp-tree-stroke));
+  height: var(--cp-tree-stroke);
+  background: var(--cp-tree-line);
 }
 
 .ds-c .cp-sec-list > .cp-card-item:last-child::after {
-  left: -15px;
-  top: -12px;
-  width: 15px;
-  height: 34px;
-  border-left: 1.5px solid var(--cp-tree-line);
-  border-bottom: 1.5px solid var(--cp-tree-line);
-  border-bottom-left-radius: 10px;
+  left: calc(-1 * var(--cp-tree-x));
+  top: 0;
+  width: var(--cp-tree-x);
+  height: var(--cp-tree-arm);
+  border-left: var(--cp-tree-stroke) solid var(--cp-tree-line);
+  border-bottom: var(--cp-tree-stroke) solid var(--cp-tree-line);
+  border-bottom-left-radius: var(--cp-tree-r);
 }
 
 .ds-c .cp-sec-list > .cp-card-item:first-child:last-child::after {
   top: -8px;
-  height: 30px;
+  height: calc(var(--cp-tree-arm) + 8px);
 }
 
 /* ==========================================================================
@@ -2494,20 +2498,11 @@ body.cp-modal-locked {
   }
 
   .ds-c .cp-sec-list {
+    --cp-tree-pad: 22px;
+    --cp-tree-x: 10px;
+    --cp-tree-gap: 9px;
+    --cp-tree-r: 8px;
     margin-left: 0;
-    padding-left: 22px;
-    gap: 9px;
-  }
-
-  .ds-c .cp-sec-list > .cp-card-item:not(:last-child)::before,
-  .ds-c .cp-sec-list > .cp-card-item:not(:last-child)::after,
-  .ds-c .cp-sec-list > .cp-card-item:last-child::after {
-    left: -11px;
-  }
-
-  .ds-c .cp-sec-list > .cp-card-item:not(:last-child)::after,
-  .ds-c .cp-sec-list > .cp-card-item:last-child::after {
-    width: 11px;
   }
 
   .cp-modal-dialog {
