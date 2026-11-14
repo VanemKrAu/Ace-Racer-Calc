@@ -18,7 +18,7 @@ jobs:
       - name: Reject non-frontend files and credentials
         run: |
           set -e
-          FORBIDDEN=$(git ls-files | grep -E '^(api|lib|bin|docs|plan|\.vercel)/|(^|/)\.env|(^|/)HANDOFF\.md$|(^|/)tokens\.json$|\.(pem|key|p12|pfx)$' || true)
+          FORBIDDEN=$(git ls-files | grep -E '^(api|lib|bin|docs|plan|workers|\.vercel)/|(^|/)\.env|(^|/)(HANDOFF|ADMIN-API-GUIDE)\.md$|(^|/)(tokens|agent_mailbox|plans|bili-cookies)\.json$|(^|/)test/test-(validator|security)|\.(pem|key|p12|pfx|cer)$' || true)
           if [ -n "$FORBIDDEN" ]; then
             echo "ERROR: Forbidden non-frontend or sensitive files detected:"
             echo "$FORBIDDEN"

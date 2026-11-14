@@ -379,10 +379,11 @@ body[data-calc-mode="support"] #communityPlansContainer {
 }
 
 .ds-c .cp-sec-pro-icon {
-  width: 32px;
-  height: 32px;
+  width: 28px;
+  height: 28px;
   object-fit: contain;
-  display: block;
+  display: inline-block;
+  flex: none;
   filter: drop-shadow(0 2px 5px rgba(0, 0, 0, 0.35));
   transition: transform .25s cubic-bezier(.2,.8,.25,1);
 }
@@ -2012,10 +2013,10 @@ body.cp-modal-locked {
 /* 移动端 (≤640px) */
 @media (max-width: 640px) {
   .ds-c .cp-plans-card .cp-card-title {
-    flex-wrap: wrap !important;
+    flex-wrap: nowrap !important;
     align-items: center !important;
     justify-content: space-between !important;
-    gap: 10px 8px !important;
+    gap: 6px !important;
   }
 
   .ds-c .cp-plans-card .cp-title-left {
@@ -2025,60 +2026,66 @@ body.cp-modal-locked {
     display: inline-flex;
     align-items: center;
     justify-content: flex-start !important;
-    gap: 6px;
+    gap: 5px;
     overflow: hidden;
   }
 
   .ds-c .cp-plans-card .cp-title-text {
-    font-size: 15px;
+    font-size: 14px;
     white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
   }
 
   .ds-c .cp-plans-card .cp-car-badge {
-    max-width: 125px;
+    max-width: 96px;
+    flex: 0 1 auto;
     overflow: hidden;
     text-overflow: ellipsis;
     white-space: nowrap;
-    padding: 2px 8px;
-    font-size: 11px;
+    padding: 2px 7px;
+    font-size: 10.5px;
+  }
+
+  .ds-c .cp-plans-card .cp-actions-bar {
+    order: 2;
+    width: auto !important;
+    flex: none !important;
+    display: inline-flex !important;
+    align-items: center !important;
+    justify-content: flex-end !important;
+    gap: 4px !important;
+    margin-left: auto !important;
+    flex-wrap: nowrap !important;
   }
 
   .ds-c .cp-plans-card .cp-fold-btn {
-    order: 2;
-    margin-left: auto !important;
-    width: 32px !important;
-    height: 32px !important;
-    min-width: 32px !important;
+    order: 3;
+    margin-left: 0 !important;
+    flex: none !important;
+    width: 30px !important;
+    height: 30px !important;
+    min-width: 30px !important;
     padding: 0 !important;
     display: inline-flex !important;
     align-items: center !important;
     justify-content: center !important;
   }
 
-  .ds-c .cp-plans-card .cp-actions-bar {
-    order: 3;
-    width: 100% !important;
+  .ds-c .cp-plans-card .cp-btn-save,
+  .ds-c .cp-plans-card .cp-btn-undo {
     flex: none !important;
-    display: flex !important;
-    align-items: center !important;
-    justify-content: flex-start !important;
-    gap: 6px !important;
-    margin-left: 0 !important;
-    flex-wrap: nowrap !important;
-  }
-
-  .ds-c .cp-plans-card .cp-btn-save {
-    flex: 1 1 auto !important;
     justify-content: center !important;
-    height: 34px !important;
-    font-size: 12.5px !important;
-    padding: 0 10px !important;
+    height: 30px !important;
+    font-size: 11.5px !important;
+    padding: 0 8px !important;
+    white-space: nowrap !important;
   }
 
   .ds-c .cp-plans-card .cp-actions-bar .cp-icon-btn {
-    width: 34px !important;
-    height: 34px !important;
-    min-width: 34px !important;
+    width: 30px !important;
+    height: 30px !important;
+    min-width: 30px !important;
     padding: 0 !important;
     display: inline-flex !important;
     align-items: center !important;

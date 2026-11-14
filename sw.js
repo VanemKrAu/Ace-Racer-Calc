@@ -1,20 +1,11 @@
-// 王牌竞速芯片计算器 · Service Worker
+// 王牌竞速芯片计算器 · Service Worker (calc-shell-v19)
 //
-// v10 相对 v9 改了三处，都是为了「离线真能用」这件事：
-//
-// 1) install 时预缓存首页骨架。
-//    v9 把注册放在 window.load 里，等 load 触发时页面资源早就下载完了，SW 接管不到
-//    任何请求 —— 第一次访问结束后缓存桶是空的。用户装完 PWA 第一次断网打开就是白屏，
-//    看起来就像「PWA 根本没生效」。
-// 2) 缓存写入放进 event.waitUntil。
-//    v9 是 respondWith 的 then 里挂一个没人等的 caches.open().then(put)。响应一返回，
-//    SW 就可能被浏览器回收，这次写入丢在半路。现在写入完成前 SW 不会被回收。
-// 3) 删掉 activate 里那次「大扫除」。
-//    它按一份很窄的白名单清理，而 car-database.js、html2canvas.min.js 不在名单里，
-//    于是每次 SW 换版本，这两个文件连同缓存首页都会被整批删掉，离线直接断。
-//    缓存桶换名（v9 → v10）时旧桶整个删掉就够干净了，不需要逐条扫。
+// 核心策略：
+// 1) install 时预缓存首页核心骨架、图标与静态数据脚本，确保 PWA 离线首屏可用；
+// 2) 运行时采用「网络优先 + 成功回写 + 离线缓存回退」策略，并忽略静态资源查询串（如 manifest.json?v=5）；
+// 3) 社区动态 /api/* 与统计 /_vercel/* 绝不落入 SW 缓存桶；升级 CACHE_NAME 时在 activate 整体淘汰旧桶。
 
-const CACHE_NAME = 'calc-shell-v18';
+const CACHE_NAME = 'calc-shell-v19';
 
 // 离线真正要用到的核心骨架与静态资源。html2canvas 只在导出长图时用，走运行时缓存即可。
 const PRECACHE = [
@@ -29,6 +20,11 @@ const PRECACHE = [
     '/community-plans.js',
     '/car-database.js',
     '/data/talents-data.js',
+    '/data/icon/pro_helmet_m.png',
+    '/icon.png',
+    '/icon.svg',
+    '/icon-192.png',
+    '/favicon.ico',
     '/manifest.json'
 ];
 
@@ -103,7 +99,7 @@ self.addEventListener('fetch', (event) => {
             }
             return response;
         }).catch(() => {
-            return caches.match(request).then((cached) => {
+            return caches.match(request, { ignoreSearch: true }).then((cached) => {
                 if (cached) {
                     return cached;
                 }

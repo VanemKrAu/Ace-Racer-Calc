@@ -708,6 +708,21 @@
       }
       return { label: '作者主页', cls: '' };
     },
+    parseJsonSafe: function (res) {
+      return res.text().then(function (txt) {
+        var parsed = null;
+        if (txt) {
+          try { parsed = JSON.parse(txt); } catch (_) { parsed = null; }
+        }
+        return { ok: res.ok, status: res.status, data: parsed, rawText: txt || '' };
+      });
+    },
+    getDataUrlDecodedBytes: function (dUrl) {
+      if (!dUrl || typeof dUrl !== 'string') return 0;
+      var idx = dUrl.indexOf(',');
+      var b64 = idx >= 0 ? dUrl.slice(idx + 1) : dUrl;
+      return Math.floor(b64.length * 0.75);
+    },
     computeLocalBuildSig: function (carId, p) {
       var paramObj = p || {};
       var num = function (v, d) {
@@ -729,6 +744,7 @@
       }).filter(Boolean).sort();
       var canonical = [
         'car=' + String(carId || ''),
+        'cm=' + String(paramObj.calc_mode === 'team' ? 'team' : 'solo'),
         'ut=' + num(paramObj.ult_threshold, 100),
         'sc=' + num(paramObj.start_charge, 0),
         'bn=' + num(paramObj.base_nitro, 0),
@@ -1110,10 +1126,10 @@
       if (Utils.charCount(t) > 15) {
         return { valid: false, message: '方案名称不能超过 15 个字' };
       }
-      if (/^(.)\1{3,}$/.test(t)) {
-        return { valid: false, message: '【方案名称不合规】方案名称不能为纯连续重复字符 (如 aaaaa)，请输入有意义的方案名' };
+      if (/^(.)\1{3,}\d*$/.test(t)) {
+        return { valid: false, message: '【方案名称不合规】方案名称不能为纯连续重复字符 (如 aaaaa / aaaa1)，请输入有意义的方案名' };
       }
-      if (/代练|出号|收号|加v|微信|wx|扣扣|qq群/i.test(t)) {
+      if (/代练|代打|接单|出号|收号|加[vV微]|加[qQ扣]|微信|v信|威信|微信号|wx|vx|扣扣|qq群|企鹅群|私聊|有偿|包上分|上分车队|包赢|包国标|接单群|咸鱼|闲鱼|转转|拼多多|taobao|tb\.cn/i.test(t)) {
         return { valid: false, message: '【方案名称违规】方案名称检测到含有代练、出号、引流等违规词，已被代码层安全拦截' };
       }
 
@@ -1486,11 +1502,10 @@
         method: 'GET',
         headers: Utils.getApiHeaders(false)
       })
-        .then(function (res) {
-          if (!res.ok) throw new Error('HTTP ' + res.status);
-          return res.json();
-        })
-        .then(function (json) {
+        .then(Utils.parseJsonSafe)
+        .then(function (resObj) {
+          if (!resObj.ok || !resObj.data) throw new Error('HTTP ' + resObj.status);
+          var json = resObj.data;
           if (reqSeq !== state.fetchSeq || String(carId) !== String(state.currentCarId)) return;
           if (json && json.site_meta && typeof json.site_meta === 'object') {
             state.siteMeta = Object.assign({}, state.siteMeta, json.site_meta);
@@ -2704,7 +2719,7 @@
       if (
         state.appliedSource &&
         state.appliedSource.isOther &&
-        (state.appliedSource.appliedDomSig === currentSig || state.appliedSource.sourceBuildSig === currentSig || state.appliedSource.buildSig === currentSig)
+        (state.appliedSource.appliedDomSig === currentSig || state.appliedSource.sourceBuildSig === currentSig)
       ) {
         CommunityPlans.toast('当前配装直接来自「' + state.appliedSource.title + '」且未作任何参数改动，请先自行调整参数后再保存或提交');
         return;
@@ -2821,6 +2836,15 @@
         car_name: state.currentCar ? state.currentCar.name : ''
       } : null;
 
+      if (isApplyPro) {
+        var rankBytes = Utils.getDataUrlDecodedBytes(CommunityPlans.proofState.rankingImg);
+        var profBytes = Utils.getDataUrlDecodedBytes(CommunityPlans.proofState.profileImg);
+        if (rankBytes > 2 * 1024 * 1024 || profBytes > 2 * 1024 * 1024 || (rankBytes + profBytes) > 3.1 * 1024 * 1024) {
+          CommunityPlans.toast('两张审核截图总体积过大（单张≤2MB，合计建议≤3MB），请换用压缩后的截图再试');
+          return;
+        }
+      }
+
       var saveBtn = document.getElementById('cpBtnConfirmSave');
       CommunityPlans.turnstileState.isSubmitting = true;
       if (saveBtn) {
@@ -2850,6 +2874,17 @@
         params: fullParams
       };
 
+      var payloadJson = JSON.stringify(payload);
+      if (payloadJson.length > 4.2 * 1024 * 1024) {
+        CommunityPlans.turnstileState.isSubmitting = false;
+        if (saveBtn) {
+          saveBtn.disabled = false;
+          saveBtn.innerHTML = Icons.save + ' 确认保存';
+        }
+        CommunityPlans.toast('提交内容与截图载荷过大，请压缩截图分辨率后重试');
+        return;
+      }
+
       var reqHeaders = Utils.getApiHeaders(true);
       if (CommunityPlans.turnstileState.token) {
         reqHeaders['X-Turnstile-Token'] = CommunityPlans.turnstileState.token;
@@ -2858,19 +2893,22 @@
       fetch('/api/plans', {
         method: 'POST',
         headers: reqHeaders,
-        body: JSON.stringify(payload)
+        body: payloadJson
       })
-        .then(function (res) {
-          return res.json().then(function (d) { return { ok: res.ok, status: res.status, data: d }; });
-        })
+        .then(Utils.parseJsonSafe)
         .then(function (resObj) {
           CommunityPlans.turnstileState.isSubmitting = false;
-          if (!resObj.ok) {
+          if (!resObj.ok || !resObj.data || resObj.data.success === false) {
             if (saveBtn) {
               saveBtn.disabled = false;
               saveBtn.innerHTML = Icons.save + ' 确认保存';
             }
-            var errMsg = (resObj.data && resObj.data.message) ? resObj.data.message : '提交被阻断';
+            var errMsg = (resObj.data && resObj.data.message) ? resObj.data.message : '';
+            if (!errMsg) {
+              if (resObj.status === 413) errMsg = '提交数据过大 (HTTP 413)，请更换更小的截图后重试';
+              else if (resObj.status >= 500) errMsg = '社区服务暂时繁忙或维护中 (HTTP ' + resObj.status + ')，请稍后重试';
+              else errMsg = '提交未通过 (HTTP ' + resObj.status + ')';
+            }
             CommunityPlans.toast(errMsg);
             if (tsRequired) {
               CommunityPlans.resetTurnstileWidget();
@@ -2895,11 +2933,11 @@
         })
         .catch(function () {
           CommunityPlans.turnstileState.isSubmitting = false;
-          state.savedPlans.unshift(planItem);
-          Utils.setStorage(STORAGE_KEYS.PLANS, state.savedPlans);
-          CommunityPlans.closeSaveModal();
-          CommunityPlans.renderPlans();
-          CommunityPlans.toast('方案已保存到本机（社区同步接口暂未连通）');
+          if (saveBtn) {
+            saveBtn.disabled = false;
+            saveBtn.innerHTML = Icons.save + ' 确认保存';
+          }
+          CommunityPlans.toast('网络连接异常，暂未能提交至社区服务器；您可重试或关闭上传开关仅存本机');
         });
     },
 
@@ -2916,15 +2954,23 @@
         method: 'GET',
         headers: Utils.getApiHeaders(false)
       })
-        .then(function (res) {
-          if (!res.ok) throw new Error('HTTP ' + res.status);
-          return res.json();
-        })
-        .then(function (json) {
-          if (!json || !json.success || !json.data) {
-            throw new Error('未获取到有效状态');
+        .then(Utils.parseJsonSafe)
+        .then(function (resObj) {
+          if (resObj.status === 404) {
+            var missingPlan = state.savedPlans.find(function (p) { return p.id === localId; });
+            if (missingPlan) {
+              missingPlan.remote_status = 'cleaned';
+              delete missingPlan.remote_id;
+              Utils.setStorage(STORAGE_KEYS.PLANS, state.savedPlans);
+              CommunityPlans.renderPlans({ preserveScroll: true });
+            }
+            CommunityPlans.toast('该方案在云端已不存在或已被清理，已更新本地状态');
+            return;
           }
-          var d = json.data;
+          if (!resObj.ok || !resObj.data || !resObj.data.success || !resObj.data.data) {
+            throw new Error((resObj.data && resObj.data.message) || ('HTTP ' + resObj.status));
+          }
+          var d = resObj.data.data;
           var localPlan = state.savedPlans.find(function (p) { return p.id === localId; });
           if (localPlan) {
             localPlan.remote_status = d.status;
@@ -3097,13 +3143,24 @@
         method: 'GET',
         headers: Utils.getApiHeaders(false)
       })
-        .then(function (res) {
-          if (!res.ok) throw new Error('HTTP ' + res.status);
-          return res.json();
-        })
-        .then(function (json) {
+        .then(Utils.parseJsonSafe)
+        .then(function (resObj) {
+          if (!resObj.ok || !resObj.data) throw new Error('HTTP ' + resObj.status);
+          var json = resObj.data;
           if (json && json.site_meta && typeof json.site_meta === 'object') {
             state.siteMeta = Object.assign({}, state.siteMeta, json.site_meta);
+            var saveModal = document.getElementById('cpSaveModal');
+            var chkSync = document.getElementById('cpChkSyncCommunity');
+            var tsBox = document.getElementById('cpTurnstileBox');
+            if (saveModal && chkSync && chkSync.checked && tsBox) {
+              var nextTsReq = state.siteMeta.turnstile_required !== false;
+              tsBox.style.display = nextTsReq ? '' : 'none';
+              if (nextTsReq && CommunityPlans.turnstileState.widgetId === null) {
+                CommunityPlans.renderTurnstileWidget();
+              } else if (!nextTsReq) {
+                CommunityPlans.turnstileState.token = '';
+              }
+            }
             CommunityPlans.maybeHandleAnnouncement(true);
             if (state.currentCarId) {
               CommunityPlans.renderPlans({ preserveScroll: true });
@@ -3401,9 +3458,7 @@
         headers: Utils.getApiHeaders(true),
         body: JSON.stringify({ plan_id: targetRemoteId, action: nextAction })
       })
-        .then(function (res) {
-          return res.json().then(function (d) { return { ok: res.ok, status: res.status, data: d }; });
-        })
+        .then(Utils.parseJsonSafe)
         .then(function (resObj) {
           if (!resObj.ok) {
             // 后端拒绝（例如自赞 403、限流 429 或未找到对应指纹点赞记录）：精确回滚
