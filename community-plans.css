@@ -29,14 +29,23 @@
   display: none !important;
 }
 
-.ds-c .cp-card-title {
+.ds-c .cp-plans-card > .cp-card-title {
   display: flex;
   align-items: center;
   justify-content: space-between;
   gap: 8px 10px;
+  padding-bottom: 11px;
   margin-bottom: 12px;
+  border-bottom: 1px solid var(--sep);
   width: 100%;
   flex-wrap: nowrap;
+}
+
+.ds-c .cp-plans-card.pv-collapsed > .cp-card-title,
+.ds-c #communityPlansContainer.pv-collapsed .cp-plans-card > .cp-card-title {
+  padding-bottom: 0;
+  margin-bottom: 0;
+  border-bottom: none;
 }
 
 .ds-c .cp-title-left {
@@ -241,12 +250,12 @@ body[data-calc-mode="support"] #communityPlansContainer {
 .ds-c .cp-scroll-viewport {
   display: flex;
   flex-direction: column;
-  gap: 20px;
+  gap: 22px;
   max-height: 860px;
   overflow-y: auto;
   overflow-x: hidden;
   -webkit-overflow-scrolling: touch;
-  padding-right: 4px;
+  padding: 2px 4px 2px 2px;
   scrollbar-width: thin;
   scrollbar-color: var(--fill-2) transparent;
 }
@@ -316,11 +325,11 @@ body[data-calc-mode="support"] #communityPlansContainer {
   display: flex;
   flex-direction: column;
   gap: 10px;
-  padding: 12px 12px 14px;
-  border-radius: var(--r-md, 12px);
-  background: linear-gradient(180deg, color-mix(in oklab, var(--cp-tree-color) 6%, var(--fill)), color-mix(in oklab, var(--fill) 45%, transparent) 120px);
-  border: 1px solid color-mix(in oklab, var(--cp-tree-color) 22%, var(--surface-edge));
-  box-shadow: inset 0 1px 0 var(--surface-rim);
+  padding: 0;
+  border: none;
+  border-radius: 0;
+  background: transparent;
+  box-shadow: none;
 }
 
 .ds-c .cp-section-pro {
@@ -351,13 +360,13 @@ body[data-calc-mode="support"] #communityPlansContainer {
   --cp-tree-color: #2563eb;
 }
 
-/* 分类组头部：树状根节点（左端图标锚点 + 主标题 + 延展章节分割线，绝不与下方卡片等宽混杂） */
+/* 分类组头部：树状根节点（极简开放式单行：锚点图标 + 主标题 + 计数 + 延伸细线，避免嵌套大框套小框） */
 .ds-c .cp-sec-header {
   display: flex;
-  align-items: flex-start;
+  align-items: center;
   width: 100%;
   gap: 10px;
-  padding: 0 2px 2px 0;
+  padding: 0;
   background: transparent;
   border: none;
   border-radius: 0;
@@ -365,20 +374,20 @@ body[data-calc-mode="support"] #communityPlansContainer {
 }
 
 .ds-c .cp-sec-icon-box {
-  width: 30px;
-  height: 30px;
-  margin-top: 1px;
+  width: 28px;
+  height: 28px;
+  margin-top: 0;
   flex: none;
   position: relative;
   z-index: 2;
-  border-radius: 9px;
+  border-radius: 8px;
   display: inline-flex;
   align-items: center;
   justify-content: center;
   background-color: color-mix(in oklab, var(--cp-tree-color) 14%, var(--surface));
-  border: 1px solid color-mix(in oklab, var(--cp-tree-color) 42%, var(--surface-edge));
+  border: 1px solid color-mix(in oklab, var(--cp-tree-color) 40%, var(--surface-edge));
   color: var(--cp-tree-color);
-  box-shadow: inset 0 1px 0 var(--surface-rim), 0 2px 6px rgba(0, 0, 0, 0.16);
+  box-shadow: inset 0 1px 0 var(--surface-rim);
 }
 
 .ds-c .cp-section-pro .cp-sec-icon-box {
@@ -398,9 +407,9 @@ body[data-calc-mode="support"] #communityPlansContainer {
 }
 
 .ds-c .cp-sec-pro-icon {
-  width: 30px;
-  height: 30px;
-  margin-top: 1px;
+  width: 28px;
+  height: 28px;
+  margin-top: 0;
   position: relative;
   z-index: 2;
   object-fit: contain;
@@ -411,8 +420,8 @@ body[data-calc-mode="support"] #communityPlansContainer {
 }
 
 .ds-c .cp-sec-icon-box .ico {
-  width: 16px;
-  height: 16px;
+  width: 15px;
+  height: 15px;
 }
 
 .ds-c .cp-sec-info {
@@ -463,9 +472,7 @@ body[data-calc-mode="support"] #communityPlansContainer {
 }
 
 .ds-c .cp-sec-desc {
-  font-size: 11.5px;
-  color: var(--ink-2);
-  line-height: 1.35;
+  display: none;
 }
 
 /* 分类下的方案卡片列表：全端统一流式竖向单列排列 */
@@ -548,8 +555,11 @@ body[data-calc-mode="support"] #communityPlansContainer {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  flex-wrap: nowrap;
-  gap: 8px 12px;
+  flex-wrap: wrap;
+  gap: 8px 16px;
+  padding-bottom: 12px;
+  margin-bottom: 14px;
+  border-bottom: 1px solid var(--sep);
 }
 
 .ds-c .cp-ctrl-group {
@@ -567,7 +577,7 @@ body[data-calc-mode="support"] #communityPlansContainer {
   white-space: nowrap;
 }
 
-/* 平滑滑动胶囊分段器（独立组件，零 DOM 重建抖动、零字重跳变） */
+/* 平滑滑动胶囊分段器（轻透无重框，减少与页面其他边线的视觉压迫） */
 .ds-c .cp-seg-track {
   position: relative;
   isolation: isolate;
@@ -575,8 +585,8 @@ body[data-calc-mode="support"] #communityPlansContainer {
   align-items: center;
   padding: 3px;
   border-radius: 10px;
-  background: var(--fill);
-  border: 1px solid var(--surface-edge);
+  background: color-mix(in oklab, var(--fill) 78%, transparent);
+  border: 1px solid color-mix(in oklab, var(--surface-edge) 55%, transparent);
   gap: 2px;
   user-select: none;
   -webkit-user-select: none;
@@ -591,9 +601,9 @@ body[data-calc-mode="support"] #communityPlansContainer {
   height: 0;
   border-radius: 7px;
   pointer-events: none;
-  background: color-mix(in oklab, var(--acc) 20%, var(--surface));
-  border: 1px solid color-mix(in oklab, var(--acc) 45%, var(--surface-edge));
-  box-shadow: inset 0 1px 0 var(--surface-rim), 0 2px 6px rgba(0, 0, 0, .12);
+  background: color-mix(in oklab, var(--acc) 18%, var(--surface));
+  border: 1px solid color-mix(in oklab, var(--acc) 40%, transparent);
+  box-shadow: inset 0 1px 0 var(--surface-rim), 0 2px 6px rgba(0, 0, 0, .1);
   opacity: 0;
   transition: transform .24s cubic-bezier(.22, 1, .36, 1), width .24s cubic-bezier(.22, 1, .36, 1), height .2s ease, opacity .15s ease;
 }
@@ -640,7 +650,7 @@ body[data-calc-mode="support"] #communityPlansContainer {
   flex-direction: column;
   gap: 10px;
   margin-left: 0;
-  padding-left: 34px;
+  padding-left: 28px;
   border-left: none;
   position: relative;
 }
@@ -655,7 +665,7 @@ body[data-calc-mode="support"] #communityPlansContainer {
 }
 
 .ds-c .cp-sec-list > .cp-card-item:not(:last-child)::before {
-  left: -20px;
+  left: -15px;
   top: -12px;
   bottom: -12px;
   width: 0;
@@ -663,13 +673,13 @@ body[data-calc-mode="support"] #communityPlansContainer {
 }
 
 .ds-c .cp-sec-list > .cp-card-item:first-child:not(:last-child)::before {
-  top: -18px;
+  top: -8px;
 }
 
 .ds-c .cp-sec-list > .cp-card-item:not(:last-child)::after {
-  left: -20px;
+  left: -15px;
   top: 0;
-  width: 20px;
+  width: 15px;
   height: 22px;
   border-left: 1.5px solid var(--cp-tree-line);
   border-bottom: 1.5px solid var(--cp-tree-line);
@@ -677,9 +687,9 @@ body[data-calc-mode="support"] #communityPlansContainer {
 }
 
 .ds-c .cp-sec-list > .cp-card-item:last-child::after {
-  left: -20px;
+  left: -15px;
   top: -12px;
-  width: 20px;
+  width: 15px;
   height: 34px;
   border-left: 1.5px solid var(--cp-tree-line);
   border-bottom: 1.5px solid var(--cp-tree-line);
@@ -687,8 +697,8 @@ body[data-calc-mode="support"] #communityPlansContainer {
 }
 
 .ds-c .cp-sec-list > .cp-card-item:first-child:last-child::after {
-  top: -18px;
-  height: 40px;
+  top: -8px;
+  height: 30px;
 }
 
 /* ==========================================================================
@@ -779,6 +789,8 @@ body[data-calc-mode="support"] #communityPlansContainer {
   flex: 1 1 160px;
   min-width: 0;
   margin: 0;
+  padding: 0;
+  border-bottom: none;
   font-size: 14px;
   font-weight: 700;
   color: var(--ink);
@@ -793,6 +805,18 @@ body[data-calc-mode="support"] #communityPlansContainer {
   gap: 4px;
   flex-wrap: wrap;
   flex: none;
+}
+
+/* 归属明确的分区内隐藏与分区标题/驳回横幅重复的装饰性徽章，只保留差异化状态标识 */
+.ds-c .cp-section-mine .cp-badge-local,
+.ds-c .cp-section-pro .cp-badge-pro,
+.ds-c .cp-section-partner .cp-badge-partner,
+.ds-c .cp-card-item:has(.cp-card-reject-banner) .cp-badge-rejected {
+  display: none;
+}
+
+.ds-c .cp-card-badges:empty {
+  display: none;
 }
 
 .ds-c .cp-card-meta {
@@ -1105,15 +1129,16 @@ body[data-calc-mode="support"] #communityPlansContainer {
   display: flex;
   align-items: center;
   gap: 8px;
-  margin-top: 8px;
-  padding: 7px 10px;
-  border-radius: var(--r-sm, 8px);
-  background: color-mix(in oklab, #ef4444 13%, var(--surface));
-  border: 1px solid color-mix(in oklab, #ef4444 38%, transparent);
+  margin-top: 2px;
+  padding: 6px 9px;
+  border-radius: 4px;
+  background: color-mix(in oklab, #ef4444 9%, transparent);
+  border: none;
+  border-left: 2px solid color-mix(in oklab, #ef4444 65%, transparent);
   cursor: pointer;
   font-size: 12px;
   line-height: 1.45;
-  transition: background-color .15s ease, border-color .15s ease;
+  transition: background-color .15s ease;
 }
 
 .ds-c .cp-card-reject-banner:hover {
@@ -1188,15 +1213,15 @@ body[data-calc-mode="support"] #communityPlansContainer {
   line-height: 1.5;
 }
 
-/* 第二层：统一参数矩阵面板 (单层微填充容器，替代零散药丸) */
+/* 第二层：统一参数矩阵面板 (无边框轻量底板，彻底减少“框套框”视觉噪音) */
 .ds-c .cp-specs-panel {
-  background: color-mix(in oklab, var(--fill) 72%, transparent);
-  border: 1px solid var(--surface-edge);
+  background: color-mix(in oklab, var(--fill) 48%, transparent);
+  border: none;
   border-radius: 8px;
-  padding: 7px 10px;
+  padding: 8px 10px;
   display: flex;
   flex-direction: column;
-  gap: 5px;
+  gap: 6px;
 }
 
 /* 顶部黄色高亮同行区（先机、汇能、团魂(模式2)、反制：全端包括手机端始终稳排在同一行） */
@@ -1306,17 +1331,18 @@ body[data-calc-mode="support"] #communityPlansContainer {
   font-weight: 600;
 }
 
-/* 方案备注卡片区 */
+/* 方案备注区：纯透明无底盒左竖条引导，消除面板内部套娃方块感 */
 .ds-c .cp-card-note-box {
   display: flex;
   align-items: flex-start;
   gap: 7px;
-  padding: 5px 8px;
-  border-radius: 7px;
-  background: color-mix(in oklab, var(--acc) 7%, var(--surface));
-  border: 1px dashed color-mix(in oklab, var(--acc) 28%, var(--surface-edge));
+  padding: 2px 0 2px 8px;
+  border-radius: 0;
+  background: transparent;
+  border: none;
+  border-left: 2px solid color-mix(in oklab, var(--acc) 55%, transparent);
   font-size: 11.5px;
-  line-height: 1.4;
+  line-height: 1.45;
 }
 
 .ds-c .cp-note-label {
@@ -2221,10 +2247,12 @@ body.cp-modal-locked {
   }
 
   .ds-c .cp-controls-bar {
-    flex-wrap: nowrap;
+    flex-wrap: wrap;
     justify-content: space-between;
     align-items: center;
-    gap: 6px;
+    gap: 8px 10px;
+    padding-bottom: 11px;
+    margin-bottom: 12px;
   }
 
   .ds-c .cp-ctrl-group {
@@ -2242,7 +2270,7 @@ body.cp-modal-locked {
   }
 
   .ds-c .cp-seg-btn {
-    padding: 4px 8px;
+    padding: 4px 7.5px;
     font-size: 11px;
   }
 
@@ -2253,30 +2281,30 @@ body.cp-modal-locked {
   }
 
   .ds-c .cp-section {
-    padding: 10px 10px 12px;
+    padding: 0;
   }
 
   .ds-c .cp-sec-icon-box,
   .ds-c .cp-sec-pro-icon {
-    width: 26px;
-    height: 26px;
+    width: 24px;
+    height: 24px;
   }
 
   .ds-c .cp-sec-list {
     margin-left: 0;
-    padding-left: 26px;
-    gap: 8px;
+    padding-left: 22px;
+    gap: 9px;
   }
 
   .ds-c .cp-sec-list > .cp-card-item:not(:last-child)::before,
   .ds-c .cp-sec-list > .cp-card-item:not(:last-child)::after,
   .ds-c .cp-sec-list > .cp-card-item:last-child::after {
-    left: -14px;
+    left: -11px;
   }
 
   .ds-c .cp-sec-list > .cp-card-item:not(:last-child)::after,
   .ds-c .cp-sec-list > .cp-card-item:last-child::after {
-    width: 14px;
+    width: 11px;
   }
 
   .cp-modal-dialog {

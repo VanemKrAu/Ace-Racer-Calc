@@ -73,7 +73,7 @@
 
 1. **本地查看与静态缓存更新**：
    - 核心计算器与本地方案模块为无后端依赖的纯静态前端，使用本地 HTTP 服务或浏览器打开 `index.html` 即可调试（在线社区库通过同源 `/api/plans`、`/api/vote` 与服务端通信）；
-   - 每次修改涉及前端核心 HTML/CSS/JS 或图标缓存清单时，**必须递增 `sw.js` 中的 `CACHE_NAME`（当前为 `calc-shell-v23`）**，避免 PWA 客户端命中旧缓存。
+   - 每次修改涉及前端核心 HTML/CSS/JS 或图标缓存清单时，**必须递增 `sw.js` 中的 `CACHE_NAME`（当前为 `calc-shell-v24`）**，避免 PWA 客户端命中旧缓存。
 2. **本地测试与动效核验**：
    - 可以编写 Playwright 脚本（复用本地 Chrome：`C:\Users\Vanem\AppData\Local\ms-playwright\chromium-1234\chrome-win64\chrome.exe`）进行 PC 端（1440x900）与移动端（375x812）真实截图比对与高度帧监控；
    - 探针脚本存放在 `.agent_tmp/`，测试完成后必须走删除六步法彻底清理。
