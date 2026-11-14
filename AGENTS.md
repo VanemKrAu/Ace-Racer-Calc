@@ -73,7 +73,7 @@
 
 1. **本地查看与静态缓存更新**：
    - 核心计算器与本地方案模块为无后端依赖的纯静态前端，使用本地 HTTP 服务或浏览器打开 `index.html` 即可调试（在线社区库通过同源 `/api/plans`、`/api/vote` 与服务端通信）；
-   - 每次修改涉及前端核心 HTML/CSS/JS 或图标缓存清单时，**必须递增 `sw.js` 中的 `CACHE_NAME`（当前为 `calc-shell-v27`）**，避免 PWA 客户端命中旧缓存。
+   - 每次修改涉及前端核心 HTML/CSS/JS 或图标缓存清单时，**必须递增 `sw.js` 中的 `CACHE_NAME`（当前为 `calc-shell-v28`）**，避免 PWA 客户端命中旧缓存。
 2. **本地测试与动效核验**：
    - 可以编写 Playwright 脚本（复用本地 Chrome：`C:\Users\Vanem\AppData\Local\ms-playwright\chromium-1234\chrome-win64\chrome.exe`）进行 PC 端（1440x900）与移动端（375x812）真实截图比对与高度帧监控；
    - 探针脚本存放在 `.agent_tmp/`，测试完成后必须走删除六步法彻底清理。
@@ -81,3 +81,12 @@
    - 样式修改统一落在 `style.css`（全局通用）或 `community-plans.css`（方案库专属）；
    - 严禁向 `index.html` 随意硬编码大段内联 CSS 或业务 JS；
    - 修改完成必须检查 `git status` 与 `git diff`，确认只有目标文件被改动。
+
+---
+
+## ✨ 微交互与动效参考规范
+
+- **外部参考标杆**：[**designbookmark.com/motion**](https://designbookmark.com/motion)（适用于前端界面、组件重构及同类演示动画设计参考）。
+- **已在本项目落地的模式与边界**：
+  - **可借鉴并已按本机调性融合**：点赞琥珀金微粒子迸发 + 数字滚动、分享/复制图标原地旋转形变 `✓`、投稿按钮 `Loading → ✓ → Idle` 原地态变、结果读数与底部胶囊离散 `200ms` 滚跳、`.slider-control` 轻量按压微弹、布局平滑形变 `__pvMorph`；
+  - **本站明确禁用/避坑项**：严禁影响数值核对的乱码解码或字重波浪文字动画；严禁破坏 PC 双列平衡的整卡悬浮大幅膨胀；严禁密集区强磁吸拖拽偏移；所有动效必须支持 `prefers-reduced-motion` 并兼容零 `'unsafe-inline'` CSP。
