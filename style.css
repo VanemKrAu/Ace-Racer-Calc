@@ -2041,9 +2041,9 @@ body[data-calc-mode="team"] .chip-card .chip-t-team { display: inline; }
   box-shadow: inset 0 1px 0 var(--surface-rim), 0 0 0 2px color-mix(in oklab, var(--acc) 30%, transparent); }
 .ds-c .chip-search::placeholder { color: var(--ink-3); }
 
-/* 芯片列表固定高度 + 内部细滚动条视口 + 三大分类排版 */
+/* 芯片列表自适应高度（上限约原 2.5 倍）+ 内部细滚动条视口 + 三大分类排版 */
 .ds-c .chip-picker-scroll {
-  height: 240px;
+  max-height: min(600px, 72vh);
   overflow-y: auto;
   overflow-x: hidden;
   -webkit-overflow-scrolling: touch;
