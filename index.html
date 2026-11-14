@@ -1441,9 +1441,9 @@ CD：45秒
   <div class="section-divider"><span><span class="zh">计算数据分享</span><span class="lang-en">Data Export & Share</span></span></div>
   <div class="card share-card">
     <div class="share-btn-group">
-      <button class="share-btn btn-text" type="button" onclick="exportConfigText()"><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="8" y="8" width="12" height="12" rx="2"/><path d="M16 8V5.5A1.5 1.5 0 0 0 14.5 4h-9A1.5 1.5 0 0 0 4 5.5v9A1.5 1.5 0 0 0 5.5 16H8"/></svg><span><span class="zh">复制纯文本</span><span class="lang-en">Copy Plain Text</span></span></button>
+      <button class="share-btn btn-text" type="button" onclick="exportConfigText(this)"><span class="pv-share-ico"><svg class="ico ico-def" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="8" y="8" width="12" height="12" rx="2"/><path d="M16 8V5.5A1.5 1.5 0 0 0 14.5 4h-9A1.5 1.5 0 0 0 4 5.5v9A1.5 1.5 0 0 0 5.5 16H8"/></svg><svg class="ico ico-ok" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="20 6 9 17 4 12"/></svg></span><span class="pv-share-txt"><span class="pv-share-lbl-def"><span class="zh">复制纯文本</span><span class="lang-en">Copy Plain Text</span></span><span class="pv-share-lbl-ok" aria-hidden="true"><span class="zh">已复制</span><span class="lang-en">Copied</span></span></span></button>
       <button class="share-btn btn-image" type="button" onclick="exportConfigImage()"><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="4" width="18" height="16" rx="2"/><circle cx="9" cy="10" r="1.8"/><path d="m21 16-5-5-9 9"/></svg><span><span class="zh">保存长截图</span><span class="lang-en">Save Long Screenshot</span></span></button>
-      <button class="share-btn btn-link" type="button" onclick="exportConfigLink()"><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 14a4 4 0 0 0 5.7 0l3-3a4 4 0 0 0-5.7-5.7l-1 1"/><path d="M14 10a4 4 0 0 0-5.7 0l-3 3a4 4 0 0 0 5.7 5.7l1-1"/></svg><span><span class="zh">分享配置链接</span><span class="lang-en">Share Link</span></span></button>
+      <button class="share-btn btn-link" type="button" onclick="exportConfigLink(this)"><span class="pv-share-ico"><svg class="ico ico-def" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 14a4 4 0 0 0 5.7 0l3-3a4 4 0 0 0-5.7-5.7l-1 1"/><path d="M14 10a4 4 0 0 0-5.7 0l-3 3a4 4 0 0 0 5.7 5.7l1-1"/></svg><svg class="ico ico-ok" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="20 6 9 17 4 12"/></svg></span><span class="pv-share-txt"><span class="pv-share-lbl-def"><span class="zh">分享配置链接</span><span class="lang-en">Share Link</span></span><span class="pv-share-lbl-ok" aria-hidden="true"><span class="zh">已复制</span><span class="lang-en">Copied</span></span></span></button>
     </div>
   </div>
 </div>
@@ -2541,7 +2541,17 @@ function __tok(n, d) { var v = getComputedStyle(document.body).getPropertyValue(
            }, 2500);
        }
 
-       function copyToClipboard(text, successMsg) {
+       function triggerCopyBtnSuccess(btn) {
+           if (!btn || !btn.classList) return;
+           if (btn.__pvCopyTimer) clearTimeout(btn.__pvCopyTimer);
+           btn.classList.add('is-copied');
+           btn.__pvCopyTimer = setTimeout(function() {
+               btn.classList.remove('is-copied');
+               btn.__pvCopyTimer = null;
+           }, 1400);
+       }
+
+       function copyToClipboard(text, successMsg, sourceBtn) {
            var fallbackCopy = function() {
                var textArea = document.createElement("textarea");
                textArea.value = text;
@@ -2557,6 +2567,7 @@ function __tok(n, d) { var v = getComputedStyle(document.body).getPropertyValue(
                try {
                    var successful = document.execCommand('copy');
                    if (successful) {
+                       triggerCopyBtnSuccess(sourceBtn);
                        showToast(successMsg);
                    } else {
                        showToast(_("❌ 复制失败，您的浏览器拦截了操作。", "❌ Copy failed, intercepted by browser."));
@@ -2570,6 +2581,7 @@ function __tok(n, d) { var v = getComputedStyle(document.body).getPropertyValue(
 
            if (navigator.clipboard && window.isSecureContext) {
                navigator.clipboard.writeText(text).then(function() {
+                   triggerCopyBtnSuccess(sourceBtn);
                    showToast(successMsg);
                }).catch(function(err) {
                    fallbackCopy();
@@ -2579,8 +2591,9 @@ function __tok(n, d) { var v = getComputedStyle(document.body).getPropertyValue(
            }
        }
 
-       function exportConfigText() {
-           if (getCalcMode() === 'support') return exportSupportText();
+       function exportConfigText(sourceBtn) {
+           var btn = (sourceBtn && sourceBtn.nodeType === 1) ? sourceBtn : document.querySelector('.share-btn.btn-text');
+           if (getCalcMode() === 'support') return exportSupportText(btn);
            var target = document.getElementById('ultThreshold').value || '0';
            var startCharge = document.getElementById('startCharge').value || '0';
            var baseNitro = document.getElementById('baseNitro').value || '0';
@@ -2693,11 +2706,12 @@ function __tok(n, d) { var v = getComputedStyle(document.body).getPropertyValue(
            }
            text += _("🔗 by Vanem - 王牌芯片计算器 - aceracercalc.top", "🔗 by Vanem - Ace Racer Calculator - aceracercalc.top");
 
-           copyToClipboard(text, _("✅ 文本已复制，快去分享吧！", "✅ Text copied, ready to share!"));
+           copyToClipboard(text, _("✅ 文本已复制，快去分享吧！", "✅ Text copied, ready to share!"), btn);
        }
 
        // 辅助供能模式只有「供能」一个结果，纯文本也只导出这一块
-       function exportSupportText() {
+       function exportSupportText(sourceBtn) {
+           var btn = (sourceBtn && sourceBtn.nodeType === 1) ? sourceBtn : document.querySelector('.share-btn.btn-text');
            var car = _selectedCar;
            var text = _("🏎️【王牌竞速·辅助供能】\n", "🏎️[Ace Racer · Support Supply]\n");
            if (car) text += _("🚗 辅助车：", "🚗 Support car: ") + _n(car) + "\n";
@@ -2712,7 +2726,7 @@ function __tok(n, d) { var v = getComputedStyle(document.body).getPropertyValue(
            text += _("▶ 队友合计实收：", "▶ Ally receives in total: ") + (document.getElementById('supportHitValue').textContent || '--').trim() + "\n";
            text += _("▶ ", "▶ ") + (document.getElementById('supportTotalLabel').textContent || '') + _("：", ": ") + (document.getElementById('supportTotalValue').textContent || '--').trim() + "\n";
            text += _("🔗 by Vanem - 王牌芯片计算器 - aceracercalc.top", "🔗 by Vanem - Ace Racer Calculator - aceracercalc.top");
-           copyToClipboard(text, _("✅ 文本已复制，快去分享吧！", "✅ Text copied, ready to share!"));
+           copyToClipboard(text, _("✅ 文本已复制，快去分享吧！", "✅ Text copied, ready to share!"), btn);
        }
 
        function exportConfigImage() {
@@ -2959,7 +2973,8 @@ function __tok(n, d) { var v = getComputedStyle(document.body).getPropertyValue(
 
        }
 
-       function exportConfigLink() {
+       function exportConfigLink(sourceBtn) {
+           var btn = (sourceBtn && sourceBtn.nodeType === 1) ? sourceBtn : document.querySelector('.share-btn.btn-link');
            var checkedRadio = document.querySelector('input[name="nitroRadio"]:checked');
            var nr = checkedRadio ? checkedRadio.value : '1x5';
            var nd = document.getElementById('time_' + nr).value;
@@ -3034,7 +3049,7 @@ function __tok(n, d) { var v = getComputedStyle(document.body).getPropertyValue(
                  shareUrl += '&car=' + _selectedCarId;
              }
 
-            copyToClipboard(shareUrl, _("🔗 短链接已复制，分享给车友可直接打开！", "🔗 Short link copied, share to open directly!"));
+            copyToClipboard(shareUrl, _("🔗 短链接已复制，分享给车友可直接打开！", "🔗 Short link copied, share to open directly!"), btn);
        }
        
        function loadConfigFromUrl() {
@@ -4481,12 +4496,30 @@ function __tok(n, d) { var v = getComputedStyle(document.body).getPropertyValue(
            // 匹配纯数值：如 100, 100.0%, 85.2%, 120.500 等
            var m = plainTxt.match(/^(-?\d+)(?:\.(\d+))?(%)?$/);
            var canAnim = !isRestoringConfig && typeof _motionOK === 'function' && _motionOK() && !document.body.classList.contains('calc-boot');
+           var nowTs = window.performance ? performance.now() : Date.now();
+           var isBurstInput = !!(valEl.__lastOdoTs && (nowTs - valEl.__lastOdoTs) < 85);
+           valEl.__lastOdoTs = nowTs;
+           var isInstant = !canAnim || document.body.classList.contains('is-dragging-slider') || isBurstInput;
+           var wasInstant = valEl.classList.contains('is-odo-instant');
+           valEl.classList.toggle('is-odo-instant', isInstant);
+           if (wasInstant && !isInstant) void valEl.offsetWidth;
 
+           var clearStepClasses = function (node) {
+               node.classList.remove('is-roll-a', 'is-roll-b', 'is-step-up-a', 'is-step-up-b', 'is-step-down-a', 'is-step-down-b');
+           };
            var triggerRoll = function (node) {
                var useB = node.classList.contains('is-roll-a');
-               node.classList.remove(useB ? 'is-roll-a' : 'is-roll-b');
+               clearStepClasses(node);
                void node.offsetWidth;
                node.classList.add(useB ? 'is-roll-b' : 'is-roll-a');
+           };
+           var triggerStep = function (node, dir) {
+               var clsA = dir === 'up' ? 'is-step-up-a' : 'is-step-down-a';
+               var clsB = dir === 'up' ? 'is-step-up-b' : 'is-step-down-b';
+               var useB = node.classList.contains(clsA);
+               clearStepClasses(node);
+               void node.offsetWidth;
+               node.classList.add(useB ? clsB : clsA);
            };
 
            if (!m) {
@@ -4494,21 +4527,28 @@ function __tok(n, d) { var v = getComputedStyle(document.body).getPropertyValue(
                var wasNum = odo.mode === 'num';
                var prevTxt = odo.txtNode.textContent;
                odo.mode = 'txt';
+               odo.numVal = NaN;
                odo.raw = plainTxt;
 
                odo.numNode.classList.add('is-hidden');
+               clearStepClasses(odo.numNode);
                odo.txtNode.textContent = plainTxt;
                odo.txtNode.classList.remove('is-hidden');
 
-               if (canAnim && (wasNum || prevTxt !== plainTxt)) {
+               if (!isInstant && (wasNum || prevTxt !== plainTxt)) {
                    triggerRoll(odo.txtNode);
+               } else {
+                   clearStepClasses(odo.txtNode);
                }
                return;
            }
 
            // 目标是数字模式！
            var wasTxt = odo.mode !== 'num';
+           var prevNum = odo.numVal;
+           var nextNum = parseFloat(m[1] + (m[2] ? ('.' + m[2]) : ''));
            odo.mode = 'num';
+           odo.numVal = nextNum;
            odo.raw = plainTxt;
            odo.txtNode.textContent = plainTxt;
 
@@ -4545,8 +4585,8 @@ function __tok(n, d) { var v = getComputedStyle(document.body).getPropertyValue(
            odo.txtNode.classList.add('is-hidden');
            odo.numNode.classList.remove('is-hidden');
 
-           if (canAnim && wasTxt) {
-               // 从文本平滑过渡到数字：数字容器触发微浮淡入，各数位从 0 纵向滚入到目标数值
+           if (!isInstant && wasTxt) {
+               // 从文本平滑过渡到数字：数字容器触发 200ms 滚入，各数位从 0 纵向滚入到目标数值
                triggerRoll(odo.numNode);
 
                var needRaf = [];
@@ -4576,7 +4616,13 @@ function __tok(n, d) { var v = getComputedStyle(document.body).getPropertyValue(
                    });
                }
            } else {
-               // 普通数字更新（已经在数字模式）
+               // 普通数字更新：连续拖拽滑块或高频连发时瞬时直出；离散更新时播放 200ms 垂直滚入跳变
+               if (!isInstant && isFinite(prevNum) && isFinite(nextNum) && nextNum !== prevNum &&
+                   valEl.classList && (valEl.classList.contains('ds-value') || valEl.classList.contains('ds-dock-v') || valEl.classList.contains('cs-val') || valEl.classList.contains('tm-stat-v'))) {
+                   triggerStep(odo.numNode, nextNum > prevNum ? 'up' : 'down');
+               } else if (isInstant) {
+                   clearStepClasses(odo.numNode);
+               }
                for (var slotKey in slots) {
                    var item = odo.map[slotKey];
                    var cfg = slots[slotKey];
@@ -4594,19 +4640,31 @@ function __tok(n, d) { var v = getComputedStyle(document.body).getPropertyValue(
        }
        window._renderOdoValue = _renderOdoValue;
 
-       // 全局滑块拖动监听：为 body 挂载 is-dragging-slider，使 Odometer 在拖拽时进入 .18s 快速平滑滚轴
+       // 全局滑块拖动监听：挂载 is-dragging-slider（拖拽期瞬时直出数值）+ is-jelly-dragging（果冻弹性反馈）
        if (!window.__rangeTrackBound) {
            window.__rangeTrackBound = true;
+           var _burstTimer = null;
            var _startRange = function (e) {
-               if (e.target && e.target.type === 'range') {
+               if (e.target && e.target.type === 'range' && !e.target.disabled) {
+                   var locked = e.target.closest && e.target.closest('.counter-card.is-locked');
+                   if (locked) return;
                    window.__rangeActive = true;
                    document.body.classList.add('is-dragging-slider');
+                   if (window.__activeJellySlider && window.__activeJellySlider !== e.target) {
+                       window.__activeJellySlider.classList.remove('is-jelly-dragging');
+                   }
+                   window.__activeJellySlider = e.target;
+                   e.target.classList.add('is-jelly-dragging');
                }
            };
            var _endRange = function () {
                if (window.__rangeActive) {
                    window.__rangeActive = false;
                    document.body.classList.remove('is-dragging-slider');
+               }
+               if (window.__activeJellySlider) {
+                   window.__activeJellySlider.classList.remove('is-jelly-dragging');
+                   window.__activeJellySlider = null;
                }
            };
            document.addEventListener('pointerdown', _startRange, { passive: true });
@@ -4615,6 +4673,19 @@ function __tok(n, d) { var v = getComputedStyle(document.body).getPropertyValue(
            document.addEventListener('touchstart', _startRange, { passive: true });
            document.addEventListener('touchend', _endRange, { passive: true });
            document.addEventListener('touchcancel', _endRange, { passive: true });
+           document.addEventListener('input', function (e) {
+               if (!e.target || e.target.type !== 'range') return;
+               var now = window.performance ? performance.now() : Date.now();
+               var prev = e.target.__lastRangeInput || 0;
+               e.target.__lastRangeInput = now;
+               if (window.__rangeActive || (now - prev) < 110) {
+                   document.body.classList.add('is-dragging-slider');
+                   clearTimeout(_burstTimer);
+                   _burstTimer = setTimeout(function () {
+                       if (!window.__rangeActive) document.body.classList.remove('is-dragging-slider');
+                   }, 140);
+               }
+           }, { passive: true });
        }
 
        // 初始化反制卡片拖动条数值为 Odometer
@@ -4751,13 +4822,6 @@ function __tok(n, d) { var v = getComputedStyle(document.body).getPropertyValue(
        window._setDockItem = function (itemEl, valEl, nextText, nextState) {
            if (!itemEl || !valEl) return;
            var prevState = itemEl.getAttribute('data-state') || 'idle';
-           if (!window.__rangeTrackBound) {
-               window.__rangeTrackBound = true;
-               document.addEventListener('pointerdown', function (e) { if (e.target && e.target.type === 'range') { window.__rangeActive = true; document.body.classList.add('is-dragging-slider'); } }, { passive: true });
-               var endRange = function () { if (window.__rangeActive) { window.__rangeActive = false; document.body.classList.remove('is-dragging-slider'); } };
-               document.addEventListener('pointerup', endRange, { passive: true });
-               document.addEventListener('pointercancel', endRange, { passive: true });
-           }
            if (prevState !== nextState) {
                itemEl.setAttribute('data-state', nextState);
            }

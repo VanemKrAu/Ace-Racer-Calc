@@ -383,10 +383,17 @@
     emptyBox: '<svg class="ico cp-empty-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16Z"/><path d="m3.3 7 8.7 5 8.7-5"/><path d="M12 22V12"/></svg>',
     emptyCar: '<svg class="ico cp-empty-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M19 17h2c.6 0 1-.4 1-1v-3c0-.9-.7-1.7-1.5-1.9C18.7 10.6 16 10 16 10s-1.3-1.4-2.2-2.3c-.5-.4-1.1-.7-1.8-.7H5c-.6 0-1.1.4-1.4.9l-1.5 2.8C2.1 10.7 2 10.9 2 11v5c0 .6.4 1 1 1h2"/><circle cx="7" cy="17" r="2"/><circle cx="17" cy="17" r="2"/></svg>',
     chevron: '<svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m6 9 6 6 6-6"/></svg>',
-    copy: '<svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>',
+    copy: '<svg class="ico cp-ico-def" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>',
     check: '<svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="20 6 9 17 4 12"/></svg>',
+    checkCopy: '<svg class="ico cp-ico-ok" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="20 6 9 17 4 12"/></svg>',
+    spinner: '<svg class="ico cp-spin-ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M21 12a9 9 0 1 1-6.219-8.56"/></svg>',
     partner: '<svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg>'
   };
+
+  function cpMotionOK() {
+    var rm = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    return !rm && !document.body.classList.contains('performance-mode');
+  }
 
   // 内存状态
   var state = {
@@ -1286,19 +1293,44 @@
       }
     },
 
+    _triggerCopyBtnSuccess: function (btn) {
+      if (!btn || !btn.classList) return;
+      if (btn.__cpCopyTimer) clearTimeout(btn.__cpCopyTimer);
+      btn.classList.add('is-copied');
+      btn.__cpCopyTimer = setTimeout(function () {
+        btn.classList.remove('is-copied');
+        btn.__cpCopyTimer = null;
+      }, 1400);
+    },
+
     // 复制车手游戏 ID
     copyPlayerId: function (id, e) {
       if (e) e.stopPropagation();
       if (!id) return;
+      var btn = e && (e.currentTarget || (e.target && e.target.closest && e.target.closest('.cp-player-id')));
       var strId = String(id);
-      if (navigator.clipboard && navigator.clipboard.writeText) {
-        navigator.clipboard.writeText(strId).then(function () {
-          CommunityPlans.toast('国服车手游戏ID 「' + strId + '」 已成功复制');
-        }).catch(function () {
-          CommunityPlans.toast('车手游戏ID: ' + strId);
-        });
-      } else {
+      var onSuccess = function () {
+        CommunityPlans._triggerCopyBtnSuccess(btn);
+        CommunityPlans.toast('国服车手游戏ID 「' + strId + '」 已成功复制');
+      };
+      var fallbackCopy = function () {
+        try {
+          var ta = document.createElement('textarea');
+          ta.value = strId;
+          ta.style.cssText = 'position:fixed;left:-9999px;top:-9999px;opacity:0;';
+          document.body.appendChild(ta);
+          ta.focus();
+          ta.select();
+          var ok = document.execCommand && document.execCommand('copy');
+          ta.remove();
+          if (ok) { onSuccess(); return; }
+        } catch (_) {}
         CommunityPlans.toast('车手游戏ID: ' + strId);
+      };
+      if (navigator.clipboard && window.isSecureContext && navigator.clipboard.writeText) {
+        navigator.clipboard.writeText(strId).then(onSuccess).catch(fallbackCopy);
+      } else {
+        fallbackCopy();
       }
     },
 
@@ -2169,10 +2201,82 @@
         var nextViewport = document.getElementById('cpScrollViewport');
         if (nextViewport) nextViewport.scrollTop = savedScrollTop;
       }
+      CommunityPlans._playPendingVoteFx(stream);
       CommunityPlans.bindLazyScroll();
       CommunityPlans.toggleCollapse(false, !container.__cpRenderedOnce);
       CommunityPlans._syncControlsBar(true, true);
       container.__cpRenderedOnce = true;
+    },
+
+    _playPendingVoteFx: function (root) {
+      var fx = state._pendingVoteFx;
+      state._pendingVoteFx = null;
+      if (!fx || !root || !cpMotionOK()) return;
+      var btns = root.querySelectorAll('.cp-vote-btn[data-plan-id]');
+      var matched = [];
+      for (var i = 0; i < btns.length; i++) {
+        if (btns[i].getAttribute('data-plan-id') === String(fx.planId)) {
+          matched.push(btns[i]);
+        }
+      }
+      if (!matched.length) return;
+      var sparkAngles = [-148, -98, -42, 16, 72, 132];
+      var sparkColors = ['var(--acc)', '#ffd166', '#f59e0b', '#fbbf24', '#ffe599', 'var(--acc)'];
+      var sparkSizes = ['4px', '3.5px', '4.5px', '3px', '4px', '3.5px'];
+      matched.forEach(function (btn) {
+        btn.classList.remove('is-bursting', 'is-unvoting');
+        void btn.offsetWidth;
+        btn.classList.add(fx.burst ? 'is-bursting' : 'is-unvoting');
+        setTimeout(function () {
+          btn.classList.remove('is-bursting', 'is-unvoting');
+        }, 420);
+
+        if (fx.burst) {
+          var icoWrap = btn.querySelector('.cp-vote-ico-wrap');
+          if (icoWrap) {
+            var oldSparks = icoWrap.querySelectorAll('.cp-vote-spark');
+            for (var s = 0; s < oldSparks.length; s++) oldSparks[s].remove();
+            sparkAngles.forEach(function (deg, idx) {
+              var rad = (deg + (Math.random() * 14 - 7)) * Math.PI / 180;
+              var dist = 16 + (idx % 3) * 2.5 + Math.random() * 2;
+              var sp = document.createElement('span');
+              sp.className = 'cp-vote-spark';
+              sp.setAttribute('aria-hidden', 'true');
+              sp.style.setProperty('--tx', (Math.cos(rad) * dist).toFixed(1) + 'px');
+              sp.style.setProperty('--ty', (Math.sin(rad) * dist).toFixed(1) + 'px');
+              sp.style.setProperty('--sz', sparkSizes[idx]);
+              sp.style.setProperty('--sp-color', sparkColors[idx]);
+              sp.style.setProperty('--delay', (idx * 14) + 'ms');
+              var removed = false;
+              var cleanup = function () {
+                if (removed) return;
+                removed = true;
+                if (sp.parentNode) sp.parentNode.removeChild(sp);
+              };
+              sp.addEventListener('animationend', cleanup, { once: true });
+              setTimeout(cleanup, 580);
+              icoWrap.appendChild(sp);
+            });
+          }
+        }
+
+        if (fx.from !== fx.to) {
+          var countEl = btn.querySelector('.cp-vote-count');
+          if (countEl) {
+            var dir = fx.to > fx.from ? 'up' : 'down';
+            countEl.innerHTML =
+              '<span class="cp-vote-roll" data-dir="' + dir + '">' +
+                '<span class="cp-vote-roll-old" aria-hidden="true">' + fx.from + '</span>' +
+                '<span class="cp-vote-roll-new">' + fx.to + '</span>' +
+              '</span>';
+            setTimeout(function () {
+              if (countEl.isConnected) {
+                countEl.innerHTML = '<span class="cp-vote-num-cur">' + fx.to + '</span>';
+              }
+            }, 250);
+          }
+        }
+      });
     },
 
     // 渲染结构化三层方案卡片（全端统一清晰排版，杜绝内部嵌套小方框堆砌）
@@ -2305,7 +2409,7 @@
         '    <div class="cp-card-meta">',
         '      <span class="cp-author-name">' + Utils.escapeHtml(item.author || '热心车友') + '</span>',
         partnerAuthorBadge,
-        (safePlayerId ? '      <button type="button" class="cp-player-id" onclick="CommunityPlans.copyPlayerId(\'' + safePlayerId + '\', event)" title="点击复制游戏ID"><span>ID ' + Utils.escapeHtml(safePlayerId) + '</span><span class="cp-copy-icon">' + Icons.copy + '</span></button>' : ''),
+        (safePlayerId ? '      <button type="button" class="cp-player-id" onclick="CommunityPlans.copyPlayerId(\'' + safePlayerId + '\', event)" title="点击复制游戏ID"><span>ID ' + Utils.escapeHtml(safePlayerId) + '</span><span class="cp-copy-icon">' + Icons.copy + Icons.checkCopy + '</span></button>' : ''),
         '      <span class="cp-meta-time">' + Utils.formatTime(item.created_at) + '</span>',
         '    </div>',
         linksHtml,
@@ -2320,8 +2424,9 @@
         '  <div class="cp-card-foot">',
         '    <div class="cp-foot-left">',
         ((!isLocalPlan || safeRemoteId)
-          ? ('      <button type="button" class="' + voteBtnCls + '" onclick="CommunityPlans.toggleVote(\'' + safePlanId + '\')" title="' + voteBtnTitle + '"' + (isAuthorSelf ? ' aria-disabled="true"' : '') + '>' +
-             Icons.thumb(isVoted) + '<span>' + (Number(item.votes) || 0) + '</span></button>')
+          ? ('      <button type="button" class="' + voteBtnCls + '" data-plan-id="' + safePlanId + '" onclick="CommunityPlans.toggleVote(\'' + safePlanId + '\')" title="' + voteBtnTitle + '"' + (isAuthorSelf ? ' aria-disabled="true"' : '') + '>' +
+             '<span class="cp-vote-ico-wrap">' + Icons.thumb(isVoted) + '</span>' +
+             '<span class="cp-vote-count" data-count="' + (Number(item.votes) || 0) + '"><span class="cp-vote-num-cur">' + (Number(item.votes) || 0) + '</span></span></button>')
           : ''),
         (isLocalPlan
           ? '      <button type="button" class="nav-btn select-btn cp-del-btn" title="删除该方案" onclick="CommunityPlans.deletePlan(\'' + safePlanId + '\')">' + Icons.trash + '</button>'
@@ -2568,6 +2673,10 @@
 
     // 关闭保存方案弹窗并彻底销毁凭证内存、Turnstile 实例与解锁背景滚动（杜绝图床滥用与滚动穿透）
     closeSaveModal: function () {
+      if (state._saveSuccessTimer) {
+        clearTimeout(state._saveSuccessTimer);
+        state._saveSuccessTimer = null;
+      }
       if (window.turnstile && CommunityPlans.turnstileState.widgetId !== null) {
         try { window.turnstile.remove(CommunityPlans.turnstileState.widgetId); } catch (_) {}
       }
@@ -3002,7 +3111,9 @@
       CommunityPlans.turnstileState.isSubmitting = true;
       if (saveBtn) {
         saveBtn.disabled = true;
-        saveBtn.innerHTML = Icons.save + ' 提交验证中...';
+        saveBtn.classList.remove('is-success');
+        saveBtn.classList.add('is-loading');
+        saveBtn.innerHTML = Icons.spinner + '<span>提交验证中...</span>';
       }
 
       var fullParams = Object.assign({}, params, {
@@ -3032,6 +3143,7 @@
         CommunityPlans.turnstileState.isSubmitting = false;
         if (saveBtn) {
           saveBtn.disabled = false;
+          saveBtn.classList.remove('is-loading', 'is-success');
           saveBtn.innerHTML = Icons.save + ' 确认保存';
         }
         CommunityPlans.toast('提交内容与截图载荷过大，请压缩截图分辨率后重试');
@@ -3050,10 +3162,11 @@
       })
         .then(Utils.parseJsonSafe)
         .then(function (resObj) {
-          CommunityPlans.turnstileState.isSubmitting = false;
           if (!resObj.ok || !resObj.data || resObj.data.success === false) {
+            CommunityPlans.turnstileState.isSubmitting = false;
             if (saveBtn) {
               saveBtn.disabled = false;
+              saveBtn.classList.remove('is-loading', 'is-success');
               saveBtn.innerHTML = Icons.save + ' 确认保存';
             }
             var errMsg = (resObj.data && resObj.data.message) ? resObj.data.message : '';
@@ -3075,19 +3188,35 @@
           }
           state.savedPlans.unshift(planItem);
           Utils.setStorage(STORAGE_KEYS.PLANS, state.savedPlans);
-          // 成功后再销毁弹窗与内存截图，绝不保留原图在本地
-          CommunityPlans.closeSaveModal();
-          CommunityPlans.renderPlans();
-          var msg = isApplyPro
-            ? '方案「' + title + '」已保存并提交国服自证审核！'
-            : '方案「' + title + '」已保存并提交内容安全审核！';
-          CommunityPlans.toast(msg);
-          CommunityPlans.fetchRemotePlans(state.currentCarId);
+
+          var finishSuccess = function () {
+            state._saveSuccessTimer = null;
+            CommunityPlans.turnstileState.isSubmitting = false;
+            // 成功后再销毁弹窗与内存截图，绝不保留原图在本地
+            CommunityPlans.closeSaveModal();
+            CommunityPlans.renderPlans();
+            var msg = isApplyPro
+              ? '方案「' + title + '」已保存并提交国服自证审核！'
+              : '方案「' + title + '」已保存并提交内容安全审核！';
+            CommunityPlans.toast(msg);
+            CommunityPlans.fetchRemotePlans(state.currentCarId);
+          };
+
+          if (saveBtn && saveBtn.isConnected) {
+            saveBtn.classList.remove('is-loading');
+            saveBtn.classList.add('is-success');
+            saveBtn.innerHTML = '<span class="cp-save-ok-ico">' + Icons.check + '</span><span>提交成功</span>';
+            var stayMs = cpMotionOK() ? 700 : 120;
+            state._saveSuccessTimer = setTimeout(finishSuccess, stayMs);
+          } else {
+            finishSuccess();
+          }
         })
         .catch(function () {
           CommunityPlans.turnstileState.isSubmitting = false;
           if (saveBtn) {
             saveBtn.disabled = false;
+            saveBtn.classList.remove('is-loading', 'is-success');
             saveBtn.innerHTML = Icons.save + ' 确认保存';
           }
           CommunityPlans.toast('网络连接异常，暂未能提交至社区服务器；您可重试或关闭上传开关仅存本机');
@@ -3702,6 +3831,12 @@
         delete state.votedMap[targetRemoteId];
       }
       Utils.setStorage(STORAGE_KEYS.VOTES, state.votedMap);
+      state._pendingVoteFx = {
+        planId: planId,
+        from: prevVotes,
+        to: optimisticVotes,
+        burst: nextVoted
+      };
       CommunityPlans.renderPlans({ preserveScroll: true });
 
       fetch('/api/vote', {
@@ -3723,12 +3858,21 @@
               delete state.votedMap[targetRemoteId];
             }
             Utils.setStorage(STORAGE_KEYS.VOTES, state.votedMap);
+            state._pendingVoteFx = {
+              planId: planId,
+              from: optimisticVotes,
+              to: prevVotes,
+              burst: false
+            };
             CommunityPlans.renderPlans({ preserveScroll: true });
             CommunityPlans.toast((resObj.data && resObj.data.message) || '操作失败，请稍后重试');
             return;
           }
           var d = resObj.data && resObj.data.data ? resObj.data.data : {};
+          var changedByServer = false;
+          var beforeServerVotes = plan.votes;
           if (typeof d.voted === 'boolean') {
+            if (plan.isVoted !== d.voted) changedByServer = true;
             plan.isVoted = d.voted;
             if (d.voted) {
               state.votedMap[plan.id] = 1;
@@ -3740,9 +3884,18 @@
             Utils.setStorage(STORAGE_KEYS.VOTES, state.votedMap);
           }
           if (typeof d.votes === 'number') {
+            if (plan.votes !== d.votes) changedByServer = true;
             plan.votes = d.votes;
           }
-          CommunityPlans.renderPlans({ preserveScroll: true });
+          if (changedByServer) {
+            state._pendingVoteFx = {
+              planId: planId,
+              from: beforeServerVotes,
+              to: plan.votes,
+              burst: false
+            };
+            CommunityPlans.renderPlans({ preserveScroll: true });
+          }
           CommunityPlans.toast(plan.isVoted ? '点赞成功 +1' : '已取消点赞');
         })
         .catch(function () {
@@ -3756,6 +3909,12 @@
             delete state.votedMap[targetRemoteId];
           }
           Utils.setStorage(STORAGE_KEYS.VOTES, state.votedMap);
+          state._pendingVoteFx = {
+            planId: planId,
+            from: optimisticVotes,
+            to: prevVotes,
+            burst: false
+          };
           CommunityPlans.renderPlans({ preserveScroll: true });
           CommunityPlans.toast('网络波动，操作已回滚，请重试');
         });

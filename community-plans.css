@@ -152,6 +152,51 @@
   transform: translateY(-1px);
 }
 
+.ds-c .cp-btn-save.is-loading,
+.ds-c .cp-btn-save.is-success {
+  cursor: default;
+  transform: none !important;
+}
+
+.ds-c .cp-btn-save.is-loading {
+  opacity: .88;
+  background-color: color-mix(in oklab, var(--acc) 18%, var(--surface));
+}
+
+.ds-c .cp-btn-save.is-success {
+  opacity: 1 !important;
+  background-color: color-mix(in oklab, var(--acc) 34%, var(--surface));
+  background-image: linear-gradient(180deg, color-mix(in oklab, var(--acc) 18%, transparent), transparent);
+  border-color: var(--acc);
+  color: var(--ink);
+  box-shadow: inset 0 1px 0 var(--surface-rim), 0 0 14px color-mix(in oklab, var(--acc) 32%, transparent);
+}
+
+@keyframes cpBtnSpin {
+  to { transform: rotate(360deg); }
+}
+
+@keyframes cpCheckPop {
+  0%   { opacity: 0; transform: scale(.4) rotate(-28deg); }
+  65%  { opacity: 1; transform: scale(1.18) rotate(4deg); }
+  100% { opacity: 1; transform: scale(1) rotate(0deg); }
+}
+
+.ds-c .cp-spin-ico {
+  animation: cpBtnSpin .75s linear infinite;
+}
+
+.ds-c .cp-save-ok-ico {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--acc);
+}
+
+.ds-c .cp-btn-save.is-success .cp-save-ok-ico .ico {
+  animation: cpCheckPop .32s cubic-bezier(.34, 1.56, .64, 1);
+}
+
 .ds-c .cp-btn-undo {
   background-color: var(--warn-soft);
   border: 1px solid color-mix(in oklab, var(--warn) 60%, transparent);
@@ -988,20 +1033,43 @@ body[data-calc-mode="support"] #communityPlansContainer {
   transition: color .15s ease, border-color .15s ease;
 }
 
-.ds-c .cp-player-id:hover {
+.ds-c .cp-player-id:hover,
+.ds-c .cp-player-id.is-copied {
   color: var(--acc);
   border-bottom-color: var(--acc);
 }
 
 .ds-c .cp-copy-icon {
+  position: relative;
   display: inline-flex;
   align-items: center;
+  justify-content: center;
+  width: 12px;
+  height: 12px;
 }
 
 .ds-c .cp-copy-icon .ico {
+  position: absolute;
   width: 11px;
   height: 11px;
   opacity: .75;
+  transition: transform .24s cubic-bezier(.34, 1.56, .64, 1), opacity .16s ease;
+}
+
+.ds-c .cp-copy-icon .cp-ico-ok {
+  opacity: 0;
+  transform: rotate(90deg) scale(.4);
+  color: var(--acc);
+}
+
+.ds-c .cp-player-id.is-copied .cp-copy-icon .cp-ico-def {
+  opacity: 0;
+  transform: rotate(-90deg) scale(.4);
+}
+
+.ds-c .cp-player-id.is-copied .cp-copy-icon .cp-ico-ok {
+  opacity: 1;
+  transform: rotate(0deg) scale(1);
 }
 
 .ds-c .cp-meta-time {
@@ -1405,6 +1473,8 @@ body[data-calc-mode="support"] #communityPlansContainer {
 }
 
 .ds-c .cp-vote-btn {
+  position: relative;
+  overflow: visible;
   display: inline-flex;
   align-items: center;
   gap: 5px;
@@ -1417,14 +1487,141 @@ body[data-calc-mode="support"] #communityPlansContainer {
   box-shadow: inset 0 1px 0 var(--surface-rim);
   font-size: 12px;
   font-weight: 600;
+  font-variant-numeric: tabular-nums;
   color: var(--ink-2);
   cursor: pointer;
   transition: background-color .15s ease, color .15s ease, border-color .15s ease, transform .15s ease;
 }
 
+.ds-c .cp-vote-btn:active:not(.is-author) {
+  transform: scale(.94);
+}
+
+.ds-c .cp-vote-ico-wrap {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 14px;
+  height: 14px;
+  flex: none;
+}
+
 .ds-c .cp-vote-btn .ico {
   width: 14px;
   height: 14px;
+  transform-origin: center;
+}
+
+.ds-c .cp-vote-btn.is-bursting .cp-vote-ico-wrap .ico {
+  animation: cpVotePop .38s cubic-bezier(.34, 1.56, .64, 1);
+}
+
+.ds-c .cp-vote-btn.is-unvoting .cp-vote-ico-wrap .ico {
+  animation: cpVoteUnpop .24s cubic-bezier(.22, 1, .36, 1);
+}
+
+@keyframes cpVotePop {
+  0%   { transform: scale(1) rotate(0deg); }
+  28%  { transform: scale(.74) rotate(8deg); }
+  62%  { transform: scale(1.28) rotate(-12deg); }
+  100% { transform: scale(1) rotate(0deg); }
+}
+
+@keyframes cpVoteUnpop {
+  0%   { transform: scale(1); }
+  45%  { transform: scale(.8); }
+  100% { transform: scale(1); }
+}
+
+.ds-c .cp-vote-spark {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  width: var(--sz, 4px);
+  height: var(--sz, 4px);
+  border-radius: 50%;
+  pointer-events: none;
+  background: var(--sp-color, var(--acc));
+  box-shadow: 0 0 6px color-mix(in oklab, var(--acc) 75%, transparent);
+  transform: translate(-50%, -50%) scale(0);
+  opacity: 0;
+  animation: cpVoteSpark .46s cubic-bezier(.16, 1, .3, 1) var(--delay, 0ms) forwards;
+}
+
+@keyframes cpVoteSpark {
+  0%   { opacity: 0; transform: translate(-50%, -50%) scale(.3); }
+  22%  { opacity: 1; transform: translate(calc(-50% + var(--tx) * .38), calc(-50% + var(--ty) * .38)) scale(1.1); }
+  100% { opacity: 0; transform: translate(calc(-50% + var(--tx)), calc(-50% + var(--ty))) scale(.15); }
+}
+
+.ds-c .cp-vote-count {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 1ch;
+  height: 1.25em;
+  line-height: 1.25em;
+  overflow: hidden;
+  font-variant-numeric: tabular-nums;
+}
+
+.ds-c .cp-vote-num-cur {
+  display: inline-block;
+  line-height: 1.25em;
+}
+
+.ds-c .cp-vote-roll {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  height: 1.25em;
+  line-height: 1.25em;
+}
+
+.ds-c .cp-vote-roll-old {
+  position: absolute;
+  inset: 0;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  pointer-events: none;
+}
+
+.ds-c .cp-vote-roll-new {
+  display: inline-block;
+}
+
+.ds-c .cp-vote-roll[data-dir="up"] .cp-vote-roll-old {
+  animation: cpCountOutUp .22s cubic-bezier(.22, 1, .36, 1) forwards;
+}
+.ds-c .cp-vote-roll[data-dir="up"] .cp-vote-roll-new {
+  animation: cpCountInUp .22s cubic-bezier(.22, 1, .36, 1) forwards;
+}
+.ds-c .cp-vote-roll[data-dir="down"] .cp-vote-roll-old {
+  animation: cpCountOutDown .22s cubic-bezier(.22, 1, .36, 1) forwards;
+}
+.ds-c .cp-vote-roll[data-dir="down"] .cp-vote-roll-new {
+  animation: cpCountInDown .22s cubic-bezier(.22, 1, .36, 1) forwards;
+}
+
+@keyframes cpCountOutUp {
+  from { opacity: 1; transform: translate3d(0, 0, 0); }
+  to   { opacity: 0; transform: translate3d(0, -100%, 0); }
+}
+@keyframes cpCountInUp {
+  from { opacity: .25; transform: translate3d(0, 100%, 0); }
+  to   { opacity: 1; transform: translate3d(0, 0, 0); }
+}
+@keyframes cpCountOutDown {
+  from { opacity: 1; transform: translate3d(0, 0, 0); }
+  to   { opacity: 0; transform: translate3d(0, 100%, 0); }
+}
+@keyframes cpCountInDown {
+  from { opacity: .25; transform: translate3d(0, -100%, 0); }
+  to   { opacity: 1; transform: translate3d(0, 0, 0); }
 }
 
 .ds-c .cp-vote-btn:hover {
@@ -2374,5 +2571,31 @@ body.cp-modal-locked {
   .ds-c .cp-seg-btn {
     padding: 4px 6px;
     font-size: 10.5px;
+  }
+}
+
+body.ds-c.performance-mode .cp-vote-btn,
+body.ds-c.performance-mode .cp-vote-ico-wrap .ico,
+body.ds-c.performance-mode .cp-vote-spark,
+body.ds-c.performance-mode .cp-vote-roll-old,
+body.ds-c.performance-mode .cp-vote-roll-new,
+body.ds-c.performance-mode .cp-player-id,
+body.ds-c.performance-mode .cp-copy-icon .ico,
+body.ds-c.performance-mode .cp-btn-save.is-success .cp-save-ok-ico .ico {
+  animation: none !important;
+  transition: none !important;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .ds-c .cp-vote-btn,
+  .ds-c .cp-vote-ico-wrap .ico,
+  .ds-c .cp-vote-spark,
+  .ds-c .cp-vote-roll-old,
+  .ds-c .cp-vote-roll-new,
+  .ds-c .cp-player-id,
+  .ds-c .cp-copy-icon .ico,
+  .ds-c .cp-btn-save.is-success .cp-save-ok-ico .ico {
+    animation: none !important;
+    transition: none !important;
   }
 }

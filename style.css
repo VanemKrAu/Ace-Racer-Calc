@@ -439,16 +439,36 @@ input, select, textarea, button { touch-action: manipulation; }
 .ds-c .slider-header { font-size: 13.5px; color: var(--ink-2); margin-bottom: 8px; gap: 10px; }
 .ds-c .slider-value { font: 700 22px/1 var(--round); color: var(--ink); }
 .ds-c .slider-control { appearance: none; height: 28px; background: transparent; margin: 0; }
-.ds-c .slider-control::-webkit-slider-runnable-track { height: 6px; border-radius: 999px; background: linear-gradient(90deg, var(--acc) var(--fill, 0%), var(--fill-2) var(--fill, 0%)); }
-.ds-c .slider-control::-moz-range-track { height: 6px; border-radius: 999px; background: linear-gradient(90deg, var(--acc) var(--fill, 0%), var(--fill-2) var(--fill, 0%)); }
-.ds-c .slider-control::-webkit-slider-thumb { appearance: none; width: 26px; height: 26px; margin-top: -10px; border-radius: 50%; background: #fff; box-shadow: 0 1px 4px rgba(0,0,0,.25), 0 0 0 .5px rgba(0,0,0,.08); transition: transform .18s cubic-bezier(.2, .8, .2, 1), box-shadow .18s ease; }
-.ds-c .slider-control::-moz-range-thumb { width: 26px; height: 26px; border: 0; border-radius: 50%; background: #fff; box-shadow: 0 1px 4px rgba(0,0,0,.25); transition: transform .18s cubic-bezier(.2, .8, .2, 1), box-shadow .18s ease; }
+.ds-c .slider-control::-webkit-slider-runnable-track { height: 6px; border-radius: 999px; background: linear-gradient(90deg, var(--acc) var(--fill, 0%), var(--fill-2) var(--fill, 0%)); transition: filter .22s ease, box-shadow .22s ease; }
+.ds-c .slider-control::-moz-range-track { height: 6px; border-radius: 999px; background: linear-gradient(90deg, var(--acc) var(--fill, 0%), var(--fill-2) var(--fill, 0%)); transition: filter .22s ease, box-shadow .22s ease; }
+.ds-c .slider-control::-webkit-slider-thumb { appearance: none; width: 26px; height: 26px; margin-top: -10px; border-radius: 50%; background: #fff; box-shadow: 0 1px 4px rgba(0,0,0,.25), 0 0 0 .5px rgba(0,0,0,.08); transition: transform .34s cubic-bezier(.34, 1.56, .64, 1), box-shadow .26s cubic-bezier(.22, 1, .36, 1); will-change: transform; }
+.ds-c .slider-control::-moz-range-thumb { width: 26px; height: 26px; border: 0; border-radius: 50%; background: #fff; box-shadow: 0 1px 4px rgba(0,0,0,.25); transition: transform .34s cubic-bezier(.34, 1.56, .64, 1), box-shadow .26s cubic-bezier(.22, 1, .36, 1); will-change: transform; }
 @media (hover: hover) and (pointer: fine) {
-  .ds-c .slider-control::-webkit-slider-thumb:hover { transform: scale(1.08); box-shadow: 0 2px 8px rgba(0,0,0,.3), 0 0 0 1px rgba(0,0,0,.1); }
-  .ds-c .slider-control::-moz-range-thumb:hover { transform: scale(1.08); box-shadow: 0 2px 8px rgba(0,0,0,.3); }
+  .ds-c .slider-control::-webkit-slider-thumb:hover { transform: scale(1.08); box-shadow: 0 2px 8px rgba(0,0,0,.3), 0 0 0 4px color-mix(in oklab, var(--acc) 16%, transparent); }
+  .ds-c .slider-control::-moz-range-thumb:hover { transform: scale(1.08); box-shadow: 0 2px 8px rgba(0,0,0,.3), 0 0 0 4px color-mix(in oklab, var(--acc) 16%, transparent); }
 }
-.ds-c .slider-control::-webkit-slider-thumb:active { transform: scale(1.15); cursor: grabbing; }
-.ds-c .slider-control::-moz-range-thumb:active { transform: scale(1.15); cursor: grabbing; }
+.ds-c .slider-control::-webkit-slider-thumb:active,
+.ds-c .slider-control:active::-webkit-slider-thumb,
+.ds-c .slider-control.is-jelly-dragging::-webkit-slider-thumb {
+  transform: scaleX(1.18) scaleY(.90);
+  cursor: grabbing;
+  box-shadow: 0 3px 12px rgba(0,0,0,.32),
+              0 0 0 7px color-mix(in oklab, var(--acc) 26%, transparent),
+              0 0 14px color-mix(in oklab, var(--acc) 36%, transparent);
+  transition: transform .12s cubic-bezier(.2, .8, .2, 1), box-shadow .16s ease;
+}
+.ds-c .slider-control::-moz-range-thumb:active,
+.ds-c .slider-control:active::-moz-range-thumb,
+.ds-c .slider-control.is-jelly-dragging::-moz-range-thumb {
+  transform: scaleX(1.18) scaleY(.90);
+  cursor: grabbing;
+  box-shadow: 0 3px 12px rgba(0,0,0,.32),
+              0 0 0 7px color-mix(in oklab, var(--acc) 26%, transparent),
+              0 0 14px color-mix(in oklab, var(--acc) 36%, transparent);
+  transition: transform .12s cubic-bezier(.2, .8, .2, 1), box-shadow .16s ease;
+}
+.ds-c .slider-control.is-jelly-dragging::-webkit-slider-runnable-track { filter: brightness(1.08); box-shadow: 0 0 10px color-mix(in oklab, var(--acc) 24%, transparent); }
+.ds-c .slider-control.is-jelly-dragging::-moz-range-track { filter: brightness(1.08); box-shadow: 0 0 10px color-mix(in oklab, var(--acc) 24%, transparent); }
 
 /* 赋能：设置列表行，开关在右 */
 /* 赋能：分类分段器（复用顶部模式切换胶囊与滑块动画） */
@@ -967,10 +987,32 @@ input, select, textarea, button { touch-action: manipulation; }
 .ds-c .share-block { margin-top: 30px; display: flex; flex-direction: column; gap: 12px; }
 .ds-c .share-card { padding: 8px; }
 .ds-c .share-btn-group { gap: 8px; }
-.ds-c .share-btn { gap: 8px; padding: 16px 8px; background: var(--fill); border: 0; border-radius: var(--r-md); color: var(--ink); font-size: 14px; font-weight: 700; transition: background .15s, transform .1s; }
+.ds-c .share-btn { position: relative; gap: 8px; padding: 16px 8px; background: var(--fill); border: 1px solid transparent; border-radius: var(--r-md); color: var(--ink); font-size: 14px; font-weight: 700; transition: background-color .18s ease, border-color .22s ease, box-shadow .22s ease, color .18s ease, transform .12s cubic-bezier(.2, .8, .2, 1); }
 .ds-c .share-btn:hover { background: var(--fill-hover); }
 .ds-c .share-btn:active { transform: scale(.97); }
-.ds-c .share-btn .ico { width: 30px; height: 30px; padding: 6px; border-radius: 50%; background: var(--cell); color: var(--ink); }
+.ds-c .share-btn > .ico { width: 30px; height: 30px; padding: 6px; border-radius: 50%; background: var(--cell); color: var(--ink); }
+.ds-c .share-btn .pv-share-ico { position: relative; display: inline-flex; align-items: center; justify-content: center; width: 30px; height: 30px; border-radius: 50%; background: var(--cell); color: var(--ink); transition: background-color .24s ease, color .24s ease, transform .28s cubic-bezier(.34, 1.56, .64, 1), box-shadow .24s ease; flex: none; }
+.ds-c .share-btn .pv-share-ico .ico { position: absolute; width: 18px; height: 18px; padding: 0; border-radius: 0; background: transparent !important; color: inherit; transition: transform .26s cubic-bezier(.34, 1.56, .64, 1), opacity .18s ease; }
+.ds-c .share-btn .pv-share-ico .ico-def { opacity: 1; transform: rotate(0deg) scale(1); }
+.ds-c .share-btn .pv-share-ico .ico-ok  { opacity: 0; transform: rotate(90deg) scale(.42); }
+.ds-c .share-btn .pv-share-txt { position: relative; display: inline-grid; place-items: center; }
+.ds-c .share-btn .pv-share-txt > span { grid-area: 1 / 1; transition: opacity .18s ease, transform .22s cubic-bezier(.22, 1, .36, 1); }
+.ds-c .share-btn .pv-share-lbl-ok { opacity: 0; transform: translateY(4px); color: var(--acc); pointer-events: none; }
+.ds-c .share-btn.is-copied {
+  border-color: color-mix(in oklab, var(--acc) 65%, transparent);
+  background: linear-gradient(180deg, color-mix(in oklab, var(--acc) 14%, transparent), color-mix(in oklab, var(--acc) 4%, var(--fill)));
+  box-shadow: inset 0 1px 0 var(--surface-rim), 0 4px 16px -4px color-mix(in oklab, var(--acc) 28%, transparent);
+}
+.ds-c .share-btn.is-copied .pv-share-ico {
+  background-color: var(--acc) !important;
+  color: #16181e;
+  transform: scale(1.06);
+  box-shadow: 0 0 12px color-mix(in oklab, var(--acc) 45%, transparent);
+}
+.ds-c .share-btn.is-copied .pv-share-ico .ico-def { opacity: 0; transform: rotate(-90deg) scale(.42); }
+.ds-c .share-btn.is-copied .pv-share-ico .ico-ok  { opacity: 1; transform: rotate(0deg) scale(1); }
+.ds-c .share-btn.is-copied .pv-share-lbl-def { opacity: 0; transform: translateY(-4px); }
+.ds-c .share-btn.is-copied .pv-share-lbl-ok  { opacity: 1; transform: translateY(0); }
 
 /* 页脚 */
 .ds-c .site-footer { margin-top: 30px; display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 16px; align-items: start; }
@@ -1131,7 +1173,8 @@ body.ds-c.performance-mode .ds-dock { background: var(--cell); }
 .ds-c:not(.light-mode) .empower-sub-options,
 .ds-c:not(.light-mode) .extra-body,
 .ds-c:not(.light-mode) .car-list-btn,
-.ds-c:not(.light-mode) .share-btn .ico,
+.ds-c:not(.light-mode) .share-btn > .ico,
+.ds-c:not(.light-mode) .share-btn .pv-share-ico,
 .ds-c:not(.light-mode) .cp-split > span { background-color: var(--raise); }
 .ds-c .nitro-item.selected { background-image: linear-gradient(180deg, color-mix(in oklab, var(--acc) 16%, transparent), transparent); }
 
@@ -2385,7 +2428,7 @@ body.ds-c:has(input[type="number"]:focus, input[type="text"]:focus) .ds-dock {
   will-change: max-width, opacity, transform;
 }
 body.ds-c.is-dragging-slider .pv-odo-dec {
-  transition-duration: .15s !important;
+  transition: none !important;
 }
 .ds-c .pv-odo-dec.is-hidden {
   display: inline-flex !important;
@@ -2407,17 +2450,26 @@ body.ds-c.is-dragging-slider .pv-odo-dec {
   display: flex;
   flex-direction: column;
   will-change: transform;
-  transition: transform .42s cubic-bezier(.22, 1, .36, 1);
+  transition: transform .2s cubic-bezier(.22, 1, .36, 1);
 }
-.ds-c .pv-odo-d[data-slot="d3"] > .pv-odo-t { transition-duration: .34s; }
-.ds-c .pv-odo-d[data-slot="d2"] > .pv-odo-t { transition-duration: .38s; }
-.ds-c .pv-odo-d[data-slot="d1"] > .pv-odo-t { transition-duration: .42s; }
-.ds-c .pv-odo-d[data-slot="d0"] > .pv-odo-t { transition-duration: .46s; }
+.ds-c .pv-odo-d[data-slot="d3"] > .pv-odo-t { transition-duration: .18s; }
+.ds-c .pv-odo-d[data-slot="d2"] > .pv-odo-t { transition-duration: .19s; }
+.ds-c .pv-odo-d[data-slot="d1"] > .pv-odo-t { transition-duration: .20s; }
+.ds-c .pv-odo-d[data-slot="d0"] > .pv-odo-t { transition-duration: .20s; }
 .ds-c .pv-odo-d[data-slot="df0"] > .pv-odo-t,
 .ds-c .pv-odo-d[data-slot="df1"] > .pv-odo-t,
 .ds-c .pv-odo-d[data-slot="df2"] > .pv-odo-t,
-.ds-c .pv-odo-d[data-slot="df"] > .pv-odo-t { transition-duration: .50s; }
-body.ds-c.is-dragging-slider .pv-odo-t { transition-duration: .18s !important; }
+.ds-c .pv-odo-d[data-slot="df"] > .pv-odo-t { transition-duration: .21s; }
+body.ds-c.is-dragging-slider .pv-odo-t,
+body.ds-c.is-dragging-slider .pv-odo-num,
+body.ds-c.is-dragging-slider .pv-odo-txt,
+.ds-c .is-odo-instant .pv-odo-t,
+.ds-c .is-odo-instant .pv-odo-dec,
+.ds-c .is-odo-instant .pv-odo-num,
+.ds-c .is-odo-instant .pv-odo-txt {
+  transition: none !important;
+  animation: none !important;
+}
 .ds-c .pv-odo-t > i {
   font-style: normal;
   display: block;
@@ -2495,22 +2547,50 @@ body.ds-c.is-dragging-slider .pv-odo-t { transition-duration: .18s !important; }
 .is-capturing-longshot .pv-odo-num { display: none !important; }
 .is-capturing-longshot .pv-odo-txt { display: inline-block !important; }
 
-/* 文本与数字状态平滑淡入滑入动画（交替播放，绝不脱离文档流） */
+/* 文本与数字状态平滑淡入滑入动画（200ms 克制垂直滚入，交替播放，绝不脱离文档流） */
 @keyframes pvOdoRollInA {
-  from { opacity: .75; transform: translate3d(0, 15%, 0); }
+  from { opacity: .55; transform: translate3d(0, 22%, 0); }
   to   { opacity: 1; transform: translate3d(0, 0, 0); }
 }
 @keyframes pvOdoRollInB {
-  from { opacity: .75; transform: translate3d(0, 15%, 0); }
+  from { opacity: .55; transform: translate3d(0, 22%, 0); }
+  to   { opacity: 1; transform: translate3d(0, 0, 0); }
+}
+@keyframes pvStepUpA {
+  from { opacity: .55; transform: translate3d(0, 22%, 0); }
+  to   { opacity: 1; transform: translate3d(0, 0, 0); }
+}
+@keyframes pvStepUpB {
+  from { opacity: .55; transform: translate3d(0, 22%, 0); }
+  to   { opacity: 1; transform: translate3d(0, 0, 0); }
+}
+@keyframes pvStepDownA {
+  from { opacity: .55; transform: translate3d(0, -22%, 0); }
+  to   { opacity: 1; transform: translate3d(0, 0, 0); }
+}
+@keyframes pvStepDownB {
+  from { opacity: .55; transform: translate3d(0, -22%, 0); }
   to   { opacity: 1; transform: translate3d(0, 0, 0); }
 }
 .ds-c .pv-odo-txt.is-roll-a,
 .ds-c .pv-odo-num.is-roll-a {
-  animation: pvOdoRollInA .32s cubic-bezier(.22, 1, .36, 1);
+  animation: pvOdoRollInA .2s cubic-bezier(.22, 1, .36, 1);
 }
 .ds-c .pv-odo-txt.is-roll-b,
 .ds-c .pv-odo-num.is-roll-b {
-  animation: pvOdoRollInB .32s cubic-bezier(.22, 1, .36, 1);
+  animation: pvOdoRollInB .2s cubic-bezier(.22, 1, .36, 1);
+}
+.ds-c .pv-odo-num.is-step-up-a {
+  animation: pvStepUpA .2s cubic-bezier(.22, 1, .36, 1);
+}
+.ds-c .pv-odo-num.is-step-up-b {
+  animation: pvStepUpB .2s cubic-bezier(.22, 1, .36, 1);
+}
+.ds-c .pv-odo-num.is-step-down-a {
+  animation: pvStepDownA .2s cubic-bezier(.22, 1, .36, 1);
+}
+.ds-c .pv-odo-num.is-step-down-b {
+  animation: pvStepDownB .2s cubic-bezier(.22, 1, .36, 1);
 }
 
 /* 内联提示框 / 状态说明条在已显示状态下内容或行数切换时的平滑过渡 */
@@ -2547,6 +2627,14 @@ body.ds-c.performance-mode .ds-dock-item,
 body.ds-c.performance-mode .ds-dock-item::before,
 body.ds-c.performance-mode .pv-odo-t,
 body.ds-c.performance-mode .pv-odo-txt,
+body.ds-c.performance-mode .pv-odo-num,
+body.ds-c.performance-mode .pv-odo-dec,
+body.ds-c.performance-mode .share-btn,
+body.ds-c.performance-mode .share-btn .pv-share-ico,
+body.ds-c.performance-mode .share-btn .pv-share-ico .ico,
+body.ds-c.performance-mode .share-btn .pv-share-txt > span,
+body.ds-c.performance-mode .slider-control::-webkit-slider-thumb,
+body.ds-c.performance-mode .slider-control::-moz-range-thumb,
 body.ds-c.performance-mode .pv-box-swap-a,
 body.ds-c.performance-mode .pv-box-swap-b,
 body.ds-c.performance-mode .pv-box-swap-a > *,
@@ -2554,17 +2642,37 @@ body.ds-c.performance-mode .pv-box-swap-b > * {
   animation: none !important;
   transition: none !important;
 }
+body.ds-c.performance-mode .slider-control:active::-webkit-slider-thumb,
+body.ds-c.performance-mode .slider-control.is-jelly-dragging::-webkit-slider-thumb,
+body.ds-c.performance-mode .slider-control:active::-moz-range-thumb,
+body.ds-c.performance-mode .slider-control.is-jelly-dragging::-moz-range-thumb {
+  transform: none !important;
+}
 @media (prefers-reduced-motion: reduce) {
   .ds-c #actualUltTimeSpan,
   .ds-c .ds-dock-item,
   .ds-c .ds-dock-item::before,
   .ds-c .pv-odo-t,
   .ds-c .pv-odo-txt,
+  .ds-c .pv-odo-num,
+  .ds-c .pv-odo-dec,
+  .ds-c .share-btn,
+  .ds-c .share-btn .pv-share-ico,
+  .ds-c .share-btn .pv-share-ico .ico,
+  .ds-c .share-btn .pv-share-txt > span,
+  .ds-c .slider-control::-webkit-slider-thumb,
+  .ds-c .slider-control::-moz-range-thumb,
   .ds-c .pv-box-swap-a,
   .ds-c .pv-box-swap-b,
   .ds-c .pv-box-swap-a > *,
   .ds-c .pv-box-swap-b > * {
     animation: none !important;
     transition: none !important;
+  }
+  .ds-c .slider-control:active::-webkit-slider-thumb,
+  .ds-c .slider-control.is-jelly-dragging::-webkit-slider-thumb,
+  .ds-c .slider-control:active::-moz-range-thumb,
+  .ds-c .slider-control.is-jelly-dragging::-moz-range-thumb {
+    transform: none !important;
   }
 }
