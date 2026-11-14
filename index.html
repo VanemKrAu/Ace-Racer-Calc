@@ -1334,8 +1334,10 @@ CD：45秒
       <span class="chip-picker-title"><span class="zh">选择芯片</span><span class="lang-en">Choose a chip</span></span>
       <input type="search" class="chip-search is-gone" id="chipSearch" autocomplete="off" spellcheck="false" placeholder="搜索芯片…" aria-label="搜索芯片 / Search chips">
     </div>
-    <div class="chip-grid" id="chipGrid"></div>
-    <div class="chip-empty is-gone" id="chipEmpty"><span class="zh">没有匹配的芯片</span><span class="lang-en">No matching chips</span></div>
+    <div class="chip-picker-scroll" id="chipPickerScroll">
+      <div class="chip-cat-list" id="chipGrid"></div>
+      <div class="chip-empty is-gone" id="chipEmpty"><span class="zh">没有匹配的芯片</span><span class="lang-en">No matching chips</span></div>
+    </div>
   </div>
 </div>
 </div>
@@ -5007,9 +5009,14 @@ function __tok(n, d) { var v = getComputedStyle(document.body).getPropertyValue(
         var CHIP_MAX = 1;                       // 动态根据当前车辆 V 型槽数量调整
         var _chipSwapTarget = null;             // 换芯片模式下记录目标芯片 id
         var CHIP_ICON_DIR = 'data/icon/';
+        var CHIP_CATEGORIES = [
+            { id: 'overclock', zh: '超频芯片', en: 'Overclock Chips' },
+            { id: 'supreme', zh: '至尊芯片', en: 'Supreme Chips', subZh: '至尊 / 墨染 / 至美系列', subEn: 'Supreme / Ink / Peerless' },
+            { id: 'heroine', zh: '车姬芯片', en: 'Heroine Chips' }
+        ];
         var CHIP_REGISTRY = [
             {
-                id: 'hunter', icon: 'chip_hunter.png',
+                id: 'hunter', category: 'heroine', icon: 'chip_hunter.png',
                 name: { zh: '隐匿猎手之芯', en: 'Hidden Hunter Chip' },
                 desc: {
                     zh: '极速 +18 km/h，但每次使用涡轮 −0.5 km/h（上限减少 30 次。加速不会被驱散，减速无法净化）。每 2 次使用大招时充能 <strong>16%</strong>（隐匿猎手装备时同时清空芯片减速）。',
@@ -5023,7 +5030,7 @@ function __tok(n, d) { var v = getComputedStyle(document.body).getPropertyValue(
                 ultCharge: function (k) { return k % 2 === 0 ? 16 : 0; }
             },
             {
-                id: 'catnap', icon: 'chip_catnap.png',
+                id: 'catnap', category: 'heroine', icon: 'chip_catnap.png',
                 name: { zh: '猫眠梦之芯', en: 'Catnap Dream Chip' },
                 desc: {
                     zh: '每 6 秒获得 1200 集气量并恢复 6 点耐久值，大招达到 <strong>90%</strong> 能量即可使用（猫眠梦装备时改为 <strong>66%</strong>）。',
@@ -5040,7 +5047,7 @@ function __tok(n, d) { var v = getComputedStyle(document.body).getPropertyValue(
                 }
             },
             {
-                id: 'hardman', icon: 'chip_hardman.png',
+                id: 'hardman', category: 'overclock', icon: 'chip_hardman.png',
                 name: { zh: '超频：硬汉模式', en: 'Overclock: Hardman Mode' },
                 allowLabel: { zh: '限战神 / 道奇 SRT 392', en: 'Ares / Challenger SRT 392' },
                 canEquip: function (car) {
@@ -5071,7 +5078,7 @@ function __tok(n, d) { var v = getComputedStyle(document.body).getPropertyValue(
                 }
             },
             {
-                id: 'triple', icon: 'chip_triple.png',
+                id: 'triple', category: 'overclock', icon: 'chip_triple.png',
                 name: { zh: '超频：三重推进', en: 'Overclock: Triple Boost' },
                 allowLabel: { zh: '限神剑号', en: 'Excalibur only' },
                 canEquip: function (car) {
@@ -5105,7 +5112,7 @@ function __tok(n, d) { var v = getComputedStyle(document.body).getPropertyValue(
                 }
             },
             {
-                id: 'qinglong', icon: 'chip_qinglong.png',
+                id: 'qinglong', category: 'supreme', icon: 'chip_qinglong.png',
                 name: { zh: '至尊：翔宇青龙', en: 'Supreme: Azure Dragon' },
                 allowLabel: { zh: '限烛龙', en: 'Zhulong only' },
                 canEquip: function (car) {
@@ -5122,7 +5129,7 @@ function __tok(n, d) { var v = getComputedStyle(document.body).getPropertyValue(
                 firstCharge: 13
             },
             {
-                id: 'aomei', icon: 'chip_aomei.png',
+                id: 'aomei', category: 'supreme', icon: 'chip_aomei.png',
                 name: { zh: '墨染：傲梅', en: 'Ink: Proud Plum' },
                 allowLabel: { zh: '限寒霜冰魄', en: 'Frostblade only' },
                 canEquip: function (car) {
@@ -5138,7 +5145,7 @@ function __tok(n, d) { var v = getComputedStyle(document.body).getPropertyValue(
                 efficiencyBonus: 0.05
             },
             {
-                id: 'xiuzhu', icon: 'chip_xiuzhu.png',
+                id: 'xiuzhu', category: 'supreme', icon: 'chip_xiuzhu.png',
                 name: { zh: '墨染：修竹', en: 'Ink: Graceful Bamboo' },
                 allowLabel: { zh: '限先驱者', en: 'Pioneer only' },
                 canEquip: function (car) {
@@ -5154,7 +5161,7 @@ function __tok(n, d) { var v = getComputedStyle(document.body).getPropertyValue(
                 ultThreshold: function () { return 80; }
             },
             {
-                id: 'yiju', icon: 'chip_yiju.png',
+                id: 'yiju', category: 'supreme', icon: 'chip_yiju.png',
                 name: { zh: '墨染：逸菊', en: 'Ink: Serene Chrysanthemum' },
                 allowLabel: { zh: '限神剑号', en: 'Excalibur only' },
                 canEquip: function (car) {
@@ -5170,7 +5177,7 @@ function __tok(n, d) { var v = getComputedStyle(document.body).getPropertyValue(
                 ultDurationMult: function () { return 1 / 0.6; }
             },
             {
-                id: 'xiuhua', icon: 'chip_xiuhua.png',
+                id: 'xiuhua', category: 'supreme', icon: 'chip_xiuhua.png',
                 name: { zh: '至美：羞花', en: 'Peerless: Shy Blossom' },
                 allowLabel: { zh: '限隐匿猎手', en: 'Hidden Hunter only' },
                 canEquip: function (car) {
@@ -5400,12 +5407,18 @@ function __tok(n, d) { var v = getComputedStyle(document.body).getPropertyValue(
             var curCar = typeof _selectedCar !== 'undefined' ? _selectedCar : null;
             var full = CHIP_MAX > 1 && _chipsOn.length >= CHIP_MAX && !_chipSwapTarget;
             var lang = typeof currentLang !== 'undefined' ? currentLang : 'zh';
-            // 无搜索过滤且已构建过网格时：直接增量更新选中态、锁定态、禁用态和副标题，避免每次重建 DOM 和重新解码图片
+            // 无搜索过滤且已构建过网格时：直接按 data-id 增量更新选中态、锁定态、禁用态和副标题，避免每次重建 DOM 和重新解码图片
             if (!q && grid.__built && grid.__lang === lang && grid.__q === '') {
                 var tiles = grid.querySelectorAll('.chip-tile');
                 if (tiles.length === CHIP_REGISTRY.length) {
-                    for (var i = 0; i < tiles.length; i++) {
-                        var d = CHIP_REGISTRY[i], tile = tiles[i];
+                    var tileMap = {};
+                    for (var ti = 0; ti < tiles.length; ti++) {
+                        tileMap[tiles[ti].getAttribute('data-id')] = tiles[ti];
+                    }
+                    var matchedAll = true;
+                    for (var i = 0; i < CHIP_REGISTRY.length; i++) {
+                        var d = CHIP_REGISTRY[i], tile = tileMap[d.id];
+                        if (!tile) { matchedAll = false; break; }
                         var on = _chipIndex(d.id) >= 0;
                         var locked = !_chipCanEquip(d, curCar);
                         var disabled = locked || (full && !on) || (_chipSwapTarget && on && d.id !== _chipSwapTarget);
@@ -5417,27 +5430,50 @@ function __tok(n, d) { var v = getComputedStyle(document.body).getPropertyValue(
                         var subEl = tile.querySelector('.chip-tile-sub');
                         if (subEl && subEl.textContent !== sub) subEl.textContent = sub;
                     }
-                    _chipEl('chipEmpty').classList.add('is-gone');
-                    return;
+                    if (matchedAll) {
+                        _chipEl('chipEmpty').classList.add('is-gone');
+                        return;
+                    }
                 }
             }
-            var list = CHIP_REGISTRY.filter(function (d) {
-                return !q || (d.name.zh + ' ' + d.name.en + ' ' + d.desc.zh + ' ' + d.desc.en + ' ' + (d.allowLabel ? d.allowLabel.zh + ' ' + d.allowLabel.en : '')).toLowerCase().indexOf(q) >= 0;
-            });
-            grid.innerHTML = list.map(function (d) {
-                var on = _chipIndex(d.id) >= 0;
-                var locked = !_chipCanEquip(d, curCar);
-                var sub = _chipEnergyTags(d).concat(d.stats || []).map(_chipTxt).join(' · ');
-                var disabled = locked || (full && !on) || (_chipSwapTarget && on && d.id !== _chipSwapTarget);
-                var lockBadge = d.allowLabel ? '<span class="chip-tile-lock">' + _chipAttr(_chipTxt(d.allowLabel)) + '</span>' : '';
-                return '<button type="button" class="chip-tile' + (on ? ' is-on' : '') + (locked ? ' is-locked' : '') + '" data-act="pick" data-id="' + _chipAttr(d.id) + '" aria-pressed="' + on + '"' + (disabled ? ' disabled' : '') + '>'
-                    + _chipIcoHtml(d) + '<span class="chip-tile-main"><span class="chip-tile-head"><span class="chip-tile-name">' + _c2(d.name.zh, d.name.en) + '</span>' + lockBadge + '</span><span class="chip-tile-sub">' + _chipAttr(sub) + '</span></span>'
-                    + '<span class="chip-tile-check" aria-hidden="true"></span></button>';
+            var total = 0;
+            grid.innerHTML = CHIP_CATEGORIES.map(function (cat) {
+                var catKw = (cat.zh + ' ' + cat.en + ' ' + (cat.subZh || '') + ' ' + (cat.subEn || '')).toLowerCase();
+                var items = CHIP_REGISTRY.filter(function (d) {
+                    if (d.category !== cat.id) return false;
+                    if (!q) return true;
+                    var hay = (d.name.zh + ' ' + d.name.en + ' ' + d.desc.zh + ' ' + d.desc.en + ' ' + (d.allowLabel ? d.allowLabel.zh + ' ' + d.allowLabel.en : '') + ' ' + catKw).toLowerCase();
+                    return hay.indexOf(q) >= 0;
+                });
+                if (!items.length) return '';
+                total += items.length;
+                var subHead = cat.subZh ? '<span class="chip-cat-sub">' + _c2(cat.subZh, cat.subEn) + '</span>' : '';
+                var tilesHtml = items.map(function (d) {
+                    var on = _chipIndex(d.id) >= 0;
+                    var locked = !_chipCanEquip(d, curCar);
+                    var sub = _chipEnergyTags(d).concat(d.stats || []).map(_chipTxt).join(' · ');
+                    var disabled = locked || (full && !on) || (_chipSwapTarget && on && d.id !== _chipSwapTarget);
+                    var lockBadge = d.allowLabel ? '<span class="chip-tile-lock">' + _chipAttr(_chipTxt(d.allowLabel)) + '</span>' : '';
+                    return '<button type="button" class="chip-tile' + (on ? ' is-on' : '') + (locked ? ' is-locked' : '') + '" data-act="pick" data-id="' + _chipAttr(d.id) + '" aria-pressed="' + on + '"' + (disabled ? ' disabled' : '') + '>'
+                        + _chipIcoHtml(d) + '<span class="chip-tile-main"><span class="chip-tile-head"><span class="chip-tile-name">' + _c2(d.name.zh, d.name.en) + '</span>' + lockBadge + '</span><span class="chip-tile-sub">' + _chipAttr(sub) + '</span></span>'
+                        + '<span class="chip-tile-check" aria-hidden="true"></span></button>';
+                }).join('');
+                return '<section class="chip-cat" data-cat="' + _chipAttr(cat.id) + '">'
+                    + '<div class="chip-cat-head"><span class="chip-cat-title">' + _c2(cat.zh, cat.en) + '</span>'
+                    + '<span class="chip-cat-count">' + items.length + '</span>'
+                    + subHead
+                    + '<span class="chip-cat-line" aria-hidden="true"></span></div>'
+                    + '<div class="chip-grid">' + tilesHtml + '</div>'
+                    + '</section>';
             }).join('');
+            if (grid.__q !== q) {
+                var sc = _chipEl('chipPickerScroll');
+                if (sc) sc.scrollTop = 0;
+            }
             grid.__built = true;
             grid.__lang = lang;
             grid.__q = q;
-            _chipEl('chipEmpty').classList.toggle('is-gone', list.length > 0);
+            _chipEl('chipEmpty').classList.toggle('is-gone', total > 0);
         }
         function _chipSyncOpenFlag() {
             var card = _chipEl('cardChips');
@@ -5470,7 +5506,11 @@ function __tok(n, d) { var v = getComputedStyle(document.body).getPropertyValue(
         function _chipPickerSet(open, instant) {
             _chipPickerWant = !!open;
             if (!open) _chipSwapTarget = null;
-            if (open) { var s = _chipEl('chipSearch'); if (s) s.value = ''; _chipRenderGrid(); }
+            if (open) {
+                var s = _chipEl('chipSearch'); if (s) s.value = '';
+                var sc = _chipEl('chipPickerScroll'); if (sc) sc.scrollTop = 0;
+                _chipRenderGrid();
+            }
             slideShow(_chipEl('chipPicker'), open, instant);
             _chipSyncOpenFlag();
         }
