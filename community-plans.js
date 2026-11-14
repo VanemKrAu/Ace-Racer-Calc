@@ -384,7 +384,14 @@
     fetchSeq: 0,            // 防止快速切车/切换排序时并发响应覆盖新列表
     savedPlans: [],         // 本地存储的方案列表
     proPlans: [],           // 后端过审的国服顶尖方案列表
-    remotePlans: [],        // 远程从私有后端 API 拉取的社区方案列表
+    remotePlans: [],        // 远程从私有后端 API 拉取的社区方案列表（按页懒加载累加）
+    remotePage: 1,
+    remotePageSize: 8,
+    remoteTotal: 0,
+    remoteTotalPages: 1,
+    remoteHasMore: false,
+    isLoadingMore: false,
+    _lazyObserver: null,
     votedMap: {},           // 已点赞方案 ID 持久化映射
     siteMeta: {             // 从后端实时拉取的站点与安全开关元数据
       maintenance_mode: false,
@@ -1293,6 +1300,11 @@
         state.currentCarId = null;
         state.currentCar = null;
         state.remotePlans = [];
+        state.remotePage = 1;
+        state.remoteTotal = 0;
+        state.remoteTotalPages = 1;
+        state.remoteHasMore = false;
+        state.isLoadingMore = false;
       } else if (typeof carOrId === 'object') {
         state.currentCarId = carOrId.id;
         state.currentCar = carOrId;
@@ -1303,6 +1315,14 @@
           state.currentCar = db.find(function (c) { return c.id === carOrId; }) || null;
         }
       }
+      if (prevCarId !== state.currentCarId) {
+        state.remotePlans = [];
+        state.remotePage = 1;
+        state.remoteTotal = 0;
+        state.remoteTotalPages = 1;
+        state.remoteHasMore = false;
+        state.isLoadingMore = false;
+      }
       if (prevCarId !== state.currentCarId && !state._isRestoringDraft && !window.isRestoringConfig) {
         state.lastSnapshot = null;
         state.hasUndoAvailable = false;
@@ -1311,9 +1331,8 @@
         var undoBtn = document.getElementById('cpBtnUndo');
         if (undoBtn) undoBtn.style.display = 'none';
       }
-      CommunityPlans.renderPlans();
-      if (state.currentCarId) {
-        CommunityPlans.fetchRemotePlans(state.currentCarId);
+      if (state.currentCarId && state.currentCarId !== -1) {
+        CommunityPlans.fetchRemotePlans(state.currentCarId, { page: 1, append: false });
         // 切车后立即覆盖更新新车的洁净草稿，避免旧车改动残留并在未满防抖期刷新时复现
         if (!state._isRestoringDraft && !window.isRestoringConfig) {
           Draft.save();
@@ -1321,16 +1340,141 @@
       } else if (!state._isRestoringDraft && !window.isRestoringConfig) {
         Draft.clear();
       }
+      CommunityPlans.renderPlans();
     },
 
-    // 异步从私有后端 Serverless 拉取社区已审核方案
-    fetchRemotePlans: function (carId) {
+    _normalizeRemoteItem: function (rp) {
+      var localUpdated = false;
+      var votesUpdated = false;
+      var matchedLocal = state.savedPlans.find(function (lp) {
+        return lp.remote_id && lp.remote_id === rp.id;
+      });
+      if (matchedLocal) {
+        if (matchedLocal.remote_status !== 'approved') {
+          matchedLocal.remote_status = 'approved';
+          localUpdated = true;
+        }
+        if (rp.is_pro && !matchedLocal.isPro) {
+          matchedLocal.isPro = true;
+          localUpdated = true;
+        }
+        if (rp.is_partner && !matchedLocal.isPartner) {
+          matchedLocal.isPartner = true;
+          localUpdated = true;
+        }
+        if (typeof rp.votes === 'number' && matchedLocal.votes !== rp.votes) {
+          matchedLocal.votes = rp.votes;
+          localUpdated = true;
+        }
+      }
+      if (typeof rp.viewer_has_voted === 'boolean') {
+        rp.isVoted = rp.viewer_has_voted;
+        if (rp.viewer_has_voted) {
+          if (!state.votedMap[rp.id]) {
+            state.votedMap[rp.id] = 1;
+            votesUpdated = true;
+          }
+        } else if (state.votedMap[rp.id]) {
+          delete state.votedMap[rp.id];
+          votesUpdated = true;
+        }
+      } else {
+        rp.isVoted = Boolean(state.votedMap[rp.id]);
+      }
+      rp.viewer_is_author = Boolean(rp.viewer_is_author || matchedLocal);
+      return { item: rp, localUpdated: localUpdated, votesUpdated: votesUpdated };
+    },
+
+    _updateLazyFooterDom: function () {
+      var footer = document.getElementById('cpLazySentinel');
+      if (!footer) return;
+      var statusEl = footer.querySelector('.cp-lazy-status');
+      var btnEl = footer.querySelector('.cp-lazy-btn');
+      if (statusEl && state.isLoadingMore) {
+        statusEl.textContent = '正在懒加载更多方案 (' + state.remotePlans.length + ' / ' + Math.max(state.remoteTotal, state.remotePlans.length) + ')...';
+      }
+      if (btnEl) {
+        btnEl.disabled = state.isLoadingMore;
+        btnEl.textContent = state.isLoadingMore ? '加载中...' : '加载更多';
+      }
+    },
+
+    bindLazyScroll: function () {
+      if (state._lazyObserver) {
+        try { state._lazyObserver.disconnect(); } catch (_) {}
+        state._lazyObserver = null;
+      }
+      var vp = document.getElementById('cpScrollViewport');
+      var sentinel = document.getElementById('cpLazySentinel');
+      if (!vp) return;
+
+      var maybeLoadMore = function () {
+        if (!state.remoteHasMore || state.isLoadingMore || state.isFetchingRemote) return;
+        CommunityPlans.loadMoreRemotePlans();
+      };
+
+      vp.addEventListener('scroll', function () {
+        if (!state.remoteHasMore || state.isLoadingMore || state.isFetchingRemote) return;
+        if (vp.scrollTop + vp.clientHeight >= vp.scrollHeight - 90) {
+          maybeLoadMore();
+        }
+      }, { passive: true });
+
+      if (sentinel && state.remoteHasMore && typeof IntersectionObserver === 'function') {
+        try {
+          state._lazyObserver = new IntersectionObserver(function (entries) {
+            for (var i = 0; i < entries.length; i += 1) {
+              if (entries[i].isIntersecting) {
+                maybeLoadMore();
+                break;
+              }
+            }
+          }, { root: vp, rootMargin: '90px 0px', threshold: 0.01 });
+          state._lazyObserver.observe(sentinel);
+        } catch (_) {}
+      }
+    },
+
+    loadMoreRemotePlans: function () {
+      if (!state.currentCarId || state.currentCarId === -1) return;
+      if (!state.remoteHasMore || state.isLoadingMore || state.isFetchingRemote) return;
+      CommunityPlans.fetchRemotePlans(state.currentCarId, {
+        page: (state.remotePage || 1) + 1,
+        append: true,
+        preserveScroll: true
+      });
+    },
+
+    // 异步从私有后端 Serverless 拉取社区已审核方案（支持分批懒加载）
+    fetchRemotePlans: function (carId, opts) {
       if (!carId || carId === -1) return;
-      state.fetchSeq = (state.fetchSeq || 0) + 1;
-      var reqSeq = state.fetchSeq;
-      state.isFetchingRemote = true;
+      var options = opts || {};
+      var targetPage = Math.max(1, parseInt(options.page, 10) || 1);
+      var append = Boolean(options.append);
+      var preserveScroll = Boolean(options.preserveScroll || append);
+      var reqSeq;
+
+      if (append) {
+        if (state.isLoadingMore || !state.remoteHasMore) return;
+        reqSeq = state.fetchSeq;
+        state.isLoadingMore = true;
+        CommunityPlans._updateLazyFooterDom();
+      } else {
+        state.fetchSeq = (state.fetchSeq || 0) + 1;
+        reqSeq = state.fetchSeq;
+        state.isFetchingRemote = true;
+        state.isLoadingMore = false;
+      }
+
       var sortParam = state.sortMode || 'hot';
-      var url = '/api/plans?car_id=' + encodeURIComponent(carId) + '&sort_by=' + encodeURIComponent(sortParam) + '&limit=100';
+      var calcModeParam = state.filterMode || 'all';
+      var pageSize = state.remotePageSize || 8;
+      var url = '/api/plans?car_id=' + encodeURIComponent(carId) +
+        '&sort_by=' + encodeURIComponent(sortParam) +
+        '&calc_mode=' + encodeURIComponent(calcModeParam) +
+        '&page=' + encodeURIComponent(targetPage) +
+        '&limit=' + encodeURIComponent(pageSize);
+
       fetch(url, {
         method: 'GET',
         headers: Utils.getApiHeaders(false)
@@ -1346,64 +1490,58 @@
             CommunityPlans.maybeHandleAnnouncement(false);
           }
           if (json && json.success && json.data && Array.isArray(json.data.items)) {
-            var localUpdated = false;
-            var votesUpdated = false;
-            state.remotePlans = json.data.items.map(function (rp) {
-              var matchedLocal = state.savedPlans.find(function (lp) {
-                return lp.remote_id && lp.remote_id === rp.id;
-              });
-              if (matchedLocal) {
-                if (matchedLocal.remote_status !== 'approved') {
-                  matchedLocal.remote_status = 'approved';
-                  localUpdated = true;
-                }
-                if (rp.is_pro && !matchedLocal.isPro) {
-                  matchedLocal.isPro = true;
-                  localUpdated = true;
-                }
-                if (rp.is_partner && !matchedLocal.isPartner) {
-                  matchedLocal.isPartner = true;
-                  localUpdated = true;
-                }
-                if (typeof rp.votes === 'number' && matchedLocal.votes !== rp.votes) {
-                  matchedLocal.votes = rp.votes;
-                  localUpdated = true;
-                }
-              }
-              if (typeof rp.viewer_has_voted === 'boolean') {
-                rp.isVoted = rp.viewer_has_voted;
-                if (rp.viewer_has_voted) {
-                  if (!state.votedMap[rp.id]) {
-                    state.votedMap[rp.id] = 1;
-                    votesUpdated = true;
-                  }
-                } else if (state.votedMap[rp.id]) {
-                  delete state.votedMap[rp.id];
-                  votesUpdated = true;
-                }
-              } else {
-                rp.isVoted = Boolean(state.votedMap[rp.id]);
-              }
-              rp.viewer_is_author = Boolean(rp.viewer_is_author || matchedLocal);
-              return rp;
+            var anyLocalUpdated = false;
+            var anyVotesUpdated = false;
+            var normalized = json.data.items.map(function (rp) {
+              var out = CommunityPlans._normalizeRemoteItem(rp);
+              if (out.localUpdated) anyLocalUpdated = true;
+              if (out.votesUpdated) anyVotesUpdated = true;
+              return out.item;
             });
-            if (localUpdated) {
+
+            if (append) {
+              var existingMap = {};
+              state.remotePlans.forEach(function (ep) { existingMap[ep.id] = true; });
+              normalized.forEach(function (np) {
+                if (!existingMap[np.id]) {
+                  state.remotePlans.push(np);
+                  existingMap[np.id] = true;
+                }
+              });
+            } else {
+              state.remotePlans = normalized;
+            }
+
+            state.remotePage = Number(json.data.page) || targetPage;
+            state.remoteTotal = Math.max(state.remotePlans.length, Number(json.data.total) || 0);
+            state.remoteTotalPages = Math.max(1, Number(json.data.total_pages) || Math.ceil(state.remoteTotal / pageSize) || 1);
+            state.remoteHasMore = typeof json.data.has_more === 'boolean'
+              ? json.data.has_more
+              : (state.remotePage * pageSize < state.remoteTotal);
+
+            if (anyLocalUpdated) {
               Utils.setStorage(STORAGE_KEYS.PLANS, state.savedPlans);
             }
-            if (votesUpdated) {
+            if (anyVotesUpdated) {
               Utils.setStorage(STORAGE_KEYS.VOTES, state.votedMap);
             }
-            CommunityPlans.renderPlans();
+            if (append) state.isLoadingMore = false;
+            else state.isFetchingRemote = false;
+            CommunityPlans.renderPlans({ preserveScroll: preserveScroll });
           }
         })
         .catch(function (err) {
           if (reqSeq !== state.fetchSeq) return;
+          if (append) state.isLoadingMore = false;
+          else state.isFetchingRemote = false;
           // 离线或服务暂时未连通时静默降级，继续展示本地与已缓存方案
           console.log('[CommunityPlans] 社区方案拉取降级:', err.message);
+          CommunityPlans.renderPlans({ preserveScroll: preserveScroll });
         })
         .finally(function () {
           if (reqSeq === state.fetchSeq) {
-            state.isFetchingRemote = false;
+            if (append) state.isLoadingMore = false;
+            else state.isFetchingRemote = false;
           }
         });
     },
@@ -1451,10 +1589,16 @@
       var nextMode = mode === 'latest' ? 'latest' : 'hot';
       if (state.sortMode === nextMode) return;
       state.sortMode = nextMode;
-      CommunityPlans.renderPlans();
+      state.remotePlans = [];
+      state.remotePage = 1;
+      state.remoteTotal = 0;
+      state.remoteTotalPages = 1;
+      state.remoteHasMore = false;
+      state.isLoadingMore = false;
       if (state.currentCarId && state.currentCarId !== -1) {
-        CommunityPlans.fetchRemotePlans(state.currentCarId);
+        CommunityPlans.fetchRemotePlans(state.currentCarId, { page: 1, append: false });
       }
+      CommunityPlans.renderPlans();
     },
 
     // 切换模式筛选（全部 / 先机汇能 / 团魂获能）
@@ -1462,11 +1606,24 @@
       var nextMode = (mode === 'solo' || mode === 'team') ? mode : 'all';
       if (state.filterMode === nextMode) return;
       state.filterMode = nextMode;
+      state.remotePlans = [];
+      state.remotePage = 1;
+      state.remoteTotal = 0;
+      state.remoteTotalPages = 1;
+      state.remoteHasMore = false;
+      state.isLoadingMore = false;
+      if (state.currentCarId && state.currentCarId !== -1) {
+        CommunityPlans.fetchRemotePlans(state.currentCarId, { page: 1, append: false });
+      }
       CommunityPlans.renderPlans();
     },
 
-    // 渲染方案卡片列表 (按分类流式竖排，优先展示本地方案，无方案自动折叠，第三个模式完全隐藏)
-    renderPlans: function () {
+    // 渲染方案卡片列表 (固定高度滚动窗口 + 懒加载追加)
+    renderPlans: function (opts) {
+      var renderOpts = opts || {};
+      var prevViewport = document.getElementById('cpScrollViewport');
+      var savedScrollTop = (renderOpts.preserveScroll && prevViewport) ? prevViewport.scrollTop : 0;
+
       var badge = document.getElementById('cpCurrentCarBadge');
       var stream = document.getElementById('cpSectionsStream');
       var container = document.getElementById('communityPlansContainer');
@@ -1536,10 +1693,11 @@
         return String(p.car_id) === curIdStr && !isShownInRemote(p);
       });
 
-      var totalPlans = partnerList.length + proList.length + remoteList.length + localList.length;
+      var loadedRemoteCount = partnerList.length + remoteProList.length + remoteList.length;
+      var totalPlans = Math.max(loadedRemoteCount, state.remoteTotal || 0) + baseProList.length + localList.length;
 
-      // 4. 更新标题栏徽标与折叠状态联动 (无方案时自动折叠卡片；先写入 DOM 再切折叠态)
-      if (totalPlans === 0) {
+      // 4. 更新标题栏徽标与折叠状态联动 (加载完成且无方案时自动折叠卡片)
+      if (totalPlans === 0 && !state.isFetchingRemote) {
         if (badge) {
           badge.innerHTML = '<span class="zh">' + Utils.escapeHtml(carName) + ' · 暂无方案 (点击展开)</span><span class="lang-en">No Setups (Click to expand)</span>';
         }
@@ -1556,9 +1714,11 @@
         return;
       }
 
-      // 有方案时更新标题徽标，待列表写入完成后再统一展开
+      // 有方案（或正在首屏加载）时更新标题徽标
       if (badge) {
-        badge.innerHTML = '<span class="zh">' + Utils.escapeHtml(carName) + ' (' + totalPlans + ' 方案)</span><span class="lang-en">' + Utils.escapeHtml(carName) + '</span>';
+        badge.innerHTML = state.isFetchingRemote && totalPlans === 0
+          ? '<span class="zh">' + Utils.escapeHtml(carName) + ' · 加载中...</span><span class="lang-en">Loading...</span>'
+          : '<span class="zh">' + Utils.escapeHtml(carName) + ' (' + totalPlans + ' 方案)</span><span class="lang-en">' + Utils.escapeHtml(carName) + '</span>';
       }
 
       // 5. 模式筛选与智能置底排序（当前模式可用的方案排前，不可用灰态方案沉底；桶内按最热/最新降序）
@@ -1586,17 +1746,18 @@
       localList = sortByCompatAndMetric(filterByPlanMode(localList));
       var filteredTotal = partnerList.length + proList.length + remoteList.length + localList.length;
 
-      // 6. 纵向流式渲染各个分类 (严格优先：1.本地浏览器 -> 2.国服顶尖 -> 3.其他玩家)
-      var sectionsHtml = [];
+      // 6. 固定顶部控制区 + 内部固定高度可滚动列表视口
+      var headerHtml = [];
+      var viewportHtml = [];
       var annNorm = CommunityPlans.normalizeAnnouncementMeta(state.siteMeta && state.siteMeta.announcement);
       var annCls = annNorm.level === 'warning' ? 'is-warn' : (annNorm.level === 'success' ? 'is-success' : '');
       if (state.siteMeta && state.siteMeta.maintenance_mode) {
         var maintText = state.siteMeta.maintenance_message || '社区服务正在维护中，您仍可正常使用本地保存方案';
-        sectionsHtml.push('<div class="cp-site-banner is-warn">' + Icons.megaphone + '<span>' + Utils.escapeHtml(maintText) + '</span></div>');
+        headerHtml.push('<div class="cp-site-banner is-warn">' + Icons.megaphone + '<span>' + Utils.escapeHtml(maintText) + '</span></div>');
       } else if (annNorm.enabled && annNorm.text && annNorm.display_mode !== 'popup_only') {
         var bannerTitle = annNorm.title ? ('【' + annNorm.title + '】') : '';
         var previewText = bannerTitle + annNorm.text.replace(/\s+/g, ' ');
-        sectionsHtml.push(
+        headerHtml.push(
           '<button type="button" class="cp-site-banner is-clickable ' + annCls + '" onclick="CommunityPlans.openAnnouncementModal(null, { fromAuto: false })" title="点击展开完整公告详情">' +
             Icons.megaphone +
             '<span class="cp-site-banner-text">' + Utils.escapeHtml(previewText) + '</span>' +
@@ -1605,7 +1766,7 @@
         );
       }
 
-      sectionsHtml.push([
+      headerHtml.push([
         '<div class="cp-controls-bar">',
         '  <div class="cp-ctrl-group">',
         '    <span class="cp-controls-hint">模式筛选</span>',
@@ -1625,13 +1786,20 @@
         '</div>'
       ].join(''));
 
-      if (filteredTotal === 0) {
+      if (state.isFetchingRemote && filteredTotal === 0) {
+        viewportHtml.push([
+          '<div class="cp-empty-box">',
+          '  <div class="cp-empty-title">正在加载社区方案...</div>',
+          '  <div class="cp-empty-desc">仅按需拉取当前车型第 1 页方案，请稍候</div>',
+          '</div>'
+        ].join(''));
+      } else if (filteredTotal === 0) {
         var filterLabel = state.filterMode === 'solo' ? '先机汇能' : '团魂获能';
-        sectionsHtml.push([
+        viewportHtml.push([
           '<div class="cp-empty-box cp-filter-empty">',
           '  ' + Icons.emptyBox,
           '  <div class="cp-empty-title">当前「' + filterLabel + '」模式下暂无方案</div>',
-          '  <div class="cp-empty-desc">该赛车共有 ' + totalPlans + ' 个其他模式方案，点击下方按钮可查看全部</div>',
+          '  <div class="cp-empty-desc">点击下方按钮可查看全部模式方案</div>',
           '  <button type="button" class="nav-btn cp-btn cp-btn-save" onclick="CommunityPlans.setFilterMode(\'all\')">显示全部方案</button>',
           '</div>'
         ].join(''));
@@ -1641,7 +1809,7 @@
       // 【分类 1】：友站分享 (合作友站实测推荐方案，有则首位展示)
       // ==========================================
       if (partnerList.length > 0) {
-        sectionsHtml.push([
+        viewportHtml.push([
           '<div class="cp-section cp-section-partner">',
           '  <div class="cp-sec-header">',
           '    <div class="cp-sec-icon-box">' + Icons.partner + '</div>',
@@ -1664,7 +1832,7 @@
       // 【分类 2】：国服顶尖 (官方推荐与自证认证)
       // ==========================================
       if (proList.length > 0) {
-        sectionsHtml.push([
+        viewportHtml.push([
           '<div class="cp-section cp-section-pro">',
           '  <div class="cp-sec-header">',
           '    <img src="data/icon/pro_helmet_m.png" class="cp-sec-pro-icon" alt="" loading="lazy">',
@@ -1687,7 +1855,7 @@
       // 【分类 3】：玩家上传 (车友社区推荐)
       // ==========================================
       if (remoteList.length > 0) {
-        sectionsHtml.push([
+        viewportHtml.push([
           '<div class="cp-section cp-section-community">',
           '  <div class="cp-sec-header">',
           '    <div class="cp-sec-icon-box">' + Icons.hot + '</div>',
@@ -1710,7 +1878,7 @@
       // 【分类 4】：我的专属配装 (本机自存/待审追踪)
       // ==========================================
       if (localList.length > 0) {
-        sectionsHtml.push([
+        viewportHtml.push([
           '<div class="cp-section cp-section-mine">',
           '  <div class="cp-sec-header">',
           '    <div class="cp-sec-icon-box">' + Icons.user + '</div>',
@@ -1729,7 +1897,29 @@
         ].join(''));
       }
 
-      stream.innerHTML = sectionsHtml.join('');
+      // 底部懒加载哨兵与已加载进度条
+      if (state.remotePlans.length > 0 || state.remoteHasMore) {
+        var totalRemote = Math.max(state.remotePlans.length, state.remoteTotal || 0);
+        var lazyText = state.remoteHasMore
+          ? ('已加载 ' + state.remotePlans.length + ' / ' + totalRemote + ' 条社区方案 · 向下滚动自动加载')
+          : ('已全部加载当前筛选下的 ' + totalRemote + ' 条社区方案');
+        var lazyBtnHtml = state.remoteHasMore
+          ? '<button type="button" class="cp-lazy-btn" onclick="CommunityPlans.loadMoreRemotePlans()"' + (state.isLoadingMore ? ' disabled' : '') + '>' + (state.isLoadingMore ? '加载中...' : '加载更多') + '</button>'
+          : '';
+        viewportHtml.push(
+          '<div id="cpLazySentinel" class="cp-lazy-footer">' +
+            '<span class="cp-lazy-status">' + Utils.escapeHtml(lazyText) + '</span>' +
+            lazyBtnHtml +
+          '</div>'
+        );
+      }
+
+      stream.innerHTML = headerHtml.join('') + '<div id="cpScrollViewport" class="cp-scroll-viewport">' + viewportHtml.join('') + '</div>';
+      if (renderOpts.preserveScroll && savedScrollTop > 0) {
+        var nextViewport = document.getElementById('cpScrollViewport');
+        if (nextViewport) nextViewport.scrollTop = savedScrollTop;
+      }
+      CommunityPlans.bindLazyScroll();
       CommunityPlans.toggleCollapse(false, !container.__cpRenderedOnce);
       container.__cpRenderedOnce = true;
     },
@@ -2030,7 +2220,10 @@
 
     triggerProofUpload: function (type) {
       var input = document.getElementById('cpFile_' + type);
-      if (input) input.click();
+      if (input) {
+        input.value = '';
+        input.click();
+      }
     },
 
     handleProofFile: function (type, input) {
@@ -2081,10 +2274,12 @@
             input.value = '';
             return;
           }
-          CommunityPlans.proofState[type] = compressed;
+          var proofKey = type === 'profile' ? 'profileImg' : 'rankingImg';
+          CommunityPlans.proofState[proofKey] = compressed;
 
           var card = document.getElementById('cpProofCard_' + type);
           if (card) {
+            card.style.borderColor = '';
             card.classList.add('has-file');
             card.innerHTML = [
               '<div class="cp-proof-thumb-box">',
@@ -2259,7 +2454,6 @@
         '            <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" style="width:24px;height:24px;color:var(--acc);margin-bottom:4px;"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg>',
         '            <span style="font-weight:700;font-size:12.5px;color:var(--ink);">本车国服最强荣誉截图</span>',
         '            <span class="cp-proof-card-desc">需含钻石大国标（全国前十）· 单张≤2MB</span>',
-        '            <input type="file" id="cpFile_ranking" class="cp-proof-file-input" accept="image/*" onchange="CommunityPlans.handleProofFile(\'ranking\', this)">',
         '          </div>',
         '          <!-- 截图入口 2: 个人主页截图 -->',
         '          <div class="cp-proof-card" id="cpProofCard_profile" onclick="CommunityPlans.triggerProofUpload(\'profile\')">',
@@ -2267,9 +2461,10 @@
         '            <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" style="width:24px;height:24px;color:var(--acc);margin-bottom:4px;"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>',
         '            <span style="font-weight:700;font-size:12.5px;color:var(--ink);">游戏个人主页截图</span>',
         '            <span class="cp-proof-card-desc">需含游戏昵称与数字ID · 单张≤2MB</span>',
-        '            <input type="file" id="cpFile_profile" class="cp-proof-file-input" accept="image/*" onchange="CommunityPlans.handleProofFile(\'profile\', this)">',
         '          </div>',
         '        </div>',
+        '        <input type="file" id="cpFile_ranking" class="cp-proof-file-input" accept="image/*" onchange="CommunityPlans.handleProofFile(\'ranking\', this)">',
+        '        <input type="file" id="cpFile_profile" class="cp-proof-file-input" accept="image/*" onchange="CommunityPlans.handleProofFile(\'profile\', this)">',
         '      </div>',
         '      <!-- 提交前安全验证 (Cloudflare Turnstile，点亮对勾后方可提交) -->',
         '      <div class="cp-turnstile-box" id="cpTurnstileBox" style="' + (tsRequired ? '' : 'display:none;') + '">',
@@ -2814,7 +3009,7 @@
             state.siteMeta = Object.assign({}, state.siteMeta, json.site_meta);
             CommunityPlans.maybeHandleAnnouncement(true);
             if (state.currentCarId) {
-              CommunityPlans.renderPlans();
+              CommunityPlans.renderPlans({ preserveScroll: true });
             }
           }
         })
@@ -3010,7 +3205,7 @@
         sourceBuildSig: Utils.computeLocalBuildSig(plan.car_id || state.currentCarId, plan.params),
         appliedDomSig: Utils.computeLocalBuildSig(state.currentCarId, appliedCapture)
       };
-      CommunityPlans.renderPlans();
+      CommunityPlans.renderPlans({ preserveScroll: true });
       Draft.scheduleSave();
 
       var cardChips = document.getElementById('cardChips');
@@ -3037,7 +3232,7 @@
       var undoBtn = document.getElementById('cpBtnUndo');
       if (undoBtn) undoBtn.style.display = 'none';
 
-      CommunityPlans.renderPlans();
+      CommunityPlans.renderPlans({ preserveScroll: true });
       Draft.scheduleSave();
       CommunityPlans.toast('已还原之前的配装状态');
     },
@@ -3057,7 +3252,7 @@
         state.activeAppliedPlanId = null;
       }
 
-      CommunityPlans.renderPlans();
+      CommunityPlans.renderPlans({ preserveScroll: true });
       CommunityPlans.toast('已删除方案「' + name + '」');
     },
 
@@ -3102,7 +3297,7 @@
         delete state.votedMap[targetRemoteId];
       }
       Utils.setStorage(STORAGE_KEYS.VOTES, state.votedMap);
-      CommunityPlans.renderPlans();
+      CommunityPlans.renderPlans({ preserveScroll: true });
 
       fetch('/api/vote', {
         method: 'POST',
@@ -3125,7 +3320,7 @@
               delete state.votedMap[targetRemoteId];
             }
             Utils.setStorage(STORAGE_KEYS.VOTES, state.votedMap);
-            CommunityPlans.renderPlans();
+            CommunityPlans.renderPlans({ preserveScroll: true });
             CommunityPlans.toast((resObj.data && resObj.data.message) || '操作失败，请稍后重试');
             return;
           }
@@ -3144,7 +3339,7 @@
           if (typeof d.votes === 'number') {
             plan.votes = d.votes;
           }
-          CommunityPlans.renderPlans();
+          CommunityPlans.renderPlans({ preserveScroll: true });
           CommunityPlans.toast(plan.isVoted ? '点赞成功 +1' : '已取消点赞');
         })
         .catch(function () {
@@ -3158,7 +3353,7 @@
             delete state.votedMap[targetRemoteId];
           }
           Utils.setStorage(STORAGE_KEYS.VOTES, state.votedMap);
-          CommunityPlans.renderPlans();
+          CommunityPlans.renderPlans({ preserveScroll: true });
           CommunityPlans.toast('网络波动，操作已回滚，请重试');
         });
     },
