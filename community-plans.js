@@ -3150,26 +3150,21 @@
       var plan = state.savedPlans.find(function (p) { return p.id === localId; });
       if (!plan) return;
 
+      CommunityPlans.closeRejectModal();
+
       var reason = plan.reject_reason || plan.review_notes || '未能通过审核，请检查截图或内容合规性后重新尝试。';
 
-      var modal = document.getElementById('cpRejectModal');
-      if (!modal) {
-        modal = document.createElement('div');
-        modal.id = 'cpRejectModal';
-        modal.className = 'cp-modal-overlay';
-        modal.addEventListener('wheel', function (ev) {
-          if (ev.target === modal) ev.preventDefault();
-        }, { passive: false });
-        modal.addEventListener('touchmove', function (ev) {
-          if (ev.target === modal) ev.preventDefault();
-        }, { passive: false });
-        document.body.appendChild(modal);
-      }
+      var modal = document.createElement('div');
+      modal.id = 'cpRejectModal';
+      modal.className = 'cp-modal-overlay is-open';
+      modal.addEventListener('wheel', function (ev) {
+        if (ev.target === modal) ev.preventDefault();
+      }, { passive: false });
+      modal.addEventListener('touchmove', function (ev) {
+        if (ev.target === modal) ev.preventDefault();
+      }, { passive: false });
 
       document.body.classList.add('cp-modal-locked');
-      if (CommunityPlans._rejectEscKeyHandler) {
-        document.removeEventListener('keydown', CommunityPlans._rejectEscKeyHandler);
-      }
       CommunityPlans._rejectEscKeyHandler = function (ev) {
         if (ev.key === 'Escape' || ev.keyCode === 27) {
           CommunityPlans.closeRejectModal();
@@ -3181,7 +3176,7 @@
         '<div class="card cp-modal-dialog" onclick="event.stopPropagation()">',
         '  <div class="cp-modal-head">',
         '    <h4 class="cp-modal-title">方案审核反馈说明</h4>',
-        '    <button type="button" class="nav-btn select-btn cp-modal-close" onclick="CommunityPlans.closeRejectModal()">',
+        '    <button type="button" class="nav-btn select-btn cp-modal-close" aria-label="关闭弹窗" onclick="CommunityPlans.closeRejectModal()">',
         '      ' + Icons.close,
         '    </button>',
         '  </div>',
@@ -3199,8 +3194,8 @@
         '      <div class="cp-reject-tip">提示：该方案已安全保存在您的本地浏览器中，不受任何影响。您可以根据上述说明修改配装或重新截取符合标准的大国标截图后再次上传。</div>',
         '    </div>',
         '  </div>',
-        '  <div class="cp-modal-foot">',
-        '    <button type="button" class="nav-btn cp-btn" style="background:var(--acc);color:var(--acc-ink, #000);font-weight:700;" onclick="CommunityPlans.closeRejectModal()">我知道了</button>',
+        '  <div class="cp-modal-footer">',
+        '    <button type="button" class="nav-btn cp-btn cp-btn-save" onclick="CommunityPlans.closeRejectModal()">' + Icons.check + ' 我知道了</button>',
         '  </div>',
         '</div>'
       ].join('');
@@ -3208,15 +3203,13 @@
       modal.onclick = function (ev) {
         if (ev.target === modal) CommunityPlans.closeRejectModal();
       };
-      modal.classList.add('active');
+      document.body.appendChild(modal);
     },
 
     closeRejectModal: function () {
       var modal = document.getElementById('cpRejectModal');
-      if (modal) {
-        modal.classList.remove('active');
-        document.body.classList.remove('cp-modal-locked');
-      }
+      if (modal) modal.remove();
+      document.body.classList.remove('cp-modal-locked');
       if (CommunityPlans._rejectEscKeyHandler) {
         document.removeEventListener('keydown', CommunityPlans._rejectEscKeyHandler);
         CommunityPlans._rejectEscKeyHandler = null;

@@ -241,7 +241,7 @@ body[data-calc-mode="support"] #communityPlansContainer {
 .ds-c .cp-scroll-viewport {
   display: flex;
   flex-direction: column;
-  gap: 12px;
+  gap: 16px;
   max-height: 460px;
   overflow-y: auto;
   overflow-x: hidden;
@@ -312,29 +312,33 @@ body[data-calc-mode="support"] #communityPlansContainer {
 .ds-c .cp-section {
   display: flex;
   flex-direction: column;
-  gap: 7px;
+  gap: 8px;
 }
 
-/* 分类组头部条 (带图标、主标题、副说明文字) */
+/* 分类组头部：紧凑贴左的非等宽分段页眉（不与下方全宽方案卡片等宽堆砌，明确父级标题定位） */
 .ds-c .cp-sec-header {
-  display: flex;
+  display: inline-flex;
   align-items: center;
-  gap: 10px;
-  padding: 7px 11px;
-  background-color: color-mix(in oklab, var(--acc) 6%, var(--surface));
-  border: 1px solid color-mix(in oklab, var(--acc) 22%, var(--surface-edge));
-  border-radius: var(--r-md, 10px);
-  box-shadow: inset 0 1px 0 var(--surface-rim);
+  align-self: flex-start;
+  width: fit-content;
+  max-width: 100%;
+  gap: 9px;
+  padding: 5px 12px 5px 6px;
+  background-color: color-mix(in oklab, var(--acc) 7%, transparent);
+  border: none;
+  border-left: 3px solid color-mix(in oklab, var(--acc) 75%, transparent);
+  border-radius: 6px 10px 10px 6px;
+  box-shadow: none;
 }
 
 .ds-c .cp-section-pro .cp-sec-header {
-  background-color: color-mix(in oklab, #ffd700 8%, var(--surface));
-  border-color: color-mix(in oklab, #ffd700 30%, var(--surface-edge));
+  background-color: color-mix(in oklab, #ffd700 9%, transparent);
+  border-left-color: #ffd700;
 }
 
 .ds-c .cp-section-partner .cp-sec-header {
-  background-color: color-mix(in oklab, #14b8a6 7%, var(--surface));
-  border-color: color-mix(in oklab, #14b8a6 26%, var(--surface-edge));
+  background-color: color-mix(in oklab, #14b8a6 9%, transparent);
+  border-left-color: #14b8a6;
 }
 
 .ds-c .cp-section-partner .cp-sec-icon-box {
@@ -344,15 +348,15 @@ body[data-calc-mode="support"] #communityPlansContainer {
 }
 
 .ds-c .cp-section-mine .cp-sec-header {
-  background-color: color-mix(in oklab, var(--acc) 10%, var(--surface));
-  border-color: color-mix(in oklab, var(--acc) 38%, var(--surface-edge));
+  background-color: color-mix(in oklab, var(--acc) 10%, transparent);
+  border-left-color: var(--acc);
 }
 
 .ds-c .cp-sec-icon-box {
-  width: 32px;
-  height: 32px;
+  width: 26px;
+  height: 26px;
   flex: none;
-  border-radius: 8px;
+  border-radius: 7px;
   display: inline-flex;
   align-items: center;
   justify-content: center;
@@ -619,6 +623,21 @@ body[data-calc-mode="support"] #communityPlansContainer {
   display: flex;
   flex-direction: column;
   gap: 9px;
+  margin-left: 10px;
+  padding-left: 12px;
+  border-left: 2px solid color-mix(in oklab, var(--acc) 22%, var(--surface-edge));
+}
+
+.ds-c .cp-section-pro .cp-sec-list {
+  border-left-color: color-mix(in oklab, #ffd700 40%, var(--surface-edge));
+}
+
+.ds-c .cp-section-partner .cp-sec-list {
+  border-left-color: color-mix(in oklab, #14b8a6 40%, var(--surface-edge));
+}
+
+.ds-c .cp-section-mine .cp-sec-list {
+  border-left-color: color-mix(in oklab, var(--acc) 45%, var(--surface-edge));
 }
 
 /* ==========================================================================
@@ -1529,6 +1548,15 @@ body.cp-modal-locked {
   justify-content: center;
   border-radius: 8px;
   cursor: pointer;
+  color: var(--ink) !important;
+  background: var(--fill) !important;
+  border: 1px solid var(--surface-edge) !important;
+  transition: background-color .15s ease, border-color .15s ease;
+}
+
+.cp-modal-close:hover {
+  background: var(--fill-hover, rgba(255, 255, 255, .12)) !important;
+  border-color: var(--acc) !important;
 }
 
 .cp-modal-close .ico {
@@ -2171,6 +2199,11 @@ body.cp-modal-locked {
   .ds-c .cp-card-list {
     display: flex;
     flex-direction: column;
+  }
+
+  .ds-c .cp-sec-list {
+    margin-left: 6px;
+    padding-left: 9px;
   }
 
   .cp-modal-dialog {
