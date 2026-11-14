@@ -414,6 +414,37 @@ body[data-calc-mode="support"] #communityPlansContainer {
   color: #34d399;
 }
 
+.ds-c .cp-site-banner.is-clickable {
+  width: 100%;
+  text-align: left;
+  font-family: inherit;
+  cursor: pointer;
+  transition: transform 0.16s ease, border-color 0.16s ease, background-color 0.16s ease;
+}
+
+.ds-c .cp-site-banner.is-clickable:hover {
+  transform: translateY(-1px);
+  border-color: color-mix(in oklab, var(--acc) 55%, transparent);
+}
+
+.ds-c .cp-site-banner-text {
+  flex: 1;
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.ds-c .cp-site-banner-more {
+  flex-shrink: 0;
+  padding: 2px 8px;
+  border-radius: 999px;
+  font-size: 11px;
+  font-weight: 600;
+  background: color-mix(in oklab, var(--acc) 16%, transparent);
+  color: var(--acc);
+}
+
 .ds-c .cp-controls-bar {
   display: flex;
   align-items: center;
@@ -593,7 +624,7 @@ body[data-calc-mode="support"] #communityPlansContainer {
   color: var(--ink);
 }
 
-/* 昵称旁友站勋章：柔和清雅的青玉微章，保持存在感同时不抢国服金冠与主站焦点 */
+/* 昵称旁友站勋章按钮：柔和清雅的青玉微章，点击跳转到合作友站 */
 .ds-c .cp-author-partner-badge {
   display: inline-flex;
   align-items: center;
@@ -609,8 +640,24 @@ body[data-calc-mode="support"] #communityPlansContainer {
   border: 1px solid color-mix(in oklab, #14b8a6 28%, transparent);
   box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.06);
   line-height: 1;
+  text-decoration: none;
+  cursor: pointer;
   white-space: nowrap;
   flex: none;
+  transition: color .15s, background-color .15s, border-color .15s, transform .15s;
+}
+
+.ds-c .cp-author-partner-badge:hover,
+.ds-c .cp-author-partner-badge:focus-visible {
+  color: #ffffff;
+  background: #0d9488;
+  border-color: #14b8a6;
+  transform: translateY(-1px);
+  outline: none;
+}
+
+.ds-c .cp-author-partner-badge:active {
+  transform: translateY(0);
 }
 
 .ds-c .cp-author-partner-badge .ico {
@@ -624,6 +671,11 @@ body[data-calc-mode="support"] #communityPlansContainer {
 :root[data-theme="light"] .ds-c .cp-section-partner .cp-sec-count,
 :root[data-theme="light"] .ds-c .cp-badge-partner {
   color: #0d9488;
+}
+
+:root[data-theme="light"] .ds-c .cp-author-partner-badge:hover,
+:root[data-theme="light"] .ds-c .cp-author-partner-badge:focus-visible {
+  color: #ffffff;
 }
 
 .ds-c .cp-pro-helmet-badge {
@@ -1702,6 +1754,133 @@ body.cp-modal-locked {
   margin-top: 18px;
   padding-top: 14px;
   border-top: 1px solid var(--surface-edge);
+}
+
+/* 全站公告弹窗专属排版 */
+.cp-ann-dialog {
+  max-width: 540px;
+  border: 1px solid var(--surface-edge);
+}
+
+.cp-ann-dialog.is-warn {
+  border-color: color-mix(in oklab, var(--warn, #e5a14b) 45%, var(--surface-edge));
+}
+
+.cp-ann-dialog.is-success {
+  border-color: color-mix(in oklab, #10b981 45%, var(--surface-edge));
+}
+
+.cp-ann-head-left {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  min-width: 0;
+  flex-wrap: wrap;
+}
+
+.cp-ann-level-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  padding: 3px 9px;
+  border-radius: 999px;
+  font-size: 11.5px;
+  font-weight: 700;
+  flex-shrink: 0;
+  background: color-mix(in oklab, var(--acc) 16%, transparent);
+  color: var(--acc);
+  border: 1px solid color-mix(in oklab, var(--acc) 35%, transparent);
+}
+
+.cp-ann-level-pill .ico {
+  width: 13px;
+  height: 13px;
+}
+
+.cp-ann-level-pill.is-warn {
+  background: color-mix(in oklab, var(--warn, #e5a14b) 18%, transparent);
+  color: var(--warn, #e5a14b);
+  border-color: color-mix(in oklab, var(--warn, #e5a14b) 42%, transparent);
+}
+
+.cp-ann-level-pill.is-success {
+  background: rgba(16, 185, 129, 0.15);
+  color: #34d399;
+  border-color: rgba(16, 185, 129, 0.38);
+}
+
+.ds-c.light-mode .cp-ann-level-pill.is-success {
+  color: #047857;
+}
+
+.cp-ann-body-card {
+  padding: 14px 16px;
+  border-radius: var(--r-sm, 10px);
+  background: var(--fill, rgba(255, 255, 255, 0.04));
+  border: 1px solid var(--surface-edge);
+  color: var(--ink);
+  font-size: 13.5px;
+  line-height: 1.72;
+  white-space: pre-wrap;
+  word-break: break-word;
+  max-height: 48vh;
+  overflow-y: auto;
+}
+
+.ds-c.light-mode .cp-ann-body-card {
+  background: rgba(15, 23, 42, 0.04);
+}
+
+.cp-ann-footer {
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 12px;
+}
+
+.cp-ann-footer-left {
+  display: flex;
+  align-items: center;
+}
+
+.cp-ann-dismiss-label {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  font-size: 12.5px;
+  color: var(--ink-2);
+  cursor: pointer;
+  user-select: none;
+}
+
+.cp-ann-dismiss-label input {
+  width: 15px;
+  height: 15px;
+  accent-color: var(--acc);
+  cursor: pointer;
+}
+
+.cp-ann-force-hint {
+  font-size: 12px;
+  color: var(--ink-2);
+}
+
+.cp-ann-footer-actions {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-left: auto;
+}
+
+.cp-ann-cta-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  text-decoration: none;
+}
+
+.cp-ann-cta-btn .ico {
+  width: 14px;
+  height: 14px;
 }
 
 /* ==========================================================================

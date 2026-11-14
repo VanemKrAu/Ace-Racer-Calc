@@ -26,7 +26,8 @@
     CLIENT_ID: 'arc_client_id_v1',
     DEVICE_FP: 'arc_device_fp_v1',
     SETTINGS: 'arc_user_settings_v1',
-    AUTO_DRAFT: 'arc_auto_draft_enabled'
+    AUTO_DRAFT: 'arc_auto_draft_enabled',
+    ANNOUNCEMENT_STATE: 'arc_announcement_state_v1'
   };
 
   // Cloudflare Turnstile 公开 Site Key（仅用于前端渲染托管人机校验框，非密钥）
@@ -392,8 +393,10 @@
       allow_pro_applications: true,
       allow_voting: true,
       turnstile_required: true,
-      announcement: ''
+      announcement: null
     },
+    _annSessionCounted: false,
+    _annCheckedVersion: null,
     deviceFp: '',           // 稳定硬件设备指纹（32~64 位小写 hex）
     lastSnapshot: null,     // 用于一键撤销还原的表单快照
     activeAppliedPlanId: null, // 当前已套用的方案 ID (用于高亮正在生效)
@@ -1192,6 +1195,9 @@
       } else {
         CommunityPlans.renderPlans();
       }
+
+      // 页面初始化时主动拉取站点公告与运营配置（不依赖是否已选车）
+      CommunityPlans.fetchSiteConfig();
     },
 
     // 模式变更联动 (第三个模式 support 辅助供能模式物理隐藏方案库)
@@ -1337,6 +1343,7 @@
           if (reqSeq !== state.fetchSeq || String(carId) !== String(state.currentCarId)) return;
           if (json && json.site_meta && typeof json.site_meta === 'object') {
             state.siteMeta = Object.assign({}, state.siteMeta, json.site_meta);
+            CommunityPlans.maybeHandleAnnouncement(false);
           }
           if (json && json.success && json.data && Array.isArray(json.data.items)) {
             var localUpdated = false;
@@ -1581,20 +1588,21 @@
 
       // 6. 纵向流式渲染各个分类 (严格优先：1.本地浏览器 -> 2.国服顶尖 -> 3.其他玩家)
       var sectionsHtml = [];
-      var annObj = state.siteMeta && state.siteMeta.announcement;
-      var annText = '';
-      var annCls = '';
-      if (typeof annObj === 'string') {
-        annText = annObj.trim();
-      } else if (annObj && typeof annObj === 'object' && annObj.enabled !== false && annObj.text) {
-        annText = String(annObj.text).trim();
-        annCls = annObj.level === 'warning' ? 'is-warn' : (annObj.level === 'success' ? 'is-success' : '');
-      }
+      var annNorm = CommunityPlans.normalizeAnnouncementMeta(state.siteMeta && state.siteMeta.announcement);
+      var annCls = annNorm.level === 'warning' ? 'is-warn' : (annNorm.level === 'success' ? 'is-success' : '');
       if (state.siteMeta && state.siteMeta.maintenance_mode) {
         var maintText = state.siteMeta.maintenance_message || '社区服务正在维护中，您仍可正常使用本地保存方案';
         sectionsHtml.push('<div class="cp-site-banner is-warn">' + Icons.megaphone + '<span>' + Utils.escapeHtml(maintText) + '</span></div>');
-      } else if (annText) {
-        sectionsHtml.push('<div class="cp-site-banner ' + annCls + '">' + Icons.megaphone + '<span>' + Utils.escapeHtml(annText) + '</span></div>');
+      } else if (annNorm.enabled && annNorm.text && annNorm.display_mode !== 'popup_only') {
+        var bannerTitle = annNorm.title ? ('【' + annNorm.title + '】') : '';
+        var previewText = bannerTitle + annNorm.text.replace(/\s+/g, ' ');
+        sectionsHtml.push(
+          '<button type="button" class="cp-site-banner is-clickable ' + annCls + '" onclick="CommunityPlans.openAnnouncementModal(null, { fromAuto: false })" title="点击展开完整公告详情">' +
+            Icons.megaphone +
+            '<span class="cp-site-banner-text">' + Utils.escapeHtml(previewText) + '</span>' +
+            '<span class="cp-site-banner-more">查看详情</span>' +
+          '</button>'
+        );
       }
 
       sectionsHtml.push([
@@ -1826,7 +1834,7 @@
         : ' onclick="CommunityPlans.applyPlanById(\'' + safePlanId + '\')"';
 
       var partnerAuthorBadge = isPartnerPlan
-        ? '<span class="cp-author-partner-badge" title="合作友站分享创作者">' + Icons.partner + '<span>友站</span></span>'
+        ? '<a class="cp-author-partner-badge" href="https://aceracer.top/" target="_blank" rel="noopener noreferrer" onclick="event.stopPropagation();" title="点击前往合作友站 https://aceracer.top/">' + Icons.partner + '<span>友站</span></a>'
         : '';
 
       return [
@@ -2729,6 +2737,240 @@
       if (CommunityPlans._rejectEscKeyHandler) {
         document.removeEventListener('keydown', CommunityPlans._rejectEscKeyHandler);
         CommunityPlans._rejectEscKeyHandler = null;
+      }
+    },
+
+    // 规范化站点公告元数据结构（兼容历史纯字符串与新版完整弹窗配置）
+    normalizeAnnouncementMeta: function (raw) {
+      if (typeof raw === 'string') {
+        var s = raw.trim();
+        return {
+          enabled: Boolean(s),
+          level: 'info',
+          title: '全站重要公告',
+          text: s,
+          display_mode: 'popup_and_bar',
+          trigger_rule: 'every_n_visits',
+          visit_interval: 20,
+          show_on_first: true,
+          cooldown_hours: 24,
+          allow_dismiss: true,
+          cta_text: '',
+          cta_url: '',
+          version: 1
+        };
+      }
+      if (!raw || typeof raw !== 'object') {
+        return {
+          enabled: false,
+          level: 'info',
+          title: '',
+          text: '',
+          display_mode: 'popup_and_bar',
+          trigger_rule: 'every_n_visits',
+          visit_interval: 20,
+          show_on_first: true,
+          cooldown_hours: 24,
+          allow_dismiss: true,
+          cta_text: '',
+          cta_url: '',
+          version: 1
+        };
+      }
+      var cleanUrl = String(raw.cta_url || '').trim();
+      if (cleanUrl && !/^https?:\/\/[^\s"'<>`]+$/i.test(cleanUrl)) {
+        cleanUrl = '';
+      }
+      var text = String(raw.text || '').trim();
+      return {
+        enabled: raw.enabled !== false && Boolean(text),
+        level: ['info', 'warning', 'success'].indexOf(raw.level) >= 0 ? raw.level : 'info',
+        title: String(raw.title || '全站重要公告').trim() || '全站重要公告',
+        text: text,
+        display_mode: ['popup_and_bar', 'popup_only', 'bar_only'].indexOf(raw.display_mode) >= 0 ? raw.display_mode : 'popup_and_bar',
+        trigger_rule: ['every_n_visits', 'once_per_version', 'cooldown_hours', 'every_visit'].indexOf(raw.trigger_rule) >= 0 ? raw.trigger_rule : 'every_n_visits',
+        visit_interval: Math.min(Math.max(parseInt(raw.visit_interval, 10) || 20, 1), 999),
+        show_on_first: raw.show_on_first !== false,
+        cooldown_hours: Math.min(Math.max(parseInt(raw.cooldown_hours, 10) || 24, 1), 720),
+        allow_dismiss: raw.allow_dismiss !== false,
+        cta_text: String(raw.cta_text || '').trim(),
+        cta_url: cleanUrl,
+        version: Number(raw.version) || 1
+      };
+    },
+
+    // 页面打开时独立拉取站点公告与开关配置
+    fetchSiteConfig: function () {
+      fetch('/api/plans?meta=site_config', {
+        method: 'GET',
+        headers: Utils.getApiHeaders(false)
+      })
+        .then(function (res) {
+          if (!res.ok) throw new Error('HTTP ' + res.status);
+          return res.json();
+        })
+        .then(function (json) {
+          if (json && json.site_meta && typeof json.site_meta === 'object') {
+            state.siteMeta = Object.assign({}, state.siteMeta, json.site_meta);
+            CommunityPlans.maybeHandleAnnouncement(true);
+            if (state.currentCarId) {
+              CommunityPlans.renderPlans();
+            }
+          }
+        })
+        .catch(function () {});
+    },
+
+    // 根据后台配置的触发时机（每打开 N 次 / 首次 / 冷却小时 / 每次）判定是否自动弹出全站公告
+    maybeHandleAnnouncement: function (allowCountVisit) {
+      var ann = CommunityPlans.normalizeAnnouncementMeta(state.siteMeta && state.siteMeta.announcement);
+      if (!ann.enabled || !ann.text) return;
+      if (ann.display_mode === 'bar_only') return;
+      // 如果同一会话里已经针对相同版本评估过，避免切车重复计次弹窗
+      if (state._annCheckedVersion === ann.version && state._annSessionCounted) return;
+      // 避免打断车友正在填写保存表单
+      if (document.getElementById('cpSaveModal') || document.getElementById('cpAnnouncementModal')) return;
+
+      var stored = Utils.getStorage(STORAGE_KEYS.ANNOUNCEMENT_STATE, null);
+      if (!stored || typeof stored !== 'object' || Number(stored.version) !== ann.version) {
+        stored = {
+          version: ann.version,
+          visits: 0,
+          lastShownAt: 0,
+          dismissedVersion: 0
+        };
+      }
+
+      if (allowCountVisit || !state._annSessionCounted) {
+        stored.visits = (Number(stored.visits) || 0) + 1;
+        state._annSessionCounted = true;
+      }
+      state._annCheckedVersion = ann.version;
+
+      if (ann.allow_dismiss && Number(stored.dismissedVersion) === ann.version) {
+        Utils.setStorage(STORAGE_KEYS.ANNOUNCEMENT_STATE, stored);
+        return;
+      }
+
+      var shouldShow = false;
+      var visits = Math.max(1, Number(stored.visits) || 1);
+      var lastAt = Number(stored.lastShownAt) || 0;
+
+      if (ann.trigger_rule === 'every_visit') {
+        shouldShow = true;
+      } else if (ann.trigger_rule === 'once_per_version') {
+        shouldShow = !lastAt;
+      } else if (ann.trigger_rule === 'cooldown_hours') {
+        var cooldownMs = ann.cooldown_hours * 3600 * 1000;
+        shouldShow = !lastAt || (Date.now() - lastAt >= cooldownMs);
+      } else {
+        // 默认 every_n_visits：每打开网站 N 次展示 1 次
+        var interval = ann.visit_interval;
+        if (ann.show_on_first) {
+          shouldShow = (visits === 1) || ((visits - 1) % interval === 0);
+        } else {
+          shouldShow = (visits % interval === 0);
+        }
+      }
+
+      if (shouldShow) {
+        stored.lastShownAt = Date.now();
+        Utils.setStorage(STORAGE_KEYS.ANNOUNCEMENT_STATE, stored);
+        CommunityPlans.openAnnouncementModal(ann, { fromAuto: true, visits: visits });
+      } else {
+        Utils.setStorage(STORAGE_KEYS.ANNOUNCEMENT_STATE, stored);
+      }
+    },
+
+    // 打开全站公告弹窗（自动触发或点击横幅主动查看）
+    openAnnouncementModal: function (rawAnn, opts) {
+      var ann = CommunityPlans.normalizeAnnouncementMeta(rawAnn || (state.siteMeta && state.siteMeta.announcement));
+      if (!ann.enabled || !ann.text) return;
+      CommunityPlans.closeAnnouncementModal(true);
+
+      var stored = Utils.getStorage(STORAGE_KEYS.ANNOUNCEMENT_STATE, {}) || {};
+      var isDismissed = ann.allow_dismiss && Number(stored.dismissedVersion) === ann.version;
+      var badgeLabel = ann.level === 'warning' ? '重要提醒' : (ann.level === 'success' ? '更新公告' : '全站公告');
+      var levelCls = ann.level === 'warning' ? 'is-warn' : (ann.level === 'success' ? 'is-success' : 'is-info');
+
+      var modal = document.createElement('div');
+      modal.id = 'cpAnnouncementModal';
+      modal.className = 'cp-modal-overlay is-open';
+      modal.onclick = function (e) {
+        if (e.target === modal) CommunityPlans.closeAnnouncementModal();
+      };
+      modal.addEventListener('wheel', function (e) {
+        if (e.target === modal) e.preventDefault();
+      }, { passive: false });
+      modal.addEventListener('touchmove', function (e) {
+        if (e.target === modal) e.preventDefault();
+      }, { passive: false });
+
+      document.body.classList.add('cp-modal-locked');
+      CommunityPlans._annEscKeyHandler = function (e) {
+        if (e.key === 'Escape' || e.keyCode === 27) {
+          CommunityPlans.closeAnnouncementModal();
+        }
+      };
+      document.addEventListener('keydown', CommunityPlans._annEscKeyHandler);
+
+      var ctaHtml = (ann.cta_text && ann.cta_url)
+        ? '<a class="nav-btn cp-btn cp-ann-cta-btn" href="' + Utils.escapeHtml(ann.cta_url) + '" target="_blank" rel="noopener noreferrer">' + Icons.link + '<span>' + Utils.escapeHtml(ann.cta_text) + '</span></a>'
+        : '';
+
+      var dismissHtml = ann.allow_dismiss
+        ? '<label class="cp-ann-dismiss-label"><input type="checkbox" id="cpAnnDismissCheck"' + (isDismissed ? ' checked' : '') + '><span>本次公告不再自动弹出</span></label>'
+        : '<span class="cp-ann-force-hint">重要通知 · 关闭后到达周期仍将提醒</span>';
+
+      modal.innerHTML = [
+        '<div class="card cp-modal-dialog cp-ann-dialog ' + levelCls + '" onclick="event.stopPropagation()" data-ann-version="' + Utils.escapeHtml(String(ann.version)) + '" data-allow-dismiss="' + (ann.allow_dismiss ? '1' : '0') + '">',
+        '  <div class="cp-modal-head">',
+        '    <div class="cp-ann-head-left">',
+        '      <span class="cp-ann-level-pill ' + levelCls + '">' + Icons.megaphone + '<span>' + badgeLabel + '</span></span>',
+        '      <h4 class="cp-modal-title">' + Utils.escapeHtml(ann.title) + '</h4>',
+        '    </div>',
+        '    <button type="button" class="nav-btn select-btn cp-modal-close" aria-label="关闭公告" onclick="CommunityPlans.closeAnnouncementModal()">',
+        '      ' + Icons.close,
+        '    </button>',
+        '  </div>',
+        '  <div class="cp-modal-body">',
+        '    <div class="cp-ann-body-card">' + Utils.escapeHtml(ann.text) + '</div>',
+        '  </div>',
+        '  <div class="cp-modal-footer cp-ann-footer">',
+        '    <div class="cp-ann-footer-left">' + dismissHtml + '</div>',
+        '    <div class="cp-ann-footer-actions">',
+        '      ' + ctaHtml,
+        '      <button type="button" class="nav-btn cp-btn cp-btn-save" onclick="CommunityPlans.closeAnnouncementModal()">' + Icons.check + ' 我知道了</button>',
+        '    </div>',
+        '  </div>',
+        '</div>'
+      ].join('');
+
+      document.body.appendChild(modal);
+    },
+
+    closeAnnouncementModal: function (skipPersist) {
+      var modal = document.getElementById('cpAnnouncementModal');
+      if (modal) {
+        if (!skipPersist) {
+          var dialog = modal.querySelector('.cp-ann-dialog');
+          var chk = document.getElementById('cpAnnDismissCheck');
+          if (dialog && chk && dialog.getAttribute('data-allow-dismiss') === '1') {
+            var ver = Number(dialog.getAttribute('data-ann-version')) || 1;
+            var stored = Utils.getStorage(STORAGE_KEYS.ANNOUNCEMENT_STATE, null);
+            if (!stored || typeof stored !== 'object') {
+              stored = { version: ver, visits: 1, lastShownAt: Date.now(), dismissedVersion: 0 };
+            }
+            stored.dismissedVersion = chk.checked ? ver : 0;
+            Utils.setStorage(STORAGE_KEYS.ANNOUNCEMENT_STATE, stored);
+          }
+        }
+        modal.remove();
+      }
+      document.body.classList.remove('cp-modal-locked');
+      if (CommunityPlans._annEscKeyHandler) {
+        document.removeEventListener('keydown', CommunityPlans._annEscKeyHandler);
+        CommunityPlans._annEscKeyHandler = null;
       }
     },
 

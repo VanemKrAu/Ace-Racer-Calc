@@ -14,7 +14,7 @@
 //    于是每次 SW 换版本，这两个文件连同缓存首页都会被整批删掉，离线直接断。
 //    缓存桶换名（v9 → v10）时旧桶整个删掉就够干净了，不需要逐条扫。
 
-const CACHE_NAME = 'calc-shell-v14';
+const CACHE_NAME = 'calc-shell-v15';
 
 // 离线真正要用到的核心骨架与静态资源。html2canvas 只在导出长图时用，走运行时缓存即可。
 const PRECACHE = [
