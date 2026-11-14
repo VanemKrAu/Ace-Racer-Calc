@@ -388,6 +388,7 @@
     remotePage: 1,
     remotePageSize: 8,
     remoteTotal: 0,
+    allCarTotal: 0,
     remoteTotalPages: 1,
     remoteHasMore: false,
     isLoadingMore: false,
@@ -1263,6 +1264,9 @@
         card.style.overflow = '';
         container.classList.toggle('pv-collapsed', shouldShut);
         card.classList.toggle('pv-collapsed', shouldShut);
+        if (!shouldShut) {
+          CommunityPlans._syncControlsBar(undefined, false);
+        }
         return;
       }
 
@@ -1284,6 +1288,7 @@
         window.__pvMorph(card, true, ['height'], kids, function () {
           card.classList.remove('pv-collapsed');
           if (container !== card) container.classList.remove('pv-collapsed');
+          CommunityPlans._syncControlsBar(undefined, false);
           return { height: card.getBoundingClientRect().height };
         }, null);
       }
@@ -1302,6 +1307,7 @@
         state.remotePlans = [];
         state.remotePage = 1;
         state.remoteTotal = 0;
+        state.allCarTotal = 0;
         state.remoteTotalPages = 1;
         state.remoteHasMore = false;
         state.isLoadingMore = false;
@@ -1319,6 +1325,7 @@
         state.remotePlans = [];
         state.remotePage = 1;
         state.remoteTotal = 0;
+        state.allCarTotal = 0;
         state.remoteTotalPages = 1;
         state.remoteHasMore = false;
         state.isLoadingMore = false;
@@ -1514,6 +1521,9 @@
 
             state.remotePage = Number(json.data.page) || targetPage;
             state.remoteTotal = Math.max(state.remotePlans.length, Number(json.data.total) || 0);
+            if (calcModeParam === 'all') {
+              state.allCarTotal = Math.max(state.allCarTotal, state.remoteTotal);
+            }
             state.remoteTotalPages = Math.max(1, Number(json.data.total_pages) || Math.ceil(state.remoteTotal / pageSize) || 1);
             state.remoteHasMore = typeof json.data.has_more === 'boolean'
               ? json.data.has_more
@@ -1580,8 +1590,87 @@
         '    <span class="cp-fold-indicator" aria-hidden="true">' + Icons.chevron + '</span>',
         '  </button>',
         '</div>',
+        '<div id="cpFixedHeader" class="cp-fixed-header">',
+        '  <div id="cpBannerSlot" style="display:none;"></div>',
+        '  <div id="cpControlsBarSlot" class="cp-controls-bar" style="display:none;">',
+        '    <div class="cp-ctrl-group">',
+        '      <span class="cp-controls-hint">模式筛选</span>',
+        '      <div id="cpFilterSeg" class="cp-seg-track" role="radiogroup" aria-label="方案模式筛选">',
+        '        <span class="cp-seg-thumb" aria-hidden="true"></span>',
+        '        <button type="button" class="cp-seg-btn is-on" data-val="all" onclick="CommunityPlans.setFilterMode(\'all\')">全部</button>',
+        '        <button type="button" class="cp-seg-btn" data-val="solo" onclick="CommunityPlans.setFilterMode(\'solo\')">先机汇能</button>',
+        '        <button type="button" class="cp-seg-btn" data-val="team" onclick="CommunityPlans.setFilterMode(\'team\')">团魂获能</button>',
+        '      </div>',
+        '    </div>',
+        '    <div class="cp-ctrl-group">',
+        '      <span class="cp-controls-hint">排序</span>',
+        '      <div id="cpSortSeg" class="cp-seg-track" role="radiogroup" aria-label="方案排序">',
+        '        <span class="cp-seg-thumb" aria-hidden="true"></span>',
+        '        <button type="button" class="cp-seg-btn is-on" data-val="hot" onclick="CommunityPlans.setSortMode(\'hot\')">最热</button>',
+        '        <button type="button" class="cp-seg-btn" data-val="latest" onclick="CommunityPlans.setSortMode(\'latest\')">最新</button>',
+        '      </div>',
+        '    </div>',
+        '  </div>',
+        '</div>',
         '<div id="cpSectionsStream" class="cp-sections-stream"></div>'
       ].join('');
+
+      if (!window.__cpResizeSegBound) {
+        window.__cpResizeSegBound = true;
+        window.addEventListener('resize', function () {
+          CommunityPlans._syncControlsBar(undefined, false);
+        });
+      }
+    },
+
+    _syncSegThumb: function (trackId, activeVal, animate) {
+      var track = document.getElementById(trackId);
+      if (!track) return;
+      var thumb = track.querySelector('.cp-seg-thumb');
+      var btns = track.querySelectorAll('.cp-seg-btn');
+      var activeBtn = null;
+      for (var i = 0; i < btns.length; i += 1) {
+        var isMatch = btns[i].getAttribute('data-val') === activeVal;
+        btns[i].classList.toggle('is-on', isMatch);
+        btns[i].setAttribute('aria-pressed', isMatch ? 'true' : 'false');
+        if (isMatch) activeBtn = btns[i];
+      }
+      if (!thumb || !activeBtn || track.offsetWidth === 0 || activeBtn.offsetWidth === 0) return;
+
+      var wasReady = thumb.classList.contains('is-ready');
+      var useAnim = Boolean(animate && wasReady);
+      if (!useAnim) {
+        thumb.classList.add('no-anim');
+      } else {
+        thumb.classList.remove('no-anim');
+      }
+
+      thumb.style.width = activeBtn.offsetWidth + 'px';
+      thumb.style.height = activeBtn.offsetHeight + 'px';
+      thumb.style.transform = 'translate3d(' + activeBtn.offsetLeft + 'px, ' + activeBtn.offsetTop + 'px, 0)';
+      thumb.classList.add('is-ready');
+
+      if (!useAnim) {
+        void thumb.offsetWidth;
+        requestAnimationFrame(function () {
+          thumb.classList.remove('no-anim');
+        });
+      }
+    },
+
+    _syncControlsBar: function (showControls, animate) {
+      var bar = document.getElementById('cpControlsBarSlot');
+      if (!bar) return;
+      if (typeof showControls === 'boolean') {
+        var wasVisible = bar.style.display !== 'none';
+        bar.style.display = showControls ? '' : 'none';
+        if (!showControls) return;
+        if (!wasVisible) animate = false;
+      } else if (bar.style.display === 'none') {
+        return;
+      }
+      CommunityPlans._syncSegThumb('cpFilterSeg', state.filterMode || 'all', animate);
+      CommunityPlans._syncSegThumb('cpSortSeg', state.sortMode || 'hot', animate);
     },
 
     // 切换列表排序（最热 / 最新）
@@ -1589,6 +1678,7 @@
       var nextMode = mode === 'latest' ? 'latest' : 'hot';
       if (state.sortMode === nextMode) return;
       state.sortMode = nextMode;
+      CommunityPlans._syncControlsBar(true, true);
       state.remotePlans = [];
       state.remotePage = 1;
       state.remoteTotal = 0;
@@ -1606,6 +1696,7 @@
       var nextMode = (mode === 'solo' || mode === 'team') ? mode : 'all';
       if (state.filterMode === nextMode) return;
       state.filterMode = nextMode;
+      CommunityPlans._syncControlsBar(true, true);
       state.remotePlans = [];
       state.remotePage = 1;
       state.remoteTotal = 0;
@@ -1642,8 +1733,14 @@
 
       var carName = state.currentCar ? (state.currentCar.name || '未知') : '未选赛车';
 
-      // 2. 未选赛车状态 -> 自动折叠（先写入 DOM，再切状态）
+      // 2. 未选赛车状态 -> 隐藏控制栏并自动折叠
       if (!state.currentCarId || state.currentCarId === -1) {
+        var bannerSlotEmpty = document.getElementById('cpBannerSlot');
+        if (bannerSlotEmpty) {
+          bannerSlotEmpty.style.display = 'none';
+          bannerSlotEmpty.innerHTML = '';
+        }
+        CommunityPlans._syncControlsBar(false, false);
         if (badge) {
           badge.innerHTML = '<span class="zh">未选赛车 · 点击展开</span><span class="lang-en">No Car Selected</span>';
         }
@@ -1695,9 +1792,19 @@
 
       var loadedRemoteCount = partnerList.length + remoteProList.length + remoteList.length;
       var totalPlans = Math.max(loadedRemoteCount, state.remoteTotal || 0) + baseProList.length + localList.length;
+      if (state.filterMode === 'all') {
+        state.allCarTotal = Math.max(state.allCarTotal, totalPlans);
+      }
 
-      // 4. 更新标题栏徽标与折叠状态联动 (加载完成且无方案时自动折叠卡片)
-      if (totalPlans === 0 && !state.isFetchingRemote) {
+      // 4. 更新标题栏徽标与折叠状态联动 (仅在「全部」模式下确认为 0 方案时才自动折叠；筛选其他模式时始终保留控制栏不折叠)
+      var isCarTrulyEmpty = (totalPlans === 0 && !state.isFetchingRemote && state.filterMode === 'all' && state.allCarTotal === 0);
+      if (isCarTrulyEmpty) {
+        var bannerSlotNone = document.getElementById('cpBannerSlot');
+        if (bannerSlotNone) {
+          bannerSlotNone.style.display = 'none';
+          bannerSlotNone.innerHTML = '';
+        }
+        CommunityPlans._syncControlsBar(false, false);
         if (badge) {
           badge.innerHTML = '<span class="zh">' + Utils.escapeHtml(carName) + ' · 暂无方案 (点击展开)</span><span class="lang-en">No Setups (Click to expand)</span>';
         }
@@ -1714,11 +1821,12 @@
         return;
       }
 
-      // 有方案（或正在首屏加载）时更新标题徽标
+      // 有方案、正在加载或正在筛选模式时更新标题徽标
       if (badge) {
+        var knownTotal = Math.max(totalPlans, state.allCarTotal || 0);
         badge.innerHTML = state.isFetchingRemote && totalPlans === 0
           ? '<span class="zh">' + Utils.escapeHtml(carName) + ' · 加载中...</span><span class="lang-en">Loading...</span>'
-          : '<span class="zh">' + Utils.escapeHtml(carName) + ' (' + totalPlans + ' 方案)</span><span class="lang-en">' + Utils.escapeHtml(carName) + '</span>';
+          : '<span class="zh">' + Utils.escapeHtml(carName) + ' (' + knownTotal + ' 方案)</span><span class="lang-en">' + Utils.escapeHtml(carName) + '</span>';
       }
 
       // 5. 模式筛选与智能置底排序（当前模式可用的方案排前，不可用灰态方案沉底；桶内按最热/最新降序）
@@ -1746,45 +1854,33 @@
       localList = sortByCompatAndMetric(filterByPlanMode(localList));
       var filteredTotal = partnerList.length + proList.length + remoteList.length + localList.length;
 
-      // 6. 固定顶部控制区 + 内部固定高度可滚动列表视口
-      var headerHtml = [];
+      // 6. 更新顶部持久化横幅与常驻模式/排序控制条 + 内部固定高度可滚动列表视口
+      var bannerHtml = '';
       var viewportHtml = [];
       var annNorm = CommunityPlans.normalizeAnnouncementMeta(state.siteMeta && state.siteMeta.announcement);
       var annCls = annNorm.level === 'warning' ? 'is-warn' : (annNorm.level === 'success' ? 'is-success' : '');
       if (state.siteMeta && state.siteMeta.maintenance_mode) {
         var maintText = state.siteMeta.maintenance_message || '社区服务正在维护中，您仍可正常使用本地保存方案';
-        headerHtml.push('<div class="cp-site-banner is-warn">' + Icons.megaphone + '<span>' + Utils.escapeHtml(maintText) + '</span></div>');
+        bannerHtml = '<div class="cp-site-banner is-warn">' + Icons.megaphone + '<span>' + Utils.escapeHtml(maintText) + '</span></div>';
       } else if (annNorm.enabled && annNorm.text && annNorm.display_mode !== 'popup_only') {
         var bannerTitle = annNorm.title ? ('【' + annNorm.title + '】') : '';
         var previewText = bannerTitle + annNorm.text.replace(/\s+/g, ' ');
-        headerHtml.push(
+        bannerHtml =
           '<button type="button" class="cp-site-banner is-clickable ' + annCls + '" onclick="CommunityPlans.openAnnouncementModal(null, { fromAuto: false })" title="点击展开完整公告详情">' +
             Icons.megaphone +
             '<span class="cp-site-banner-text">' + Utils.escapeHtml(previewText) + '</span>' +
             '<span class="cp-site-banner-more">查看详情</span>' +
-          '</button>'
-        );
+          '</button>';
       }
 
-      headerHtml.push([
-        '<div class="cp-controls-bar">',
-        '  <div class="cp-ctrl-group">',
-        '    <span class="cp-controls-hint">模式筛选</span>',
-        '    <div class="chip-seg cp-sort-seg cp-filter-seg">',
-        '      <button type="button" class="' + (state.filterMode === 'all' ? 'is-on' : '') + '" onclick="CommunityPlans.setFilterMode(\'all\')">全部</button>',
-        '      <button type="button" class="' + (state.filterMode === 'solo' ? 'is-on' : '') + '" onclick="CommunityPlans.setFilterMode(\'solo\')">先机汇能</button>',
-        '      <button type="button" class="' + (state.filterMode === 'team' ? 'is-on' : '') + '" onclick="CommunityPlans.setFilterMode(\'team\')">团魂获能</button>',
-        '    </div>',
-        '  </div>',
-        '  <div class="cp-ctrl-group">',
-        '    <span class="cp-controls-hint">排序</span>',
-        '    <div class="chip-seg cp-sort-seg">',
-        '      <button type="button" class="' + (state.sortMode === 'hot' ? 'is-on' : '') + '" onclick="CommunityPlans.setSortMode(\'hot\')">最热</button>',
-        '      <button type="button" class="' + (state.sortMode === 'latest' ? 'is-on' : '') + '" onclick="CommunityPlans.setSortMode(\'latest\')">最新</button>',
-        '    </div>',
-        '  </div>',
-        '</div>'
-      ].join(''));
+      var bannerSlot = document.getElementById('cpBannerSlot');
+      if (bannerSlot) {
+        if (bannerSlot.__lastHtml !== bannerHtml) {
+          bannerSlot.innerHTML = bannerHtml;
+          bannerSlot.__lastHtml = bannerHtml;
+        }
+        bannerSlot.style.display = bannerHtml ? '' : 'none';
+      }
 
       if (state.isFetchingRemote && filteredTotal === 0) {
         viewportHtml.push([
@@ -1794,12 +1890,12 @@
           '</div>'
         ].join(''));
       } else if (filteredTotal === 0) {
-        var filterLabel = state.filterMode === 'solo' ? '先机汇能' : '团魂获能';
+        var filterLabel = state.filterMode === 'solo' ? '先机汇能' : (state.filterMode === 'team' ? '团魂获能' : '全部');
         viewportHtml.push([
           '<div class="cp-empty-box cp-filter-empty">',
           '  ' + Icons.emptyBox,
           '  <div class="cp-empty-title">当前「' + filterLabel + '」模式下暂无方案</div>',
-          '  <div class="cp-empty-desc">点击下方按钮可查看全部模式方案</div>',
+          '  <div class="cp-empty-desc">您可通过上方筛选栏切换其他模式，或点击下方按钮查看全部方案</div>',
           '  <button type="button" class="nav-btn cp-btn cp-btn-save" onclick="CommunityPlans.setFilterMode(\'all\')">显示全部方案</button>',
           '</div>'
         ].join(''));
@@ -1914,13 +2010,14 @@
         );
       }
 
-      stream.innerHTML = headerHtml.join('') + '<div id="cpScrollViewport" class="cp-scroll-viewport">' + viewportHtml.join('') + '</div>';
+      stream.innerHTML = '<div id="cpScrollViewport" class="cp-scroll-viewport">' + viewportHtml.join('') + '</div>';
       if (renderOpts.preserveScroll && savedScrollTop > 0) {
         var nextViewport = document.getElementById('cpScrollViewport');
         if (nextViewport) nextViewport.scrollTop = savedScrollTop;
       }
       CommunityPlans.bindLazyScroll();
       CommunityPlans.toggleCollapse(false, !container.__cpRenderedOnce);
+      CommunityPlans._syncControlsBar(true, true);
       container.__cpRenderedOnce = true;
     },
 

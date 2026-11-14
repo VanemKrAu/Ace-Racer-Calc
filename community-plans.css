@@ -517,6 +517,12 @@ body[data-calc-mode="support"] #communityPlansContainer {
   color: var(--acc);
 }
 
+.ds-c .cp-fixed-header {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
 .ds-c .cp-controls-bar {
   display: flex;
   align-items: center;
@@ -540,32 +546,72 @@ body[data-calc-mode="support"] #communityPlansContainer {
   white-space: nowrap;
 }
 
-.ds-c .cp-sort-seg {
+/* 平滑滑动胶囊分段器（独立组件，零 DOM 重建抖动、零字重跳变） */
+.ds-c .cp-seg-track {
+  position: relative;
+  isolation: isolate;
   display: inline-flex;
+  align-items: center;
   padding: 3px;
   border-radius: 10px;
   background: var(--fill);
   border: 1px solid var(--surface-edge);
   gap: 2px;
+  user-select: none;
+  -webkit-user-select: none;
 }
 
-.ds-c .cp-sort-seg button {
+.ds-c .cp-seg-thumb {
+  position: absolute;
+  z-index: 0;
+  top: 0;
+  left: 0;
+  width: 0;
+  height: 0;
+  border-radius: 7px;
+  pointer-events: none;
+  background: color-mix(in oklab, var(--acc) 20%, var(--surface));
+  border: 1px solid color-mix(in oklab, var(--acc) 45%, var(--surface-edge));
+  box-shadow: inset 0 1px 0 var(--surface-rim), 0 2px 6px rgba(0, 0, 0, .12);
+  opacity: 0;
+  transition: transform .24s cubic-bezier(.22, 1, .36, 1), width .24s cubic-bezier(.22, 1, .36, 1), height .2s ease, opacity .15s ease;
+}
+
+.ds-c .cp-seg-thumb.is-ready {
+  opacity: 1;
+}
+
+.ds-c .cp-seg-thumb.no-anim {
+  transition: none !important;
+}
+
+.ds-c .cp-seg-btn {
+  position: relative;
+  z-index: 1;
   border: none;
   background: transparent;
   color: var(--ink-2);
   font-size: 12px;
   font-weight: 600;
+  line-height: 1.35;
   padding: 4px 11px;
   border-radius: 7px;
   cursor: pointer;
   white-space: nowrap;
-  transition: background-color .15s ease, color .15s ease, box-shadow .15s ease;
+  transition: color .2s ease;
 }
 
-.ds-c .cp-sort-seg button.is-on {
-  background: color-mix(in oklab, var(--acc) 22%, var(--surface));
+.ds-c .cp-seg-btn:hover {
+  color: var(--ink);
+}
+
+.ds-c .cp-seg-btn.is-on {
   color: var(--acc-ink, var(--acc));
-  box-shadow: inset 0 1px 0 var(--surface-rim);
+}
+
+.ds-c .cp-seg-btn:focus-visible {
+  outline: 2px solid var(--acc);
+  outline-offset: 1px;
 }
 
 .ds-c .cp-sec-list {
@@ -2056,11 +2102,11 @@ body.cp-modal-locked {
     display: none;
   }
 
-  .ds-c .cp-sort-seg {
+  .ds-c .cp-seg-track {
     flex-wrap: nowrap;
   }
 
-  .ds-c .cp-sort-seg button {
+  .ds-c .cp-seg-btn {
     padding: 4px 8px;
     font-size: 11px;
   }
@@ -2129,7 +2175,7 @@ body.cp-modal-locked {
 }
 
 @media (max-width: 374px) {
-  .ds-c .cp-sort-seg button {
+  .ds-c .cp-seg-btn {
     padding: 4px 6px;
     font-size: 10.5px;
   }
