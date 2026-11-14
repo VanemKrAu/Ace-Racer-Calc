@@ -1025,6 +1025,55 @@ body[data-calc-mode="support"] #communityPlansContainer {
   border: 1px solid color-mix(in oklab, #10b981 50%, transparent);
 }
 
+.ds-c .cp-badge-cleaned {
+  background: color-mix(in oklab, var(--ink-3, #888) 16%, var(--surface));
+  color: var(--ink-2);
+  border: 1px solid color-mix(in oklab, var(--ink-3, #888) 38%, transparent);
+}
+
+.ds-c .cp-card-reject-banner {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-top: 8px;
+  padding: 7px 10px;
+  border-radius: var(--r-sm, 8px);
+  background: color-mix(in oklab, #ef4444 13%, var(--surface));
+  border: 1px solid color-mix(in oklab, #ef4444 38%, transparent);
+  cursor: pointer;
+  font-size: 12px;
+  line-height: 1.45;
+  transition: background-color .15s ease, border-color .15s ease;
+}
+
+.ds-c .cp-card-reject-banner:hover {
+  background: color-mix(in oklab, #ef4444 22%, var(--surface));
+  border-color: color-mix(in oklab, #ef4444 58%, transparent);
+}
+
+.ds-c .cp-reject-banner-lbl {
+  flex-shrink: 0;
+  font-weight: 700;
+  color: #f87171;
+}
+
+.ds-c .cp-reject-banner-text {
+  flex: 1;
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  color: var(--ink-2);
+}
+
+.ds-c .cp-reject-banner-more {
+  flex-shrink: 0;
+  font-weight: 600;
+  color: #f87171;
+  text-decoration: underline;
+  text-underline-offset: 2px;
+}
+
 /* 审核驳回详情微光弹窗 */
 .ds-c .cp-reject-feedback-box {
   display: flex;

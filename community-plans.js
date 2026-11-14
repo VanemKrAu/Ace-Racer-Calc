@@ -173,10 +173,12 @@
   function isTeamOnlyPlan(p) {
     var param = p || {};
     if (param.calc_mode === 'team') return true;
-    if (param.device && DEVICE_LABEL_MAP[param.device] && param.device !== '0') return true;
+    if (param.calc_mode === 'solo') return false;
+    var devKey = (param.device && DEVICE_LABEL_MAP[param.device] && param.device !== '0') ? param.device : '';
+    if (devKey) return true;
     var th = Number(param.tuanhun !== undefined ? param.tuanhun : param.team_spirit) || 0;
     if (th > 0) return true;
-    if ((Number(param.dev_sub_first) || 0) > 0 || (Number(param.dev_sub_loop) || 0) > 0) return true;
+    if ((devKey === 'chg' || devKey === 'schg') && ((Number(param.dev_sub_first) || 0) > 0 || (Number(param.dev_sub_loop) || 0) > 0)) return true;
     return false;
   }
 
@@ -742,9 +744,12 @@
         var optStr = Object.keys(o).sort().map(function (k) { return k + '=' + String(o[k]); }).join(',');
         return String(c.id || c.name || c.type || '') + (optStr ? ':' + optStr : '');
       }).filter(Boolean).sort();
+      var calcModeNorm = paramObj.calc_mode === 'team' ? 'team' : 'solo';
+      var normDevice = calcModeNorm === 'solo' ? '' : String(paramObj.device || '').trim().toLowerCase();
+      var hasChargeDev = normDevice === 'chg' || normDevice === 'schg';
       var canonical = [
         'car=' + String(carId || ''),
-        'cm=' + String(paramObj.calc_mode === 'team' ? 'team' : 'solo'),
+        'cm=' + calcModeNorm,
         'ut=' + num(paramObj.ult_threshold, 100),
         'sc=' + num(paramObj.start_charge, 0),
         'bn=' + num(paramObj.base_nitro, 0),
@@ -759,10 +764,10 @@
         'mn=' + (paramObj.is_manual_nitro ? 1 : 0),
         'fn=' + num(paramObj.first_nitro_count !== undefined ? paramObj.first_nitro_count : paramObj.start_nitro_count, 1),
         'ln=' + num(paramObj.loop_nitro_count !== undefined ? paramObj.loop_nitro_count : paramObj.cycle_nitro_count, 0),
-        'th=' + num(paramObj.tuanhun !== undefined ? paramObj.tuanhun : paramObj.team_spirit, 0),
-        'dev=' + String(paramObj.device || ''),
-        'dsf=' + num(paramObj.dev_sub_first, 0),
-        'dsl=' + num(paramObj.dev_sub_loop, 0),
+        'th=' + (calcModeNorm === 'solo' ? 0 : num(paramObj.tuanhun !== undefined ? paramObj.tuanhun : paramObj.team_spirit, 0)),
+        'dev=' + normDevice,
+        'dsf=' + (calcModeNorm === 'solo' || !hasChargeDev ? 0 : num(paramObj.dev_sub_first, 0)),
+        'dsl=' + (calcModeNorm === 'solo' || !hasChargeDev ? 0 : num(paramObj.dev_sub_loop, 0)),
         'jf=' + num(paramObj.jiezou_first, 0),
         'jl=' + num(paramObj.jiezou_loop, 0),
         'qs=' + (paramObj.queyi_self ? 1 : 0),
@@ -832,10 +837,13 @@
       var curMode = (typeof window.getCalcMode === 'function')
         ? window.getCalcMode()
         : (document.body.getAttribute('data-calc-mode') || 'solo');
+      var isTeamMode = (curMode === 'team');
+      var capturedDev = (isTeamMode && typeof window.getDevice === 'function') ? String(window.getDevice() || '') : '';
+      var hasChargeDevice = isTeamMode && (capturedDev === 'chg' || capturedDev === 'schg');
 
       return {
         schema_version: 2,
-        calc_mode: curMode === 'team' ? 'team' : 'solo',
+        calc_mode: isTeamMode ? 'team' : 'solo',
         ult_threshold: ParamsIO.getVal('ultThreshold', 100),
         start_charge: ParamsIO.getVal('startCharge', 0),
         base_nitro: ParamsIO.getVal('baseNitro', 0),
@@ -872,10 +880,10 @@
         huineng: ParamsIO.getVal('inputHuineng', 0),
         is_manual_nitro: window.isManualNitroCount ? 1 : 0,
         loop_nitro_count: ParamsIO.getInt('inputNitroCount', 0),
-        device: typeof window.getDevice === 'function' ? window.getDevice() : '',
-        dev_sub_first: ParamsIO.getVal('dev_sub_first', 0),
-        dev_sub_loop: ParamsIO.getVal('dev_sub_loop', 0),
-        tuanhun: ParamsIO.getVal('inputTuanhun', 0),
+        device: capturedDev,
+        dev_sub_first: hasChargeDevice ? ParamsIO.getVal('dev_sub_first', 0) : 0,
+        dev_sub_loop: hasChargeDevice ? ParamsIO.getVal('dev_sub_loop', 0) : 0,
+        tuanhun: isTeamMode ? ParamsIO.getVal('inputTuanhun', 0) : 0,
         chips_on: chipsOn
       };
     },
@@ -883,121 +891,138 @@
     apply: function (p) {
       if (!p) return;
 
-      ParamsIO.setVal('ultThreshold', p.ult_threshold);
-      ParamsIO.setVal('startCharge', p.start_charge);
-      ParamsIO.setVal('baseNitro', p.base_nitro);
-      ParamsIO.setVal('baseUltDuration', p.base_ult_dur);
-      ParamsIO.setChk('isSpec', p.is_spec !== undefined ? p.is_spec : 1);
-      var targetCounter = p.counter_range !== undefined ? p.counter_range : 0;
-      var targetDebuff = p.debuff_range !== undefined ? p.debuff_range : 0;
-      if (typeof window.setEnvSliders === 'function') {
-        window.setEnvSliders(targetCounter, targetDebuff);
-      } else {
-        ParamsIO.setVal('counterRange', targetCounter);
-        var cv = document.getElementById('counterValue');
-        if (cv) cv.innerText = targetCounter + '%';
-        ParamsIO.setVal('debuffRange', targetDebuff);
-        var dv = document.getElementById('debuffValue');
-        if (dv) dv.innerText = targetDebuff + '%';
-      }
-
-      if (p.nitro_rule) {
-        var r = document.getElementById('r_' + p.nitro_rule);
-        if (r) {
-          r.checked = true;
-          if (typeof window.handleNitroRadioChange === 'function') window.handleNitroRadioChange(true);
+      var prevRestoring = window.isRestoringConfig;
+      window.isRestoringConfig = true;
+      try {
+        var curCalcMode = (typeof window.getCalcMode === 'function')
+          ? window.getCalcMode()
+          : (document.body.getAttribute('data-calc-mode') || 'solo');
+        var targetDevice = (curCalcMode === 'team' && p.device && p.device !== '0') ? String(p.device) : '';
+        // 必须先还原增益装置状态以解除旧装置的禁用锁与历史快照，避免覆盖新方案的反制与赋能参数
+        if (typeof window.setDevice === 'function') {
+          window.setDevice(targetDevice, true);
         }
-        var tInput = document.getElementById('time_' + p.nitro_rule);
-        if (tInput && p.nitro_dur !== undefined) {
-          tInput.value = p.nitro_dur;
-          if (typeof window.syncNitroTimes === 'function') window.syncNitroTimes(p.nitro_rule);
-        }
-      }
+        ParamsIO.setVal('dev_sub_first', (targetDevice === 'chg' || targetDevice === 'schg') && p.dev_sub_first !== undefined ? p.dev_sub_first : 0);
+        ParamsIO.setVal('dev_sub_loop', (targetDevice === 'chg' || targetDevice === 'schg') && p.dev_sub_loop !== undefined ? p.dev_sub_loop : 0);
 
-      var cbs = document.querySelectorAll('.empower-checkbox');
-      cbs.forEach(function (cb) { cb.checked = false; });
-      var empList = Array.isArray(p.emps) ? p.emps : (Array.isArray(p.empowers) ? p.empowers : null);
-      if (empList) {
-        empList.forEach(function (eid) {
-          var cb = document.getElementById('chk_' + eid);
-          if (cb) {
-            cb.checked = true;
-            if (typeof window.handleEmpowerChange === 'function') window.handleEmpowerChange(cb);
+        ParamsIO.setVal('ultThreshold', p.ult_threshold);
+        ParamsIO.setVal('startCharge', p.start_charge);
+        ParamsIO.setVal('baseNitro', p.base_nitro);
+        ParamsIO.setVal('baseUltDuration', p.base_ult_dur);
+        ParamsIO.setChk('isSpec', p.is_spec !== undefined ? p.is_spec : 1);
+        var targetCounter = p.counter_range !== undefined ? p.counter_range : 0;
+        var targetDebuff = p.debuff_range !== undefined ? p.debuff_range : 0;
+        if (typeof window.setEnvSliders === 'function') {
+          window.setEnvSliders(targetCounter, targetDebuff);
+        } else {
+          ParamsIO.setVal('counterRange', targetCounter);
+          var cv = document.getElementById('counterValue');
+          if (cv) cv.innerText = targetCounter + '%';
+          ParamsIO.setVal('debuffRange', targetDebuff);
+          var dv = document.getElementById('debuffValue');
+          if (dv) dv.innerText = targetDebuff + '%';
+        }
+
+        if (p.nitro_rule) {
+          var r = document.getElementById('r_' + p.nitro_rule);
+          if (r) {
+            r.checked = true;
+            if (typeof window.handleNitroRadioChange === 'function') window.handleNitroRadioChange(true);
           }
-        });
-      }
-
-      ParamsIO.setVal('jiezou_sub_first', p.jiezou_first !== undefined ? p.jiezou_first : 0);
-      ParamsIO.setVal('jiezou_sub_loop', p.jiezou_loop !== undefined ? p.jiezou_loop : 0);
-      ParamsIO.setChk('queyi_sub_self', p.queyi_self !== undefined ? p.queyi_self : 0);
-      ParamsIO.setChk('queyi_sub_enemy', p.queyi_enemy !== undefined ? p.queyi_enemy : 0);
-      ParamsIO.setVal('huaxin_sub_first', p.huaxin_first !== undefined ? p.huaxin_first : 0);
-      ParamsIO.setVal('huaxin_sub_loop', p.huaxin_loop !== undefined ? p.huaxin_loop : 0);
-
-      ParamsIO.setChk('hasExtraNitro', p.has_extra_nitro !== undefined ? p.has_extra_nitro : 0);
-      ParamsIO.setVal('valExtraNitro', p.val_extra_nitro !== undefined ? p.val_extra_nitro : 0);
-      ParamsIO.setChk('chkExtraNitroFirst', p.chk_extra_nitro_first !== undefined ? p.chk_extra_nitro_first : 1);
-      ParamsIO.setChk('chkExtraNitroLoop', p.chk_extra_nitro_loop !== undefined ? p.chk_extra_nitro_loop : 1);
-
-      ParamsIO.setChk('hasExtraUlt', p.has_extra_ult !== undefined ? p.has_extra_ult : 0);
-      ParamsIO.setVal('valExtraUltFirst', p.val_extra_ult_first !== undefined ? p.val_extra_ult_first : 0);
-      ParamsIO.setVal('valExtraUltLoop', p.val_extra_ult_loop !== undefined ? p.val_extra_ult_loop : 0);
-
-      ParamsIO.setChk('hasExtraPerSec', p.has_extra_per_sec !== undefined ? p.has_extra_per_sec : 0);
-      ParamsIO.setVal('valExtraPerSec', p.val_extra_per_sec !== undefined ? p.val_extra_per_sec : 0);
-      ParamsIO.setChk('chkExtraPerSecFirst', p.chk_extra_per_sec_first !== undefined ? p.chk_extra_per_sec_first : 1);
-      ParamsIO.setChk('chkExtraPerSecLoop', p.chk_extra_per_sec_loop !== undefined ? p.chk_extra_per_sec_loop : 1);
-
-      ParamsIO.setVal('valCustomTrig', p.val_custom_trig !== undefined ? p.val_custom_trig : 0);
-      ParamsIO.setVal('customTrigFirstCount', p.custom_trig_first !== undefined ? p.custom_trig_first : 0);
-      ParamsIO.setVal('customTrigLoopCount', p.custom_trig_loop !== undefined ? p.custom_trig_loop : 0);
-
-      if (typeof window.toggleExtraUI === 'function') window.toggleExtraUI();
-
-      ParamsIO.setVal('extraEfficiency', p.extra_eff !== undefined ? p.extra_eff : 0);
-      var firstNitro = p.first_nitro_count !== undefined ? p.first_nitro_count : p.start_nitro_count;
-      ParamsIO.setVal('inputFirstNitroCount', firstNitro !== undefined ? firstNitro : 1);
-      ParamsIO.setVal('inputXianji', p.xianji !== undefined ? p.xianji : 0);
-      ParamsIO.setVal('inputHuineng', p.huineng !== undefined ? p.huineng : 0);
-      var tuanhunVal = p.tuanhun !== undefined ? p.tuanhun : p.team_spirit;
-      ParamsIO.setVal('inputTuanhun', tuanhunVal !== undefined ? tuanhunVal : 0);
-
-      var loopNitro = p.loop_nitro_count !== undefined ? p.loop_nitro_count : p.cycle_nitro_count;
-      if (p.is_manual_nitro !== undefined || loopNitro !== undefined) {
-        window.isManualNitroCount = p.is_manual_nitro !== undefined ? !!p.is_manual_nitro : true;
-        ParamsIO.setVal('inputNitroCount', loopNitro !== undefined ? loopNitro : 0);
-      } else {
-        window.isManualNitroCount = false;
-      }
-      if (typeof window.updateNitroCountUI === 'function') window.updateNitroCountUI();
-
-      if (typeof window.setDevice === 'function') {
-        var devType = (p.device === '0' || !p.device) ? '' : String(p.device);
-        window.setDevice(devType, true);
-      }
-      ParamsIO.setVal('dev_sub_first', p.dev_sub_first !== undefined ? p.dev_sub_first : 0);
-      ParamsIO.setVal('dev_sub_loop', p.dev_sub_loop !== undefined ? p.dev_sub_loop : 0);
-
-      var chipsList = Array.isArray(p.chips_on) ? p.chips_on : (Array.isArray(p.chips) ? p.chips : []);
-      var normChips = chipsList.map(function (c) {
-        if (typeof c === 'string') return { id: c, opts: { loopMode: 'peak' } };
-        if (c && typeof c === 'object') {
-          return {
-            id: c.id || c.type || c.name || '',
-            opts: c.opts && typeof c.opts === 'object' ? Object.assign({}, c.opts) : {}
-          };
+          var tInput = document.getElementById('time_' + p.nitro_rule);
+          if (tInput && p.nitro_dur !== undefined) {
+            tInput.value = p.nitro_dur;
+            if (typeof window.syncNitroTimes === 'function') window.syncNitroTimes(p.nitro_rule);
+          }
         }
-        return null;
-      }).filter(function (c) { return c && c.id; });
-      if (typeof window.chipRestore === 'function') {
-        var serialized = normChips.length ? normChips.map(function (inst) {
-          var o = Object.keys(inst.opts || {}).map(function (k) { return k + '=' + inst.opts[k]; }).join(',');
-          return inst.id + (o ? '.' + o : '');
-        }).join('-') : '0';
-        window.chipRestore(serialized);
-      } else if (typeof window.renderChips === 'function') {
-        window._chipsOn = normChips;
-        window.renderChips(true);
+
+        var cbs = document.querySelectorAll('.empower-checkbox');
+        cbs.forEach(function (cb) { cb.checked = false; });
+        var empList = Array.isArray(p.emps) ? p.emps : (Array.isArray(p.empowers) ? p.empowers : null);
+        if (empList) {
+          empList.forEach(function (eid) {
+            var cb = document.getElementById('chk_' + eid);
+            if (cb) {
+              cb.checked = true;
+              if (typeof window.handleEmpowerChange === 'function') window.handleEmpowerChange(cb);
+            }
+          });
+        }
+
+        ParamsIO.setVal('jiezou_sub_first', p.jiezou_first !== undefined ? p.jiezou_first : 0);
+        ParamsIO.setVal('jiezou_sub_loop', p.jiezou_loop !== undefined ? p.jiezou_loop : 0);
+        ParamsIO.setChk('queyi_sub_self', p.queyi_self !== undefined ? p.queyi_self : 0);
+        ParamsIO.setChk('queyi_sub_enemy', p.queyi_enemy !== undefined ? p.queyi_enemy : 0);
+        ParamsIO.setVal('huaxin_sub_first', p.huaxin_first !== undefined ? p.huaxin_first : 0);
+        ParamsIO.setVal('huaxin_sub_loop', p.huaxin_loop !== undefined ? p.huaxin_loop : 0);
+
+        ParamsIO.setChk('hasExtraNitro', p.has_extra_nitro !== undefined ? p.has_extra_nitro : 0);
+        ParamsIO.setVal('valExtraNitro', p.val_extra_nitro !== undefined ? p.val_extra_nitro : 0);
+        ParamsIO.setChk('chkExtraNitroFirst', p.chk_extra_nitro_first !== undefined ? p.chk_extra_nitro_first : 1);
+        ParamsIO.setChk('chkExtraNitroLoop', p.chk_extra_nitro_loop !== undefined ? p.chk_extra_nitro_loop : 1);
+
+        ParamsIO.setChk('hasExtraUlt', p.has_extra_ult !== undefined ? p.has_extra_ult : 0);
+        ParamsIO.setVal('valExtraUltFirst', p.val_extra_ult_first !== undefined ? p.val_extra_ult_first : 0);
+        ParamsIO.setVal('valExtraUltLoop', p.val_extra_ult_loop !== undefined ? p.val_extra_ult_loop : 0);
+
+        ParamsIO.setChk('hasExtraPerSec', p.has_extra_per_sec !== undefined ? p.has_extra_per_sec : 0);
+        ParamsIO.setVal('valExtraPerSec', p.val_extra_per_sec !== undefined ? p.val_extra_per_sec : 0);
+        ParamsIO.setChk('chkExtraPerSecFirst', p.chk_extra_per_sec_first !== undefined ? p.chk_extra_per_sec_first : 1);
+        ParamsIO.setChk('chkExtraPerSecLoop', p.chk_extra_per_sec_loop !== undefined ? p.chk_extra_per_sec_loop : 1);
+
+        ParamsIO.setVal('valCustomTrig', p.val_custom_trig !== undefined ? p.val_custom_trig : 0);
+        ParamsIO.setVal('customTrigFirstCount', p.custom_trig_first !== undefined ? p.custom_trig_first : 0);
+        ParamsIO.setVal('customTrigLoopCount', p.custom_trig_loop !== undefined ? p.custom_trig_loop : 0);
+
+        if (typeof window.toggleExtraUI === 'function') window.toggleExtraUI();
+
+        ParamsIO.setVal('extraEfficiency', p.extra_eff !== undefined ? p.extra_eff : 0);
+        var firstNitro = p.first_nitro_count !== undefined ? p.first_nitro_count : p.start_nitro_count;
+        ParamsIO.setVal('inputFirstNitroCount', firstNitro !== undefined ? firstNitro : 1);
+        ParamsIO.setVal('inputXianji', p.xianji !== undefined ? p.xianji : 0);
+        ParamsIO.setVal('inputHuineng', p.huineng !== undefined ? p.huineng : 0);
+        var tuanhunVal = p.tuanhun !== undefined ? p.tuanhun : p.team_spirit;
+        ParamsIO.setVal('inputTuanhun', tuanhunVal !== undefined ? tuanhunVal : 0);
+
+        // 团魂获能模式下套用方案时锁住三项输入值，防止紧接着 calculate() 自动反算覆盖方案原数值
+        if (curCalcMode === 'team' && window._tm && window._tm.lock) {
+          window._tm.lock = { soul: true, xianji: true, huineng: true };
+          window._tm.res = null;
+          if (typeof window._tmRender === 'function') window._tmRender();
+        }
+
+        var loopNitro = p.loop_nitro_count !== undefined ? p.loop_nitro_count : p.cycle_nitro_count;
+        if (p.is_manual_nitro !== undefined || loopNitro !== undefined) {
+          window.isManualNitroCount = p.is_manual_nitro !== undefined ? !!p.is_manual_nitro : true;
+          ParamsIO.setVal('inputNitroCount', loopNitro !== undefined ? loopNitro : 0);
+        } else {
+          window.isManualNitroCount = false;
+        }
+        if (typeof window.updateNitroCountUI === 'function') window.updateNitroCountUI();
+
+        var chipsList = Array.isArray(p.chips_on) ? p.chips_on : (Array.isArray(p.chips) ? p.chips : []);
+        var normChips = chipsList.map(function (c) {
+          if (typeof c === 'string') return { id: c, opts: { loopMode: 'peak' } };
+          if (c && typeof c === 'object') {
+            return {
+              id: c.id || c.type || c.name || '',
+              opts: c.opts && typeof c.opts === 'object' ? Object.assign({}, c.opts) : {}
+            };
+          }
+          return null;
+        }).filter(function (c) { return c && c.id; });
+        if (typeof window.chipRestore === 'function') {
+          var serialized = normChips.length ? normChips.map(function (inst) {
+            var o = Object.keys(inst.opts || {}).map(function (k) { return k + '=' + inst.opts[k]; }).join(',');
+            return inst.id + (o ? '.' + o : '');
+          }).join('-') : '0';
+          window.chipRestore(serialized);
+        } else if (typeof window.renderChips === 'function') {
+          window._chipsOn = normChips;
+          window.renderChips(true);
+        }
+      } finally {
+        window.isRestoringConfig = prevRestoring;
       }
 
       if (typeof window.calculate === 'function') {
@@ -1220,8 +1245,21 @@
         CommunityPlans.renderPlans();
       }
 
-      // 页面初始化时主动拉取站点公告与运营配置（不依赖是否已选车）
+      // 页面初始化时主动拉取站点公告与运营配置（不依赖是否已选车），并静默核验本地待审方案真实状态
       CommunityPlans.fetchSiteConfig();
+      CommunityPlans.syncPendingPlanStatuses({ force: true });
+
+      if (!window.__cpStatusSyncBound) {
+        window.__cpStatusSyncBound = true;
+        document.addEventListener('visibilitychange', function () {
+          if (!document.hidden) {
+            CommunityPlans.syncPendingPlanStatuses();
+          }
+        });
+        window.addEventListener('focus', function () {
+          CommunityPlans.syncPendingPlanStatuses();
+        });
+      }
     },
 
     // 模式变更联动 (第三个模式 support 辅助供能模式物理隐藏方案库)
@@ -1356,6 +1394,7 @@
       }
       if (state.currentCarId && state.currentCarId !== -1) {
         CommunityPlans.fetchRemotePlans(state.currentCarId, { page: 1, append: false });
+        CommunityPlans.syncPendingPlanStatuses();
         // 切车后立即覆盖更新新车的洁净草稿，避免旧车改动残留并在未满防抖期刷新时复现
         if (!state._isRestoringDraft && !window.isRestoringConfig) {
           Draft.save();
@@ -2084,13 +2123,25 @@
         : '';
 
       var auditStatusBadge = '';
-      if (isLocalPlan && safeRemoteId) {
+      var rejectBannerHtml = '';
+      if (isLocalPlan) {
         if (item.remote_status === 'rejected') {
           auditStatusBadge = '<span class="cp-card-badge cp-badge-rejected" onclick="CommunityPlans.showRejectModal(\'' + safePlanId + '\', event)" title="点击查看审核驳回说明">审核未通过</span>';
-        } else if (item.remote_status === 'approved') {
-          auditStatusBadge = '<span class="cp-card-badge cp-badge-approved">已收录</span>';
-        } else {
-          auditStatusBadge = '<span class="cp-card-badge cp-badge-pending" onclick="CommunityPlans.checkPlanStatus(\'' + safePlanId + '\', \'' + safeRemoteId + '\', event)" title="点击刷新审核状态">审核中</span>';
+          var briefReason = String(item.reject_reason || item.review_notes || '未能通过审核，点击查看具体原因').trim();
+          rejectBannerHtml =
+            '<div class="cp-card-reject-banner" onclick="CommunityPlans.showRejectModal(\'' + safePlanId + '\', event)" title="点击查看完整审核反馈说明">' +
+            '  <span class="cp-reject-banner-lbl">审核未通过</span>' +
+            '  <span class="cp-reject-banner-text">' + Utils.escapeHtml(briefReason) + '</span>' +
+            '  <span class="cp-reject-banner-more">详情</span>' +
+            '</div>';
+        } else if (item.remote_status === 'cleaned') {
+          auditStatusBadge = '<span class="cp-card-badge cp-badge-cleaned" title="该方案已从云端移除或下架，本地备份仍可正常使用">云端已移除</span>';
+        } else if (safeRemoteId) {
+          if (item.remote_status === 'approved') {
+            auditStatusBadge = '<span class="cp-card-badge cp-badge-approved">已收录</span>';
+          } else {
+            auditStatusBadge = '<span class="cp-card-badge cp-badge-pending" onclick="CommunityPlans.checkPlanStatus(\'' + safePlanId + '\', \'' + safeRemoteId + '\', event)" title="点击刷新审核状态">审核中</span>';
+          }
         }
       }
 
@@ -2164,6 +2215,7 @@
         specGridHtml,
         specsExtraHtml,
         noteHtml,
+        rejectBannerHtml,
         '  </div>',
         '  <div class="cp-card-foot">',
         '    <div class="cp-foot-left">',
@@ -2444,7 +2496,8 @@
 
       var carName = state.currentCar ? state.currentCar.name : '当前赛车';
       var params = ParamsIO.capture();
-      var summary = extractAllPlanDetails(params, state.currentCar).summaryText;
+      var modeLabel = params.calc_mode === 'team' ? '团魂获能模式' : '先机汇能模式';
+      var summary = '[' + modeLabel + '] ' + extractAllPlanDetails(params, state.currentCar).summaryText;
 
       var modal = document.createElement('div');
       modal.id = 'cpSaveModal';
@@ -2941,6 +2994,97 @@
         });
     },
 
+    // 后台静默批量同步本地所有「审核中」方案的真实云端裁决状态（解决驳回/通过/清理后前端滞留「审核中」问题）
+    syncPendingPlanStatuses: function (opts) {
+      var force = Boolean(opts && opts.force);
+      var pendingPlans = state.savedPlans.filter(function (p) {
+        if (!p || !p.remote_id) return false;
+        return p.remote_status !== 'approved' && p.remote_status !== 'rejected' && p.remote_status !== 'cleaned';
+      });
+      if (pendingPlans.length === 0) return;
+
+      var now = Date.now();
+      if (state._isSyncingStatuses) return;
+      if (!force && state._lastStatusSyncAt && (now - state._lastStatusSyncAt) < 4000) return;
+
+      // 优先检查当前所选车型的待审方案，最多一次批量核验 20 条
+      var curIdStr = state.currentCarId ? String(state.currentCarId) : '';
+      pendingPlans.sort(function (a, b) {
+        var aCur = (curIdStr && String(a.car_id) === curIdStr) ? 1 : 0;
+        var bCur = (curIdStr && String(b.car_id) === curIdStr) ? 1 : 0;
+        return bCur - aCur || ((Number(b.created_at) || 0) - (Number(a.created_at) || 0));
+      });
+      var batch = pendingPlans.slice(0, 20);
+      var ids = batch.map(function (p) { return p.remote_id; });
+
+      state._isSyncingStatuses = true;
+      state._lastStatusSyncAt = now;
+
+      fetch('/api/plans?check_statuses=' + encodeURIComponent(ids.join(',')), {
+        method: 'GET',
+        cache: 'no-store',
+        headers: Utils.getApiHeaders(false)
+      })
+        .then(Utils.parseJsonSafe)
+        .then(function (resObj) {
+          if (!resObj.ok || !resObj.data || !resObj.data.success || !resObj.data.data || !resObj.data.data.items) {
+            return;
+          }
+          var map = resObj.data.data.items;
+          var anyChanged = false;
+          var anyNewlyApprovedForCurCar = false;
+          var rejectedTitles = [];
+
+          batch.forEach(function (lp) {
+            var info = map[lp.remote_id];
+            if (!info) return;
+            if (info.found === false || info.status === 'cleaned') {
+              lp.remote_status = 'cleaned';
+              delete lp.remote_id;
+              anyChanged = true;
+              return;
+            }
+            if (info.status && info.status !== lp.remote_status) {
+              lp.remote_status = info.status;
+              anyChanged = true;
+              if (info.status === 'rejected') {
+                lp.reject_reason = info.reject_reason || info.review_notes || '未能通过审核，请查看详情';
+                lp.review_notes = info.review_notes || lp.reject_reason;
+                rejectedTitles.push(lp.title || '未命名方案');
+              }
+            } else if (info.status === 'rejected' && (info.reject_reason || info.review_notes)) {
+              var nextReason = info.reject_reason || info.review_notes;
+              if (lp.reject_reason !== nextReason) {
+                lp.reject_reason = nextReason;
+                lp.review_notes = info.review_notes || nextReason;
+                anyChanged = true;
+              }
+            }
+            if (info.status === 'approved') {
+              if (info.is_pro && !lp.isPro) { lp.isPro = true; anyChanged = true; }
+              if (info.is_partner && !lp.isPartner) { lp.isPartner = true; anyChanged = true; }
+              if (curIdStr && String(lp.car_id) === curIdStr) {
+                anyNewlyApprovedForCurCar = true;
+              }
+            }
+          });
+
+          if (anyChanged) {
+            Utils.setStorage(STORAGE_KEYS.PLANS, state.savedPlans);
+            CommunityPlans.renderPlans({ preserveScroll: true });
+            if (rejectedTitles.length > 0) {
+              CommunityPlans.toast('方案「' + rejectedTitles[0] + '」审核未通过，已显示驳回说明');
+            } else if (anyNewlyApprovedForCurCar && state.currentCarId) {
+              CommunityPlans.fetchRemotePlans(state.currentCarId, { page: 1, append: false, preserveScroll: true });
+            }
+          }
+        })
+        .catch(function () {})
+        .finally(function () {
+          state._isSyncingStatuses = false;
+        });
+    },
+
     // 检查指定方案的审核进度与官方审核组裁决说明
     checkPlanStatus: function (localId, remoteId, e) {
       if (e) e.stopPropagation();
@@ -2952,6 +3096,7 @@
       CommunityPlans.toast('正在查询方案审核状态...');
       fetch('/api/plans?check_status=' + encodeURIComponent(remoteId), {
         method: 'GET',
+        cache: 'no-store',
         headers: Utils.getApiHeaders(false)
       })
         .then(Utils.parseJsonSafe)
@@ -3377,6 +3522,15 @@
         return;
       }
 
+      if (typeof window.setCalcMode === 'function' && state.lastSnapshot.calc_mode &&
+          (state.lastSnapshot.calc_mode === 'solo' || state.lastSnapshot.calc_mode === 'team')) {
+        var curM = (typeof window.getCalcMode === 'function')
+          ? window.getCalcMode()
+          : (document.body.getAttribute('data-calc-mode') || 'solo');
+        if (curM !== state.lastSnapshot.calc_mode) {
+          window.setCalcMode(state.lastSnapshot.calc_mode, true, true);
+        }
+      }
       ParamsIO.apply(state.lastSnapshot);
       state.lastSnapshot = null;
       state.hasUndoAvailable = false;
@@ -3396,8 +3550,12 @@
       var idx = state.savedPlans.findIndex(function (p) { return p.id === planId; });
       if (idx === -1) return;
 
-      var name = state.savedPlans[idx].title;
-      if (!confirm('确定要删除本地保存的方案「' + name + '」吗？')) return;
+      var target = state.savedPlans[idx];
+      var name = target.title;
+      var confirmText = target.remote_id
+        ? ('确定要从本机列表移除方案「' + name + '」吗？（仅删除本机保存记录，已提交云端的数据不受影响）')
+        : ('确定要删除本地保存的方案「' + name + '」吗？');
+      if (!confirm(confirmText)) return;
 
       state.savedPlans.splice(idx, 1);
       Utils.setStorage(STORAGE_KEYS.PLANS, state.savedPlans);
