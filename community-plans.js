@@ -1445,6 +1445,8 @@
         card.classList.toggle('pv-collapsed', shouldShut);
         if (!shouldShut) {
           CommunityPlans._syncControlsBar(undefined, false);
+          CommunityPlans._layoutTreeLines();
+          CommunityPlans._scheduleTreeLayout();
         }
         return;
       }
@@ -1471,8 +1473,11 @@
           if (container !== card) container.classList.remove('pv-collapsed');
           CommunityPlans._syncControlsBar(undefined, false);
           CommunityPlans._morphActionsBar(card, true, false, actStartSnap);
+          CommunityPlans._layoutTreeLines();
           return { height: card.getBoundingClientRect().height };
-        }, null);
+        }, function () {
+          CommunityPlans._scheduleTreeLayout();
+        });
       }
     },
 
@@ -2205,6 +2210,9 @@
       CommunityPlans.bindLazyScroll();
       CommunityPlans.toggleCollapse(false, !container.__cpRenderedOnce);
       CommunityPlans._syncControlsBar(true, true);
+      CommunityPlans._layoutTreeLines();
+      CommunityPlans._scheduleTreeLayout();
+      CommunityPlans._bindTreeResizeObserver();
       container.__cpRenderedOnce = true;
     },
 
@@ -3918,6 +3926,121 @@
           CommunityPlans.renderPlans({ preserveScroll: true });
           CommunityPlans.toast('网络波动，操作已回滚，请重试');
         });
+    },
+
+    // 测量每个 .cp-section 内图标底边与方案卡左侧坐标，单图层绘制连续弧线树干
+    _layoutTreeLines: function () {
+      var stream = document.getElementById('cpSectionsStream');
+      if (!stream || stream.offsetWidth === 0) return;
+
+      var getRelBox = function (el, ancestor) {
+        var x = 0;
+        var y = 0;
+        var cur = el;
+        while (cur && cur !== ancestor) {
+          x += cur.offsetLeft || 0;
+          y += cur.offsetTop || 0;
+          cur = cur.offsetParent;
+        }
+        return { x: x, y: y, w: el.offsetWidth || 0, h: el.offsetHeight || 0 };
+      };
+
+      var secs = stream.querySelectorAll('.cp-section');
+      for (var i = 0; i < secs.length; i++) {
+        var sec = secs[i];
+        var iconEl = sec.querySelector('.cp-sec-header > .cp-sec-icon-box, .cp-sec-header > .cp-sec-pro-icon');
+        var listEl = sec.querySelector('.cp-sec-list');
+        var svg = sec.querySelector(':scope > .cp-tree-svg');
+
+        if (!iconEl || !listEl || listEl.offsetHeight === 0) {
+          if (svg) svg.remove();
+          continue;
+        }
+
+        var cards = listEl.querySelectorAll(':scope > .cp-card-item');
+        var anchors = [];
+        for (var c = 0; c < cards.length; c++) {
+          if (cards[c].offsetHeight === 0) continue;
+          var cBox = getRelBox(cards[c], sec);
+          anchors.push({ x: cBox.x, y: cBox.y + 22 });
+        }
+
+        if (!anchors.length) {
+          if (svg) svg.remove();
+          continue;
+        }
+
+        var iBox = getRelBox(iconEl, sec);
+        var cx = Math.round((iBox.x + iBox.w / 2) * 2) / 2;
+        var topY = iBox.y + iBox.h;
+        var dx = Math.max(8, anchors[0].x - cx);
+        var baseR = Math.min(10, Math.max(6, dx - 2));
+
+        var dParts = [];
+        var last = anchors[anchors.length - 1];
+        var lastR = Math.min(baseR, Math.max(4, last.y - topY));
+        var lastBendY = Math.max(topY, last.y - lastR);
+
+        // 主干竖线与末项圆角 L 型分支整合为一笔连续路径，彻底避免接缝与断点
+        dParts.push(
+          'M ' + cx + ' ' + topY +
+          ' L ' + cx + ' ' + lastBendY +
+          ' A ' + lastR + ' ' + lastR + ' 0 0 0 ' + (cx + lastR) + ' ' + last.y +
+          ' L ' + last.x + ' ' + last.y
+        );
+
+        // 非末项均由主干切线顺滑弯出同款圆弧连入卡片
+        for (var j = 0; j < anchors.length - 1; j++) {
+          var pt = anchors[j];
+          var br = Math.min(baseR, Math.max(4, pt.y - topY));
+          dParts.push(
+            'M ' + cx + ' ' + (pt.y - br) +
+            ' A ' + br + ' ' + br + ' 0 0 0 ' + (cx + br) + ' ' + pt.y +
+            ' L ' + pt.x + ' ' + pt.y
+          );
+        }
+
+        var svgNs = 'http://www.w3.org/2000/svg';
+        if (!svg) {
+          svg = document.createElementNS(svgNs, 'svg');
+          svg.setAttribute('class', 'cp-tree-svg');
+          svg.setAttribute('aria-hidden', 'true');
+          svg.setAttribute('shape-rendering', 'geometricPrecision');
+          var pathEl = document.createElementNS(svgNs, 'path');
+          svg.appendChild(pathEl);
+          sec.insertBefore(svg, sec.firstChild);
+        }
+        var p = svg.querySelector('path');
+        if (p) p.setAttribute('d', dParts.join(' '));
+      }
+    },
+
+    _scheduleTreeLayout: function () {
+      if (state._treeRaf) cancelAnimationFrame(state._treeRaf);
+      state._treeRaf = requestAnimationFrame(function () {
+        state._treeRaf = 0;
+        CommunityPlans._layoutTreeLines();
+      });
+    },
+
+    _bindTreeResizeObserver: function () {
+      var viewport = document.getElementById('cpScrollViewport');
+      if (!viewport) return;
+      if (!state._treeResizeBound) {
+        state._treeResizeBound = true;
+        window.addEventListener('resize', CommunityPlans._scheduleTreeLayout);
+      }
+      if (typeof ResizeObserver === 'function') {
+        if (state._treeRo) state._treeRo.disconnect();
+        state._treeRo = new ResizeObserver(function () {
+          CommunityPlans._scheduleTreeLayout();
+        });
+        state._treeRo.observe(viewport);
+        var secs = viewport.querySelectorAll('.cp-section, .cp-card-item');
+        for (var i = 0; i < secs.length; i++) {
+          state._treeRo.observe(secs[i]);
+        }
+      }
     },
 
     // 统一 Toast 提示 (优先委托全局 showToast，确保定时器清理、图标装饰与最高层 z-index 一致)

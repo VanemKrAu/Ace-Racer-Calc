@@ -700,62 +700,38 @@ body[data-calc-mode="support"] #communityPlansContainer {
 
 .ds-c .cp-sec-list {
   --cp-tree-pad: 28px;
-  --cp-tree-x: 14px;
-  --cp-tree-gap: 10px;
-  --cp-tree-arm: 22px;
-  --cp-tree-r: 10px;
-  --cp-tree-stroke: 1px;
   display: flex;
   flex-direction: column;
-  gap: var(--cp-tree-gap);
+  gap: 10px;
   margin-left: 0;
   padding-left: var(--cp-tree-pad);
   border-left: none;
   position: relative;
 }
 
-/* 多级树形归属线：主干按卡距无缝接力，非末项横枝贴主干右壁零重叠接出，末项圆角 L 型收尾 */
-.ds-c .cp-sec-list > .cp-card-item::before,
-.ds-c .cp-sec-list > .cp-card-item::after {
-  content: '';
+/* 统一单图层 SVG 树形弧线：整组做透明度合成，彻底消除主干与圆弧交汇处叠亮、伪元素撕裂断点 */
+.ds-c .cp-tree-svg {
   position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
   pointer-events: none;
-  box-sizing: border-box;
+  overflow: visible;
+  z-index: 1;
+  color: var(--cp-tree-color);
+  opacity: 0.46;
 }
 
-.ds-c .cp-sec-list > .cp-card-item:not(:last-child)::before {
-  left: calc(-1 * var(--cp-tree-x));
-  top: 0;
-  bottom: calc(-1 * var(--cp-tree-gap));
-  width: 0;
-  border-left: var(--cp-tree-stroke) solid var(--cp-tree-line);
+:root[data-theme="light"] .ds-c .cp-tree-svg {
+  opacity: 0.42;
 }
 
-.ds-c .cp-sec-list > .cp-card-item:first-child:not(:last-child)::before {
-  top: -8px;
-}
-
-.ds-c .cp-sec-list > .cp-card-item:not(:last-child)::after {
-  left: calc(-1 * var(--cp-tree-x) + var(--cp-tree-stroke));
-  top: calc(var(--cp-tree-arm) - var(--cp-tree-stroke));
-  width: calc(var(--cp-tree-x) - var(--cp-tree-stroke));
-  height: var(--cp-tree-stroke);
-  background: var(--cp-tree-line);
-}
-
-.ds-c .cp-sec-list > .cp-card-item:last-child::after {
-  left: calc(-1 * var(--cp-tree-x));
-  top: 0;
-  width: var(--cp-tree-x);
-  height: var(--cp-tree-arm);
-  border-left: var(--cp-tree-stroke) solid var(--cp-tree-line);
-  border-bottom: var(--cp-tree-stroke) solid var(--cp-tree-line);
-  border-bottom-left-radius: var(--cp-tree-r);
-}
-
-.ds-c .cp-sec-list > .cp-card-item:first-child:last-child::after {
-  top: -8px;
-  height: calc(var(--cp-tree-arm) + 8px);
+.ds-c .cp-tree-svg path {
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 1.5;
+  stroke-linecap: butt;
+  stroke-linejoin: round;
 }
 
 /* ==========================================================================
@@ -2499,9 +2475,7 @@ body.cp-modal-locked {
 
   .ds-c .cp-sec-list {
     --cp-tree-pad: 22px;
-    --cp-tree-x: 10px;
-    --cp-tree-gap: 9px;
-    --cp-tree-r: 8px;
+    gap: 9px;
     margin-left: 0;
   }
 
