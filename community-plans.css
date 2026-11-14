@@ -103,9 +103,17 @@
   order: 2;
   display: inline-flex;
   align-items: center;
+  justify-content: flex-end;
   gap: 8px;
-  margin-left: auto;
+  margin-left: 0;
   flex: none;
+  white-space: nowrap;
+  transform-origin: right center;
+}
+
+.ds-c .cp-actions-bar .cp-btn {
+  flex-shrink: 0;
+  white-space: nowrap;
 }
 
 .ds-c .cp-fold-btn {
@@ -2203,14 +2211,12 @@ body.cp-modal-locked {
 
   .ds-c .cp-plans-card .cp-actions-bar {
     order: 2;
-    width: auto !important;
-    flex: none !important;
-    display: inline-flex !important;
-    align-items: center !important;
-    justify-content: flex-end !important;
-    gap: 4px !important;
-    margin-left: auto !important;
-    flex-wrap: nowrap !important;
+    flex: none;
+    align-items: center;
+    justify-content: flex-end;
+    gap: 4px;
+    margin-left: 0;
+    flex-wrap: nowrap;
   }
 
   .ds-c .cp-plans-card .cp-fold-btn {

@@ -76,7 +76,14 @@
 
   var CHIP_NAME_MAP = {
     hunter: '隐匿猎手之芯',
-    catnap: '猫眠梦之芯'
+    catnap: '猫眠梦之芯',
+    hardman: '超频：硬汉模式',
+    triple: '超频：三重推进',
+    qinglong: '至尊：翔宇青龙',
+    aomei: '墨染：傲梅',
+    xiuzhu: '墨染：修竹',
+    yiju: '墨染：逸菊',
+    xiuhua: '至美：羞花'
   };
 
   function fmtPlanNum(v) {
@@ -113,6 +120,11 @@
             }
             if (!matchedText && k === 'loopMode') {
               matchedText = val === 'safe' ? '稳妥循环+0%' : (val === 'peak' ? '偶数/触发轮' : String(val));
+            } else if (!matchedText && k === 'hitState') {
+              matchedText = val === 'hit' ? '已受撞击+0%' : '未受撞击+45%';
+            } else if (!matchedText && k === 'clicks') {
+              var nClk = parseInt(val, 10);
+              matchedText = (nClk >= 1 && nClk <= 3) ? (nClk + '次+' + (nClk * 10) + '%') : String(val);
             }
             optLabels.push(matchedText || (k + '=' + val));
           });
@@ -1298,6 +1310,85 @@
       CommunityPlans.toggleCollapse();
     },
 
+    _captureActionsStart: function (card) {
+      var bar = card && card.querySelector('.cp-actions-bar');
+      if (!bar) return null;
+      var titleEl = bar.parentElement;
+      var gap = titleEl ? (parseFloat(getComputedStyle(titleEl).columnGap) || 8) : 8;
+      if (card.classList.contains('pv-collapsed') && !bar.__cpActAnim) {
+        return { fromZero: true, w: 0, ml: -gap, op: 0, tr: 'translateX(8px) scale(0.92)', gap: gap };
+      }
+      var cs = getComputedStyle(bar);
+      var w = bar.getClientRects().length > 0 ? bar.getBoundingClientRect().width : 0;
+      var ml = parseFloat(cs.marginLeft) || 0;
+      var op = parseFloat(cs.opacity);
+      if (isNaN(op)) op = w > 0 ? 1 : 0;
+      var tr = (cs.transform && cs.transform !== 'none') ? cs.transform : 'translateX(0px) scale(1)';
+      return { fromZero: w < 2, w: w, ml: ml, op: op, tr: tr, gap: gap };
+    },
+
+    _morphActionsBar: function (card, opening, instant, startSnap) {
+      var bar = card && card.querySelector('.cp-actions-bar');
+      if (!bar) return;
+
+      var snap = startSnap || CommunityPlans._captureActionsStart(card);
+
+      function clearAnim() {
+        if (bar.__cpActAnim) {
+          try { bar.__cpActAnim.cancel(); } catch (_) {}
+          bar.__cpActAnim = null;
+        }
+        bar.style.overflow = '';
+        bar.style.pointerEvents = '';
+      }
+
+      clearAnim();
+
+      var reduced = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+      if (instant || reduced || typeof bar.animate !== 'function' || !snap) {
+        return;
+      }
+
+      if (opening) {
+        var prevW = bar.style.width;
+        bar.style.width = '';
+        var w1 = bar.getBoundingClientRect().width;
+        bar.style.width = prevW;
+        if (w1 < 2) return;
+        var startW = snap.fromZero ? 0 : snap.w;
+        var startMl = snap.fromZero ? -snap.gap : snap.ml;
+        var startOp = snap.fromZero ? 0 : snap.op;
+        var startTr = snap.fromZero ? 'translateX(8px) scale(0.92)' : snap.tr;
+
+        bar.style.overflow = 'hidden';
+        bar.style.pointerEvents = 'none';
+        var animOpen = bar.animate(
+          [
+            { width: startW + 'px', marginLeft: startMl + 'px', opacity: startOp, transform: startTr },
+            { width: w1 + 'px', marginLeft: '0px', opacity: 1, transform: 'translateX(0px) scale(1)' }
+          ],
+          { duration: 280, easing: 'cubic-bezier(.2,.8,.2,1)', fill: 'both' }
+        );
+        bar.__cpActAnim = animOpen;
+        animOpen.onfinish = function () {
+          if (bar.__cpActAnim !== animOpen) return;
+          clearAnim();
+        };
+      } else {
+        if (snap.w < 2) return;
+        bar.style.overflow = 'hidden';
+        bar.style.pointerEvents = 'none';
+        var animClose = bar.animate(
+          [
+            { width: snap.w + 'px', marginLeft: snap.ml + 'px', opacity: snap.op, transform: snap.tr },
+            { width: '0px', marginLeft: (-snap.gap) + 'px', opacity: 0, transform: 'translateX(8px) scale(0.92)' }
+          ],
+          { duration: 240, easing: 'cubic-bezier(.2,.8,.2,1)', fill: 'forwards' }
+        );
+        bar.__cpActAnim = animClose;
+      }
+    },
+
     // 切换折叠状态 (与全站 v4.js __pvMorph 规范 100% 同步：记录目标态避免重复触发，仅在收起终态才隐藏节点)
     toggleCollapse: function (forceState, instant) {
       var container = document.getElementById('communityPlansContainer');
@@ -1308,6 +1399,7 @@
       if (curShut === shouldShut && card.classList.contains('pv-shut') === shouldShut && !instant) {
         return;
       }
+      var actStartSnap = CommunityPlans._captureActionsStart(card);
       card.__pvWant = shouldShut;
       card.classList.toggle('pv-shut', shouldShut);
       if (container !== card) container.classList.toggle('pv-shut', shouldShut);
@@ -1316,6 +1408,7 @@
         if (card.__pvA) { card.__pvA.cancel(); card.__pvA = null; }
         if (card.__pvK) { card.__pvK.forEach(function (k) { k.cancel(); }); card.__pvK = null; }
         card.style.overflow = '';
+        CommunityPlans._morphActionsBar(card, !shouldShut, true, actStartSnap);
         container.classList.toggle('pv-collapsed', shouldShut);
         card.classList.toggle('pv-collapsed', shouldShut);
         if (!shouldShut) {
@@ -1337,12 +1430,15 @@
         }, function () {
           card.classList.add('pv-collapsed');
           if (container !== card) container.classList.add('pv-collapsed');
+          CommunityPlans._morphActionsBar(card, false, true, actStartSnap);
         });
+        CommunityPlans._morphActionsBar(card, false, false, actStartSnap);
       } else {
         window.__pvMorph(card, true, ['height'], kids, function () {
           card.classList.remove('pv-collapsed');
           if (container !== card) container.classList.remove('pv-collapsed');
           CommunityPlans._syncControlsBar(undefined, false);
+          CommunityPlans._morphActionsBar(card, true, false, actStartSnap);
           return { height: card.getBoundingClientRect().height };
         }, null);
       }

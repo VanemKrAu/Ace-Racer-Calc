@@ -2169,7 +2169,8 @@ CD：45秒
             _selectedCarId = -1;
             _resetManualCarEdits();
             CHIP_MAX = 1;
-            if (_chipsOn.length > CHIP_MAX) _chipsOn = _chipsOn.slice(0, CHIP_MAX);
+            if (typeof _chipPruneByCar === 'function') _chipPruneByCar(null);
+            else if (_chipsOn.length > CHIP_MAX) _chipsOn = _chipsOn.slice(0, CHIP_MAX);
             document.getElementById('carPreviewPlaceholder').style.display = '';
             document.getElementById('carPreviewName').style.display = 'none';
             document.getElementById('carPreviewInfo').style.display = 'none';
@@ -2634,7 +2635,22 @@ function __tok(n, d) { var v = getComputedStyle(document.body).getPropertyValue(
            if (_chipsOn.length > 0) {
                var chipNames = _chipsOn.map(function (c) {
                    var d = _chipDef(c.id);
-                   return d ? (d.name[currentLang === 'en' ? 'en' : 'zh'] || d.id) : c.id;
+                   if (!d) return c.id;
+                   var nm = d.name[currentLang === 'en' ? 'en' : 'zh'] || d.id;
+                   if (typeof _chipOptionDefs === 'function' && typeof _chipOptVal === 'function') {
+                       var optTexts = [];
+                       _chipOptionDefs(d).forEach(function (od) {
+                           var v = _chipOptVal(c, od);
+                           for (var oi = 0; oi < od.choices.length; oi++) {
+                               if (od.choices[oi].v === v) {
+                                   optTexts.push(od.choices[oi][currentLang === 'en' ? 'en' : 'zh'] || v);
+                                   break;
+                               }
+                           }
+                       });
+                       if (optTexts.length) nm += ' (' + optTexts.join(', ') + ')';
+                   }
+                   return nm;
                }).join(' + ');
                text += _("🔹 特殊芯片：", "🔹 Special Chip: ") + chipNames + "\n";
            }
@@ -3004,7 +3020,9 @@ function __tok(n, d) { var v = getComputedStyle(document.body).getPropertyValue(
                document.getElementById('supMateEff').value,
                document.getElementById('supCount').value,
                // 54：团魂获能的三把锁（团魂 / 先机 / 汇能），例如 100 = 只锁团魂
-               (_tm.lock.soul ? '1' : '0') + (_tm.lock.xianji ? '1' : '0') + (_tm.lock.huineng ? '1' : '0')
+               (_tm.lock.soul ? '1' : '0') + (_tm.lock.xianji ? '1' : '0') + (_tm.lock.huineng ? '1' : '0'),
+               // 55：特殊芯片序列化（'0' 表示未装备）
+               typeof chipSerialize === 'function' ? chipSerialize() : '0'
            ];
 
            var cfgStr = encodeURIComponent(btoa(compactArr.join('|')));
@@ -3157,6 +3175,9 @@ function __tok(n, d) { var v = getComputedStyle(document.body).getPropertyValue(
                            // 三把锁：新链接按发送者的状态还原；旧链接没有这一项 —— 三个值都是发送者定好的，全部锁上原样打开
                            var lk = arr.length >= 54 && /^[01]{3}$/.test(arr[53]) ? arr[53] : '111';
                            _tm.lock = { soul: lk[0] === '1', xianji: lk[1] === '1', huineng: lk[2] === '1' };
+                           if (arr.length >= 55 && typeof chipRestore === 'function') {
+                               chipRestore(arr[54], true);
+                           }
                        }
                        
                        result = true;
@@ -3271,6 +3292,8 @@ function __tok(n, d) { var v = getComputedStyle(document.body).getPropertyValue(
                         }
                     }
                 }
+            } else if (typeof _chipPruneByCar === 'function' && _chipPruneByCar(_selectedCar)) {
+                if (typeof renderChips === 'function') renderChips(true);
             }
 
             isRestoringConfig = false;
@@ -3672,14 +3695,20 @@ function __tok(n, d) { var v = getComputedStyle(document.body).getPropertyValue(
                // 没增幅的基础值另存一份：卡片显示和自动反算都用它
                hnEl.dataset.baseMax = baseMax;
            }
-           // 动态计算特殊芯片（V型槽）上限
+           // 动态计算特殊芯片（V型槽）上限与车辆适配限定
            var newChipMax = getCarVSlots(car);
-           if (CHIP_MAX !== newChipMax) {
-               CHIP_MAX = newChipMax;
-               if (_chipsOn.length > CHIP_MAX) {
-                   _chipsOn = _chipsOn.slice(0, CHIP_MAX);
-               }
+           var chipLimitChanged = (CHIP_MAX !== newChipMax);
+           if (chipLimitChanged) CHIP_MAX = newChipMax;
+           var chipPruned = (typeof _chipPruneByCar === 'function') ? _chipPruneByCar(car) : false;
+           if (!chipPruned && _chipsOn.length > CHIP_MAX) {
+               _chipsOn = _chipsOn.slice(0, CHIP_MAX);
+               chipPruned = true;
+           }
+           if (chipLimitChanged || chipPruned) {
                if (typeof renderChips === 'function') renderChips(true);
+           } else if (typeof _chipRenderGrid === 'function') {
+               var chipGrid = document.getElementById('chipGrid');
+               if (chipGrid && chipGrid.__built) _chipRenderGrid();
            }
            _chipBadge();   // 上限徽标（团魂获能里多一项团魂上限）
            clampAllLimited();
@@ -3762,9 +3791,9 @@ function __tok(n, d) { var v = getComputedStyle(document.body).getPropertyValue(
            var extraPerSecFirstVal = (document.getElementById('chkExtraPerSecFirst') && document.getElementById('chkExtraPerSecFirst').checked) ? extraPerSecBase : 0;
 
            var extraEfficiency = (parseFloat(document.getElementById('extraEfficiency').value) || 0) / 100;
-           
+           var chipEff = typeof chipEffBonus === 'function' ? chipEffBonus() : 0;
            var efficiencyReduce = (parseFloat(document.getElementById('debuffRange').value) || 0) / 100;
-           var efficiencyMult = ((activeEmpowers.indexOf('yichu') !== -1) ? 1.05 : 1.00) + extraEfficiency - efficiencyReduce;
+           var efficiencyMult = ((activeEmpowers.indexOf('yichu') !== -1) ? 1.05 : 1.00) + extraEfficiency + chipEff - efficiencyReduce;
 
            if (efficiencyMult < 0) efficiencyMult = 0;
            var chipTriggerRes = chipAgg(defenseMult, efficiencyMult);
@@ -3884,9 +3913,9 @@ function __tok(n, d) { var v = getComputedStyle(document.body).getPropertyValue(
            var extraPerSecLoopVal = (document.getElementById('chkExtraPerSecLoop') && document.getElementById('chkExtraPerSecLoop').checked) ? extraPerSecBase : 0;
 
            var extraEfficiency = (parseFloat(document.getElementById('extraEfficiency').value) || 0) / 100;
-           
+           var chipEff = typeof chipEffBonus === 'function' ? chipEffBonus() : 0;
            var efficiencyReduce = (parseFloat(document.getElementById('debuffRange').value) || 0) / 100;
-           var efficiencyMult = ((activeEmpowers.indexOf('yichu') !== -1) ? 1.05 : 1.00) + extraEfficiency - efficiencyReduce;
+           var efficiencyMult = ((activeEmpowers.indexOf('yichu') !== -1) ? 1.05 : 1.00) + extraEfficiency + chipEff - efficiencyReduce;
 
            if (efficiencyMult < 0) efficiencyMult = 0;
            var chipAggRes = chipAgg(defenseMult, efficiencyMult);
@@ -3896,7 +3925,9 @@ function __tok(n, d) { var v = getComputedStyle(document.body).getPropertyValue(
            var customTrigLoopCount = parseInt(document.getElementById('customTrigLoopCount').value) || 0;
 
            var baseUltDuration = parseFloat(document.getElementById('baseUltDuration').value) || 0;
-           var actualUltDuration = baseUltDuration * (target / 100);
+           var chipDurMult = typeof chipUltDurMult === 'function' ? chipUltDurMult() : 1;
+           var actualUltDuration = baseUltDuration * chipDurMult * (target / 100);
+           var yijuTag = chipDurMult > 1 ? _('墨染：逸菊耗能-40%（时长×', 'Ink: Yiju -40% Cost (Dur ×') + chipDurMult.toFixed(2) + _('）', ')') : '';
            
            var ultLabel = document.getElementById('actualUltTimeSpan');
            var nextUltText = '';
@@ -3911,11 +3942,12 @@ function __tok(n, d) { var v = getComputedStyle(document.body).getPropertyValue(
                    }
                }
                var reasonStr = reason.length > 0 ? (reason.join('+') + _('生效：', ' Active: ')) : '';
-               nextUltText = _("（", " (") + reasonStr + _("阈值降为 ", "Threshold lowered to ") + target + _("%，实际时长折算为: ", "%, actual scaled to: ") + actualUltDuration.toFixed(2) + _(" 秒）", " s)");
+               nextUltText = _("（", " (") + reasonStr + _("阈值降为 ", "Threshold lowered to ") + target + "%" + (yijuTag ? _("，", ", ") + yijuTag : "") + _("，实际时长折算为: ", ", actual scaled to: ") + actualUltDuration.toFixed(2) + _(" 秒）", " s)");
            } else if (activeEmpowers.indexOf('weilai') !== -1) {
-               nextUltText = _("（未来视界未降低：当前阈值已达标，实际时长为: ", " (Future Vision inactive: Threshold met, actual duration: ") + actualUltDuration.toFixed(2) + _(" 秒）", " s)");
+               nextUltText = _("（未来视界未降低：当前阈值已达标", " (Future Vision inactive: Threshold met") + (yijuTag ? _("，", ", ") + yijuTag : "") + _("，实际时长为: ", ", actual duration: ") + actualUltDuration.toFixed(2) + _(" 秒）", " s)");
            } else {
-               if (target !== 100) nextUltText = _("（当前阈值 ", " (Current threshold ") + target + _("%，实际时长折算为: ", "%, scaled to: ") + actualUltDuration.toFixed(2) + _(" 秒）", " s)");
+               if (target !== 100) nextUltText = _("（当前阈值 ", " (Current threshold ") + target + "%" + (yijuTag ? _("，", ", ") + yijuTag : "") + _("，实际时长折算为: ", ", scaled to: ") + actualUltDuration.toFixed(2) + _(" 秒）", " s)");
+               else if (yijuTag) nextUltText = _("（", " (") + yijuTag + _("，实际时长折算为: ", ", actual scaled to: ") + actualUltDuration.toFixed(2) + _(" 秒）", " s)");
                else nextUltText = '';
            }
            if (ultLabel && (ultLabel._targetText !== undefined ? ultLabel._targetText : ultLabel.textContent) !== nextUltText) {
@@ -4182,7 +4214,9 @@ function __tok(n, d) { var v = getComputedStyle(document.body).getPropertyValue(
            var stepLoop_ExtraUlt = loopExtraUltOutput.toFixed(3);
 
            var formulaLoopStr = "<b>" + _("【大招循环运算解析盒】", "[Ult Loop Calc Breakdown]") + "</b><br>";
-           formulaLoopStr += _("大招实机时长 = ", "Actual Ult = ") + actualUltDuration.toFixed(2) + _("秒 (容纳 <b>", "s (fits <b>") + nitrosPerUlt + _("</b> 个单次氮气)<br><br>", "</b> single nitros)<br><br>");
+           formulaLoopStr += _("大招实机时长 = ", "Actual Ult = ") + actualUltDuration.toFixed(2) + _("秒", "s")
+               + (chipDurMult > 1.0001 ? (_("（含逸菊耗能-40% ×", " (Ink -40% cost ×") + chipDurMult.toFixed(2) + _("）", ")")) : "")
+               + _(" (容纳 <b>", " (fits <b>") + nitrosPerUlt + _("</b> 个单次氮气)<br><br>", "</b> single nitros)<br><br>");
            formulaLoopStr += _("① 绝对自充：[缺一(", "1. Absolute Charge: [Indispensable(") + (queyiPerSecond * Math.floor(actualUltDuration + 0.000001)).toFixed(2) + _(") + 复苏(", ") + Recovery(") + fusuTotalBonus + _(") + 回收(", ") + Recycle(") + huishouBonus + _(") + 节奏(", ") + Rhythm(") + (jiezouLoopCount * 4.0) + _(")] × (1-反制％) = <b>", ")] * (1-Counter%) = <b>") + stepLoop_Empower + "</b><br>";
            formulaLoopStr += _("② 复合自充：[花信风(大招内触发", "2. Compound Charge: [Floral(Ult Triggers ") + huaxinLoopCount + _("次×7%)] × (1-反制％) × 充能效率 = <b>", " times*7%)] * (1-Counter%) * Eff = <b>") + stepLoop_Huaxin + "</b><br>";
            formulaLoopStr += _("③ 期间氮充：[单发威力(", "3. Nitro Charge: [Single Power(") + (netSingleNitroOutputLoop).toFixed(3) + _(")] × <b>", ")] * <b>") + nitrosPerUlt + _("</b>个 = <b>", "</b> = <b>") + stepLoop_Nitro + "</b><br>";
@@ -5004,6 +5038,154 @@ function __tok(n, d) { var v = getComputedStyle(document.body).getPropertyValue(
                     var isMmm = car && (car.id === 10058 || (car.name && car.name.indexOf('猫眠梦') !== -1));
                     return isMmm ? 66 : 90;
                 }
+            },
+            {
+                id: 'hardman', icon: 'chip_hardman.png',
+                name: { zh: '超频：硬汉模式', en: 'Overclock: Hardman Mode' },
+                allowLabel: { zh: '限战神 / 道奇 SRT 392', en: 'Ares / Challenger SRT 392' },
+                canEquip: function (car) {
+                    return !!(car && (car.id === 10021 || car.id === 10065));
+                },
+                desc: {
+                    zh: '大招期间不会受到减速或干扰效果影响；大招结束时，若期间未受撞击则回复 <strong>45%</strong> 大招能量（受反制与充能效率影响）。',
+                    en: 'Immune to slows and interference during ult; when ult ends without taking a collision, restores <strong>45%</strong> ult energy (scaled by Counter & Charge Eff).'
+                },
+                stats: [
+                    { zh: '大招免减速与干扰', en: 'Slow & disrupt immune in ult' },
+                    { zh: '专属：战神 / 道奇 SRT 392', en: 'Exclusive: Ares / SRT 392' }
+                ],
+                cycle: 1,
+                scale: 'DE',
+                options: [
+                    {
+                        id: 'hitState', def: 'unhit',
+                        label: { zh: '大招期间撞击状态', en: 'Collision During Ult' },
+                        choices: [
+                            { v: 'unhit', zh: '未受撞击 +45%', en: 'Unhit +45%' },
+                            { v: 'hit', zh: '已受撞击 +0%', en: 'Hit +0%' }
+                        ]
+                    }
+                ],
+                ultCharge: function (k, opts) {
+                    return (opts && opts.hitState === 'hit') ? 0 : 45;
+                }
+            },
+            {
+                id: 'triple', icon: 'chip_triple.png',
+                name: { zh: '超频：三重推进', en: 'Overclock: Triple Boost' },
+                allowLabel: { zh: '限神剑号', en: 'Excalibur only' },
+                canEquip: function (car) {
+                    return !!(car && car.id === 10022);
+                },
+                desc: {
+                    zh: '使用大招后可额外触发最多 3 次推进；每触发 1 次推进，大招结束时回复 <strong>10%</strong> 大招能量（满 3 次共 <strong>+30%</strong>，受反制与充能效率影响）。',
+                    en: 'Trigger up to 3 extra boosts during ult; each boost restores <strong>10%</strong> ult energy when ult ends (up to <strong>+30%</strong>, scaled by Counter & Charge Eff).'
+                },
+                stats: [
+                    { zh: '专属：神剑号', en: 'Exclusive: Excalibur' }
+                ],
+                cycle: 1,
+                scale: 'DE',
+                options: [
+                    {
+                        id: 'clicks', def: '3',
+                        label: { zh: '额外推进触发次数', en: 'Boost Triggers' },
+                        choices: [
+                            { v: '1', zh: '1次 +10%', en: '1x +10%' },
+                            { v: '2', zh: '2次 +20%', en: '2x +20%' },
+                            { v: '3', zh: '3次 +30%', en: '3x +30%' }
+                        ]
+                    }
+                ],
+                ultCharge: function (k, opts) {
+                    var c = opts && opts.clicks !== undefined ? parseInt(opts.clicks, 10) : 3;
+                    if (isNaN(c) || c < 1) c = 1;
+                    if (c > 3) c = 3;
+                    return c * 10;
+                }
+            },
+            {
+                id: 'qinglong', icon: 'chip_qinglong.png',
+                name: { zh: '至尊：翔宇青龙', en: 'Supreme: Azure Dragon' },
+                allowLabel: { zh: '限烛龙', en: 'Zhulong only' },
+                canEquip: function (car) {
+                    return !!(car && car.id === 12006);
+                },
+                desc: {
+                    zh: '开局获得 <strong>13%</strong> 大招能量（受反制与充能效率影响），并激活龙魂强化效果。',
+                    en: 'Gain <strong>13%</strong> ult energy at race start (scaled by Counter & Charge Eff) and activate Dragon Soul buffs.'
+                },
+                stats: [
+                    { zh: '专属：烛龙', en: 'Exclusive: Zhulong' }
+                ],
+                scale: 'DE',
+                firstCharge: 13
+            },
+            {
+                id: 'aomei', icon: 'chip_aomei.png',
+                name: { zh: '墨染：傲梅', en: 'Ink: Proud Plum' },
+                allowLabel: { zh: '限寒霜冰魄', en: 'Frostblade only' },
+                canEquip: function (car) {
+                    return !!(car && car.id === 10093);
+                },
+                desc: {
+                    zh: '满级充能效率提升 <strong>5%</strong>（直接计入全局充能效率），并强化冰晶增益。',
+                    en: 'Increases Charge Efficiency by <strong>5%</strong> at Lv.10 (added directly to global Charge Eff) and enhances frost buffs.'
+                },
+                stats: [
+                    { zh: '专属：寒霜冰魄', en: 'Exclusive: Frostblade' }
+                ],
+                efficiencyBonus: 0.05
+            },
+            {
+                id: 'xiuzhu', icon: 'chip_xiuzhu.png',
+                name: { zh: '墨染：修竹', en: 'Ink: Graceful Bamboo' },
+                allowLabel: { zh: '限先驱者', en: 'Pioneer only' },
+                canEquip: function (car) {
+                    return !!(car && car.id === 10087);
+                },
+                desc: {
+                    zh: '满级大招能量达到 <strong>80%</strong> 即可提前使用（阈值降至 80%，按阈值比例折算大招时长）。',
+                    en: 'Ult can be activated at <strong>80%</strong> energy at Lv.10 (threshold lowered to 80%, ult duration scales proportionally).'
+                },
+                stats: [
+                    { zh: '专属：先驱者', en: 'Exclusive: Pioneer' }
+                ],
+                ultThreshold: function () { return 80; }
+            },
+            {
+                id: 'yiju', icon: 'chip_yiju.png',
+                name: { zh: '墨染：逸菊', en: 'Ink: Serene Chrysanthemum' },
+                allowLabel: { zh: '限神剑号', en: 'Excalibur only' },
+                canEquip: function (car) {
+                    return !!(car && car.id === 10022);
+                },
+                desc: {
+                    zh: '满级大招期间能量损失和消耗降低 <strong>40%</strong>（按大招实际时长延长至 <strong>1 ÷ 0.6 ≈ 1.67 倍</strong> 折算循环与自充）。',
+                    en: 'Reduces ult energy loss and consumption by <strong>40%</strong> at Lv.10 (ult duration scaled by <strong>1 ÷ 0.6 ≈ 1.67x</strong> for loop and passive charge).'
+                },
+                stats: [
+                    { zh: '专属：神剑号', en: 'Exclusive: Excalibur' }
+                ],
+                ultDurationMult: function () { return 1 / 0.6; }
+            },
+            {
+                id: 'xiuhua', icon: 'chip_xiuhua.png',
+                name: { zh: '至美：羞花', en: 'Peerless: Shy Blossom' },
+                allowLabel: { zh: '限隐匿猎手', en: 'Hidden Hunter only' },
+                canEquip: function (car) {
+                    return !!(car && car.id === 10082);
+                },
+                desc: {
+                    zh: '满级开局获得 <strong>25%</strong> 大招能量（受反制与充能效率影响），且大招能量达到 <strong>88%</strong> 即可使用。',
+                    en: 'Gain <strong>25%</strong> ult energy at race start (scaled by Counter & Charge Eff) and ult threshold is lowered to <strong>88%</strong> at Lv.10.'
+                },
+                stats: [
+                    { zh: '专属：隐匿猎手', en: 'Exclusive: Hidden Hunter' }
+                ],
+                scale: 'DE',
+                firstCharge: 25,
+                ultThreshold: function () { return 88; }
             }
         ];
 
@@ -5023,11 +5205,44 @@ function __tok(n, d) { var v = getComputedStyle(document.body).getPropertyValue(
         function _chipAttr(s) { return String(s).replace(/&/g, '&amp;').replace(/"/g, '&quot;').replace(/</g, '&lt;'); }
         function _chipDef(id) { for (var i = 0; i < CHIP_REGISTRY.length; i++) if (CHIP_REGISTRY[i].id === id) return CHIP_REGISTRY[i]; return null; }
         function _chipIndex(id) { for (var i = 0; i < _chipsOn.length; i++) if (_chipsOn[i].id === id) return i; return -1; }
-        function _chipUlts(def, n) { var a = []; for (var k = 1; k <= n; k++) a.push(def.ultCharge ? (+def.ultCharge(k) || 0) : 0); return a; }
-        function _chipLoopStats(def) {
-            var n = Math.max(1, (def.cycle | 0) || 1), v = _chipUlts(def, n), s = 0, p = 0;
+        function _chipUlts(def, n, opts) { var a = []; for (var k = 1; k <= n; k++) a.push(def.ultCharge ? (+def.ultCharge(k, opts) || 0) : 0); return a; }
+        function _chipLoopStats(def, opts) {
+            var n = Math.max(1, (def.cycle | 0) || 1), v = _chipUlts(def, n, opts), s = 0, p = 0;
             v.forEach(function (x) { s += x; if (x > p) p = x; });
             return { n: n, mean: s / n, peak: p, sum: s };
+        }
+        function _chipCanEquip(def, car) {
+            if (!def) return false;
+            if (typeof def.canEquip === 'function') return !!def.canEquip(car);
+            return true;
+        }
+        function _chipPruneByCar(car) {
+            var prevLen = _chipsOn.length;
+            if (!prevLen) return false;
+            _chipsOn = _chipsOn.filter(function (inst) {
+                return _chipCanEquip(_chipDef(inst.id), car);
+            });
+            return _chipsOn.length !== prevLen;
+        }
+        function chipEffBonus() {
+            var sum = 0;
+            _chipsOn.forEach(function (inst) {
+                var def = _chipDef(inst.id);
+                if (def && def.efficiencyBonus) sum += (+def.efficiencyBonus || 0);
+            });
+            return sum;
+        }
+        function chipUltDurMult() {
+            var mult = 1;
+            var curCar = typeof _selectedCar !== 'undefined' ? _selectedCar : null;
+            _chipsOn.forEach(function (inst) {
+                var def = _chipDef(inst.id);
+                if (def && typeof def.ultDurationMult === 'function') {
+                    var dm = +def.ultDurationMult(curCar) || 1;
+                    if (dm > 0) mult *= dm;
+                }
+            });
+            return mult;
         }
 
         /* ---------- 选项：有「周期内有的轮次不触发」的芯片，自动带一个循环口径选项（方案 B：稳妥循环 vs 偶数/触发轮） ---------- */
@@ -5049,15 +5264,21 @@ function __tok(n, d) { var v = getComputedStyle(document.body).getPropertyValue(
             (def.options || []).forEach(function (o) { list.push(o); });
             return list;
         }
+        function _chipDefaultOpts(def) {
+            var opts = {};
+            _chipOptionDefs(def).forEach(function (od) { opts[od.id] = od.def; });
+            return opts;
+        }
         function _chipOptVal(inst, od) {
             var v = inst.opts && inst.opts[od.id];
             for (var i = 0; i < od.choices.length; i++) if (od.choices[i].v === v) return v;
             return od.def;
         }
         function _chipLoopMode(inst, def) {
-            var st = def.ultCharge ? _chipLoopStats(def) : null;
-            if (!st || st.n < 2 || st.peak === 0) return 'safe';
-            return inst.opts && inst.opts.loopMode === 'safe' ? 'safe' : 'peak';
+            var st = def.ultCharge ? _chipLoopStats(def, inst && inst.opts) : null;
+            if (!st || st.peak === 0) return 'safe';
+            if (st.n < 2) return 'peak';
+            return inst && inst.opts && inst.opts.loopMode === 'safe' ? 'safe' : 'peak';
         }
 
         /* ---------- 后端接入点：已装芯片 → 额外能量（已乘折算系数） ---------- */
@@ -5068,11 +5289,12 @@ function __tok(n, d) { var v = getComputedStyle(document.body).getPropertyValue(
                 if (!def) return;
                 var m = def.scale === 'none' ? 1 : def.scale === 'D' ? D : D * E;
                 var fr = +def.firstCharge || 0, lr = +def.loopCharge || 0, ur = 0, mode = 'safe', u = [0, 0, 0];
+                var instOpts = inst.opts || null;
                 if (def.ultCharge) {
-                    var st = _chipLoopStats(def);
+                    var st = _chipLoopStats(def, instOpts);
                     mode = _chipLoopMode(inst, def);
                     ur = mode === 'peak' ? st.peak : 0;
-                    u = _chipUlts(def, 3).map(function (x) { return x * m; });
+                    u = _chipUlts(def, 3, instOpts).map(function (x) { return x * m; });
                 }
                 r.on = true;
                 r.first += fr * m; r.loop += (lr + ur) * m; r.loopUlt += ur * m;
@@ -5083,28 +5305,45 @@ function __tok(n, d) { var v = getComputedStyle(document.body).getPropertyValue(
         }
 
         /* ---------- 文案：能量标签与规则简注（都由数值自动生成，不用手写） ---------- */
-        function _chipEnergyTags(def) {
+        function _chipEnergyTags(def, inst) {
             var t = [], fc = +def.firstCharge || 0, lc = +def.loopCharge || 0;
             if (fc) t.push({ zh: '首发前 +' + _chipPct(fc) + '%', en: 'Before 1st ult +' + _chipPct(fc) + '%' });
             if (lc) t.push({ zh: '每轮循环 +' + _chipPct(lc) + '%', en: 'Per loop +' + _chipPct(lc) + '%' });
             if (def.ultCharge) {
-                var st = _chipLoopStats(def);
-                if (st.sum > 0) t.push(st.n === 1 ? { zh: '每次大招 +' + _chipPct(st.sum) + '%', en: '+' + _chipPct(st.sum) + '% per ult' }
-                                                  : { zh: '每 ' + st.n + ' 次大招 +' + _chipPct(st.sum) + '%', en: '+' + _chipPct(st.sum) + '% every ' + st.n + ' ults' });
+                var st = _chipLoopStats(def, inst && inst.opts);
+                if (st.sum > 0 || (inst && inst.opts)) {
+                    t.push(st.n === 1 ? { zh: '每次大招 +' + _chipPct(st.sum) + '%', en: '+' + _chipPct(st.sum) + '% per ult' }
+                                      : { zh: '每 ' + st.n + ' 次大招 +' + _chipPct(st.sum) + '%', en: '+' + _chipPct(st.sum) + '% every ' + st.n + ' ults' });
+                }
             }
             if (def.ultThreshold) {
                 var curCar = typeof _selectedCar !== 'undefined' ? _selectedCar : null;
-                var isMmm = curCar && (curCar.id === 10058 || (curCar.name && curCar.name.indexOf('猫眠梦') !== -1));
-                if (isMmm) {
-                    t.push({ zh: '猫眠梦专属：大招阈值 66%', en: 'Catnap Exclusive: Ult 66%' });
-                } else {
-                    t.push({ zh: '大招阈值 90%', en: 'Ult Threshold 90%' });
+                var th = def.ultThreshold(curCar);
+                if (def.id === 'catnap') {
+                    var isMmm = curCar && (curCar.id === 10058 || (curCar.name && curCar.name.indexOf('猫眠梦') !== -1));
+                    if (isMmm) {
+                        t.push({ zh: '猫眠梦专属：大招阈值 66%', en: 'Catnap Exclusive: Ult 66%' });
+                    } else {
+                        t.push({ zh: '大招阈值 90%', en: 'Ult Threshold 90%' });
+                    }
+                } else if (th && th < 100) {
+                    t.push({ zh: '大招阈值 ' + th + '%', en: 'Ult Threshold ' + th + '%' });
+                }
+            }
+            if (def.efficiencyBonus) {
+                var eb = _chipPct(def.efficiencyBonus * 100);
+                t.push({ zh: '充能效率 +' + eb + '%', en: 'Charge Eff +' + eb + '%' });
+            }
+            if (def.ultDurationMult) {
+                var dm = +def.ultDurationMult(typeof _selectedCar !== 'undefined' ? _selectedCar : null) || 1;
+                if (dm > 1.0001) {
+                    t.push({ zh: '大招耗能 −40%（时长×' + dm.toFixed(2) + '）', en: 'Ult Cost −40% (Dur ×' + dm.toFixed(2) + ')' });
                 }
             }
             return t;
         }
-        function _chipRuleTag(def) {
-            var u = def.ultCharge ? _chipUlts(def, 2) : [0, 0], partsZh = [], partsEn = [];
+        function _chipRuleTag(def, inst) {
+            var u = def.ultCharge ? _chipUlts(def, 2, inst && inst.opts) : [0, 0], partsZh = [], partsEn = [];
             if (u[0] > 0) { partsZh.push('一大连发 +' + _chipPct(u[0]) + '%'); partsEn.push('1st chain +' + _chipPct(u[0]) + '%'); }
             if (u[1] > 0) { partsZh.push('二大连发 +' + _chipPct(u[1]) + '%'); partsEn.push('2nd chain +' + _chipPct(u[1]) + '%'); }
             if (def.scale !== 'none' && (def.firstCharge || def.loopCharge || def.ultCharge)) {
@@ -5122,8 +5361,8 @@ function __tok(n, d) { var v = getComputedStyle(document.body).getPropertyValue(
                 + (src ? '<img src="' + _chipAttr(src) + '" alt="" decoding="async" draggable="false" onerror="this.parentNode.classList.add(\'is-fb\');this.remove();">' : '')
                 + '<span class="chip-ico-fb">' + ch + '</span></span>';
         }
-        function _chipTagsHtml(def) {
-            return _chipEnergyTags(def).map(function (t) { return '<span class="chip-tag is-energy">' + _c2(t.zh, t.en) + '</span>'; }).join('');
+        function _chipTagsHtml(def, inst) {
+            return _chipEnergyTags(def, inst).map(function (t) { return '<span class="chip-tag is-energy">' + _c2(t.zh, t.en) + '</span>'; }).join('');
         }
         function _chipOptsHtml(inst, def) {
             var defs = _chipOptionDefs(def);
@@ -5144,7 +5383,7 @@ function __tok(n, d) { var v = getComputedStyle(document.body).getPropertyValue(
             if (!def) return '';
             return '<div class="chip-slot is-filled' + (_chipNewId === def.id ? ' is-new' : '') + '" data-chip="' + _chipAttr(def.id) + '">'
                 + _chipIcoHtml(def)
-                + '<div class="chip-body"><div class="chip-head"><span class="chip-name">' + _c2(def.name.zh, def.name.en) + '</span><span class="chip-tags">' + _chipTagsHtml(def) + '</span></div>'
+                + '<div class="chip-body"><div class="chip-head"><span class="chip-name">' + _c2(def.name.zh, def.name.en) + '</span><span class="chip-tags">' + _chipTagsHtml(def, inst) + '</span></div>'
                 + '<div class="chip-desc">' + _c2(def.desc.zh, def.desc.en) + '</div></div>'
                 + '<div class="chip-acts">'
                 + (CHIP_REGISTRY.length > 1 ? '<button type="button" class="chip-act" data-act="swap" aria-expanded="' + _chipPickerWant + '">' + _CHIP_SVG.swap + '<span class="chip-sr zh">更换芯片</span><span class="chip-sr lang-en">Swap chip</span></button>' : '')
@@ -5158,18 +5397,21 @@ function __tok(n, d) { var v = getComputedStyle(document.body).getPropertyValue(
         function _chipRenderGrid() {
             var grid = _chipEl('chipGrid'), q = ((_chipEl('chipSearch') || {}).value || '').trim().toLowerCase();
             if (!grid) return;
+            var curCar = typeof _selectedCar !== 'undefined' ? _selectedCar : null;
             var full = CHIP_MAX > 1 && _chipsOn.length >= CHIP_MAX && !_chipSwapTarget;
             var lang = typeof currentLang !== 'undefined' ? currentLang : 'zh';
-            // 无搜索过滤且已构建过网格时：直接增量更新选中态、禁用态和副标题，避免每次重建 DOM 和重新解码图片
+            // 无搜索过滤且已构建过网格时：直接增量更新选中态、锁定态、禁用态和副标题，避免每次重建 DOM 和重新解码图片
             if (!q && grid.__built && grid.__lang === lang && grid.__q === '') {
                 var tiles = grid.querySelectorAll('.chip-tile');
                 if (tiles.length === CHIP_REGISTRY.length) {
                     for (var i = 0; i < tiles.length; i++) {
                         var d = CHIP_REGISTRY[i], tile = tiles[i];
                         var on = _chipIndex(d.id) >= 0;
-                        var disabled = (full && !on) || (_chipSwapTarget && on && d.id !== _chipSwapTarget);
+                        var locked = !_chipCanEquip(d, curCar);
+                        var disabled = locked || (full && !on) || (_chipSwapTarget && on && d.id !== _chipSwapTarget);
                         var sub = _chipEnergyTags(d).concat(d.stats || []).map(_chipTxt).join(' · ');
                         tile.classList.toggle('is-on', on);
+                        tile.classList.toggle('is-locked', locked);
                         tile.setAttribute('aria-pressed', on ? 'true' : 'false');
                         tile.disabled = !!disabled;
                         var subEl = tile.querySelector('.chip-tile-sub');
@@ -5180,14 +5422,16 @@ function __tok(n, d) { var v = getComputedStyle(document.body).getPropertyValue(
                 }
             }
             var list = CHIP_REGISTRY.filter(function (d) {
-                return !q || (d.name.zh + ' ' + d.name.en + ' ' + d.desc.zh + ' ' + d.desc.en).toLowerCase().indexOf(q) >= 0;
+                return !q || (d.name.zh + ' ' + d.name.en + ' ' + d.desc.zh + ' ' + d.desc.en + ' ' + (d.allowLabel ? d.allowLabel.zh + ' ' + d.allowLabel.en : '')).toLowerCase().indexOf(q) >= 0;
             });
             grid.innerHTML = list.map(function (d) {
                 var on = _chipIndex(d.id) >= 0;
+                var locked = !_chipCanEquip(d, curCar);
                 var sub = _chipEnergyTags(d).concat(d.stats || []).map(_chipTxt).join(' · ');
-                var disabled = (full && !on) || (_chipSwapTarget && on && d.id !== _chipSwapTarget);
-                return '<button type="button" class="chip-tile' + (on ? ' is-on' : '') + '" data-act="pick" data-id="' + _chipAttr(d.id) + '" aria-pressed="' + on + '"' + (disabled ? ' disabled' : '') + '>'
-                    + _chipIcoHtml(d) + '<span class="chip-tile-main"><span class="chip-tile-name">' + _c2(d.name.zh, d.name.en) + '</span><span class="chip-tile-sub">' + _chipAttr(sub) + '</span></span>'
+                var disabled = locked || (full && !on) || (_chipSwapTarget && on && d.id !== _chipSwapTarget);
+                var lockBadge = d.allowLabel ? '<span class="chip-tile-lock">' + _chipAttr(_chipTxt(d.allowLabel)) + '</span>' : '';
+                return '<button type="button" class="chip-tile' + (on ? ' is-on' : '') + (locked ? ' is-locked' : '') + '" data-act="pick" data-id="' + _chipAttr(d.id) + '" aria-pressed="' + on + '"' + (disabled ? ' disabled' : '') + '>'
+                    + _chipIcoHtml(d) + '<span class="chip-tile-main"><span class="chip-tile-head"><span class="chip-tile-name">' + _c2(d.name.zh, d.name.en) + '</span>' + lockBadge + '</span><span class="chip-tile-sub">' + _chipAttr(sub) + '</span></span>'
                     + '<span class="chip-tile-check" aria-hidden="true"></span></button>';
             }).join('');
             grid.__built = true;
@@ -5231,7 +5475,11 @@ function __tok(n, d) { var v = getComputedStyle(document.body).getPropertyValue(
             _chipSyncOpenFlag();
         }
         function chipEquip(id) {
-            if (!_chipDef(id)) return;
+            var def = _chipDef(id);
+            if (!def) return;
+            var curCar = typeof _selectedCar !== 'undefined' ? _selectedCar : null;
+            var at = _chipIndex(id);
+            if (!_chipCanEquip(def, curCar) && at < 0) return;
             if (_chipSwapTarget) {
                 var targetIdx = _chipIndex(_chipSwapTarget);
                 if (targetIdx >= 0) {
@@ -5242,19 +5490,18 @@ function __tok(n, d) { var v = getComputedStyle(document.body).getPropertyValue(
                         return;
                     } else {
                         // 替换指定槽位
-                        _chipsOn[targetIdx] = { id: id, opts: { loopMode: 'peak' } };
+                        _chipsOn[targetIdx] = { id: id, opts: _chipDefaultOpts(def) };
                         _chipNewId = id;
                     }
                 }
                 _chipSwapTarget = null;
             } else {
-                var at = _chipIndex(id);
                 if (at >= 0) _chipsOn.splice(at, 1);                                   // 再点一次 = 卸下
                 else {
                     if (_chipsOn.length >= CHIP_MAX) {
                         if (CHIP_MAX === 1) _chipsOn.length = 0; else return;
                     }
-                    _chipsOn.push({ id: id, opts: { loopMode: 'peak' } });
+                    _chipsOn.push({ id: id, opts: _chipDefaultOpts(def) });
                     _chipNewId = id;
                 }
             }
@@ -5333,13 +5580,28 @@ function __tok(n, d) { var v = getComputedStyle(document.body).getPropertyValue(
                 return inst.id + (o ? '.' + o : '');
             }).join('-');
         }
-        function chipRestore(str) {
+        function chipRestore(str, forceKeep) {
             _chipsOn = [];
+            var curCar = typeof _selectedCar !== 'undefined' ? _selectedCar : null;
             if (str && str !== '0') String(str).split('-').forEach(function (part) {
                 var dot = part.indexOf('.'), id = dot < 0 ? part : part.slice(0, dot);
-                if (!_chipDef(id) || _chipIndex(id) >= 0 || _chipsOn.length >= CHIP_MAX) return;
-                var opts = {};
-                if (dot >= 0) part.slice(dot + 1).split(',').forEach(function (kv) { var p = kv.split('='); if (p[0]) opts[p[0]] = p[1]; });
+                var def = _chipDef(id);
+                if (!def || _chipIndex(id) >= 0 || _chipsOn.length >= CHIP_MAX) return;
+                if (!forceKeep && !_chipCanEquip(def, curCar)) return;
+                var opts = _chipDefaultOpts(def);
+                var odefs = _chipOptionDefs(def);
+                if (dot >= 0) part.slice(dot + 1).split(',').forEach(function (kv) {
+                    var p = kv.split('='), k = p[0], v = p[1];
+                    if (!k || v === undefined) return;
+                    for (var oi = 0; oi < odefs.length; oi++) {
+                        if (odefs[oi].id === k) {
+                            for (var ci = 0; ci < odefs[oi].choices.length; ci++) {
+                                if (odefs[oi].choices[ci].v === v) { opts[k] = v; break; }
+                            }
+                            break;
+                        }
+                    }
+                });
                 _chipsOn.push({ id: id, opts: opts });
             });
             renderChips(true);
@@ -5840,13 +6102,15 @@ function __tok(n, d) { var v = getComputedStyle(document.body).getPropertyValue(
            var dev = getDevice();
            var targetLoop = T;
            var targetFirst = (dev === 'acc') ? Math.min(targetLoop, 80) : targetLoop;
-           var E = (has('yichu') ? 1.05 : 1.00) + g('extraEfficiency') / 100 - g('debuffRange') / 100;
+           var chipEff = typeof chipEffBonus === 'function' ? chipEffBonus() : 0;
+           var E = (has('yichu') ? 1.05 : 1.00) + g('extraEfficiency') / 100 + chipEff - g('debuffRange') / 100;
            if (E < 0) E = 0;
            var exN = c('hasExtraNitro') ? g('valExtraNitro') : 0, exP = c('hasExtraPerSec') ? g('valExtraPerSec') : 0, exU = c('hasExtraUlt');
            var nrEl = document.querySelector('input[name="nitroRadio"]:checked'), nr = nrEl ? nrEl.value : '1x5';
            var nd = g('time_' + nr);
            var ratio = (nr === '2x2' || nr === '2x3' || nr === '2x25') ? 0.5 : nr === '3x2' ? 1 / 3 : 1.0;
-           var actualUlt = g('baseUltDuration') * (T / 100);
+           var chipDurMult = typeof chipUltDurMult === 'function' ? chipUltDurMult() : 1;
+           var actualUlt = g('baseUltDuration') * chipDurMult * (T / 100);
            var npu;
            if (isManualNitroCount) { npu = parseInt(document.getElementById('inputNitroCount').value); if (isNaN(npu) || npu < 0) npu = 0; }
            else npu = nd > 0 ? Math.floor((actualUlt / nd) + 0.000001) : 0;
@@ -5854,8 +6118,9 @@ function __tok(n, d) { var v = getComputedStyle(document.body).getPropertyValue(
            if (isNaN(firstN) || firstN < 0) firstN = 0;
            var queyi = 0;
            if (has('queyi')) { if (c('queyi_sub_self')) queyi += 0.8; if (c('queyi_sub_enemy')) queyi += 1.2; }
+           var chipResEnv = chipAgg(1 - (g('counterRange') / 100), E);
            var e = {
-               T: T, targetFirst: targetFirst, targetLoop: targetLoop, D: 1 - (g('counterRange') / 100), E: E, start: g('startCharge'),
+               T: T, targetFirst: targetFirst, targetLoop: targetLoop, D: 1 - (g('counterRange') / 100), E: E, chip: chipResEnv, start: g('startCharge'),
                baseNitro: g('baseNitro') * ratio, spec: c('isSpec') ? (10.0 * ratio) : 0,
                exNF: c('chkExtraNitroFirst') ? exN : 0, exNL: c('chkExtraNitroLoop') ? exN : 0,
                exUF: exU ? g('valExtraUltFirst') : 0, exUL: exU ? g('valExtraUltLoop') : 0,

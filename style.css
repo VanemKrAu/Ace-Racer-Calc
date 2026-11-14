@@ -2060,12 +2060,22 @@ body[data-calc-mode="team"] .chip-card .chip-t-team { display: inline; }
   border-color: var(--acc);
   background-color: color-mix(in oklab, var(--acc) 14%, var(--surface));
   box-shadow: inset 0 1px 0 var(--surface-rim), 0 0 0 1px var(--acc), 0 8px 24px -6px color-mix(in oklab, var(--acc) 35%, transparent); }
-.ds-c .chip-tile:disabled { opacity: .45; cursor: not-allowed; }
+.ds-c .chip-tile:disabled { opacity: .48; cursor: not-allowed; }
+.ds-c .chip-tile.is-locked { background-color: color-mix(in oklab, var(--surface) 88%, transparent); }
 .ds-c .chip-tile .chip-ico { width: 44px; height: 44px; border-radius: 12px; box-shadow: none;
   background: color-mix(in oklab, var(--acc) 10%, var(--surface));
   border: 1px solid var(--surface-edge); }
-.ds-c .chip-tile-main { display: flex; flex-direction: column; gap: 2px; min-width: 0; }
+.ds-c .chip-tile-main { display: flex; flex-direction: column; gap: 3px; min-width: 0; flex: 1; }
+.ds-c .chip-tile-head { display: flex; flex-wrap: wrap; align-items: center; gap: 4px 6px; min-width: 0; }
 .ds-c .chip-tile-name { font-size: 13.5px; font-weight: 600; line-height: 1.35; }
+.ds-c .chip-tile-lock { padding: 1px 6px; border-radius: 999px; font-size: 10.5px; font-weight: 600; line-height: 1.45; white-space: nowrap;
+  background: color-mix(in oklab, var(--acc) 14%, var(--surface));
+  border: 1px solid color-mix(in oklab, var(--acc) 40%, transparent);
+  color: var(--acc-ink); }
+.ds-c .chip-tile.is-locked .chip-tile-lock {
+  background: rgba(248, 113, 113, .14);
+  border-color: rgba(248, 113, 113, .38);
+  color: #fca5a5; }
 .ds-c .chip-tile-sub { display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; font-size: 12px; line-height: 1.45; color: var(--ink-2); }
 .ds-c .chip-tile-check { position: absolute; top: 50%; right: 10px; width: 20px; height: 20px; margin-top: -10px; border-radius: 50%;
   background: var(--acc) var(--check-acc) no-repeat center / 13px 13px; opacity: 0; transform: scale(.5); transition: opacity .2s, transform .25s cubic-bezier(.3, 1.4, .5, 1); }
