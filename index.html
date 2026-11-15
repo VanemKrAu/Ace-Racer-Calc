@@ -3043,7 +3043,7 @@ function __tok(n, d) { var v = getComputedStyle(document.body).getPropertyValue(
        
        function loadConfigFromUrl() {
            var urlParams = new URLSearchParams(window.location.search);
-           if (!urlParams.has('s') && !urlParams.has('cfg')) return false;
+           if (!urlParams.has('s') && !urlParams.has('cfg') && !urlParams.has('car')) return false;
 
            isRestoringConfig = true;
            var result = false;
@@ -3286,7 +3286,7 @@ function __tok(n, d) { var v = getComputedStyle(document.body).getPropertyValue(
                      if (found) {
                          _selectedCar = found;
                          _selectedCarId = found.id;
-                         if (urlParams.has('s')) {
+                         if (urlParams.has('s') || urlParams.has('cfg')) {
                              // Config exists: only update preview, don't overwrite values
                              updateCarPreview(found);
                              populateCarGrid();
@@ -3876,14 +3876,21 @@ function __tok(n, d) { var v = getComputedStyle(document.body).getPropertyValue(
 
        function calculate(isInit) {
            if (isRestoringConfig) return;
+           var _num = function (id, minVal) {
+               var el = document.getElementById(id);
+               var v = el ? parseFloat(el.value) : 0;
+               if (!isFinite(v) || isNaN(v)) return 0;
+               return (typeof minVal === 'number' && v < minVal) ? minVal : v;
+           };
 
            var originalTarget = parseFloat(document.getElementById('ultThreshold').value);
-           if (isNaN(originalTarget) || originalTarget <= 0) originalTarget = 100;
+           if (!isFinite(originalTarget) || isNaN(originalTarget) || originalTarget <= 0) originalTarget = 100;
            var target = originalTarget;
 
-           var startCharge = parseFloat(document.getElementById('startCharge').value) || 0;
-           var baseNitroInput = parseFloat(document.getElementById('baseNitro').value) || 0;
-           var defenseMult = 1 - ((parseFloat(document.getElementById('counterRange').value) || 0) / 100);
+           var startCharge = _num('startCharge', 0);
+           var baseNitroInput = _num('baseNitro', 0);
+           var counterPct = Math.min(100, _num('counterRange', 0));
+           var defenseMult = Math.max(0, 1 - (counterPct / 100));
 
            var activeEmpowers = [];
            var checkedBoxes = document.querySelectorAll('.empower-checkbox:checked');
@@ -4203,7 +4210,7 @@ function __tok(n, d) { var v = getComputedStyle(document.body).getPropertyValue(
            }
 
            var reqHuinengLoop = 0;
-           if (nitrosPerUlt > 0 && efficiencyMult > 0 && currentBaseNitro > 0) {
+           if (nitrosPerUlt > 0 && efficiencyMult > 0 && defenseMult > 0 && currentBaseNitro > 0) {
                var remainForLoopUlt = target - loopFixedEmpower - loopHuaxinOutput - loopExtraUltOutput - loopPerSecOutput - loopCustomTrigOutput - tdx.loop - (chipAggRes.loop || 0);
                var singleNeeded = remainForLoopUlt / nitrosPerUlt;
                var baseNeeded = singleNeeded / (defenseMult * efficiencyMult);

@@ -1179,6 +1179,9 @@
       if (/代练|代打|接单|出号|收号|加[vV微]|加[qQ扣]|微信|v信|威信|微信号|wx|vx|扣扣|qq群|企鹅群|私聊|有偿|包上分|上分车队|包赢|包国标|接单群|咸鱼|闲鱼|转转|拼多多|taobao|tb\.cn/i.test(t)) {
         return { valid: false, message: '【方案名称违规】方案名称检测到含有代练、出号、引流等违规词，已被代码层安全拦截' };
       }
+      if (/[<>{}`\\]/.test(t) || /(ignore\s+(all\s+)?previous|system\s*prompt|assistant\s*:|role\s*:\s*system|<\|im_start\|>|<\|system\|>)/i.test(t)) {
+        return { valid: false, message: '【方案名称不合规】方案名称包含非法特殊符号或敏感指令字符，请修改后重试' };
+      }
 
       var p = params || {};
 
@@ -1193,31 +1196,31 @@
 
       var xianji = parseFloat(p.xianji) || 0;
       var huineng = parseFloat(p.huineng) || 0;
-      if (xianji < 0 || xianji > 30) {
+      if (!isFinite(xianji) || xianji < 0 || xianji > 30) {
         return { valid: false, message: '【先机数值异常】当前输入为 ' + xianji + '%，超出比赛物理允许范围 (0% ~ 30%)，请核对后修改' };
       }
-      if (huineng < 0 || huineng > 60) {
+      if (!isFinite(huineng) || huineng < 0 || huineng > 60) {
         return { valid: false, message: '【汇能数值异常】当前输入为 ' + huineng + '%，超出赛车芯片槽位最大物理上限 (0% ~ 60%)，请核对后修改' };
       }
 
       if (p.has_extra_ult) {
         var ultFirst = parseFloat(p.val_extra_ult_first) || 0;
         var ultLoop = parseFloat(p.val_extra_ult_loop) || 0;
-        if (ultFirst > 50 || ultLoop > 50) {
-          return { valid: false, message: '额外大招充能数值异常 (单次上限50%)' };
+        if (!isFinite(ultFirst) || !isFinite(ultLoop) || ultFirst < 0 || ultLoop < 0 || ultFirst > 100 || ultLoop > 100) {
+          return { valid: false, message: '额外大招充能数值异常 (合理范围 0% ~ 100%)' };
         }
       }
       if (p.has_extra_per_sec) {
         var perSec = parseFloat(p.val_extra_per_sec) || 0;
-        if (perSec > 10) {
-          return { valid: false, message: '每秒自充数值异常 (单秒上限10%/s)' };
+        if (!isFinite(perSec) || perSec < 0 || perSec > 100) {
+          return { valid: false, message: '每秒自充数值异常 (合理范围 0% ~ 100%/s)' };
         }
       }
       if (p.val_custom_trig) {
         var trigFirst = parseInt(p.custom_trig_first, 10) || 0;
         var trigLoop = parseInt(p.custom_trig_loop, 10) || 0;
-        if (trigFirst > 10 || trigLoop > 10) {
-          return { valid: false, message: '自定义触发次数超出比赛合理范围 (上限10次)' };
+        if (!isFinite(trigFirst) || !isFinite(trigLoop) || trigFirst < 0 || trigLoop < 0 || trigFirst > 50 || trigLoop > 50) {
+          return { valid: false, message: '自定义触发次数超出比赛合理范围 (0 ~ 50 次)' };
         }
       }
 
@@ -1679,7 +1682,12 @@
       })
         .then(Utils.parseJsonSafe)
         .then(function (resObj) {
-          if (!resObj.ok || !resObj.data) throw new Error('HTTP ' + resObj.status);
+          if (!resObj.ok || !resObj.data) {
+            var err = new Error('HTTP ' + resObj.status);
+            err.httpStatus = resObj.status;
+            err.userMsg = (resObj.data && resObj.data.message) ? resObj.data.message : '';
+            throw err;
+          }
           var json = resObj.data;
           if (reqSeq !== state.fetchSeq || String(carId) !== String(state.currentCarId)) return;
           if (json && json.site_meta && typeof json.site_meta === 'object') {
@@ -1734,8 +1742,11 @@
           if (reqSeq !== state.fetchSeq) return;
           if (append) state.isLoadingMore = false;
           else state.isFetchingRemote = false;
-          // 离线或服务暂时未连通时静默降级，继续展示本地与已缓存方案
+          // 离线或服务暂时未连通时降级展示本地与已缓存方案；明确限流/拦截时给出轻提示
           console.log('[CommunityPlans] 社区方案拉取降级:', err.message);
+          if (err && (err.httpStatus === 429 || err.httpStatus === 403) && err.userMsg) {
+            CommunityPlans.toast(err.userMsg);
+          }
           CommunityPlans.renderPlans({ preserveScroll: preserveScroll });
         })
         .finally(function () {
@@ -3523,7 +3534,12 @@
       })
         .then(Utils.parseJsonSafe)
         .then(function (resObj) {
-          if (!resObj.ok || !resObj.data) throw new Error('HTTP ' + resObj.status);
+          if (!resObj.ok || !resObj.data) {
+            var err = new Error('HTTP ' + resObj.status);
+            err.httpStatus = resObj.status;
+            err.userMsg = (resObj.data && resObj.data.message) ? resObj.data.message : '';
+            throw err;
+          }
           var json = resObj.data;
           if (json && json.site_meta && typeof json.site_meta === 'object') {
             state.siteMeta = Object.assign({}, state.siteMeta, json.site_meta);
@@ -3826,6 +3842,10 @@
       }
 
       var targetRemoteId = plan.remote_id || plan.id;
+      if (!state.votingMap) state.votingMap = {};
+      if (state.votingMap[planId]) return;
+      state.votingMap[planId] = true;
+
       var prevVoted = Boolean(plan.isVoted || state.votedMap[plan.id] || state.votedMap[targetRemoteId]);
       var prevVotes = Math.max(0, Number(plan.votes) || 0);
       var nextAction = prevVoted ? 'unvote' : 'vote';
@@ -3858,6 +3878,16 @@
         .then(Utils.parseJsonSafe)
         .then(function (resObj) {
           if (!resObj.ok) {
+            if (resObj.status === 409 || (resObj.data && resObj.data.code === 'ALREADY_VOTED')) {
+              plan.isVoted = true;
+              plan.votes = Math.max(1, prevVotes);
+              state.votedMap[plan.id] = 1;
+              state.votedMap[targetRemoteId] = 1;
+              Utils.setStorage(STORAGE_KEYS.VOTES, state.votedMap);
+              CommunityPlans.renderPlans({ preserveScroll: true });
+              CommunityPlans.toast((resObj.data && resObj.data.message) || '您已赞过该方案');
+              return;
+            }
             // 后端拒绝（例如自赞 403、限流 429 或未找到对应指纹点赞记录）：精确回滚
             plan.isVoted = prevVoted;
             plan.votes = prevVotes;
@@ -3928,6 +3958,9 @@
           };
           CommunityPlans.renderPlans({ preserveScroll: true });
           CommunityPlans.toast('网络波动，操作已回滚，请重试');
+        })
+        .finally(function () {
+          if (state.votingMap) delete state.votingMap[planId];
         });
     },
 

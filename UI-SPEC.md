@@ -1,7 +1,7 @@
 # 王牌竞速芯片计算器 · 网站 UI 设计与工程规范 (UI-SPEC)
 
 > **版本**：v2.6 (2026-11-14)  
-> **适用范围**：本项目所有前端页面（`index.html`）、组件样式（`style.css`、`community-plans.css`）、动态动效与交互逻辑（`v4.js`、`community-plans.js`、`view.js`）。  
+> **适用范围**：本项目所有前端页面（`index.html`）、组件样式（`style.css`、`community-plans.css`）、数据脚本（`car-database.js`、`data/talents-data.js`、`cdn-icons.js`）及动态动效与交互逻辑（`v4.js`、`community-plans.js`、`view.js`、`liquid-theme.js`、`desk.js`）。  
 > **核心宗旨**：**所有后续开发人员与 Agent 必须 100% 遵守本规范，严禁凭主观臆想自创 UI 或随意打破既有排版平衡**。
 
 ---
@@ -41,8 +41,8 @@
 
 | 变量名 | 深色模式（Dark）典型值 | 用途与语义 |
 | :--- | :--- | :--- |
-| `--bg` | `#0f1013` | 页面底层主背景 |
-| `--surface` | `rgba(26, 28, 35, 0.72)` | 一级卡片毛玻璃基底（配合 `backdrop-filter: blur(16px)`） |
+| `--bg` | `#000000` / `#05060a` | 页面底层主背景（基础 / 毛玻璃层） |
+| `--surface` | `rgba(22, 23, 29, .62)` | 一级卡片毛玻璃基底（配合 `color-mix` 与 `backdrop-filter`） |
 | `--surface-edge` | `rgba(255, 255, 255, 0.08)` | 一级卡片外边框，柔和微透 |
 | `--surface-rim` | `rgba(255, 255, 255, 0.12)` | 卡片顶部 1px 模拟光照的高光内描边 |
 | `--fill` | `rgba(255, 255, 255, 0.04)` | 二级嵌套条目、选项框底色（微透底） |
@@ -51,10 +51,10 @@
 | `--ink` | `#f0f2f5` | 主文字颜色（对比度 > 12:1） |
 | `--ink-2` | `#9ba1ad` | 次要说明文字、辅助标签 |
 | `--ink-3` | `#636b78` | 占位符、禁用态文字 |
-| `--acc` | `#d4a359` / `#e5b567` | 品牌琥珀金高光、强调色、激活边框 |
-| `--r-lg` | `16px` | 大卡片外层圆角 |
-| `--r-md` | `10px` | 内部子卡片、输入框、条目圆角 |
-| `--r-sm` | `6px` | 徽章、小型 Pill 标签圆角 |
+| `--acc` | `#8e8e93`（按车辆品质动态覆盖为 `#ffbf2e` / `#b77bff` / `#4aaeff` / `#3ccf84`） | 品牌强调色、激活边框 |
+| `--r-lg` | `20px` | 大卡片外层圆角 |
+| `--r-md` | `14px` | 内部子卡片、输入框、条目圆角 |
+| `--r-sm` | `10px` | 徽章、小型 Pill 标签圆角 |
 
 ### 2. 标准卡片材质代码范式
 ```css
@@ -231,14 +231,9 @@ if (shouldShut) {
 
 ### 1. 开关组件 (Switch)
 ```html
-<label class="ui-switch">
-  <input type="checkbox" id="mySwitch">
-  <span class="ui-switch-track">
-    <span class="ui-switch-thumb"></span>
-  </span>
-</label>
+<input type="checkbox" id="mySwitch" class="ui-switch">
 ```
-- 激活态 Track 背景为暖金渐变，Thumb 平滑平移，支持触控与键盘无障碍访问。
+- 直接使用 `<input type="checkbox" class="ui-switch">`（配合 `style.css` 内 `::before` 轨道与 `::after` 滑块伪元素实现），激活态背景为强调色渐变，支持触控与键盘无障碍访问。
 
 ### 2. 分段选择器 (Segmented Control)
 - 滑块底层采用深色半透明基底，当前选中的滑块药丸（Active Pill）带有 1px 细微内描边与暖金光泽，切换时带有 `transform` 平滑位移过渡。

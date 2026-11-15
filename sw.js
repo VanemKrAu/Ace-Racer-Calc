@@ -1,11 +1,11 @@
-// 王牌竞速芯片计算器 · Service Worker (calc-shell-v38)
+// 王牌竞速芯片计算器 · Service Worker (calc-shell-v40)
 //
 // 核心策略：
 // 1) install 时预缓存首页核心骨架、图标与静态数据脚本，确保 PWA 离线首屏可用；
 // 2) 运行时采用「网络优先 + 成功回写 + 离线缓存回退」策略，并忽略静态资源查询串（如 manifest.json?v=5）；
 // 3) 社区动态 /api/* 与统计 /_vercel/* 绝不落入 SW 缓存桶；升级 CACHE_NAME 时在 activate 整体淘汰旧桶。
 
-const CACHE_NAME = 'calc-shell-v39';
+const CACHE_NAME = 'calc-shell-v40';
 
 // 离线真正要用到的核心骨架与静态资源。html2canvas 只在导出长图时用，走运行时缓存即可。
 const PRECACHE = [
@@ -31,6 +31,35 @@ const PRECACHE = [
     '/data/icon/chip_xiuzhu.png',
     '/data/icon/chip_yiju.png',
     '/data/icon/chip_xiuhua.png',
+    '/data/icon/racer_icon_buff_2.png',
+    '/data/icon/racer_icon_buff_4.png',
+    '/data/icon/racer_icon_buff_7.png',
+    '/data/icon/racer_icon_buff_9.png',
+    '/data/icon/icon_mhyck_m.png',
+    '/data/icon/talents/skill_green_02.png',
+    '/data/icon/talents/skill_green_03.png',
+    '/data/icon/talents/skill_green_04.png',
+    '/data/icon/talents/skill_green_05.png',
+    '/data/icon/talents/skill_green_06.png',
+    '/data/icon/talents/skill_green_07.png',
+    '/data/icon/talents/skill_purple_02.png',
+    '/data/icon/talents/skill_purple_03.png',
+    '/data/icon/talents/skill_purple_04.png',
+    '/data/icon/talents/skill_purple_05.png',
+    '/data/icon/talents/skill_purple_06.png',
+    '/data/icon/talents/skill_purple_07.png',
+    '/data/icon/talents/skill_red_02.png',
+    '/data/icon/talents/skill_red_04.png',
+    '/data/icon/talents/skill_red_06.png',
+    '/data/icon/talents/skill_red_07.png',
+    '/data/icon/talents/skill_red_08.png',
+    '/data/icon/talents/skill_red_09.png',
+    '/data/icon/talents/skill_yellow_02.png',
+    '/data/icon/talents/skill_yellow_04.png',
+    '/data/icon/talents/skill_yellow_05.png',
+    '/data/icon/talents/skill_yellow_06.png',
+    '/data/icon/talents/skill_yellow_08.png',
+    '/data/icon/talents/skill_yellow_09.png',
     '/icon.png',
     '/icon.svg',
     '/icon-192.png',
