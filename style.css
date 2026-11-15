@@ -117,9 +117,8 @@ body.performance-mode details.tutorial-details.closing > div:last-child { displa
 .top-bar, .top-right, .top-left { display: flex; align-items: center; }
 .nav-btn { display: inline-flex; align-items: center; cursor: pointer; }
 .theme-ico .ico { display: none; }
-.theme-ico .ico:nth-child(3) { display: inline-block; }
-body[data-theme-mode="light"] .theme-ico .ico:nth-child(3), body[data-theme-mode="dark"] .theme-ico .ico:nth-child(3) { display: none; }
-body[data-theme-mode="light"] .theme-ico .ico:nth-child(1), body[data-theme-mode="dark"] .theme-ico .ico:nth-child(2) { display: inline-block; }
+body:not([data-theme-mode="light"]) .theme-ico .ico:nth-child(2) { display: inline-block; }
+body[data-theme-mode="light"] .theme-ico .ico:nth-child(1) { display: inline-block; }
 .tutorial-details summary { display: flex; align-items: center; justify-content: space-between; gap: 12px; }
 .tut-head, .tut-actions { display: flex; align-items: center; gap: 8px; }
 .tut-head { flex-wrap: wrap; }

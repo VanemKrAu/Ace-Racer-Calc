@@ -217,16 +217,13 @@
 
   function setData(k, v) { if (document.body.dataset[k] !== v) document.body.dataset[k] = v; }
   function syncTheme() {
-    var t = ($('themeIcon') || {}).textContent || '';
-    setData('themeMode', t.indexOf('☀') >= 0 ? 'light' : t.indexOf('🌙') >= 0 ? 'dark' : 'system');
-    // 页面本身默认就是深色（原站 initTheme 无存档时会写死 dark），但滚动条、原生控件这些
-    // UA 部件仍会跟着系统走 —— 这里把 color-scheme 钉在 <html> 上，让它们跟随页面主题。
     var light = document.body.classList.contains('light-mode');
+    setData('themeMode', light ? 'light' : 'dark');
+    // 页面本身默认就是深色，但滚动条、原生控件这些
+    // UA 部件仍会跟着系统走 —— 这里把 color-scheme 钉在 <html> 上，让它们跟随页面主题。
     var cs = light ? 'light' : 'dark';
     if (document.documentElement.style.colorScheme !== cs) document.documentElement.style.colorScheme = cs;
-    // 手机地址栏 / 安装成 PWA 后的状态栏底色（theme-color）。
-    // 原站在 <head> 里写了两条按「系统偏好」切换的 meta，但本站有三档主题且默认深色 ——
-    // 系统与站内主题不一致时，地址栏颜色会和页面对不上。这里改成跟随站内实际主题：
+    // 手机地址栏 / 安装成 PWA 后的状态栏底色（theme-color）：
     // 只保留一条 meta、去掉 media 条件，主题一变就同步改写它。
     var metas = document.querySelectorAll('meta[name="theme-color"]');
     if (metas.length) {
