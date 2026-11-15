@@ -1,14 +1,17 @@
 /**
- * LiquidThemeReveal - 液体主题切换动效模块（无音效、跨端零闪烁、原生 CSS clip-path: polygon + Shadow DOM 揭示层）
+ * LiquidThemeReveal - 液体主题切换动效模块（无音效、跨端零闪烁）
  *
- * 架构设计（方案 B 增强版：底层稳固旧主题 + 顶层新主题 Shadow DOM 快照正向 polygon 裁剪 + 双帧无缝提交）：
- * 1. 动画全程底层保持当前真实旧主题不动，绝不因合成器时序/瓦片重绘出现整屏黑白爆闪；
- * 2. 顶层 #__ltOverlay 在 Shadow DOM 内构建目标新主题视觉快照，禁用全部 transition/animation/backdrop-filter，
- *    从源头上消除克隆挂载闪烁与移动端动态 clip-path + backdrop-filter 合成闪烁；
- * 3. 使用 CSS 原生 clip-path: polygon(...) 描述单一连续闭环液体轮廓（液柱 + 弯月面 + 平滑起伏波浪），
- *    彻底告别 iOS Safari / 移动端 WebView 上跨 Shadow Host 引用外部 SVG <clipPath> url(#) 的兼容闪烁问题；
- * 4. 分离小液滴、触底飞溅水花与微弱液面高光由轻量化独立顶层 <svg> 绘制；
- * 5. 动画覆盖全屏（p >= 1）后：禁止 transition → 提交真实底层 applyTheme() → 双 rAF 确认底层已绘制上屏 → 移除揭示层。
+ * 双引擎零闪烁架构：
+ * 1. Tier 1（主引擎：原生 View Transitions 单层平面合成 + 动态 polygon clip-path）：
+ *    - 现代 Chrome / Android Chrome / Via (System WebView) / Safari 18+ 等支持 document.startViewTransition 的浏览器优先启用；
+ *    - 启动前预置 ::view-transition-new(root) 为不可见闭合零面积裁剪 polygon(0 0, 0 0, 0 0)，确保第 0 帧零全屏露底闪烁；
+ *    - 浏览器将新旧主题各合成为一张纯平面 GPU 贴图（零 Shadow DOM、零嵌套 fixed/scroll/canvas/feTurbulence 合成层），
+ *      从架构上根治 Android 瓦片 GPU 合成器在动态 clip-path 下的爆闪问题；
+ *    - 独立粒子层 #__ltParticles 绑定 view-transition-name: lt-particles 置于顶层绘制分离小液滴、触底飞溅与边缘高光。
+ * 2. Tier 2（降级引擎：层扁平化 Shadow DOM 快照揭示层）：
+ *    - 用于不支持 startViewTransition 或调用方显式指定 shadow 引擎的环境；
+ *    - 彻底剥离宿主 translateZ(0)、内部 overflow-y: auto（改为 margin 偏移）、内部所有 position: fixed（转为绝对定位）、
+ *      will-change、mix-blend-mode 及全屏 <feTurbulence> 噪声滤镜，消除移动端 RenderSurface/Mask 脱节闪烁。
  */
 (function (root) {
   'use strict';
@@ -22,17 +25,19 @@
   var rawShadowCssPromise = null;
 
   var SHADOW_HOST_OVERRIDE_CSS = '\n'
-    + ':host { display: block; width: 100%; height: 100%; pointer-events: none; user-select: none; }\n'
-    + '.lt-snap-backdrop { position: fixed; inset: 0; z-index: -1; pointer-events: none; }\n'
-    + '.lt-snap-viewport { position: fixed; top: 0; left: 0; overflow-x: hidden; overflow-y: auto; scrollbar-width: none; -ms-overflow-style: none; pointer-events: none; }\n'
-    + '.lt-snap-viewport::-webkit-scrollbar { display: none; }\n'
-    + '.lt-snap-viewport > .lt-snap-html { display: block; position: static !important; width: 100% !important; min-height: 100% !important; height: auto !important; overflow: visible !important; margin: 0 !important; padding: 0 !important; background: transparent !important; background-color: transparent !important; }\n'
-    + '.lt-snap-viewport > .lt-snap-html > .lt-snap-body { display: block; position: relative; width: 100%; min-height: 100%; margin: 0; isolation: isolate; background: transparent !important; background-color: transparent !important; }\n'
+    + ':host { display: block; width: 100%; height: 100%; pointer-events: none; user-select: none; contain: layout paint style; isolation: isolate; }\n'
+    + '.lt-snap-backdrop { position: absolute; inset: 0; z-index: 0; pointer-events: none; }\n'
+    + '.lt-snap-viewport { position: absolute; inset: 0; overflow: hidden; pointer-events: none; z-index: 1; }\n'
+    + '.lt-snap-viewport > .lt-snap-html { display: block; position: relative !important; width: 100% !important; min-height: 100% !important; height: auto !important; overflow: visible !important; margin: 0 !important; padding: 0 !important; background: transparent !important; background-color: transparent !important; }\n'
+    + '.lt-snap-viewport > .lt-snap-html > .lt-snap-body { display: block; position: relative; width: 100%; min-height: 100%; margin: 0; background: transparent !important; background-color: transparent !important; }\n'
     + '.lt-snap-viewport, .lt-snap-viewport *, .lt-snap-viewport *::before, .lt-snap-viewport *::after {\n'
     + '  transition: none !important; transition-duration: 0s !important;\n'
     + '  animation: none !important; animation-duration: 0s !important;\n'
     + '  -webkit-backdrop-filter: none !important; backdrop-filter: none !important;\n'
+    + '  will-change: auto !important;\n'
+    + '  mix-blend-mode: normal !important;\n'
     + '}\n'
+    + '.lt-snap-body .ds-ambient::after { content: none !important; display: none !important; }\n'
     + '.lt-snap-body.ds-c .ds-dock { background: rgba(26, 27, 34, .94) !important; }\n'
     + '.lt-snap-body.ds-c.light-mode .ds-dock { background: rgba(250, 250, 252, .94) !important; }\n';
 
@@ -49,15 +54,30 @@
     return t * t * (3 - 2 * t);
   }
 
-  function supportsLiquidReveal() {
-    if (typeof document === 'undefined' || typeof window === 'undefined') return false;
-    if (!document.createElementNS || !Element.prototype.attachShadow) return false;
-    if (typeof requestAnimationFrame !== 'function') return false;
+  function supportsPolygonClip() {
     if (typeof CSS !== 'undefined' && typeof CSS.supports === 'function') {
       return CSS.supports('clip-path', 'polygon(0px 0px, 10px 0px, 10px 10px)')
         || CSS.supports('-webkit-clip-path', 'polygon(0px 0px, 10px 0px, 10px 10px)');
     }
     return true;
+  }
+
+  function supportsViewTransitionReveal() {
+    if (typeof document === 'undefined' || typeof window === 'undefined') return false;
+    if (typeof document.startViewTransition !== 'function') return false;
+    if (!document.createElementNS || typeof requestAnimationFrame !== 'function') return false;
+    if (!supportsPolygonClip()) return false;
+    if (typeof CSS !== 'undefined' && typeof CSS.supports === 'function') {
+      return CSS.supports('selector(::view-transition-new(root))');
+    }
+    return false;
+  }
+
+  function supportsLiquidReveal() {
+    if (typeof document === 'undefined' || typeof window === 'undefined') return false;
+    if (!document.createElementNS || typeof requestAnimationFrame !== 'function') return false;
+    if (!supportsPolygonClip()) return false;
+    return supportsViewTransitionReveal() || !!Element.prototype.attachShadow;
   }
 
   function defaultReducedMotion() {
@@ -348,20 +368,39 @@
     }
 
     var scrollRecords = [];
+    var fixedRecords = [];
+    function captureNodeScrollAndFixed(origNode, cloneNode) {
+      if (origNode.scrollTop > 0 || origNode.scrollLeft > 0) {
+        scrollRecords.push({ el: cloneNode, top: origNode.scrollTop, left: origNode.scrollLeft });
+      }
+      try {
+        var cs = getComputedStyle(origNode);
+        if (cs && cs.position === 'fixed') {
+          var rect = origNode.getBoundingClientRect();
+          fixedRecords.push({
+            cloneEl: cloneNode,
+            top: rect.top,
+            left: rect.left,
+            width: rect.width,
+            height: rect.height,
+            sized: (rect.width > 0 || rect.height > 0)
+          });
+        }
+      } catch (_) {}
+    }
+
+    captureNodeScrollAndFixed(origRoot, cloneRoot);
     var origAll = origRoot.getElementsByTagName('*');
     var cloneAll = cloneRoot.getElementsByTagName('*');
     var allLen = Math.min(origAll.length, cloneAll.length);
     for (var m = 0; m < allLen; m++) {
-      var el = origAll[m];
-      if (el.scrollTop > 0 || el.scrollLeft > 0) {
-        scrollRecords.push({ el: cloneAll[m], top: el.scrollTop, left: el.scrollLeft });
-      }
+      captureNodeScrollAndFixed(origAll[m], cloneAll[m]);
     }
-    return scrollRecords;
+    return { scrollRecords: scrollRecords, fixedRecords: fixedRecords };
   }
 
   /**
-   * 构建顶层「目标新主题」Shadow DOM 快照层（始终先隐藏，就绪后用原生 polygon 裁剪揭示）。
+   * 构建顶层「目标新主题」层扁平化 Shadow DOM 快照揭示层（Tier 2 降级引擎）。
    */
   function createNewThemeSnapshotOverlay(toLight, onReady, onFail) {
     var body = document.body;
@@ -378,7 +417,7 @@
     host.setAttribute('inert', '');
     host.tabIndex = -1;
     host.style.cssText = 'position:fixed;inset:0;z-index:2147483640;pointer-events:none;overflow:hidden;user-select:none;'
-      + 'visibility:hidden;-webkit-transform:translateZ(0);transform:translateZ(0);';
+      + 'contain:layout paint style;isolation:isolate;visibility:hidden;';
 
     var shadow = host.attachShadow({ mode: 'open' });
     var useRawCache = rawShadowCssCache !== null;
@@ -456,6 +495,7 @@
     snapBody.dataset.themeMode = toLight ? 'light' : 'dark';
 
     var scrollRecords = [];
+    var fixedRecords = [];
     var children = body.childNodes;
     var origList = [];
     var cloneList = [];
@@ -476,11 +516,9 @@
     }
 
     for (var j = 0; j < origList.length; j++) {
-      var recs = syncClonedControlsAndScroll(origList[j], cloneList[j]);
-      for (var r = 0; r < recs.length; r++) scrollRecords.push(recs[r]);
-      if (origList[j].scrollTop > 0 || origList[j].scrollLeft > 0) {
-        scrollRecords.push({ el: cloneList[j], top: origList[j].scrollTop, left: origList[j].scrollLeft });
-      }
+      var synced = syncClonedControlsAndScroll(origList[j], cloneList[j]);
+      for (var r = 0; r < synced.scrollRecords.length; r++) scrollRecords.push(synced.scrollRecords[r]);
+      for (var fr = 0; fr < synced.fixedRecords.length; fr++) fixedRecords.push(synced.fixedRecords[fr]);
     }
 
     var clonedThemeIcon = snapBody.querySelector('#themeIcon');
@@ -493,9 +531,30 @@
     shadow.appendChild(snapViewport);
     document.documentElement.appendChild(host);
 
+    function syncScrollOffset(curScrollX, curScrollY) {
+      snapHtml.style.setProperty('margin-top', (-curScrollY) + 'px', 'important');
+      snapHtml.style.setProperty('margin-left', (-curScrollX) + 'px', 'important');
+      for (var fi = 0; fi < fixedRecords.length; fi++) {
+        var rec = fixedRecords[fi];
+        var ce = rec.cloneEl;
+        ce.style.setProperty('position', 'absolute', 'important');
+        if (rec.sized) {
+          ce.style.setProperty('top', (rec.top + curScrollY) + 'px', 'important');
+          ce.style.setProperty('left', (rec.left + curScrollX) + 'px', 'important');
+          ce.style.setProperty('right', 'auto', 'important');
+          ce.style.setProperty('bottom', 'auto', 'important');
+          ce.style.setProperty('width', rec.width + 'px', 'important');
+          ce.style.setProperty('height', rec.height + 'px', 'important');
+          ce.style.setProperty('margin', '0', 'important');
+          ce.style.setProperty('transform', 'none', 'important');
+        }
+      }
+    }
+
     function applyScrollAndCanvases() {
-      snapViewport.scrollTop = window.pageYOffset || docEl.scrollTop || scrollY;
-      snapViewport.scrollLeft = window.pageXOffset || docEl.scrollLeft || scrollX;
+      var sx = window.pageXOffset || docEl.scrollLeft || scrollX;
+      var sy = window.pageYOffset || docEl.scrollTop || scrollY;
+      syncScrollOffset(sx, sy);
       for (var sr = 0; sr < scrollRecords.length; sr++) {
         scrollRecords[sr].el.scrollTop = scrollRecords[sr].top;
         scrollRecords[sr].el.scrollLeft = scrollRecords[sr].left;
@@ -560,6 +619,7 @@
     return {
       host: host,
       snapViewport: snapViewport,
+      syncScroll: syncScrollOffset,
       cancelWait: function () {
         readyCalled = true;
         if (fallbackTimer) {
@@ -896,78 +956,67 @@
     };
   }
 
+  function removeNodeSafe(node) {
+    if (node && node.parentNode) {
+      node.parentNode.removeChild(node);
+    }
+  }
+
   function cleanupState(st, invokeCallbackKey) {
     if (!st || st.cleaned) return;
     st.cleaned = true;
     if (activeState === st) activeState = null;
 
     if (st.cancelWait) st.cancelWait();
+    if (st.readyTimer) {
+      clearTimeout(st.readyTimer);
+      st.readyTimer = 0;
+    }
     if (st.rafId) cancelAnimationFrame(st.rafId);
     if (st.commitRaf1) cancelAnimationFrame(st.commitRaf1);
     if (st.commitRaf2) cancelAnimationFrame(st.commitRaf2);
-    window.removeEventListener('scroll', st.onScroll);
-    window.removeEventListener('resize', st.onResize);
-    document.removeEventListener('visibilitychange', st.onVisibility);
+    if (st.onScroll) window.removeEventListener('scroll', st.onScroll);
+    if (st.onResize) window.removeEventListener('resize', st.onResize);
+    if (st.onVisibility) document.removeEventListener('visibilitychange', st.onVisibility);
 
-    if (st.overlay && st.overlay.parentNode) st.overlay.parentNode.removeChild(st.overlay);
-    if (st.particleSvg && st.particleSvg.parentNode) st.particleSvg.parentNode.removeChild(st.particleSvg);
-    if (!activeState) document.documentElement.classList.remove('lt-no-trans');
+    if (st.keepAliveAnim) {
+      try { st.keepAliveAnim.cancel(); } catch (_) {}
+      st.keepAliveAnim = null;
+    }
+    if (st.vt) {
+      try { st.vt.skipTransition(); } catch (_) {}
+      st.vt = null;
+    }
+
+    removeNodeSafe(st.vtClipStyle);
+    removeNodeSafe(st.vtBaseStyle);
+    removeNodeSafe(st.overlay);
+    removeNodeSafe(st.particleSvg);
+
+    if (!activeState) {
+      if (st.deferRemoveNoTrans) {
+        requestAnimationFrame(function () {
+          if (!activeState) document.documentElement.classList.remove('lt-no-trans');
+        });
+      } else {
+        document.documentElement.classList.remove('lt-no-trans');
+      }
+    }
 
     if (invokeCallbackKey && typeof st[invokeCallbackKey] === 'function') {
       try { st[invokeCallbackKey](); } catch (_) {}
     }
   }
 
-  function run(options) {
-    options = options || {};
-    var applyTheme = typeof options.applyTheme === 'function' ? options.applyTheme : function () {};
-    var toLight = typeof options.toLight === 'boolean'
-      ? options.toLight
-      : !(document.body && document.body.classList.contains('light-mode'));
-    var isReduced = typeof options.isReducedMotion === 'function'
-      ? options.isReducedMotion()
-      : defaultReducedMotion();
-
-    if (activeState) {
-      var prev = activeState;
-      cleanupState(prev, prev.started ? 'onInterrupt' : null);
-    }
-
-    if (isReduced || !supportsLiquidReveal()) {
-      document.documentElement.classList.add('lt-no-trans');
-      applyTheme();
-      void document.body.offsetHeight;
-      requestAnimationFrame(function () {
-        if (!activeState) document.documentElement.classList.remove('lt-no-trans');
-      });
-      if (typeof options.onFinish === 'function') options.onFinish();
-      return false;
-    }
-
-    var duration = typeof options.duration === 'number' && options.duration > 100
-      ? options.duration
-      : DEFAULT_DURATION;
-    var triggerEl = options.triggerEl || null;
-    var W = document.documentElement.clientWidth || window.innerWidth || 1;
-    var H = window.innerHeight || 1;
-
-    var originX = W - 40;
-    var originY = 48;
-    if (triggerEl && triggerEl.getBoundingClientRect) {
-      var rect = triggerEl.getBoundingClientRect();
-      if (rect.width > 0 && rect.height > 0) {
-        originX = clamp(rect.left + rect.width / 2, 20, W - 20);
-        originY = clamp(rect.bottom - 5, 6, Math.max(40, H * 0.45));
-      }
-    }
-
+  function createParticleLayer(W, H, toLight, withViewTransitionName) {
     var particleSvg = document.createElementNS(SVG_NS, 'svg');
     particleSvg.id = '__ltParticles';
     particleSvg.setAttribute('aria-hidden', 'true');
     particleSvg.setAttribute('width', String(W));
     particleSvg.setAttribute('height', String(H));
     particleSvg.setAttribute('viewBox', '0 0 ' + W + ' ' + H);
-    particleSvg.style.cssText = 'position:fixed;inset:0;width:100%;height:100%;z-index:2147483641;pointer-events:none;visibility:hidden;';
+    particleSvg.style.cssText = 'position:fixed;inset:0;width:100%;height:100%;z-index:2147483641;pointer-events:none;'
+      + (withViewTransitionName ? 'view-transition-name:lt-particles;' : 'visibility:hidden;');
 
     var dropPathEl = document.createElementNS(SVG_NS, 'path');
     dropPathEl.setAttribute('fill', toLight ? '#f2f2f6' : '#000000');
@@ -982,43 +1031,244 @@
     particleSvg.appendChild(sheenPathEl);
     document.documentElement.appendChild(particleSvg);
 
+    return {
+      svg: particleSvg,
+      dropPathEl: dropPathEl,
+      sheenPathEl: sheenPathEl
+    };
+  }
+
+  function resolveTriggerOrigin(triggerEl, W, H) {
+    var originX = W - 40;
+    var originY = 48;
+    if (triggerEl && triggerEl.getBoundingClientRect) {
+      var rect = triggerEl.getBoundingClientRect();
+      if (rect.width > 0 && rect.height > 0) {
+        originX = clamp(rect.left + rect.width / 2, 20, W - 20);
+        originY = clamp(rect.bottom - 5, 6, Math.max(40, H * 0.45));
+      }
+    }
+    return { x: originX, y: originY };
+  }
+
+  function runViewTransition(options, applyTheme, toLight, duration, triggerEl) {
+    var W = document.documentElement.clientWidth || window.innerWidth || 1;
+    var H = window.innerHeight || 1;
+    var origin = resolveTriggerOrigin(triggerEl, W, H);
+    var originX = origin.x;
+    var originY = origin.y;
+
+    var particles = createParticleLayer(W, H, toLight, true);
+    var particleSvg = particles.svg;
+    var dropPathEl = particles.dropPathEl;
+    var sheenPathEl = particles.sheenPathEl;
+
+    var vtBaseStyle = document.createElement('style');
+    vtBaseStyle.id = '__ltVtBaseStyle';
+    vtBaseStyle.textContent = ''
+      + '::view-transition { pointer-events: none !important; }\n'
+      + '::view-transition-group(*), ::view-transition-image-pair(*), ::view-transition-old(*), ::view-transition-new(*) {\n'
+      + '  animation: none !important;\n'
+      + '  mix-blend-mode: normal !important;\n'
+      + '}\n'
+      + '::view-transition-group(root) { z-index: 1 !important; }\n'
+      + '::view-transition-group(lt-particles) { z-index: 2 !important; }\n'
+      + '::view-transition-old(lt-particles) { display: none !important; }\n';
+    (document.head || document.documentElement).appendChild(vtBaseStyle);
+
+    // 启动 ViewTransition 前预设闭合裁剪，确保第 0 帧绝不闪出未裁剪的新主题全屏快照
+    var vtClipStyle = document.createElement('style');
+    vtClipStyle.id = '__ltVtClipStyle';
+    vtClipStyle.textContent = '::view-transition-new(root){clip-path:polygon(0px 0px,0px 0px,0px 0px) !important;-webkit-clip-path:polygon(0px 0px,0px 0px,0px 0px) !important;}';
+    (document.head || document.documentElement).appendChild(vtClipStyle);
+
     var state = {
+      engine: 'view-transition',
+      started: false,
+      themeApplied: false,
+      committing: false,
+      cleaned: false,
+      deferRemoveNoTrans: true,
+      rafId: 0,
+      commitRaf1: 0,
+      commitRaf2: 0,
+      readyTimer: 0,
+      vt: null,
+      keepAliveAnim: null,
+      vtBaseStyle: vtBaseStyle,
+      vtClipStyle: vtClipStyle,
+      particleSvg: particleSvg,
+      onFinish: options.onFinish,
+      onInterrupt: options.onInterrupt,
+      onResize: function () {
+        if (activeState !== state) return;
+        cleanupState(state, 'onFinish');
+      },
+      onVisibility: function () {
+        if (document.hidden && activeState === state) {
+          if (!state.themeApplied) {
+            state.themeApplied = true;
+            document.documentElement.classList.add('lt-no-trans');
+            applyTheme();
+          }
+          cleanupState(state, 'onFinish');
+        }
+      }
+    };
+    activeState = state;
+
+    window.addEventListener('resize', state.onResize, { passive: true });
+    document.addEventListener('visibilitychange', state.onVisibility);
+
+    var vt;
+    try {
+      vt = document.startViewTransition(function () {
+        if (activeState !== state || state.cleaned) return;
+        document.documentElement.classList.add('lt-no-trans');
+        applyTheme();
+        state.themeApplied = true;
+        try {
+          var bg = getComputedStyle(document.body).backgroundColor || '';
+          if (bg && bg !== 'rgba(0, 0, 0, 0)' && bg !== 'transparent') {
+            dropPathEl.setAttribute('fill', bg);
+          }
+        } catch (_) {}
+        void document.body.offsetHeight;
+      });
+    } catch (_) {
+      if (!state.themeApplied) {
+        document.documentElement.classList.add('lt-no-trans');
+        applyTheme();
+        state.themeApplied = true;
+      }
+      cleanupState(state, 'onFinish');
+      return false;
+    }
+
+    state.vt = vt;
+    if (vt && vt.finished && typeof vt.finished.catch === 'function') {
+      vt.finished.catch(function () {});
+    }
+
+    state.readyTimer = setTimeout(function () {
+      if (activeState === state && !state.started && !state.cleaned) {
+        if (!state.themeApplied) {
+          document.documentElement.classList.add('lt-no-trans');
+          applyTheme();
+          state.themeApplied = true;
+        }
+        cleanupState(state, 'onFinish');
+      }
+    }, 600);
+
+    vt.ready.then(function () {
+      if (activeState !== state || state.cleaned) return;
+      if (state.readyTimer) {
+        clearTimeout(state.readyTimer);
+        state.readyTimer = 0;
+      }
+      state.started = true;
+
+      // 在 old(root) 挂一个零视觉改变的 WAAPI 动画，防止 Chromium 因无活跃 CSS 动画而在首帧提前结束转场
+      try {
+        state.keepAliveAnim = document.documentElement.animate(
+          { opacity: [1, 1] },
+          { duration: duration + 2000, fill: 'forwards', pseudoElement: '::view-transition-old(root)' }
+        );
+      } catch (_) {}
+
+      var splashList = createSplashParticles(originX, W);
+      var streamDrops = createStreamDroplets();
+      var initFrame = buildFrameGeometry(W, H, originX, originY, 0.001, 0, splashList, streamDrops);
+      vtClipStyle.textContent = '::view-transition-new(root){clip-path:' + initFrame.clipCss + ' !important;-webkit-clip-path:' + initFrame.clipCss + ' !important;}';
+      dropPathEl.setAttribute('d', initFrame.dropD);
+      sheenPathEl.setAttribute('d', initFrame.sheenD);
+
+      var startTs = 0;
+      function tick(now) {
+        if (activeState !== state || state.cleaned || state.committing) return;
+        if (!startTs) startTs = now;
+        var elapsed = now - startTs;
+        var p = clamp(elapsed / duration, 0, 1);
+
+        var frame = buildFrameGeometry(W, H, originX, originY, p, elapsed / 1000, splashList, streamDrops);
+        vtClipStyle.textContent = '::view-transition-new(root){clip-path:' + frame.clipCss + ' !important;-webkit-clip-path:' + frame.clipCss + ' !important;}';
+        dropPathEl.setAttribute('d', frame.dropD);
+        sheenPathEl.setAttribute('d', frame.sheenD);
+
+        if (p >= 1) {
+          state.committing = true;
+          vtClipStyle.textContent = '::view-transition-new(root){clip-path:none !important;-webkit-clip-path:none !important;}';
+          dropPathEl.setAttribute('d', '');
+          sheenPathEl.setAttribute('d', '');
+          state.commitRaf1 = requestAnimationFrame(function () {
+            if (activeState !== state || state.cleaned) return;
+            cleanupState(state, 'onFinish');
+          });
+          return;
+        }
+        state.rafId = requestAnimationFrame(tick);
+      }
+
+      state.rafId = requestAnimationFrame(tick);
+    }, function () {
+      if (activeState !== state || state.cleaned) return;
+      if (!state.themeApplied) {
+        document.documentElement.classList.add('lt-no-trans');
+        applyTheme();
+        state.themeApplied = true;
+      }
+      cleanupState(state, 'onFinish');
+    });
+
+    return true;
+  }
+
+  function runShadowFallback(options, applyTheme, toLight, duration, triggerEl) {
+    var W = document.documentElement.clientWidth || window.innerWidth || 1;
+    var H = window.innerHeight || 1;
+    var origin = resolveTriggerOrigin(triggerEl, W, H);
+    var originX = origin.x;
+    var originY = origin.y;
+
+    var particles = createParticleLayer(W, H, toLight, false);
+    var particleSvg = particles.svg;
+    var dropPathEl = particles.dropPathEl;
+    var sheenPathEl = particles.sheenPathEl;
+
+    var state = {
+      engine: 'shadow',
       started: false,
       committing: false,
       cleaned: false,
+      deferRemoveNoTrans: true,
       rafId: 0,
       commitRaf1: 0,
       commitRaf2: 0,
       overlay: null,
       snapViewport: null,
+      syncScroll: null,
       cancelWait: null,
       particleSvg: particleSvg,
       onFinish: options.onFinish,
       onInterrupt: options.onInterrupt,
       onScroll: function () {
-        if (!activeState || activeState !== state || !state.snapViewport) return;
-        state.snapViewport.scrollTop = window.pageYOffset || document.documentElement.scrollTop || 0;
-        state.snapViewport.scrollLeft = window.pageXOffset || document.documentElement.scrollLeft || 0;
+        if (!activeState || activeState !== state || !state.syncScroll) return;
+        var sx = window.pageXOffset || document.documentElement.scrollLeft || 0;
+        var sy = window.pageYOffset || document.documentElement.scrollTop || 0;
+        state.syncScroll(sx, sy);
       },
       onResize: function () {
         if (!activeState || activeState !== state) return;
         var hr = state.overlay ? state.overlay.getBoundingClientRect() : null;
         W = (hr && hr.width > 0) ? hr.width : (document.documentElement.clientWidth || window.innerWidth || 1);
         H = (hr && hr.height > 0) ? hr.height : (window.innerHeight || 1);
-        if (state.snapViewport) {
-          state.snapViewport.style.width = (document.documentElement.clientWidth || W) + 'px';
-          state.snapViewport.style.height = (document.documentElement.clientHeight || H) + 'px';
-        }
         particleSvg.setAttribute('width', String(W));
         particleSvg.setAttribute('height', String(H));
         particleSvg.setAttribute('viewBox', '0 0 ' + W + ' ' + H);
-        if (triggerEl && triggerEl.getBoundingClientRect) {
-          var r = triggerEl.getBoundingClientRect();
-          if (r.width > 0 && r.height > 0) {
-            originX = clamp(r.left + r.width / 2, 20, W - 20);
-            originY = clamp(r.bottom - 5, 6, Math.max(40, H * 0.45));
-          }
-        }
+        var o = resolveTriggerOrigin(triggerEl, W, H);
+        originX = o.x;
+        originY = o.y;
       },
       onVisibility: function () {
         if (document.hidden && activeState === state) {
@@ -1049,7 +1299,6 @@
       applyTheme();
       void document.body.offsetHeight;
 
-      // 保持全屏覆盖等待两帧，确保真实新主题已在底层合成完毕再撤下揭示层，彻底消灭收尾闪烁
       state.commitRaf1 = requestAnimationFrame(function () {
         if (activeState !== state) return;
         state.commitRaf2 = requestAnimationFrame(function () {
@@ -1070,13 +1319,9 @@
       particleSvg.setAttribute('viewBox', '0 0 ' + W + ' ' + H);
       dropPathEl.setAttribute('fill', resolvedBg || (toLight ? '#f2f2f6' : '#000000'));
 
-      if (triggerEl && triggerEl.getBoundingClientRect) {
-        var tr = triggerEl.getBoundingClientRect();
-        if (tr.width > 0 && tr.height > 0) {
-          originX = clamp(tr.left + tr.width / 2, 20, W - 20);
-          originY = clamp(tr.bottom - 5, 6, Math.max(40, H * 0.45));
-        }
-      }
+      var o = resolveTriggerOrigin(triggerEl, W, H);
+      originX = o.x;
+      originY = o.y;
 
       var splashList = createSplashParticles(originX, W);
       var streamDrops = createStreamDroplets();
@@ -1086,7 +1331,6 @@
       dropPathEl.setAttribute('d', initFrame.dropD);
       sheenPathEl.setAttribute('d', initFrame.sheenD);
 
-      // 必须在 clip-path 与初始几何落位后再显形，确保第 0 帧绝不闪现未裁剪的新主题层
       host.style.visibility = '';
       particleSvg.style.visibility = '';
 
@@ -1121,9 +1365,48 @@
 
     state.overlay = snap.host;
     state.snapViewport = snap.snapViewport;
+    state.syncScroll = snap.syncScroll;
     state.cancelWait = snap.cancelWait;
 
     return true;
+  }
+
+  function run(options) {
+    options = options || {};
+    var applyTheme = typeof options.applyTheme === 'function' ? options.applyTheme : function () {};
+    var toLight = typeof options.toLight === 'boolean'
+      ? options.toLight
+      : !(document.body && document.body.classList.contains('light-mode'));
+    var isReduced = typeof options.isReducedMotion === 'function'
+      ? options.isReducedMotion()
+      : defaultReducedMotion();
+
+    if (activeState) {
+      var prev = activeState;
+      cleanupState(prev, prev.started ? 'onInterrupt' : null);
+    }
+
+    if (isReduced || !supportsLiquidReveal()) {
+      document.documentElement.classList.add('lt-no-trans');
+      applyTheme();
+      void document.body.offsetHeight;
+      requestAnimationFrame(function () {
+        if (!activeState) document.documentElement.classList.remove('lt-no-trans');
+      });
+      if (typeof options.onFinish === 'function') options.onFinish();
+      return false;
+    }
+
+    var duration = typeof options.duration === 'number' && options.duration > 100
+      ? options.duration
+      : DEFAULT_DURATION;
+    var triggerEl = options.triggerEl || null;
+
+    var forceShadow = options.engine === 'shadow';
+    if (!forceShadow && supportsViewTransitionReveal()) {
+      return runViewTransition(options, applyTheme, toLight, duration, triggerEl);
+    }
+    return runShadowFallback(options, applyTheme, toLight, duration, triggerEl);
   }
 
   function cancel() {
@@ -1138,6 +1421,7 @@
 
   if (typeof window !== 'undefined') {
     var schedulePrefetch = function () {
+      if (supportsViewTransitionReveal()) return;
       if (typeof requestIdleCallback === 'function') {
         requestIdleCallback(function () { prefetchRawShadowCss(); }, { timeout: 1000 });
       } else {
@@ -1152,6 +1436,7 @@
     run: run,
     cancel: cancel,
     isRunning: isRunning,
-    prefetch: prefetchRawShadowCss
+    prefetch: prefetchRawShadowCss,
+    getActiveEngine: function () { return activeState ? activeState.engine : null; }
   };
 })(typeof window !== 'undefined' ? window : this);
