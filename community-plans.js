@@ -86,6 +86,182 @@
     xiuhua: '至美：羞花'
   };
 
+  var OFFICIAL_CHIP_META = {
+    '1': { name: '极速', kind: 'normal', shape: '○', desc: '提升车辆平跑极速' },
+    '2': { name: '耐久', kind: 'normal', shape: '○', desc: '提升车辆耐久值' },
+    '3': { name: '起步推进', kind: 'normal', shape: '⬡', desc: '延长起步推进时间' },
+    '4': { name: '涡轮连发', kind: 'normal', shape: '○', desc: '提升涡轮连发概率' },
+    '5': { name: '氮气时间', kind: 'normal', shape: '⬡', desc: '延长氮气持续时间' },
+    '6': { name: '尾流集氮', kind: 'normal', shape: '△', desc: '尾流期间额外集氮' },
+    '7': { name: '漂移集氮', kind: 'normal', shape: '△', desc: '提升漂移集气效率' },
+    '8': { name: '汇能', kind: 'normal', shape: '△/◇/⬡', desc: '使用氮气后额外获得大招充能' },
+    '9': { name: '团魂', kind: 'normal', shape: '◇', desc: '辅助位大招额外充能效率' },
+    '10': { name: '背水', kind: 'normal', shape: '△', desc: '低耐久时提升平跑极速' },
+    '11': { name: '尾流提速', kind: 'normal', shape: '○', desc: '尾流期间提升极速' },
+    '12': { name: '进境', kind: 'normal', shape: '⬡', desc: '随比赛推进逐步提升极速' },
+    '13': { name: '反击', kind: 'normal', shape: '△', desc: '排名靠后时提升平跑极速' },
+    '14': { name: '先制', kind: 'normal', shape: '○', desc: '排名靠前时提升平跑极速' },
+    '15': { name: '反制', kind: 'normal', shape: '◇', desc: '降低敌方对我方施放的大招充能/干扰效果' },
+    '16': { name: '先机', kind: 'normal', shape: '◇', desc: '开局直接获得一定比例的大招能量' },
+    '1001': { name: '圆形扩展', kind: 'core', shape: 'V', desc: '提升圆形芯片性能' },
+    '1002': { name: '三角扩展', kind: 'core', shape: 'V', desc: '提升三角形芯片性能' },
+    '1003': { name: '菱形扩展', kind: 'core', shape: 'V', desc: '提升菱形芯片性能' },
+    '1004': { name: '六边形扩展', kind: 'core', shape: 'V', desc: '提升六边形芯片性能' },
+    '1005': { name: '团队充能', kind: 'core', shape: 'V', desc: '每次释放大招为队友提供充能' },
+    '1006': { name: '命中充能', kind: 'core', shape: 'V', desc: '大招命中目标时获得额外充能' },
+    '1007': { name: '大招极速', kind: 'core', shape: 'V', desc: '每次释放大招后下一次氮气提升极速' },
+    '1008': { name: '氮气出弯', kind: 'core', shape: 'V', desc: '氮气速度提升，触发氮气出弯立即退出漂移' },
+    '1009': { name: '无阈值漂移', kind: 'core', shape: 'V', desc: '获得集气无阈值效果并提升漂移集气效率' },
+    '1010': { name: '涡轮极速', kind: 'core', shape: 'V', desc: '周期性获得涡轮，使用涡轮叠加极速' },
+    '1011': { name: '开局干扰', kind: 'core', shape: 'V', desc: '开局5秒获得大招能量并使下两次干扰必定命中' },
+    '1012': { name: '大招断漂', kind: 'core', shape: 'V', desc: '点击大招立即结束漂移并获得大招能量' },
+    '2001': { name: '超车氮气', kind: 'exclusive', shape: 'V', desc: '特技期间每次超车获得氮气能量' },
+    '2002': { name: '闪现氮气', kind: 'exclusive', shape: 'V', desc: '每次闪现后获得氮气加速效果' },
+    '2003': { name: '冲锋回能', kind: 'exclusive', shape: 'V', desc: '冲锋未撞击时大招结束恢复能量' },
+    '2004': { name: '人车隐身', kind: 'exclusive', shape: 'V', desc: '释放人车合一时获得隐身效果' },
+    '2005': { name: '龙卷旋转', kind: 'exclusive', shape: 'V', desc: '龙卷冲锋旋转速度提升' },
+    '2006': { name: '充能扩距', kind: 'exclusive', shape: 'V', desc: '大招充能范围从50米提升' },
+    '2007': { name: '大招自充', kind: 'exclusive', shape: 'V', desc: '每次点击大招自充能' },
+    '2008': { name: '巡航涡轮', kind: 'exclusive', shape: 'V', desc: '空中巡航每秒刷出涡轮并获氮气' },
+    '2009': { name: '全域干扰', kind: 'exclusive', shape: 'V', desc: '干扰前方转换为干扰范围内敌人' },
+    '2010': { name: '穿梭导航', kind: 'exclusive', shape: 'V', desc: '穿梭结束后进行可取消自动导航' },
+    '2011': { name: '时空减秒', kind: 'exclusive', shape: 'V', desc: '开局获得13%大招能量并周期减少比赛完成时间' },
+    '2012': { name: '闪现集气', kind: 'exclusive', shape: 'V', desc: '每秒自动集气400并提升向前闪现距离' },
+    '2013': { name: '开局集气扩辅', kind: 'exclusive', shape: 'V', desc: '开局获得8000集气量并扩大辅助范围' },
+    '2014': { name: '曼巴无阈值', kind: 'exclusive', shape: 'V', desc: '曼巴蛇移速提升并获得集气无阈值效果' },
+    '2015': { name: '墨染·傲梅', kind: 'exclusive', shape: 'V', calcId: 'aomei', desc: '寒霜冰魄专属：干扰范围扩大且充能效率+5%' },
+    '2016': { name: '圣印续刻', kind: 'exclusive', shape: 'V', desc: '开局8秒补齐圣印，每2次大招触发已解锁圣印' },
+    '2017': { name: '墨染·修竹', kind: 'exclusive', shape: 'V', calcId: 'xiuzhu', desc: '先驱者专属：80%大招能量即可使用' },
+    '2018': { name: '墨染·逸菊', kind: 'exclusive', shape: 'V', calcId: 'yiju', desc: '神剑号专属：自动集气翻倍，大招能量消耗降低' },
+    '2019': { name: '至美·羞花', kind: 'exclusive', shape: 'V', calcId: 'xiuhua', desc: '隐匿猎手专属：开局25%大招能量且88%即可使用' },
+    '2020': { name: '反弹提速', kind: 'exclusive', shape: 'V', desc: '充能效率提升，大招/反弹干扰可叠加极速' },
+    '2021': { name: '万集扩辅', kind: 'exclusive', shape: 'V', desc: '开局获得10000集气量并扩大辅助范围' },
+    '2022': { name: '大招返能', kind: 'exclusive', shape: 'V', desc: '释放大招消耗20%当前能量，结束时返还能量' },
+    '3001': { name: '超频·氮气', kind: 'boost', shape: 'V', desc: '每3次氮气提升极速（上限3层）' },
+    '3002': { name: '超频·闪现', kind: 'boost', shape: 'V', desc: '提升向前闪现距离' },
+    '3003': { name: '超频·大招', kind: 'boost', shape: 'V', desc: '每5次大招集气5000并提升极速（上限4层）' },
+    '3004': { name: '后追极速', kind: 'boost', shape: 'V', desc: '处于第4名及以后名次时提升极速' },
+    '3005': { name: '开局45s极速', kind: 'boost', shape: 'V', desc: '开局前45秒内提升极速' },
+    '3006': { name: '首氮闪现', kind: 'boost', shape: 'V', desc: '开局首次使用氮气附加闪现效果' },
+    '3007': { name: '蓄势极速', kind: 'boost', shape: 'V', desc: '开局及每11秒叠加极速（上限5层）' },
+    '3008': { name: '开局无阈值', kind: 'boost', shape: 'V', desc: '开局前数秒极速+5km/h并获得集气无阈值' },
+    '4001': { name: '紫气极速', kind: 'exclusive', shape: 'V', desc: '大招后5秒氮气涡轮变紫并叠加极速' },
+    '4002': { name: '大招断漂集气', kind: 'exclusive', shape: 'V', desc: '点击大招断漂，开局无阈值且每次大招集气900' },
+    '4003': { name: '猫眠梦之芯', kind: 'exclusive', shape: 'V', calcId: 'catnap', desc: '每6秒集气1200回耐久，猫眠梦66%能量可用大招' },
+    '4004': { name: '隐匿猎手之芯', kind: 'exclusive', shape: 'V', calcId: 'hunter', desc: '极速提升但涡轮微降，每2次大招充能16%' },
+    '4005': { name: '至尊：翔宇青龙', kind: 'exclusive', shape: 'V', calcId: 'qinglong', desc: '缩短比赛完成时间，烛龙受辅助充能加成+30%' }
+  };
+
+  var OFFICIAL_TIER_OPTIONS = [
+    { key: '16-99', label: '车神高分', shortLabel: '16-99段' },
+    { key: '10-15', label: '进阶排位', shortLabel: '10-15段' },
+    { key: '1-9', label: '入门参考', shortLabel: '1-9段' }
+  ];
+
+  function getOfficialChipInfo(chipId) {
+    var id = String(chipId);
+    if (OFFICIAL_CHIP_META[id]) return OFFICIAL_CHIP_META[id];
+    var num = parseInt(id, 10);
+    if (num >= 200 && num < 300) return { name: '赛道专属 #' + id, kind: 'normal', shape: '○', desc: '特定赛道极速芯片' };
+    if (num >= 2000 && num < 3000) return { name: '专属核心 #' + id, kind: 'exclusive', shape: 'V', desc: '车辆专属核心芯片' };
+    if (num >= 3000 && num < 4000) return { name: '增幅核心 #' + id, kind: 'boost', shape: 'V', desc: '增幅核心芯片' };
+    if (num >= 4000 && num < 5000) return { name: '至尊核心 #' + id, kind: 'exclusive', shape: 'V', desc: '至尊/至美核心芯片' };
+    return { name: '芯片 #' + id, kind: 'normal', shape: '', desc: '' };
+  }
+
+  function countCarSlotShapes(car) {
+    var counts = { diamond: 0, triangle: 0, hex: 0, circle: 0 };
+    var slots = (car && car.chip_slots) ? String(car.chip_slots) : '';
+    for (var i = 0; i < slots.length; i++) {
+      var ch = slots[i];
+      if (ch === '\u25C7') counts.diamond++;
+      else if (ch === '\u25B3') counts.triangle++;
+      else if (ch === '\u25E3') counts.hex++;
+      else if (ch === '\u25CB') counts.circle++;
+    }
+    return counts;
+  }
+
+  function buildOfficialDerivedParams(tierWeights, car, curMode) {
+    var base = ParamsIO.capture();
+    var weights = tierWeights || {};
+    var shapes = countCarSlotShapes(car);
+    var boostDiamond = (Number(weights['1003']) || 0) >= 0.35;
+    var boostTriangle = (Number(weights['1002']) || 0) >= 0.35;
+    var boostHex = (Number(weights['1004']) || 0) >= 0.35;
+
+    var w8 = Number(weights['8']) || 0;
+    var w16 = Number(weights['16']) || 0;
+    var w9 = Number(weights['9']) || 0;
+
+    // 1. 估算先机：菱形槽位每颗满级 7.5%（带菱形扩展 11.25%）
+    var xianjiStep = boostDiamond ? 11.25 : 7.5;
+    var maxXianjiBySlot = Math.min(30, shapes.diamond * xianjiStep);
+    var estXianji = 0;
+    if (w16 >= 0.12 && shapes.diamond > 0) {
+      var estDiamondXianji = Math.max(1, Math.min(shapes.diamond, Math.round(w16 * 1.5)));
+      estXianji = Number(Math.min(maxXianjiBySlot, estDiamondXianji * xianjiStep).toFixed(2));
+    }
+
+    // 2. 估算汇能：三角/六边形每颗 9%（扩展 13.5%），剩余菱形每颗 18%（扩展 27%）
+    var usedDiamonds = Math.min(shapes.diamond, Math.round(estXianji / xianjiStep));
+    var freeDiamonds = Math.max(0, shapes.diamond - usedDiamonds);
+    var maxHuinengBySlot = freeDiamonds * (boostDiamond ? 27 : 18) +
+      shapes.triangle * (boostTriangle ? 13.5 : 9) +
+      shapes.hex * (boostHex ? 13.5 : 9);
+    var estHuineng = 0;
+    if (w8 >= 0.12 && maxHuinengBySlot > 0) {
+      // 汇能权重通常落在 0.2 ~ 2.5，按权重估算推荐占比
+      var ratio = Math.min(1, Math.max(0.25, w8 / 1.8));
+      var rawHuineng = maxHuinengBySlot * ratio;
+      estHuineng = Number(Math.min(maxHuinengBySlot, Math.max(9, Math.round(rawHuineng * 2) / 2)).toFixed(1));
+    }
+
+    // 3. 估算团魂（仅团魂获能模式适用）
+    var estTuanhun = base.tuanhun || 0;
+    if (curMode === 'team' && w9 >= 0.12 && shapes.diamond > 0) {
+      var thStep = boostDiamond ? 24 : 16;
+      var thSlots = Math.max(1, Math.min(shapes.diamond, Math.round(w9 * 1.5)));
+      estTuanhun = Math.min(200, thSlots * thStep);
+    }
+
+    // 4. 匹配计算器内已支持的特殊核心芯片（仅保留当前车可装备的）
+    var matchedChips = [];
+    Object.keys(weights).forEach(function (cid) {
+      var w = Number(weights[cid]) || 0;
+      if (w < 0.2) return;
+      var meta = OFFICIAL_CHIP_META[cid];
+      if (!meta || !meta.calcId) return;
+      var def = typeof window._chipDef === 'function' ? window._chipDef(meta.calcId) : null;
+      if (!def) return;
+      if (typeof def.canEquip === 'function' && car && !def.canEquip(car)) return;
+      matchedChips.push({ id: meta.calcId, weight: w, opts: { loopMode: 'peak' } });
+    });
+    matchedChips.sort(function (a, b) { return b.weight - a.weight; });
+    var maxVSlots = (typeof window.getCarVSlots === 'function' && car) ? window.getCarVSlots(car) : 2;
+    var chipsOn = matchedChips.slice(0, maxVSlots).map(function (c) {
+      return { id: c.id, opts: c.opts };
+    });
+
+    var outParams = Object.assign({}, base, {
+      xianji: estXianji,
+      huineng: estHuineng
+    });
+    if (curMode === 'team') {
+      outParams.tuanhun = estTuanhun;
+    }
+    if (chipsOn.length > 0) {
+      outParams.chips_on = chipsOn;
+    }
+    return {
+      params: outParams,
+      xianji: estXianji,
+      huineng: estHuineng,
+      tuanhun: estTuanhun,
+      chipsOn: chipsOn
+    };
+  }
+
   function fmtPlanNum(v) {
     var n = Number(v);
     if (!Number.isFinite(n)) return '0';
@@ -390,7 +566,8 @@
     check: '<svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="20 6 9 17 4 12"/></svg>',
     checkCopy: '<svg class="ico cp-ico-ok" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="20 6 9 17 4 12"/></svg>',
     spinner: '<svg class="ico cp-spin-ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M21 12a9 9 0 1 1-6.219-8.56"/></svg>',
-    partner: '<svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg>'
+    partner: '<svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg>',
+    aiSpark: '<svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m12 3-1.9 5.8a2 2 0 0 1-1.3 1.3L3 12l5.8 1.9a2 2 0 0 1 1.3 1.3L12 21l1.9-5.8a2 2 0 0 1 1.3-1.3L21 12l-5.8-1.9a2 2 0 0 1-1.3-1.3Z"/></svg>'
   };
 
   function cpMotionOK() {
@@ -406,6 +583,11 @@
     sortMode: 'hot',        // 'hot' | 'latest'
     filterMode: 'all',      // 'all' | 'solo' | 'team'
     fetchSeq: 0,            // 防止快速切车/切换排序时并发响应覆盖新列表
+    officialFetchSeq: 0,    // 官方 AI 推荐独立请求序号
+    officialTier: '16-99',  // 当前查看的官方 AI 段位: '16-99' | '10-15' | '1-9'
+    officialChips: null,    // 当前车型的官方 AI 推荐数据
+    officialChipsByCar: {}, // 按车型缓存已拉取的官方 AI 数据
+    isFetchingOfficial: false,
     savedPlans: [],         // 本地存储的方案列表
     proPlans: [],           // 后端过审的国服顶尖方案列表
     remotePlans: [],        // 远程从私有后端 API 拉取的社区方案列表（按页懒加载累加）
@@ -1522,6 +1704,8 @@
         state.remoteTotalPages = 1;
         state.remoteHasMore = false;
         state.isLoadingMore = false;
+        state.officialChips = (state.currentCarId && state.officialChipsByCar[String(state.currentCarId)]) || null;
+        state.isFetchingOfficial = false;
       }
       if (prevCarId !== state.currentCarId && !state._isRestoringDraft && !window.isRestoringConfig) {
         state.lastSnapshot = null;
@@ -1533,6 +1717,7 @@
       }
       if (state.currentCarId && state.currentCarId !== -1) {
         CommunityPlans.fetchRemotePlans(state.currentCarId, { page: 1, append: false });
+        CommunityPlans.fetchOfficialChips(state.currentCarId);
         CommunityPlans.syncPendingPlanStatuses();
         // 切车后立即覆盖更新新车的洁净草稿，避免旧车改动残留并在未满防抖期刷新时复现
         if (!state._isRestoringDraft && !window.isRestoringConfig) {
@@ -1755,6 +1940,226 @@
             else state.isFetchingRemote = false;
           }
         });
+    },
+
+    // 拉取官方 AI 推荐芯片数据（带按车型内存缓存，避免重复请求）
+    fetchOfficialChips: function (carId) {
+      if (!carId || carId === -1) return;
+      var key = String(carId);
+      if (state.officialChipsByCar[key]) {
+        state.officialChips = state.officialChipsByCar[key];
+        state.isFetchingOfficial = false;
+        CommunityPlans.renderPlans({ preserveScroll: true });
+        return;
+      }
+
+      state.officialFetchSeq = (state.officialFetchSeq || 0) + 1;
+      var reqSeq = state.officialFetchSeq;
+      state.isFetchingOfficial = true;
+
+      fetch('/api/plans?official=1&car_id=' + encodeURIComponent(key), {
+        method: 'GET',
+        headers: Utils.getApiHeaders(false)
+      })
+        .then(Utils.parseJsonSafe)
+        .then(function (resObj) {
+          if (reqSeq !== state.officialFetchSeq || String(state.currentCarId) !== key) return;
+          state.isFetchingOfficial = false;
+          if (resObj && resObj.ok && resObj.data && resObj.data.success && resObj.data.data) {
+            var payload = resObj.data.data;
+            state.officialChipsByCar[key] = payload;
+            state.officialChips = payload;
+            CommunityPlans.renderPlans({ preserveScroll: true });
+          }
+        })
+        .catch(function (err) {
+          if (reqSeq !== state.officialFetchSeq) return;
+          state.isFetchingOfficial = false;
+          console.log('[CommunityPlans] 官方AI推荐拉取降级:', err && err.message ? err.message : err);
+        });
+    },
+
+    switchOfficialTier: function (tierKey) {
+      if (!tierKey || state.officialTier === tierKey) return;
+      state.officialTier = tierKey;
+      CommunityPlans.renderPlans({ preserveScroll: true });
+    },
+
+    applyOfficialPlan: function (tierKey) {
+      var data = state.officialChips;
+      var activeTier = tierKey || state.officialTier || '16-99';
+      var ailab = data && data.ailab ? data.ailab : null;
+      var tierWeights = (ailab && ailab[activeTier]) || (ailab && ailab['16-99']) || null;
+      if (!tierWeights || Object.keys(tierWeights).length === 0) {
+        CommunityPlans.toast('当前车型暂无可套用的官方 AI 推荐数据');
+        return;
+      }
+
+      var curCalcMode = (typeof window.getCalcMode === 'function')
+        ? window.getCalcMode()
+        : (document.body.getAttribute('data-calc-mode') || 'solo');
+      var derived = buildOfficialDerivedParams(tierWeights, state.currentCar, curCalcMode);
+
+      state.lastSnapshot = ParamsIO.capture();
+      state.hasUndoAvailable = true;
+      state.activeAppliedPlanId = '__official_' + activeTier;
+      state.appliedSource = null;
+
+      var undoBtn = document.getElementById('cpBtnUndo');
+      if (undoBtn) undoBtn.style.display = 'inline-flex';
+
+      ParamsIO.apply(derived.params);
+      CommunityPlans.renderPlans({ preserveScroll: true });
+      Draft.scheduleSave();
+
+      var cardChips = document.getElementById('cardChips');
+      if (cardChips) {
+        cardChips.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      }
+
+      var tierObj = OFFICIAL_TIER_OPTIONS.find(function (t) { return t.key === activeTier; });
+      var tierLabel = tierObj ? tierObj.label : activeTier;
+      var summaryParts = [];
+      if (derived.xianji > 0) summaryParts.push('先机 ' + derived.xianji + '%');
+      if (derived.huineng > 0) summaryParts.push('汇能 ' + derived.huineng + '%');
+      if (curCalcMode === 'team' && derived.tuanhun > 0) summaryParts.push('团魂 ' + derived.tuanhun + '%');
+      var sumTxt = summaryParts.length > 0 ? ('（' + summaryParts.join(' · ') + '）') : '';
+      CommunityPlans.toast('已按槽位套用官方 AI「' + tierLabel + '」推荐配比' + sumTxt);
+    },
+
+    _hasOfficialData: function () {
+      var d = state.officialChips;
+      if (!d || !d.available) return false;
+      var hasAilab = d.ailab && Object.keys(d.ailab).some(function (k) {
+        return d.ailab[k] && Object.keys(d.ailab[k]).length > 0;
+      });
+      var hasStats = Array.isArray(d.stats) && d.stats.length > 0;
+      return Boolean(hasAilab || hasStats);
+    },
+
+    renderOfficialSection: function (calcMode) {
+      var d = state.officialChips;
+      if (!CommunityPlans._hasOfficialData()) return '';
+
+      var ailab = d.ailab || {};
+      var availableTiers = OFFICIAL_TIER_OPTIONS.filter(function (t) {
+        return ailab[t.key] && Object.keys(ailab[t.key]).length > 0;
+      });
+      var activeTier = state.officialTier || '16-99';
+      if (availableTiers.length > 0 && !availableTiers.some(function (t) { return t.key === activeTier; })) {
+        activeTier = availableTiers[0].key;
+      }
+
+      var tierWeights = ailab[activeTier] || {};
+      var entries = Object.keys(tierWeights).map(function (cid) {
+        return { id: cid, weight: Number(tierWeights[cid]) || 0, info: getOfficialChipInfo(cid) };
+      }).filter(function (x) { return x.weight > 0.001; });
+      entries.sort(function (a, b) { return b.weight - a.weight; });
+
+      var maxW = entries.length > 0 ? Math.max(entries[0].weight, 0.01) : 1;
+      var topEntries = entries.slice(0, 10);
+      var derived = buildOfficialDerivedParams(tierWeights, state.currentCar, calcMode);
+      var isApplied = (state.activeAppliedPlanId === '__official_' + activeTier);
+
+      var tierTabsHtml = availableTiers.map(function (t) {
+        var activeCls = (t.key === activeTier) ? ' is-active' : '';
+        return '<button type="button" class="cp-off-tier-btn' + activeCls + '" onclick="CommunityPlans.switchOfficialTier(\'' + t.key + '\')">' +
+          Utils.escapeHtml(t.label) + '</button>';
+      }).join('');
+
+      var chipsHtml = topEntries.map(function (item) {
+        var pct = Math.min(100, Math.round((item.weight / maxW) * 100));
+        var kindCls = 'cp-off-chip-' + (item.info.kind || 'normal');
+        var shapeHtml = item.info.shape ? '<span class="cp-off-chip-shape">' + Utils.escapeHtml(item.info.shape) + '</span>' : '';
+        var wText = item.weight >= 1 ? item.weight.toFixed(2) : item.weight.toFixed(3);
+        var titleAttr = item.info.desc ? (' title="' + Utils.escapeHtml(item.info.desc + '（AI权重 ' + wText + '）') + '"') : '';
+        return '<div class="cp-off-chip-pill ' + kindCls + '"' + titleAttr + '>' +
+          '<div class="cp-off-chip-bar" style="width:' + pct + '%"></div>' +
+          '<div class="cp-off-chip-inner">' +
+            shapeHtml +
+            '<span class="cp-off-chip-name">' + Utils.escapeHtml(item.info.name) + '</span>' +
+            '<span class="cp-off-chip-weight">' + wText + '</span>' +
+          '</div>' +
+        '</div>';
+      }).join('');
+
+      var derivedCellsHtml = '';
+      if (Object.keys(tierWeights).length > 0) {
+        var cells = [
+          { lbl: '换算先机', val: derived.xianji + '%' },
+          { lbl: '换算汇能', val: derived.huineng + '%' }
+        ];
+        if (calcMode === 'team') {
+          cells.push({ lbl: '换算团魂', val: derived.tuanhun + '%' });
+        }
+        if (derived.chipsOn.length > 0) {
+          cells.push({
+            lbl: '适配核心',
+            val: derived.chipsOn.map(function (c) { return CHIP_NAME_MAP[c.id] || c.id; }).join(' + ')
+          });
+        }
+        derivedCellsHtml = '<div class="cp-off-derived-row">' +
+          cells.map(function (c) {
+            return '<div class="cp-off-derived-cell"><span class="cp-off-derived-lbl">' + c.lbl + '</span><span class="cp-off-derived-val">' + Utils.escapeHtml(c.val) + '</span></div>';
+          }).join('') +
+        '</div>';
+      }
+
+      var statsHtml = '';
+      if (Array.isArray(d.stats) && d.stats.length > 0) {
+        var topStats = d.stats.slice().sort(function (a, b) {
+          return (Number(b.all_cnt) || 0) - (Number(a.all_cnt) || 0);
+        }).slice(0, 3);
+        statsHtml = '<div class="cp-off-stats-row">' +
+          '<span class="cp-off-stats-lbl">实战参考</span>' +
+          topStats.map(function (st) {
+            var wr = Number(st.win_rate) || 0;
+            var cnt = Number(st.all_cnt) || 0;
+            return '<span class="cp-off-stat-pill">组合#' + Utils.escapeHtml(String(st.plan_key || '')) +
+              ' · 胜率 <strong>' + wr + '%</strong> (' + cnt + '场)</span>';
+          }).join('') +
+        '</div>';
+      }
+
+      var verText = d.client_version ? ('v' + Utils.escapeHtml(String(d.client_version))) : '';
+      var genDate = d.generated_at ? String(d.generated_at).slice(0, 10) : '';
+      var metaText = [verText, genDate].filter(Boolean).join(' · ');
+
+      return [
+        '<div class="cp-section cp-section-official">',
+        '  <div class="cp-sec-header">',
+        '    <div class="cp-sec-icon-box">' + Icons.aiSpark + '</div>',
+        '    <div class="cp-sec-info">',
+        '      <div class="cp-sec-title-row">',
+        '        <span class="cp-sec-title"><span class="zh">官方 AI 推荐</span><span class="lang-en">Official AI Recommended</span></span>',
+        '        <span class="cp-sec-count">' + topEntries.length + '</span>',
+        '      </div>',
+        '      <div class="cp-sec-desc"><span class="zh">游戏服务端 AI Lab 大数据芯片权重推荐（与计算器槽位联动估算）</span><span class="lang-en">Official server AI Lab chip weight recommendations</span></div>',
+        '    </div>',
+        '  </div>',
+        '  <div class="cp-sec-list">',
+        '    <div class="cp-plan-card cp-official-card' + (isApplied ? ' is-applied' : '') + '">',
+        '      <div class="cp-off-top-bar">',
+        '        <div class="cp-off-badges">',
+        '          <span class="cp-card-badge cp-badge-official">' + Icons.aiSpark + ' 官方大数据</span>',
+        metaText ? ('<span class="cp-off-meta">' + metaText + '</span>') : '',
+        '        </div>',
+        availableTiers.length > 0 ? ('<div class="cp-off-tiers">' + tierTabsHtml + '</div>') : '',
+        '      </div>',
+        chipsHtml ? ('<div class="cp-off-chips-grid">' + chipsHtml + '</div>') : '<div class="cp-off-empty-tip">该车型暂无 AI 芯片权重，以下为实战对战统计参考</div>',
+        derivedCellsHtml,
+        statsHtml,
+        '      <div class="cp-card-footer cp-off-footer">',
+        '        <span class="cp-off-note">权重越高越推荐；一键套用将按本车槽位换算先机/汇能' + (calcMode === 'team' ? '/团魂' : '') + '</span>',
+        Object.keys(tierWeights).length > 0
+          ? ('        <button type="button" class="nav-btn cp-btn cp-btn-apply" onclick="CommunityPlans.applyOfficialPlan(\'' + activeTier + '\')">' +
+             (isApplied ? (Icons.check + ' <span>已套用</span>') : (Icons.apply + ' <span>一键套用</span>')) + '</button>')
+          : '',
+        '      </div>',
+        '    </div>',
+        '  </div>',
+        '</div>'
+      ].join('');
     },
 
     // 渲染挂载容器与面板骨架 (严格挂载于选择车辆卡片正下方)
@@ -2087,14 +2492,15 @@
         bannerSlot.style.display = bannerHtml ? '' : 'none';
       }
 
-      if (state.isFetchingRemote && filteredTotal === 0) {
+      var hasOfficialData = CommunityPlans._hasOfficialData();
+      if (state.isFetchingRemote && filteredTotal === 0 && !hasOfficialData) {
         viewportHtml.push([
           '<div class="cp-empty-box">',
           '  <div class="cp-empty-title">正在加载社区方案...</div>',
           '  <div class="cp-empty-desc">仅按需拉取当前车型第 1 页方案，请稍候</div>',
           '</div>'
         ].join(''));
-      } else if (filteredTotal === 0) {
+      } else if (filteredTotal === 0 && !hasOfficialData) {
         var filterLabel = state.filterMode === 'solo' ? '先机汇能' : (state.filterMode === 'team' ? '团魂获能' : '全部');
         viewportHtml.push([
           '<div class="cp-empty-box cp-filter-empty">',
@@ -2130,7 +2536,15 @@
       }
 
       // ==========================================
-      // 【分类 2】：友站分享 (合作友站实测推荐方案)
+      // 【分类 2】：官方 AI 推荐 (游戏服务端 AI Lab 大数据芯片推荐，位于本地保存之下、友站分享之上)
+      // ==========================================
+      var officialHtml = CommunityPlans.renderOfficialSection(currentMode);
+      if (officialHtml) {
+        viewportHtml.push(officialHtml);
+      }
+
+      // ==========================================
+      // 【分类 3】：友站分享 (合作友站实测推荐方案)
       // ==========================================
       if (partnerList.length > 0) {
         viewportHtml.push([
