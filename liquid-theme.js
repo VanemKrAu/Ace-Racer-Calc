@@ -29,7 +29,8 @@
     + '.lt-snap-viewport { position: fixed; top: 0; left: 0; overflow-x: hidden; overflow-y: auto; scrollbar-width: none; -ms-overflow-style: none; pointer-events: none; }\n'
     + '.lt-snap-viewport::-webkit-scrollbar { display: none; }\n'
     + '.lt-snap-viewport > .lt-snap-html { display: block; position: static !important; width: 100% !important; min-height: 100% !important; height: auto !important; overflow: visible !important; margin: 0 !important; padding: 0 !important; background: transparent !important; background-color: transparent !important; }\n'
-    + '.lt-snap-viewport > .lt-snap-html > .lt-snap-body { display: block; position: relative; width: 100%; min-height: 100%; margin: 0; isolation: isolate; background: transparent !important; background-color: transparent !important; }\n';
+    + '.lt-snap-viewport > .lt-snap-html > .lt-snap-body { display: block; position: relative; width: 100%; min-height: 100%; margin: 0; isolation: isolate; background: transparent !important; background-color: transparent !important; }\n'
+    + '.lt-snap-viewport, .lt-snap-viewport *, .lt-snap-viewport *::before, .lt-snap-viewport *::after { transition: none !important; transition-duration: 0s !important; animation: none !important; animation-duration: 0s !important; }\n';
 
   function clamp(v, lo, hi) {
     return v < lo ? lo : v > hi ? hi : v;
@@ -1031,12 +1032,15 @@
       sheenSvg.style.visibility = '';
 
       document.documentElement.classList.add('lt-no-trans');
-      try {
-        applyTheme();
-        void document.body.offsetHeight;
-      } finally {
-        document.documentElement.classList.remove('lt-no-trans');
-      }
+      applyTheme();
+      void document.body.offsetHeight;
+      requestAnimationFrame(function () {
+        requestAnimationFrame(function () {
+          if (!activeState || activeState === state) {
+            document.documentElement.classList.remove('lt-no-trans');
+          }
+        });
+      });
 
       var startTs = 0;
       function tick(now) {
