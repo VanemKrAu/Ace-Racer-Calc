@@ -4838,14 +4838,24 @@ function __tok(n, d) { var v = getComputedStyle(document.body).getPropertyValue(
 
        /* ======================================================================
           开局连发测算区：一大 → 二大 → 三大
-          - 一大：首发核算 F；放出一大后多出来的 F − 阈值 带进二大
+          - 一大：首发核算 F；阈值只决定「能不能放」，每次开大实际清空 100%，所以带进二大的是 F − 100（不足 100 就按 0）
           - 每一大期间的产出 P = 后续循环的「循环总产出」（同一套输入：大招内氮气、触发次数、装置 / 队友循环次数…）
           - 二大 = 一大溢出 + P；三大 = 二大溢出 + P。只算到三大
           - 卡在哪：三连发要同时满足一、二、三大（木桶效应），给出「最少要多少」时三个条件一起算
           - 不加任何输入，所以和自充能、触发次数等模块没有额外耦合：它们怎么影响首发 / 循环，就怎么影响这里
           ====================================================================== */
        var _chainRes = null;
-       function _chainPass(fi, li, ti) { return fi >= ti && fi + li >= 2 * ti && fi + 2 * li >= 3 * ti; }
+       // 每次开大固定清空 100% 能量：降低阈值只是允许提前放，阈值以上的部分不会留在手里。
+       // 因此「放完还剩多少」= max(0, 攒到的能量 − 100)，不能拿阈值当消耗量。
+       var _CHAIN_COST = 100000;   // 定点 ×1000
+       function _chainCarry(v) { return v > _CHAIN_COST ? v - _CHAIN_COST : 0; }
+       function _chainPass(fi, li, t1, t2) {
+           var tt = (t2 === undefined) ? t1 : t2;
+           if (fi < t1) return false;
+           var s2 = _chainCarry(fi) + li;
+           if (s2 < tt) return false;
+           return (_chainCarry(s2) + li) >= tt;
+       }
        function renderChain(F, P, T, xianji, huineng, tdx, targetLoopParam, chipParam) {
             var card = document.getElementById('resultCardChain');
             if (!card) return;
@@ -4858,8 +4868,8 @@ function __tok(n, d) { var v = getComputedStyle(document.body).getPropertyValue(
             var chipAfter2nd = chip && chip.ult ? k(chip.ult[1] || 0) : 0;
             
             var e = [Fi, NaN, NaN], ok = [Fi >= T1i, false, false];
-            if (ok[0]) { e[1] = Fi - T1i + Pi + chipAfter1st; ok[1] = e[1] >= T2i; }
-            if (ok[1]) { e[2] = e[1] - T2i + Pi + chipAfter2nd; ok[2] = e[2] >= T2i; }
+            if (ok[0]) { e[1] = _chainCarry(Fi) + Pi + chipAfter1st; ok[1] = e[1] >= T2i; }
+            if (ok[1]) { e[2] = _chainCarry(e[1]) + Pi + chipAfter2nd; ok[2] = e[2] >= T2i; }
             var brk = !ok[0] ? 0 : !ok[1] ? 1 : !ok[2] ? 2 : -1;   // 断在第几大（-1 = 三连发成立）
             var names = [_('一大', '1st'), _('二大', '2nd'), _('三大', '3rd')];
             // 「最少要多少」：三连发同时成立（木桶效应）—— 每次只动一个量，其余保持当前值
@@ -4873,7 +4883,8 @@ function __tok(n, d) { var v = getComputedStyle(document.body).getPropertyValue(
                     var li = k(_tmLoop(env, st.h, st.s));
                     var ca1 = env.chip && env.chip.ult ? k(env.chip.ult[0] || 0) : 0;
                     var ca2 = env.chip && env.chip.ult ? k(env.chip.ult[1] || 0) : 0;
-                    return fi >= T1i && (fi - T1i + li + ca1) >= T2i && (fi - T1i + li + ca1 - T2i + li + ca2) >= T2i;
+                    var s2 = _chainCarry(fi) + li + ca1;
+                    return fi >= T1i && s2 >= T2i && (_chainCarry(s2) + li + ca2) >= T2i;
                 };
                 var soulOn = team && !env.na && (_tmFirst(env, cur.x, cur.h, SOUL_MAX) > _tmFirst(env, cur.x, cur.h, 0) || _tmLoop(env, cur.h, SOUL_MAX) > _tmLoop(env, cur.h, 0));
                 var nm = { soul: _('团魂', 'Team Soul'), huineng: _('汇能', 'Huineng'), xianji: _('先机', 'Xianji') };
@@ -4909,8 +4920,8 @@ function __tok(n, d) { var v = getComputedStyle(document.body).getPropertyValue(
                     var chipExtraText = (i === 1 && chipAfter1st > 0) ? (' + ' + _('芯片', 'chip ') + f3(chipAfter1st) + '%')
                         : (i === 2 && chipAfter2nd > 0) ? (' + ' + _('芯片', 'chip ') + f3(chipAfter2nd) + '%') : '';
                     how.textContent = i === 0 ? _('首发核算', 'from the 1st-ult calc')
-                        : _('带入 ', 'carried ') + f3(e[i - 1] - prevReq) + _(' + 产出 ', ' + gained ') + f3(Pi) + chipExtraText;
-                    out.textContent = ok[i] ? (i < 2 ? _('溢出 +', 'overflow +') + f3(e[i] - thisReq) + '%' : _('达成', 'fires')) : _('差 ', 'short ') + f3(thisReq - e[i]) + '%';
+                        : _('带入 ', 'carried ') + f3(_chainCarry(e[i - 1])) + _(' + 产出 ', ' + gained ') + f3(Pi) + chipExtraText;
+                    out.textContent = ok[i] ? (i < 2 ? _('溢出 +', 'overflow +') + f3(_chainCarry(e[i])) + '%' : _('达成', 'fires')) : _('差 ', 'short ') + f3(thisReq - e[i]) + '%';
                 }
                 var stEl = document.getElementById('chainStatus');
                 stEl.textContent = brk < 0 ? _('连放三大', '3-ult chain') : brk === 0 ? _('首发未达成', '1st ult not ready') : names[brk] + _('断档', ' breaks');
@@ -4936,14 +4947,14 @@ function __tok(n, d) { var v = getComputedStyle(document.body).getPropertyValue(
                 // 解析盒
                 var fb = '<b>' + _('【开局连发运算解析盒】', '[Opening Chain Breakdown]') + '</b><br>';
                 fb += _('及格线目标：一大 ', 'Passing Target: 1st ') + '<b>' + T1 + '%</b>' + _('，二大/三大 ', ', 2nd/3rd ') + '<b>' + T2 + '%</b>' + _('；每一大期间产出 = 循环总产出 ', '; gain per ult = loop total ') + '<b>' + f3(Pi) + '</b><br><br>';
-                fb += _('① 一大：首发核算 ', '1. 1st: first-ult calc ') + '<b>' + f3(Fi) + '</b>' + (ok[0] ? _(' → 放出，溢出 ', ' → fires, overflow ') + f3(Fi - T1i) : _(' → 未达成', ' → not ready')) + '<br>';
+                fb += _('① 一大：首发核算 ', '1. 1st: first-ult calc ') + '<b>' + f3(Fi) + '</b>' + (ok[0] ? _(' → 放出，溢出 ', ' → fires, overflow ') + f3(_chainCarry(Fi)) : _(' → 未达成', ' → not ready')) + '<br>';
                 if (ok[0]) {
                     var extraText2 = chipAfter1st > 0 ? (' + ' + _('芯片一大放出充能 ', 'chip 1st ult ') + f3(chipAfter1st)) : '';
-                    fb += _('② 二大：溢出 ', '2. 2nd: overflow ') + f3(Fi - T1i) + ' + ' + _('产出 ', 'gain ') + f3(Pi) + extraText2 + ' = <b>' + f3(e[1]) + '</b>' + (ok[1] ? _(' → 放出，溢出 ', ' → fires, overflow ') + f3(e[1] - T2i) : _(' → 不够', ' → short')) + '<br>';
+                    fb += _('② 二大：溢出 ', '2. 2nd: overflow ') + f3(_chainCarry(Fi)) + ' + ' + _('产出 ', 'gain ') + f3(Pi) + extraText2 + ' = <b>' + f3(e[1]) + '</b>' + (ok[1] ? _(' → 放出，溢出 ', ' → fires, overflow ') + f3(_chainCarry(e[1])) : _(' → 不够', ' → short')) + '<br>';
                 }
                 if (ok[1]) {
                     var extraText3 = chipAfter2nd > 0 ? (' + ' + _('芯片二大放出充能 ', 'chip 2nd ult ') + f3(chipAfter2nd)) : '';
-                    fb += _('③ 三大：溢出 ', '3. 3rd: overflow ') + f3(e[1] - T2i) + ' + ' + _('产出 ', 'gain ') + f3(Pi) + extraText3 + ' = <b>' + f3(e[2]) + '</b>' + (ok[2] ? _(' → 放出', ' → fires') : _(' → 不够', ' → short')) + '<br>';
+                    fb += _('③ 三大：溢出 ', '3. 3rd: overflow ') + f3(_chainCarry(e[1])) + ' + ' + _('产出 ', 'gain ') + f3(Pi) + extraText3 + ' = <b>' + f3(e[2]) + '</b>' + (ok[2] ? _(' → 放出', ' → fires') : _(' → 不够', ' → short')) + '<br>';
                 }
                 fb += '-------------------------<<br><b>' + _('连发判定：', 'Chain Check: ') + (brk < 0 ? _('一大 → 二大 → 三大 全部接上', '1st → 2nd → 3rd all fire') : _('断在', 'breaks at ') + names[brk]) + '</b>';
                 document.getElementById('formulaChain').innerHTML = fb;
