@@ -788,15 +788,6 @@
       }
       pushQuadBezierPoly(polyPts, rightPts[0][0], rightPts[0][1], originX, originY - 4, leftPts[0][0], leftPts[0][1], 4);
 
-      appendSmoothSvgSegment(sheenParts, leftPts, true);
-      sheenParts.push(
-        'Q', (tipInfo.cx - rxTip * 0.9).toFixed(1), (tipY + rxTip * 0.75).toFixed(1),
-        tipInfo.cx.toFixed(1), (tipY + rxTip * 0.85).toFixed(1),
-        'Q', (tipInfo.cx + rxTip * 0.9).toFixed(1), (tipY + rxTip * 0.75).toFixed(1),
-        tipR[0].toFixed(1), tipR[1].toFixed(1)
-      );
-      appendSmoothSvgSegment(sheenParts, rightPts.slice().reverse().slice(1), false);
-
       for (var di = 0; di < streamDrops.length; di++) {
         var sd = streamDrops[di];
         if (p < sd.startP) continue;
@@ -807,7 +798,6 @@
         var dx = colAtDy.cx + sd.side * (colAtDy.hw + sd.r + 3.5 + Math.sin(dt * Math.PI) * sd.offsetAmp);
         if (dx > 6 && dx < W - 6) {
           appendDropletPath(dropParts, dx, dy, sd.r, sd.r * 1.38);
-          appendDropletPath(sheenParts, dx, dy, sd.r, sd.r * 1.38);
         }
       }
 
@@ -886,22 +876,12 @@
       }
       leftWaveAsc.push([leftJoinX, leftJoinY]);
       appendSmoothSvgSegment(sheenParts, leftWaveAsc, true);
-      sheenParts.push(
-        'Q', (lastL[0] - neckSpread * 0.08).toFixed(1), leftJoinY.toFixed(1),
-        lastL[0].toFixed(1), lastL[1].toFixed(1)
-      );
-      appendSmoothSvgSegment(sheenParts, sLeft.slice().reverse().slice(1), false);
 
-      appendSmoothSvgSegment(sheenParts, sRight, true);
-      sheenParts.push(
-        'Q', (lastR[0] + neckSpread * 0.08).toFixed(1), rightJoinY.toFixed(1),
-        rightJoinX.toFixed(1), rightJoinY.toFixed(1)
-      );
       var rightWaveAsc = [[rightJoinX, rightJoinY]];
       for (var swr = 0; swr <= waveSamples; swr++) {
         if (wavePts[swr][0] > rightJoinX + 2) rightWaveAsc.push(wavePts[swr]);
       }
-      appendSmoothSvgSegment(sheenParts, rightWaveAsc.slice(1), false);
+      appendSmoothSvgSegment(sheenParts, rightWaveAsc, true);
     } else {
       for (var wi2 = 0; wi2 <= waveSamples; wi2++) {
         pushPolyPt(polyPts, wavePts[wi2][0], wavePts[wi2][1]);
@@ -990,6 +970,7 @@
 
     removeNodeSafe(st.vtClipStyle);
     removeNodeSafe(st.vtBaseStyle);
+    removeNodeSafe(st.anchorEl);
     removeNodeSafe(st.overlay);
     removeNodeSafe(st.particleSvg);
 
@@ -1008,6 +989,41 @@
     }
   }
 
+  function readPseudoGroupBox(pseudoSelector) {
+    try {
+      var cs = getComputedStyle(document.documentElement, pseudoSelector);
+      if (!cs) return null;
+      var w = parseFloat(cs.width);
+      var h = parseFloat(cs.height);
+      if (!(w > 0) || !(h > 0)) return null;
+      var left = parseFloat(cs.left) || 0;
+      var top = parseFloat(cs.top) || 0;
+      var tr = cs.transform;
+      if (tr && tr !== 'none') {
+        var m2 = tr.match(/^matrix\(([^)]+)\)$/);
+        if (m2) {
+          var p2 = m2[1].split(',');
+          if (p2.length === 6) {
+            left += parseFloat(p2[4]) || 0;
+            top += parseFloat(p2[5]) || 0;
+          }
+        } else {
+          var m3 = tr.match(/^matrix3d\(([^)]+)\)$/);
+          if (m3) {
+            var p3 = m3[1].split(',');
+            if (p3.length === 16) {
+              left += parseFloat(p3[12]) || 0;
+              top += parseFloat(p3[13]) || 0;
+            }
+          }
+        }
+      }
+      return { left: left, top: top, width: w, height: h };
+    } catch (_) {
+      return null;
+    }
+  }
+
   function createParticleLayer(W, H, toLight, withViewTransitionName) {
     var particleSvg = document.createElementNS(SVG_NS, 'svg');
     particleSvg.id = '__ltParticles';
@@ -1015,6 +1031,7 @@
     particleSvg.setAttribute('width', String(W));
     particleSvg.setAttribute('height', String(H));
     particleSvg.setAttribute('viewBox', '0 0 ' + W + ' ' + H);
+    particleSvg.setAttribute('preserveAspectRatio', 'none');
     particleSvg.style.cssText = 'position:fixed;inset:0;width:100%;height:100%;z-index:2147483641;pointer-events:none;'
       + (withViewTransitionName ? 'view-transition-name:lt-particles;' : 'visibility:hidden;');
 
@@ -1058,22 +1075,43 @@
     var originX = origin.x;
     var originY = origin.y;
 
+    // 视口定位锚点：用于在 vt.ready 时读出 Android Chrome/WebView 的真实 Snapshot Containing Block 坐标系位置，抵消动态地址栏偏移
+    var anchorEl = null;
+    if (triggerEl && triggerEl.getBoundingClientRect) {
+      var trBtn = triggerEl.getBoundingClientRect();
+      if (trBtn.width > 0 && trBtn.height > 0) {
+        anchorEl = document.createElement('div');
+        anchorEl.id = '__ltAnchor';
+        anchorEl.setAttribute('aria-hidden', 'true');
+        anchorEl.style.cssText = 'position:fixed;left:' + trBtn.left.toFixed(2) + 'px;'
+          + 'top:' + trBtn.top.toFixed(2) + 'px;'
+          + 'width:' + trBtn.width.toFixed(2) + 'px;'
+          + 'height:' + trBtn.height.toFixed(2) + 'px;'
+          + 'margin:0;padding:0;pointer-events:none;opacity:0.001;z-index:2147483640;'
+          + 'view-transition-name:lt-anchor;';
+        document.documentElement.appendChild(anchorEl);
+      }
+    }
+
     var particles = createParticleLayer(W, H, toLight, true);
     var particleSvg = particles.svg;
     var dropPathEl = particles.dropPathEl;
     var sheenPathEl = particles.sheenPathEl;
 
-    var vtBaseStyle = document.createElement('style');
-    vtBaseStyle.id = '__ltVtBaseStyle';
-    vtBaseStyle.textContent = ''
+    var vtBaseCssPrefix = ''
       + '::view-transition { pointer-events: none !important; }\n'
       + '::view-transition-group(*), ::view-transition-image-pair(*), ::view-transition-old(*), ::view-transition-new(*) {\n'
       + '  animation: none !important;\n'
       + '  mix-blend-mode: normal !important;\n'
       + '}\n'
+      + '::view-transition-group(lt-anchor) { opacity: 0 !important; pointer-events: none !important; }\n'
       + '::view-transition-group(root) { z-index: 1 !important; }\n'
       + '::view-transition-group(lt-particles) { z-index: 2 !important; }\n'
       + '::view-transition-old(lt-particles) { display: none !important; }\n';
+
+    var vtBaseStyle = document.createElement('style');
+    vtBaseStyle.id = '__ltVtBaseStyle';
+    vtBaseStyle.textContent = vtBaseCssPrefix;
     (document.head || document.documentElement).appendChild(vtBaseStyle);
 
     // 启动 ViewTransition 前预设闭合裁剪，确保第 0 帧绝不闪出未裁剪的新主题全屏快照
@@ -1095,6 +1133,7 @@
       readyTimer: 0,
       vt: null,
       keepAliveAnim: null,
+      anchorEl: anchorEl,
       vtBaseStyle: vtBaseStyle,
       vtClipStyle: vtClipStyle,
       particleSvg: particleSvg,
@@ -1168,6 +1207,33 @@
         state.readyTimer = 0;
       }
       state.started = true;
+
+      // 在 Android Chrome 上读取真实的 Snapshot Containing Block 盒子，校准起点与粒子层坐标
+      var rootBox = readPseudoGroupBox('::view-transition-group(root)');
+      var partBox = readPseudoGroupBox('::view-transition-group(lt-particles)');
+      var anchorBox = anchorEl ? readPseudoGroupBox('::view-transition-group(lt-anchor)') : null;
+      if (rootBox && rootBox.width > 0 && rootBox.height > 0) {
+        W = rootBox.width;
+        H = rootBox.height;
+        if (anchorBox && anchorBox.width > 0 && anchorBox.height > 0) {
+          originX = clamp((anchorBox.left - rootBox.left) + anchorBox.width / 2, 20, W - 20);
+          originY = clamp((anchorBox.top - rootBox.top) + anchorBox.height - 5, 6, Math.max(40, H * 0.65));
+        } else if (partBox && partBox.width > 0 && partBox.height > 0) {
+          originX = clamp(originX + (partBox.left - rootBox.left), 20, W - 20);
+          originY = clamp(originY + (partBox.top - rootBox.top), 6, Math.max(40, H * 0.65));
+        }
+        particleSvg.setAttribute('width', String(W));
+        particleSvg.setAttribute('height', String(H));
+        particleSvg.setAttribute('viewBox', '0 0 ' + W + ' ' + H);
+        vtBaseStyle.textContent = vtBaseCssPrefix
+          + '::view-transition-group(lt-particles) {\n'
+          + '  top: 0px !important; left: 0px !important; right: auto !important; bottom: auto !important;\n'
+          + '  width: ' + W.toFixed(2) + 'px !important; height: ' + H.toFixed(2) + 'px !important;\n'
+          + '  transform: translate(' + rootBox.left.toFixed(2) + 'px, ' + rootBox.top.toFixed(2) + 'px) !important;\n'
+          + '  z-index: 2 !important;\n'
+          + '}\n'
+          + '::view-transition-new(lt-particles) { width: 100% !important; height: 100% !important; object-fit: fill !important; }\n';
+      }
 
       // 在 old(root) 挂一个零视觉改变的 WAAPI 动画，防止 Chromium 因无活跃 CSS 动画而在首帧提前结束转场
       try {
