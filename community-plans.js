@@ -87,69 +87,107 @@
   };
 
   var OFFICIAL_CHIP_META = {
-    '1': { name: '极速', kind: 'normal', shape: '○', desc: '提升车辆平跑极速' },
-    '2': { name: '耐久', kind: 'normal', shape: '○', desc: '提升车辆耐久值' },
-    '3': { name: '起步推进', kind: 'normal', shape: '⬡', desc: '延长起步推进时间' },
-    '4': { name: '涡轮连发', kind: 'normal', shape: '○', desc: '提升涡轮连发概率' },
-    '5': { name: '氮气时间', kind: 'normal', shape: '⬡', desc: '延长氮气持续时间' },
-    '6': { name: '尾流集氮', kind: 'normal', shape: '△', desc: '尾流期间额外集氮' },
-    '7': { name: '漂移集氮', kind: 'normal', shape: '△', desc: '提升漂移集气效率' },
-    '8': { name: '汇能', kind: 'normal', shape: '△/◇/⬡', desc: '使用氮气后额外获得大招充能' },
-    '9': { name: '团魂', kind: 'normal', shape: '◇', desc: '辅助位大招额外充能效率' },
-    '10': { name: '背水', kind: 'normal', shape: '△', desc: '低耐久时提升平跑极速' },
-    '11': { name: '尾流提速', kind: 'normal', shape: '○', desc: '尾流期间提升极速' },
-    '12': { name: '进境', kind: 'normal', shape: '⬡', desc: '随比赛推进逐步提升极速' },
-    '13': { name: '反击', kind: 'normal', shape: '△', desc: '排名靠后时提升平跑极速' },
-    '14': { name: '先制', kind: 'normal', shape: '○', desc: '排名靠前时提升平跑极速' },
-    '15': { name: '反制', kind: 'normal', shape: '◇', desc: '降低敌方对我方施放的大招充能/干扰效果' },
-    '16': { name: '先机', kind: 'normal', shape: '◇', desc: '开局直接获得一定比例的大招能量' },
-    '1001': { name: '圆形扩展', kind: 'core', shape: 'V', desc: '提升圆形芯片性能' },
-    '1002': { name: '三角扩展', kind: 'core', shape: 'V', desc: '提升三角形芯片性能' },
-    '1003': { name: '菱形扩展', kind: 'core', shape: 'V', desc: '提升菱形芯片性能' },
-    '1004': { name: '六边形扩展', kind: 'core', shape: 'V', desc: '提升六边形芯片性能' },
-    '1005': { name: '团队充能', kind: 'core', shape: 'V', desc: '每次释放大招为队友提供充能' },
-    '1006': { name: '命中充能', kind: 'core', shape: 'V', desc: '大招命中目标时获得额外充能' },
-    '1007': { name: '大招极速', kind: 'core', shape: 'V', desc: '每次释放大招后下一次氮气提升极速' },
-    '1008': { name: '氮气出弯', kind: 'core', shape: 'V', desc: '氮气速度提升，触发氮气出弯立即退出漂移' },
-    '1009': { name: '无阈值漂移', kind: 'core', shape: 'V', desc: '获得集气无阈值效果并提升漂移集气效率' },
-    '1010': { name: '涡轮极速', kind: 'core', shape: 'V', desc: '周期性获得涡轮，使用涡轮叠加极速' },
-    '1011': { name: '开局干扰', kind: 'core', shape: 'V', desc: '开局5秒获得大招能量并使下两次干扰必定命中' },
-    '1012': { name: '大招断漂', kind: 'core', shape: 'V', desc: '点击大招立即结束漂移并获得大招能量' },
-    '2001': { name: '超车氮气', kind: 'exclusive', shape: 'V', desc: '特技期间每次超车获得氮气能量' },
-    '2002': { name: '闪现氮气', kind: 'exclusive', shape: 'V', desc: '每次闪现后获得氮气加速效果' },
-    '2003': { name: '冲锋回能', kind: 'exclusive', shape: 'V', desc: '冲锋未撞击时大招结束恢复能量' },
-    '2004': { name: '人车隐身', kind: 'exclusive', shape: 'V', desc: '释放人车合一时获得隐身效果' },
-    '2005': { name: '龙卷旋转', kind: 'exclusive', shape: 'V', desc: '龙卷冲锋旋转速度提升' },
-    '2006': { name: '充能扩距', kind: 'exclusive', shape: 'V', desc: '大招充能范围从50米提升' },
-    '2007': { name: '大招自充', kind: 'exclusive', shape: 'V', desc: '每次点击大招自充能' },
-    '2008': { name: '巡航涡轮', kind: 'exclusive', shape: 'V', desc: '空中巡航每秒刷出涡轮并获氮气' },
-    '2009': { name: '全域干扰', kind: 'exclusive', shape: 'V', desc: '干扰前方转换为干扰范围内敌人' },
-    '2010': { name: '穿梭导航', kind: 'exclusive', shape: 'V', desc: '穿梭结束后进行可取消自动导航' },
-    '2011': { name: '时空减秒', kind: 'exclusive', shape: 'V', desc: '开局获得13%大招能量并周期减少比赛完成时间' },
-    '2012': { name: '闪现集气', kind: 'exclusive', shape: 'V', desc: '每秒自动集气400并提升向前闪现距离' },
-    '2013': { name: '开局集气扩辅', kind: 'exclusive', shape: 'V', desc: '开局获得8000集气量并扩大辅助范围' },
-    '2014': { name: '曼巴无阈值', kind: 'exclusive', shape: 'V', desc: '曼巴蛇移速提升并获得集气无阈值效果' },
-    '2015': { name: '墨染·傲梅', kind: 'exclusive', shape: 'V', calcId: 'aomei', desc: '寒霜冰魄专属：干扰范围扩大且充能效率+5%' },
-    '2016': { name: '圣印续刻', kind: 'exclusive', shape: 'V', desc: '开局8秒补齐圣印，每2次大招触发已解锁圣印' },
-    '2017': { name: '墨染·修竹', kind: 'exclusive', shape: 'V', calcId: 'xiuzhu', desc: '先驱者专属：80%大招能量即可使用' },
-    '2018': { name: '墨染·逸菊', kind: 'exclusive', shape: 'V', calcId: 'yiju', desc: '神剑号专属：自动集气翻倍，大招能量消耗降低' },
-    '2019': { name: '至美·羞花', kind: 'exclusive', shape: 'V', calcId: 'xiuhua', desc: '隐匿猎手专属：开局25%大招能量且88%即可使用' },
-    '2020': { name: '反弹提速', kind: 'exclusive', shape: 'V', desc: '充能效率提升，大招/反弹干扰可叠加极速' },
-    '2021': { name: '万集扩辅', kind: 'exclusive', shape: 'V', desc: '开局获得10000集气量并扩大辅助范围' },
-    '2022': { name: '大招返能', kind: 'exclusive', shape: 'V', desc: '释放大招消耗20%当前能量，结束时返还能量' },
-    '3001': { name: '超频·氮气', kind: 'boost', shape: 'V', desc: '每3次氮气提升极速（上限3层）' },
-    '3002': { name: '超频·闪现', kind: 'boost', shape: 'V', desc: '提升向前闪现距离' },
-    '3003': { name: '超频·大招', kind: 'boost', shape: 'V', desc: '每5次大招集气5000并提升极速（上限4层）' },
-    '3004': { name: '后追极速', kind: 'boost', shape: 'V', desc: '处于第4名及以后名次时提升极速' },
-    '3005': { name: '开局45s极速', kind: 'boost', shape: 'V', desc: '开局前45秒内提升极速' },
-    '3006': { name: '首氮闪现', kind: 'boost', shape: 'V', desc: '开局首次使用氮气附加闪现效果' },
-    '3007': { name: '蓄势极速', kind: 'boost', shape: 'V', desc: '开局及每11秒叠加极速（上限5层）' },
-    '3008': { name: '开局无阈值', kind: 'boost', shape: 'V', desc: '开局前数秒极速+5km/h并获得集气无阈值' },
-    '4001': { name: '紫气极速', kind: 'exclusive', shape: 'V', desc: '大招后5秒氮气涡轮变紫并叠加极速' },
-    '4002': { name: '大招断漂集气', kind: 'exclusive', shape: 'V', desc: '点击大招断漂，开局无阈值且每次大招集气900' },
-    '4003': { name: '猫眠梦之芯', kind: 'exclusive', shape: 'V', calcId: 'catnap', desc: '每6秒集气1200回耐久，猫眠梦66%能量可用大招' },
-    '4004': { name: '隐匿猎手之芯', kind: 'exclusive', shape: 'V', calcId: 'hunter', desc: '极速提升但涡轮微降，每2次大招充能16%' },
-    '4005': { name: '至尊：翔宇青龙', kind: 'exclusive', shape: 'V', calcId: 'qinglong', desc: '缩短比赛完成时间，烛龙受辅助充能加成+30%' }
+    '1': {"name":"动力I","kind":"normal","shape":"○","desc":"极速 0.4","iconFile":"chip_icon_dl_1_1.png"},
+    '2': {"name":"守护I","kind":"normal","shape":"○","desc":"耐久 5","iconFile":"chip_icon_sh_1_1.png"},
+    '3': {"name":"急先锋I","kind":"normal","shape":"△","desc":"起步推进 0.83秒","iconFile":"chip_icon_xf_2_1.png"},
+    '4': {"name":"跃动I","kind":"normal","shape":"△","desc":"涡轮连发 15%","iconFile":"chip_icon_yd_2_1.png"},
+    '5': {"name":"节气I","kind":"normal","shape":"△","desc":"氮气时间 5.3%","iconFile":"chip_icon_jq_2_1.png"},
+    '6': {"name":"滑流I","kind":"normal","shape":"◇","desc":"尾流集氮 9.3%","iconFile":"chip_icon_hl_3_1.png"},
+    '7': {"name":"蓄氮I","kind":"normal","shape":"◇","desc":"漂移集氮 2%","iconFile":"chip_icon_xd_3_1.png"},
+    '8': {"name":"汇能I","kind":"normal","shape":"◇","desc":"汇能 3%","iconFile":"chip_icon_hn_3_1.png"},
+    '9': {"name":"团魂I","kind":"normal","shape":"◇","desc":"团魂 12%","iconFile":"chip_icon_th_3_1.png"},
+    '10': {"name":"背水I","kind":"normal","shape":"⬡","desc":"背水 1.6","iconFile":"chip_icon_bs_4_1.png"},
+    '11': {"name":"逆流I","kind":"normal","shape":"⬡","desc":"尾流提速 2.4","iconFile":"chip_icon_nl_4_1.png"},
+    '12': {"name":"进境I","kind":"normal","shape":"⬡","desc":"进境 0.45","iconFile":"chip_icon_jj_4_1.png"},
+    '13': {"name":"反击I","kind":"normal","shape":"⬡","desc":"反击 1","iconFile":"chip_icon_fj_4_1.png"},
+    '14': {"name":"先制I","kind":"normal","shape":"⬡","desc":"先制 0.5","iconFile":"chip_icon_xz_4_1.png"},
+    '15': {"name":"反制I","kind":"normal","shape":"⬡","desc":"反制 1.67%","iconFile":"chip_icon_fz_4_1.png"},
+    '16': {"name":"先机I","kind":"normal","shape":"◇","desc":"先机 5%","iconFile":"chip_icon_xj_3_1.png"},
+    '101': {"name":"专业领航","kind":"track","shape":"V","desc":"领航员得分 50%"},
+    '201': {"name":"记忆：龙井问茶","kind":"track","shape":"V","desc":"龙井问茶赛道，极速 3"},
+    '202': {"name":"记忆：山城飞行","kind":"track","shape":"V","desc":"山城飞行赛道，极速 3"},
+    '203': {"name":"记忆：跃动苏堤","kind":"track","shape":"V","desc":"跃动苏堤赛道，极速 3"},
+    '204': {"name":"记忆：通天大道","kind":"track","shape":"V","desc":"通天大道赛道，极速 3"},
+    '205': {"name":"记忆：榛名山","kind":"track","shape":"V","desc":"榛名山赛道，极速 3"},
+    '206': {"name":"记忆：天堑之桥","kind":"track","shape":"V","desc":"天堑之桥赛道，极速 3"},
+    '207': {"name":"记忆：日月同辉","kind":"track","shape":"V","desc":"日月同辉赛道，极速 3"},
+    '208': {"name":"记忆：雅丹拉力","kind":"track","shape":"V","desc":"雅丹拉力赛道，极速 3"},
+    '209': {"name":"记忆：虹桥练习场","kind":"track","shape":"V","desc":"虹桥练习场中，极速 3"},
+    '210': {"name":"记忆：英雄之路","kind":"track","shape":"V","desc":"英雄之路赛道，极速 3"},
+    '211': {"name":"记忆：立交夜驰","kind":"track","shape":"V","desc":"立交夜驰赛道，极速 3"},
+    '212': {"name":"记忆：凌云栈道","kind":"track","shape":"V","desc":"凌云栈道赛道，极速 3"},
+    '213': {"name":"记忆：乡村小镇","kind":"track","shape":"V","desc":"乡村小镇赛道，极速 3"},
+    '214': {"name":"记忆：极地拉力","kind":"track","shape":"V","desc":"极地拉力赛道，极速 3"},
+    '215': {"name":"记忆：峡谷纵横","kind":"track","shape":"V","desc":"峡谷纵横赛道，极速 3"},
+    '216': {"name":"记忆：午夜霓虹","kind":"track","shape":"V","desc":"午夜霓虹赛道，极速 3"},
+    '217': {"name":"记忆：海岸风暴","kind":"track","shape":"V","desc":"海岸风暴赛道，极速 3"},
+    '218': {"name":"记忆：千本鸟居","kind":"track","shape":"V","desc":"千本鸟居赛道，极速 3"},
+    '219': {"name":"记忆：65号公路","kind":"track","shape":"V","desc":"65号公路赛道，极速 3"},
+    '220': {"name":"记忆：水坝疾行","kind":"track","shape":"V","desc":"水坝疾行赛道，极速 3"},
+    '221': {"name":"记忆：速度节赛车场","kind":"track","shape":"V","desc":"速度节赛车场，极速 3"},
+    '222': {"name":"记忆：沙洲腹地","kind":"track","shape":"V","desc":"沙洲腹地赛道，极速 3"},
+    '223': {"name":"记忆：金手指训练场","kind":"track","shape":"V","desc":"金手指训练场，极速 3"},
+    '224': {"name":"记忆：通云九钧","kind":"track","shape":"V","desc":"通云九钧赛道，极速 3"},
+    '225': {"name":"记忆：枫落过隙","kind":"track","shape":"V","desc":"枫落过隙赛道，极速 3"},
+    '226': {"name":"记忆：海岛果岭","kind":"track","shape":"V","desc":"海岛果岭赛道，极速 3"},
+    '227': {"name":"记忆：旷野惊风","kind":"track","shape":"V","desc":"旷野惊风赛道，极速 3"},
+    '228': {"name":"记忆：失落的神庙","kind":"track","shape":"V","desc":"迷宫赛道，极速 3"},
+    '229': {"name":"记忆：王牌学院","kind":"track","shape":"V","desc":"王牌学院赛道，极速 3"},
+    '230': {"name":"记忆：层楼千落","kind":"track","shape":"V","desc":"层楼千落赛道，极速 3"},
+    '231': {"name":"记忆：停车楼","kind":"track","shape":"V","desc":"停车楼赛道，极速 3"},
+    '232': {"name":"记忆：318国道","kind":"track","shape":"V","desc":"318国道赛道，极速 3"},
+    '233': {"name":"记忆：红牛极限工厂","kind":"track","shape":"V","desc":"红牛极限工厂赛道，极速 3"},
+    '234': {"name":"记忆：烟雨江南","kind":"track","shape":"V","desc":"烟雨江南赛道，极速 3"},
+    '235': {"name":"记忆：樱之峠","kind":"track","shape":"V","desc":"樱之峠赛道，极速 3"},
+    '301': {"name":"真实阵营","kind":"track","shape":"V","desc":"比赛中不少于3台真实车辆时，极速 3"},
+    '302': {"name":"幻想阵营","kind":"track","shape":"V","desc":"比赛中不少于3台幻想车辆时，极速 3"},
+    '1001': {"name":"增幅装置·○","kind":"core","shape":"V","desc":"圆形扩展芯片性能 50%","iconFile":"chip_icon_zfxp_1_4.png"},
+    '1002': {"name":"增幅装置·△","kind":"core","shape":"V","desc":"三角形扩展芯片性能 50%","iconFile":"chip_icon_zfxp_2_4.png"},
+    '1003': {"name":"增幅装置·◇","kind":"core","shape":"V","desc":"菱形扩展芯片性能 50%","iconFile":"chip_icon_zfxp_3_4.png"},
+    '1004': {"name":"增幅装置·⑥","kind":"core","shape":"V","desc":"六边形扩展芯片性能 50%","iconFile":"chip_icon_zfxp_4_4.png"},
+    '1005': {"name":"外部充能核心","kind":"core","shape":"V","desc":"大招提供团队充能 30%","iconFile":"chip_icon_cnhx_cnhx_4.png"},
+    '1006': {"name":"自律核心","kind":"core","shape":"V","desc":"大招命中时获得充能 20%","iconFile":"chip_icon_zlhx_zlhx_4.png"},
+    '1007': {"name":"加速核心","kind":"core","shape":"V","desc":"每次点击大招后，下一次氮气期间极速20km/h（次数可存储）","iconFile":"chip_icon_jshx_jshx_4.png"},
+    '1008': {"name":"氮气出弯","kind":"core","shape":"V","desc":"氮气速度3km/h，触发氮气出弯时立即退出漂移","iconFile":"chip_icon_dqcw_dqcw_4.png"},
+    '1009': {"name":"无界核心","kind":"core","shape":"V","desc":"获得集气无阈值效果，漂移集气效率10%"},
+    '1010': {"name":"涡轮核心","kind":"core","shape":"V","desc":"每2次使用涡轮时获得一个涡轮，每次使用涡轮后2秒内极速+1km/h，加速期间重复使用涡轮时，加速时间将会刷新且加速翻倍（上限8km/h）"},
+    '1011': {"name":"穿透核心","kind":"core","shape":"V","desc":"开局5秒时获得15%大招能量并使下次干扰效果必定命中"},
+    '1012': {"name":"大招断漂","kind":"core","shape":"V","desc":"每次点击大招时立即结束漂移状态并获得5%大招能量"},
+    '2001': {"name":"超频：刀片跑法","kind":"exclusive","shape":"V","desc":"特技期间每次超车获得3000氮气能量","iconFile":"chip_icon_dppf_dppf_4.png"},
+    '2002': {"name":"超频：双闪","kind":"exclusive","shape":"V","desc":"每次闪现后获得3秒氮气加速效果","iconFile":"chip_icon_ssqh_ssqh_4.png"},
+    '2003': {"name":"超频：硬汉模式","kind":"exclusive","shape":"V","desc":"若冲锋期间未撞击到其他车辆，大招结束时恢复45%大招能量","calcId":"hardman","iconFile":"chip_icon_yhms_yhms_4.png"},
+    '2004': {"name":"超频：人车合一","kind":"exclusive","shape":"V","desc":"释放人车合一时获得5.25秒隐身效果","iconFile":"chip_icon_rchy_rchy_4.png"},
+    '2005': {"name":"超频：龙卷冲锋","kind":"exclusive","shape":"V","desc":"龙卷冲锋的旋转速度提升60%","iconFile":"chip_icon_ljcf_ljcf_4.png"},
+    '2006': {"name":"超频：纳米科技","kind":"exclusive","shape":"V","desc":"大招充能范围从50米提升至300米，距离超过50米的队友受到的充能效果会有一定衰减","iconFile":"chip_icon_nmkj_nmkj_4.png"},
+    '2007': {"name":"超频：三重推进","kind":"exclusive","shape":"V","desc":"每次点击大招自充能10%","calcId":"triple","iconFile":"chip_icon_sctj_sctj_4.png"},
+    '2008': {"name":"超频：空中巡航","kind":"exclusive","shape":"V","desc":"空中巡航期间，每秒刷出一个涡轮及获得750氮气充能","iconFile":"chip_icon_kzxh_kzxh_4.png"},
+    '2009': {"name":"超频：漆黑魅影","kind":"exclusive","shape":"V","desc":"干扰前方敌人转换为干扰400米范围内敌人","iconFile":"chip_icon_qhmy_qhmy_4.png"},
+    '2010': {"name":"超频：时空穿梭","kind":"exclusive","shape":"V","desc":"穿梭结束后进行3秒可取消的自动导航","iconFile":"chip_icon_csscp_csscp_4.png"},
+    '2011': {"name":"至尊：翔宇青龙","kind":"exclusive","shape":"V","desc":"比赛完成时间不会增加，开局时获得13%大招能量，每15秒使本局比赛完成时间-0.3秒，比赛结束倒计时变为13秒","calcId":"qinglong"},
+    '2012': {"name":"至尊：浴火朱雀","kind":"exclusive","shape":"V","desc":"每秒自动获得400集气量，向前闪现距离33%"},
+    '2013': {"name":"至尊：啸风白虎","kind":"exclusive","shape":"V","desc":"开局时获得8000集气量，辅助范围提升至700米"},
+    '2014': {"name":"至尊：镇渊玄武","kind":"exclusive","shape":"V","desc":"曼巴蛇在前方60米处召唤且移动速度提升至250km/h，获得集气无阈值效果"},
+    '2015': {"name":"墨染：傲梅","kind":"exclusive","shape":"V","desc":"干扰范围变为120米，充能效率提升5%，每次使用大招时获得3500集气量并将涡轮和氮气染色6秒","calcId":"aomei"},
+    '2016': {"name":"墨染：幽兰","kind":"exclusive","shape":"V","desc":"开局8秒时补齐未解锁的圣印，开局25秒后，每2次大招结束时触发已解锁的圣印效果"},
+    '2017': {"name":"墨染：修竹","kind":"exclusive","shape":"V","desc":"舍我其谁达到80%能量即可使用，每次被干扰和辅助时立即获得1200集气量（CD2秒）","calcId":"xiuzhu"},
+    '2018': {"name":"墨染：逸菊","kind":"exclusive","shape":"V","desc":"自动集气翻倍，极速+13km/h，耐久损失降低12%，能量损失和消耗降低40%","calcId":"yiju"},
+    '2019': {"name":"至美：羞花","kind":"exclusive","shape":"V","desc":"大招能量达到88%即可使用，开局时获得25%大招能量，所有陷阱触发次数要求降低2次，陷阱获得的增益效果加成50%","calcId":"xiuhua"},
+    '2020': {"name":"反弹极速","kind":"exclusive","shape":"V","desc":"充能效率10%，每次使用大招时和成功反弹干扰效果时本局内极速+3km/h（上限叠加5次）并获得2500集气量"},
+    '2021': {"name":"开局万集","kind":"exclusive","shape":"V","desc":"开局时获得10000集气量，辅助范围变为700米"},
+    '2022': {"name":"大招返能","kind":"exclusive","shape":"V","desc":"每次使用大招时损失20%当前大招能量，每次大招结束时获得24%大招能量"},
+    '3001': {"name":"修炼：神速","kind":"boost","shape":"V","desc":"每3次使用氮气，本局内极速2.3km/h，上限叠加3次","iconFile":"chip_icon_ssxp_ssxp_4.png"},
+    '3002': {"name":"修炼：冲刺","kind":"boost","shape":"V","desc":"向前闪现距离20%","iconFile":"chip_icon_ccxp_ccxp_4.png"},
+    '3003': {"name":"修炼：累积","kind":"boost","shape":"V","desc":"每5次点击大招时获得5000集气量且本局内极速5km/h，上限叠加4次","iconFile":"chip_icon_ljxp_ljxp_4.png"},
+    '3004': {"name":"修炼：追击","kind":"boost","shape":"V","desc":"处于第4名及以后名次时，极速8km/h","iconFile":"chip_icon_zjxp_zjxp_4.png"},
+    '3005': {"name":"修炼：飞驰","kind":"boost","shape":"V","desc":"开局前45秒内，极速8km/h","iconFile":"chip_icon_fcxp_fcxp_4.png"},
+    '3006': {"name":"修炼：突进","kind":"boost","shape":"V","desc":"开局首次使用氮气时附加50米闪现效果","iconFile":"chip_icon_tjxp_tjxp_4.png"},
+    '3007': {"name":"修炼：坚韧","kind":"boost","shape":"V","desc":"开局时和每11秒极速1.7km/h，上限叠加5次","iconFile":"chip_icon_jrxp_jrxp_4.png"},
+    '3008': {"name":"修炼：效率","kind":"boost","shape":"V","desc":"开局前25秒内极速+5km/h并获得集气无阈值效果"},
+    '4001': {"name":"圣骑士之芯","kind":"exclusive","shape":"V","desc":"使用大招后5秒内将蓝色涡轮和氮气变为紫色涡轮和氮气，每4次使用涡轮、氮气或大招极速3km/h，上限叠加3次"},
+    '4002': {"name":"神剑号之芯","kind":"exclusive","shape":"V","desc":"每次点击大招时立即结束漂移状态，开局前33秒内获得集气无阈值效果且每次点击大招时获得900集气量"},
+    '4003': {"name":"猫眠梦之芯","kind":"exclusive","shape":"V","desc":"每6秒获得1200集气量并恢复6点耐久值，大招达到90%能量即可使用（猫眠梦装备时改为66%）","calcId":"catnap"},
+    '4004': {"name":"隐匿猎手之芯","kind":"exclusive","shape":"V","desc":"极速18km/h但每次使用涡轮-0.5km/h（上限减少30次，加速不会被驱散，减速无法净化），每2次使用大招时充能16%（隐匿猎手装备时同时清空芯片减速）","calcId":"hunter"},
+    '4005': {"name":"缩减赛时","kind":"exclusive","shape":"V","desc":"完成比赛时间-1秒，收到的辅助能量加成20%（烛龙装备时变为30%）。"}
   };
 
   var OFFICIAL_TIER_OPTIONS = [
@@ -186,20 +224,22 @@
     var base = ParamsIO.capture();
     var weights = tierWeights || {};
     var shapes = countCarSlotShapes(car);
+    // ailab 权重键与真实芯片 ID 对齐：8 汇能I、16 先机I、9 团魂I；
+    // 1002 增幅装置·△、1003 增幅装置·◇、1004 增幅装置·⑥
     var boostDiamond = (Number(weights['1003']) || 0) >= 0.35;
     var boostTriangle = (Number(weights['1002']) || 0) >= 0.35;
     var boostHex = (Number(weights['1004']) || 0) >= 0.35;
 
-    var w8 = Number(weights['8']) || 0;
-    var w16 = Number(weights['16']) || 0;
-    var w9 = Number(weights['9']) || 0;
+    var wHuineng = Number(weights['8']) || 0;
+    var wXianji = Number(weights['16']) || 0;
+    var wTuanhun = Number(weights['9']) || 0;
 
     // 1. 估算先机：菱形槽位每颗满级 7.5%（带菱形扩展 11.25%）
     var xianjiStep = boostDiamond ? 11.25 : 7.5;
     var maxXianjiBySlot = Math.min(30, shapes.diamond * xianjiStep);
     var estXianji = 0;
-    if (w16 >= 0.12 && shapes.diamond > 0) {
-      var estDiamondXianji = Math.max(1, Math.min(shapes.diamond, Math.round(w16 * 1.5)));
+    if (wXianji >= 0.12 && shapes.diamond > 0) {
+      var estDiamondXianji = Math.max(1, Math.min(shapes.diamond, Math.round(wXianji * 1.5)));
       estXianji = Number(Math.min(maxXianjiBySlot, estDiamondXianji * xianjiStep).toFixed(2));
     }
 
@@ -210,18 +250,18 @@
       shapes.triangle * (boostTriangle ? 13.5 : 9) +
       shapes.hex * (boostHex ? 13.5 : 9);
     var estHuineng = 0;
-    if (w8 >= 0.12 && maxHuinengBySlot > 0) {
+    if (wHuineng >= 0.12 && maxHuinengBySlot > 0) {
       // 汇能权重通常落在 0.2 ~ 2.5，按权重估算推荐占比
-      var ratio = Math.min(1, Math.max(0.25, w8 / 1.8));
+      var ratio = Math.min(1, Math.max(0.25, wHuineng / 1.8));
       var rawHuineng = maxHuinengBySlot * ratio;
       estHuineng = Number(Math.min(maxHuinengBySlot, Math.max(9, Math.round(rawHuineng * 2) / 2)).toFixed(1));
     }
 
     // 3. 估算团魂（仅团魂获能模式适用）
     var estTuanhun = base.tuanhun || 0;
-    if (curMode === 'team' && w9 >= 0.12 && shapes.diamond > 0) {
+    if (curMode === 'team' && wTuanhun >= 0.12 && shapes.diamond > 0) {
       var thStep = boostDiamond ? 24 : 16;
-      var thSlots = Math.max(1, Math.min(shapes.diamond, Math.round(w9 * 1.5)));
+      var thSlots = Math.max(1, Math.min(shapes.diamond, Math.round(wTuanhun * 1.5)));
       estTuanhun = Math.min(200, thSlots * thStep);
     }
 
@@ -594,6 +634,8 @@
     remotePage: 1,
     remotePageSize: 8,
     remoteTotal: 0,
+    remoteCategoryTotals: { partner: 0, pro: 0, community: 0 },
+    remoteCategoryTotalsMode: 'all',
     allCarTotal: 0,
     remoteTotalPages: 1,
     remoteHasMore: false,
@@ -1682,6 +1724,8 @@
         state.remotePlans = [];
         state.remotePage = 1;
         state.remoteTotal = 0;
+        state.remoteCategoryTotals = { partner: 0, pro: 0, community: 0 };
+        state.remoteCategoryTotalsMode = state.filterMode || 'all';
         state.allCarTotal = 0;
         state.remoteTotalPages = 1;
         state.remoteHasMore = false;
@@ -1700,6 +1744,8 @@
         state.remotePlans = [];
         state.remotePage = 1;
         state.remoteTotal = 0;
+        state.remoteCategoryTotals = { partner: 0, pro: 0, community: 0 };
+        state.remoteCategoryTotalsMode = state.filterMode || 'all';
         state.allCarTotal = 0;
         state.remoteTotalPages = 1;
         state.remoteHasMore = false;
@@ -1911,6 +1957,15 @@
             state.remoteHasMore = typeof json.data.has_more === 'boolean'
               ? json.data.has_more
               : (state.remotePage * pageSize < state.remoteTotal);
+            var ct = json.data.category_totals;
+            if (ct && typeof ct === 'object') {
+              state.remoteCategoryTotals = {
+                partner: Number(ct.partner) || 0,
+                pro: Number(ct.pro) || 0,
+                community: Number(ct.community) || 0
+              };
+              state.remoteCategoryTotalsMode = calcModeParam;
+            }
 
             if (anyLocalUpdated) {
               Utils.setStorage(STORAGE_KEYS.PLANS, state.savedPlans);
@@ -2047,6 +2102,9 @@
     },
 
     _renderOfficialChipIcon: function (info) {
+      if (info && info.iconFile) {
+        return '<img src="data/icon/official/' + Utils.escapeHtml(info.iconFile) + '" class="cp-off-chip-img" alt="" loading="lazy">';
+      }
       if (info && info.calcId) {
         return '<img src="data/icon/chip_' + Utils.escapeHtml(info.calcId) + '.png" class="cp-off-chip-img" alt="" loading="lazy">';
       }
@@ -2148,7 +2206,7 @@
         '    <div class="cp-sec-info">',
         '      <div class="cp-sec-title-row">',
         '        <span class="cp-sec-title"><span class="zh">官方 AI 推荐</span><span class="lang-en">Official AI Recommended</span></span>',
-        '        <span class="cp-sec-count">' + topEntries.length + '</span>',
+        '        <span class="cp-sec-count">1</span>',
         '      </div>',
         '      <div class="cp-sec-desc"><span class="zh">官方大数据芯片推荐（自动按当前车型槽位换算可套用参数）</span><span class="lang-en">Official AI chip recommendations</span></div>',
         '    </div>',
@@ -2421,13 +2479,23 @@
       });
 
       var loadedRemoteCount = partnerList.length + remoteProList.length + remoteList.length;
-      var totalPlans = Math.max(loadedRemoteCount, state.remoteTotal || 0) + baseProList.length + localList.length;
+      var hasOfficialData = CommunityPlans._hasOfficialData();
+      var officialPlanCount = hasOfficialData ? 1 : 0;
+      var totalPlans = Math.max(loadedRemoteCount, state.remoteTotal || 0) + baseProList.length + localList.length + officialPlanCount;
       if (state.filterMode === 'all') {
         state.allCarTotal = Math.max(state.allCarTotal, totalPlans);
       }
 
       // 4. 更新标题栏徽标与折叠状态联动 (仅在「全部」模式下确认为 0 方案时才自动折叠；筛选其他模式时始终保留控制栏不折叠)
-      var isCarTrulyEmpty = (totalPlans === 0 && !state.isFetchingRemote && state.filterMode === 'all' && state.allCarTotal === 0);
+      // 官方 AI 推荐也算一套方案：还在拉取、或已经有数据时，不能走进「暂无方案」早退
+      var isCarTrulyEmpty = (
+        totalPlans === 0 &&
+        !hasOfficialData &&
+        !state.isFetchingOfficial &&
+        !state.isFetchingRemote &&
+        state.filterMode === 'all' &&
+        state.allCarTotal === 0
+      );
       if (isCarTrulyEmpty) {
         var bannerSlotNone = document.getElementById('cpBannerSlot');
         if (bannerSlotNone) {
@@ -2454,7 +2522,7 @@
       // 有方案、正在加载或正在筛选模式时更新标题徽标
       if (badge) {
         var knownTotal = Math.max(totalPlans, state.allCarTotal || 0);
-        badge.innerHTML = state.isFetchingRemote && totalPlans === 0
+        badge.innerHTML = (state.isFetchingRemote || state.isFetchingOfficial) && totalPlans === 0
           ? '<span class="zh">' + Utils.escapeHtml(carName) + ' · 加载中...</span><span class="lang-en">Loading...</span>'
           : '<span class="zh">' + Utils.escapeHtml(carName) + ' (' + knownTotal + ' 方案)</span><span class="lang-en">' + Utils.escapeHtml(carName) + '</span>';
       }
@@ -2483,6 +2551,16 @@
       remoteList = sortByCompatAndMetric(filterByPlanMode(remoteList));
       localList = sortByCompatAndMetric(filterByPlanMode(localList));
       var filteredTotal = partnerList.length + proList.length + remoteList.length + localList.length;
+      var catTotals = state.remoteCategoryTotals || {};
+      var totalsMatchFilter = (state.remoteCategoryTotalsMode || 'all') === (state.filterMode || 'all');
+      var sectionCount = function (loadedLen, key) {
+        var serverN = Number(catTotals[key]);
+        if (!totalsMatchFilter || !Number.isFinite(serverN)) return loadedLen;
+        return Math.max(loadedLen, serverN);
+      };
+      var partnerCount = sectionCount(partnerList.length, 'partner');
+      var proCount = sectionCount(proList.length, 'pro');
+      var communityCount = sectionCount(remoteList.length, 'community');
 
       // 6. 更新顶部持久化横幅与常驻模式/排序控制条 + 内部固定高度可滚动列表视口
       var bannerHtml = '';
@@ -2512,8 +2590,7 @@
         bannerSlot.style.display = bannerHtml ? '' : 'none';
       }
 
-      var hasOfficialData = CommunityPlans._hasOfficialData();
-      if (state.isFetchingRemote && filteredTotal === 0 && !hasOfficialData) {
+      if ((state.isFetchingRemote || state.isFetchingOfficial) && filteredTotal === 0 && !hasOfficialData) {
         viewportHtml.push([
           '<div class="cp-empty-box">',
           '  <div class="cp-empty-title">正在加载社区方案...</div>',
@@ -2573,8 +2650,8 @@
           '    <div class="cp-sec-icon-box">' + Icons.partner + '</div>',
           '    <div class="cp-sec-info">',
           '      <div class="cp-sec-title-row">',
-          '        <span class="cp-sec-title"><span class="zh">友站分享</span><span class="lang-en">Partner Setups</span></span>',
-          '        <span class="cp-sec-count">' + partnerList.length + '</span>',
+        '        <span class="cp-sec-title"><span class="zh">友站分享</span><span class="lang-en">Partner Setups</span></span>',
+        '        <span class="cp-sec-count">' + partnerCount + '</span>',
           '      </div>',
           '      <div class="cp-sec-desc"><span class="zh">合作友站提供的实战芯片搭配参考，可点击作者主页前往查看原站与更多分享</span><span class="lang-en">Partner site curated setups</span></div>',
           '    </div>',
@@ -2596,8 +2673,8 @@
           '    <img src="data/icon/pro_helmet_m.png" class="cp-sec-pro-icon" alt="" loading="lazy">',
           '    <div class="cp-sec-info">',
           '      <div class="cp-sec-title-row">',
-          '        <span class="cp-sec-title"><span class="zh">国服顶尖</span><span class="lang-en">Pro Master Setups</span></span>',
-          '        <span class="cp-sec-count">' + proList.length + '</span>',
+        '        <span class="cp-sec-title"><span class="zh">国服顶尖</span><span class="lang-en">Pro Master Setups</span></span>',
+        '        <span class="cp-sec-count">' + proCount + '</span>',
           '      </div>',
           '      <div class="cp-sec-desc"><span class="zh">官方实战大数据与国服榜首车神认证配装</span><span class="lang-en">National top driver certified setups</span></div>',
           '    </div>',
@@ -2619,8 +2696,8 @@
           '    <div class="cp-sec-icon-box">' + Icons.hot + '</div>',
           '    <div class="cp-sec-info">',
           '      <div class="cp-sec-title-row">',
-          '        <span class="cp-sec-title"><span class="zh">玩家上传</span><span class="lang-en">Community Setups</span></span>',
-          '        <span class="cp-sec-count">' + remoteList.length + '</span>',
+        '        <span class="cp-sec-title"><span class="zh">玩家上传</span><span class="lang-en">Community Setups</span></span>',
+        '        <span class="cp-sec-count">' + communityCount + '</span>',
           '      </div>',
           '      <div class="cp-sec-desc"><span class="zh">来自全网车友实战分享的方案，经安全初筛认证</span><span class="lang-en">Community contributed setups</span></div>',
           '    </div>',
