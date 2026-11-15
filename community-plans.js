@@ -2017,19 +2017,18 @@
         cardChips.scrollIntoView({ behavior: 'smooth', block: 'start' });
       }
 
-      var tierObj = OFFICIAL_TIER_OPTIONS.find(function (t) { return t.key === activeTier; });
-      var tierLabel = tierObj ? tierObj.label : activeTier;
       var summaryParts = [];
       if (derived.xianji > 0) summaryParts.push('先机 ' + derived.xianji + '%');
       if (derived.huineng > 0) summaryParts.push('汇能 ' + derived.huineng + '%');
       if (curCalcMode === 'team' && derived.tuanhun > 0) summaryParts.push('团魂 ' + derived.tuanhun + '%');
       var sumTxt = summaryParts.length > 0 ? ('（' + summaryParts.join(' · ') + '）') : '';
-      CommunityPlans.toast('已按槽位套用官方 AI「' + tierLabel + '」推荐配比' + sumTxt);
+      CommunityPlans.toast('已按槽位套用官方 AI 推荐配比' + sumTxt);
     },
 
     _hasOfficialData: function () {
+      if (state.siteMeta && state.siteMeta.official_chips_enabled === false) return false;
       var d = state.officialChips;
-      if (!d || !d.available) return false;
+      if (!d || !d.available || d.disabled) return false;
       var hasAilab = d.ailab && Object.keys(d.ailab).some(function (k) {
         return d.ailab[k] && Object.keys(d.ailab[k]).length > 0;
       });
@@ -2037,93 +2036,110 @@
       return Boolean(hasAilab || hasStats);
     },
 
+    _pickOfficialWeights: function (ailab) {
+      if (!ailab || typeof ailab !== 'object') return {};
+      if (ailab['16-99'] && Object.keys(ailab['16-99']).length > 0) return ailab['16-99'];
+      var keys = Object.keys(ailab);
+      for (var i = 0; i < keys.length; i++) {
+        if (ailab[keys[i]] && Object.keys(ailab[keys[i]]).length > 0) return ailab[keys[i]];
+      }
+      return {};
+    },
+
+    _renderOfficialChipIcon: function (info) {
+      if (info && info.calcId) {
+        return '<img src="data/icon/chip_' + Utils.escapeHtml(info.calcId) + '.png" class="cp-off-chip-img" alt="" loading="lazy">';
+      }
+      var sym = (info && info.shape) ? String(info.shape) : '';
+      if (sym.indexOf('V') >= 0) sym = 'V';
+      else if (sym.indexOf('\u25C7') >= 0 && sym.indexOf('\u25B3') < 0) sym = '\u25C7';
+      else if (sym.indexOf('\u25B3') >= 0) sym = '\u25B3';
+      else if (sym.indexOf('\u25E3') >= 0 || sym.indexOf('⬡') >= 0) sym = '\u25E3';
+      else sym = '\u25CB';
+      if (typeof window.__pvChip === 'function') {
+        return '<span class="cp-off-pv-chip">' + window.__pvChip(sym) + '</span>';
+      }
+      return '<span class="cp-off-chip-fallback">' + Utils.escapeHtml(sym) + '</span>';
+    },
+
     renderOfficialSection: function (calcMode) {
       var d = state.officialChips;
       if (!CommunityPlans._hasOfficialData()) return '';
 
-      var ailab = d.ailab || {};
-      var availableTiers = OFFICIAL_TIER_OPTIONS.filter(function (t) {
-        return ailab[t.key] && Object.keys(ailab[t.key]).length > 0;
-      });
-      var activeTier = state.officialTier || '16-99';
-      if (availableTiers.length > 0 && !availableTiers.some(function (t) { return t.key === activeTier; })) {
-        activeTier = availableTiers[0].key;
-      }
-
-      var tierWeights = ailab[activeTier] || {};
+      var tierWeights = CommunityPlans._pickOfficialWeights(d.ailab);
       var entries = Object.keys(tierWeights).map(function (cid) {
         return { id: cid, weight: Number(tierWeights[cid]) || 0, info: getOfficialChipInfo(cid) };
       }).filter(function (x) { return x.weight > 0.001; });
       entries.sort(function (a, b) { return b.weight - a.weight; });
 
       var maxW = entries.length > 0 ? Math.max(entries[0].weight, 0.01) : 1;
-      var topEntries = entries.slice(0, 10);
+      var topEntries = entries.slice(0, 8);
       var derived = buildOfficialDerivedParams(tierWeights, state.currentCar, calcMode);
-      var isApplied = (state.activeAppliedPlanId === '__official_' + activeTier);
+      var isApplied = (state.activeAppliedPlanId === '__official_16-99');
 
-      var tierTabsHtml = availableTiers.map(function (t) {
-        var activeCls = (t.key === activeTier) ? ' is-active' : '';
-        return '<button type="button" class="cp-off-tier-btn' + activeCls + '" onclick="CommunityPlans.switchOfficialTier(\'' + t.key + '\')">' +
-          Utils.escapeHtml(t.label) + '</button>';
-      }).join('');
+      // 1. 复用原版高亮行 .cp-specs-hl-row（先机 / 汇能 / 团魂 / 适配核心）
+      var hlCells = [];
+      if (Object.keys(tierWeights).length > 0) {
+        hlCells.push({ lbl: '先机（按槽位换算）', val: derived.xianji + '%' });
+        hlCells.push({ lbl: '汇能（按槽位换算）', val: derived.huineng + '%' });
+        if (calcMode === 'team') {
+          hlCells.push({ lbl: '团魂（按槽位换算）', val: derived.tuanhun + '%' });
+        }
+      }
+      var hlRowHtml = hlCells.length > 0
+        ? '<div class="cp-specs-hl-row" style="--hl-cols:' + hlCells.length + '">' +
+            hlCells.map(function (c) {
+              return '<div class="cp-spec-hl-cell"><span class="cp-spec-lbl">' + Utils.escapeHtml(c.lbl) + '</span><span class="cp-spec-val is-acc">' + Utils.escapeHtml(c.val) + '</span></div>';
+            }).join('') +
+          '</div>'
+        : '';
 
-      var chipsHtml = topEntries.map(function (item) {
+      // 2. 复用原版网格 .cp-specs-grid 展示高权重推荐芯片 + 网站自带芯片图标
+      var chipCellsHtml = topEntries.map(function (item) {
         var pct = Math.min(100, Math.round((item.weight / maxW) * 100));
-        var kindCls = 'cp-off-chip-' + (item.info.kind || 'normal');
-        var shapeHtml = item.info.shape ? '<span class="cp-off-chip-shape">' + Utils.escapeHtml(item.info.shape) + '</span>' : '';
         var wText = item.weight >= 1 ? item.weight.toFixed(2) : item.weight.toFixed(3);
-        var titleAttr = item.info.desc ? (' title="' + Utils.escapeHtml(item.info.desc + '（AI权重 ' + wText + '）') + '"') : '';
-        return '<div class="cp-off-chip-pill ' + kindCls + '"' + titleAttr + '>' +
-          '<div class="cp-off-chip-bar" style="width:' + pct + '%"></div>' +
-          '<div class="cp-off-chip-inner">' +
-            shapeHtml +
-            '<span class="cp-off-chip-name">' + Utils.escapeHtml(item.info.name) + '</span>' +
-            '<span class="cp-off-chip-weight">' + wText + '</span>' +
+        var titleAttr = item.info.desc ? (' title="' + Utils.escapeHtml(item.info.desc + '（推荐权重 ' + wText + '）') + '"') : '';
+        return '<div class="cp-spec-cell cp-off-chip-cell"' + titleAttr + '>' +
+          '<div class="cp-off-chip-progress" style="width:' + pct + '%"></div>' +
+          '<div class="cp-off-chip-row">' +
+            CommunityPlans._renderOfficialChipIcon(item.info) +
+            '<span class="cp-off-chip-label">' + Utils.escapeHtml(item.info.name) + '</span>' +
+            '<span class="cp-off-chip-score">' + wText + '</span>' +
           '</div>' +
         '</div>';
       }).join('');
 
-      var derivedCellsHtml = '';
-      if (Object.keys(tierWeights).length > 0) {
-        var cells = [
-          { lbl: '换算先机', val: derived.xianji + '%' },
-          { lbl: '换算汇能', val: derived.huineng + '%' }
-        ];
-        if (calcMode === 'team') {
-          cells.push({ lbl: '换算团魂', val: derived.tuanhun + '%' });
-        }
-        if (derived.chipsOn.length > 0) {
-          cells.push({
-            lbl: '适配核心',
-            val: derived.chipsOn.map(function (c) { return CHIP_NAME_MAP[c.id] || c.id; }).join(' + ')
-          });
-        }
-        derivedCellsHtml = '<div class="cp-off-derived-row">' +
-          cells.map(function (c) {
-            return '<div class="cp-off-derived-cell"><span class="cp-off-derived-lbl">' + c.lbl + '</span><span class="cp-off-derived-val">' + Utils.escapeHtml(c.val) + '</span></div>';
-          }).join('') +
-        '</div>';
-      }
+      var chipGridHtml = chipCellsHtml
+        ? '<div class="cp-specs-grid cp-off-specs-grid">' + chipCellsHtml + '</div>'
+        : '<div class="cp-card-note-box"><span class="cp-note-text">该车型暂无 AI 芯片权重数据</span></div>';
 
-      var statsHtml = '';
-      if (Array.isArray(d.stats) && d.stats.length > 0) {
+      // 3. 复用原版扩展行 .cp-specs-extra 展示适配核心与实战胜率统计
+      var extraRows = [];
+      if (derived.chipsOn.length > 0) {
+        extraRows.push({
+          k: '核心',
+          v: derived.chipsOn.map(function (c) { return CHIP_NAME_MAP[c.id] || c.id; }).join(' · '),
+          acc: true
+        });
+      }
+      var showStats = !(state.siteMeta && state.siteMeta.official_chips_show_stats === false);
+      if (showStats && Array.isArray(d.stats) && d.stats.length > 0) {
         var topStats = d.stats.slice().sort(function (a, b) {
           return (Number(b.all_cnt) || 0) - (Number(a.all_cnt) || 0);
         }).slice(0, 3);
-        statsHtml = '<div class="cp-off-stats-row">' +
-          '<span class="cp-off-stats-lbl">实战参考</span>' +
-          topStats.map(function (st) {
-            var wr = Number(st.win_rate) || 0;
-            var cnt = Number(st.all_cnt) || 0;
-            return '<span class="cp-off-stat-pill">组合#' + Utils.escapeHtml(String(st.plan_key || '')) +
-              ' · 胜率 <strong>' + wr + '%</strong> (' + cnt + '场)</span>';
-          }).join('') +
-        '</div>';
+        var statsText = topStats.map(function (st) {
+          var wr = Number(st.win_rate) || 0;
+          var cnt = Number(st.all_cnt) || 0;
+          var cntTxt = cnt >= 10000 ? ((cnt / 10000).toFixed(1) + '万场') : (cnt + '场');
+          return '组合#' + String(st.plan_key || '') + ' 胜率' + wr + '%(' + cntTxt + ')';
+        }).join(' · ');
+        extraRows.push({ k: '实战', v: statsText, acc: false });
       }
-
-      var verText = d.client_version ? ('v' + Utils.escapeHtml(String(d.client_version))) : '';
-      var genDate = d.generated_at ? String(d.generated_at).slice(0, 10) : '';
-      var metaText = [verText, genDate].filter(Boolean).join(' · ');
+      var extraHtml = extraRows.length > 0
+        ? '<div class="cp-specs-extra">' + extraRows.map(function (r) {
+            return '<div class="cp-spec-extra-row"><span class="cp-spec-extra-k">' + Utils.escapeHtml(r.k) + '</span><span class="cp-spec-extra-v' + (r.acc ? ' is-acc' : '') + '">' + Utils.escapeHtml(r.v) + '</span></div>';
+          }).join('') + '</div>'
+        : '';
 
       return [
         '<div class="cp-section cp-section-official">',
@@ -2134,29 +2150,33 @@
         '        <span class="cp-sec-title"><span class="zh">官方 AI 推荐</span><span class="lang-en">Official AI Recommended</span></span>',
         '        <span class="cp-sec-count">' + topEntries.length + '</span>',
         '      </div>',
-        '      <div class="cp-sec-desc"><span class="zh">游戏服务端 AI Lab 大数据芯片权重推荐（与计算器槽位联动估算）</span><span class="lang-en">Official server AI Lab chip weight recommendations</span></div>',
+        '      <div class="cp-sec-desc"><span class="zh">官方大数据芯片推荐（自动按当前车型槽位换算可套用参数）</span><span class="lang-en">Official AI chip recommendations</span></div>',
         '    </div>',
         '  </div>',
         '  <div class="cp-sec-list">',
-        '    <div class="cp-plan-card cp-official-card' + (isApplied ? ' is-applied' : '') + '">',
-        '      <div class="cp-off-top-bar">',
-        '        <div class="cp-off-badges">',
-        '          <span class="cp-card-badge cp-badge-official">' + Icons.aiSpark + ' 官方大数据</span>',
-        metaText ? ('<span class="cp-off-meta">' + metaText + '</span>') : '',
+        '    <article class="cp-card-item cp-official-item' + (isApplied ? ' is-applied' : '') + '">',
+        '      <div class="cp-card-head">',
+        '        <div class="cp-card-header-line">',
+        '          <h4 class="cp-card-title"><span class="zh">官方 AI 大数据推荐配装</span><span class="lang-en">Official AI Setup</span></h4>',
+        '          <div class="cp-card-badges">',
+        '            <span class="cp-card-badge cp-badge-official">' + Icons.aiSpark + ' 官方推荐</span>',
+        (isApplied ? '            <span class="cp-card-badge cp-badge-active">' + Icons.check + ' 生效中</span>' : ''),
+        '          </div>',
         '        </div>',
-        availableTiers.length > 0 ? ('<div class="cp-off-tiers">' + tierTabsHtml + '</div>') : '',
         '      </div>',
-        chipsHtml ? ('<div class="cp-off-chips-grid">' + chipsHtml + '</div>') : '<div class="cp-off-empty-tip">该车型暂无 AI 芯片权重，以下为实战对战统计参考</div>',
-        derivedCellsHtml,
-        statsHtml,
-        '      <div class="cp-card-footer cp-off-footer">',
-        '        <span class="cp-off-note">权重越高越推荐；一键套用将按本车槽位换算先机/汇能' + (calcMode === 'team' ? '/团魂' : '') + '</span>',
-        Object.keys(tierWeights).length > 0
-          ? ('        <button type="button" class="nav-btn cp-btn cp-btn-apply" onclick="CommunityPlans.applyOfficialPlan(\'' + activeTier + '\')">' +
-             (isApplied ? (Icons.check + ' <span>已套用</span>') : (Icons.apply + ' <span>一键套用</span>')) + '</button>')
-          : '',
+        '      <div class="cp-specs-panel">',
+        hlRowHtml,
+        chipGridHtml,
+        extraHtml,
         '      </div>',
-        '    </div>',
+        '      <div class="cp-card-foot">',
+        '        <div class="cp-foot-left"><span class="cp-meta-time">按权重与槽位自动换算</span></div>',
+        (Object.keys(tierWeights).length > 0
+          ? ('        <button type="button" class="nav-btn cp-apply-btn' + (isApplied ? ' is-applied' : '') + '" onclick="CommunityPlans.applyOfficialPlan(\'16-99\')">' +
+             (isApplied ? Icons.check : Icons.apply) + '<span class="zh">' + (isApplied ? '已套用' : '一键套用') + '</span><span class="lang-en">' + (isApplied ? 'Applied' : 'Apply') + '</span></button>')
+          : ''),
+        '      </div>',
+        '    </article>',
         '  </div>',
         '</div>'
       ].join('');
