@@ -1,16 +1,14 @@
 /**
- * LiquidThemeReveal - 液体主题切换动效模块（无音效、纯原生 JS + SVG clipPath + Shadow DOM 快照隔离）
+ * LiquidThemeReveal - 液体主题切换动效模块（无音效、跨端零闪烁、原生 CSS clip-path: polygon + Shadow DOM 揭示层）
  *
- * 原理（方案 A：真实新主题底层 + Shadow DOM 旧主题快照层 + 反向 evenodd SVG 镂空裁剪）：
- * 1. 样式双通道保障：
- *    - HTTP/HTTPS 环境下空闲预取同源 CSS 原文并做词法级根选择器改写，实现 0ms 同步启动；
- *    - file:// 本地双击打开或预取未完成时，直接在 Shadow DOM 内挂载真实 <html>/<body> 标签并克隆 <link>/<style>，
- *      等核心样式表加载就绪后再切底层与显形，彻底杜绝 file:// SecurityError 或无样式黑屏；
- * 2. 立即将真实页面无过渡切换为新主题并同步刷新环境光/分区光 Canvas；
- * 3. 单一 requestAnimationFrame 循环逐帧更新 SVG <clipPath>（clip-rule="evenodd"）路径：
- *    - 阶段 1：细长液柱从触发按钮下方涌出，带自然摆动、粗细变化与分离液滴；
- *    - 阶段 2：液柱触底产生飞溅小液滴与局部涟漪；
- *    - 阶段 3：液体在底部积聚形成起伏波浪液面，顺滑上涨并与液柱合流覆盖全屏。
+ * 架构设计（方案 B 增强版：底层稳固旧主题 + 顶层新主题 Shadow DOM 快照正向 polygon 裁剪 + 双帧无缝提交）：
+ * 1. 动画全程底层保持当前真实旧主题不动，绝不因合成器时序/瓦片重绘出现整屏黑白爆闪；
+ * 2. 顶层 #__ltOverlay 在 Shadow DOM 内构建目标新主题视觉快照，禁用全部 transition/animation/backdrop-filter，
+ *    从源头上消除克隆挂载闪烁与移动端动态 clip-path + backdrop-filter 合成闪烁；
+ * 3. 使用 CSS 原生 clip-path: polygon(...) 描述单一连续闭环液体轮廓（液柱 + 弯月面 + 平滑起伏波浪），
+ *    彻底告别 iOS Safari / 移动端 WebView 上跨 Shadow Host 引用外部 SVG <clipPath> url(#) 的兼容闪烁问题；
+ * 4. 分离小液滴、触底飞溅水花与微弱液面高光由轻量化独立顶层 <svg> 绘制；
+ * 5. 动画覆盖全屏（p >= 1）后：禁止 transition → 提交真实底层 applyTheme() → 双 rAF 确认底层已绘制上屏 → 移除揭示层。
  */
 (function (root) {
   'use strict';
@@ -30,7 +28,13 @@
     + '.lt-snap-viewport::-webkit-scrollbar { display: none; }\n'
     + '.lt-snap-viewport > .lt-snap-html { display: block; position: static !important; width: 100% !important; min-height: 100% !important; height: auto !important; overflow: visible !important; margin: 0 !important; padding: 0 !important; background: transparent !important; background-color: transparent !important; }\n'
     + '.lt-snap-viewport > .lt-snap-html > .lt-snap-body { display: block; position: relative; width: 100%; min-height: 100%; margin: 0; isolation: isolate; background: transparent !important; background-color: transparent !important; }\n'
-    + '.lt-snap-viewport, .lt-snap-viewport *, .lt-snap-viewport *::before, .lt-snap-viewport *::after { transition: none !important; transition-duration: 0s !important; animation: none !important; animation-duration: 0s !important; }\n';
+    + '.lt-snap-viewport, .lt-snap-viewport *, .lt-snap-viewport *::before, .lt-snap-viewport *::after {\n'
+    + '  transition: none !important; transition-duration: 0s !important;\n'
+    + '  animation: none !important; animation-duration: 0s !important;\n'
+    + '  -webkit-backdrop-filter: none !important; backdrop-filter: none !important;\n'
+    + '}\n'
+    + '.lt-snap-body.ds-c .ds-dock { background: rgba(26, 27, 34, .94) !important; }\n'
+    + '.lt-snap-body.ds-c.light-mode .ds-dock { background: rgba(250, 250, 252, .94) !important; }\n';
 
   function clamp(v, lo, hi) {
     return v < lo ? lo : v > hi ? hi : v;
@@ -50,7 +54,8 @@
     if (!document.createElementNS || !Element.prototype.attachShadow) return false;
     if (typeof requestAnimationFrame !== 'function') return false;
     if (typeof CSS !== 'undefined' && typeof CSS.supports === 'function') {
-      return CSS.supports('clip-path', 'url(#x)') || CSS.supports('-webkit-clip-path', 'url(#x)');
+      return CSS.supports('clip-path', 'polygon(0px 0px, 10px 0px, 10px 10px)')
+        || CSS.supports('-webkit-clip-path', 'polygon(0px 0px, 10px 0px, 10px 10px)');
     }
     return true;
   }
@@ -62,9 +67,6 @@
     return !!(rm || perf);
   }
 
-  /**
-   * 词法级替换 CSS 选择器中的文档根选择器（跳过 [...] 与引号内部）
-   */
   function rewriteSelector(selectorText) {
     if (!selectorText) return selectorText;
     var out = '';
@@ -106,29 +108,20 @@
       }
 
       if (bracketDepth === 0) {
-        var prev = i > 0 ? selectorText.charAt(i - 1) : '';
-        var isIdBoundaryPrev = !prev || !/[a-zA-Z0-9_.\-#:*]/.test(prev);
-        var isPseudoRootBoundaryPrev = !prev || !/[a-zA-Z0-9_-]/.test(prev);
-
-        if (isPseudoRootBoundaryPrev && selectorText.slice(i, i + 5) === ':root') {
-          var nextR = selectorText.charAt(i + 5);
-          if (!nextR || !/[a-zA-Z0-9_-]/.test(nextR)) {
+        var prev = i === 0 ? '' : selectorText.charAt(i - 1);
+        var isBoundaryBefore = i === 0 || /[\s,>+~(]/.test(prev);
+        if (isBoundaryBefore) {
+          if (selectorText.slice(i, i + 5) === ':root' && !/[a-zA-Z0-9_-]/.test(selectorText.charAt(i + 5) || '')) {
             out += '.lt-snap-html';
             i += 5;
             continue;
           }
-        }
-        if (isIdBoundaryPrev && selectorText.slice(i, i + 4) === 'html') {
-          var nextH = selectorText.charAt(i + 4);
-          if (!nextH || !/[a-zA-Z0-9_-]/.test(nextH)) {
+          if (selectorText.slice(i, i + 4) === 'html' && !/[a-zA-Z0-9_-]/.test(selectorText.charAt(i + 4) || '')) {
             out += '.lt-snap-html';
             i += 4;
             continue;
           }
-        }
-        if (isIdBoundaryPrev && selectorText.slice(i, i + 4) === 'body') {
-          var nextB = selectorText.charAt(i + 4);
-          if (!nextB || !/[a-zA-Z0-9_-]/.test(nextB)) {
+          if (selectorText.slice(i, i + 4) === 'body' && !/[a-zA-Z0-9_-]/.test(selectorText.charAt(i + 4) || '')) {
             out += '.lt-snap-body';
             i += 4;
             continue;
@@ -222,29 +215,29 @@
           i = endSemi;
           continue;
         }
-        if (atName === 'media' || atName === 'supports' || atName === 'layer' || atName === 'container') {
+        if (atName === 'media' || atName === 'supports' || atName === 'layer' || atName === 'container' || atName === 'document') {
           out += raw.slice(atStart, j + 1);
           atContainerDepth++;
           i = j + 1;
-        } else {
-          var blockEnd = scanBalancedBlock(raw, j);
-          out += raw.slice(atStart, blockEnd);
-          i = blockEnd;
+          continue;
         }
+        var atBlockEnd = scanBalancedBlock(raw, j);
+        out += raw.slice(atStart, atBlockEnd);
+        i = atBlockEnd;
         continue;
       }
 
       var selStart = i;
-      var qSel = '';
+      var q3 = '';
       while (i < n) {
         var c3 = raw.charAt(i);
-        if (qSel) {
+        if (q3) {
           if (c3 === '\\') { i += 2; continue; }
-          if (c3 === qSel) qSel = '';
+          if (c3 === q3) q3 = '';
           i++;
           continue;
         }
-        if (c3 === '"' || c3 === "'") { qSel = c3; i++; continue; }
+        if (c3 === '"' || c3 === "'") { q3 = c3; i++; continue; }
         if (c3 === '/' && raw.charAt(i + 1) === '*') {
           var ec3 = raw.indexOf('*/', i + 2);
           i = ec3 >= 0 ? ec3 + 2 : n;
@@ -298,7 +291,6 @@
         if (texts[k]) combined += rewriteRawCss(texts[k]) + '\n';
       }
       if (combined) {
-        // 一并追加主文档内联 <style>（如有扩展或页面注入内联样式）
         var inlineStyles = document.querySelectorAll('head style, body style');
         for (var s = 0; s < inlineStyles.length; s++) {
           if (inlineStyles[s].textContent) {
@@ -345,6 +337,7 @@
     for (var k = 0; k < cvLen; k++) {
       var oc = origCvs[k];
       var cc = cloneCvs[k];
+      if (oc.id === 'dsAmbientImg' || oc.id === 'dsAmbientImg2' || oc.id === 'dsZoneGlow') continue;
       if (!oc.width || !oc.height) continue;
       try {
         cc.width = oc.width;
@@ -368,23 +361,16 @@
   }
 
   /**
-   * 构建 Shadow DOM 旧主题快照层。
-   * - 若已预取同源 CSS 原文：同步注入改写后 CSS，立即就绪；
-   * - 否则（如 file:// 本地双击打开）：直接挂载真实 <html>/<body> 标签并克隆 <link>/<style>，
-   *   等待核心样式表加载完成再回调 onReady，确保 100% 完整样式与正确 scrollTop。
+   * 构建顶层「目标新主题」Shadow DOM 快照层（始终先隐藏，就绪后用原生 polygon 裁剪揭示）。
    */
-  function createOldThemeSnapshotOverlay(clipId, onReady, onFail) {
+  function createNewThemeSnapshotOverlay(toLight, onReady, onFail) {
     var body = document.body;
     var docEl = document.documentElement;
     var scrollX = window.pageXOffset || docEl.scrollLeft || 0;
     var scrollY = window.pageYOffset || docEl.scrollTop || 0;
     var vpW = docEl.clientWidth || window.innerWidth || 1;
     var vpH = docEl.clientHeight || window.innerHeight || 1;
-    var oldBodyStyle = getComputedStyle(body);
-    var oldBg = oldBodyStyle.backgroundColor;
-    if (!oldBg || oldBg === 'rgba(0, 0, 0, 0)' || oldBg === 'transparent') {
-      oldBg = body.classList.contains('light-mode') ? '#f2f2f6' : '#000000';
-    }
+    var targetBg = toLight ? '#f2f2f6' : '#000000';
 
     var host = document.createElement('div');
     host.id = '__ltOverlay';
@@ -392,7 +378,7 @@
     host.setAttribute('inert', '');
     host.tabIndex = -1;
     host.style.cssText = 'position:fixed;inset:0;z-index:2147483640;pointer-events:none;overflow:hidden;user-select:none;'
-      + 'clip-path:url(#' + clipId + ');-webkit-clip-path:url(#' + clipId + ');';
+      + 'visibility:hidden;-webkit-transform:translateZ(0);transform:translateZ(0);';
 
     var shadow = host.attachShadow({ mode: 'open' });
     var useRawCache = rawShadowCssCache !== null;
@@ -403,8 +389,6 @@
       cachedStyleEl.textContent = rawShadowCssCache;
       shadow.appendChild(cachedStyleEl);
     } else {
-      // file:// 或首屏未预取完成：仅克隆本地/同源核心 <link rel="stylesheet"> 和内联 <style>，避免外链字体触发 FOUT 错位
-      host.style.visibility = 'hidden';
       var allLinks = document.querySelectorAll('link[rel="stylesheet"][href]');
       for (var i = 0; i < allLinks.length; i++) {
         var origLink = allLinks[i];
@@ -434,7 +418,7 @@
 
     var backdrop = document.createElement('div');
     backdrop.className = 'lt-snap-backdrop';
-    backdrop.style.backgroundColor = oldBg;
+    backdrop.style.backgroundColor = targetBg;
     shadow.appendChild(backdrop);
 
     var snapViewport = document.createElement('div');
@@ -442,10 +426,9 @@
     snapViewport.style.width = vpW + 'px';
     snapViewport.style.height = vpH + 'px';
 
-    // 使用真实 <html> / <body> 标签，保证兜底 <link> 下 body.ds-c / body.light-mode 选择器原生 100% 匹配
     var snapHtml = document.createElement('html');
     snapHtml.className = 'lt-snap-html ' + (docEl.className || '');
-    snapHtml.style.colorScheme = docEl.style.colorScheme || (body.classList.contains('light-mode') ? 'light' : 'dark');
+    snapHtml.style.colorScheme = toLight ? 'light' : 'dark';
     if (docEl.attributes) {
       for (var da = 0; da < docEl.attributes.length; da++) {
         var dattr = docEl.attributes[da];
@@ -457,6 +440,8 @@
 
     var snapBody = document.createElement('body');
     snapBody.className = 'lt-snap-body ' + (body.className || '');
+    if (toLight) snapBody.classList.add('light-mode');
+    else snapBody.classList.remove('light-mode');
     snapBody.style.cssText = body.style.cssText || '';
     snapBody.style.background = 'transparent';
     snapBody.style.backgroundColor = 'transparent';
@@ -468,6 +453,7 @@
         }
       }
     }
+    snapBody.dataset.themeMode = toLight ? 'light' : 'dark';
 
     var scrollRecords = [];
     var children = body.childNodes;
@@ -478,7 +464,7 @@
       if (child.nodeType !== 1) continue;
       var tag = child.tagName;
       if (tag === 'SCRIPT' || tag === 'NOSCRIPT' || tag === 'IFRAME') continue;
-      if (child.id === 'pvDiag' || child.id === '__ltOverlay' || child.id === '__ltSvg') continue;
+      if (child.id === 'pvDiag' || child.id === '__ltOverlay' || child.id === '__ltParticles' || child.id === '__ltSvg') continue;
       var cloned = child.cloneNode(true);
       var bad = cloned.querySelectorAll ? cloned.querySelectorAll('script, iframe') : [];
       for (var b = bad.length - 1; b >= 0; b--) {
@@ -497,18 +483,32 @@
       }
     }
 
+    var clonedThemeIcon = snapBody.querySelector('#themeIcon');
+    if (clonedThemeIcon) {
+      clonedThemeIcon.textContent = toLight ? '☀️' : '🌙';
+    }
+
     snapHtml.appendChild(snapBody);
     snapViewport.appendChild(snapHtml);
     shadow.appendChild(snapViewport);
     document.documentElement.appendChild(host);
 
-    function applyScrollPositions() {
+    function applyScrollAndCanvases() {
       snapViewport.scrollTop = window.pageYOffset || docEl.scrollTop || scrollY;
       snapViewport.scrollLeft = window.pageXOffset || docEl.scrollLeft || scrollX;
       for (var sr = 0; sr < scrollRecords.length; sr++) {
         scrollRecords[sr].el.scrollTop = scrollRecords[sr].top;
         scrollRecords[sr].el.scrollLeft = scrollRecords[sr].left;
       }
+      if (typeof root.__pvPaintSnapshotCanvases === 'function') {
+        try {
+          root.__pvPaintSnapshotCanvases(snapBody, toLight);
+        } catch (_) {}
+      }
+      try {
+        var compBg = getComputedStyle(snapBody).getPropertyValue('--bg');
+        if (compBg && compBg.trim()) backdrop.style.backgroundColor = compBg.trim();
+      } catch (_) {}
     }
 
     function hasLoadedStylesheets() {
@@ -533,9 +533,8 @@
         return;
       }
       void snapViewport.offsetHeight;
-      applyScrollPositions();
-      host.style.visibility = '';
-      if (typeof onReady === 'function') onReady();
+      applyScrollAndCanvases();
+      if (typeof onReady === 'function') onReady(host, targetBg);
     }
 
     if (waitLinks.length === 0) {
@@ -609,7 +608,7 @@
     );
   }
 
-  function appendSmoothSegment(parts, pts, startWithMove) {
+  function appendSmoothSvgSegment(parts, pts, startWithMove) {
     var len = pts.length;
     if (len === 0) return;
     parts.push(startWithMove ? 'M' : 'L', pts[0][0].toFixed(1), pts[0][1].toFixed(1));
@@ -629,10 +628,23 @@
     parts.push('L', pts[len - 1][0].toFixed(1), pts[len - 1][1].toFixed(1));
   }
 
+  function pushPolyPt(polyPts, x, y) {
+    polyPts.push(x.toFixed(1) + 'px ' + y.toFixed(1) + 'px');
+  }
+
+  function pushQuadBezierPoly(polyPts, x0, y0, cx, cy, x1, y1, steps) {
+    for (var i = 1; i <= steps; i++) {
+      var t = i / steps;
+      var mt = 1 - t;
+      var px = mt * mt * x0 + 2 * mt * t * cx + t * t * x1;
+      var py = mt * mt * y0 + 2 * mt * t * cy + t * t * y1;
+      pushPolyPt(polyPts, px, py);
+    }
+  }
+
   function evalStreamColumn(y, originX, originY, tipY, elapsedSec, maxSpan) {
     var span = Math.max(1, tipY - originY);
     var u = clamp((y - originY) / span, 0, 1);
-    // 顶部 u=0 严格锚定在按钮正下方中心，避免开始帧悬空甩尾
     var env = u * Math.sin(u * Math.PI * 0.86);
     var swayAmp = clamp(maxSpan * 0.0085, 2.8, 6.2);
     var sway = (
@@ -655,7 +667,6 @@
     var baseAmp = clamp(H * 0.026, 12, 24) * ampScale;
     var nx = x / Math.max(1, W);
 
-    // 宽大柔和的低频波浪（全屏 1~2.5 个自然大波），彻底杜绝高频锯齿
     var w1 = Math.sin(nx * Math.PI * 2.2 + elapsedSec * 3.8) * (baseAmp * 0.60);
     var w2 = Math.sin(nx * Math.PI * 4.2 - elapsedSec * 5.2 + 1.05) * (baseAmp * 0.26);
     var w3 = Math.cos(nx * Math.PI * 1.4 + elapsedSec * 2.3) * (baseAmp * 0.22);
@@ -675,8 +686,12 @@
     return baseY - (w1 + w2 + w3) - ripple;
   }
 
-  function buildFramePaths(W, H, originX, originY, p, elapsedSec, splashList, streamDrops) {
-    var clipParts = ['M 0 0 L', W.toFixed(1), '0 L', W.toFixed(1), H.toFixed(1), 'L 0', H.toFixed(1), 'Z'];
+  /**
+   * 生成正向 CSS clip-path: polygon(...) 多边形字符串与轻量粒子/高光 SVG 路径
+   */
+  function buildFrameGeometry(W, H, originX, originY, p, elapsedSec, splashList, streamDrops) {
+    var polyPts = [];
+    var dropParts = [];
     var sheenParts = [];
 
     var tipY;
@@ -688,7 +703,7 @@
       var fallEase = fallT * fallT * (0.28 + 0.72 * fallT);
       tipY = originY + 6 + (H - originY - 4) * fallEase;
 
-      var steps = 28;
+      var steps = 24;
       var leftPts = [];
       var rightPts = [];
       for (var i = 0; i <= steps; i++) {
@@ -701,25 +716,26 @@
       var tipInfo = evalStreamColumn(tipY, originX, originY, tipY, elapsedSec, H - originY);
       var rxTip = Math.max(4, tipInfo.hw);
 
-      appendSmoothSegment(clipParts, leftPts, true);
-      clipParts.push(
-        'Q', (tipInfo.cx - rxTip * 0.9).toFixed(1), (tipY + rxTip * 0.75).toFixed(1),
-        tipInfo.cx.toFixed(1), (tipY + rxTip * 0.85).toFixed(1),
-        'Q', (tipInfo.cx + rxTip * 0.9).toFixed(1), (tipY + rxTip * 0.75).toFixed(1),
-        rightPts[rightPts.length - 1][0].toFixed(1), rightPts[rightPts.length - 1][1].toFixed(1)
-      );
-      var rightDesc = rightPts.slice().reverse();
-      appendSmoothSegment(clipParts, rightDesc.slice(1), false);
-      clipParts.push('A', '9 5 0 0 0', leftPts[0][0].toFixed(1), leftPts[0][1].toFixed(1), 'Z');
+      for (var li = 0; li < leftPts.length; li++) {
+        pushPolyPt(polyPts, leftPts[li][0], leftPts[li][1]);
+      }
+      var tipL = leftPts[leftPts.length - 1];
+      var tipR = rightPts[rightPts.length - 1];
+      pushQuadBezierPoly(polyPts, tipL[0], tipL[1], tipInfo.cx - rxTip * 0.9, tipY + rxTip * 0.75, tipInfo.cx, tipY + rxTip * 0.85, 4);
+      pushQuadBezierPoly(polyPts, tipInfo.cx, tipY + rxTip * 0.85, tipInfo.cx + rxTip * 0.9, tipY + rxTip * 0.75, tipR[0], tipR[1], 4);
+      for (var ri = rightPts.length - 2; ri >= 0; ri--) {
+        pushPolyPt(polyPts, rightPts[ri][0], rightPts[ri][1]);
+      }
+      pushQuadBezierPoly(polyPts, rightPts[0][0], rightPts[0][1], originX, originY - 4, leftPts[0][0], leftPts[0][1], 4);
 
-      appendSmoothSegment(sheenParts, leftPts, true);
+      appendSmoothSvgSegment(sheenParts, leftPts, true);
       sheenParts.push(
         'Q', (tipInfo.cx - rxTip * 0.9).toFixed(1), (tipY + rxTip * 0.75).toFixed(1),
         tipInfo.cx.toFixed(1), (tipY + rxTip * 0.85).toFixed(1),
         'Q', (tipInfo.cx + rxTip * 0.9).toFixed(1), (tipY + rxTip * 0.75).toFixed(1),
-        rightPts[rightPts.length - 1][0].toFixed(1), rightPts[rightPts.length - 1][1].toFixed(1)
+        tipR[0].toFixed(1), tipR[1].toFixed(1)
       );
-      appendSmoothSegment(sheenParts, rightDesc.slice(1), false);
+      appendSmoothSvgSegment(sheenParts, rightPts.slice().reverse().slice(1), false);
 
       for (var di = 0; di < streamDrops.length; di++) {
         var sd = streamDrops[di];
@@ -730,13 +746,14 @@
         var colAtDy = evalStreamColumn(dy, originX, originY, tipY, elapsedSec, H - originY);
         var dx = colAtDy.cx + sd.side * (colAtDy.hw + sd.r + 3.5 + Math.sin(dt * Math.PI) * sd.offsetAmp);
         if (dx > 6 && dx < W - 6) {
-          appendDropletPath(clipParts, dx, dy, sd.r, sd.r * 1.38);
+          appendDropletPath(dropParts, dx, dy, sd.r, sd.r * 1.38);
           appendDropletPath(sheenParts, dx, dy, sd.r, sd.r * 1.38);
         }
       }
 
       return {
-        clipD: clipParts.join(' '),
+        clipCss: 'polygon(' + polyPts.join(',') + ')',
+        dropD: dropParts.join(' '),
         sheenD: sheenParts.join(' ')
       };
     }
@@ -744,9 +761,9 @@
     var riseP = clamp((p - HIT_PHASE) / (1 - HIT_PHASE), 0, 1);
     var riseEase = riseP * riseP * (3 - 2 * riseP);
     var baseY = lerp(H - 2, -56, riseEase);
-    var floorY = H + 80;
+    var floorY = H + 60;
 
-    var waveSamples = 72;
+    var waveSamples = 96;
     var wavePts = new Array(waveSamples + 1);
     for (var wi = 0; wi <= waveSamples; wi++) {
       var wx = (wi / waveSamples) * W;
@@ -760,10 +777,9 @@
 
     if (hasStream) {
       streamBottomY = centerWaveY;
-      var sSteps = 22;
+      var sSteps = 20;
       var neckH = Math.min(34, Math.max(10, (centerWaveY - originY) * 0.28));
       var neckSpread = (22 + Math.sin(riseP * Math.PI) * 18) * streamFade;
-      var colTop = evalStreamColumn(originY, originX, originY, streamBottomY, elapsedSec, H - originY);
       var sLeft = [];
       var sRight = [];
       for (var si = 0; si <= sSteps; si++) {
@@ -781,54 +797,58 @@
       var leftJoinY = evalWaveY(leftJoinX, baseY, W, H, originX, p, elapsedSec);
       var rightJoinY = evalWaveY(rightJoinX, baseY, W, H, originX, p, elapsedSec);
 
-      var leftWaveDesc = [[leftJoinX, leftJoinY]];
+      for (var sl = 0; sl < sLeft.length; sl++) {
+        pushPolyPt(polyPts, sLeft[sl][0], sLeft[sl][1]);
+      }
+      pushQuadBezierPoly(polyPts, lastL[0], lastL[1], lastL[0] - neckSpread * 0.08, leftJoinY, leftJoinX, leftJoinY, 6);
       for (var wl = waveSamples; wl >= 0; wl--) {
-        if (wavePts[wl][0] < leftJoinX - 2) leftWaveDesc.push(wavePts[wl]);
+        if (wavePts[wl][0] < leftJoinX - 1) {
+          pushPolyPt(polyPts, wavePts[wl][0], wavePts[wl][1]);
+        }
       }
-      var rightWaveDesc = [];
+      pushPolyPt(polyPts, 0, floorY);
+      pushPolyPt(polyPts, W, floorY);
       for (var wr = waveSamples; wr >= 0; wr--) {
-        if (wavePts[wr][0] > rightJoinX + 2) rightWaveDesc.push(wavePts[wr]);
+        if (wavePts[wr][0] > rightJoinX + 1) {
+          pushPolyPt(polyPts, wavePts[wr][0], wavePts[wr][1]);
+        }
       }
-      rightWaveDesc.push([rightJoinX, rightJoinY]);
+      pushPolyPt(polyPts, rightJoinX, rightJoinY);
+      pushQuadBezierPoly(polyPts, rightJoinX, rightJoinY, lastR[0] + neckSpread * 0.08, rightJoinY, lastR[0], lastR[1], 6);
+      for (var sr = sRight.length - 2; sr >= 0; sr--) {
+        pushPolyPt(polyPts, sRight[sr][0], sRight[sr][1]);
+      }
+      pushQuadBezierPoly(polyPts, sRight[0][0], sRight[0][1], originX, originY - 4, sLeft[0][0], sLeft[0][1], 4);
 
-      appendSmoothSegment(clipParts, sLeft, true);
-      clipParts.push(
-        'Q', (lastL[0] - neckSpread * 0.08).toFixed(1), leftJoinY.toFixed(1),
-        leftJoinX.toFixed(1), leftJoinY.toFixed(1)
-      );
-      appendSmoothSegment(clipParts, leftWaveDesc.slice(1), false);
-      clipParts.push('L 0', floorY.toFixed(1), 'L', W.toFixed(1), floorY.toFixed(1));
-      appendSmoothSegment(clipParts, rightWaveDesc.slice(0, rightWaveDesc.length - 1), false);
-      clipParts.push(
-        'L', rightJoinX.toFixed(1), rightJoinY.toFixed(1),
-        'Q', (lastR[0] + neckSpread * 0.08).toFixed(1), rightJoinY.toFixed(1),
-        lastR[0].toFixed(1), lastR[1].toFixed(1)
-      );
-      var sRightDesc = sRight.slice().reverse();
-      appendSmoothSegment(clipParts, sRightDesc.slice(1), false);
-      var topHalf = Math.max(4, colTop.hw * (0.5 + 0.5 * streamFade));
-      clipParts.push('A', topHalf.toFixed(1), '5 0 0 0', sLeft[0][0].toFixed(1), sLeft[0][1].toFixed(1), 'Z');
-
-      var leftWaveAsc = leftWaveDesc.slice().reverse();
-      appendSmoothSegment(sheenParts, leftWaveAsc, true);
+      var leftWaveAsc = [];
+      for (var swl = 0; swl <= waveSamples; swl++) {
+        if (wavePts[swl][0] < leftJoinX - 2) leftWaveAsc.push(wavePts[swl]);
+      }
+      leftWaveAsc.push([leftJoinX, leftJoinY]);
+      appendSmoothSvgSegment(sheenParts, leftWaveAsc, true);
       sheenParts.push(
         'Q', (lastL[0] - neckSpread * 0.08).toFixed(1), leftJoinY.toFixed(1),
         lastL[0].toFixed(1), lastL[1].toFixed(1)
       );
-      var sLeftDesc = sLeft.slice().reverse();
-      appendSmoothSegment(sheenParts, sLeftDesc.slice(1), false);
+      appendSmoothSvgSegment(sheenParts, sLeft.slice().reverse().slice(1), false);
 
-      appendSmoothSegment(sheenParts, sRight, true);
+      appendSmoothSvgSegment(sheenParts, sRight, true);
       sheenParts.push(
         'Q', (lastR[0] + neckSpread * 0.08).toFixed(1), rightJoinY.toFixed(1),
         rightJoinX.toFixed(1), rightJoinY.toFixed(1)
       );
-      var rightWaveAsc = rightWaveDesc.slice().reverse();
-      appendSmoothSegment(sheenParts, rightWaveAsc.slice(1), false);
+      var rightWaveAsc = [[rightJoinX, rightJoinY]];
+      for (var swr = 0; swr <= waveSamples; swr++) {
+        if (wavePts[swr][0] > rightJoinX + 2) rightWaveAsc.push(wavePts[swr]);
+      }
+      appendSmoothSvgSegment(sheenParts, rightWaveAsc.slice(1), false);
     } else {
-      appendSmoothSegment(clipParts, wavePts, true);
-      clipParts.push('L', W.toFixed(1), floorY.toFixed(1), 'L 0', floorY.toFixed(1), 'Z');
-      appendSmoothSegment(sheenParts, wavePts, true);
+      for (var wi2 = 0; wi2 <= waveSamples; wi2++) {
+        pushPolyPt(polyPts, wavePts[wi2][0], wavePts[wi2][1]);
+      }
+      pushPolyPt(polyPts, W, floorY);
+      pushPolyPt(polyPts, 0, floorY);
+      appendSmoothSvgSegment(sheenParts, wavePts, true);
     }
 
     var ringP = clamp((p - HIT_PHASE) / 0.36, 0, 1);
@@ -864,32 +884,34 @@
         var rx = sp.r * shrink;
         var ry = sp.r * 1.24 * shrink;
         if (rx < 1.1) continue;
-        appendDropletPath(clipParts, sx, sy, rx, ry);
+        appendDropletPath(dropParts, sx, sy, rx, ry);
         appendDropletPath(sheenParts, sx, sy, rx, ry);
       }
     }
 
     return {
-      clipD: clipParts.join(' '),
+      clipCss: 'polygon(' + polyPts.join(',') + ')',
+      dropD: dropParts.join(' '),
       sheenD: sheenParts.join(' ')
     };
   }
 
-  function cleanupActive(invokeCallbackKey) {
-    if (!activeState) return;
-    var st = activeState;
-    activeState = null;
+  function cleanupState(st, invokeCallbackKey) {
+    if (!st || st.cleaned) return;
+    st.cleaned = true;
+    if (activeState === st) activeState = null;
 
     if (st.cancelWait) st.cancelWait();
     if (st.rafId) cancelAnimationFrame(st.rafId);
+    if (st.commitRaf1) cancelAnimationFrame(st.commitRaf1);
+    if (st.commitRaf2) cancelAnimationFrame(st.commitRaf2);
     window.removeEventListener('scroll', st.onScroll);
     window.removeEventListener('resize', st.onResize);
     document.removeEventListener('visibilitychange', st.onVisibility);
 
     if (st.overlay && st.overlay.parentNode) st.overlay.parentNode.removeChild(st.overlay);
-    if (st.svg && st.svg.parentNode) st.svg.parentNode.removeChild(st.svg);
-    if (st.sheenSvg && st.sheenSvg.parentNode) st.sheenSvg.parentNode.removeChild(st.sheenSvg);
-    document.documentElement.classList.remove('lt-no-trans');
+    if (st.particleSvg && st.particleSvg.parentNode) st.particleSvg.parentNode.removeChild(st.particleSvg);
+    if (!activeState) document.documentElement.classList.remove('lt-no-trans');
 
     if (invokeCallbackKey && typeof st[invokeCallbackKey] === 'function') {
       try { st[invokeCallbackKey](); } catch (_) {}
@@ -899,21 +921,25 @@
   function run(options) {
     options = options || {};
     var applyTheme = typeof options.applyTheme === 'function' ? options.applyTheme : function () {};
+    var toLight = typeof options.toLight === 'boolean'
+      ? options.toLight
+      : !(document.body && document.body.classList.contains('light-mode'));
     var isReduced = typeof options.isReducedMotion === 'function'
       ? options.isReducedMotion()
       : defaultReducedMotion();
 
     if (activeState) {
-      if (!activeState.started) {
-        // 上一次还在等样式加载，先清旧等待层
-        cleanupActive(null);
-      } else {
-        cleanupActive('onInterrupt');
-      }
+      var prev = activeState;
+      cleanupState(prev, prev.started ? 'onInterrupt' : null);
     }
 
     if (isReduced || !supportsLiquidReveal()) {
+      document.documentElement.classList.add('lt-no-trans');
       applyTheme();
+      void document.body.offsetHeight;
+      requestAnimationFrame(function () {
+        if (!activeState) document.documentElement.classList.remove('lt-no-trans');
+      });
       if (typeof options.onFinish === 'function') options.onFinish();
       return false;
     }
@@ -935,68 +961,57 @@
       }
     }
 
-    var uid = String(Date.now()) + '_' + Math.floor(Math.random() * 10000);
-    var clipId = '__ltClip_' + uid;
+    var particleSvg = document.createElementNS(SVG_NS, 'svg');
+    particleSvg.id = '__ltParticles';
+    particleSvg.setAttribute('aria-hidden', 'true');
+    particleSvg.setAttribute('width', String(W));
+    particleSvg.setAttribute('height', String(H));
+    particleSvg.setAttribute('viewBox', '0 0 ' + W + ' ' + H);
+    particleSvg.style.cssText = 'position:fixed;inset:0;width:100%;height:100%;z-index:2147483641;pointer-events:none;visibility:hidden;';
 
-    var svg = document.createElementNS(SVG_NS, 'svg');
-    svg.id = '__ltSvg';
-    svg.setAttribute('aria-hidden', 'true');
-    svg.setAttribute('width', '0');
-    svg.setAttribute('height', '0');
-    svg.style.cssText = 'position:fixed;left:-9999px;top:-9999px;width:0;height:0;pointer-events:none;';
-    var defs = document.createElementNS(SVG_NS, 'defs');
-    var clipPathEl = document.createElementNS(SVG_NS, 'clipPath');
-    clipPathEl.setAttribute('id', clipId);
-    clipPathEl.setAttribute('clipPathUnits', 'userSpaceOnUse');
-    var pathEl = document.createElementNS(SVG_NS, 'path');
-    pathEl.setAttribute('clip-rule', 'evenodd');
-    clipPathEl.appendChild(pathEl);
-    defs.appendChild(clipPathEl);
-    svg.appendChild(defs);
-    document.documentElement.appendChild(svg);
+    var dropPathEl = document.createElementNS(SVG_NS, 'path');
+    dropPathEl.setAttribute('fill', toLight ? '#f2f2f6' : '#000000');
+    particleSvg.appendChild(dropPathEl);
 
-    var willBeLight = !(document.body && document.body.classList.contains('light-mode'));
-    var sheenSvg = document.createElementNS(SVG_NS, 'svg');
-    sheenSvg.setAttribute('aria-hidden', 'true');
-    sheenSvg.setAttribute('width', String(W));
-    sheenSvg.setAttribute('height', String(H));
-    sheenSvg.setAttribute('viewBox', '0 0 ' + W + ' ' + H);
-    sheenSvg.style.cssText = 'position:fixed;inset:0;width:100%;height:100%;z-index:2147483641;pointer-events:none;visibility:hidden;';
     var sheenPathEl = document.createElementNS(SVG_NS, 'path');
     sheenPathEl.setAttribute('fill', 'none');
     sheenPathEl.setAttribute('stroke-linecap', 'round');
     sheenPathEl.setAttribute('stroke-linejoin', 'round');
     sheenPathEl.setAttribute('stroke-width', '1.1');
-    sheenPathEl.setAttribute('stroke', willBeLight ? 'rgba(255, 255, 255, 0.28)' : 'rgba(255, 255, 255, 0.16)');
-    sheenSvg.appendChild(sheenPathEl);
-    document.documentElement.appendChild(sheenSvg);
+    sheenPathEl.setAttribute('stroke', toLight ? 'rgba(255, 255, 255, 0.28)' : 'rgba(255, 255, 255, 0.16)');
+    particleSvg.appendChild(sheenPathEl);
+    document.documentElement.appendChild(particleSvg);
 
     var state = {
       started: false,
+      committing: false,
+      cleaned: false,
       rafId: 0,
+      commitRaf1: 0,
+      commitRaf2: 0,
       overlay: null,
       snapViewport: null,
       cancelWait: null,
-      svg: svg,
-      sheenSvg: sheenSvg,
+      particleSvg: particleSvg,
       onFinish: options.onFinish,
       onInterrupt: options.onInterrupt,
       onScroll: function () {
-        if (!activeState || !activeState.snapViewport) return;
-        activeState.snapViewport.scrollTop = window.pageYOffset || document.documentElement.scrollTop || 0;
-        activeState.snapViewport.scrollLeft = window.pageXOffset || document.documentElement.scrollLeft || 0;
+        if (!activeState || activeState !== state || !state.snapViewport) return;
+        state.snapViewport.scrollTop = window.pageYOffset || document.documentElement.scrollTop || 0;
+        state.snapViewport.scrollLeft = window.pageXOffset || document.documentElement.scrollLeft || 0;
       },
       onResize: function () {
-        if (!activeState) return;
-        W = document.documentElement.clientWidth || window.innerWidth || 1;
-        H = window.innerHeight || 1;
-        if (activeState.snapViewport) {
-          activeState.snapViewport.style.width = W + 'px';
-          activeState.snapViewport.style.height = (document.documentElement.clientHeight || H) + 'px';
+        if (!activeState || activeState !== state) return;
+        var hr = state.overlay ? state.overlay.getBoundingClientRect() : null;
+        W = (hr && hr.width > 0) ? hr.width : (document.documentElement.clientWidth || window.innerWidth || 1);
+        H = (hr && hr.height > 0) ? hr.height : (window.innerHeight || 1);
+        if (state.snapViewport) {
+          state.snapViewport.style.width = (document.documentElement.clientWidth || W) + 'px';
+          state.snapViewport.style.height = (document.documentElement.clientHeight || H) + 'px';
         }
-        sheenSvg.setAttribute('width', String(W));
-        sheenSvg.setAttribute('height', String(H));
-        sheenSvg.setAttribute('viewBox', '0 0 ' + W + ' ' + H);
+        particleSvg.setAttribute('width', String(W));
+        particleSvg.setAttribute('height', String(H));
+        particleSvg.setAttribute('viewBox', '0 0 ' + W + ' ' + H);
         if (triggerEl && triggerEl.getBoundingClientRect) {
           var r = triggerEl.getBoundingClientRect();
           if (r.width > 0 && r.height > 0) {
@@ -1006,11 +1021,13 @@
         }
       },
       onVisibility: function () {
-        if (document.hidden) {
-          if (!state.started) {
+        if (document.hidden && activeState === state) {
+          if (!state.committing) {
+            state.committing = true;
+            document.documentElement.classList.add('lt-no-trans');
             applyTheme();
           }
-          cleanupActive('onFinish');
+          cleanupState(state, 'onFinish');
         }
       }
     };
@@ -1020,41 +1037,74 @@
     window.addEventListener('resize', state.onResize, { passive: true });
     document.addEventListener('visibilitychange', state.onVisibility);
 
-    var snap = createOldThemeSnapshotOverlay(clipId, function () {
-      if (activeState !== state) return;
-      state.started = true;
-
-      var splashList = createSplashParticles(originX, W);
-      var streamDrops = createStreamDroplets();
-      var initFrame = buildFramePaths(W, H, originX, originY, 0.001, 0, splashList, streamDrops);
-      pathEl.setAttribute('d', initFrame.clipD);
-      sheenPathEl.setAttribute('d', initFrame.sheenD);
-      sheenSvg.style.visibility = '';
+    function commitAndFinish(host) {
+      if (state.cleaned || state.committing || activeState !== state) return;
+      state.committing = true;
+      host.style.clipPath = 'none';
+      host.style.webkitClipPath = 'none';
+      dropPathEl.setAttribute('d', '');
+      sheenPathEl.setAttribute('d', '');
 
       document.documentElement.classList.add('lt-no-trans');
       applyTheme();
       void document.body.offsetHeight;
-      requestAnimationFrame(function () {
-        requestAnimationFrame(function () {
-          if (!activeState || activeState === state) {
-            document.documentElement.classList.remove('lt-no-trans');
-          }
+
+      // 保持全屏覆盖等待两帧，确保真实新主题已在底层合成完毕再撤下揭示层，彻底消灭收尾闪烁
+      state.commitRaf1 = requestAnimationFrame(function () {
+        if (activeState !== state) return;
+        state.commitRaf2 = requestAnimationFrame(function () {
+          cleanupState(state, 'onFinish');
         });
       });
+    }
+
+    var snap = createNewThemeSnapshotOverlay(toLight, function (host, resolvedBg) {
+      if (activeState !== state) return;
+      state.started = true;
+
+      var hr = host.getBoundingClientRect();
+      if (hr.width > 0) W = hr.width;
+      if (hr.height > 0) H = hr.height;
+      particleSvg.setAttribute('width', String(W));
+      particleSvg.setAttribute('height', String(H));
+      particleSvg.setAttribute('viewBox', '0 0 ' + W + ' ' + H);
+      dropPathEl.setAttribute('fill', resolvedBg || (toLight ? '#f2f2f6' : '#000000'));
+
+      if (triggerEl && triggerEl.getBoundingClientRect) {
+        var tr = triggerEl.getBoundingClientRect();
+        if (tr.width > 0 && tr.height > 0) {
+          originX = clamp(tr.left + tr.width / 2, 20, W - 20);
+          originY = clamp(tr.bottom - 5, 6, Math.max(40, H * 0.45));
+        }
+      }
+
+      var splashList = createSplashParticles(originX, W);
+      var streamDrops = createStreamDroplets();
+      var initFrame = buildFrameGeometry(W, H, originX, originY, 0.001, 0, splashList, streamDrops);
+      host.style.clipPath = initFrame.clipCss;
+      host.style.webkitClipPath = initFrame.clipCss;
+      dropPathEl.setAttribute('d', initFrame.dropD);
+      sheenPathEl.setAttribute('d', initFrame.sheenD);
+
+      // 必须在 clip-path 与初始几何落位后再显形，确保第 0 帧绝不闪现未裁剪的新主题层
+      host.style.visibility = '';
+      particleSvg.style.visibility = '';
 
       var startTs = 0;
       function tick(now) {
-        if (activeState !== state) return;
+        if (activeState !== state || state.committing) return;
         if (!startTs) startTs = now;
         var elapsed = now - startTs;
         var p = clamp(elapsed / duration, 0, 1);
 
-        var frame = buildFramePaths(W, H, originX, originY, p, elapsed / 1000, splashList, streamDrops);
-        pathEl.setAttribute('d', frame.clipD);
+        var frame = buildFrameGeometry(W, H, originX, originY, p, elapsed / 1000, splashList, streamDrops);
+        host.style.clipPath = frame.clipCss;
+        host.style.webkitClipPath = frame.clipCss;
+        dropPathEl.setAttribute('d', frame.dropD);
         sheenPathEl.setAttribute('d', frame.sheenD);
 
         if (p >= 1) {
-          cleanupActive('onFinish');
+          commitAndFinish(host);
           return;
         }
         state.rafId = requestAnimationFrame(tick);
@@ -1063,8 +1113,10 @@
       state.rafId = requestAnimationFrame(tick);
     }, function () {
       if (activeState !== state) return;
+      document.documentElement.classList.add('lt-no-trans');
       applyTheme();
-      cleanupActive('onFinish');
+      void document.body.offsetHeight;
+      cleanupState(state, 'onFinish');
     });
 
     state.overlay = snap.host;
@@ -1075,7 +1127,9 @@
   }
 
   function cancel() {
-    cleanupActive('onInterrupt');
+    if (activeState) {
+      cleanupState(activeState, 'onInterrupt');
+    }
   }
 
   function isRunning() {

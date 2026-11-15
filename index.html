@@ -2432,22 +2432,37 @@ function __tok(n, d) { var v = getComputedStyle(document.body).getPropertyValue(
 
        function toggleTheme() {
            _closeDropdown(document.getElementById('authorMenu'));
-           var nextMode = document.body.classList.contains('light-mode') ? 'dark' : 'light';
            var btn = document.getElementById('themeBtn');
+           var revealRunning = !!(window.LiquidThemeReveal && typeof window.LiquidThemeReveal.isRunning === 'function' && window.LiquidThemeReveal.isRunning());
+           var currentReal = document.body.classList.contains('light-mode') ? 'light' : 'dark';
+           var logicalCurrent = (revealRunning && window.__ltTargetTheme) ? window.__ltTargetTheme : currentReal;
+           var nextMode = (logicalCurrent === 'light') ? 'dark' : 'light';
+           window.__ltTargetTheme = nextMode;
+
            var apply = function() {
+               window.__ltTargetTheme = null;
                selectTheme(nextMode);
                if (typeof window.__pvSyncThemeNow === 'function') {
                    window.__pvSyncThemeNow();
                }
            };
+           if (revealRunning && nextMode === currentReal) {
+               window.LiquidThemeReveal.cancel();
+               window.__ltTargetTheme = null;
+               return;
+           }
            if (window.LiquidThemeReveal && typeof window.LiquidThemeReveal.run === 'function') {
                window.LiquidThemeReveal.run({
                    triggerEl: btn,
+                   toLight: nextMode === 'light',
                    duration: 1300,
                    isReducedMotion: function() {
                        return typeof _motionOK === 'function' ? !_motionOK() : false;
                    },
-                   applyTheme: apply
+                   applyTheme: apply,
+                   onInterrupt: function() {
+                       if (window.__ltTargetTheme === nextMode) window.__ltTargetTheme = null;
+                   }
                });
            } else {
                apply();

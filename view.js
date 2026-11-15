@@ -251,7 +251,7 @@
   var ambLayers = null, ambOn = 0, ambToken = 0, ambImg = null;   // ambImg：最近一次成功加载的车图，回前台重画时复用
   var AMB_W = 200;                               // 模糊图工作宽度；CSS 仍按 1120px 显示
   function ambKey(url) { return url + '|' + (document.body.classList.contains('light-mode') ? 'l' : 'd'); }
-  function paintAmb(cv, img, key) {
+  function paintAmb(cv, img, key, satOverride) {
     var nw = img.naturalWidth, nh = img.naturalHeight;
     if (!nw || !nh) return false;
     var W = AMB_W, H = Math.max(1, Math.round(W * nh / nw));
@@ -260,7 +260,7 @@
     var ctx = cv.getContext('2d');
     if (!ctx) return false;
     ctx.clearRect(0, 0, W, H);
-    var sat = document.body.classList.contains('light-mode') ? 2.2 : 1.7;
+    var sat = typeof satOverride === 'number' ? satOverride : (document.body.classList.contains('light-mode') ? 2.2 : 1.7);
     var ok = false;
     if ('filter' in ctx) {
       try {
@@ -414,6 +414,35 @@
              C: { c: acc, a: .75 },
              tk: tk };
   }
+  function zgDrawTo(ctx, W, H, lightFlag, accColor) {
+    if (!ctx || !W || !H) return;
+    var doc = document.documentElement;
+    if (!zgMaxScroll) zgSyncMaxScroll();
+    var max = zgMaxScroll;
+    var raw = window.pageYOffset || doc.scrollTop || 0;
+    var p = max > 40 ? Math.min(1, Math.max(0, raw / max)) : 0;
+    var acc = accColor || '';
+    var list = [
+      ['A', { c: acc, a: .70 }],
+      ['B', lightFlag ? { c: acc, a: .70 } : { c: '#ffffff', a: .20 }],
+      ['C', { c: acc, a: .75 }]
+    ];
+    ctx.clearRect(0, 0, W, H);
+    var vw = window.innerWidth || 1, vh = window.innerHeight || 1, k = W / vw;
+    for (var i = 0; i < list.length; i++) {
+      var z = zgAt(ZG_KEYS[list[i][0]], p), col = list[i][1];
+      if (z.o <= .004) continue;
+      var cx = (vw / 2 + z.tx / 100 * vw) * k;
+      var cy = (vh / 2 + z.ty / 100 * vh) * k;
+      var r = 60 * z.s * k;                // 原元素 120px 宽的一半 × 缩放
+      if (r <= .5) continue;
+      var g = ctx.createRadialGradient(cx, cy, 0, cx, cy, r);
+      g.addColorStop(0, zgRgba(col.c, col.a * z.o));
+      g.addColorStop(1, zgRgba(col.c, 0));
+      ctx.fillStyle = g;
+      ctx.fillRect(cx - r, cy - r, r * 2, r * 2);
+    }
+  }
   function zgDraw(force) {
     if (!zgCtx || !zgCanvas.width) return;
     if (document.body.classList.contains('performance-mode')) return;
@@ -427,22 +456,7 @@
     var drawKey = W + 'x' + H + '|' + Math.round(p * 500) + '|' + cols.tk;
     if (!force && drawKey === zgLastDrawKey) return;
     zgLastDrawKey = drawKey;
-    zgCtx.clearRect(0, 0, W, H);
-    var vw = window.innerWidth || 1, vh = window.innerHeight || 1, k = W / vw;
-    var list = [['A', cols.A], ['B', cols.B], ['C', cols.C]];
-    for (var i = 0; i < list.length; i++) {
-      var z = zgAt(ZG_KEYS[list[i][0]], p), col = list[i][1];
-      if (z.o <= .004) continue;
-      var cx = (vw / 2 + z.tx / 100 * vw) * k;
-      var cy = (vh / 2 + z.ty / 100 * vh) * k;
-      var r = 60 * z.s * k;                // 原元素 120px 宽的一半 × 缩放
-      if (r <= .5) continue;
-      var g = zgCtx.createRadialGradient(cx, cy, 0, cx, cy, r);
-      g.addColorStop(0, zgRgba(col.c, col.a * z.o));
-      g.addColorStop(1, zgRgba(col.c, 0));
-      zgCtx.fillStyle = g;
-      zgCtx.fillRect(cx - r, cy - r, r * 2, r * 2);
-    }
+    zgDrawTo(zgCtx, W, H, document.body.classList.contains('light-mode'), cols.A.c);
   }
   function zgSchedule() {
     if (zgQueued) return;
@@ -656,6 +670,28 @@
       syncAmbient();
     }
     zgDraw(true);
+  };
+
+  /** 为液体主题揭示快照重绘目标主题下的环境光与分区光画布 */
+  window.__pvPaintSnapshotCanvases = function (snapRoot, toLight) {
+    if (!snapRoot) return;
+    var car = $('carImage');
+    var hasCar = !!(typeof _selectedCar !== 'undefined' && _selectedCar && car && car.src && car.style.display !== 'none');
+    var a1 = snapRoot.querySelector('#dsAmbientImg');
+    var a2 = snapRoot.querySelector('#dsAmbientImg2');
+    if (hasCar && ambImg && ambImg.naturalWidth && ambImg.src === car.src && a1) {
+      paintAmb(a1, ambImg, car.src + '|' + (toLight ? 'l' : 'd'), toLight ? 2.2 : 1.7);
+      a1.classList.add('is-on');
+      if (a2) a2.classList.remove('is-on');
+    }
+    var zgSnap = snapRoot.querySelector('#dsZoneGlow');
+    if (zgSnap && zgCanvas && zgCanvas.width && zgCanvas.height && !document.body.classList.contains('performance-mode')) {
+      zgSnap.width = zgCanvas.width;
+      zgSnap.height = zgCanvas.height;
+      var sCtx = zgSnap.getContext('2d');
+      var acc = getComputedStyle(snapRoot).getPropertyValue('--acc') || getComputedStyle(document.body).getPropertyValue('--acc');
+      zgDrawTo(sCtx, zgSnap.width, zgSnap.height, !!toLight, acc);
+    }
   };
 
   sync();
