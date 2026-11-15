@@ -5,7 +5,7 @@
 // 2) 运行时采用「网络优先 + 成功回写 + 离线缓存回退」策略，并忽略静态资源查询串（如 manifest.json?v=5）；
 // 3) 社区动态 /api/* 与统计 /_vercel/* 绝不落入 SW 缓存桶；升级 CACHE_NAME 时在 activate 整体淘汰旧桶。
 
-const CACHE_NAME = 'calc-shell-v32';
+const CACHE_NAME = 'calc-shell-v33';
 
 // 离线真正要用到的核心骨架与静态资源。html2canvas 只在导出长图时用，走运行时缓存即可。
 const PRECACHE = [
