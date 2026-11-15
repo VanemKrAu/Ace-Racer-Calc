@@ -380,6 +380,9 @@
     apply: '<svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>',
     close: '<svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>',
     link: '<svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>',
+    bili: '<svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="6" width="18" height="13" rx="2"/><path d="m8 3 4 3 4-3"/></svg>',
+    douyin: '<svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 18V6l10-2v12"/><circle cx="6.5" cy="18" r="2.5"/><circle cx="16.5" cy="16" r="2.5"/></svg>',
+    kuaishou: '<svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="6" width="13" height="12" rx="2"/><path d="m16 10 5-3v10l-5-3"/></svg>',
     emptyBox: '<svg class="ico cp-empty-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16Z"/><path d="m3.3 7 8.7 5 8.7-5"/><path d="M12 22V12"/></svg>',
     emptyCar: '<svg class="ico cp-empty-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M19 17h2c.6 0 1-.4 1-1v-3c0-.9-.7-1.7-1.5-1.9C18.7 10.6 16 10 16 10s-1.3-1.4-2.2-2.3c-.5-.4-1.1-.7-1.8-.7H5c-.6 0-1.1.4-1.4.9l-1.5 2.8C2.1 10.7 2 10.9 2 11v5c0 .6.4 1 1 1h2"/><circle cx="7" cy="17" r="2"/><circle cx="17" cy="17" r="2"/></svg>',
     chevron: '<svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m6 9 6 6 6-6"/></svg>',
@@ -723,11 +726,11 @@
     detectPlatform: function (url) {
       var res = Utils.extractProfileLink(url);
       if (res && res.ok && !res.empty) {
-        if (res.platform === 'bili') return { label: 'B站主页', cls: 'is-bili' };
-        if (res.platform === 'douyin') return { label: '抖音主页', cls: 'is-douyin' };
-        if (res.platform === 'kuaishou') return { label: '快手主页', cls: 'is-ks' };
+        if (res.platform === 'bili') return { label: 'B站主页', cls: 'is-bili', icon: Icons.bili };
+        if (res.platform === 'douyin') return { label: '抖音主页', cls: 'is-douyin', icon: Icons.douyin };
+        if (res.platform === 'kuaishou') return { label: '快手主页', cls: 'is-ks', icon: Icons.kuaishou };
       }
-      return { label: '作者主页', cls: '' };
+      return { label: '作者主页', cls: '', icon: Icons.link };
     },
     parseJsonSafe: function (res) {
       return res.text().then(function (txt) {
@@ -2315,7 +2318,7 @@
             var pf = Utils.detectPlatform(safeUrl);
             validLinks.push(
               '<a href="' + Utils.escapeHtml(safeUrl) + '" target="_blank" rel="noopener noreferrer" class="cp-author-link-btn ' + pf.cls + '" title="打开 ' + Utils.escapeHtml(pf.label) + '：' + Utils.escapeHtml(safeUrl) + '">' +
-              Icons.link + '<span>' + Utils.escapeHtml(pf.label) + '</span></a>'
+              (pf.icon || Icons.link) + '<span>' + Utils.escapeHtml(pf.label) + '</span></a>'
             );
           }
         });
@@ -2418,9 +2421,9 @@
         '      <span class="cp-author-name">' + Utils.escapeHtml(item.author || '热心车友') + '</span>',
         partnerAuthorBadge,
         (safePlayerId ? '      <button type="button" class="cp-player-id" onclick="CommunityPlans.copyPlayerId(\'' + safePlayerId + '\', event)" title="点击复制游戏ID"><span>ID ' + Utils.escapeHtml(safePlayerId) + '</span><span class="cp-copy-icon">' + Icons.copy + Icons.checkCopy + '</span></button>' : ''),
+        linksHtml,
         '      <span class="cp-meta-time">' + Utils.formatTime(item.created_at) + '</span>',
         '    </div>',
-        linksHtml,
         '  </div>',
         '  <div class="cp-specs-panel">',
         hlRowHtml,
