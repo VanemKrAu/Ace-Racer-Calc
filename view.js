@@ -641,5 +641,22 @@
   if ($('carPreviewPlaceholder')) mo.observe($('carPreviewPlaceholder'), { attributes: true, attributeFilter: ['style'] });
   if ($('carImage')) mo.observe($('carImage'), { attributes: true, attributeFilter: ['src'] });
 
+  window.__pvSyncThemeNow = function () {
+    syncTheme();
+    var car = $('carImage');
+    var has = !!(typeof _selectedCar !== 'undefined' && _selectedCar && car && car.src && car.style.display !== 'none');
+    if (has && ambLayers && ambLayers.length && ambImg && ambImg.naturalWidth && ambImg.src === car.src) {
+      var cur = ambLayers[ambOn];
+      if (paintAmb(cur, ambImg, ambKey(car.src))) {
+        cur.classList.add('is-on');
+      } else {
+        syncAmbient();
+      }
+    } else {
+      syncAmbient();
+    }
+    zgDraw(true);
+  };
+
   sync();
 })();

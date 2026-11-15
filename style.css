@@ -2675,3 +2675,12 @@ body.ds-c.performance-mode .slider-control.is-jelly-dragging::-moz-range-thumb {
     transform: none !important;
   }
 }
+
+/* 液体主题切换瞬时落位：屏蔽切换帧的 CSS transition，避免底层慢半拍渐变 */
+html.lt-no-trans,
+html.lt-no-trans *,
+html.lt-no-trans *::before,
+html.lt-no-trans *::after {
+  transition: none !important;
+  transition-duration: 0s !important;
+}

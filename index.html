@@ -2433,7 +2433,25 @@ function __tok(n, d) { var v = getComputedStyle(document.body).getPropertyValue(
        function toggleTheme() {
            _closeDropdown(document.getElementById('authorMenu'));
            var nextMode = document.body.classList.contains('light-mode') ? 'dark' : 'light';
-           selectTheme(nextMode);
+           var btn = document.getElementById('themeBtn');
+           var apply = function() {
+               selectTheme(nextMode);
+               if (typeof window.__pvSyncThemeNow === 'function') {
+                   window.__pvSyncThemeNow();
+               }
+           };
+           if (window.LiquidThemeReveal && typeof window.LiquidThemeReveal.run === 'function') {
+               window.LiquidThemeReveal.run({
+                   triggerEl: btn,
+                   duration: 1300,
+                   isReducedMotion: function() {
+                       return typeof _motionOK === 'function' ? !_motionOK() : false;
+                   },
+                   applyTheme: apply
+               });
+           } else {
+               apply();
+           }
        }
 
        function toggleAuthorMenu() {
@@ -6817,6 +6835,7 @@ if (typeof CAR_DATABASE !== 'undefined') {
 
 </script>
 <script src="view.js"></script>
+<script src="liquid-theme.js"></script>
 <script src="desk.js"></script>
 <script src="community-plans.js"></script>
 </body>
