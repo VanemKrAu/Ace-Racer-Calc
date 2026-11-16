@@ -3041,6 +3041,15 @@ function __tok(n, d) { var v = getComputedStyle(document.body).getPropertyValue(
             copyToClipboard(shareUrl, _("🔗 短链接已复制，分享给车友可直接打开！", "🔗 Short link copied, share to open directly!"), btn);
        }
        
+       // URL 参数进来的一切数值/枚举都要过白名单，挡住 ?s= / ?cfg= 注入
+       function _numOr(v, def) {
+           var n = parseFloat(v);
+           return isFinite(n) ? n : (def === undefined ? 0 : def);
+       }
+       function _enumOr(v, allow, def) {
+           return allow.indexOf(String(v)) >= 0 ? String(v) : def;
+       }
+
        function loadConfigFromUrl() {
            var urlParams = new URLSearchParams(window.location.search);
            if (!urlParams.has('s') && !urlParams.has('cfg') && !urlParams.has('car')) return false;
@@ -3061,7 +3070,7 @@ function __tok(n, d) { var v = getComputedStyle(document.body).getPropertyValue(
                        document.getElementById('startCharge').value = arr[1];
                        document.getElementById('baseNitro').value = arr[2];
                        
-                       var nr = arr[3];
+                       var nr = _enumOr(arr[3], ['1x5', '1x6', '2x2'], '1x5');
                        
                        if (arr.length >= 31) {
                            var anchorInput = document.getElementById('time_1x6');
@@ -3086,17 +3095,19 @@ function __tok(n, d) { var v = getComputedStyle(document.body).getPropertyValue(
                        document.getElementById('baseUltDuration').value = arr[5 + offset];
                        document.getElementById('isSpec').checked = arr[6 + offset] === '1';
 
-                       document.getElementById('counterRange').value = arr[7 + offset];
+                       var _crSafe = _numOr(arr[7 + offset], 0);
+                       var _drSafe = _numOr(arr[8 + offset], 0);
+                       document.getElementById('counterRange').value = _crSafe;
                        if (window._renderOdoValue) {
-                           window._renderOdoValue(document.getElementById('counterValue'), arr[7 + offset] + '%');
+                           window._renderOdoValue(document.getElementById('counterValue'), _crSafe + '%');
                        } else {
-                           document.getElementById('counterValue').innerText = arr[7 + offset] + '%';
+                           document.getElementById('counterValue').innerText = _crSafe + '%';
                        }
-                       document.getElementById('debuffRange').value = arr[8 + offset];
+                       document.getElementById('debuffRange').value = _drSafe;
                        if (window._renderOdoValue) {
-                           window._renderOdoValue(document.getElementById('debuffValue'), arr[8 + offset] + '%');
+                           window._renderOdoValue(document.getElementById('debuffValue'), _drSafe + '%');
                        } else {
-                           document.getElementById('debuffValue').innerText = arr[8 + offset] + '%';
+                           document.getElementById('debuffValue').innerText = _drSafe + '%';
                        }
 
                        var cbs = document.querySelectorAll('.empower-checkbox');
@@ -3162,7 +3173,7 @@ function __tok(n, d) { var v = getComputedStyle(document.body).getPropertyValue(
                            // 旧版链接诞生时只有先机汇能：按先机汇能打开（除非地址里另带 ?mode=）
                            if (!urlParams.has('mode')) setCalcMode('solo', true, true);
                        } else {
-                           setCalcMode(arr[38], true, true);
+                           setCalcMode(_enumOr(arr[38], ['solo', 'team'], 'solo'), true, true);
                            document.getElementById('dev_sub_first').value = arr[40];
                            document.getElementById('dev_sub_loop').value = arr[41];
                            document.getElementById('teamMateCar').value = _carById(parseInt(arr[42], 10) || 0) ? String(parseInt(arr[42], 10)) : '0';
@@ -3206,14 +3217,16 @@ function __tok(n, d) { var v = getComputedStyle(document.body).getPropertyValue(
                    if(config.sp !== undefined) document.getElementById('isSpec').checked = config.sp;
 
                    if(config.cr !== undefined) {
-                       document.getElementById('counterRange').value = config.cr;
-                       if (window._renderOdoValue) window._renderOdoValue(document.getElementById('counterValue'), config.cr + '%');
-                       else document.getElementById('counterValue').innerText = config.cr + '%';
+                       var _cfgCr = _numOr(config.cr, 0);
+                       document.getElementById('counterRange').value = _cfgCr;
+                       if (window._renderOdoValue) window._renderOdoValue(document.getElementById('counterValue'), _cfgCr + '%');
+                       else document.getElementById('counterValue').innerText = _cfgCr + '%';
                    }
                    if(config.dr !== undefined) {
-                       document.getElementById('debuffRange').value = config.dr;
-                       if (window._renderOdoValue) window._renderOdoValue(document.getElementById('debuffValue'), config.dr + '%');
-                       else document.getElementById('debuffValue').innerText = config.dr + '%';
+                       var _cfgDr = _numOr(config.dr, 0);
+                       document.getElementById('debuffRange').value = _cfgDr;
+                       if (window._renderOdoValue) window._renderOdoValue(document.getElementById('debuffValue'), _cfgDr + '%');
+                       else document.getElementById('debuffValue').innerText = _cfgDr + '%';
                    }
 
                    var allCbs = document.querySelectorAll('.empower-checkbox');
@@ -4467,9 +4480,19 @@ function __tok(n, d) { var v = getComputedStyle(document.body).getPropertyValue(
            return valEl.__odo;
        }
 
+       // 只允许纯数值/纯文本形态进入 innerHTML 解析；任何带标签的内容先剥成 textContent。
+       // 目的：堵住 ?s= / ?cfg= 分享参数把 <img onerror> 送进 _renderOdoValue 的 DOM XSS 路径。
+       function _odoSanitize(s) {
+           if (!/[<>]/.test(s)) return s;
+           if (/^<span class=["']emoji-fix["']>[^<>]{1,8}<\/span>([^<>]*)$/.test(s)) return s;
+           var scrub = document.createElement('div');
+           scrub.textContent = s;
+           return (scrub.textContent || '').trim();
+       }
+
        function _renderOdoValue(valEl, nextHtml) {
            if (!valEl) return;
-           var nextStr = String(nextHtml === undefined || nextHtml === null ? '' : nextHtml).trim();
+           var nextStr = _odoSanitize(String(nextHtml === undefined || nextHtml === null ? '' : nextHtml).trim());
            if (valEl.__html === nextStr && valEl.__odo) return;
 
            var odo = _ensureOdo(valEl);
