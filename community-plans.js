@@ -2953,6 +2953,7 @@
         specsExtraHtml,
         noteHtml,
         rejectBannerHtml,
+        (isLocalPlan ? CommunityPlans.buildAnnotationHtml(item, safePlanId) : ''),
         '  </div>',
         '  <div class="cp-card-foot">',
         '    <div class="cp-foot-left">',
@@ -2960,6 +2961,9 @@
           ? ('      <button type="button" class="' + voteBtnCls + '" data-plan-id="' + safePlanId + '" onclick="CommunityPlans.toggleVote(\'' + safePlanId + '\')" title="' + voteBtnTitle + '"' + (isAuthorSelf ? ' aria-disabled="true"' : '') + '>' +
              '<span class="cp-vote-ico-wrap">' + Icons.thumb(isVoted) + '</span>' +
              '<span class="cp-vote-count" data-count="' + (Number(item.votes) || 0) + '"><span class="cp-vote-num-cur">' + (Number(item.votes) || 0) + '</span></span></button>')
+          : ''),
+        (isLocalPlan && safeRemoteId
+          ? '      <button type="button" class="nav-btn select-btn cp-edit-btn" title="编辑该方案（保存后需重新审核）" onclick="CommunityPlans.startEditPlan(\'' + safePlanId + '\')">' + Icons.save + '</button>'
           : ''),
         (isLocalPlan
           ? '      <button type="button" class="nav-btn select-btn cp-del-btn" title="删除该方案" onclick="CommunityPlans.deletePlan(\'' + safePlanId + '\')">' + Icons.trash + '</button>'
@@ -2971,6 +2975,69 @@
         '  </div>',
         '</article>'
       ].join('');
+    },
+
+    // 站长批注区（仅方案提交人可见）：复用 DS v4 玻璃卡片规范，样式见 community-plans.css
+    buildAnnotationHtml: function (item, localId) {
+      var list = Array.isArray(item.annotations) ? item.annotations : [];
+      if (!list.length) return '';
+      var esc = Utils.escapeHtml;
+      var fmt = function (ts) {
+        try {
+          var d = new Date(ts);
+          return (d.getMonth() + 1) + '/' + d.getDate() + ' ' + ('0' + d.getHours()).slice(-2) + ':' + ('0' + d.getMinutes()).slice(-2);
+        } catch (_) { return ''; }
+      };
+      var items = list.slice(-6).map(function (a) {
+        var replies = (a.replies || []).map(function (r) {
+          return '<div class="cp-anno-reply">'
+            + '<div class="cp-anno-meta"><b>' + esc(r.author || '投稿人') + '</b><span>' + fmt(r.created_at) + '</span></div>'
+            + '<div class="cp-anno-text">' + esc(r.content) + '</div>'
+            + '</div>';
+        }).join('');
+        return '<div class="cp-anno-item">'
+          + '<div class="cp-anno-meta"><b>' + esc(a.author || 'Vanem') + '</b><span>' + fmt(a.created_at) + '</span></div>'
+          + '<div class="cp-anno-text">' + esc(a.content) + '</div>'
+          + (replies ? '<div class="cp-anno-replies">' + replies + '</div>' : '')
+          + '<div class="cp-anno-form">'
+          + '<input class="cp-anno-input" type="text" maxlength="200" placeholder="回复这条批注…" data-anno-input="' + esc(a.id) + '">'
+          + '<button type="button" class="cp-anno-send" onclick="CommunityPlans.replyAnnotation(\'' + esc(localId) + '\', \'' + esc(a.id) + '\')">回复</button>'
+          + '</div>'
+          + '</div>';
+      }).join('');
+      return '<div class="cp-anno-wrap">'
+        + '<div class="cp-anno-head">' + Icons.check + '<span>站长批注</span></div>'
+        + items
+        + '</div>';
+    },
+
+    replyAnnotation: function (localId, annoId) {
+      var plan = state.savedPlans.find(function (p) { return p.id === localId; });
+      if (!plan || !plan.remote_id) return;
+      var input = document.querySelector('[data-anno-input="' + annoId + '"]');
+      var content = input ? String(input.value || '').trim() : '';
+      if (!content) { CommunityPlans.toast('回复内容不能为空'); return; }
+      if (input) input.disabled = true;
+      fetch('/api/plans', {
+        method: 'POST',
+        headers: Utils.getApiHeaders(true),
+        body: JSON.stringify({ action: 'reply_annotation', plan_id: plan.remote_id, annotation_id: annoId, content: content })
+      })
+        .then(Utils.parseJsonSafe)
+        .then(function (resObj) {
+          var body = resObj.data || {};
+          if (!resObj.ok || !body.success) {
+            if (input) input.disabled = false;
+            CommunityPlans.toast('回复失败：' + (body.message || ('HTTP ' + resObj.status)));
+            return;
+          }
+          CommunityPlans.toast('回复已发送');
+          CommunityPlans.checkPlanStatus(localId, plan.remote_id);
+        })
+        .catch(function (err) {
+          if (input) input.disabled = false;
+          CommunityPlans.toast('回复失败：' + err.message);
+        });
     },
 
     // 凭证图片暂存
@@ -3391,6 +3458,23 @@
       ].join('');
 
       document.body.appendChild(modal);
+
+      // 编辑已上传方案：预填标题/备注，并把保存按钮改成「保存修改并重新送审」
+      if (state.editingPlan) {
+        var tEl = document.getElementById('cpInputTitle');
+        var nEl = document.getElementById('cpInputNotes');
+        if (tEl && state.editingPlan.title) {
+          tEl.value = state.editingPlan.title;
+          CommunityPlans.onTitleInput(tEl);
+        }
+        if (nEl && state.editingPlan.notes) {
+          nEl.value = state.editingPlan.notes;
+          CommunityPlans.onNotesInput(nEl);
+        }
+        var saveBtnEl = document.getElementById('cpBtnConfirmSave');
+        if (saveBtnEl) saveBtnEl.innerHTML = Icons.save + ' 保存修改并重新送审';
+      }
+
       setTimeout(function () {
         var input = document.getElementById('cpInputTitle');
         if (input) input.focus();
@@ -3657,7 +3741,10 @@
         empowers: params.emps
       });
 
+      var editing = state.editingPlan;
       var payload = {
+        action: editing ? 'edit' : 'submit',
+        plan_id: editing ? editing.remoteId : undefined,
         car_id: state.currentCarId,
         car_name: state.currentCar ? state.currentCar.name : '',
         title: title,
@@ -3719,18 +3806,43 @@
             planItem.remote_id = resObj.data.data.id;
             planItem.remote_status = resObj.data.data.status;
           }
-          state.savedPlans.unshift(planItem);
+
+          if (editing) {
+            // 编辑模式：覆盖本地那条，不新增
+            var existPlan = state.savedPlans.find(function (x) { return x.id === editing.localId; });
+            if (existPlan) {
+              existPlan.title = planItem.title;
+              existPlan.notes = planItem.notes;
+              existPlan.params = planItem.params;
+              existPlan.build_sig = planItem.build_sig;
+              existPlan.links = planItem.links;
+              existPlan.author = planItem.author;
+              existPlan.is_anonymous = planItem.is_anonymous;
+              existPlan.remote_id = editing.remoteId;
+              existPlan.remote_status = planItem.remote_status || 'pending_review';
+              existPlan.reject_reason = '';
+              existPlan.review_notes = '';
+              existPlan.edit_count = (Number(existPlan.edit_count) || 0) + 1;
+              existPlan.last_edited_at = Date.now();
+            }
+            state.editingPlan = null;
+          } else {
+            state.savedPlans.unshift(planItem);
+          }
           Utils.setStorage(STORAGE_KEYS.PLANS, state.savedPlans);
 
+          var editingWas = Boolean(editing);
           var finishSuccess = function () {
             state._saveSuccessTimer = null;
             CommunityPlans.turnstileState.isSubmitting = false;
             // 成功后再销毁弹窗与内存截图，绝不保留原图在本地
             CommunityPlans.closeSaveModal();
             CommunityPlans.renderPlans();
-            var msg = isApplyPro
-              ? '方案「' + title + '」已保存并提交国服自证审核！'
-              : '方案「' + title + '」已保存并提交内容安全审核！';
+            var msg = editingWas
+              ? ('方案「' + title + '」已更新，重新进入审核队列')
+              : (isApplyPro
+                  ? '方案「' + title + '」已保存并提交国服自证审核！'
+                  : '方案「' + title + '」已保存并提交内容安全审核！');
             CommunityPlans.toast(msg);
             CommunityPlans.fetchRemotePlans(state.currentCarId);
           };
@@ -3759,15 +3871,21 @@
     // 后台静默批量同步本地所有「审核中」方案的真实云端裁决状态（解决驳回/通过/清理后前端滞留「审核中」问题）
     syncPendingPlanStatuses: function (opts) {
       var force = Boolean(opts && opts.force);
+      // 已通过的方案也要跟着查：后台可能下架或删除，之前把 approved 排除掉导致前端一直显示「已收录」
       var pendingPlans = state.savedPlans.filter(function (p) {
         if (!p || !p.remote_id) return false;
-        return p.remote_status !== 'approved' && p.remote_status !== 'rejected' && p.remote_status !== 'cleaned';
+        return p.remote_status !== 'cleaned';
       });
       if (pendingPlans.length === 0) return;
 
       var now = Date.now();
       if (state._isSyncingStatuses) return;
-      if (!force && state._lastStatusSyncAt && (now - state._lastStatusSyncAt) < 4000) return;
+      // 还在审的方案 4 秒一次；只有已通过/已驳回的，降频到 60 秒一次，避免无谓请求
+      var hasUnsettled = pendingPlans.some(function (p) {
+        return p.remote_status !== 'approved' && p.remote_status !== 'rejected';
+      });
+      var throttleMs = hasUnsettled ? 4000 : 60000;
+      if (!force && state._lastStatusSyncAt && (now - state._lastStatusSyncAt) < throttleMs) return;
 
       // 优先检查当前所选车型的待审方案，最多一次批量核验 20 条
       var curIdStr = state.currentCarId ? String(state.currentCarId) : '';
@@ -3805,6 +3923,12 @@
               delete lp.remote_id;
               anyChanged = true;
               return;
+            }
+            if (Array.isArray(info.annotations)) {
+              if (JSON.stringify(lp.annotations || []) !== JSON.stringify(info.annotations)) {
+                lp.annotations = info.annotations;
+                anyChanged = true;
+              }
             }
             if (info.status && info.status !== lp.remote_status) {
               lp.remote_status = info.status;
@@ -3883,6 +4007,8 @@
             localPlan.remote_status = d.status;
             localPlan.reject_reason = d.reject_reason || d.review_notes;
             localPlan.review_notes = d.review_notes;
+            if (Array.isArray(d.annotations)) localPlan.annotations = d.annotations;
+            if (d.edit_count !== undefined) localPlan.edit_count = d.edit_count;
             if (d.status === 'approved' && d.is_pro) {
               localPlan.isPro = true;
             }
@@ -4312,20 +4438,74 @@
 
       var target = state.savedPlans[idx];
       var name = target.title;
-      var confirmText = target.remote_id
-        ? ('确定要从本机列表移除方案「' + name + '」吗？（仅删除本机保存记录，已提交云端的数据不受影响）')
+      var hasRemote = Boolean(target.remote_id);
+      var confirmText = hasRemote
+        ? ('方案「' + name + '」已上传到社区。\n\n删除会同时从云端移除，且无法恢复。确定继续吗？')
         : ('确定要删除本地保存的方案「' + name + '」吗？');
       if (!confirm(confirmText)) return;
 
-      state.savedPlans.splice(idx, 1);
-      Utils.setStorage(STORAGE_KEYS.PLANS, state.savedPlans);
+      var removeLocal = function () {
+        var i = state.savedPlans.findIndex(function (p) { return p.id === planId; });
+        if (i === -1) return;
+        state.savedPlans.splice(i, 1);
+        Utils.setStorage(STORAGE_KEYS.PLANS, state.savedPlans);
+        if (state.activeAppliedPlanId === planId) state.activeAppliedPlanId = null;
+        if (state.editingPlan && state.editingPlan.localId === planId) state.editingPlan = null;
+        CommunityPlans.renderPlans({ preserveScroll: true });
+      };
 
-      if (state.activeAppliedPlanId === planId) {
-        state.activeAppliedPlanId = null;
+      if (!hasRemote) {
+        removeLocal();
+        CommunityPlans.toast('已删除方案「' + name + '」');
+        return;
       }
 
-      CommunityPlans.renderPlans({ preserveScroll: true });
-      CommunityPlans.toast('已删除方案「' + name + '」');
+      CommunityPlans.toast('正在从云端删除...');
+      fetch('/api/plans', {
+        method: 'POST',
+        headers: Utils.getApiHeaders(true),
+        body: JSON.stringify({ action: 'delete', plan_id: target.remote_id })
+      })
+        .then(Utils.parseJsonSafe)
+        .then(function (resObj) {
+          var body = resObj.data || {};
+          if (!resObj.ok || !body.success) {
+            CommunityPlans.toast('云端删除失败：' + (body.message || ('HTTP ' + resObj.status)));
+            return;
+          }
+          removeLocal();
+          CommunityPlans.toast('已从云端与本机删除「' + name + '」');
+        })
+        .catch(function (err) {
+          CommunityPlans.toast('删除失败：' + err.message);
+        });
+    },
+
+    // 编辑已上传的方案：把参数载回计算器，保存时走 action=edit，重新进审核队列
+    startEditPlan: function (localId) {
+      var plan = state.savedPlans.find(function (p) { return p.id === localId; });
+      if (!plan) return;
+      if (!plan.remote_id) {
+        CommunityPlans.toast('该方案只在本地，直接修改后重新保存即可');
+        return;
+      }
+      if (state.currentCarId && String(state.currentCarId) !== String(plan.car_id)) {
+        CommunityPlans.toast('请先切换到「' + (plan.car_name || '该车') + '」再编辑这条方案');
+        return;
+      }
+      try {
+        ParamsIO.apply(plan.params);
+      } catch (e) {
+        CommunityPlans.toast('载入方案参数失败：' + e.message);
+        return;
+      }
+      state.editingPlan = {
+        localId: plan.id,
+        remoteId: plan.remote_id,
+        title: plan.title,
+        notes: plan.notes
+      };
+      CommunityPlans.toast('已载入「' + plan.title + '」的参数。改完点右上角「立即保存当前配装」，保存后会重新提交审核。');
     },
 
     // 点赞 / 再次点击取消点赞 (绑定设备指纹持久化记忆 + 禁止作者自赞)

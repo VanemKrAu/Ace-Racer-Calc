@@ -1658,6 +1658,140 @@ body[data-calc-mode="support"] #communityPlansContainer {
   background-color: var(--warn-soft);
 }
 
+/* 编辑按钮：与删除按钮同规格图标按钮，悬停走宿主强调色（不写死纯色） */
+.ds-c .cp-edit-btn {
+  width: 30px;
+  height: 30px;
+  padding: 0;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 8px;
+  color: var(--ink-3);
+  cursor: pointer;
+}
+
+.ds-c .cp-edit-btn .ico {
+  width: 14px;
+  height: 14px;
+}
+
+.ds-c .cp-edit-btn:hover {
+  color: var(--acc-ink);
+  background-color: var(--acc-soft);
+}
+
+/* ==========================================================================
+   站长批注（仅方案提交人可见）
+   复用宿主 .card 的玻璃底色、--surface-rim 内描边与 --r-md 圆角，不写死纯色
+   ========================================================================== */
+.ds-c .cp-anno-wrap {
+  margin-top: 10px;
+  padding: 10px 12px;
+  border-radius: var(--r-md, 10px);
+  background: color-mix(in oklab, var(--acc) 6%, var(--surface));
+  border: 1px solid color-mix(in oklab, var(--acc) 22%, transparent);
+  box-shadow: inset 0 1px 0 var(--surface-rim);
+}
+
+.ds-c .cp-anno-head {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  margin-bottom: 8px;
+  font-size: 12px;
+  font-weight: 700;
+  color: var(--acc-ink);
+}
+
+.ds-c .cp-anno-item {
+  padding-left: 10px;
+  margin-bottom: 10px;
+  border-left: 2px solid color-mix(in oklab, var(--acc) 45%, transparent);
+}
+
+.ds-c .cp-anno-item:last-child {
+  margin-bottom: 0;
+}
+
+.ds-c .cp-anno-meta {
+  display: flex;
+  gap: 8px;
+  margin-bottom: 4px;
+  font-size: 11px;
+  color: var(--ink-3);
+}
+
+.ds-c .cp-anno-meta b {
+  color: var(--ink-2);
+  font-weight: 700;
+}
+
+.ds-c .cp-anno-text {
+  font-size: 12.5px;
+  line-height: 1.65;
+  color: var(--ink);
+  word-break: break-word;
+}
+
+.ds-c .cp-anno-replies {
+  margin-top: 6px;
+  padding-left: 10px;
+  border-left: 2px solid var(--sep);
+}
+
+.ds-c .cp-anno-replies .cp-anno-text {
+  font-size: 12px;
+  color: var(--ink-2);
+}
+
+.ds-c .cp-anno-form {
+  display: flex;
+  gap: 6px;
+  margin-top: 8px;
+}
+
+.ds-c .cp-anno-input {
+  flex: 1;
+  min-width: 0;
+  height: 30px;
+  padding: 0 10px;
+  border-radius: 8px;
+  font-size: 12px;
+  background: var(--fill);
+  border: 1px solid var(--sep);
+  color: var(--ink);
+  font-family: inherit;
+}
+
+.ds-c .cp-anno-input:focus {
+  outline: none;
+  border-color: color-mix(in oklab, var(--acc) 55%, transparent);
+}
+
+.ds-c .cp-anno-send {
+  height: 30px;
+  padding: 0 12px;
+  border-radius: 8px;
+  font-size: 12px;
+  font-weight: 700;
+  color: var(--ink);
+  background-color: color-mix(in oklab, var(--acc) 20%, var(--surface));
+  border: 1px solid color-mix(in oklab, var(--acc) 60%, transparent);
+  box-shadow: inset 0 1px 0 var(--surface-rim);
+  cursor: pointer;
+}
+
+.ds-c .cp-anno-send:hover {
+  background-color: color-mix(in oklab, var(--acc) 30%, var(--surface));
+}
+
+@media (max-width: 640px) {
+  .ds-c .cp-anno-wrap { padding: 9px 10px; }
+  .ds-c .cp-anno-form { flex-wrap: wrap; }
+  .ds-c .cp-anno-send { flex: 0 0 auto; }
+}
+
 .ds-c .cp-apply-btn {
   display: inline-flex;
   align-items: center;
