@@ -2976,13 +2976,13 @@
              '<span class="cp-vote-count" data-count="' + (Number(item.votes) || 0) + '"><span class="cp-vote-num-cur">' + (Number(item.votes) || 0) + '</span></span></button>')
           : ''),
         (ownerLocalId && (isLocalPlan ? safeRemoteId : item.id)
-          ? '      <button type="button" class="nav-btn select-btn cp-edit-btn" title="编辑这条已上传的方案（保存后重新送审）" onclick="CommunityPlans.startEditPlan(\'' + ownerLocalId + '\')">' + Icons.edit + '</button>'
+          ? '      <button type="button" class="nav-btn cp-edit-btn" title="编辑这条已上传的方案（保存后重新送审）" onclick="CommunityPlans.startEditPlan(\'' + ownerLocalId + '\')">' + Icons.edit + '</button>'
           : ''),
         (isLocalPlan && !safeRemoteId
-          ? '      <button type="button" class="nav-btn select-btn cp-upload-btn" title="上传到云端（需人机验证）" onclick="CommunityPlans.uploadLocalPlan(\'' + ownerLocalId + '\')">' + Icons.upload + '</button>'
+          ? '      <button type="button" class="nav-btn cp-upload-btn" title="上传到云端（需人机验证）" onclick="CommunityPlans.uploadLocalPlan(\'' + ownerLocalId + '\')">' + Icons.upload + '</button>'
           : ''),
         (ownerLocalId
-          ? '      <button type="button" class="nav-btn select-btn cp-del-btn" title="删除该方案" onclick="CommunityPlans.deletePlan(\'' + ownerLocalId + '\')">' + Icons.trash + '</button>'
+          ? '      <button type="button" class="nav-btn cp-del-btn" title="删除该方案" onclick="CommunityPlans.deletePlan(\'' + ownerLocalId + '\')">' + Icons.trash + '</button>'
           : ''),
         '    </div>',
         '    <button type="button" class="nav-btn cp-apply-btn ' + (isApplied && !isModeDisabled ? 'is-applied' : '') + (isModeDisabled ? ' is-disabled' : '') + '"' + applyBtnAttrs + '>',
@@ -3320,6 +3320,12 @@
 
     // 关闭保存方案弹窗并彻底销毁凭证内存、Turnstile 实例与解锁背景滚动（杜绝图床滥用与滚动穿透）
     closeSaveModal: function () {
+      // 只有用户主动关掉弹窗（而非 openSaveModal 内部清理）才把编辑条还回去
+      if (state.editingPlan && !state._suppressBarRestore) {
+        setTimeout(function () {
+          if (state.editingPlan) CommunityPlans.showEditingBar(state.editingPlan.title);
+        }, 60);
+      }
       if (state._saveSuccessTimer) {
         clearTimeout(state._saveSuccessTimer);
         state._saveSuccessTimer = null;
@@ -3348,7 +3354,11 @@
         CommunityPlans.toast('请先在上方选择一辆赛车');
         return;
       }
+      // 弹窗盖上来时先把顶部编辑条收起，避免两层浮层叠着
+      if (state.editingPlan) CommunityPlans.hideEditingBar();
+      state._suppressBarRestore = true;
       CommunityPlans.closeSaveModal();
+      state._suppressBarRestore = false;
 
       var carName = state.currentCar ? state.currentCar.name : '当前赛车';
       var params = ParamsIO.capture();

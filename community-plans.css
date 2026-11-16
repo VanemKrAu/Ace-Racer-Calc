@@ -1644,9 +1644,9 @@ body[data-calc-mode="support"] #communityPlansContainer {
   align-items: center;
   justify-content: center;
   border-radius: 8px;
-  color: var(--ink-2);
-  background-color: color-mix(in oklab, var(--ink) 6%, transparent);
-  border: 1px solid color-mix(in oklab, var(--ink) 8%, transparent);
+  color: #ffffff;
+  background-color: color-mix(in oklab, var(--ink) 9%, transparent);
+  border: 1px solid color-mix(in oklab, var(--ink) 14%, transparent);
   cursor: pointer;
   transition: color .15s ease, background-color .15s ease, border-color .15s ease;
 }
@@ -1670,9 +1670,9 @@ body[data-calc-mode="support"] #communityPlansContainer {
   align-items: center;
   justify-content: center;
   border-radius: 8px;
-  color: var(--ink-2);
-  background-color: color-mix(in oklab, var(--ink) 6%, transparent);
-  border: 1px solid color-mix(in oklab, var(--ink) 8%, transparent);
+  color: #ffffff;
+  background-color: color-mix(in oklab, var(--ink) 9%, transparent);
+  border: 1px solid color-mix(in oklab, var(--ink) 14%, transparent);
   cursor: pointer;
   transition: color .15s ease, background-color .15s ease, border-color .15s ease;
 }
@@ -1696,9 +1696,9 @@ body[data-calc-mode="support"] #communityPlansContainer {
   align-items: center;
   justify-content: center;
   border-radius: 8px;
-  color: var(--ink-2);
-  background-color: color-mix(in oklab, var(--ink) 6%, transparent);
-  border: 1px solid color-mix(in oklab, var(--ink) 8%, transparent);
+  color: #ffffff;
+  background-color: color-mix(in oklab, var(--ink) 9%, transparent);
+  border: 1px solid color-mix(in oklab, var(--ink) 14%, transparent);
   cursor: pointer;
   transition: color .15s ease, background-color .15s ease, border-color .15s ease;
 }
@@ -3017,10 +3017,9 @@ body.ds-c.performance-mode .cp-btn-save.is-success .cp-save-ok-ico .ico {
   display: flex;
   align-items: center;
   gap: 14px;
-  width: -moz-fit-content;
-  width: fit-content;
+  width: -moz-max-content;
+  width: max-content;
   max-width: calc(100vw - 20px);
-  overflow: hidden;
   padding: 9px 12px;
   border-radius: var(--r-md, 10px);
   background: var(--surface-2, var(--surface));
@@ -3049,13 +3048,14 @@ body.ds-c.performance-mode .cp-btn-save.is-success .cp-save-ok-ico .ico {
   height: 16px;
 }
 
-/* 用 block + inline 子元素撑开真实宽度；容器可收缩，超长方案名走省略号 */
+/* 文字区保底宽度，超出走省略号；min-width:0 会让 flex 把它压成 0，这里不能用 */
 .cp-eb-text {
   display: block;
   flex: 0 1 auto;
-  min-width: 0;
+  min-width: 5.5em;
   overflow: hidden;
   white-space: nowrap;
+  text-overflow: ellipsis;
   font-size: 12.5px;
   line-height: 1.4;
 }
