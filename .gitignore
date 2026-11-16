@@ -58,3 +58,5 @@ bin/
 *PRIVATE*
 tokens.json
 agent_mailbox.json
+.vercel
+.env*
