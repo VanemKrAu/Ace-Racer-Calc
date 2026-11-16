@@ -3532,6 +3532,18 @@
         if (saveBtnEl) saveBtnEl.innerHTML = Icons.save + ' 保存修改并重新送审';
       }
 
+      // 编辑 / 补传时必须是云端操作：勾上同步并锁死，否则会退化成「存本地新建一条」
+      if (state.editingPlan || state.uploadingLocalId) {
+        var syncChk = document.getElementById('cpChkSyncCommunity');
+        if (syncChk) {
+          syncChk.checked = true;
+          syncChk.disabled = true;
+          if (typeof CommunityPlans.onToggleSyncCommunity === 'function') {
+            CommunityPlans.onToggleSyncCommunity(true);
+          }
+        }
+      }
+
       setTimeout(function () {
         var input = document.getElementById('cpInputTitle');
         if (input) input.focus();
@@ -3756,6 +3768,23 @@
 
       // 不勾选上传社区时，零验证直接保存在本机浏览器
       if (!isSync) {
+        if (editing) {
+          // 编辑态兜底：只更新本地那条，绝不新增
+          var fallback = state.savedPlans.find(function (x) { return x.id === editing.localId; });
+          if (fallback) {
+            fallback.title = planItem.title;
+            fallback.notes = planItem.notes;
+            fallback.params = planItem.params;
+            fallback.build_sig = planItem.build_sig;
+          }
+          state.editingPlan = null;
+          CommunityPlans.hideEditingBar();
+          Utils.setStorage(STORAGE_KEYS.PLANS, state.savedPlans);
+          CommunityPlans.closeSaveModal();
+          CommunityPlans.renderPlans();
+          CommunityPlans.toast('已更新本地方案「' + title + '」');
+          return;
+        }
         state.savedPlans.unshift(planItem);
         Utils.setStorage(STORAGE_KEYS.PLANS, state.savedPlans);
         CommunityPlans.closeSaveModal();
