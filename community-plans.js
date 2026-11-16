@@ -27,7 +27,8 @@
     DEVICE_FP: 'arc_device_fp_v1',
     SETTINGS: 'arc_user_settings_v1',
     AUTO_DRAFT: 'arc_auto_draft_enabled',
-    ANNOUNCEMENT_STATE: 'arc_announcement_state_v1'
+    ANNOUNCEMENT_STATE: 'arc_announcement_state_v1',
+    NOTIFICATIONS: 'arc_notifications_v1'
   };
 
   // Cloudflare Turnstile 公开 Site Key（仅用于前端渲染托管人机校验框，非密钥）
@@ -582,6 +583,7 @@
   var Icons = {
     chip: '<svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="4" y="4" width="16" height="16" rx="2"/><rect x="9" y="9" width="6" height="6"/><path d="M9 1v3M15 1v3M9 20v3M15 20v3M20 9h3M20 14h3M1 9h3M1 14h3"/></svg>',
     save: '<svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"/><polyline points="17 21 17 13 7 13 7 21"/><polyline points="7 3 7 8 15 8"/></svg>',
+    bell: '<svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M18 8a6 6 0 0 0-12 0c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 0 1-3.46 0"/></svg>',
     upload: '<svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>',
     undo: '<svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 7v6h6"/><path d="M21 17a9 9 0 0 0-9-9 9 9 0 0 0-6 2.3L3 13"/></svg>',
     megaphone: '<svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m3 11 18-5v12L3 14v-3z"/><path d="M11.6 16.8a3 3 0 1 1-5.8-1.6"/></svg>',
@@ -650,7 +652,8 @@
       allow_pro_applications: true,
       allow_voting: true,
       turnstile_required: true,
-      announcement: null
+      announcement: null,
+      notifications: []
     },
     _annSessionCounted: false,
     _annCheckedVersion: null,
@@ -1497,6 +1500,7 @@
 
       // 页面初始化时主动拉取站点公告与运营配置（不依赖是否已选车），并静默核验本地待审方案真实状态
       CommunityPlans.fetchSiteConfig();
+      CommunityPlans.loadNotifications();
       CommunityPlans.syncPendingPlanStatuses({ force: true });
 
       if (!window.__cpStatusSyncBound) {
@@ -3890,6 +3894,174 @@
         });
     },
 
+    /* ======================================================================
+       通知中心：审核结果 / 站长批注 / 云端下架，统一进收信箱
+       ====================================================================== */
+    NOTIF_META: {
+      approved: { cls: 'is-approved', tag: '审核通过', text: function (n) { return '《' + n.planTitle + '》已通过审核' + (n.extra || '') + '，已收录到社区方案库。'; } },
+      rejected: { cls: 'is-rejected', tag: '未通过', text: function (n) { return '《' + n.planTitle + '》未通过审核：' + (n.extra || '请查看详情'); } },
+      annotation: { cls: 'is-annotation', tag: '站长批注', text: function (n) { return '《' + n.planTitle + '》收到站长批注：' + (n.extra || ''); } },
+      removed: { cls: 'is-removed', tag: '云端移除', text: function (n) { return '《' + n.planTitle + '》已被管理员从云端移除。'; } }
+    },
+
+    loadNotifications: function () {
+      var list = Utils.getStorage(STORAGE_KEYS.NOTIFICATIONS, []);
+      state.notifications = Array.isArray(list) ? list.filter(function (n) { return n && n.id; }) : [];
+      CommunityPlans.updateNotifBadge();
+    },
+
+    saveNotifications: function () {
+      // 只保留最近 60 条，避免 localStorage 膨胀
+      state.notifications = state.notifications.slice(0, 60);
+      Utils.setStorage(STORAGE_KEYS.NOTIFICATIONS, state.notifications);
+      CommunityPlans.updateNotifBadge();
+    },
+
+    pushNotification: function (type, planTitle, carName, extra) {
+      if (!CommunityPlans.NOTIF_META[type]) return;
+      var n = {
+        id: 'ntf_' + Date.now().toString(36) + '_' + Math.random().toString(36).slice(2, 7),
+        type: type,
+        planTitle: planTitle || '未命名方案',
+        carName: carName || '',
+        extra: extra || '',
+        ts: Date.now(),
+        read: false
+      };
+      state.notifications.unshift(n);
+      CommunityPlans.saveNotifications();
+      return n;
+    },
+
+    updateNotifBadge: function () {
+      var wrapper = document.getElementById('notifWrapper');
+      var dot = document.getElementById('notifDot');
+      if (!wrapper) return;
+      var hasAny = state.notifications.length > 0;
+      wrapper.hidden = !hasAny;
+      if (dot) dot.hidden = !state.notifications.some(function (n) { return !n.read; });
+    },
+
+    formatNotifTime: function (ts) {
+      try {
+        var d = new Date(ts);
+        var pad = function (v) { return ('0' + v).slice(-2); };
+        return (d.getMonth() + 1) + '/' + d.getDate() + ' ' + pad(d.getHours()) + ':' + pad(d.getMinutes());
+      } catch (_) { return ''; }
+    },
+
+    buildNotifListHtml: function (list) {
+      if (!list.length) return '<div class="cp-notif-empty">暂时没有通知</div>';
+      return '<div class="cp-notif-list">' + list.map(function (n) {
+        var meta = CommunityPlans.NOTIF_META[n.type] || CommunityPlans.NOTIF_META.annotation;
+        var text = meta.text(n);
+        return '<div class="cp-notif-item ' + meta.cls + '">'
+          + '<div class="cp-notif-body">'
+          + '<div class="cp-notif-title"><span class="cp-notif-tag ' + meta.cls + '">' + meta.tag + '</span>'
+          + '<b>' + Utils.escapeHtml(n.planTitle) + '</b></div>'
+          + '<div class="cp-notif-text">' + Utils.escapeHtml(text) + '</div>'
+          + '<div class="cp-notif-time">' + (n.carName ? Utils.escapeHtml(n.carName) + ' · ' : '') + CommunityPlans.formatNotifTime(n.ts) + '</div>'
+          + '</div></div>';
+      }).join('') + '</div>';
+    },
+
+    // 有未读时自动弹一次（多条合并进同一个弹窗）
+    maybeShowNotificationPopup: function () {
+      var unread = state.notifications.filter(function (n) { return !n.read; });
+      if (!unread.length) return;
+      if (document.getElementById('cpNotifModal')) return;
+      CommunityPlans.openNotificationCenter(true);
+    },
+
+    openNotificationCenter: function (onlyUnread) {
+      var old = document.getElementById('cpNotifModal');
+      if (old) old.remove();
+
+      var list = onlyUnread === true
+        ? state.notifications.filter(function (n) { return !n.read; })
+        : state.notifications;
+      var unreadCount = state.notifications.filter(function (n) { return !n.read; }).length;
+      var title = onlyUnread === true ? ('您有 ' + list.length + ' 条新通知') : '通知收信箱';
+      var levelCls = list.some(function (n) { return n.type === 'rejected'; }) ? 'is-warn'
+        : (list.length && list.every(function (n) { return n.type === 'approved'; }) ? 'is-success' : '');
+
+      var modal = document.createElement('div');
+      modal.id = 'cpNotifModal';
+      modal.className = 'cp-modal-overlay is-open';
+      modal.setAttribute('role', 'dialog');
+      modal.setAttribute('aria-modal', 'true');
+      modal.onclick = function (e) { if (e.target === modal) CommunityPlans.closeNotificationCenter(); };
+      modal.innerHTML = [
+        '<div class="card cp-modal-dialog cp-ann-dialog ' + levelCls + '" onclick="event.stopPropagation()">',
+        '  <div class="cp-modal-head">',
+        '    <div class="cp-ann-head-left">',
+        '      <span class="cp-ann-level-pill ' + levelCls + '">' + Icons.bell + '<span>通知</span></span>',
+        '      <h4 class="cp-modal-title">' + Utils.escapeHtml(title) + '</h4>',
+        '    </div>',
+        '    <button type="button" class="nav-btn select-btn cp-modal-close" aria-label="关闭通知" onclick="CommunityPlans.closeNotificationCenter()">' + Icons.close + '</button>',
+        '  </div>',
+        '  <div class="cp-modal-body">',
+        CommunityPlans.buildNotifListHtml(list),
+        '  </div>',
+        '  <div class="cp-modal-footer cp-ann-footer">',
+        '    <div class="cp-ann-footer-left"></div>',
+        '    <div class="cp-ann-footer-actions">',
+        (unreadCount > 1 ? '<button type="button" class="nav-btn cp-btn" onclick="CommunityPlans.markAllNotifRead()">全部标为已读</button>' : ''),
+        '      <button type="button" class="nav-btn cp-btn cp-btn-save" onclick="CommunityPlans.closeNotificationCenter()">' + Icons.check + ' 我知道了</button>',
+        '    </div>',
+        '  </div>',
+        '</div>'
+      ].join('');
+
+      document.body.appendChild(modal);
+      document.body.classList.add('cp-modal-locked');
+      CommunityPlans.markAllNotifRead();
+    },
+
+    markAllNotifRead: function () {
+      var changed = false;
+      state.notifications.forEach(function (n) { if (!n.read) { n.read = true; changed = true; } });
+      if (changed) CommunityPlans.saveNotifications();
+    },
+
+    closeNotificationCenter: function () {
+      var modal = document.getElementById('cpNotifModal');
+      if (modal) modal.remove();
+      document.body.classList.remove('cp-modal-locked');
+      CommunityPlans.updateNotifBadge();
+    },
+
+    // 对比前后状态，生成通知；首次同步只建立基线不推通知，避免一打开就炸出一堆历史
+    detectNotifications: function (before, after, info) {
+      if (!state._notifBaselineDone) return;
+      var title = (after && after.title) || (before && before.title) || '未命名方案';
+      var carName = (after && after.car_name) || (before && before.car_name) || '';
+
+      var oldStatus = before ? before.remote_status : null;
+      var newStatus = after ? after.remote_status : null;
+
+      if (newStatus && oldStatus !== newStatus) {
+        if (newStatus === 'approved') {
+          var extra = info && info.is_partner ? '，并授予「友站分享」勋标' : (info && info.is_pro ? '，并荣获「国服顶尖」勋标' : '');
+          CommunityPlans.pushNotification('approved', title, carName, extra);
+        } else if (newStatus === 'rejected') {
+          CommunityPlans.pushNotification('rejected', title, carName, (info && (info.reject_reason || info.review_notes)) || '请查看详情');
+        } else if (newStatus === 'cleaned') {
+          CommunityPlans.pushNotification('removed', title, carName, '');
+        }
+      }
+
+      // 批注：用最后一条批注 id 判断是否有新增
+      var oldAnnos = (before && Array.isArray(before.annotations)) ? before.annotations : [];
+      var newAnnos = (after && Array.isArray(after.annotations)) ? after.annotations : [];
+      var oldLast = oldAnnos.length ? oldAnnos[oldAnnos.length - 1].id : '';
+      var newLast = newAnnos.length ? newAnnos[newAnnos.length - 1].id : '';
+      if (newLast && newLast !== oldLast) {
+        var latest = newAnnos[newAnnos.length - 1];
+        CommunityPlans.pushNotification('annotation', title, carName, latest.content || '');
+      }
+    },
+
     // 后台静默批量同步本地所有「审核中」方案的真实云端裁决状态（解决驳回/通过/清理后前端滞留「审核中」问题）
     syncPendingPlanStatuses: function (opts) {
       var force = Boolean(opts && opts.force);
@@ -3940,10 +4112,19 @@
           batch.forEach(function (lp) {
             var info = map[lp.remote_id];
             if (!info) return;
+            var snapBefore = {
+              remote_status: lp.remote_status,
+              title: lp.title,
+              car_name: lp.car_name,
+              annotations: Array.isArray(lp.annotations) ? lp.annotations.slice() : []
+            };
             if (info.found === false || info.status === 'cleaned') {
-              lp.remote_status = 'cleaned';
-              delete lp.remote_id;
-              anyChanged = true;
+              if (lp.remote_status !== 'cleaned') {
+                lp.remote_status = 'cleaned';
+                delete lp.remote_id;
+                anyChanged = true;
+              }
+              CommunityPlans.detectNotifications(snapBefore, lp, info);
               return;
             }
             if (Array.isArray(info.annotations)) {
@@ -3975,6 +4156,7 @@
                 anyNewlyApprovedForCurCar = true;
               }
             }
+            CommunityPlans.detectNotifications(snapBefore, lp, info);
           });
 
           if (anyChanged) {
@@ -3990,6 +4172,13 @@
         .catch(function () {})
         .finally(function () {
           state._isSyncingStatuses = false;
+          if (!state._notifBaselineDone) {
+            // 首次同步只建立基线，不把历史状态刷成一堆通知
+            state._notifBaselineDone = true;
+            CommunityPlans.updateNotifBadge();
+          } else {
+            setTimeout(function () { CommunityPlans.maybeShowNotificationPopup(); }, 1200);
+          }
         });
     },
 
@@ -4026,11 +4215,18 @@
           var d = resObj.data.data;
           var localPlan = state.savedPlans.find(function (p) { return p.id === localId; });
           if (localPlan) {
+            var singleSnap = {
+              remote_status: localPlan.remote_status,
+              title: localPlan.title,
+              car_name: localPlan.car_name,
+              annotations: Array.isArray(localPlan.annotations) ? localPlan.annotations.slice() : []
+            };
             localPlan.remote_status = d.status;
             localPlan.reject_reason = d.reject_reason || d.review_notes;
             localPlan.review_notes = d.review_notes;
             if (Array.isArray(d.annotations)) localPlan.annotations = d.annotations;
             if (d.edit_count !== undefined) localPlan.edit_count = d.edit_count;
+            CommunityPlans.detectNotifications(singleSnap, localPlan, d);
             if (d.status === 'approved' && d.is_pro) {
               localPlan.isPro = true;
             }
