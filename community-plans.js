@@ -3020,12 +3020,31 @@
     },
 
     replyAnnotation: function (localId, annoId) {
+      // 防重入：连点按钮不会再发一遍
+      if (state._replyingAnnoId) {
+        CommunityPlans.toast('正在发送，请稍候…');
+        return;
+      }
       var plan = state.savedPlans.find(function (p) { return p.id === localId; });
       if (!plan || !plan.remote_id) return;
       var input = document.querySelector('[data-anno-input="' + annoId + '"]');
       var content = input ? String(input.value || '').trim() : '';
-      if (!content) { CommunityPlans.toast('回复内容不能为空'); return; }
+      if (!content) {
+        CommunityPlans.toast('回复内容不能为空');
+        return;
+      }
+
+      state._replyingAnnoId = annoId;
       if (input) input.disabled = true;
+      var sendBtn = input && input.parentNode ? input.parentNode.querySelector('.cp-anno-send') : null;
+      if (sendBtn) { sendBtn.disabled = true; sendBtn.textContent = '发送中'; }
+
+      var reset = function () {
+        state._replyingAnnoId = null;
+        if (input) input.disabled = false;
+        if (sendBtn) { sendBtn.disabled = false; sendBtn.textContent = '回复'; }
+      };
+
       fetch('/api/plans', {
         method: 'POST',
         headers: Utils.getApiHeaders(true),
@@ -3035,15 +3054,27 @@
         .then(function (resObj) {
           var body = resObj.data || {};
           if (!resObj.ok || !body.success) {
-            if (input) input.disabled = false;
+            reset();
             CommunityPlans.toast('回复失败：' + (body.message || ('HTTP ' + resObj.status)));
             return;
           }
+          // 直接用服务端返回的最新批注更新本地，立即重绘（重绘即清空输入框、刷新回复列表）
+          var list = Array.isArray(plan.annotations) ? plan.annotations : [];
+          for (var i = 0; i < list.length; i++) {
+            if (list[i] && list[i].id === annoId) {
+              list[i].replies = (body.annotation && body.annotation.replies) || list[i].replies || [];
+              break;
+            }
+          }
+          plan.annotations = list;
+          if (input) input.value = '';
+          Utils.setStorage(STORAGE_KEYS.PLANS, state.savedPlans);
+          state._replyingAnnoId = null;
+          CommunityPlans.renderPlans({ preserveScroll: true });
           CommunityPlans.toast('回复已发送');
-          CommunityPlans.checkPlanStatus(localId, plan.remote_id);
         })
         .catch(function (err) {
-          if (input) input.disabled = false;
+          reset();
           CommunityPlans.toast('回复失败：' + err.message);
         });
     },
