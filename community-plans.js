@@ -4841,6 +4841,7 @@
       state.editingPlan = {
         localId: plan.id,
         remoteId: plan.remote_id,
+        carId: plan.car_id,
         title: plan.title,
         notes: plan.notes
       };
@@ -4855,7 +4856,8 @@
     },
 
     showEditingBar: function (title) {
-      CommunityPlans.hideEditingBar();
+      var stale = document.getElementById('cpEditingBar');
+      if (stale) stale.remove();
       var bar = document.createElement('div');
       bar.id = 'cpEditingBar';
       bar.className = 'cp-editing-bar';
@@ -4881,8 +4883,21 @@
 
     hideEditingBar: function () {
       var bar = document.getElementById('cpEditingBar');
-      if (bar) bar.remove();
       document.body.classList.remove('cp-editing-active');
+      if (!bar) return;
+      bar.classList.remove('is-show');
+      setTimeout(function () {
+        if (bar.parentNode && !bar.classList.contains('is-show')) bar.remove();
+      }, 340);
+    },
+
+    // 由主计算器在切车时调用：切到别的车就退出编辑态，避免编辑条一直挂着
+    notifyCarChanged: function (carId) {
+      if (!state.editingPlan) return;
+      if (String(state.editingPlan.carId) === String(carId)) return;
+      state.editingPlan = null;
+      CommunityPlans.hideEditingBar();
+      CommunityPlans.toast('已切换车辆，退出编辑');
     },
 
     cancelEditPlan: function () {

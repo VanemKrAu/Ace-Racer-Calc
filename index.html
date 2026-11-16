@@ -2165,6 +2165,10 @@ CD：45秒
     }
 
     function pickCar(id) {
+        // 切换车辆时若处于「编辑已上传方案」状态，直接退出编辑
+        if (window.CommunityPlans && typeof window.CommunityPlans.notifyCarChanged === 'function') {
+            window.CommunityPlans.notifyCarChanged(id);
+        }
         // Handle "Unreleased car"
         if (id === -1) {
             _selectedCar = null;
