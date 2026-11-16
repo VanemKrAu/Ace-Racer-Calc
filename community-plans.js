@@ -2835,6 +2835,13 @@
       var isProPlan = !isPartnerPlan && Boolean(item.isPro || item.is_pro || type === 'pro');
       var isLocalPlan = (type === 'local');
       var isAuthorSelf = Boolean(item.viewer_is_author || (isLocalPlan && safeRemoteId));
+      // 已上传的方案会从「我的专属配装」移到社区分区，这里找回对应的本地记录，
+      // 让作者本人即使在社区卡片上也能编辑/删除（用的是本地 id，走同一套接口）
+      // 社区方案没有 remote_id 字段，它的 item.id 本身就是云端 id
+      var myLocalCounterpart = !isLocalPlan
+        ? state.savedPlans.filter(function (p) { return p && p.remote_id && p.remote_id === item.id; })[0]
+        : null;
+      var ownerLocalId = isLocalPlan ? safePlanId : (myLocalCounterpart ? Utils.safeId(myLocalCounterpart.id) : '');
 
       // 渲染主页链接胶囊（带平台标识与外链图标，严禁中途断行）
       var linksHtml = '';
@@ -2968,14 +2975,14 @@
              '<span class="cp-vote-ico-wrap">' + Icons.thumb(isVoted) + '</span>' +
              '<span class="cp-vote-count" data-count="' + (Number(item.votes) || 0) + '"><span class="cp-vote-num-cur">' + (Number(item.votes) || 0) + '</span></span></button>')
           : ''),
-        (isLocalPlan && safeRemoteId
-          ? '      <button type="button" class="nav-btn select-btn cp-edit-btn" title="编辑这条已上传的方案（保存后重新送审）" onclick="CommunityPlans.startEditPlan(\'' + safePlanId + '\')">' + Icons.edit + '</button>'
+        (ownerLocalId && (isLocalPlan ? safeRemoteId : item.id)
+          ? '      <button type="button" class="nav-btn select-btn cp-edit-btn" title="编辑这条已上传的方案（保存后重新送审）" onclick="CommunityPlans.startEditPlan(\'' + ownerLocalId + '\')">' + Icons.edit + '</button>'
           : ''),
         (isLocalPlan && !safeRemoteId
-          ? '      <button type="button" class="nav-btn select-btn cp-upload-btn" title="上传到云端（需人机验证）" onclick="CommunityPlans.uploadLocalPlan(\'' + safePlanId + '\')">' + Icons.upload + '</button>'
+          ? '      <button type="button" class="nav-btn select-btn cp-upload-btn" title="上传到云端（需人机验证）" onclick="CommunityPlans.uploadLocalPlan(\'' + ownerLocalId + '\')">' + Icons.upload + '</button>'
           : ''),
-        (isLocalPlan
-          ? '      <button type="button" class="nav-btn select-btn cp-del-btn" title="删除该方案" onclick="CommunityPlans.deletePlan(\'' + safePlanId + '\')">' + Icons.trash + '</button>'
+        (ownerLocalId
+          ? '      <button type="button" class="nav-btn select-btn cp-del-btn" title="删除该方案" onclick="CommunityPlans.deletePlan(\'' + ownerLocalId + '\')">' + Icons.trash + '</button>'
           : ''),
         '    </div>',
         '    <button type="button" class="nav-btn cp-apply-btn ' + (isApplied && !isModeDisabled ? 'is-applied' : '') + (isModeDisabled ? ' is-disabled' : '') + '"' + applyBtnAttrs + '>',
