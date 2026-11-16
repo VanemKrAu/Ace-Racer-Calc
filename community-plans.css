@@ -1681,6 +1681,29 @@ body[data-calc-mode="support"] #communityPlansContainer {
   background-color: var(--acc-soft);
 }
 
+/* 上传按钮：与编辑/删除同规格图标按钮，悬停走宿主通过色 --pass */
+.ds-c .cp-upload-btn {
+  width: 30px;
+  height: 30px;
+  padding: 0;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 8px;
+  color: var(--ink-3);
+  cursor: pointer;
+}
+
+.ds-c .cp-upload-btn .ico {
+  width: 14px;
+  height: 14px;
+}
+
+.ds-c .cp-upload-btn:hover {
+  color: var(--pass);
+  background-color: var(--pass-soft);
+}
+
 /* ==========================================================================
    站长批注（仅方案提交人可见）
    复用宿主 .card 的玻璃底色、--surface-rim 内描边与 --r-md 圆角，不写死纯色

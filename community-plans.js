@@ -582,6 +582,7 @@
   var Icons = {
     chip: '<svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="4" y="4" width="16" height="16" rx="2"/><rect x="9" y="9" width="6" height="6"/><path d="M9 1v3M15 1v3M9 20v3M15 20v3M20 9h3M20 14h3M1 9h3M1 14h3"/></svg>',
     save: '<svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"/><polyline points="17 21 17 13 7 13 7 21"/><polyline points="7 3 7 8 15 8"/></svg>',
+    upload: '<svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>',
     undo: '<svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 7v6h6"/><path d="M21 17a9 9 0 0 0-9-9 9 9 0 0 0-6 2.3L3 13"/></svg>',
     megaphone: '<svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m3 11 18-5v12L3 14v-3z"/><path d="M11.6 16.8a3 3 0 1 1-5.8-1.6"/></svg>',
     hot: '<svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M8.5 14.5A2.5 2.5 0 0 0 11 12c0-1.38-.5-2-1-3-1.072-2.143-.224-4.054 2-6 .5 2.5 2 4.9 4 6.5 2 1.6 3 3.5 3 5.5a7 7 0 1 1-14 0c0-1.153.433-2.294 1-3a2.5 2.5 0 0 0 2.5 2.5z"/></svg>',
@@ -2965,6 +2966,9 @@
         (isLocalPlan && safeRemoteId
           ? '      <button type="button" class="nav-btn select-btn cp-edit-btn" title="编辑该方案（保存后需重新审核）" onclick="CommunityPlans.startEditPlan(\'' + safePlanId + '\')">' + Icons.save + '</button>'
           : ''),
+        (isLocalPlan && !safeRemoteId
+          ? '      <button type="button" class="nav-btn select-btn cp-upload-btn" title="上传到云端（需人机验证）" onclick="CommunityPlans.uploadLocalPlan(\'' + safePlanId + '\')">' + Icons.upload + '</button>'
+          : ''),
         (isLocalPlan
           ? '      <button type="button" class="nav-btn select-btn cp-del-btn" title="删除该方案" onclick="CommunityPlans.deletePlan(\'' + safePlanId + '\')">' + Icons.trash + '</button>'
           : ''),
@@ -3742,6 +3746,7 @@
       });
 
       var editing = state.editingPlan;
+      var uploadingLocalId = state.uploadingLocalId;
       var payload = {
         action: editing ? 'edit' : 'submit',
         plan_id: editing ? editing.remoteId : undefined,
@@ -3807,7 +3812,21 @@
             planItem.remote_status = resObj.data.data.status;
           }
 
-          if (editing) {
+          if (uploadingLocalId) {
+            // 本地补传：把云端 id 回填到原来那条，不新增
+            var upPlan = state.savedPlans.find(function (x) { return x.id === uploadingLocalId; });
+            if (upPlan) {
+              upPlan.remote_id = planItem.remote_id;
+              upPlan.remote_status = planItem.remote_status;
+              upPlan.title = planItem.title;
+              upPlan.notes = planItem.notes;
+              upPlan.build_sig = planItem.build_sig;
+              upPlan.links = planItem.links;
+              upPlan.author = planItem.author;
+              upPlan.is_anonymous = planItem.is_anonymous;
+            }
+            state.uploadingLocalId = null;
+          } else if (editing) {
             // 编辑模式：覆盖本地那条，不新增
             var existPlan = state.savedPlans.find(function (x) { return x.id === editing.localId; });
             if (existPlan) {
@@ -3832,17 +3851,20 @@
           Utils.setStorage(STORAGE_KEYS.PLANS, state.savedPlans);
 
           var editingWas = Boolean(editing);
+          var uploadingWas = Boolean(uploadingLocalId);
           var finishSuccess = function () {
             state._saveSuccessTimer = null;
             CommunityPlans.turnstileState.isSubmitting = false;
             // 成功后再销毁弹窗与内存截图，绝不保留原图在本地
             CommunityPlans.closeSaveModal();
             CommunityPlans.renderPlans();
-            var msg = editingWas
+            var msg = uploadingWas
+              ? ('方案「' + title + '」已上传到云端，等待审核')
+              : (editingWas
               ? ('方案「' + title + '」已更新，重新进入审核队列')
               : (isApplyPro
                   ? '方案「' + title + '」已保存并提交国服自证审核！'
-                  : '方案「' + title + '」已保存并提交内容安全审核！');
+                  : '方案「' + title + '」已保存并提交内容安全审核！'));
             CommunityPlans.toast(msg);
             CommunityPlans.fetchRemotePlans(state.currentCarId);
           };
@@ -4479,6 +4501,51 @@
         .catch(function (err) {
           CommunityPlans.toast('删除失败：' + err.message);
         });
+    },
+
+    // 把纯本地方案补传到云端：切车 → 载参数 → 打开保存弹窗并自动勾选同步
+    uploadLocalPlan: function (localId) {
+      var plan = state.savedPlans.find(function (p) { return p.id === localId; });
+      if (!plan) return;
+      if (plan.remote_id) {
+        CommunityPlans.toast('该方案已经在云端了');
+        return;
+      }
+
+      var open = function () {
+        try {
+          ParamsIO.apply(plan.params);
+        } catch (e) {
+          CommunityPlans.toast('载入方案参数失败：' + e.message);
+          return;
+        }
+        state.uploadingLocalId = plan.id;
+        CommunityPlans.openSaveModal();
+        setTimeout(function () {
+          var t = document.getElementById('cpInputTitle');
+          if (t) { t.value = plan.title || ''; CommunityPlans.onTitleInput(t); }
+          var n = document.getElementById('cpInputNotes');
+          if (n && plan.notes) { n.value = plan.notes; CommunityPlans.onNotesInput(n); }
+          var chk = document.getElementById('cpChkSyncCommunity');
+          if (chk && !chk.checked) {
+            chk.checked = true;
+            try { chk.dispatchEvent(new Event('change', { bubbles: true })); } catch (_) {}
+          }
+          var btn = document.getElementById('cpBtnConfirmSave');
+          if (btn) btn.innerHTML = Icons.upload + ' 完成验证并上传';
+        }, 80);
+      };
+
+      if (state.currentCarId && String(state.currentCarId) !== String(plan.car_id)) {
+        if (typeof window.pickCar === 'function') {
+          window.pickCar(plan.car_id);
+          setTimeout(open, 420);
+        } else {
+          CommunityPlans.toast('请先切换到「' + (plan.car_name || '该车') + '」再上传');
+        }
+        return;
+      }
+      open();
     },
 
     // 编辑已上传的方案：把参数载回计算器，保存时走 action=edit，重新进审核队列
