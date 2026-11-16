@@ -1724,13 +1724,13 @@ body[data-calc-mode="support"] #communityPlansContainer {
   margin-bottom: 8px;
   font-size: 12px;
   font-weight: 700;
-  color: var(--acc-ink);
+  color: var(--info-ink);
 }
 
 .ds-c .cp-anno-item {
   padding-left: 10px;
   margin-bottom: 10px;
-  border-left: 2px solid color-mix(in oklab, var(--acc) 45%, transparent);
+  border-left: 2px solid color-mix(in oklab, var(--info) 55%, transparent);
 }
 
 .ds-c .cp-anno-item:last-child {
@@ -1789,7 +1789,7 @@ body[data-calc-mode="support"] #communityPlansContainer {
 
 .ds-c .cp-anno-input:focus {
   outline: none;
-  border-color: color-mix(in oklab, var(--acc) 55%, transparent);
+  border-color: color-mix(in oklab, var(--info) 55%, transparent);
 }
 
 .ds-c .cp-anno-send {
@@ -1799,14 +1799,14 @@ body[data-calc-mode="support"] #communityPlansContainer {
   font-size: 12px;
   font-weight: 700;
   color: var(--ink);
-  background-color: color-mix(in oklab, var(--acc) 20%, var(--surface));
-  border: 1px solid color-mix(in oklab, var(--acc) 60%, transparent);
+  background-color: color-mix(in oklab, var(--info) 20%, var(--surface));
+  border: 1px solid color-mix(in oklab, var(--info) 60%, transparent);
   box-shadow: inset 0 1px 0 var(--surface-rim);
   cursor: pointer;
 }
 
 .ds-c .cp-anno-send:hover {
-  background-color: color-mix(in oklab, var(--acc) 30%, var(--surface));
+  background-color: color-mix(in oklab, var(--info) 32%, var(--surface));
 }
 
 @media (max-width: 640px) {
@@ -1825,8 +1825,8 @@ body[data-calc-mode="support"] #communityPlansContainer {
   font-size: 12px;
   font-weight: 700;
   color: var(--ink);
-  background-color: color-mix(in oklab, var(--acc) 20%, var(--surface));
-  border: 1px solid color-mix(in oklab, var(--acc) 60%, transparent);
+  background-color: color-mix(in oklab, var(--info) 20%, var(--surface));
+  border: 1px solid color-mix(in oklab, var(--info) 60%, transparent);
   box-shadow: inset 0 1px 0 var(--surface-rim);
   cursor: pointer;
   transition: background-color .15s ease, border-color .15s ease, color .15s ease, transform .15s ease;
@@ -2916,26 +2916,22 @@ body.ds-c.performance-mode .cp-btn-save.is-success .cp-save-ok-ico .ico {
 
 /* 通知列表（弹窗内与收信箱共用） */
 .ds-c .cp-notif-list {
-  display: flex;
-  flex-direction: column;
-  gap: 8px;
+  display: block;
 }
 
+/* 与 .cp-card-note-box 一致：透明底、无圆角、左侧一条细直线，不用彩色竖条 */
 .ds-c .cp-notif-item {
-  display: flex;
-  gap: 10px;
-  padding: 11px 12px;
-  border-radius: var(--r-md, 10px);
-  background: var(--fill);
-  border: 1px solid var(--sep);
-  border-left-width: 3px;
-  border-left-style: solid;
+  display: block;
+  padding: 1px 0 1px 9px;
+  border: none;
+  border-radius: 0;
+  background: transparent;
+  border-left: 2px solid color-mix(in oklab, var(--acc) 42%, transparent);
 }
 
-.ds-c .cp-notif-item.is-approved { border-left-color: var(--pass); }
-.ds-c .cp-notif-item.is-rejected { border-left-color: var(--fail); }
-.ds-c .cp-notif-item.is-annotation { border-left-color: var(--acc); }
-.ds-c .cp-notif-item.is-removed { border-left-color: var(--warn); }
+.ds-c .cp-notif-item + .cp-notif-item {
+  margin-top: 12px;
+}
 
 .ds-c .cp-notif-body {
   flex: 1;
@@ -2944,10 +2940,12 @@ body.ds-c.performance-mode .cp-btn-save.is-success .cp-save-ok-ico .ico {
 
 .ds-c .cp-notif-title {
   display: flex;
-  align-items: baseline;
+  align-items: flex-start;
   gap: 7px;
   flex-wrap: wrap;
-  margin-bottom: 3px;
+  margin-bottom: 2px;
+  font-size: 11.5px;
+  line-height: 1.45;
 }
 
 .ds-c .cp-notif-title b {
@@ -2957,29 +2955,32 @@ body.ds-c.performance-mode .cp-btn-save.is-success .cp-save-ok-ico .ico {
 }
 
 .ds-c .cp-notif-tag {
-  font-size: 10.5px;
+  flex-shrink: 0;
+  font-size: 11px;
   font-weight: 700;
-  padding: 1px 7px;
+  padding: 1px 6px;
   border-radius: 5px;
   white-space: nowrap;
+  margin-top: 1px;
 }
 
 .ds-c .cp-notif-tag.is-approved { color: var(--pass); background: var(--pass-soft); }
 .ds-c .cp-notif-tag.is-rejected { color: var(--fail); background: var(--fail-soft); }
-.ds-c .cp-notif-tag.is-annotation { color: var(--acc-ink); background: var(--acc-soft); }
+.ds-c .cp-notif-tag.is-annotation { color: var(--info-ink); background: var(--info-soft); }
 .ds-c .cp-notif-tag.is-removed { color: var(--warn); background: var(--warn-soft); }
 
 .ds-c .cp-notif-text {
-  font-size: 12px;
-  line-height: 1.6;
+  font-size: 11.5px;
+  line-height: 1.45;
   color: var(--ink-2);
   word-break: break-word;
+  overflow-wrap: anywhere;
 }
 
 .ds-c .cp-notif-time {
-  font-size: 11px;
+  font-size: 10.5px;
   color: var(--ink-3);
-  margin-top: 4px;
+  margin-top: 3px;
 }
 
 .ds-c .cp-notif-empty {
