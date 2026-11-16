@@ -4013,8 +4013,8 @@
         : state.notifications;
       var unreadCount = state.notifications.filter(function (n) { return !n.read; }).length;
       var title = onlyUnread === true ? ('您有 ' + list.length + ' 条新通知') : '通知收信箱';
-      var levelCls = list.some(function (n) { return n.type === 'rejected'; }) ? 'is-warn'
-        : (list.length && list.every(function (n) { return n.type === 'approved'; }) ? 'is-success' : '');
+      // 通知弹窗保持与公告默认级别一致的描边，不按内容染边（避免整窗泛金/泛绿）
+      var levelCls = '';
 
       var modal = document.createElement('div');
       modal.id = 'cpNotifModal';
