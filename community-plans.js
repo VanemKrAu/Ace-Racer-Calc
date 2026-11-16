@@ -3888,6 +3888,7 @@
               existPlan.last_edited_at = Date.now();
             }
             state.editingPlan = null;
+            CommunityPlans.hideEditingBar();
           } else {
             state.savedPlans.unshift(planItem);
           }
@@ -4804,7 +4805,51 @@
         title: plan.title,
         notes: plan.notes
       };
-      CommunityPlans.toast('已载入「' + plan.title + '」的参数。改完点右上角「立即保存当前配装」，保存后会重新提交审核。');
+      // 进入编辑态：参数已载入计算器，顶部出现「正在编辑」条，改完点那里的「保存修改」
+      CommunityPlans.showEditingBar(plan.title);
+      CommunityPlans.closePlansModal && CommunityPlans.closePlansModal();
+      try {
+        var anchor = document.getElementById('cardCoreParams') || document.querySelector('.ds-c .card');
+        if (anchor) anchor.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      } catch (_) {}
+      CommunityPlans.toast('已载入「' + plan.title + '」的参数，改完点顶部「保存修改」');
+    },
+
+    showEditingBar: function (title) {
+      CommunityPlans.hideEditingBar();
+      var bar = document.createElement('div');
+      bar.id = 'cpEditingBar';
+      bar.className = 'cp-editing-bar';
+      bar.setAttribute('data-html2canvas-ignore', 'true');
+      // 内联兜底：这个条挂在 body 下、不在 .ds-c 卡片上下文里，类选择器偶发取不到宿主变量
+      var ghostStyle = 'height:30px;padding:0 12px;border-radius:8px;font-size:12px;font-weight:700;font-family:inherit;cursor:pointer;'
+        + 'border:1px solid rgba(255,255,255,.18);background:rgba(255,255,255,.07);color:#c7c7cc;';
+      var primaryStyle = 'height:30px;padding:0 12px;border-radius:8px;font-size:12px;font-weight:700;font-family:inherit;cursor:pointer;'
+        + 'border:1px solid color-mix(in oklab, var(--acc, #f2a900) 60%, transparent);'
+        + 'background:color-mix(in oklab, var(--acc, #f2a900) 22%, rgba(20,20,24,.9));color:#f5f5f7;';
+      bar.innerHTML = [
+        '<span class="cp-eb-ico">' + Icons.edit + '</span>',
+        '<span class="cp-eb-text"><b>正在编辑</b><span>' + Utils.escapeHtml(String(title || '该方案')) + '</span></span>',
+        '<span class="cp-eb-actions">',
+        '  <button type="button" style="' + ghostStyle + '" onclick="CommunityPlans.cancelEditPlan()">取消</button>',
+        '  <button type="button" style="' + primaryStyle + '" onclick="CommunityPlans.openSaveModal()">保存修改</button>',
+        '</span>'
+      ].join('');
+      document.body.appendChild(bar);
+      document.body.classList.add('cp-editing-active');
+      requestAnimationFrame(function () { bar.classList.add('is-show'); });
+    },
+
+    hideEditingBar: function () {
+      var bar = document.getElementById('cpEditingBar');
+      if (bar) bar.remove();
+      document.body.classList.remove('cp-editing-active');
+    },
+
+    cancelEditPlan: function () {
+      state.editingPlan = null;
+      CommunityPlans.hideEditingBar();
+      CommunityPlans.toast('已退出编辑');
     },
 
     // 点赞 / 再次点击取消点赞 (绑定设备指纹持久化记忆 + 禁止作者自赞)

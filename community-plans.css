@@ -2994,3 +2994,123 @@ body.ds-c.performance-mode .cp-btn-save.is-success .cp-save-ok-ico .ico {
   .ds-c #notifBtn { width: 34px; }
   .ds-c .cp-notif-item { padding: 10px; }
 }
+
+/* ==========================================================================
+   编辑态顶部提示条：复用宿主 --surface / --surface-rim / --acc / --r-md
+   ========================================================================== */
+.ds-c .cp-editing-bar,
+.cp-editing-bar {
+  position: fixed;
+  left: 50%;
+  top: 10px;
+  z-index: 2147482500;
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  width: -moz-fit-content;
+  width: fit-content;
+  max-width: calc(100vw - 20px);
+  padding: 9px 12px;
+  border-radius: var(--r-md, 10px);
+  background: var(--surface-2, var(--surface));
+  border: 1px solid color-mix(in oklab, var(--acc) 45%, transparent);
+  box-shadow: 0 10px 30px rgba(0, 0, 0, .32), inset 0 1px 0 var(--surface-rim);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  transform: translate(-50%, -14px);
+  opacity: 0;
+  transition: opacity .22s var(--ease-out), transform .26s var(--ease-spring);
+}
+
+.cp-editing-bar.is-show {
+  transform: translate(-50%, 0);
+  opacity: 1;
+}
+
+.cp-eb-ico {
+  display: inline-flex;
+  color: var(--acc-ink, var(--acc));
+  flex-shrink: 0;
+}
+
+.cp-eb-ico .ico {
+  width: 16px;
+  height: 16px;
+}
+
+/* 用 block + inline 子元素撑开真实宽度；之前用 flex 时容器被算成 0，文字溢出压到按钮上 */
+.cp-eb-text {
+  display: block;
+  flex: 0 0 auto;
+  white-space: nowrap;
+  font-size: 12.5px;
+  line-height: 1.4;
+}
+
+.cp-eb-text b {
+  margin-right: 6px;
+}
+
+.cp-eb-text b {
+  font-weight: 700;
+  color: var(--ink);
+  white-space: nowrap;
+}
+
+
+.cp-eb-text span {
+  display: inline-block;
+  vertical-align: baseline;
+  color: var(--ink-2);
+  font-size: 11.5px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 22ch;
+}
+
+.cp-eb-actions {
+  display: flex;
+  gap: 6px;
+  margin-left: auto;
+  flex: 0 0 auto;
+}
+
+.cp-eb-btn {
+  height: 30px;
+  padding: 0 12px;
+  border-radius: var(--r-sm, 8px);
+  font-size: 12px;
+  font-weight: 700;
+  font-family: inherit;
+  cursor: pointer;
+  border: 1px solid var(--sep);
+  background: var(--fill);
+  color: var(--ink-2);
+  transition: background-color .15s ease, color .15s ease, border-color .15s ease;
+}
+
+.cp-eb-btn.is-ghost:hover {
+  background: var(--fill-hover, var(--fill));
+  color: var(--ink);
+}
+
+.cp-eb-btn.is-primary {
+  color: var(--ink);
+  background: color-mix(in oklab, var(--acc) 20%, var(--surface));
+  border-color: color-mix(in oklab, var(--acc) 60%, transparent);
+}
+
+.cp-eb-btn.is-primary:hover {
+  background: color-mix(in oklab, var(--acc) 30%, var(--surface));
+}
+
+@media (max-width: 640px) {
+  .cp-editing-bar { top: 8px; padding: 8px 10px; gap: 8px; }
+  .cp-eb-text span { display: none; }
+  .cp-eb-btn { padding: 0 10px; }
+}
+
+/* 编辑条固定在顶部时，用 body 内边距撑开，避免压住第一张卡片 */
+body.cp-editing-active { padding-top: 56px !important; }
+@media (max-width: 640px) { body.cp-editing-active { padding-top: 54px !important; } }
