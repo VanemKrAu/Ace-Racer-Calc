@@ -583,6 +583,7 @@
   var Icons = {
     chip: '<svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="4" y="4" width="16" height="16" rx="2"/><rect x="9" y="9" width="6" height="6"/><path d="M9 1v3M15 1v3M9 20v3M15 20v3M20 9h3M20 14h3M1 9h3M1 14h3"/></svg>',
     save: '<svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"/><polyline points="17 21 17 13 7 13 7 21"/><polyline points="7 3 7 8 15 8"/></svg>',
+    edit: '<svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 20h9"/><path d="M16.5 3.5a2.12 2.12 0 0 1 3 3L7 19l-4 1 1-4Z"/></svg>',
     bell: '<svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M18 8a6 6 0 0 0-12 0c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 0 1-3.46 0"/></svg>',
     upload: '<svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>',
     undo: '<svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 7v6h6"/><path d="M21 17a9 9 0 0 0-9-9 9 9 0 0 0-6 2.3L3 13"/></svg>',
@@ -2968,7 +2969,7 @@
              '<span class="cp-vote-count" data-count="' + (Number(item.votes) || 0) + '"><span class="cp-vote-num-cur">' + (Number(item.votes) || 0) + '</span></span></button>')
           : ''),
         (isLocalPlan && safeRemoteId
-          ? '      <button type="button" class="nav-btn select-btn cp-edit-btn" title="编辑该方案（保存后需重新审核）" onclick="CommunityPlans.startEditPlan(\'' + safePlanId + '\')">' + Icons.save + '</button>'
+          ? '      <button type="button" class="nav-btn select-btn cp-edit-btn" title="编辑这条已上传的方案（保存后重新送审）" onclick="CommunityPlans.startEditPlan(\'' + safePlanId + '\')">' + Icons.edit + '</button>'
           : ''),
         (isLocalPlan && !safeRemoteId
           ? '      <button type="button" class="nav-btn select-btn cp-upload-btn" title="上传到云端（需人机验证）" onclick="CommunityPlans.uploadLocalPlan(\'' + safePlanId + '\')">' + Icons.upload + '</button>'
