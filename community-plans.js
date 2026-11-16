@@ -4064,7 +4064,9 @@
 
     // 对比前后状态，生成通知；首次同步只建立基线不推通知，避免一打开就炸出一堆历史
     detectNotifications: function (before, after, info) {
-      if (!state._notifBaselineDone) return;
+      // 只有本地从没记录过远端状态时才视为基线（首次见到这条方案），不推通知。
+      // 之前用的是全局 _notifBaselineDone，会把「页面首次同步前刚发生的驳回」一并吞掉。
+      if (!before || !before.remote_status) return;
       var title = (after && after.title) || (before && before.title) || '未命名方案';
       var carName = (after && after.car_name) || (before && before.car_name) || '';
 
@@ -4203,13 +4205,8 @@
         .catch(function () {})
         .finally(function () {
           state._isSyncingStatuses = false;
-          if (!state._notifBaselineDone) {
-            // 首次同步只建立基线，不把历史状态刷成一堆通知
-            state._notifBaselineDone = true;
-            CommunityPlans.updateNotifBadge();
-          } else {
-            setTimeout(function () { CommunityPlans.maybeShowNotificationPopup(); }, 1200);
-          }
+          CommunityPlans.updateNotifBadge();
+          setTimeout(function () { CommunityPlans.maybeShowNotificationPopup(); }, 1200);
         });
     },
 
