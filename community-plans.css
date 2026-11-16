@@ -1644,8 +1644,11 @@ body[data-calc-mode="support"] #communityPlansContainer {
   align-items: center;
   justify-content: center;
   border-radius: 8px;
-  color: var(--ink-3);
+  color: var(--ink-2);
+  background-color: color-mix(in oklab, var(--ink) 6%, transparent);
+  border: 1px solid color-mix(in oklab, var(--ink) 8%, transparent);
   cursor: pointer;
+  transition: color .15s ease, background-color .15s ease, border-color .15s ease;
 }
 
 .ds-c .cp-del-btn .ico {
@@ -1667,8 +1670,11 @@ body[data-calc-mode="support"] #communityPlansContainer {
   align-items: center;
   justify-content: center;
   border-radius: 8px;
-  color: var(--ink-3);
+  color: var(--ink-2);
+  background-color: color-mix(in oklab, var(--ink) 6%, transparent);
+  border: 1px solid color-mix(in oklab, var(--ink) 8%, transparent);
   cursor: pointer;
+  transition: color .15s ease, background-color .15s ease, border-color .15s ease;
 }
 
 .ds-c .cp-edit-btn .ico {
@@ -1690,8 +1696,11 @@ body[data-calc-mode="support"] #communityPlansContainer {
   align-items: center;
   justify-content: center;
   border-radius: 8px;
-  color: var(--ink-3);
+  color: var(--ink-2);
+  background-color: color-mix(in oklab, var(--ink) 6%, transparent);
+  border: 1px solid color-mix(in oklab, var(--ink) 8%, transparent);
   cursor: pointer;
+  transition: color .15s ease, background-color .15s ease, border-color .15s ease;
 }
 
 .ds-c .cp-upload-btn .ico {
@@ -3004,12 +3013,14 @@ body.ds-c.performance-mode .cp-btn-save.is-success .cp-save-ok-ico .ico {
   left: 50%;
   top: 10px;
   z-index: 2147482500;
+  box-sizing: border-box;
   display: flex;
   align-items: center;
   gap: 14px;
   width: -moz-fit-content;
   width: fit-content;
   max-width: calc(100vw - 20px);
+  overflow: hidden;
   padding: 9px 12px;
   border-radius: var(--r-md, 10px);
   background: var(--surface-2, var(--surface));
@@ -3038,10 +3049,12 @@ body.ds-c.performance-mode .cp-btn-save.is-success .cp-save-ok-ico .ico {
   height: 16px;
 }
 
-/* 用 block + inline 子元素撑开真实宽度；之前用 flex 时容器被算成 0，文字溢出压到按钮上 */
+/* 用 block + inline 子元素撑开真实宽度；容器可收缩，超长方案名走省略号 */
 .cp-eb-text {
   display: block;
-  flex: 0 0 auto;
+  flex: 0 1 auto;
+  min-width: 0;
+  overflow: hidden;
   white-space: nowrap;
   font-size: 12.5px;
   line-height: 1.4;
@@ -3066,7 +3079,7 @@ body.ds-c.performance-mode .cp-btn-save.is-success .cp-save-ok-ico .ico {
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
-  max-width: 22ch;
+  max-width: min(22ch, 30vw);
 }
 
 .cp-eb-actions {
@@ -3111,6 +3124,3 @@ body.ds-c.performance-mode .cp-btn-save.is-success .cp-save-ok-ico .ico {
   .cp-eb-btn { padding: 0 10px; }
 }
 
-/* 编辑条固定在顶部时，用 body 内边距撑开，避免压住第一张卡片 */
-body.cp-editing-active { padding-top: 56px !important; }
-@media (max-width: 640px) { body.cp-editing-active { padding-top: 54px !important; } }
