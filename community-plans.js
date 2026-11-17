@@ -4637,6 +4637,7 @@
     fetchSiteConfig: function () {
       fetch('/api/plans?meta=site_config', {
         method: 'GET',
+        cache: 'no-store',
         headers: Utils.getApiHeaders(false)
       })
         .then(Utils.parseJsonSafe)
@@ -4663,6 +4664,9 @@
               }
             }
             CommunityPlans.maybeHandleAnnouncement(true);
+            if (window.ArcProfile && window.ArcProfile.configurePrompt) {
+              window.ArcProfile.configurePrompt(json.site_meta.profile_prompt || { enabled: true, max_shows: 1, delay_seconds: 1, interval_hours: 24 });
+            }
             if (state.currentCarId) {
               CommunityPlans.renderPlans({ preserveScroll: true });
             }

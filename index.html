@@ -5118,21 +5118,11 @@ function __tok(n, d) { var v = getComputedStyle(document.body).getPropertyValue(
                 id: 'acecore', category: 'core', slotType: 'core', icon: 'chip_wphx.png',
                 name: { zh: '王牌核心', en: 'Ace Core' },
                 desc: {
-                    zh: '每次点击大招时立即结束漂移，并在扣除本次大招能量后获得 <strong>0.5%～5%</strong> 大招能量（受反制和充能效率影响）。',
-                    en: 'Each ult ends drifting and grants <strong>0.5%–5%</strong> energy after its cost (scaled by Counter and Charge Eff).'
+                    zh: '每次点击大招时立即结束漂移，并在扣除本次大招能量后获得 <strong>5%</strong> 大招能量（按 10 级计算，受反制和充能效率影响）。',
+                    en: 'Each ult ends drifting and grants <strong>5%</strong> energy after its cost (Lv. 10, scaled by Counter and Charge Eff).'
                 },
                 scale: 'DE', cycle: 1,
-                options: [{
-                    id: 'level', def: '10', label: { zh: '芯片等级', en: 'Chip level' },
-                    choices: Array.from({ length: 10 }, function (_, i) {
-                        var level = String(i + 1);
-                        return { v: level, zh: level + '级', en: 'Lv.' + level };
-                    })
-                }],
-                ultCharge: function (k, opts) {
-                    var level = opts && opts.level ? parseInt(opts.level, 10) : 10;
-                    return Math.max(1, Math.min(10, isNaN(level) ? 10 : level)) * 0.5;
-                }
+                ultCharge: function () { return 5; }
             },
             {
                 id: 'hunter', category: 'heroine', icon: 'chip_hunter.png',
@@ -5317,7 +5307,6 @@ function __tok(n, d) { var v = getComputedStyle(document.body).getPropertyValue(
 
         var _chipsOn = [];             // 已装备：[{ id, opts: { loopMode: 'avg' } }]
         var _chipPickerWant = false;
-        var _chipPickerType = 'v';
         var _chipNewId = '';
         var _CHIP_SVG = {
             plus: '<svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 5v14M5 12h14"/></svg>',
@@ -5524,15 +5513,15 @@ function __tok(n, d) { var v = getComputedStyle(document.body).getPropertyValue(
                 + '<button type="button" class="chip-act" data-act="remove" data-id="' + _chipAttr(def.id) + '">' + _CHIP_SVG.x + '<span class="chip-sr zh">卸下芯片</span><span class="chip-sr lang-en">Remove chip</span></button>'
                 + '</div>' + _chipOptsHtml(inst, def) + '</div>';
         }
-        function _chipEmptyHtml(type) {
-            return '<button type="button" class="chip-slot is-empty' + (_chipPickerWant && _chipPickerType === type ? ' is-open' : '') + '" data-act="open" data-slot="' + type + '" aria-expanded="' + (_chipPickerWant && _chipPickerType === type) + '">'
-                + '<span class="chip-add-ico">' + _CHIP_SVG.plus + '</span><span>' + (type === 'core' ? _c2('选择核心芯片', 'Choose a core chip') : _c2('选择 V 型芯片', 'Choose a V chip')) + '</span></button>';
+        function _chipEmptyHtml() {
+            var open = _chipPickerWant && !_chipSwapTarget;
+            return '<button type="button" class="chip-slot is-empty' + (open ? ' is-open' : '') + '" data-act="open" aria-expanded="' + open + '">'
+                + '<span class="chip-add-ico">' + _CHIP_SVG.plus + '</span><span>' + _c2('选择芯片', 'Choose a chip') + '</span></button>';
         }
         function _chipRenderGrid() {
             var grid = _chipEl('chipGrid'), q = ((_chipEl('chipSearch') || {}).value || '').trim().toLowerCase();
             if (!grid) return;
             var curCar = typeof _selectedCar !== 'undefined' ? _selectedCar : null;
-            var full = _chipCount(_chipPickerType) >= _chipCapacity(_chipPickerType) && !_chipSwapTarget;
             var lang = typeof currentLang !== 'undefined' ? currentLang : 'zh';
             // 无搜索过滤且已构建过网格时：直接按 data-id 增量更新选中态、锁定态、禁用态和副标题，避免每次重建 DOM 和重新解码图片
             if (!q && grid.__built && grid.__lang === lang && grid.__q === '') {
@@ -5548,7 +5537,10 @@ function __tok(n, d) { var v = getComputedStyle(document.body).getPropertyValue(
                         if (!tile) { matchedAll = false; break; }
                         var on = _chipIndex(d.id) >= 0;
                         var locked = !_chipCanEquip(d, curCar);
-                        var disabled = locked || (full && !on) || (_chipSwapTarget && on && d.id !== _chipSwapTarget);
+                        var type = _chipSlotType(d);
+                        var wrongSwap = _chipSwapTarget && _chipSlotType(_chipDef(_chipSwapTarget)) !== type;
+                        var full = _chipCount(type) >= _chipCapacity(type);
+                        var disabled = locked || wrongSwap || (!_chipSwapTarget && full && !on) || (_chipSwapTarget && on && d.id !== _chipSwapTarget);
                         var sub = _chipEnergyTags(d).concat(d.stats || []).map(_chipTxt).join(' · ');
                         tile.classList.toggle('is-on', on);
                         tile.classList.toggle('is-locked', locked);
@@ -5567,7 +5559,6 @@ function __tok(n, d) { var v = getComputedStyle(document.body).getPropertyValue(
             grid.innerHTML = CHIP_CATEGORIES.map(function (cat) {
                 var catKw = (cat.zh + ' ' + cat.en + ' ' + (cat.subZh || '') + ' ' + (cat.subEn || '')).toLowerCase();
                 var items = CHIP_REGISTRY.filter(function (d) {
-                    if (_chipSlotType(d) !== _chipPickerType) return false;
                     if (d.category !== cat.id) return false;
                     if (!q) return true;
                     var hay = (d.name.zh + ' ' + d.name.en + ' ' + d.desc.zh + ' ' + d.desc.en + ' ' + (d.allowLabel ? d.allowLabel.zh + ' ' + d.allowLabel.en : '') + ' ' + catKw).toLowerCase();
@@ -5580,7 +5571,10 @@ function __tok(n, d) { var v = getComputedStyle(document.body).getPropertyValue(
                     var on = _chipIndex(d.id) >= 0;
                     var locked = !_chipCanEquip(d, curCar);
                     var sub = _chipEnergyTags(d).concat(d.stats || []).map(_chipTxt).join(' · ');
-                    var disabled = locked || (full && !on) || (_chipSwapTarget && on && d.id !== _chipSwapTarget);
+                    var type = _chipSlotType(d);
+                    var wrongSwap = _chipSwapTarget && _chipSlotType(_chipDef(_chipSwapTarget)) !== type;
+                    var full = _chipCount(type) >= _chipCapacity(type);
+                    var disabled = locked || wrongSwap || (!_chipSwapTarget && full && !on) || (_chipSwapTarget && on && d.id !== _chipSwapTarget);
                     var lockBadge = d.allowLabel ? '<span class="chip-tile-lock">' + _chipAttr(_chipTxt(d.allowLabel)) + '</span>' : '';
                     return '<button type="button" class="chip-tile' + (on ? ' is-on' : '') + (locked ? ' is-locked' : '') + '" data-act="pick" data-id="' + _chipAttr(d.id) + '" aria-pressed="' + on + '"' + (disabled ? ' disabled' : '') + '>'
                         + _chipIcoHtml(d) + '<span class="chip-tile-main"><span class="chip-tile-head"><span class="chip-tile-name">' + _c2(d.name.zh, d.name.en) + '</span>' + lockBadge + '</span><span class="chip-tile-sub">' + _chipAttr(sub) + '</span></span>'
@@ -5607,7 +5601,7 @@ function __tok(n, d) { var v = getComputedStyle(document.body).getPropertyValue(
             var card = _chipEl('cardChips');
             if (!card) return;
             [].forEach.call(card.querySelectorAll('[data-act="open"], [data-act="swap"]'), function (b) {
-                var active = _chipPickerWant && (b.getAttribute('data-act') === 'open' ? b.getAttribute('data-slot') === _chipPickerType : !!_chipSwapTarget && b.closest('.chip-slot').getAttribute('data-chip') === _chipSwapTarget);
+                var active = _chipPickerWant && (b.getAttribute('data-act') === 'open' ? !_chipSwapTarget : !!_chipSwapTarget && b.closest('.chip-slot').getAttribute('data-chip') === _chipSwapTarget);
                 b.setAttribute('aria-expanded', active ? 'true' : 'false');
                 if (b.getAttribute('data-act') === 'open') b.classList.toggle('is-open', active);
             });
@@ -5618,8 +5612,8 @@ function __tok(n, d) { var v = getComputedStyle(document.body).getPropertyValue(
             _chipBindOnce();
             var core = _chipsOn.filter(function (i) { return _chipSlotType(_chipDef(i.id)) === 'core'; });
             var vChips = _chipsOn.filter(function (i) { return _chipSlotType(_chipDef(i.id)) === 'v'; });
-            var html = (core.length ? core.map(_chipSlotHtml).join('') : _chipEmptyHtml('core'))
-                + vChips.map(_chipSlotHtml).join('') + (vChips.length < CHIP_MAX ? _chipEmptyHtml('v') : '');
+            var html = core.map(_chipSlotHtml).join('') + vChips.map(_chipSlotHtml).join('')
+                + (core.length < 1 || vChips.length < CHIP_MAX ? _chipEmptyHtml() : '');
             if (slots.__html !== html) {
                 var fill = function () { slots.innerHTML = html; slots.__html = html; };
                 if (slots.__html === undefined || instant) fill(); else _flipHeight(slots, fill, instant);
@@ -5650,7 +5644,6 @@ function __tok(n, d) { var v = getComputedStyle(document.body).getPropertyValue(
             var def = _chipDef(id);
             if (!def) return;
             var type = _chipSlotType(def);
-            if (type !== _chipPickerType && _chipIndex(id) < 0) return;
             var curCar = typeof _selectedCar !== 'undefined' ? _selectedCar : null;
             var at = _chipIndex(id);
             if (!_chipCanEquip(def, curCar) && at < 0) return;
@@ -5721,15 +5714,13 @@ function __tok(n, d) { var v = getComputedStyle(document.body).getPropertyValue(
                 if (!b || !card.contains(b) || b.disabled) return;
                 var act = b.getAttribute('data-act'), id = b.getAttribute('data-id');
                 if (act === 'open') {
-                    var samePicker = _chipPickerWant && !_chipSwapTarget && _chipPickerType === (b.getAttribute('data-slot') === 'core' ? 'core' : 'v');
+                    var samePicker = _chipPickerWant && !_chipSwapTarget;
                     _chipSwapTarget = null;
-                    _chipPickerType = b.getAttribute('data-slot') === 'core' ? 'core' : 'v';
                     _chipPickerSet(!samePicker);
                     if (_chipPickerWant && e.detail === 0) { var f = card.querySelector('.chip-tile'); if (f) f.focus({ preventScroll: true }); }
                 } else if (act === 'swap') {
                     var slot = b.closest ? b.closest('.chip-slot') : null;
                     _chipSwapTarget = slot ? slot.getAttribute('data-chip') : null;
-                    _chipPickerType = _chipSlotType(_chipDef(_chipSwapTarget));
                     _chipPickerSet(true);
                     if (_chipPickerWant && e.detail === 0) { var f = card.querySelector('.chip-tile'); if (f) f.focus({ preventScroll: true }); }
                 } else if (act === 'close') {

@@ -116,6 +116,25 @@ with sync_playwright() as playwright:
     assert not page.evaluate("Boolean(window.__testState.ownedRemoteIds.mine_one)")
     assert page.evaluate("window.__testState.notifications.length") == 0
     assert page.evaluate("localStorage.getItem('arc_notifications_v1:" + IDENTITY + "') !== null")
+    context = browser.new_context()
+    prompt = context.new_page()
+    prompt.add_init_script("window.fetch=()=>Promise.reject(new Error('offline'))")
+    prompt.route("**/*", serve)
+    prompt.goto("http://localhost:8421/index.html", wait_until="load")
+    prompt.evaluate("ArcProfile.configurePrompt({enabled:false,max_shows:2,delay_seconds:0,interval_hours:0})")
+    prompt.wait_for_timeout(150)
+    assert prompt.locator('.profile-overlay').count() == 0
+    for expected in (1, 2):
+        prompt.evaluate("ArcProfile.configurePrompt({enabled:true,max_shows:2,delay_seconds:0,interval_hours:0})")
+        prompt.wait_for_selector('.profile-overlay')
+        assert prompt.evaluate("JSON.parse(localStorage.getItem('arc_profile_prompt_state_v1')).count") == expected
+        prompt.locator('[data-profile=skip]').click()
+        prompt.wait_for_selector('.profile-overlay', state='detached')
+        prompt.reload(wait_until='load')
+    prompt.evaluate("ArcProfile.configurePrompt({enabled:true,max_shows:2,delay_seconds:0,interval_hours:0})")
+    prompt.wait_for_timeout(150)
+    assert prompt.locator('.profile-overlay').count() == 0
+    context.close()
     browser.close()
 
 print("身份同步、通知、本地备份、并发与离线身份隔离通过")

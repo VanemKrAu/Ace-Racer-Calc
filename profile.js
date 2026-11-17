@@ -227,9 +227,39 @@
     } catch (_) { tell('凭据文件无效或无法保存，请检查文件与浏览器存储权限'); }
   }
 
-  window.ArcProfile = { open: open, getNickname: getNickname };
+  var promptTimer = null;
+  var promptedThisPage = false;
+  function configurePrompt(policy) {
+    if (promptTimer) clearTimeout(promptTimer);
+    promptTimer = null;
+    if (!policy || policy.enabled === false || promptedThisPage || getNickname()) return;
+    function bounded(value, min, max, fallback) {
+      var n = Number(value);
+      return isFinite(n) ? Math.min(max, Math.max(min, Math.round(n))) : fallback;
+    }
+    var limit = bounded(policy.max_shows, 1, 20, 1);
+    var delay = bounded(policy.delay_seconds, 0, 120, 1);
+    var interval = bounded(policy.interval_hours, 0, 720, 24) * 3600000;
+    var key = 'arc_profile_prompt_state_v1';
+    var state;
+    try {
+      var saved = localStorage.getItem(key);
+      state = saved ? JSON.parse(saved) : { count: localStorage.getItem(visitedKey) ? 1 : 0, last: 0 };
+      if (!state || typeof state !== 'object') state = { count: 0, last: 0 };
+      if ((Number(state.count) || 0) >= limit || (state.last && Date.now() - Number(state.last) < interval)) return;
+    } catch (_) { return; }
+    function showWhenReady() {
+      if (getNickname() || promptedThisPage) return;
+      if (document.hidden || document.querySelector('.cp-modal-overlay:not(.is-closing), .profile-overlay:not(.is-closing), dialog[open]')) {
+        promptTimer = setTimeout(showWhenReady, 1000);
+        return;
+      }
+      promptedThisPage = true;
+      try { localStorage.setItem(key, JSON.stringify({ count: (Number(state.count) || 0) + 1, last: Date.now() })); } catch (_) {}
+      open();
+    }
+    promptTimer = setTimeout(showWhenReady, delay * 1000);
+  }
+  window.ArcProfile = { open: open, getNickname: getNickname, configurePrompt: configurePrompt };
   document.getElementById('profileBtn').addEventListener('click', open);
-  try {
-    if (!localStorage.getItem(visitedKey) && !getNickname()) setTimeout(open, 1200);
-  } catch (_) {}
 })();
