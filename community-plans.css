@@ -2001,6 +2001,21 @@ body.cp-modal-locked {
   height: 16px;
 }
 
+/* 所有弹窗关闭按钮统一为正圆：压过 .ds-c .select-btn（height:46px / width:100% / 两端对齐）的覆盖 */
+.ds-c .cp-modal-close,
+.ds-c .select-btn.cp-modal-close {
+  flex: none;
+  width: 34px;
+  height: 34px;
+  min-width: 34px;
+  padding: 0;
+  gap: 0;
+  justify-content: center;
+  align-items: center;
+  border-radius: 50%;
+  box-shadow: inset 0 1px 0 var(--surface-rim);
+}
+
 .cp-modal-body {
   display: flex;
   flex-direction: column;

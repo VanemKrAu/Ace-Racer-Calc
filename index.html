@@ -206,12 +206,6 @@
   </div>
 </div></div>
     <div class="top-right">
-<div class="notif-toggle-wrapper" id="notifWrapper" data-html2canvas-ignore="true" hidden>
-  <button id="notifBtn" class="nav-btn" type="button" aria-label="通知 / Notifications" onclick="CommunityPlans.openNotificationCenter()">
-    <span class="notif-ico-wrap" aria-hidden="true"><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M18 8a6 6 0 0 0-12 0c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 0 1-3.46 0"/></svg></span>
-    <span class="notif-dot" id="notifDot" hidden></span>
-  </button>
-</div>
 <div class="lang-toggle-wrapper" data-html2canvas-ignore="true">
   <button id="langToggleBtn" class="nav-btn lang-btn" type="button" aria-label="中文 / English" onclick="toggleLanguage()"><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M3 12h18M12 3c2.5 2.7 3.8 5.7 3.8 9s-1.3 6.3-3.8 9c-2.5-2.7-3.8-5.7-3.8-9S9.5 5.7 12 3Z"/></svg><span id="langBtnText">中文 / English</span></button>
 </div>
@@ -219,6 +213,9 @@
   <button id="themeBtn" class="nav-btn" type="button" aria-label="切换深浅色模式 / Toggle Theme" onclick="toggleTheme()">
     <span id="themeIcon" hidden>🌙</span><span class="theme-ico"><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="4"/><path d="M12 2.5v2M12 19.5v2M4.6 4.6l1.4 1.4M18 18l1.4 1.4M2.5 12h2M19.5 12h2M4.6 19.4 6 18M18 6l1.4-1.4"/></svg><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 14.5A8 8 0 0 1 9.5 4a8 8 0 1 0 10.5 10.5Z"/></svg></span><span class="nav-btn-text"><span class="zh">主题</span><span class="lang-en">Theme</span></span>
   </button>
+</div>
+<div class="profile-toggle-wrapper" data-html2canvas-ignore="true">
+  <button id="profileBtn" class="nav-btn" type="button" aria-label="个人信息 / Profile"><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="8" r="4"/><path d="M4 21a8 8 0 0 1 16 0"/></svg><span class="nav-btn-text"><span class="zh">个人信息</span><span class="lang-en">Profile</span></span><span class="notif-dot" id="notifDot" hidden></span></button>
 </div></div>
   </div>
   <div id="captureArea">
@@ -2176,7 +2173,6 @@ CD：45秒
             _resetManualCarEdits();
             CHIP_MAX = 1;
             if (typeof _chipPruneByCar === 'function') _chipPruneByCar(null);
-            else if (_chipsOn.length > CHIP_MAX) _chipsOn = _chipsOn.slice(0, CHIP_MAX);
             document.getElementById('carPreviewPlaceholder').style.display = '';
             document.getElementById('carPreviewName').style.display = 'none';
             document.getElementById('carPreviewInfo').style.display = 'none';
@@ -3720,7 +3716,8 @@ function __tok(n, d) { var v = getComputedStyle(document.body).getPropertyValue(
            var hnEl = document.getElementById('inputHuineng');
            if (hnEl) {
                // 手动输入的口子放宽到「带了核心增幅之后」的上限
-               hnEl.max = calcMaxHuinengBoosted(car.chip_slots);
+               hnEl.max = (typeof _chipIndex === 'function' && _chipIndex('acecore') >= 0)
+                   ? baseMax : calcMaxHuinengBoosted(car.chip_slots);
                // 没增幅的基础值另存一份：卡片显示和自动反算都用它
                hnEl.dataset.baseMax = baseMax;
            }
@@ -3729,10 +3726,6 @@ function __tok(n, d) { var v = getComputedStyle(document.body).getPropertyValue(
            var chipLimitChanged = (CHIP_MAX !== newChipMax);
            if (chipLimitChanged) CHIP_MAX = newChipMax;
            var chipPruned = (typeof _chipPruneByCar === 'function') ? _chipPruneByCar(car) : false;
-           if (!chipPruned && _chipsOn.length > CHIP_MAX) {
-               _chipsOn = _chipsOn.slice(0, CHIP_MAX);
-               chipPruned = true;
-           }
            if (chipLimitChanged || chipPruned) {
                if (typeof renderChips === 'function') renderChips(true);
            } else if (typeof _chipRenderGrid === 'function') {
@@ -4894,8 +4887,9 @@ function __tok(n, d) { var v = getComputedStyle(document.body).getPropertyValue(
             if (!card) return;
             var k = function (v) { return Math.round(v * 1000); }, f3 = function (i) { return (i / 1000).toFixed(3); };
             var T1 = T, T2 = targetLoopParam !== undefined ? targetLoopParam : T;
-            var T1i = k(T1), T2i = k(T2), Fi = k(F), Pi = k(P);
             var chip = chipParam || null;
+            // 循环总量已包含每次开大触发的芯片能量；连发按每次实际触发单独加入，避免重复计入。
+            var T1i = k(T1), T2i = k(T2), Fi = k(F), Pi = Math.max(0, k(P) - k(chip && chip.loopUlt || 0));
             // chip.ult[0] 是放出一大时触发给二大的能量；chip.ult[1] 是放出二大时触发给三大的能量（隐匿猎手在此触发 +16%）
             var chipAfter1st = chip && chip.ult ? k(chip.ult[0] || 0) : 0;
             var chipAfter2nd = chip && chip.ult ? k(chip.ult[1] || 0) : 0;
@@ -4913,7 +4907,7 @@ function __tok(n, d) { var v = getComputedStyle(document.body).getPropertyValue(
                 var env = _chipEnv(), cur = _tmCur(), team = tdx && tdx.mode === 'team';
                 var pass = function (st) {
                     var fi = k(_tmFirst(env, st.x, st.h, st.s));
-                    var li = k(_tmLoop(env, st.h, st.s));
+                    var li = Math.max(0, k(_tmLoop(env, st.h, st.s)) - k(env.chip && env.chip.loopUlt || 0));
                     var ca1 = env.chip && env.chip.ult ? k(env.chip.ult[0] || 0) : 0;
                     var ca2 = env.chip && env.chip.ult ? k(env.chip.ult[1] || 0) : 0;
                     var s2 = _chainCarry(fi) + li + ca1;
@@ -4964,8 +4958,8 @@ function __tok(n, d) { var v = getComputedStyle(document.body).getPropertyValue(
                 var ico = function (kd) { return window.__pvIcon ? '<span class="pv-det-ico">' + __pvIcon(kd) + '</span>' : ''; };
                 var d;
                 if (brk < 0) {
-                    d = ico('ok') + '<b>' + _('开局连放三大', 'Three ults in a row') + '</b>' + (Pi >= T2i
-                        ? _('：每一大期间的产出已够一管（循环跑通），之后每一大也都接得上。', ': each ult already gains a full bar (the loop holds), so later ults keep chaining too.')
+                    d = ico('ok') + '<b>' + _('开局连放三大', 'Three ults in a row') + '</b>' + (k(P) >= T2i
+                        ? _('：按当前循环口径，每轮产出已达到大招阈值。', ': the current loop output reaches the ult threshold.')
                         : _('：靠一大的溢出撑住了；每一大期间的产出不够一管，溢出会一大比一大少。', ': the 1st ult’s overflow carries it — each ult gains less than a bar, so the overflow shrinks every time.'));
                 } else {
                     var diffBreak = (brk === 0 ? T1i : T2i) - e[brk];
@@ -4979,7 +4973,7 @@ function __tok(n, d) { var v = getComputedStyle(document.body).getPropertyValue(
                 _morphInlineBox(document.getElementById('resultDetailChain'), d, null, null, !skipFlip);
                 // 解析盒
                 var fb = '<b>' + _('【开局连发运算解析盒】', '[Opening Chain Breakdown]') + '</b><br>';
-                fb += _('及格线目标：一大 ', 'Passing Target: 1st ') + '<b>' + T1 + '%</b>' + _('，二大/三大 ', ', 2nd/3rd ') + '<b>' + T2 + '%</b>' + _('；每一大期间产出 = 循环总产出 ', '; gain per ult = loop total ') + '<b>' + f3(Pi) + '</b><br><br>';
+                fb += _('及格线目标：一大 ', 'Passing Target: 1st ') + '<b>' + T1 + '%</b>' + _('，二大/三大 ', ', 2nd/3rd ') + '<b>' + T2 + '%</b>' + _('；每轮其他产出（不含开大触发芯片） ', '; other gain per loop (excluding ult-triggered chips) ') + '<b>' + f3(Pi) + '</b><br><br>';
                 fb += _('① 一大：首发核算 ', '1. 1st: first-ult calc ') + '<b>' + f3(Fi) + '</b>' + (ok[0] ? _(' → 放出，溢出 ', ' → fires, overflow ') + f3(_chainCarry(Fi)) : _(' → 未达成', ' → not ready')) + '<br>';
                 if (ok[0]) {
                     var extraText2 = chipAfter1st > 0 ? (' + ' + _('芯片一大放出充能 ', 'chip 1st ult ') + f3(chipAfter1st)) : '';
@@ -5108,17 +5102,38 @@ function __tok(n, d) { var v = getComputedStyle(document.body).getPropertyValue(
         function getCarVSlots(car) {
             if (!car || !car.chip_slots) return 1;
             var matches = String(car.chip_slots).match(/V|v|Ｖ/g);
-            return matches ? Math.max(1, matches.length) : 1;
+            return matches ? matches.length : 0;
         }
         var CHIP_MAX = 1;                       // 动态根据当前车辆 V 型槽数量调整
         var _chipSwapTarget = null;             // 换芯片模式下记录目标芯片 id
         var CHIP_ICON_DIR = 'data/icon/';
         var CHIP_CATEGORIES = [
+            { id: 'core', zh: '核心芯片', en: 'Core Chips' },
             { id: 'heroine', zh: '车姬芯片', en: 'Heroine Chips' },
             { id: 'supreme', zh: '至尊芯片', en: 'Supreme Chips', subZh: '至尊 / 墨染 / 至美系列', subEn: 'Supreme / Ink / Peerless' },
             { id: 'overclock', zh: '超频芯片', en: 'Overclock Chips' }
         ];
         var CHIP_REGISTRY = [
+            {
+                id: 'acecore', category: 'core', slotType: 'core', icon: 'chip_wphx.png',
+                name: { zh: '王牌核心', en: 'Ace Core' },
+                desc: {
+                    zh: '每次点击大招时立即结束漂移，并在扣除本次大招能量后获得 <strong>0.5%～5%</strong> 大招能量（受反制和充能效率影响）。',
+                    en: 'Each ult ends drifting and grants <strong>0.5%–5%</strong> energy after its cost (scaled by Counter and Charge Eff).'
+                },
+                scale: 'DE', cycle: 1,
+                options: [{
+                    id: 'level', def: '10', label: { zh: '芯片等级', en: 'Chip level' },
+                    choices: Array.from({ length: 10 }, function (_, i) {
+                        var level = String(i + 1);
+                        return { v: level, zh: level + '级', en: 'Lv.' + level };
+                    })
+                }],
+                ultCharge: function (k, opts) {
+                    var level = opts && opts.level ? parseInt(opts.level, 10) : 10;
+                    return Math.max(1, Math.min(10, isNaN(level) ? 10 : level)) * 0.5;
+                }
+            },
             {
                 id: 'hunter', category: 'heroine', icon: 'chip_hunter.png',
                 name: { zh: '隐匿猎手之芯', en: 'Hidden Hunter Chip' },
@@ -5302,6 +5317,7 @@ function __tok(n, d) { var v = getComputedStyle(document.body).getPropertyValue(
 
         var _chipsOn = [];             // 已装备：[{ id, opts: { loopMode: 'avg' } }]
         var _chipPickerWant = false;
+        var _chipPickerType = 'v';
         var _chipNewId = '';
         var _CHIP_SVG = {
             plus: '<svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 5v14M5 12h14"/></svg>',
@@ -5315,6 +5331,9 @@ function __tok(n, d) { var v = getComputedStyle(document.body).getPropertyValue(
         function _chipPct(x) { return String(+(+x).toFixed(2)); }
         function _chipAttr(s) { return String(s).replace(/&/g, '&amp;').replace(/"/g, '&quot;').replace(/</g, '&lt;'); }
         function _chipDef(id) { for (var i = 0; i < CHIP_REGISTRY.length; i++) if (CHIP_REGISTRY[i].id === id) return CHIP_REGISTRY[i]; return null; }
+        function _chipSlotType(def) { return def && def.slotType === 'core' ? 'core' : 'v'; }
+        function _chipCount(type) { return _chipsOn.filter(function (inst) { return _chipSlotType(_chipDef(inst.id)) === type; }).length; }
+        function _chipCapacity(type) { return type === 'core' ? 1 : CHIP_MAX; }
         function _chipIndex(id) { for (var i = 0; i < _chipsOn.length; i++) if (_chipsOn[i].id === id) return i; return -1; }
         function _chipUlts(def, n, opts) { var a = []; for (var k = 1; k <= n; k++) a.push(def.ultCharge ? (+def.ultCharge(k, opts) || 0) : 0); return a; }
         function _chipLoopStats(def, opts) {
@@ -5330,8 +5349,12 @@ function __tok(n, d) { var v = getComputedStyle(document.body).getPropertyValue(
         function _chipPruneByCar(car) {
             var prevLen = _chipsOn.length;
             if (!prevLen) return false;
+            var counts = { core: 0, v: 0 };
             _chipsOn = _chipsOn.filter(function (inst) {
-                return _chipCanEquip(_chipDef(inst.id), car);
+                var def = _chipDef(inst.id), type = _chipSlotType(def);
+                if (!_chipCanEquip(def, car) || counts[type] >= _chipCapacity(type)) return false;
+                counts[type]++;
+                return true;
             });
             return _chipsOn.length !== prevLen;
         }
@@ -5481,7 +5504,7 @@ function __tok(n, d) { var v = getComputedStyle(document.body).getPropertyValue(
             var h = '<div class="chip-opts">';
             defs.forEach(function (od) {
                 var cur = _chipOptVal(inst, od);
-                h += '<div class="chip-opt"><div class="chip-opt-label"><span>' + _c2(od.label.zh, od.label.en) + '</span></div><div class="chip-seg" role="radiogroup">'
+                h += '<div class="chip-opt"><div class="chip-opt-label"><span>' + _c2(od.label.zh, od.label.en) + '</span></div><div class="chip-seg' + (od.id === 'level' ? ' chip-seg-levels' : '') + '" role="radiogroup">'
                     + od.choices.map(function (c) {
                         return '<button type="button" role="radio" aria-checked="' + (c.v === cur) + '" class="' + (c.v === cur ? 'is-on' : '') + '" data-act="opt" data-id="' + _chipAttr(def.id)
                             + '" data-opt="' + _chipAttr(od.id) + '" data-val="' + _chipAttr(c.v) + '">' + _c2(c.zh, c.en) + '</button>';
@@ -5497,19 +5520,19 @@ function __tok(n, d) { var v = getComputedStyle(document.body).getPropertyValue(
                 + '<div class="chip-body"><div class="chip-head"><span class="chip-name">' + _c2(def.name.zh, def.name.en) + '</span><span class="chip-tags">' + _chipTagsHtml(def, inst) + '</span></div>'
                 + '<div class="chip-desc">' + _c2(def.desc.zh, def.desc.en) + '</div></div>'
                 + '<div class="chip-acts">'
-                + (CHIP_REGISTRY.length > 1 ? '<button type="button" class="chip-act" data-act="swap" aria-expanded="' + _chipPickerWant + '">' + _CHIP_SVG.swap + '<span class="chip-sr zh">更换芯片</span><span class="chip-sr lang-en">Swap chip</span></button>' : '')
+                + (_chipSlotType(def) === 'v' ? '<button type="button" class="chip-act" data-act="swap" aria-expanded="' + _chipPickerWant + '">' + _CHIP_SVG.swap + '<span class="chip-sr zh">更换芯片</span><span class="chip-sr lang-en">Swap chip</span></button>' : '')
                 + '<button type="button" class="chip-act" data-act="remove" data-id="' + _chipAttr(def.id) + '">' + _CHIP_SVG.x + '<span class="chip-sr zh">卸下芯片</span><span class="chip-sr lang-en">Remove chip</span></button>'
                 + '</div>' + _chipOptsHtml(inst, def) + '</div>';
         }
-        function _chipEmptyHtml() {
-            return '<button type="button" class="chip-slot is-empty' + (_chipPickerWant ? ' is-open' : '') + '" data-act="open" aria-expanded="' + _chipPickerWant + '">'
-                + '<span class="chip-add-ico">' + _CHIP_SVG.plus + '</span><span>' + _c2('选择芯片', 'Choose a chip') + '</span></button>';
+        function _chipEmptyHtml(type) {
+            return '<button type="button" class="chip-slot is-empty' + (_chipPickerWant && _chipPickerType === type ? ' is-open' : '') + '" data-act="open" data-slot="' + type + '" aria-expanded="' + (_chipPickerWant && _chipPickerType === type) + '">'
+                + '<span class="chip-add-ico">' + _CHIP_SVG.plus + '</span><span>' + (type === 'core' ? _c2('选择核心芯片', 'Choose a core chip') : _c2('选择 V 型芯片', 'Choose a V chip')) + '</span></button>';
         }
         function _chipRenderGrid() {
             var grid = _chipEl('chipGrid'), q = ((_chipEl('chipSearch') || {}).value || '').trim().toLowerCase();
             if (!grid) return;
             var curCar = typeof _selectedCar !== 'undefined' ? _selectedCar : null;
-            var full = CHIP_MAX > 1 && _chipsOn.length >= CHIP_MAX && !_chipSwapTarget;
+            var full = _chipCount(_chipPickerType) >= _chipCapacity(_chipPickerType) && !_chipSwapTarget;
             var lang = typeof currentLang !== 'undefined' ? currentLang : 'zh';
             // 无搜索过滤且已构建过网格时：直接按 data-id 增量更新选中态、锁定态、禁用态和副标题，避免每次重建 DOM 和重新解码图片
             if (!q && grid.__built && grid.__lang === lang && grid.__q === '') {
@@ -5544,6 +5567,7 @@ function __tok(n, d) { var v = getComputedStyle(document.body).getPropertyValue(
             grid.innerHTML = CHIP_CATEGORIES.map(function (cat) {
                 var catKw = (cat.zh + ' ' + cat.en + ' ' + (cat.subZh || '') + ' ' + (cat.subEn || '')).toLowerCase();
                 var items = CHIP_REGISTRY.filter(function (d) {
+                    if (_chipSlotType(d) !== _chipPickerType) return false;
                     if (d.category !== cat.id) return false;
                     if (!q) return true;
                     var hay = (d.name.zh + ' ' + d.name.en + ' ' + d.desc.zh + ' ' + d.desc.en + ' ' + (d.allowLabel ? d.allowLabel.zh + ' ' + d.allowLabel.en : '') + ' ' + catKw).toLowerCase();
@@ -5583,22 +5607,26 @@ function __tok(n, d) { var v = getComputedStyle(document.body).getPropertyValue(
             var card = _chipEl('cardChips');
             if (!card) return;
             [].forEach.call(card.querySelectorAll('[data-act="open"], [data-act="swap"]'), function (b) {
-                b.setAttribute('aria-expanded', _chipPickerWant ? 'true' : 'false');
-                if (b.getAttribute('data-act') === 'open') b.classList.toggle('is-open', _chipPickerWant);
+                var active = _chipPickerWant && (b.getAttribute('data-act') === 'open' ? b.getAttribute('data-slot') === _chipPickerType : !!_chipSwapTarget && b.closest('.chip-slot').getAttribute('data-chip') === _chipSwapTarget);
+                b.setAttribute('aria-expanded', active ? 'true' : 'false');
+                if (b.getAttribute('data-act') === 'open') b.classList.toggle('is-open', active);
             });
         }
         function renderChips(instant) {
             var slots = _chipEl('chipSlots');
             if (!slots) return;
             _chipBindOnce();
-            var html = _chipsOn.map(_chipSlotHtml).join('') + (_chipsOn.length < CHIP_MAX ? _chipEmptyHtml() : '');
+            var core = _chipsOn.filter(function (i) { return _chipSlotType(_chipDef(i.id)) === 'core'; });
+            var vChips = _chipsOn.filter(function (i) { return _chipSlotType(_chipDef(i.id)) === 'v'; });
+            var html = (core.length ? core.map(_chipSlotHtml).join('') : _chipEmptyHtml('core'))
+                + vChips.map(_chipSlotHtml).join('') + (vChips.length < CHIP_MAX ? _chipEmptyHtml('v') : '');
             if (slots.__html !== html) {
                 var fill = function () { slots.innerHTML = html; slots.__html = html; };
                 if (slots.__html === undefined || instant) fill(); else _flipHeight(slots, fill, instant);
             }
             _chipNewId = '';
             var bd = _chipEl('chipsLimitBadge');
-            if (bd) { var bh = _c2('限装 ' + CHIP_MAX + ' 枚', 'Max ' + CHIP_MAX); if (bd.__html !== bh) { bd.innerHTML = bh; bd.__html = bh; } }
+            if (bd) { var bh = _c2('核心 1 · V型 ' + CHIP_MAX, 'Core 1 · V ' + CHIP_MAX); if (bd.__html !== bh) { bd.innerHTML = bh; bd.__html = bh; } }
             var se = _chipEl('chipSearch');
             if (se) { se.classList.toggle('is-gone', CHIP_REGISTRY.length <= 6); se.placeholder = currentLang === 'en' ? 'Search chips…' : '搜索芯片…'; }
             var grid = _chipEl('chipGrid');
@@ -5621,12 +5649,15 @@ function __tok(n, d) { var v = getComputedStyle(document.body).getPropertyValue(
         function chipEquip(id) {
             var def = _chipDef(id);
             if (!def) return;
+            var type = _chipSlotType(def);
+            if (type !== _chipPickerType && _chipIndex(id) < 0) return;
             var curCar = typeof _selectedCar !== 'undefined' ? _selectedCar : null;
             var at = _chipIndex(id);
             if (!_chipCanEquip(def, curCar) && at < 0) return;
             if (_chipSwapTarget) {
                 var targetIdx = _chipIndex(_chipSwapTarget);
                 if (targetIdx >= 0) {
+                    if (_chipSlotType(_chipDef(_chipSwapTarget)) !== type) return;
                     if (id === _chipSwapTarget) {
                         // 点击当前芯片：保持不变
                     } else if (_chipIndex(id) >= 0) {
@@ -5642,9 +5673,7 @@ function __tok(n, d) { var v = getComputedStyle(document.body).getPropertyValue(
             } else {
                 if (at >= 0) _chipsOn.splice(at, 1);                                   // 再点一次 = 卸下
                 else {
-                    if (_chipsOn.length >= CHIP_MAX) {
-                        if (CHIP_MAX === 1) _chipsOn.length = 0; else return;
-                    }
+                    if (_chipCount(type) >= _chipCapacity(type)) return;
                     _chipsOn.push({ id: id, opts: _chipDefaultOpts(def) });
                     _chipNewId = id;
                 }
@@ -5673,6 +5702,12 @@ function __tok(n, d) { var v = getComputedStyle(document.body).getPropertyValue(
             }
         }
         function _chipChanged(instantSlot) {
+            if (typeof _selectedCar !== 'undefined' && _selectedCar) {
+                var hn = _chipEl('inputHuineng');
+                var before = hn ? hn.value : '';
+                applyChipLimits(_selectedCar);
+                if (hn && before !== hn.value) showToast(_('装备王牌核心后，汇能已调整为未增幅上限', 'Huineng adjusted to the non-boosted limit for Ace Core'));
+            }
             renderChips(instantSlot);
             _chipAfterRender();
         }
@@ -5686,12 +5721,15 @@ function __tok(n, d) { var v = getComputedStyle(document.body).getPropertyValue(
                 if (!b || !card.contains(b) || b.disabled) return;
                 var act = b.getAttribute('data-act'), id = b.getAttribute('data-id');
                 if (act === 'open') {
+                    var samePicker = _chipPickerWant && !_chipSwapTarget && _chipPickerType === (b.getAttribute('data-slot') === 'core' ? 'core' : 'v');
                     _chipSwapTarget = null;
-                    _chipPickerSet(!_chipPickerWant);
+                    _chipPickerType = b.getAttribute('data-slot') === 'core' ? 'core' : 'v';
+                    _chipPickerSet(!samePicker);
                     if (_chipPickerWant && e.detail === 0) { var f = card.querySelector('.chip-tile'); if (f) f.focus({ preventScroll: true }); }
                 } else if (act === 'swap') {
                     var slot = b.closest ? b.closest('.chip-slot') : null;
                     _chipSwapTarget = slot ? slot.getAttribute('data-chip') : null;
+                    _chipPickerType = _chipSlotType(_chipDef(_chipSwapTarget));
                     _chipPickerSet(true);
                     if (_chipPickerWant && e.detail === 0) { var f = card.querySelector('.chip-tile'); if (f) f.focus({ preventScroll: true }); }
                 } else if (act === 'close') {
@@ -5730,7 +5768,11 @@ function __tok(n, d) { var v = getComputedStyle(document.body).getPropertyValue(
             if (str && str !== '0') String(str).split('-').forEach(function (part) {
                 var dot = part.indexOf('.'), id = dot < 0 ? part : part.slice(0, dot);
                 var def = _chipDef(id);
-                if (!def || _chipIndex(id) >= 0 || _chipsOn.length >= CHIP_MAX) return;
+                if (!def || _chipIndex(id) >= 0) return;
+                var type = _chipSlotType(def);
+                // 分享链接先恢复芯片、后恢复车辆；暂存 V 芯片后再按实际车辆裁剪。
+                var limit = forceKeep && type === 'v' ? 7 : _chipCapacity(type);
+                if (_chipCount(type) >= limit) return;
                 if (!forceKeep && !_chipCanEquip(def, curCar)) return;
                 var opts = _chipDefaultOpts(def);
                 var odefs = _chipOptionDefs(def);
@@ -5748,6 +5790,7 @@ function __tok(n, d) { var v = getComputedStyle(document.body).getPropertyValue(
                 });
                 _chipsOn.push({ id: id, opts: opts });
             });
+            if (curCar) applyChipLimits(curCar);
             renderChips(true);
         }
 
@@ -6903,6 +6946,7 @@ if (typeof CAR_DATABASE !== 'undefined') {
 <script src="view.js"></script>
 <script src="liquid-theme.js"></script>
 <script src="desk.js"></script>
+<script src="profile.js"></script>
 <script src="community-plans.js"></script>
 </body>
 </html>

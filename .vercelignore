@@ -1,0 +1,25 @@
+.git
+.github
+.agents
+.env*
+.vercel
+.local/
+.agent_tmp/
+.agent_reports/
+node_modules/
+update/
+updata/
+video/
+video-community/
+Claude outputs/
+data/*/full/assets/*/skill-icons/
+data/*/full/assets/*/skins/
+data/*/full/assets/*/body/*_s.png
+data/*/full/vehicles.json
+data/*/full/vehicle-index.json
+data/*/full/manifest.json
+data/*/single-*/
+data/*/full/packages/
+*.zip
+scripts/
+*.md

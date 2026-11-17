@@ -1,11 +1,11 @@
-// 王牌竞速芯片计算器 · Service Worker (calc-shell-v68)
+// 王牌竞速芯片计算器 · Service Worker (calc-shell-v71)
 //
 // 核心策略：
 // 1) install 时预缓存首页核心骨架、图标与静态数据脚本，确保 PWA 离线首屏可用；
 // 2) 运行时采用「网络优先 + 成功回写 + 离线缓存回退」策略，并忽略静态资源查询串（如 manifest.json?v=5）；
 // 3) 社区动态 /api/* 与统计 /_vercel/* 绝不落入 SW 缓存桶；升级 CACHE_NAME 时在 activate 整体淘汰旧桶。
 
-const CACHE_NAME = 'calc-shell-v68';
+const CACHE_NAME = 'calc-shell-v71';
 
 // 离线真正要用到的核心骨架与静态资源。html2canvas 只在导出长图时用，走运行时缓存即可。
 const PRECACHE = [
@@ -19,10 +19,12 @@ const PRECACHE = [
     '/desk.js',
     '/community-plans.css',
     '/community-plans.js',
+    '/profile.js',
     '/car-database.js',
     '/data/talents-data.js',
     '/data/icon/pro_helmet_m.png',
     '/data/icon/chip_hunter.png',
+    '/data/icon/chip_wphx.png',
     '/data/icon/chip_catnap.png',
     '/data/icon/chip_hardman.png',
     '/data/icon/chip_triple.png',

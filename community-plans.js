@@ -76,6 +76,7 @@
   };
 
   var CHIP_NAME_MAP = {
+    acecore: '王牌核心',
     hunter: '隐匿猎手之芯',
     catnap: '猫眠梦之芯',
     hardman: '超频：硬汉模式',
@@ -153,7 +154,7 @@
     '1009': {"name":"无界核心","kind":"core","shape":"V","desc":"获得集气无阈值效果，漂移集气效率10%"},
     '1010': {"name":"涡轮核心","kind":"core","shape":"V","desc":"每2次使用涡轮时获得一个涡轮，每次使用涡轮后2秒内极速+1km/h，加速期间重复使用涡轮时，加速时间将会刷新且加速翻倍（上限8km/h）"},
     '1011': {"name":"穿透核心","kind":"core","shape":"V","desc":"开局5秒时获得15%大招能量并使下次干扰效果必定命中"},
-    '1012': {"name":"大招断漂","kind":"core","shape":"V","desc":"每次点击大招时立即结束漂移状态并获得5%大招能量"},
+    '1012': {"name":"王牌核心","kind":"core","shape":"核心","desc":"每次点击大招时立即结束漂移状态并获得5%大招能量","calcId":"acecore"},
     '2001': {"name":"超频：刀片跑法","kind":"exclusive","shape":"V","desc":"特技期间每次超车获得3000氮气能量","iconFile":"chip_icon_dppf_dppf_4.png"},
     '2002': {"name":"超频：双闪","kind":"exclusive","shape":"V","desc":"每次闪现后获得3秒氮气加速效果","iconFile":"chip_icon_ssqh_ssqh_4.png"},
     '2003': {"name":"超频：硬汉模式","kind":"exclusive","shape":"V","desc":"若冲锋期间未撞击到其他车辆，大招结束时恢复45%大招能量","calcId":"hardman","iconFile":"chip_icon_yhms_yhms_4.png"},
@@ -227,9 +228,16 @@
     var shapes = countCarSlotShapes(car);
     // ailab 权重键与真实芯片 ID 对齐：8 汇能I、16 先机I、9 团魂I；
     // 1002 增幅装置·△、1003 增幅装置·◇、1004 增幅装置·⑥
-    var boostDiamond = (Number(weights['1003']) || 0) >= 0.35;
-    var boostTriangle = (Number(weights['1002']) || 0) >= 0.35;
-    var boostHex = (Number(weights['1004']) || 0) >= 0.35;
+    // 所有核心芯片共用一个核心槽，官方推荐按权重选一个，避免王牌核心与增幅同时生效。
+    var coreId = '';
+    var coreWeight = 0;
+    for (var coreNum = 1001; coreNum <= 1012; coreNum++) {
+      var candidate = String(coreNum), weight = Number(weights[candidate]) || 0;
+      if (weight >= 0.2 && weight > coreWeight) { coreId = candidate; coreWeight = weight; }
+    }
+    var boostDiamond = coreId === '1003' && coreWeight >= 0.35;
+    var boostTriangle = coreId === '1002' && coreWeight >= 0.35;
+    var boostHex = coreId === '1004' && coreWeight >= 0.35;
 
     var wHuineng = Number(weights['8']) || 0;
     var wXianji = Number(weights['16']) || 0;
@@ -273,6 +281,7 @@
       if (w < 0.2) return;
       var meta = OFFICIAL_CHIP_META[cid];
       if (!meta || !meta.calcId) return;
+      if (meta.kind === 'core' && cid !== coreId) return;
       var def = typeof window._chipDef === 'function' ? window._chipDef(meta.calcId) : null;
       if (!def) return;
       if (typeof def.canEquip === 'function' && car && !def.canEquip(car)) return;
@@ -280,7 +289,18 @@
     });
     matchedChips.sort(function (a, b) { return b.weight - a.weight; });
     var maxVSlots = (typeof window.getCarVSlots === 'function' && car) ? window.getCarVSlots(car) : 2;
-    var chipsOn = matchedChips.slice(0, maxVSlots).map(function (c) {
+    var pickedCore = false, pickedV = 0;
+    var chipsOn = matchedChips.filter(function (c) {
+      var def = typeof window._chipDef === 'function' ? window._chipDef(c.id) : null;
+      if (def && def.slotType === 'core') {
+        if (pickedCore) return false;
+        pickedCore = true;
+        return true;
+      }
+      if (pickedV >= maxVSlots) return false;
+      pickedV++;
+      return true;
+    }).map(function (c) {
       return { id: c.id, opts: c.opts };
     });
 
@@ -291,9 +311,7 @@
     if (curMode === 'team') {
       outParams.tuanhun = estTuanhun;
     }
-    if (chipsOn.length > 0) {
-      outParams.chips_on = chipsOn;
-    }
+    outParams.chips_on = chipsOn;
     return {
       params: outParams,
       xianji: estXianji,
@@ -949,6 +967,16 @@
         'X-Client-ID': Utils.getClientId(),
         'X-Device-FP': Utils.getDeviceFingerprint()
       };
+      try {
+        var token = localStorage.getItem('arc_user_identity_v1');
+        if (!/^[a-f0-9]{64}$/.test(token || '') && window.crypto && window.crypto.getRandomValues) {
+          var bytes = new Uint8Array(32);
+          window.crypto.getRandomValues(bytes);
+          token = Array.from(bytes, function (b) { return ('0' + b.toString(16)).slice(-2); }).join('');
+          localStorage.setItem('arc_user_identity_v1', token);
+        }
+        if (/^[a-f0-9]{64}$/.test(token || '')) h['X-User-Identity'] = token;
+      } catch (_) {}
       if (includeJson) h['Content-Type'] = 'application/json';
       return h;
     },
@@ -1502,16 +1530,20 @@
       // 页面初始化时主动拉取站点公告与运营配置（不依赖是否已选车），并静默核验本地待审方案真实状态
       CommunityPlans.fetchSiteConfig();
       CommunityPlans.loadNotifications();
+      CommunityPlans.restoreOwnedOffline();
+      CommunityPlans.syncOwnedPlans();
       CommunityPlans.syncPendingPlanStatuses({ force: true });
 
       if (!window.__cpStatusSyncBound) {
         window.__cpStatusSyncBound = true;
         document.addEventListener('visibilitychange', function () {
           if (!document.hidden) {
+            CommunityPlans.syncOwnedPlans();
             CommunityPlans.syncPendingPlanStatuses();
           }
         });
         window.addEventListener('focus', function () {
+          CommunityPlans.syncOwnedPlans();
           CommunityPlans.syncPendingPlanStatuses();
         });
       }
@@ -1785,7 +1817,7 @@
       var localUpdated = false;
       var votesUpdated = false;
       var matchedLocal = state.savedPlans.find(function (lp) {
-        return lp.remote_id && lp.remote_id === rp.id;
+        return rp.viewer_is_author && lp.remote_id && lp.remote_id === rp.id;
       });
       if (matchedLocal) {
         if (matchedLocal.remote_status !== 'approved') {
@@ -1819,7 +1851,7 @@
       } else {
         rp.isVoted = Boolean(state.votedMap[rp.id]);
       }
-      rp.viewer_is_author = Boolean(rp.viewer_is_author || matchedLocal);
+      rp.viewer_is_author = Boolean(rp.viewer_is_author);
       return { item: rp, localUpdated: localUpdated, votesUpdated: votesUpdated };
     },
 
@@ -2112,7 +2144,9 @@
         return '<img src="data/icon/official/' + Utils.escapeHtml(info.iconFile) + '" class="cp-off-chip-img" alt="" loading="lazy">';
       }
       if (info && info.calcId) {
-        return '<img src="data/icon/chip_' + Utils.escapeHtml(info.calcId) + '.png" class="cp-off-chip-img" alt="" loading="lazy">';
+        var def = typeof window._chipDef === 'function' ? window._chipDef(info.calcId) : null;
+        var icon = def && def.icon ? def.icon : 'chip_' + info.calcId + '.png';
+        return '<img src="data/icon/' + Utils.escapeHtml(icon) + '" class="cp-off-chip-img" alt="" loading="lazy">';
       }
       var sym = (info && info.shape) ? String(info.shape) : '';
       if (sym.indexOf('V') >= 0) sym = 'V';
@@ -2481,7 +2515,7 @@
         });
       };
       var localList = state.savedPlans.filter(function (p) {
-        return String(p.car_id) === curIdStr && !isShownInRemote(p);
+        return String(p.car_id) === curIdStr && (!p.remote_id || Boolean(state.ownedRemoteIds && state.ownedRemoteIds[p.remote_id]) || (p.remote_status === 'cleaned' && p.owner_identity_hash === state.currentIdentityHash)) && !isShownInRemote(p);
       });
 
       var loadedRemoteCount = partnerList.length + remoteProList.length + remoteList.length;
@@ -2827,19 +2861,19 @@
       var details = extractAllPlanDetails(p, state.currentCar);
       var isModeDisabled = !isPlanCompatibleWithMode(p, currentCalcMode);
       var safePlanId = Utils.safeId(item.id);
-      var safeRemoteId = Utils.safeId(item.remote_id);
+      var safeRemoteId = item.remote_status === 'cleaned' ? '' : Utils.safeId(item.remote_id);
       var safePlayerId = Utils.safeId(item.player_id);
       var isVoted = Boolean(item.isVoted || state.votedMap[item.id] || (item.remote_id && state.votedMap[item.remote_id]));
       var isApplied = (state.activeAppliedPlanId === item.id);
       var isPartnerPlan = Boolean(item.isPartner || item.is_partner || type === 'partner');
       var isProPlan = !isPartnerPlan && Boolean(item.isPro || item.is_pro || type === 'pro');
       var isLocalPlan = (type === 'local');
-      var isAuthorSelf = Boolean(item.viewer_is_author || (isLocalPlan && safeRemoteId));
+      var isAuthorSelf = Boolean(item.viewer_is_author || (isLocalPlan && safeRemoteId && state.ownedRemoteIds && state.ownedRemoteIds[safeRemoteId]));
       // 已上传的方案会从「我的专属配装」移到社区分区，这里找回对应的本地记录，
       // 让作者本人即使在社区卡片上也能编辑/删除（用的是本地 id，走同一套接口）
       // 社区方案没有 remote_id 字段，它的 item.id 本身就是云端 id
       var myLocalCounterpart = !isLocalPlan
-        ? state.savedPlans.filter(function (p) { return p && p.remote_id && p.remote_id === item.id; })[0]
+        ? state.savedPlans.filter(function (p) { return item.viewer_is_author && p && p.remote_id && p.remote_id === item.id; })[0]
         : null;
       var ownerLocalId = isLocalPlan ? safePlanId : (myLocalCounterpart ? Utils.safeId(myLocalCounterpart.id) : '');
 
@@ -3005,6 +3039,8 @@
         } catch (_) { return ''; }
       };
       var items = list.slice(-6).map(function (a) {
+        var safeAnnoId = Utils.safeId(a.id);
+        var safeLocalId = Utils.safeId(localId);
         var replies = (a.replies || []).map(function (r) {
           return '<div class="cp-anno-reply">'
             + '<div class="cp-anno-meta"><b>' + esc(r.author || '投稿人') + '</b><span>' + fmt(r.created_at) + '</span></div>'
@@ -3016,8 +3052,8 @@
           + '<div class="cp-anno-text">' + esc(a.content) + '</div>'
           + (replies ? '<div class="cp-anno-replies">' + replies + '</div>' : '')
           + '<div class="cp-anno-form">'
-          + '<input class="cp-anno-input" type="text" maxlength="200" placeholder="回复这条批注…" data-anno-input="' + esc(a.id) + '">'
-          + '<button type="button" class="cp-anno-send" onclick="CommunityPlans.replyAnnotation(\'' + esc(localId) + '\', \'' + esc(a.id) + '\')">回复</button>'
+          + '<input class="cp-anno-input" type="text" maxlength="200" placeholder="回复这条批注…" data-anno-input="' + safeAnnoId + '">'
+          + '<button type="button" class="cp-anno-send" data-anno-reply="' + safeAnnoId + '" data-local-id="' + safeLocalId + '">回复</button>'
           + '</div>'
           + '</div>';
       }).join('');
@@ -3035,7 +3071,7 @@
       }
       var plan = state.savedPlans.find(function (p) { return p.id === localId; });
       if (!plan || !plan.remote_id) return;
-      var input = document.querySelector('[data-anno-input="' + annoId + '"]');
+      var input = document.querySelector('[data-anno-input="' + Utils.safeId(annoId) + '"]');
       var content = input ? String(input.value || '').trim() : '';
       if (!content) {
         CommunityPlans.toast('回复内容不能为空');
@@ -3435,14 +3471,11 @@
         '    <div class="cp-community-section" id="cpCommunitySection" style="display: none;">',
         '      <div class="form-group cp-form-group">',
         '        <div class="cp-label-row">',
-        '          <label class="form-label" for="cpInputAuthor">作者署名 (选填，留空展示热心车友)</label>',
+        '          <span class="form-label">作者署名使用个人信息中的昵称</span>',
         '          <div class="cp-switch-label-wrap">',
         '            <input type="checkbox" id="cpChkAnon" class="ui-switch" onchange="CommunityPlans.onToggleAnon(this.checked)">',
         '            <span class="cp-switch-label-text">匿名上传</span>',
         '          </div>',
-        '        </div>',
-        '        <div class="input-wrapper">',
-        '          <input type="text" id="cpInputAuthor" class="form-control cp-modal-input" placeholder="您的昵称 (选填)" maxlength="20" autocomplete="off">',
         '        </div>',
         '      </div>',
         '      <div class="form-group cp-form-group" id="cpLinksGroup">',
@@ -3677,7 +3710,7 @@
       var dupRemote = state.remotePlans.find(function (rp) {
         if (String(rp.car_id) !== String(state.currentCarId)) return false;
         if (rp.viewer_is_author) return false;
-        var matchedOwn = state.savedPlans.some(function (lp) { return lp.remote_id && lp.remote_id === rp.id; });
+        var matchedOwn = Boolean(state.ownedRemoteIds && state.ownedRemoteIds[rp.id]);
         if (matchedOwn) return false;
         return Utils.computeLocalBuildSig(rp.car_id, rp.params) === currentSig;
       });
@@ -3709,6 +3742,20 @@
 
       var chkSync = document.getElementById('cpChkSyncCommunity');
       var isSync = chkSync ? chkSync.checked : false;
+      if (isSync) {
+        if (!state.identityApiReady) {
+          CommunityPlans.toast('社区身份服务正在更新或尚未连接，请稍后再提交');
+          CommunityPlans.syncOwnedPlans(true);
+          return;
+        }
+        var profileNickname = window.ArcProfile && window.ArcProfile.getNickname();
+        if (!profileNickname) {
+          CommunityPlans.toast('请先在个人信息中填写昵称，再提交方案');
+          if (window.ArcProfile) window.ArcProfile.open();
+          return;
+        }
+        author = isAnon ? '热心车友' : profileNickname;
+      }
 
       var chkApplyPro = document.getElementById('cpChkApplyPro');
       var isApplyPro = isSync && chkApplyPro ? chkApplyPro.checked : false;
@@ -3862,6 +3909,7 @@
         reqHeaders['X-Turnstile-Token'] = CommunityPlans.turnstileState.token;
       }
 
+      state._ownedMutationEpoch = (state._ownedMutationEpoch || 0) + 1;
       fetch('/api/plans', {
         method: 'POST',
         headers: reqHeaders,
@@ -3889,9 +3937,13 @@
             return;
           }
 
+          state._ownedMutationEpoch = (state._ownedMutationEpoch || 0) + 1;
           if (resObj.data && resObj.data.data && resObj.data.data.id) {
             planItem.remote_id = resObj.data.data.id;
             planItem.remote_status = resObj.data.data.status;
+            if (!state.ownedRemoteIds) state.ownedRemoteIds = Object.create(null);
+            state.ownedRemoteIds[planItem.remote_id] = true;
+            planItem.owner_identity_hash = state.currentIdentityHash;
           }
 
           if (uploadingLocalId) {
@@ -3900,6 +3952,7 @@
             if (upPlan) {
               upPlan.remote_id = planItem.remote_id;
               upPlan.remote_status = planItem.remote_status;
+              upPlan.owner_identity_hash = state.currentIdentityHash;
               upPlan.title = planItem.title;
               upPlan.notes = planItem.notes;
               upPlan.build_sig = planItem.build_sig;
@@ -3921,6 +3974,7 @@
               existPlan.is_anonymous = planItem.is_anonymous;
               existPlan.remote_id = editing.remoteId;
               existPlan.remote_status = planItem.remote_status || 'pending_review';
+              existPlan.owner_identity_hash = state.currentIdentityHash;
               existPlan.reject_reason = '';
               existPlan.review_notes = '';
               existPlan.edit_count = (Number(existPlan.edit_count) || 0) + 1;
@@ -3984,7 +4038,8 @@
     },
 
     loadNotifications: function () {
-      var list = Utils.getStorage(STORAGE_KEYS.NOTIFICATIONS, []);
+      var key = state.currentIdentityHash ? STORAGE_KEYS.NOTIFICATIONS + ':' + state.currentIdentityHash : '';
+      var list = key ? Utils.getStorage(key, []) : [];
       state.notifications = Array.isArray(list) ? list.filter(function (n) { return n && n.id; }) : [];
       CommunityPlans.updateNotifBadge();
     },
@@ -3992,7 +4047,7 @@
     saveNotifications: function () {
       // 只保留最近 60 条，避免 localStorage 膨胀
       state.notifications = state.notifications.slice(0, 60);
-      Utils.setStorage(STORAGE_KEYS.NOTIFICATIONS, state.notifications);
+      if (state.currentIdentityHash) Utils.setStorage(STORAGE_KEYS.NOTIFICATIONS + ':' + state.currentIdentityHash, state.notifications);
       CommunityPlans.updateNotifBadge();
     },
 
@@ -4013,11 +4068,7 @@
     },
 
     updateNotifBadge: function () {
-      var wrapper = document.getElementById('notifWrapper');
       var dot = document.getElementById('notifDot');
-      if (!wrapper) return;
-      var hasAny = state.notifications.length > 0;
-      wrapper.hidden = !hasAny;
       if (dot) dot.hidden = !state.notifications.some(function (n) { return !n.read; });
     },
 
@@ -4143,12 +4194,137 @@
       }
     },
 
-    // 后台静默批量同步本地所有「审核中」方案的真实云端裁决状态（解决驳回/通过/清理后前端滞留「审核中」问题）
+    // 使用先前经服务端验证的摘要恢复离线索引；不会把其他身份的记录显示为本人。
+    restoreOwnedOffline: function () {
+      if (!window.crypto || !crypto.subtle || typeof TextEncoder === 'undefined') return;
+      var token;
+      try { token = localStorage.getItem('arc_user_identity_v1'); } catch (_) { return; }
+      if (!/^[a-f0-9]{64}$/.test(token || '')) return;
+      crypto.subtle.digest('SHA-256', new TextEncoder().encode(token)).then(function (digest) {
+        try { if (localStorage.getItem('arc_user_identity_v1') !== token) return; } catch (_) { return; }
+        var hash = Array.from(new Uint8Array(digest), function (b) { return ('0' + b.toString(16)).slice(-2); }).join('');
+        if (state.currentIdentityHash && state.currentIdentityHash !== hash) return;
+        var ids = state.ownedRemoteIds || Object.create(null);
+        state.savedPlans.forEach(function (item) {
+          if (item && item.remote_id && item.owner_identity_hash === hash && item.remote_status !== 'cleaned') ids[item.remote_id] = true;
+        });
+        state.currentIdentityHash = hash;
+        state.ownedRemoteIds = ids;
+        CommunityPlans.loadNotifications();
+        CommunityPlans.renderPlans({ preserveScroll: true });
+      }).catch(function () {});
+    },
+
+    // 以服务器验证的身份恢复本人所有方案，包括待审与驳回记录。
+    syncOwnedPlans: function (force) {
+      var now = Date.now();
+      if (state._syncingOwned || (!force && state._ownedSyncAt && now - state._ownedSyncAt < 60000)) return;
+      state._syncingOwned = true;
+      var syncEpoch = state._ownedMutationEpoch || 0;
+      var needsResync = false;
+      var initialIds = Object.create(null);
+      state.savedPlans.forEach(function (item) { if (item && item.remote_id) initialIds[item.remote_id] = item; });
+      var fetched = [];
+      var identityHash = '';
+      function load(page) {
+        return fetch('/api/plans?mine=1&page=' + page + '&limit=50', { method: 'GET', cache: 'no-store', headers: Utils.getApiHeaders(false) })
+          .then(Utils.parseJsonSafe).then(function (res) {
+            var data = res && res.data && res.data.data;
+            if (!res.ok || !res.data.success || !data || data.identity_version !== 1 || !/^[a-f0-9]{64}$/.test(data.identity_hash || '') || !Array.isArray(data.items)) throw new Error('identity_sync_unavailable');
+            if (identityHash && identityHash !== data.identity_hash) throw new Error('identity_changed_during_sync');
+            identityHash = data.identity_hash;
+            fetched = fetched.concat(data.items);
+            if (data.has_more && page < 40) return load(page + 1);
+            if (data.has_more) throw new Error('identity_sync_limit');
+          });
+      }
+      load(1).then(async function () {
+        if ((state._ownedMutationEpoch || 0) !== syncEpoch) { state._ownedSyncAt = 0; needsResync = true; return; }
+        var ids = Object.create(null);
+        var approvedCurrentCar = false;
+        if (state.currentIdentityHash !== identityHash) {
+          state.currentIdentityHash = identityHash;
+          CommunityPlans.loadNotifications();
+        }
+        fetched.forEach(function (item) {
+          if (!item || !Utils.safeId(item.id)) return;
+          ids[item.id] = true;
+          var existing = state.savedPlans.find(function (p) { return p && p.remote_id === item.id; });
+          var before = existing && existing.owner_identity_hash === identityHash ? {
+            remote_status: existing.remote_status, title: existing.title, car_name: existing.car_name,
+            annotations: Array.isArray(existing.annotations) ? existing.annotations.slice() : []
+          } : null;
+          if (before && before.remote_status !== 'approved' && item.status === 'approved' && String(item.car_id) === String(state.currentCarId)) approvedCurrentCar = true;
+          if (!existing) {
+            existing = { id: Utils.uuid(), remote_id: item.id };
+            state.savedPlans.unshift(existing);
+          }
+          existing.car_id = item.car_id;
+          existing.car_name = item.car_name;
+          existing.title = item.title;
+          existing.notes = item.notes || '';
+          existing.author = item.author;
+          existing.is_anonymous = Boolean(item.is_anonymous);
+          existing.params = item.params || {};
+          existing.links = item.links || [];
+          existing.build_sig = item.build_sig;
+          existing.created_at = item.created_at;
+          existing.remote_status = item.status;
+          existing.owner_identity_hash = identityHash;
+          existing.reject_reason = item.reject_reason;
+          existing.review_notes = item.review_notes;
+          existing.annotations = item.annotations || [];
+          existing.edit_count = item.edit_count || 0;
+          existing.last_edited_at = item.last_edited_at || null;
+          existing.isPro = Boolean(item.is_pro);
+          existing.isPartner = Boolean(item.is_partner);
+          existing.votes = Number(item.votes) || 0;
+          if (before) CommunityPlans.detectNotifications(before, existing, item);
+        });
+        var missing = state.savedPlans.filter(function (item) {
+          return item && item.remote_id && initialIds[item.remote_id] === item && item.owner_identity_hash === identityHash && !ids[item.remote_id] && item.remote_status !== 'cleaned';
+        });
+        for (var offset = 0; offset < missing.length; offset += 20) {
+          var batch = missing.slice(offset, offset + 20);
+          var confirmed = null;
+          try {
+            var response = await fetch('/api/plans?check_statuses=' + encodeURIComponent(batch.map(function (item) { return item.remote_id; }).join(',')), { method: 'GET', cache: 'no-store', headers: Utils.getApiHeaders(false) });
+            var parsed = await Utils.parseJsonSafe(response);
+            if (parsed.ok && parsed.data && parsed.data.success && parsed.data.data) confirmed = parsed.data.data.items;
+          } catch (_) {}
+          if ((state._ownedMutationEpoch || 0) !== syncEpoch) { state._ownedSyncAt = 0; needsResync = true; return; }
+          batch.forEach(function (item) {
+            var result = confirmed && confirmed[item.remote_id];
+            if (!result) { ids[item.remote_id] = true; return; }
+            if (result.found === false || result.status === 'cleaned') {
+              var before = { remote_status: item.remote_status, title: item.title, car_name: item.car_name, annotations: item.annotations || [] };
+              item.remote_status = 'cleaned';
+              CommunityPlans.detectNotifications(before, item, {});
+            } else if (result.viewer_is_author === true) ids[item.remote_id] = true;
+            else if (result.viewer_is_author === false) item.owner_identity_hash = '';
+            else ids[item.remote_id] = true;
+          });
+        }
+        state.ownedRemoteIds = ids;
+        state.currentIdentityHash = identityHash;
+        state.identityApiReady = true;
+        state._ownedSyncAt = Date.now();
+        Utils.setStorage(STORAGE_KEYS.PLANS, state.savedPlans);
+        CommunityPlans.renderPlans({ preserveScroll: true });
+        CommunityPlans.syncPendingPlanStatuses({ force: true });
+        if (approvedCurrentCar && state.currentCarId) CommunityPlans.fetchRemotePlans(state.currentCarId, { page: 1, append: false, preserveScroll: true });
+      }).catch(function () { state.identityApiReady = false; }).finally(function () {
+        state._syncingOwned = false;
+        if (needsResync) setTimeout(function () { CommunityPlans.syncOwnedPlans(true); }, 0);
+      });
+    },
+
+    // 后台静默批量同步本地方案的真实云端审核状态。
     syncPendingPlanStatuses: function (opts) {
       var force = Boolean(opts && opts.force);
       // 已通过的方案也要跟着查：后台可能下架或删除，之前把 approved 排除掉导致前端一直显示「已收录」
       var pendingPlans = state.savedPlans.filter(function (p) {
-        if (!p || !p.remote_id) return false;
+        if (!p || !p.remote_id || !state.ownedRemoteIds || !state.ownedRemoteIds[p.remote_id]) return false;
         return p.remote_status !== 'cleaned';
       });
       if (pendingPlans.length === 0) return;
@@ -4669,8 +4845,8 @@
       state.lastSnapshot = ParamsIO.capture();
       state.hasUndoAvailable = true;
       state.activeAppliedPlanId = planId;
-      var isOwnLocal = Boolean(localFound);
-      var isOwnRemote = Boolean(remoteFound && (remoteFound.viewer_is_author || state.savedPlans.some(function (lp) { return lp.remote_id === remoteFound.id; })));
+      var isOwnLocal = Boolean(localFound && (!localFound.remote_id || (state.ownedRemoteIds && state.ownedRemoteIds[localFound.remote_id]) || (localFound.remote_status === 'cleaned' && localFound.owner_identity_hash === state.currentIdentityHash)));
+      var isOwnRemote = Boolean(remoteFound && remoteFound.viewer_is_author);
 
       var undoBtn = document.getElementById('cpBtnUndo');
       if (undoBtn) undoBtn.style.display = 'inline-flex';
@@ -4732,7 +4908,7 @@
 
       var target = state.savedPlans[idx];
       var name = target.title;
-      var hasRemote = Boolean(target.remote_id);
+      var hasRemote = Boolean(target.remote_id && target.remote_status !== 'cleaned');
       var confirmText = hasRemote
         ? ('方案「' + name + '」已上传到社区。\n\n删除会同时从云端移除，且无法恢复。确定继续吗？')
         : ('确定要删除本地保存的方案「' + name + '」吗？');
@@ -4755,6 +4931,7 @@
       }
 
       CommunityPlans.toast('正在从云端删除...');
+      state._ownedMutationEpoch = (state._ownedMutationEpoch || 0) + 1;
       fetch('/api/plans', {
         method: 'POST',
         headers: Utils.getApiHeaders(true),
@@ -4767,6 +4944,7 @@
             CommunityPlans.toast('云端删除失败：' + (body.message || ('HTTP ' + resObj.status)));
             return;
           }
+          state._ownedMutationEpoch = (state._ownedMutationEpoch || 0) + 1;
           removeLocal();
           CommunityPlans.toast('已从云端与本机删除「' + name + '」');
         })
@@ -4779,7 +4957,7 @@
     uploadLocalPlan: function (localId) {
       var plan = state.savedPlans.find(function (p) { return p.id === localId; });
       if (!plan) return;
-      if (plan.remote_id) {
+      if (plan.remote_id && plan.remote_status !== 'cleaned') {
         CommunityPlans.toast('该方案已经在云端了');
         return;
       }
@@ -4914,7 +5092,7 @@
       var plan = localPlan || remotePlan;
       if (!plan) return;
 
-      var isOwnLocalWithRemote = Boolean(localPlan && localPlan.remote_id);
+      var isOwnLocalWithRemote = Boolean(localPlan && localPlan.remote_id && state.ownedRemoteIds && state.ownedRemoteIds[localPlan.remote_id]);
       if (plan.viewer_is_author || isOwnLocalWithRemote) {
         CommunityPlans.toast('不能给自己的方案点赞');
         return;
@@ -5191,6 +5369,10 @@
 
   // 挂载到全局
   window.CommunityPlans = CommunityPlans;
+  document.addEventListener('click', function (event) {
+    var button = event.target.closest('[data-anno-reply]');
+    if (button) CommunityPlans.replyAnnotation(button.dataset.localId, button.dataset.annoReply);
+  });
   window.toggleAutoDraft = Draft.toggle;
   window.paintAutoDraft = Draft.paintSwitch;
 

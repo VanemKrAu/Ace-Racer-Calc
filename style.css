@@ -235,7 +235,7 @@ body[data-theme-mode="light"] .theme-ico .ico:nth-child(1) { display: inline-blo
 .ds-c .top-right { gap: 8px; }
 .ds-c .nav-btn { height: 38px; gap: 7px; padding: 0 14px; background: var(--cell); border: 0; border-radius: 999px; box-shadow: var(--shadow); color: var(--ink); font-size: 13.5px; font-weight: 600; transition: background .15s; }
 .ds-c .top-bar .nav-btn:hover { background: var(--fill); }
-.ds-c .top-bar #authorBtn, .ds-c .top-bar #themeBtn { width: 38px; padding: 0; justify-content: center; }
+.ds-c .top-bar #authorBtn, .ds-c .top-bar #themeBtn, .ds-c .top-bar #profileBtn { width: 38px; padding: 0; justify-content: center; }
 .ds-c .top-bar .nav-btn-text { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); }
 .ds-c .top-bar .nav-btn .ico { width: 18px; height: 18px; }
 .ds-c .dropdown-menu { background: var(--cell); border-radius: var(--r-md); padding: 6px; box-shadow: 0 12px 40px rgba(0,0,0,.18), 0 0 0 1px var(--sep); }
@@ -2055,6 +2055,8 @@ body[data-calc-mode="team"] .chip-card .chip-t-team { display: inline; }
   background: transparent; color: var(--ink-2);
   font-size: 12.5px; font-weight: 600; line-height: 1.3; white-space: nowrap; cursor: pointer;
   transition: background-color .2s, border-color .2s, color .2s, box-shadow .2s; }
+.ds-c .chip-seg.chip-seg-levels { display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); }
+.ds-c .chip-seg-levels button { padding: 6px 2px; }
 .ds-c .chip-seg button:not(.is-on):hover {
   background-color: rgba(255, 255, 255, .06);
   color: var(--ink); }
@@ -2683,4 +2685,88 @@ html.lt-no-trans *::before,
 html.lt-no-trans *::after {
   transition: none !important;
   transition-duration: 0s !important;
+}
+
+/* 个人信息与身份凭据：弹窗外壳复用 community-plans.css 的 .cp-modal-overlay / .cp-modal-dialog / .cp-setting-switch-row / .cp-btn，这里仅补充差异 */
+.profile-toggle-wrapper { position: relative; }
+/* 昵称：弹窗焦点区，暖金描边高光 + 大号输入框 */
+.profile-dialog .profile-nick-card { position: relative; display: flex; flex-direction: column; gap: 10px; padding: 16px; border-radius: var(--r-md); background-color: color-mix(in oklab, var(--acc) 8%, var(--surface)); background-image: linear-gradient(180deg, color-mix(in oklab, var(--acc) 12%, transparent), transparent); border: 1px solid color-mix(in oklab, var(--acc) 55%, var(--surface-edge)); box-shadow: inset 0 1px 0 var(--surface-rim), 0 4px 18px -6px color-mix(in oklab, var(--acc) 35%, transparent); transition: border-color .2s ease, box-shadow .25s ease; }
+.profile-dialog .profile-nick-card:focus-within { border-color: var(--acc); box-shadow: inset 0 1px 0 var(--surface-rim), 0 0 0 3px color-mix(in oklab, var(--acc) 24%, transparent), 0 6px 22px -6px color-mix(in oklab, var(--acc) 45%, transparent); }
+.profile-dialog .profile-nick-head { display: flex; align-items: center; gap: 8px; }
+.profile-dialog .profile-nick-ico { display: inline-flex; align-items: center; justify-content: center; width: 28px; height: 28px; border-radius: 999px; color: var(--acc); background: color-mix(in oklab, var(--acc) 16%, transparent); transition: transform .3s cubic-bezier(.34, 1.56, .64, 1); }
+.profile-dialog .profile-nick-card:focus-within .profile-nick-ico { transform: scale(1.12) rotate(-6deg); }
+.profile-dialog .profile-nick-ico .ico { width: 16px; height: 16px; }
+.profile-dialog .profile-nick-label { flex: 1; min-width: 0; font-size: 14.5px; font-weight: 700; color: var(--ink); }
+.profile-dialog .profile-nick-count { font-size: 12px; font-variant-numeric: tabular-nums; color: var(--ink-3); transition: color .2s ease; }
+.profile-dialog .profile-nick-card.has-value .profile-nick-count { color: var(--acc); }
+.profile-dialog .profile-nick-input { width: 100%; height: 50px; padding: 0 14px; font-size: 17px; font-weight: 600; color: var(--ink); background-color: var(--fill); background-image: linear-gradient(180deg, rgba(255,255,255,.04), transparent); border: 1px solid var(--surface-edge); border-radius: var(--r-md); box-shadow: inset 0 1px 0 var(--surface-rim); outline: none; transition: border-color .2s ease, background-color .2s ease; }
+.profile-dialog .profile-nick-input::placeholder { color: var(--ink-3); font-weight: 500; }
+.profile-dialog .profile-nick-input:focus { border-color: var(--acc); background-color: var(--fill-hover); }
+.profile-dialog .profile-nick-hint { font-size: 12px; color: var(--ink-2); line-height: 1.5; }
+.profile-dialog .profile-nick-card.is-invalid { border-color: var(--fail); animation: profile-shake .38s cubic-bezier(.36, .07, .19, .97); }
+.profile-dialog .profile-nick-card.is-invalid .profile-nick-hint { color: var(--fail); }
+@keyframes profile-shake { 10%, 90% { transform: translateX(-1px); } 20%, 80% { transform: translateX(3px); } 30%, 50%, 70% { transform: translateX(-5px); } 40%, 60% { transform: translateX(5px); } }
+/* 进出场与分段错峰淡入 */
+.profile-overlay.is-closing { animation: profile-fade-out .18s ease forwards; pointer-events: none; }
+.profile-overlay.is-closing .profile-dialog { animation: profile-pop-out .18s ease forwards; }
+@keyframes profile-fade-out { to { opacity: 0; } }
+@keyframes profile-pop-out { to { opacity: 0; transform: scale(.96) translateY(6px); } }
+@keyframes profile-rise { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: none; } }
+.profile-dialog .cp-modal-body > *, .profile-dialog .cp-modal-footer { animation: profile-rise .38s cubic-bezier(.2, .8, .2, 1) both; }
+.profile-dialog .cp-modal-body > :nth-child(1) { animation-delay: .05s; }
+.profile-dialog .cp-modal-body > :nth-child(2) { animation-delay: .11s; }
+.profile-dialog .cp-modal-body > :nth-child(3) { animation-delay: .17s; }
+.profile-dialog .cp-modal-body > :nth-child(4) { animation-delay: .23s; }
+.profile-dialog .cp-modal-footer { animation-delay: .27s; }
+.profile-dialog .profile-warn .ico { animation: profile-warn-pulse 1.8s ease-in-out .4s 2; }
+@keyframes profile-warn-pulse { 50% { transform: scale(1.18); } }
+.profile-dialog .profile-status:not([hidden]) { animation: profile-rise .25s ease both; }
+.profile-dialog .cp-modal-close .ico { transition: transform .25s cubic-bezier(.34, 1.56, .64, 1); }
+.profile-dialog .cp-modal-close:hover .ico { transform: rotate(90deg); }
+.profile-dialog .cp-btn:not(.btn-hold):active { transform: scale(.97); }
+@media (prefers-reduced-motion: reduce) {
+  .profile-dialog *, .profile-overlay.is-closing, .profile-overlay.is-closing .profile-dialog { animation: none !important; transition: none !important; }
+}
+.ds-c .top-bar #profileBtn { position: relative; }
+.profile-overlay { z-index: 1000000; }
+.profile-dialog { outline: none; }
+.profile-dialog .cp-modal-title .lang-en { font-weight: 700; }
+.profile-dialog .cp-setting-switch-row.profile-stack { flex-direction: column; align-items: stretch; gap: 10px; }
+.profile-dialog .profile-actions { display: flex; flex-wrap: wrap; gap: 8px; }
+.profile-dialog .profile-actions .cp-btn { flex: 1 1 130px; justify-content: center; }
+.profile-dialog .profile-code { display: block; overflow-wrap: anywhere; word-break: break-all; font: 12px/1.5 ui-monospace, SFMono-Regular, Consolas, monospace; font-variant-numeric: tabular-nums; user-select: all; margin: 0; }
+.profile-dialog .profile-status { color: var(--warn); }
+.profile-dialog .profile-warn { display: flex; align-items: flex-start; gap: 8px; color: var(--ink); background: var(--fail-soft); border-color: color-mix(in oklab, var(--fail) 45%, var(--surface-edge)); line-height: 1.55; }
+.profile-dialog .profile-warn .ico { width: 18px; height: 18px; flex: none; margin-top: 1px; color: var(--fail); }
+/* 红色危险按钮：沿用 .cp-btn 规格，语义色取自 --fail */
+/* 弹窗内普通按钮：毛玻璃 --fill + 180° 顶光渐变 + rim 内高光，不用纯色底 */
+.profile-dialog .cp-btn:not(.cp-btn-save):not(.profile-danger) { background-color: var(--fill); background-image: linear-gradient(180deg, rgba(255,255,255,.04), transparent); border: 1px solid var(--surface-edge); box-shadow: inset 0 1px 0 var(--surface-rim); color: var(--ink); }
+.profile-dialog .cp-btn:not(.cp-btn-save):not(.profile-danger):hover { background-color: var(--fill-hover); border-color: color-mix(in oklab, var(--acc) 55%, var(--surface-edge)); transform: translateY(-1px); }
+.ds-c .cp-btn.profile-danger { position: relative; overflow: hidden; background-color: color-mix(in oklab, var(--fail) 20%, var(--surface)); background-image: linear-gradient(180deg, color-mix(in oklab, var(--fail) 14%, transparent), transparent); border: 1px solid color-mix(in oklab, var(--fail) 65%, transparent); color: var(--ink); box-shadow: inset 0 1px 0 var(--surface-rim), 0 2px 8px color-mix(in oklab, var(--fail) 22%, transparent); }
+.ds-c .cp-btn.profile-danger .ico, .ds-c .cp-btn.profile-danger .hold-ring-wrap { color: var(--fail); }
+.ds-c .cp-btn.profile-danger:hover { background-color: color-mix(in oklab, var(--fail) 30%, var(--surface)); border-color: var(--fail); transform: translateY(-1px); }
+.ds-c .cp-btn.profile-danger:focus-visible, .ds-c .cp-btn:focus-visible, .profile-dialog .cp-modal-close:focus-visible { outline: 2px solid var(--fail-fill); outline-offset: 2px; }
+.ds-c .cp-btn:not(.profile-danger):focus-visible, .profile-dialog .cp-modal-close:focus-visible { outline-color: var(--acc); }
+/* 长按确认：视觉与交互对齐后台 .btn-hold（填充条 + 圆环） */
+.profile-dialog .profile-hold-hint { display: flex; align-items: center; gap: 6px; font-size: 12px; color: var(--ink-2); transition: color .18s ease; }
+.profile-dialog .profile-hold-hint.is-holding { color: var(--fail); font-weight: 600; }
+.ds-c .btn-hold { isolation: isolate; touch-action: none; user-select: none; -webkit-user-select: none; -webkit-touch-callout: none; }
+.ds-c .btn-hold::before { content: ""; position: absolute; inset: 0; z-index: 0; background: color-mix(in oklab, var(--fail) 38%, transparent); transform: scaleX(0); transform-origin: left center; transition: transform .22s ease; pointer-events: none; }
+.ds-c .btn-hold.is-holding::before { transform: scaleX(1); transition: transform 1s linear; }
+.ds-c .btn-hold.is-hold-complete::before { transform: scaleX(1); background: color-mix(in oklab, var(--fail) 55%, transparent); }
+.ds-c .btn-hold > * { position: relative; z-index: 1; }
+.ds-c .btn-hold.is-holding { box-shadow: 0 0 0 3px var(--fail-soft); transform: scale(.985); }
+.hold-ring-wrap { display: inline-flex; align-items: center; justify-content: center; width: 17px; height: 17px; flex: none; }
+.hold-ring-svg { width: 17px; height: 17px; display: block; transform: rotate(-90deg); }
+.hold-ring-track { fill: none; stroke: currentColor; stroke-width: 2.4; opacity: .3; }
+.hold-ring-progress { fill: none; stroke: currentColor; stroke-width: 2.6; stroke-linecap: round; stroke-dasharray: 56.6; stroke-dashoffset: 56.6; transition: stroke-dashoffset .22s ease; }
+.btn-hold.is-holding .hold-ring-progress, .btn-hold.is-hold-complete .hold-ring-progress { stroke-dashoffset: 0; }
+.btn-hold.is-holding .hold-ring-progress { transition: stroke-dashoffset 1s linear; }
+@media (max-width: 640px) {
+  .profile-dialog .cp-modal-footer { flex-wrap: wrap; }
+  .profile-dialog .cp-modal-footer .cp-btn { flex: 1 1 120px; justify-content: center; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .ds-c .btn-hold::before, .btn-hold .hold-ring-progress, .profile-dialog .profile-hold-hint { transition: none !important; }
+  .ds-c .btn-hold.is-holding { transform: none; outline: 2px solid var(--fail); outline-offset: -4px; }
 }
