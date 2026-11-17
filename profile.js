@@ -229,24 +229,47 @@
 
   var promptTimer = null;
   var promptedThisPage = false;
+  var countedThisPage = false;
   function configurePrompt(policy) {
     if (promptTimer) clearTimeout(promptTimer);
     promptTimer = null;
-    if (!policy || policy.enabled === false || promptedThisPage || getNickname()) return;
+    if (!policy || policy.enabled === false || getNickname()) return;
     function bounded(value, min, max, fallback) {
+      if (value === undefined || value === null || value === '') return fallback;
       var n = Number(value);
       return isFinite(n) ? Math.min(max, Math.max(min, Math.round(n))) : fallback;
     }
-    var limit = bounded(policy.max_shows, 1, 20, 1);
+    var visitInterval = bounded(policy.visit_interval, 1, 999, 1);
+    var showOnFirst = policy.show_on_first !== false;
+    var limit = bounded(policy.max_shows, 0, 100, 0);
     var delay = bounded(policy.delay_seconds, 0, 120, 1);
-    var interval = bounded(policy.interval_hours, 0, 720, 24) * 3600000;
+    var interval = bounded(policy.interval_hours, 0, 720, 0) * 3600000;
     var key = 'arc_profile_prompt_state_v1';
     var state;
     try {
       var saved = localStorage.getItem(key);
-      state = saved ? JSON.parse(saved) : { count: localStorage.getItem(visitedKey) ? 1 : 0, last: 0 };
-      if (!state || typeof state !== 'object') state = { count: 0, last: 0 };
-      if ((Number(state.count) || 0) >= limit || (state.last && Date.now() - Number(state.last) < interval)) return;
+      if (saved) {
+        state = JSON.parse(saved);
+      } else {
+        var oldVisited = localStorage.getItem(visitedKey) ? 1 : 0;
+        state = { visits: oldVisited, count: oldVisited, last: 0 };
+      }
+      if (!state || typeof state !== 'object') state = { visits: 0, count: 0, last: 0 };
+      if (typeof state.visits !== 'number' || !isFinite(state.visits)) {
+        state.visits = Number(state.count) || 0;
+      }
+      if (!countedThisPage) {
+        countedThisPage = true;
+        state.visits = (Number(state.visits) || 0) + 1;
+        localStorage.setItem(key, JSON.stringify(state));
+      }
+      if (promptedThisPage) return;
+      if (limit > 0 && (Number(state.count) || 0) >= limit) return;
+      var hitVisit = showOnFirst
+        ? ((state.visits - 1) % visitInterval === 0)
+        : (state.visits % visitInterval === 0);
+      if (!hitVisit) return;
+      if (interval > 0 && state.last && Date.now() - Number(state.last) < interval) return;
     } catch (_) { return; }
     function showWhenReady() {
       if (getNickname() || promptedThisPage) return;
@@ -255,7 +278,14 @@
         return;
       }
       promptedThisPage = true;
-      try { localStorage.setItem(key, JSON.stringify({ count: (Number(state.count) || 0) + 1, last: Date.now() })); } catch (_) {}
+      try {
+        var latest = {};
+        try { latest = JSON.parse(localStorage.getItem(key) || '{}') || {}; } catch (_) {}
+        latest.visits = Number(latest.visits) || Number(state.visits) || 1;
+        latest.count = (Number(latest.count) || Number(state.count) || 0) + 1;
+        latest.last = Date.now();
+        localStorage.setItem(key, JSON.stringify(latest));
+      } catch (_) {}
       open();
     }
     promptTimer = setTimeout(showWhenReady, delay * 1000);

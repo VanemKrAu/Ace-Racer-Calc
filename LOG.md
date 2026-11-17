@@ -66,3 +66,11 @@
 - 改动：发布合并芯片入口、王牌核心固定满级及昵称提示控制；原因：完成用户要求的功能调整。
 - 涉及文件：前端提交 `aa71e8d` 及本日志与索引；git 状态：功能提交已推送 `main`，此记录为发布后补记。
 - 发布面：正式前端和 PWA；冒烟：本地芯片与身份回归、gitleaks 扫描通过，Vercel 构建状态成功；未执行生产写入测试，未轮换密钥。
+
+## 2026-11-17 昵称弹窗按打开次数节流（每 5 次弹 1 次）
+
+- 改动：`profile.js` 新增 `visit_interval`（默认 5）、`show_on_first` 与 `max_shows=0`（不限次数直到填写昵称）支持；`community-plans.js` 同步离线默认策略；`sw.js` 升级至 `calc-shell-v74`。
+- 原因：未填写昵称的访客按每打开 5 次网站弹出 1 次提醒，填写后不再自动弹窗。
+- 涉及文件：`profile.js`、`community-plans.js`、`sw.js`、`scripts/test-identity-sync.py`、本日志与索引。
+- 验证：本地 Playwright 跑通 `scripts/test-ace-core.py` 与 `scripts/test-identity-sync.py`（验证第 1、6 次弹出，第 2~5 次不弹，填写后不再弹）。
+- git 状态：仅本地未提交；待用户确认后提交并推送。

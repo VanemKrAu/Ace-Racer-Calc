@@ -4665,7 +4665,7 @@
             }
             CommunityPlans.maybeHandleAnnouncement(true);
             if (window.ArcProfile && window.ArcProfile.configurePrompt) {
-              window.ArcProfile.configurePrompt(json.site_meta.profile_prompt || { enabled: true, max_shows: 1, delay_seconds: 1, interval_hours: 24 });
+              window.ArcProfile.configurePrompt(json.site_meta.profile_prompt || { enabled: true, visit_interval: 5, show_on_first: true, max_shows: 0, delay_seconds: 1, interval_hours: 0 });
             }
             if (state.currentCarId) {
               CommunityPlans.renderPlans({ preserveScroll: true });

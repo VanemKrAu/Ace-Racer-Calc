@@ -135,6 +135,35 @@ with sync_playwright() as playwright:
     prompt.wait_for_timeout(150)
     assert prompt.locator('.profile-overlay').count() == 0
     context.close()
+
+    # 验证「不填昵称时，每打开 5 次网站弹出 1 次（第 1、6 次弹；填完昵称后不再弹）」
+    freq_ctx = browser.new_context()
+    fp = freq_ctx.new_page()
+    fp.add_init_script("window.fetch=()=>Promise.reject(new Error('offline'))")
+    fp.route("**/*", serve)
+    policy5 = "ArcProfile.configurePrompt({enabled:true,visit_interval:5,show_on_first:true,max_shows:0,delay_seconds:0,interval_hours:0})"
+    for visit in range(1, 7):
+        fp.goto("http://localhost:8421/index.html", wait_until="load")
+        fp.evaluate(policy5)
+        if visit in (1, 6):
+            fp.wait_for_selector('.profile-overlay')
+            if visit == 1:
+                fp.locator('[data-profile=skip]').click()
+                fp.wait_for_selector('.profile-overlay', state='detached')
+            else:
+                fp.locator('#profileNickname').fill('测试车手')
+                fp.locator('[data-profile=save]').click()
+                fp.wait_for_selector('.profile-overlay', state='detached')
+        else:
+            fp.wait_for_timeout(120)
+            assert fp.locator('.profile-overlay').count() == 0, f"visit {visit} should not prompt"
+    # 已填昵称后即使后续到达周期也不再弹出
+    for _ in range(5):
+        fp.goto("http://localhost:8421/index.html", wait_until="load")
+        fp.evaluate(policy5)
+        fp.wait_for_timeout(80)
+        assert fp.locator('.profile-overlay').count() == 0
+    freq_ctx.close()
     browser.close()
 
 print("身份同步、通知、本地备份、并发与离线身份隔离通过")
