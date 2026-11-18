@@ -520,6 +520,16 @@
       "evidence": {
         "ult_charge_first": "RECU 变体技能原文「提高干扰频率并在比赛开始时获得30%大招能量」，这 30% 属于起步额外充能。原先 init_ratio 与 ult_charge_first 都是 null，两头落空，导致选车时起步充能只填了 ace_charge 的 27%，少 30%。按 SKILL 规则，RECU 的加成归 ult_charge_first，不重复计入 init_ratio。"
       }
+    },
+    "12085": {
+      "name": "兰博基尼 Urus",
+      "audited_at": "2026-11-18",
+      "fields": {},
+      "evidence": {
+        "结论": "脚本提取的基础字段正确（ace_charge=3900, init_ratio=500 对应开局+5%, ult_duration=7, nitro_duration=6, chip_slots=○○◇◣◣V），已补充 ASSIST_OVERRIDE（为 1000m 内非辅助位队友提供 24% 大招能量）。",
+        "两次充能": "richText.ace_time_effect 写「优雅非凡可以充能两次」属于通用存两管大招措辞，不设 ult_chain。",
+        "被动与自身充能": "special_passive_skill_desc「在特殊地形中不会减速，开局时获得2500集气量和5%大招能量」已由 init_ratio=500 体现，不重复填 ult_charge_first；无自身氮气/大招/每秒/条件自充能，相关字段保持 null。"
+      }
     }
   }
 }

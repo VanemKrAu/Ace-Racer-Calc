@@ -663,6 +663,52 @@ const CAR_DATABASE = [
     "release_at": 1781798400000
   },
   {
+    "id": 12085,
+    "name": "兰博基尼 Urus",
+    "name_en": "Lamborghini Urus",
+    "position": "辅助位",
+    "specialization": "山路",
+    "quality": "传说",
+    "ace_charge": 3900,
+    "ult_duration": 7,
+    "ult_type": "N2O_STYLE",
+    "cost_ratio": 1428,
+    "has_sp": false,
+    "chip_slots": "○○◇◣◣V",
+    "speed_limit": 181,
+    "speedup_ratio": 1.24,
+    "drift_coef": 600,
+    "drift_min": 1200,
+    "drift_max": 6000,
+    "init_ratio": 500,
+    "drift_extra_charge": [
+      [
+        1,
+        0
+      ],
+      [
+        2,
+        1800
+      ]
+    ],
+    "nitro_duration": 6,
+    "ult_threshold": 100,
+    "nitro_charge": null,
+    "ult_charge_first": null,
+    "ult_charge_loop": null,
+    "per_sec_charge": null,
+    "sp_charge": null,
+    "search_text": "lanbojini urus lbjn",
+    "asset_dir": "assets/兰博基尼 Urus_12085",
+    "added_at": 1795011102055,
+    "release_at": 1795104000000,
+    "assist_charge": 24,
+    "assist_kind": "once",
+    "assist_hits": 1,
+    "assist_note": "为 1000 米范围内非辅助位队友提供 24% 大招能量（每次大招 1 次）",
+    "assist_note_en": "Grants 24% ult charge to non-Support allies within 1000m (1 hit per ult)"
+  },
+  {
     "id": 12084,
     "name": "蔚来ET9",
     "name_en": "Wei Lai ET9",

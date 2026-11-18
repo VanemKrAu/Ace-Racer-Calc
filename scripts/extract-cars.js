@@ -14,6 +14,7 @@ const rawDataDir = process.env.ACE_RAWDATA_DIR
 // 车辆添加时间登记表（新增车辆时在此登记，用于列表"新车在上"排序）
 // 时间戳 = 该车加入网站的时间 (Date.now())
 const ADDED_AT = {
+  12085: 1795011102055, // 兰博基尼 Urus
   12090: 1793097114796, // 终焉梦魇
   12101: 1792515865886, // 丰田 GR SUPRA
   12050: 1790841739849, // 法拉利 SF90 XX Stradale
@@ -76,6 +77,9 @@ const FIELD_OVERRIDE = {
 // assist_note / assist_note_en：自动填入时给用户看的补充说明（条件触发、附带效果等）
 // 大部分辅助车直接从大招面板「友方充能」读出来（见 extractAssist），这里只登记读不到或需要补说明的。
 const ASSIST_OVERRIDE = {
+  12085: { assist_charge: 24, assist_kind: 'once', assist_hits: 1,    // 兰博基尼 Urus：为 1000m 内非辅助位队友提供 24% 大招能量
+    assist_note: '为 1000 米范围内非辅助位队友提供 24% 大招能量（每次大招 1 次）',
+    assist_note_en: 'Grants 24% ult charge to non-Support allies within 1000m (1 hit per ult)' },
   // 面板里没有「友方充能」行，但大招确实给队友能量：
   12036: { assist_charge: 7.5, assist_kind: 'once', assist_hits: 4,   // 游龙惊鸿：「游龙大招充能 7.5%」
     assist_note: '游龙在赛道中存在 10 秒，每 3 秒给一次（CD 3 秒），一次大招最多 4 次',
