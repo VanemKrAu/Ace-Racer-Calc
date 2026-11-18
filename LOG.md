@@ -74,3 +74,11 @@
 - 涉及文件：`profile.js`、`community-plans.js`、`sw.js`、`scripts/test-identity-sync.py`、本日志与索引。
 - 验证：本地 Playwright 跑通 `scripts/test-ace-core.py` 与 `scripts/test-identity-sync.py`（验证第 1、6 次弹出，第 2~5 次不弹，填写后不再弹）。
 - git 状态：仅本地未提交；待用户确认后提交并推送。
+
+## 2026-11-18 身份隔离与分享参数安全修复
+
+- 改动：限制配装分享参数类型和大小；身份切换时丢弃旧请求并清理旧身份状态；本人方案状态查询改为轮转。
+- 原因：修复恶意参数卡顿、跨标签身份竞态及超过 20 条方案时的状态遗漏。
+- 涉及文件：`index.html`、`community-plans.js`、`sw.js`、`scripts/test-identity-sync.py`、本日志与索引。
+- 发布面：前端计算器、社区及 PWA；离线浏览器回归通过，尚未部署，未轮换密钥。
+- git 状态：未提交；保留原有未跟踪视频工程。

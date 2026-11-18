@@ -15,6 +15,7 @@
 import { readFileSync, writeFileSync, readdirSync, copyFileSync, existsSync, mkdirSync, statSync } from 'fs';
 import { join, dirname } from 'path';
 import { execSync } from 'child_process';
+import { generateCDNBlock } from './cdn-code.mjs';
 
 const ROOT = join(import.meta.dirname, '..');
 const DATA = join(ROOT, 'data', '26-07-15_29734784_android');
@@ -22,6 +23,7 @@ const FULL = join(DATA, 'full');
 const VEHICLES = join(FULL, 'vehicles');
 const ASSETS = join(FULL, 'assets');
 const INDEX = join(ROOT, 'index.html');
+const CDN_ICONS = join(ROOT, 'cdn-icons.js');
 const MAPPING = join(ROOT, 'data', 'bili-url-mapping.json');
 
 function log(step, msg) {
@@ -157,8 +159,8 @@ execSync('node scripts/extract-cars.js', { cwd: ROOT, stdio: 'inherit' });
 step('3. Upload new images to B站 CDN');
 execSync('node scripts/upload-bili.mjs', { cwd: ROOT, stdio: 'inherit' });
 
-// ── Step 4: Regenerate CDN URL mappings in index.html ──
-step('4. Regenerate CDN code in index.html');
+// ── Step 4: Regenerate the external CDN URL mapping ──
+step('4. Regenerate CDN code in cdn-icons.js');
 
 const mapping = JSON.parse(readFileSync(MAPPING, 'utf-8'));
 
@@ -177,36 +179,13 @@ for (const [key, url] of Object.entries(mapping)) {
   }
 }
 
-// Read current index.html
-let html = readFileSync(INDEX, 'utf-8');
-
-// Find and replace the CDN JS block (between _BILI_CDN marker)
-const startMarker = '// Bilibili CDN image URLs (auto-generated)';
-const endMarker = '</script>';
-const blockStart = html.indexOf(startMarker);
-const blockEnd = html.indexOf(endMarker, blockStart);
-
-if (blockStart < 0) {
-  log('ERROR', 'Cannot find CDN block marker in index.html. Inserting new block after car-database.js');
-  const insertPoint = html.indexOf('</script>', html.indexOf('car-database.js')) + 9;
-  const newBlock = generateCDNBlock(iconKeys, carUrls);
-  html = html.slice(0, insertPoint) + newBlock + html.slice(insertPoint);
-} else {
-  // 从注释向前找到所属的 <script> 开标签，整块替换。
-  // 若只从注释开始替换，原有 <script> 会残留，而新块又自带一个 <script>，
-  // 结果出现连续两个 <script> 开标签（标签不配平）→ 该段脚本语法错误 → 页面 JS 全挂。
-  const scriptOpen = html.lastIndexOf('<script', blockStart);
-  // 仅当 <script> 与注释之间只有空白时才连开标签一起替换，否则退回只替换注释块
-  const between = scriptOpen >= 0 ? html.slice(scriptOpen, blockStart) : '';
-  const from = (scriptOpen >= 0 && /^<script[^>]*>\s*$/.test(between)) ? scriptOpen : blockStart;
-  const oldBlock = html.slice(from, blockEnd + 9);
-  const newBlock = generateCDNBlock(iconKeys, carUrls);
-  html = html.replace(oldBlock, newBlock);
-  log('REPLACE', 'Updated CDN block in index.html');
+const html = readFileSync(INDEX, 'utf-8');
+if (!/<script\b[^>]*\bsrc=["'](?:\.\/)?cdn-icons\.js["']/i.test(html)) {
+  throw new Error('index.html 未加载 cdn-icons.js，拒绝更新 CDN 映射');
 }
-
-writeFileSync(INDEX, html, 'utf-8');
-log('DONE', 'index.html CDN references updated');
+if (!existsSync(CDN_ICONS)) throw new Error('cdn-icons.js 不存在，拒绝创建意外输出');
+writeFileSync(CDN_ICONS, generateCDNBlock(iconKeys, carUrls), 'utf-8');
+log('DONE', 'cdn-icons.js CDN references updated');
 
 // ── Step 5: Summary ──
 step('5. Summary');
@@ -231,17 +210,3 @@ console.log('  ─────────────────────�
 console.log('  Suggested commit: git add -A && git commit -m "feat: add N new cars + CDN upload"');
 console.log('  Then push:        git push\n');
 
-// ── Helper ──
-function generateCDNBlock(icons, carImg) {
-  let js = '\n<script>\n// Bilibili CDN image URLs (auto-generated)\n';
-  js += 'var _BILI_CDN = true;\n';
-  js += 'var _ICONS = ' + JSON.stringify(icons, null, 2) + ';\n';
-  js += 'var _CAR_IMG = {\n';
-  const sorted = Object.entries(carImg).sort((a, b) => parseInt(b[0]) - parseInt(a[0]));
-  for (const [id, url] of sorted) {
-    js += `  ${id}: "${url}",\n`;
-  }
-  js += '};\n';
-  js += '</script>\n';
-  return js;
-}

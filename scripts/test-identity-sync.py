@@ -43,7 +43,8 @@ def serve(route):
 
 with sync_playwright() as playwright:
     browser = playwright.chromium.launch(executable_path=CHROME, headless=True)
-    page = browser.new_page(viewport={"width": 375, "height": 850})
+    first_context = browser.new_context(viewport={"width": 375, "height": 850})
+    page = first_context.new_page()
     setup = """(() => {
       localStorage.setItem('arc_user_identity_v1', TOKEN);
       localStorage.setItem('arc_profile_intro_v1', '1');
@@ -89,7 +90,47 @@ with sync_playwright() as playwright:
     }""")
     page.wait_for_function("!window.__testState._syncingOwned", timeout=10000)
     assert page.evaluate("window.__testState.savedPlans.find(x=>x.remote_id==='new_remote').remote_status") == "pending_review"
+
+    # 另一标签切换身份时，旧请求不能将旧身份的数据写入当前状态。
+    page.wait_for_timeout(100)
+    page.evaluate("""() => {
+      window.__mineResponse.data.items.push({id:'late_private',car_id:12104,car_name:'test',title:'stale private',status:'pending_review',params:{}});
+      window.__deferMine = true;
+      delete window.__resolveMine;
+      CommunityPlans.syncOwnedPlans(true);
+    }""")
+    page.wait_for_function("typeof window.__resolveMine === 'function'")
+    other_tab = page.context.new_page()
+    other_tab.route("**/*", serve)
+    other_tab.goto("http://localhost:8421/index.html", wait_until="load")
+    page.evaluate("""hash => {
+      window.__mineResponse = {success:true,data:{identity_version:1,identity_hash:hash,has_more:false,items:[]}};
+      window.__deferMine = false;
+    }""", OTHER_IDENTITY)
+    other_tab.evaluate("localStorage.setItem('arc_user_identity_v1', 'b'.repeat(64))")
+    page.wait_for_function("window.__testState._resyncForIdentity === true")
+    page.evaluate("window.__resolveMine()")
+    page.wait_for_function("hash => window.__testState.currentIdentityHash === hash && window.__testState.identityApiReady", arg=OTHER_IDENTITY, timeout=10000)
+    assert not page.evaluate("window.__testState.savedPlans.some(x=>x.remote_id==='late_private')")
+    assert not page.evaluate("Boolean(window.__testState.ownedRemoteIds.mine_one)")
+    other_tab.close()
+
+    # 超过批量上限时轮转，不能每次都只检查同样的 20 条。
+    page.evaluate("""() => {
+      const s=window.__testState;
+      s.savedPlans=Array.from({length:21},(_,i)=>({id:'local_'+i,remote_id:'id_'+i,owner_identity_hash:s.currentIdentityHash,remote_status:'pending_review',car_id:12104,created_at:i}));
+      s.ownedRemoteIds=Object.fromEntries(s.savedPlans.map(x=>[x.remote_id,true]));
+      s._statusCursor=0; s._lastStatusSyncAt=0; s._isSyncingStatuses=false;
+      window.__statusRequests=[];
+      window.fetch=(url)=>{ window.__statusRequests.push(String(url)); return Promise.resolve(new Response(JSON.stringify({success:true,data:{items:{}}}),{status:200})); };
+    }""")
+    for _ in range(2):
+        page.evaluate("CommunityPlans.syncPendingPlanStatuses({force:true})")
+        page.wait_for_function("!window.__testState._isSyncingStatuses")
+    checked = page.evaluate("window.__statusRequests.filter(x=>x.includes('check_statuses=')).map(x=>decodeURIComponent(x))")
+    assert len(checked) == 2 and any('id_0' in request for request in checked), checked
     page.close()
+    first_context.close()
 
     page = browser.new_page(viewport={"width": 375, "height": 850})
     offline = """(() => { localStorage.setItem('arc_user_identity_v1',TOKEN);
@@ -121,6 +162,18 @@ with sync_playwright() as playwright:
     prompt.add_init_script("window.fetch=()=>Promise.reject(new Error('offline'))")
     prompt.route("**/*", serve)
     prompt.goto("http://localhost:8421/index.html", wait_until="load")
+    # 畸形配置不得修改页面，也不得把伪造的 length 当成循环上限。
+    assert prompt.evaluate("""() => {
+      document.getElementById('startCharge').value='42';
+      let cfg=btoa(encodeURIComponent(JSON.stringify({sc:88,emps:{length:1000000000}})));
+      history.replaceState(null,'','?cfg='+encodeURIComponent(cfg));
+      return loadConfigFromUrl() === false && document.getElementById('startCharge').value === '42';
+    }""")
+    assert prompt.evaluate("""() => {
+      let cfg=btoa(encodeURIComponent(JSON.stringify({sc:31,emps:['fusu']})));
+      history.replaceState(null,'','?cfg='+encodeURIComponent(cfg));
+      return loadConfigFromUrl() === true && document.getElementById('startCharge').value === '31' && document.getElementById('chk_fusu').checked;
+    }""")
     prompt.evaluate("ArcProfile.configurePrompt({enabled:false,max_shows:2,delay_seconds:0,interval_hours:0})")
     prompt.wait_for_timeout(150)
     assert prompt.locator('.profile-overlay').count() == 0

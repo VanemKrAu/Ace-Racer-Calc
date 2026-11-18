@@ -1,0 +1,2 @@
+
+(function(){var e=document.getElementById('carSearch');if(e&&typeof currentLang!=='undefined')e.placeholder=currentLang==='zh'?'搜索赛车名称...':'Search car name...';})();

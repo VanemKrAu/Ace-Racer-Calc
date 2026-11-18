@@ -980,6 +980,10 @@
       if (includeJson) h['Content-Type'] = 'application/json';
       return h;
     },
+    identityMatches: function (token) {
+      if (!/^[a-f0-9]{64}$/.test(token || '')) return false;
+      try { return localStorage.getItem('arc_user_identity_v1') === token; } catch (_) { return false; }
+    },
     detectPlatform: function (url) {
       var res = Utils.extractProfileLink(url);
       if (res && res.ok && !res.empty) {
@@ -1546,6 +1550,30 @@
           CommunityPlans.syncOwnedPlans();
           CommunityPlans.syncPendingPlanStatuses();
         });
+        window.addEventListener('storage', function (event) {
+          if (event.key !== 'arc_user_identity_v1' && event.key !== null) return;
+          if (event.key && event.oldValue === event.newValue) return;
+          // 立即撤销旧身份的本页显示与异步请求结果，随后按新身份重新同步。
+          state._identityEpoch = (state._identityEpoch || 0) + 1;
+          state._ownedMutationEpoch = (state._ownedMutationEpoch || 0) + 1;
+          state._ownedSyncAt = 0;
+          state._statusCursor = 0;
+          state._lastStatusSyncAt = 0;
+          state.currentIdentityHash = '';
+          state.ownedRemoteIds = Object.create(null);
+          state.identityApiReady = false;
+          state.notifications = [];
+          state.fetchSeq = (state.fetchSeq || 0) + 1;
+          state.remotePlans = [];
+          state.remotePage = 0;
+          state.remoteHasMore = false;
+          CommunityPlans.updateNotifBadge();
+          CommunityPlans.renderPlans({ preserveScroll: true });
+          CommunityPlans.restoreOwnedOffline();
+          if (state._syncingOwned) state._resyncForIdentity = true;
+          else CommunityPlans.syncOwnedPlans(true);
+          if (state.currentCarId && state.currentCarId !== -1) CommunityPlans.fetchRemotePlans(state.currentCarId, { page: 1 });
+        });
       }
     },
 
@@ -1945,9 +1973,12 @@
         '&page=' + encodeURIComponent(targetPage) +
         '&limit=' + encodeURIComponent(pageSize);
 
+      var requestHeaders = Utils.getApiHeaders(false);
+      var requestIdentity = requestHeaders['X-User-Identity'] || '';
+      var requestIdentityEpoch = state._identityEpoch || 0;
       fetch(url, {
         method: 'GET',
-        headers: Utils.getApiHeaders(false)
+        headers: requestHeaders
       })
         .then(Utils.parseJsonSafe)
         .then(function (resObj) {
@@ -1958,7 +1989,7 @@
             throw err;
           }
           var json = resObj.data;
-          if (reqSeq !== state.fetchSeq || String(carId) !== String(state.currentCarId)) return;
+          if (reqSeq !== state.fetchSeq || String(carId) !== String(state.currentCarId) || (state._identityEpoch || 0) !== requestIdentityEpoch || (requestIdentity && !Utils.identityMatches(requestIdentity))) return;
           if (json && json.site_meta && typeof json.site_meta === 'object') {
             state.siteMeta = Object.assign({}, state.siteMeta, json.site_meta);
             CommunityPlans.maybeHandleAnnouncement(false);
@@ -2270,7 +2301,7 @@
         '      <div class="cp-card-foot">',
         '        <div class="cp-foot-left"><span class="cp-meta-time">按权重与槽位自动换算</span></div>',
         (Object.keys(tierWeights).length > 0
-          ? ('        <button type="button" class="nav-btn cp-apply-btn' + (isApplied ? ' is-applied' : '') + '" onclick="CommunityPlans.applyOfficialPlan(\'16-99\')">' +
+          ? ('        <button type="button" class="nav-btn cp-apply-btn' + (isApplied ? ' is-applied' : '') + '">' +
              (isApplied ? Icons.check : Icons.apply) + '<span class="zh">' + (isApplied ? '已套用' : '一键套用') + '</span><span class="lang-en">' + (isApplied ? 'Applied' : 'Apply') + '</span></button>')
           : ''),
         '      </div>',
@@ -2296,21 +2327,21 @@
       // 100% 融入宿主 .card 体系，天然继承毛玻璃、半透明与边框高光，并支持 .pv-collapsible 折叠能力
       container.className = 'card cp-plans-card pv-collapsible';
       container.innerHTML = [
-        '<div class="card-title cp-card-title" onclick="CommunityPlans.onTitleClick(event)" title="点击折叠/展开方案库">',
+        '<div class="card-title cp-card-title" title="点击折叠/展开方案库">',
         '  <div class="cp-title-left">',
         '    <span class="cp-badge-icon" aria-hidden="true">' + Icons.chip + '</span>',
         '    <span class="cp-title-text"><span class="zh">芯片方案库</span><span class="lang-en">Chip Setups</span></span>',
         '    <span id="cpCurrentCarBadge" class="cp-car-badge"><span class="zh">未选赛车</span><span class="lang-en">No Car Selected</span></span>',
         '  </div>',
-        '  <div class="cp-actions-bar" onclick="event.stopPropagation()">',
-        '    <button type="button" id="cpBtnUndo" class="nav-btn cp-btn cp-btn-undo" style="display:none;" onclick="CommunityPlans.undoApply()">',
+        '  <div class="cp-actions-bar">',
+        '    <button type="button" id="cpBtnUndo" class="nav-btn cp-btn cp-btn-undo" style="display:none;">',
         '      ' + Icons.undo + '<span class="zh">撤销套用</span><span class="lang-en">Undo</span>',
         '    </button>',
-        '    <button type="button" class="nav-btn cp-btn cp-btn-save" onclick="CommunityPlans.openSaveModal()">',
+        '    <button type="button" class="nav-btn cp-btn cp-btn-save">',
         '      ' + Icons.save + '<span class="zh">保存当前配装</span><span class="lang-en">Save Setup</span>',
         '    </button>',
         '  </div>',
-        '  <button type="button" class="nav-btn select-btn cp-icon-btn cp-fold-btn" onclick="event.stopPropagation(); CommunityPlans.toggleCollapse()" title="折叠/展开方案库">',
+        '  <button type="button" class="nav-btn select-btn cp-icon-btn cp-fold-btn" title="折叠/展开方案库">',
         '    <span class="cp-fold-indicator" aria-hidden="true">' + Icons.chevron + '</span>',
         '  </button>',
         '</div>',
@@ -2321,23 +2352,36 @@
         '      <span class="cp-controls-hint">模式筛选</span>',
         '      <div id="cpFilterSeg" class="cp-seg-track" role="radiogroup" aria-label="方案模式筛选">',
         '        <span class="cp-seg-thumb" aria-hidden="true"></span>',
-        '        <button type="button" class="cp-seg-btn is-on" data-val="all" onclick="CommunityPlans.setFilterMode(\'all\')">全部</button>',
-        '        <button type="button" class="cp-seg-btn" data-val="solo" onclick="CommunityPlans.setFilterMode(\'solo\')">先机汇能</button>',
-        '        <button type="button" class="cp-seg-btn" data-val="team" onclick="CommunityPlans.setFilterMode(\'team\')">团魂获能</button>',
+        '        <button type="button" class="cp-seg-btn is-on" data-val="all">全部</button>',
+        '        <button type="button" class="cp-seg-btn" data-val="solo">先机汇能</button>',
+        '        <button type="button" class="cp-seg-btn" data-val="team">团魂获能</button>',
         '      </div>',
         '    </div>',
         '    <div class="cp-ctrl-group">',
         '      <span class="cp-controls-hint">排序</span>',
         '      <div id="cpSortSeg" class="cp-seg-track" role="radiogroup" aria-label="方案排序">',
         '        <span class="cp-seg-thumb" aria-hidden="true"></span>',
-        '        <button type="button" class="cp-seg-btn is-on" data-val="hot" onclick="CommunityPlans.setSortMode(\'hot\')">最热</button>',
-        '        <button type="button" class="cp-seg-btn" data-val="latest" onclick="CommunityPlans.setSortMode(\'latest\')">最新</button>',
+        '        <button type="button" class="cp-seg-btn is-on" data-val="hot">最热</button>',
+        '        <button type="button" class="cp-seg-btn" data-val="latest">最新</button>',
         '      </div>',
         '    </div>',
         '  </div>',
         '</div>',
         '<div id="cpSectionsStream" class="cp-sections-stream"></div>'
       ].join('');
+
+      // 这些节点来自上面的固定模板，在插入后立即逐个绑定，不接受 data 属性作为动作授权。
+      container.querySelector('.cp-card-title').addEventListener('click', function (event) { CommunityPlans.onTitleClick(event); });
+      container.querySelector('.cp-actions-bar').addEventListener('click', function (event) { event.stopPropagation(); });
+      container.querySelector('#cpBtnUndo').addEventListener('click', function () { CommunityPlans.undoApply(); });
+      container.querySelector('.cp-actions-bar .cp-btn-save').addEventListener('click', function () { CommunityPlans.openSaveModal(); });
+      container.querySelector('.cp-fold-btn').addEventListener('click', function (event) { event.stopPropagation(); CommunityPlans.toggleCollapse(); });
+      ['all', 'solo', 'team'].forEach(function (mode, i) {
+        container.querySelectorAll('#cpFilterSeg .cp-seg-btn')[i].addEventListener('click', function () { CommunityPlans.setFilterMode(mode); });
+      });
+      ['hot', 'latest'].forEach(function (mode, i) {
+        container.querySelectorAll('#cpSortSeg .cp-seg-btn')[i].addEventListener('click', function () { CommunityPlans.setSortMode(mode); });
+      });
 
       if (!window.__cpResizeSegBound) {
         window.__cpResizeSegBound = true;
@@ -2551,9 +2595,11 @@
           '  ' + Icons.emptyBox,
           '  <div class="cp-empty-title"><span class="zh">该赛车暂无任何芯片配装</span><span class="lang-en">No Setups Found</span></div>',
           '  <div class="cp-empty-desc"><span class="zh">在上方配好先机、汇能与芯片参数后，点击右上角【保存当前配装】即可收藏您的专属方案！</span><span class="lang-en">Tune your chips and click Save Setup to create one!</span></div>',
-          '  <button type="button" class="nav-btn cp-btn cp-btn-save" onclick="CommunityPlans.openSaveModal()">' + Icons.save + '<span class="zh">立即保存当前配装</span><span class="lang-en">Save Setup Now</span></button>',
+          '  <button type="button" class="nav-btn cp-btn cp-btn-save">' + Icons.save + '<span class="zh">立即保存当前配装</span><span class="lang-en">Save Setup Now</span></button>',
           '</div>'
         ].join('');
+        var emptySaveBtn = stream.querySelector('.cp-empty-box .cp-btn-save');
+        if (emptySaveBtn) emptySaveBtn.addEventListener('click', function () { CommunityPlans.openSaveModal(); });
         CommunityPlans.toggleCollapse(true, !container.__cpRenderedOnce);
         container.__cpRenderedOnce = true;
         return;
@@ -2614,7 +2660,7 @@
         var bannerTitle = annNorm.title ? ('【' + annNorm.title + '】') : '';
         var previewText = bannerTitle + annNorm.text.replace(/\s+/g, ' ');
         bannerHtml =
-          '<button type="button" class="cp-site-banner is-clickable ' + annCls + '" onclick="CommunityPlans.openAnnouncementModal(null, { fromAuto: false })" title="点击展开完整公告详情">' +
+          '<button type="button" class="cp-site-banner is-clickable ' + annCls + '" title="点击展开完整公告详情">' +
             Icons.megaphone +
             '<span class="cp-site-banner-text">' + Utils.escapeHtml(previewText) + '</span>' +
             '<span class="cp-site-banner-more">查看详情</span>' +
@@ -2626,10 +2672,17 @@
         if (bannerSlot.__lastHtml !== bannerHtml) {
           bannerSlot.innerHTML = bannerHtml;
           bannerSlot.__lastHtml = bannerHtml;
+          var bannerBtn = bannerSlot.querySelector('.cp-site-banner.is-clickable');
+          if (bannerBtn) {
+            bannerBtn.addEventListener('click', function () {
+              CommunityPlans.openAnnouncementModal(null, { fromAuto: false });
+            });
+          }
         }
         bannerSlot.style.display = bannerHtml ? '' : 'none';
       }
 
+      var cardMetas = [];
       if ((state.isFetchingRemote || state.isFetchingOfficial) && filteredTotal === 0 && !hasOfficialData) {
         viewportHtml.push([
           '<div class="cp-empty-box">',
@@ -2644,7 +2697,7 @@
           '  ' + Icons.emptyBox,
           '  <div class="cp-empty-title">当前「' + filterLabel + '」模式下暂无方案</div>',
           '  <div class="cp-empty-desc">您可通过上方筛选栏切换其他模式，或点击下方按钮查看全部方案</div>',
-          '  <button type="button" class="nav-btn cp-btn cp-btn-save" onclick="CommunityPlans.setFilterMode(\'all\')">显示全部方案</button>',
+          '  <button type="button" class="nav-btn cp-btn cp-btn-save">显示全部方案</button>',
           '</div>'
         ].join(''));
       }
@@ -2666,7 +2719,7 @@
           '    </div>',
           '  </div>',
           '  <div class="cp-sec-list">',
-          localList.map(function (item) { return CommunityPlans.renderPlanItem(item, 'local', currentMode); }).join(''),
+          localList.map(function (item) { return CommunityPlans.renderPlanItem(item, 'local', currentMode, cardMetas); }).join(''),
           '  </div>',
           '</div>'
         ].join(''));
@@ -2697,7 +2750,7 @@
           '    </div>',
           '  </div>',
           '  <div class="cp-sec-list">',
-          partnerList.map(function (item) { return CommunityPlans.renderPlanItem(item, 'partner', currentMode); }).join(''),
+          partnerList.map(function (item) { return CommunityPlans.renderPlanItem(item, 'partner', currentMode, cardMetas); }).join(''),
           '  </div>',
           '</div>'
         ].join(''));
@@ -2720,7 +2773,7 @@
           '    </div>',
           '  </div>',
           '  <div class="cp-sec-list">',
-          proList.map(function (item) { return CommunityPlans.renderPlanItem(item, 'pro', currentMode); }).join(''),
+          proList.map(function (item) { return CommunityPlans.renderPlanItem(item, 'pro', currentMode, cardMetas); }).join(''),
           '  </div>',
           '</div>'
         ].join(''));
@@ -2743,7 +2796,7 @@
           '    </div>',
           '  </div>',
           '  <div class="cp-sec-list">',
-          remoteList.map(function (item) { return CommunityPlans.renderPlanItem(item, 'community', currentMode); }).join(''),
+          remoteList.map(function (item) { return CommunityPlans.renderPlanItem(item, 'community', currentMode, cardMetas); }).join(''),
           '  </div>',
           '</div>'
         ].join(''));
@@ -2756,7 +2809,7 @@
           ? ('已加载 ' + state.remotePlans.length + ' / ' + totalRemote + ' 条社区方案 · 向下滚动自动加载')
           : ('已全部加载当前筛选下的 ' + totalRemote + ' 条社区方案');
         var lazyBtnHtml = state.remoteHasMore
-          ? '<button type="button" class="cp-lazy-btn" onclick="CommunityPlans.loadMoreRemotePlans()"' + (state.isLoadingMore ? ' disabled' : '') + '>' + (state.isLoadingMore ? '加载中...' : '加载更多') + '</button>'
+          ? '<button type="button" class="cp-lazy-btn"' + (state.isLoadingMore ? ' disabled' : '') + '>' + (state.isLoadingMore ? '加载中...' : '加载更多') + '</button>'
           : '';
         viewportHtml.push(
           '<div id="cpLazySentinel" class="cp-lazy-footer">' +
@@ -2767,6 +2820,16 @@
       }
 
       stream.innerHTML = '<div id="cpScrollViewport" class="cp-scroll-viewport">' + viewportHtml.join('') + '</div>';
+      var showAllBtn = stream.querySelector('.cp-filter-empty .cp-btn-save');
+      if (showAllBtn) showAllBtn.addEventListener('click', function () { CommunityPlans.setFilterMode('all'); });
+      var officialApplyBtn = stream.querySelector('.cp-official-card .cp-apply-btn');
+      if (officialApplyBtn) officialApplyBtn.addEventListener('click', function () { CommunityPlans.applyOfficialPlan('16-99'); });
+      var lazyBtn = stream.querySelector('.cp-lazy-btn');
+      if (lazyBtn) lazyBtn.addEventListener('click', function () { CommunityPlans.loadMoreRemotePlans(); });
+      var cardEls = stream.querySelectorAll('article.cp-card-item:not(.cp-official-card)');
+      for (var ci = 0; ci < cardEls.length && ci < cardMetas.length; ci++) {
+        CommunityPlans._bindPlanCardEvents(cardEls[ci], cardMetas[ci]);
+      }
       if (renderOpts.preserveScroll && savedScrollTop > 0) {
         var nextViewport = document.getElementById('cpScrollViewport');
         if (nextViewport) nextViewport.scrollTop = savedScrollTop;
@@ -2852,8 +2915,34 @@
       });
     },
 
+    _bindPlanCardEvents: function (cardEl, meta) {
+      if (!cardEl || !meta) return;
+      var rejBadge = cardEl.querySelector('.cp-badge-rejected');
+      if (rejBadge) rejBadge.addEventListener('click', function (ev) { CommunityPlans.showRejectModal(meta.planId, ev); });
+      var rejBanner = cardEl.querySelector('.cp-card-reject-banner');
+      if (rejBanner) rejBanner.addEventListener('click', function (ev) { CommunityPlans.showRejectModal(meta.planId, ev); });
+      var pendBadge = cardEl.querySelector('.cp-badge-pending');
+      if (pendBadge) pendBadge.addEventListener('click', function (ev) { CommunityPlans.checkPlanStatus(meta.planId, meta.remoteId, ev); });
+      var partnerBadge = cardEl.querySelector('.cp-author-partner-badge');
+      if (partnerBadge) partnerBadge.addEventListener('click', function (ev) { ev.stopPropagation(); });
+      var playerBtn = cardEl.querySelector('.cp-player-id');
+      if (playerBtn) playerBtn.addEventListener('click', function (ev) { CommunityPlans.copyPlayerId(meta.playerId, ev); });
+      var voteBtn = cardEl.querySelector('.cp-vote-btn');
+      if (voteBtn) voteBtn.addEventListener('click', function () { CommunityPlans.toggleVote(meta.planId); });
+      var editBtn = cardEl.querySelector('.cp-edit-btn');
+      if (editBtn) editBtn.addEventListener('click', function () { CommunityPlans.startEditPlan(meta.ownerLocalId); });
+      var uploadBtn = cardEl.querySelector('.cp-upload-btn');
+      if (uploadBtn) uploadBtn.addEventListener('click', function () { CommunityPlans.uploadLocalPlan(meta.ownerLocalId); });
+      var delBtn = cardEl.querySelector('.cp-del-btn');
+      if (delBtn) delBtn.addEventListener('click', function () { CommunityPlans.deletePlan(meta.ownerLocalId); });
+      var applyBtn = cardEl.querySelector('.cp-apply-btn');
+      if (applyBtn && !meta.isModeDisabled) {
+        applyBtn.addEventListener('click', function () { CommunityPlans.applyPlanById(meta.planId); });
+      }
+    },
+
     // 渲染结构化三层方案卡片（全端统一清晰排版，杜绝内部嵌套小方框堆砌）
-    renderPlanItem: function (item, type, calcMode) {
+    renderPlanItem: function (item, type, calcMode, metaOut) {
       var p = item.params || {};
       var currentCalcMode = calcMode || ((typeof window.getCalcMode === 'function')
         ? window.getCalcMode()
@@ -2876,6 +2965,15 @@
         ? state.savedPlans.filter(function (p) { return item.viewer_is_author && p && p.remote_id && p.remote_id === item.id; })[0]
         : null;
       var ownerLocalId = isLocalPlan ? safePlanId : (myLocalCounterpart ? Utils.safeId(myLocalCounterpart.id) : '');
+      if (Array.isArray(metaOut)) {
+        metaOut.push({
+          planId: safePlanId,
+          remoteId: safeRemoteId,
+          playerId: safePlayerId,
+          ownerLocalId: ownerLocalId,
+          isModeDisabled: isModeDisabled
+        });
+      }
 
       // 渲染主页链接胶囊（带平台标识与外链图标，严禁中途断行）
       var linksHtml = '';
@@ -2910,10 +3008,10 @@
       var rejectBannerHtml = '';
       if (isLocalPlan) {
         if (item.remote_status === 'rejected') {
-          auditStatusBadge = '<span class="cp-card-badge cp-badge-rejected" onclick="CommunityPlans.showRejectModal(\'' + safePlanId + '\', event)" title="点击查看审核驳回说明">审核未通过</span>';
+          auditStatusBadge = '<span class="cp-card-badge cp-badge-rejected" title="点击查看审核驳回说明">审核未通过</span>';
           var briefReason = String(item.reject_reason || item.review_notes || '未能通过审核，点击查看具体原因').trim();
           rejectBannerHtml =
-            '<div class="cp-card-reject-banner" onclick="CommunityPlans.showRejectModal(\'' + safePlanId + '\', event)" title="点击查看完整审核反馈说明">' +
+            '<div class="cp-card-reject-banner" title="点击查看完整审核反馈说明">' +
             '  <span class="cp-reject-banner-lbl">审核未通过</span>' +
             '  <span class="cp-reject-banner-text">' + Utils.escapeHtml(briefReason) + '</span>' +
             '  <span class="cp-reject-banner-more">详情</span>' +
@@ -2924,7 +3022,7 @@
           if (item.remote_status === 'approved') {
             auditStatusBadge = '<span class="cp-card-badge cp-badge-approved">已收录</span>';
           } else {
-            auditStatusBadge = '<span class="cp-card-badge cp-badge-pending" onclick="CommunityPlans.checkPlanStatus(\'' + safePlanId + '\', \'' + safeRemoteId + '\', event)" title="点击刷新审核状态">审核中</span>';
+            auditStatusBadge = '<span class="cp-card-badge cp-badge-pending" title="点击刷新审核状态">审核中</span>';
           }
         }
       }
@@ -2968,10 +3066,10 @@
       var applyBtnLabelEn = isModeDisabled ? 'Team Mode Only' : (isApplied ? 'Applied' : 'Apply');
       var applyBtnAttrs = isModeDisabled
         ? ' disabled aria-disabled="true" title="该方案含团魂或增益装置，请先切换至「团魂获能」模式"'
-        : ' onclick="CommunityPlans.applyPlanById(\'' + safePlanId + '\')"';
+        : '';
 
       var partnerAuthorBadge = isPartnerPlan
-        ? '<a class="cp-author-partner-badge" href="https://aceracer.top/" target="_blank" rel="noopener noreferrer" onclick="event.stopPropagation();" title="点击前往合作友站 https://aceracer.top/">' + Icons.partner + '<span>友站</span></a>'
+        ? '<a class="cp-author-partner-badge" href="https://aceracer.top/" target="_blank" rel="noopener noreferrer" title="点击前往合作友站 https://aceracer.top/">' + Icons.partner + '<span>友站</span></a>'
         : '';
 
       return [
@@ -2989,7 +3087,7 @@
         '    <div class="cp-card-meta">',
         '      <span class="cp-author-name">' + Utils.escapeHtml(item.author || '热心车友') + '</span>',
         partnerAuthorBadge,
-        (safePlayerId ? '      <button type="button" class="cp-player-id" onclick="CommunityPlans.copyPlayerId(\'' + safePlayerId + '\', event)" title="点击复制游戏ID"><span>ID ' + Utils.escapeHtml(safePlayerId) + '</span><span class="cp-copy-icon">' + Icons.copy + Icons.checkCopy + '</span></button>' : ''),
+        (safePlayerId ? '      <button type="button" class="cp-player-id" title="点击复制游戏ID"><span>ID ' + Utils.escapeHtml(safePlayerId) + '</span><span class="cp-copy-icon">' + Icons.copy + Icons.checkCopy + '</span></button>' : ''),
         linksHtml,
         '      <span class="cp-meta-time">' + Utils.formatTime(item.created_at) + '</span>',
         '    </div>',
@@ -3005,18 +3103,18 @@
         '  <div class="cp-card-foot">',
         '    <div class="cp-foot-left">',
         ((!isLocalPlan || safeRemoteId)
-          ? ('      <button type="button" class="' + voteBtnCls + '" data-plan-id="' + safePlanId + '" onclick="CommunityPlans.toggleVote(\'' + safePlanId + '\')" title="' + voteBtnTitle + '"' + (isAuthorSelf ? ' aria-disabled="true"' : '') + '>' +
+          ? ('      <button type="button" class="' + voteBtnCls + '" data-plan-id="' + safePlanId + '" title="' + voteBtnTitle + '"' + (isAuthorSelf ? ' aria-disabled="true"' : '') + '>' +
              '<span class="cp-vote-ico-wrap">' + Icons.thumb(isVoted) + '</span>' +
              '<span class="cp-vote-count" data-count="' + (Number(item.votes) || 0) + '"><span class="cp-vote-num-cur">' + (Number(item.votes) || 0) + '</span></span></button>')
           : ''),
         (ownerLocalId && (isLocalPlan ? safeRemoteId : item.id)
-          ? '      <button type="button" class="nav-btn cp-edit-btn" title="编辑这条已上传的方案（保存后重新送审）" onclick="CommunityPlans.startEditPlan(\'' + ownerLocalId + '\')">' + Icons.edit + '</button>'
+          ? '      <button type="button" class="nav-btn cp-edit-btn" title="编辑这条已上传的方案（保存后重新送审）">' + Icons.edit + '</button>'
           : ''),
         (isLocalPlan && !safeRemoteId
-          ? '      <button type="button" class="nav-btn cp-upload-btn" title="上传到云端（需人机验证）" onclick="CommunityPlans.uploadLocalPlan(\'' + ownerLocalId + '\')">' + Icons.upload + '</button>'
+          ? '      <button type="button" class="nav-btn cp-upload-btn" title="上传到云端（需人机验证）">' + Icons.upload + '</button>'
           : ''),
         (ownerLocalId
-          ? '      <button type="button" class="nav-btn cp-del-btn" title="删除该方案" onclick="CommunityPlans.deletePlan(\'' + ownerLocalId + '\')">' + Icons.trash + '</button>'
+          ? '      <button type="button" class="nav-btn cp-del-btn" title="删除该方案">' + Icons.trash + '</button>'
           : ''),
         '    </div>',
         '    <button type="button" class="nav-btn cp-apply-btn ' + (isApplied && !isModeDisabled ? 'is-applied' : '') + (isModeDisabled ? ' is-disabled' : '') + '"' + applyBtnAttrs + '>',
@@ -3224,7 +3322,9 @@
           var currentWrap = document.getElementById('cpTurnstileWidget');
           if (!currentWrap) return;
           CommunityPlans._setTurnstileStatus('组件加载失败', 'err');
-          currentWrap.innerHTML = '<span style="font-size:12px;color:var(--ink-3);">安全验证组件暂不可用<button type="button" class="cp-turnstile-retry" onclick="CommunityPlans.renderTurnstileWidget()">点击重试</button></span>';
+          currentWrap.innerHTML = '<span style="font-size:12px;color:var(--ink-3);">安全验证组件暂不可用<button type="button" class="cp-turnstile-retry">点击重试</button></span>';
+          var retryBtn = currentWrap.querySelector('.cp-turnstile-retry');
+          if (retryBtn) retryBtn.addEventListener('click', function () { CommunityPlans.renderTurnstileWidget(); });
         });
     },
 
@@ -3336,9 +3436,16 @@
             card.innerHTML = [
               '<div class="cp-proof-thumb-box">',
               '  <img src="' + compressed + '" class="cp-proof-thumb" alt="预览">',
-              '  <button type="button" class="cp-proof-btn-reupload" onclick="event.stopPropagation(); CommunityPlans.triggerProofUpload(\'' + type + '\')">重新选择</button>',
+              '  <button type="button" class="cp-proof-btn-reupload">重新选择</button>',
               '</div>'
             ].join('');
+            var reuploadBtn = card.querySelector('.cp-proof-btn-reupload');
+            if (reuploadBtn) {
+              reuploadBtn.addEventListener('click', function (ev) {
+                ev.stopPropagation();
+                CommunityPlans.triggerProofUpload(type);
+              });
+            }
           }
         };
         img.onerror = function () {
@@ -3430,10 +3537,10 @@
       var tsRequired = !state.siteMeta || state.siteMeta.turnstile_required !== false;
 
       modal.innerHTML = [
-        '<div class="card cp-modal-dialog" onclick="event.stopPropagation()">',
+        '<div class="card cp-modal-dialog">',
         '  <div class="cp-modal-head">',
         '    <h4 class="cp-modal-title">保存芯片配装 (' + Utils.escapeHtml(carName) + ')</h4>',
-        '    <button type="button" class="nav-btn select-btn cp-modal-close" onclick="CommunityPlans.closeSaveModal()">',
+        '    <button type="button" class="nav-btn select-btn cp-modal-close">',
         '      ' + Icons.close,
         '    </button>',
         '  </div>',
@@ -3447,7 +3554,7 @@
         '        <span id="cpTitleCounter" class="cp-input-count">0/15</span>',
         '      </div>',
         '      <div class="input-wrapper">',
-        '        <input type="text" id="cpInputTitle" class="form-control cp-modal-input" placeholder="例如：大招连发稳健装" maxlength="15" autocomplete="off" oninput="CommunityPlans.onTitleInput(this)">',
+        '        <input type="text" id="cpInputTitle" class="form-control cp-modal-input" placeholder="例如：大招连发稳健装" maxlength="15" autocomplete="off">',
         '      </div>',
         '    </div>',
         '    <div class="form-group cp-form-group">',
@@ -3456,7 +3563,7 @@
         '        <span id="cpNotesCounter" class="cp-input-count">0/300</span>',
         '      </div>',
         '      <div class="input-wrapper">',
-        '        <textarea id="cpInputNotes" class="form-control cp-modal-input cp-modal-textarea" rows="3" placeholder="例如：弯道提前踩减速带触发、双氮气起手注意节气（留空不显示）" maxlength="300" oninput="CommunityPlans.onNotesInput(this)"></textarea>',
+        '        <textarea id="cpInputNotes" class="form-control cp-modal-input cp-modal-textarea" rows="3" placeholder="例如：弯道提前踩减速带触发、双氮气起手注意节气（留空不显示）" maxlength="300"></textarea>',
         '      </div>',
         '    </div>',
         '    <!-- 开关 1: 是否上传方案至全网社区库 (规范 Switch，默认关闭) -->',
@@ -3465,7 +3572,7 @@
         '        <span class="cp-setting-switch-title">上传芯片方案至全网社区库</span>',
         '        <span class="cp-setting-switch-desc">' + (allowSubmissions ? '默认关闭（仅保存在本机浏览器中）；开启后经安全初筛共享至全网方案库' : '全站社区投稿当前已暂停，您仍可将方案保存在本地浏览器中') + '</span>',
         '      </div>',
-        '      <input type="checkbox" id="cpChkSyncCommunity" class="ui-switch"' + (allowSubmissions ? '' : ' disabled') + ' onchange="CommunityPlans.onToggleSyncCommunity(this.checked)">',
+        '      <input type="checkbox" id="cpChkSyncCommunity" class="ui-switch"' + (allowSubmissions ? '' : ' disabled') + '>',
         '    </div>',
         '    <!-- 社区上传扩展设置区 (开启上方开关后动态展开) -->',
         '    <div class="cp-community-section" id="cpCommunitySection" style="display: none;">',
@@ -3473,7 +3580,7 @@
         '        <div class="cp-label-row">',
         '          <span class="form-label">作者署名使用个人信息中的昵称</span>',
         '          <div class="cp-switch-label-wrap">',
-        '            <input type="checkbox" id="cpChkAnon" class="ui-switch" onchange="CommunityPlans.onToggleAnon(this.checked)">',
+        '            <input type="checkbox" id="cpChkAnon" class="ui-switch">',
         '            <span class="cp-switch-label-text">匿名上传</span>',
         '          </div>',
         '        </div>',
@@ -3481,9 +3588,9 @@
         '      <div class="form-group cp-form-group" id="cpLinksGroup">',
         '        <label class="form-label">个人主页链接 (选填，最多 3 个，仅限 B站 / 抖音 / 快手，支持粘贴分享文案自动提取)</label>',
         '        <div class="cp-links-input-list">',
-        '          <div class="cp-link-input-wrap" id="cpLinkWrap1"><div class="cp-link-input-row"><span class="cp-link-idx">1</span><input type="text" id="cpInputLink1" class="form-control cp-modal-input" placeholder="粘贴 B站主页链接或分享口令 (space.bilibili.com / b23.tv)" autocomplete="off" oninput="CommunityPlans.onLinkInput(this, 1)" onpaste="setTimeout(function(){var el=document.getElementById(\'cpInputLink1\');if(el)CommunityPlans.onLinkInput(el,1,true);},0)" onblur="CommunityPlans.onLinkInput(this, 1, true)"></div><div class="cp-link-parse-msg" id="cpLinkMsg1"></div></div>',
-        '          <div class="cp-link-input-wrap" id="cpLinkWrap2"><div class="cp-link-input-row"><span class="cp-link-idx">2</span><input type="text" id="cpInputLink2" class="form-control cp-modal-input" placeholder="粘贴 抖音主页链接或分享文案 (自动去除中文与乱码)" autocomplete="off" oninput="CommunityPlans.onLinkInput(this, 2)" onpaste="setTimeout(function(){var el=document.getElementById(\'cpInputLink2\');if(el)CommunityPlans.onLinkInput(el,2,true);},0)" onblur="CommunityPlans.onLinkInput(this, 2, true)"></div><div class="cp-link-parse-msg" id="cpLinkMsg2"></div></div>',
-        '          <div class="cp-link-input-wrap" id="cpLinkWrap3"><div class="cp-link-input-row"><span class="cp-link-idx">3</span><input type="text" id="cpInputLink3" class="form-control cp-modal-input" placeholder="粘贴 快手主页链接或分享文案 (支持长/短链接)" autocomplete="off" oninput="CommunityPlans.onLinkInput(this, 3)" onpaste="setTimeout(function(){var el=document.getElementById(\'cpInputLink3\');if(el)CommunityPlans.onLinkInput(el,3,true);},0)" onblur="CommunityPlans.onLinkInput(this, 3, true)"></div><div class="cp-link-parse-msg" id="cpLinkMsg3"></div></div>',
+        '          <div class="cp-link-input-wrap" id="cpLinkWrap1"><div class="cp-link-input-row"><span class="cp-link-idx">1</span><input type="text" id="cpInputLink1" class="form-control cp-modal-input" placeholder="粘贴 B站主页链接或分享口令 (space.bilibili.com / b23.tv)" autocomplete="off"></div><div class="cp-link-parse-msg" id="cpLinkMsg1"></div></div>',
+        '          <div class="cp-link-input-wrap" id="cpLinkWrap2"><div class="cp-link-input-row"><span class="cp-link-idx">2</span><input type="text" id="cpInputLink2" class="form-control cp-modal-input" placeholder="粘贴 抖音主页链接或分享文案 (自动去除中文与乱码)" autocomplete="off"></div><div class="cp-link-parse-msg" id="cpLinkMsg2"></div></div>',
+        '          <div class="cp-link-input-wrap" id="cpLinkWrap3"><div class="cp-link-input-row"><span class="cp-link-idx">3</span><input type="text" id="cpInputLink3" class="form-control cp-modal-input" placeholder="粘贴 快手主页链接或分享文案 (支持长/短链接)" autocomplete="off"></div><div class="cp-link-parse-msg" id="cpLinkMsg3"></div></div>',
         '        </div>',
         '      </div>',
         '      <!-- 开关 2: 申请入选国服顶尖方案池 (规范 Switch，默认关闭) -->',
@@ -3495,7 +3602,7 @@
         '          </div>',
         '          <span class="cp-setting-switch-desc">开放车友自证通道；需审核双截图凭证，审核通过后置入国服推荐列表</span>',
         '        </div>',
-        '        <input type="checkbox" id="cpChkApplyPro" class="ui-switch" onchange="CommunityPlans.onToggleApplyPro(this.checked)">',
+        '        <input type="checkbox" id="cpChkApplyPro" class="ui-switch">',
         '      </div>',
         '      <!-- 国服最强自证双截图凭证上传区 (开启国服顶尖申请后展开) -->',
         '      <div class="cp-pro-apply-box" id="cpProProofSection" style="display: none;">',
@@ -3513,22 +3620,22 @@
         '        </div>',
         '        <div class="cp-proof-grid">',
         '          <!-- 截图入口 1: 本车国服最强荣誉截图 -->',
-        '          <div class="cp-proof-card" id="cpProofCard_ranking" onclick="CommunityPlans.triggerProofUpload(\'ranking\')">',
+        '          <div class="cp-proof-card" id="cpProofCard_ranking">',
         '            <span class="cp-proof-card-badge">必传凭证 1</span>',
         '            <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" style="width:24px;height:24px;color:var(--acc);margin-bottom:4px;"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg>',
         '            <span style="font-weight:700;font-size:12.5px;color:var(--ink);">本车国服最强荣誉截图</span>',
         '            <span class="cp-proof-card-desc">需含钻石大国标（全国前十）· 单张≤2MB</span>',
         '          </div>',
         '          <!-- 截图入口 2: 个人主页截图 -->',
-        '          <div class="cp-proof-card" id="cpProofCard_profile" onclick="CommunityPlans.triggerProofUpload(\'profile\')">',
+        '          <div class="cp-proof-card" id="cpProofCard_profile">',
         '            <span class="cp-proof-card-badge">必传凭证 2</span>',
         '            <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" style="width:24px;height:24px;color:var(--acc);margin-bottom:4px;"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>',
         '            <span style="font-weight:700;font-size:12.5px;color:var(--ink);">游戏个人主页截图</span>',
         '            <span class="cp-proof-card-desc">需含游戏昵称与数字ID · 单张≤2MB</span>',
         '          </div>',
         '        </div>',
-        '        <input type="file" id="cpFile_ranking" class="cp-proof-file-input" accept="image/*" onchange="CommunityPlans.handleProofFile(\'ranking\', this)">',
-        '        <input type="file" id="cpFile_profile" class="cp-proof-file-input" accept="image/*" onchange="CommunityPlans.handleProofFile(\'profile\', this)">',
+        '        <input type="file" id="cpFile_ranking" class="cp-proof-file-input" accept="image/*">',
+        '        <input type="file" id="cpFile_profile" class="cp-proof-file-input" accept="image/*">',
         '      </div>',
         '      <!-- 提交前安全验证 (Cloudflare Turnstile，点亮对勾后方可提交) -->',
         '      <div class="cp-turnstile-box" id="cpTurnstileBox" style="' + (tsRequired ? '' : 'display:none;') + '">',
@@ -3541,13 +3648,50 @@
         '    </div>',
         '  </div>',
         '  <div class="cp-modal-footer">',
-        '    <button type="button" class="nav-btn cp-btn" onclick="CommunityPlans.closeSaveModal()">取消</button>',
-        '    <button type="button" id="cpBtnConfirmSave" class="nav-btn cp-btn cp-btn-save" onclick="CommunityPlans.confirmSave()">' + Icons.save + ' 确认保存</button>',
+        '    <button type="button" class="nav-btn cp-btn cp-btn-cancel">取消</button>',
+        '    <button type="button" id="cpBtnConfirmSave" class="nav-btn cp-btn cp-btn-save">' + Icons.save + ' 确认保存</button>',
         '  </div>',
         '</div>'
       ].join('');
 
       document.body.appendChild(modal);
+
+      var dlg = modal.querySelector('.cp-modal-dialog');
+      if (dlg) dlg.addEventListener('click', function (e) { e.stopPropagation(); });
+      var closeBtn = modal.querySelector('.cp-modal-close');
+      if (closeBtn) closeBtn.addEventListener('click', function () { CommunityPlans.closeSaveModal(); });
+      var cancelBtn = modal.querySelector('.cp-btn-cancel');
+      if (cancelBtn) cancelBtn.addEventListener('click', function () { CommunityPlans.closeSaveModal(); });
+      var confirmBtn = modal.querySelector('#cpBtnConfirmSave');
+      if (confirmBtn) confirmBtn.addEventListener('click', function () { CommunityPlans.confirmSave(); });
+
+      var titleInput = modal.querySelector('#cpInputTitle');
+      if (titleInput) titleInput.addEventListener('input', function () { CommunityPlans.onTitleInput(this); });
+      var notesInput = modal.querySelector('#cpInputNotes');
+      if (notesInput) notesInput.addEventListener('input', function () { CommunityPlans.onNotesInput(this); });
+      var syncChk = modal.querySelector('#cpChkSyncCommunity');
+      if (syncChk) syncChk.addEventListener('change', function () { CommunityPlans.onToggleSyncCommunity(this.checked); });
+      var anonChk = modal.querySelector('#cpChkAnon');
+      if (anonChk) anonChk.addEventListener('change', function () { CommunityPlans.onToggleAnon(this.checked); });
+      var proChk = modal.querySelector('#cpChkApplyPro');
+      if (proChk) proChk.addEventListener('change', function () { CommunityPlans.onToggleApplyPro(this.checked); });
+
+      [1, 2, 3].forEach(function (idx) {
+        var linkEl = modal.querySelector('#cpInputLink' + idx);
+        if (!linkEl) return;
+        linkEl.addEventListener('input', function () { CommunityPlans.onLinkInput(this, idx); });
+        linkEl.addEventListener('paste', function () {
+          setTimeout(function () { CommunityPlans.onLinkInput(linkEl, idx, true); }, 0);
+        });
+        linkEl.addEventListener('blur', function () { CommunityPlans.onLinkInput(this, idx, true); });
+      });
+
+      ['ranking', 'profile'].forEach(function (pType) {
+        var cardEl = modal.querySelector('#cpProofCard_' + pType);
+        if (cardEl) cardEl.addEventListener('click', function () { CommunityPlans.triggerProofUpload(pType); });
+        var fileEl = modal.querySelector('#cpFile_' + pType);
+        if (fileEl) fileEl.addEventListener('change', function () { CommunityPlans.handleProofFile(pType, this); });
+      });
 
       // 编辑已上传方案：预填标题/备注，并把保存按钮改成「保存修改并重新送审」
       if (state.editingPlan) {
@@ -4122,13 +4266,13 @@
       modal.setAttribute('aria-modal', 'true');
       modal.onclick = function (e) { if (e.target === modal) CommunityPlans.closeNotificationCenter(); };
       modal.innerHTML = [
-        '<div class="card cp-modal-dialog cp-ann-dialog ' + levelCls + '" onclick="event.stopPropagation()">',
+        '<div class="card cp-modal-dialog cp-ann-dialog ' + levelCls + '">',
         '  <div class="cp-modal-head">',
         '    <div class="cp-ann-head-left">',
         '      <span class="cp-ann-level-pill ' + levelCls + '">' + Icons.bell + '<span>通知</span></span>',
         '      <h4 class="cp-modal-title">' + Utils.escapeHtml(title) + '</h4>',
         '    </div>',
-        '    <button type="button" class="nav-btn select-btn cp-modal-close" aria-label="关闭通知" onclick="CommunityPlans.closeNotificationCenter()">' + Icons.close + '</button>',
+        '    <button type="button" class="nav-btn select-btn cp-modal-close" aria-label="关闭通知">' + Icons.close + '</button>',
         '  </div>',
         '  <div class="cp-modal-body">',
         CommunityPlans.buildNotifListHtml(list),
@@ -4136,14 +4280,22 @@
         '  <div class="cp-modal-footer cp-ann-footer">',
         '    <div class="cp-ann-footer-left"></div>',
         '    <div class="cp-ann-footer-actions">',
-        (unreadCount > 1 ? '<button type="button" class="nav-btn cp-btn" onclick="CommunityPlans.markAllNotifRead()">全部标为已读</button>' : ''),
-        '      <button type="button" class="nav-btn cp-btn cp-btn-save" onclick="CommunityPlans.closeNotificationCenter()">' + Icons.check + ' 我知道了</button>',
+        (unreadCount > 1 ? '<button type="button" class="nav-btn cp-btn cp-notif-mark-all">全部标为已读</button>' : ''),
+        '      <button type="button" class="nav-btn cp-btn cp-btn-save">' + Icons.check + ' 我知道了</button>',
         '    </div>',
         '  </div>',
         '</div>'
       ].join('');
 
       document.body.appendChild(modal);
+      var nDlg = modal.querySelector('.cp-modal-dialog');
+      if (nDlg) nDlg.addEventListener('click', function (e) { e.stopPropagation(); });
+      var nClose = modal.querySelector('.cp-modal-close');
+      if (nClose) nClose.addEventListener('click', function () { CommunityPlans.closeNotificationCenter(); });
+      var nMarkAll = modal.querySelector('.cp-notif-mark-all');
+      if (nMarkAll) nMarkAll.addEventListener('click', function () { CommunityPlans.markAllNotifRead(); });
+      var nOk = modal.querySelector('.cp-btn-save');
+      if (nOk) nOk.addEventListener('click', function () { CommunityPlans.closeNotificationCenter(); });
       document.body.classList.add('cp-modal-locked');
       CommunityPlans.markAllNotifRead();
     },
@@ -4220,15 +4372,24 @@
       var now = Date.now();
       if (state._syncingOwned || (!force && state._ownedSyncAt && now - state._ownedSyncAt < 60000)) return;
       state._syncingOwned = true;
+      var syncHeaders = Utils.getApiHeaders(false);
+      var syncToken = syncHeaders['X-User-Identity'] || '';
+      var identityEpoch = state._identityEpoch || 0;
+      if (!Utils.identityMatches(syncToken)) { state._syncingOwned = false; state.identityApiReady = false; return; }
       var syncEpoch = state._ownedMutationEpoch || 0;
       var needsResync = false;
       var initialIds = Object.create(null);
       state.savedPlans.forEach(function (item) { if (item && item.remote_id) initialIds[item.remote_id] = item; });
       var fetched = [];
       var identityHash = '';
+      function syncStillCurrent() {
+        return Utils.identityMatches(syncToken) && (state._identityEpoch || 0) === identityEpoch && (state._ownedMutationEpoch || 0) === syncEpoch;
+      }
       function load(page) {
-        return fetch('/api/plans?mine=1&page=' + page + '&limit=50', { method: 'GET', cache: 'no-store', headers: Utils.getApiHeaders(false) })
+        if (!syncStillCurrent()) return Promise.reject(new Error('identity_changed_during_sync'));
+        return fetch('/api/plans?mine=1&page=' + page + '&limit=50', { method: 'GET', cache: 'no-store', headers: syncHeaders })
           .then(Utils.parseJsonSafe).then(function (res) {
+            if (!syncStillCurrent()) throw new Error('identity_changed_during_sync');
             var data = res && res.data && res.data.data;
             if (!res.ok || !res.data.success || !data || data.identity_version !== 1 || !/^[a-f0-9]{64}$/.test(data.identity_hash || '') || !Array.isArray(data.items)) throw new Error('identity_sync_unavailable');
             if (identityHash && identityHash !== data.identity_hash) throw new Error('identity_changed_during_sync');
@@ -4239,9 +4400,26 @@
           });
       }
       load(1).then(async function () {
-        if ((state._ownedMutationEpoch || 0) !== syncEpoch) { state._ownedSyncAt = 0; needsResync = true; return; }
+        if (!syncStillCurrent()) { state._ownedSyncAt = 0; needsResync = true; return; }
         var ids = Object.create(null);
         var approvedCurrentCar = false;
+        fetched.forEach(function (item) { if (item && Utils.safeId(item.id)) ids[item.id] = true; });
+        var missing = state.savedPlans.filter(function (item) {
+          return item && item.remote_id && initialIds[item.remote_id] === item && item.owner_identity_hash === identityHash && !ids[item.remote_id] && item.remote_status !== 'cleaned';
+        });
+        var checkedMissing = [];
+        for (var offset = 0; offset < missing.length; offset += 20) {
+          var batch = missing.slice(offset, offset + 20);
+          var confirmed = null;
+          try {
+            var response = await fetch('/api/plans?check_statuses=' + encodeURIComponent(batch.map(function (item) { return item.remote_id; }).join(',')), { method: 'GET', cache: 'no-store', headers: syncHeaders });
+            var parsed = await Utils.parseJsonSafe(response);
+            if (parsed.ok && parsed.data && parsed.data.success && parsed.data.data) confirmed = parsed.data.data.items;
+          } catch (_) {}
+          if (!syncStillCurrent()) { state._ownedSyncAt = 0; needsResync = true; return; }
+          checkedMissing.push({ batch: batch, confirmed: confirmed });
+        }
+        if (!syncStillCurrent()) { state._ownedSyncAt = 0; needsResync = true; return; }
         if (state.currentIdentityHash !== identityHash) {
           state.currentIdentityHash = identityHash;
           CommunityPlans.loadNotifications();
@@ -4281,20 +4459,9 @@
           existing.votes = Number(item.votes) || 0;
           if (before) CommunityPlans.detectNotifications(before, existing, item);
         });
-        var missing = state.savedPlans.filter(function (item) {
-          return item && item.remote_id && initialIds[item.remote_id] === item && item.owner_identity_hash === identityHash && !ids[item.remote_id] && item.remote_status !== 'cleaned';
-        });
-        for (var offset = 0; offset < missing.length; offset += 20) {
-          var batch = missing.slice(offset, offset + 20);
-          var confirmed = null;
-          try {
-            var response = await fetch('/api/plans?check_statuses=' + encodeURIComponent(batch.map(function (item) { return item.remote_id; }).join(',')), { method: 'GET', cache: 'no-store', headers: Utils.getApiHeaders(false) });
-            var parsed = await Utils.parseJsonSafe(response);
-            if (parsed.ok && parsed.data && parsed.data.success && parsed.data.data) confirmed = parsed.data.data.items;
-          } catch (_) {}
-          if ((state._ownedMutationEpoch || 0) !== syncEpoch) { state._ownedSyncAt = 0; needsResync = true; return; }
-          batch.forEach(function (item) {
-            var result = confirmed && confirmed[item.remote_id];
+        checkedMissing.forEach(function (checked) {
+          checked.batch.forEach(function (item) {
+            var result = checked.confirmed && checked.confirmed[item.remote_id];
             if (!result) { ids[item.remote_id] = true; return; }
             if (result.found === false || result.status === 'cleaned') {
               var before = { remote_status: item.remote_status, title: item.title, car_name: item.car_name, annotations: item.annotations || [] };
@@ -4304,7 +4471,7 @@
             else if (result.viewer_is_author === false) item.owner_identity_hash = '';
             else ids[item.remote_id] = true;
           });
-        }
+        });
         state.ownedRemoteIds = ids;
         state.currentIdentityHash = identityHash;
         state.identityApiReady = true;
@@ -4313,9 +4480,15 @@
         CommunityPlans.renderPlans({ preserveScroll: true });
         CommunityPlans.syncPendingPlanStatuses({ force: true });
         if (approvedCurrentCar && state.currentCarId) CommunityPlans.fetchRemotePlans(state.currentCarId, { page: 1, append: false, preserveScroll: true });
-      }).catch(function () { state.identityApiReady = false; }).finally(function () {
+      }).catch(function () {
+        if (!syncStillCurrent()) { state._ownedSyncAt = 0; needsResync = true; }
+        else state.identityApiReady = false;
+      }).finally(function () {
         state._syncingOwned = false;
-        if (needsResync) setTimeout(function () { CommunityPlans.syncOwnedPlans(true); }, 0);
+        if (needsResync || state._resyncForIdentity) {
+          state._resyncForIdentity = false;
+          setTimeout(function () { CommunityPlans.syncOwnedPlans(true); }, 0);
+        }
       });
     },
 
@@ -4345,8 +4518,14 @@
         var bCur = (curIdStr && String(b.car_id) === curIdStr) ? 1 : 0;
         return bCur - aCur || ((Number(b.created_at) || 0) - (Number(a.created_at) || 0));
       });
-      var batch = pendingPlans.slice(0, 20);
+      var start = (Number(state._statusCursor) || 0) % pendingPlans.length;
+      var batch = pendingPlans.slice(start, start + 20);
+      if (batch.length < 20 && start > 0) batch = batch.concat(pendingPlans.slice(0, Math.min(start, 20 - batch.length)));
       var ids = batch.map(function (p) { return p.remote_id; });
+      var statusHeaders = Utils.getApiHeaders(false);
+      var statusToken = statusHeaders['X-User-Identity'] || '';
+      var statusIdentityEpoch = state._identityEpoch || 0;
+      if (!Utils.identityMatches(statusToken)) return;
 
       state._isSyncingStatuses = true;
       state._lastStatusSyncAt = now;
@@ -4354,13 +4533,15 @@
       fetch('/api/plans?check_statuses=' + encodeURIComponent(ids.join(',')), {
         method: 'GET',
         cache: 'no-store',
-        headers: Utils.getApiHeaders(false)
+        headers: statusHeaders
       })
         .then(Utils.parseJsonSafe)
         .then(function (resObj) {
+          if (!Utils.identityMatches(statusToken) || (state._identityEpoch || 0) !== statusIdentityEpoch) return;
           if (!resObj.ok || !resObj.data || !resObj.data.success || !resObj.data.data || !resObj.data.data.items) {
             return;
           }
+          state._statusCursor = (start + batch.length) % pendingPlans.length;
           var map = resObj.data.data.items;
           var anyChanged = false;
           var anyNewlyApprovedForCurCar = false;
@@ -4429,6 +4610,7 @@
         .catch(function () {})
         .finally(function () {
           state._isSyncingStatuses = false;
+          if (!Utils.identityMatches(statusToken) || (state._identityEpoch || 0) !== statusIdentityEpoch) return;
           CommunityPlans.updateNotifBadge();
           setTimeout(function () { CommunityPlans.maybeShowNotificationPopup(); }, 1200);
         });
@@ -4443,13 +4625,17 @@
       }
 
       CommunityPlans.toast('正在查询方案审核状态...');
+      var checkHeaders = Utils.getApiHeaders(false);
+      var checkToken = checkHeaders['X-User-Identity'] || '';
+      var checkIdentityEpoch = state._identityEpoch || 0;
       fetch('/api/plans?check_status=' + encodeURIComponent(remoteId), {
         method: 'GET',
         cache: 'no-store',
-        headers: Utils.getApiHeaders(false)
+        headers: checkHeaders
       })
         .then(Utils.parseJsonSafe)
         .then(function (resObj) {
+          if (!Utils.identityMatches(checkToken) || (state._identityEpoch || 0) !== checkIdentityEpoch) return;
           if (resObj.status === 404) {
             var missingPlan = state.savedPlans.find(function (p) { return p.id === localId; });
             if (missingPlan) {
@@ -4531,10 +4717,10 @@
       document.addEventListener('keydown', CommunityPlans._rejectEscKeyHandler);
 
       modal.innerHTML = [
-        '<div class="card cp-modal-dialog" onclick="event.stopPropagation()">',
+        '<div class="card cp-modal-dialog">',
         '  <div class="cp-modal-head">',
         '    <h4 class="cp-modal-title">方案审核反馈说明</h4>',
-        '    <button type="button" class="nav-btn select-btn cp-modal-close" aria-label="关闭弹窗" onclick="CommunityPlans.closeRejectModal()">',
+        '    <button type="button" class="nav-btn select-btn cp-modal-close" aria-label="关闭弹窗">',
         '      ' + Icons.close,
         '    </button>',
         '  </div>',
@@ -4553,7 +4739,7 @@
         '    </div>',
         '  </div>',
         '  <div class="cp-modal-footer">',
-        '    <button type="button" class="nav-btn cp-btn cp-btn-save" onclick="CommunityPlans.closeRejectModal()">' + Icons.check + ' 我知道了</button>',
+        '    <button type="button" class="nav-btn cp-btn cp-btn-save">' + Icons.check + ' 我知道了</button>',
         '  </div>',
         '</div>'
       ].join('');
@@ -4562,6 +4748,12 @@
         if (ev.target === modal) CommunityPlans.closeRejectModal();
       };
       document.body.appendChild(modal);
+      var rDlg = modal.querySelector('.cp-modal-dialog');
+      if (rDlg) rDlg.addEventListener('click', function (e) { e.stopPropagation(); });
+      var rClose = modal.querySelector('.cp-modal-close');
+      if (rClose) rClose.addEventListener('click', function () { CommunityPlans.closeRejectModal(); });
+      var rOk = modal.querySelector('.cp-btn-save');
+      if (rOk) rOk.addEventListener('click', function () { CommunityPlans.closeRejectModal(); });
     },
 
     closeRejectModal: function () {
@@ -4768,8 +4960,10 @@
       };
       document.addEventListener('keydown', CommunityPlans._annEscKeyHandler);
 
-      var ctaHtml = (ann.cta_text && ann.cta_url)
-        ? '<a class="nav-btn cp-btn cp-ann-cta-btn" href="' + Utils.escapeHtml(ann.cta_url) + '" target="_blank" rel="noopener noreferrer">' + Icons.link + '<span>' + Utils.escapeHtml(ann.cta_text) + '</span></a>'
+      var rawCtaUrl = ann.cta_url ? String(ann.cta_url).trim() : '';
+      var safeCtaUrl = (/^https?:\/\//i.test(rawCtaUrl) || /^\/(?!\/)/.test(rawCtaUrl)) ? rawCtaUrl : '';
+      var ctaHtml = (ann.cta_text && safeCtaUrl)
+        ? '<a class="nav-btn cp-btn cp-ann-cta-btn" href="' + Utils.escapeHtml(safeCtaUrl) + '" target="_blank" rel="noopener noreferrer">' + Icons.link + '<span>' + Utils.escapeHtml(ann.cta_text) + '</span></a>'
         : '';
 
       var dismissHtml = ann.allow_dismiss
@@ -4777,13 +4971,13 @@
         : '<span class="cp-ann-force-hint">重要通知 · 关闭后到达周期仍将提醒</span>';
 
       modal.innerHTML = [
-        '<div class="card cp-modal-dialog cp-ann-dialog ' + levelCls + '" onclick="event.stopPropagation()" data-ann-version="' + Utils.escapeHtml(String(ann.version)) + '" data-allow-dismiss="' + (ann.allow_dismiss ? '1' : '0') + '">',
+        '<div class="card cp-modal-dialog cp-ann-dialog ' + levelCls + '" data-ann-version="' + Utils.escapeHtml(String(ann.version)) + '" data-allow-dismiss="' + (ann.allow_dismiss ? '1' : '0') + '">',
         '  <div class="cp-modal-head">',
         '    <div class="cp-ann-head-left">',
         '      <span class="cp-ann-level-pill ' + levelCls + '">' + Icons.megaphone + '<span>' + badgeLabel + '</span></span>',
         '      <h4 class="cp-modal-title">' + Utils.escapeHtml(ann.title) + '</h4>',
         '    </div>',
-        '    <button type="button" class="nav-btn select-btn cp-modal-close" aria-label="关闭公告" onclick="CommunityPlans.closeAnnouncementModal()">',
+        '    <button type="button" class="nav-btn select-btn cp-modal-close" aria-label="关闭公告">',
         '      ' + Icons.close,
         '    </button>',
         '  </div>',
@@ -4794,13 +4988,19 @@
         '    <div class="cp-ann-footer-left">' + dismissHtml + '</div>',
         '    <div class="cp-ann-footer-actions">',
         '      ' + ctaHtml,
-        '      <button type="button" class="nav-btn cp-btn cp-btn-save" onclick="CommunityPlans.closeAnnouncementModal()">' + Icons.check + ' 我知道了</button>',
+        '      <button type="button" class="nav-btn cp-btn cp-btn-save">' + Icons.check + ' 我知道了</button>',
         '    </div>',
         '  </div>',
         '</div>'
       ].join('');
 
       document.body.appendChild(modal);
+      var aDlg = modal.querySelector('.cp-modal-dialog');
+      if (aDlg) aDlg.addEventListener('click', function (e) { e.stopPropagation(); });
+      var aClose = modal.querySelector('.cp-modal-close');
+      if (aClose) aClose.addEventListener('click', function () { CommunityPlans.closeAnnouncementModal(); });
+      var aOk = modal.querySelector('.cp-btn-save');
+      if (aOk) aOk.addEventListener('click', function () { CommunityPlans.closeAnnouncementModal(); });
     },
 
     closeAnnouncementModal: function (skipPersist) {
@@ -5054,11 +5254,15 @@
         '<span class="cp-eb-ico">' + Icons.edit + '</span>',
         '<span class="cp-eb-text"><b>正在编辑</b><span>' + Utils.escapeHtml(String(title || '该方案')) + '</span></span>',
         '<span class="cp-eb-actions">',
-        '  <button type="button" style="' + ghostStyle + '" onclick="CommunityPlans.cancelEditPlan()">取消</button>',
-        '  <button type="button" style="' + primaryStyle + '" onclick="CommunityPlans.openSaveModal()">保存修改</button>',
+        '  <button type="button" class="cp-eb-cancel" style="' + ghostStyle + '">取消</button>',
+        '  <button type="button" class="cp-eb-save" style="' + primaryStyle + '">保存修改</button>',
         '</span>'
       ].join('');
       document.body.appendChild(bar);
+      var ebCancel = bar.querySelector('.cp-eb-cancel');
+      if (ebCancel) ebCancel.addEventListener('click', function () { CommunityPlans.cancelEditPlan(); });
+      var ebSave = bar.querySelector('.cp-eb-save');
+      if (ebSave) ebSave.addEventListener('click', function () { CommunityPlans.openSaveModal(); });
       document.body.classList.add('cp-editing-active');
       requestAnimationFrame(function () { bar.classList.add('is-show'); });
     },

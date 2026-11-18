@@ -1,0 +1,1 @@
+try{var __m=localStorage.getItem('calcMode');var __q=(location.search.match(/[?&]mode=(solo|support|team)\b/)||[])[1];if(__q)__m=__q;if(__m==='support'||__m==='team')document.body.setAttribute('data-calc-mode',__m);}catch(e){}
