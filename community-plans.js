@@ -681,6 +681,7 @@
     activeAppliedPlanId: null, // 当前已套用的方案 ID (用于高亮正在生效)
     appliedSource: null,    // 记录最近一次套用的方案元信息 { id, title, isOther, buildSig }
     hasUndoAvailable: false,
+    userCollapsed: false,   // 仅在用户主动点击标题栏或折叠按钮时更新；默认始终保持展开
     draftTimer: null,
     isFetchingRemote: false
   };
@@ -1723,7 +1724,11 @@
       if (!container) return;
       var card = container.querySelector('.cp-plans-card') || container;
       var curShut = card.__pvA ? Boolean(card.__pvWant) : card.classList.contains('pv-collapsed');
-      var shouldShut = (typeof forceState === 'boolean') ? forceState : !curShut;
+      var isManualToggle = typeof forceState !== 'boolean';
+      var shouldShut = isManualToggle ? !curShut : forceState;
+      if (isManualToggle) {
+        state.userCollapsed = shouldShut;
+      }
       if (curShut === shouldShut && card.classList.contains('pv-shut') === shouldShut && !instant) {
         return;
       }
@@ -2505,7 +2510,7 @@
 
       var carName = state.currentCar ? (state.currentCar.name || '未知') : '未选赛车';
 
-      // 2. 未选赛车状态 -> 隐藏控制栏并自动折叠
+      // 2. 未选赛车状态 -> 隐藏控制栏；默认保持展开，仅当用户手动收起时才保持折叠
       if (!state.currentCarId || state.currentCarId === -1) {
         var bannerSlotEmpty = document.getElementById('cpBannerSlot');
         if (bannerSlotEmpty) {
@@ -2514,7 +2519,7 @@
         }
         CommunityPlans._syncControlsBar(false, false);
         if (badge) {
-          badge.innerHTML = '<span class="zh">未选赛车 · 点击展开</span><span class="lang-en">No Car Selected</span>';
+          badge.innerHTML = '<span class="zh">未选赛车</span><span class="lang-en">No Car Selected</span>';
         }
         stream.innerHTML = [
           '<div class="cp-empty-box">',
@@ -2523,7 +2528,7 @@
           '  <div class="cp-empty-desc"><span class="zh">选好赛车后，这里将直接为您垂直呈现本地方案、国服精选与社区推荐</span><span class="lang-en">Select a car to view setups</span></div>',
           '</div>'
         ].join('');
-        CommunityPlans.toggleCollapse(true, !container.__cpRenderedOnce);
+        CommunityPlans.toggleCollapse(Boolean(state.userCollapsed), !container.__cpRenderedOnce);
         container.__cpRenderedOnce = true;
         return;
       }
@@ -2570,7 +2575,7 @@
         state.allCarTotal = Math.max(state.allCarTotal, totalPlans);
       }
 
-      // 4. 更新标题栏徽标与折叠状态联动 (仅在「全部」模式下确认为 0 方案时才自动折叠；筛选其他模式时始终保留控制栏不折叠)
+      // 4. 更新标题栏徽标与折叠状态联动（无方案时也保持展开，仅遵从用户手动折叠状态）
       // 官方 AI 推荐也算一套方案：还在拉取、或已经有数据时，不能走进「暂无方案」早退
       var isCarTrulyEmpty = (
         totalPlans === 0 &&
@@ -2588,7 +2593,7 @@
         }
         CommunityPlans._syncControlsBar(false, false);
         if (badge) {
-          badge.innerHTML = '<span class="zh">' + Utils.escapeHtml(carName) + ' · 暂无方案 (点击展开)</span><span class="lang-en">No Setups (Click to expand)</span>';
+          badge.innerHTML = '<span class="zh">' + Utils.escapeHtml(carName) + ' · 暂无方案</span><span class="lang-en">' + Utils.escapeHtml(carName) + ' · No Setups</span>';
         }
         stream.innerHTML = [
           '<div class="cp-empty-box">',
@@ -2600,7 +2605,7 @@
         ].join('');
         var emptySaveBtn = stream.querySelector('.cp-empty-box .cp-btn-save');
         if (emptySaveBtn) emptySaveBtn.addEventListener('click', function () { CommunityPlans.openSaveModal(); });
-        CommunityPlans.toggleCollapse(true, !container.__cpRenderedOnce);
+        CommunityPlans.toggleCollapse(Boolean(state.userCollapsed), !container.__cpRenderedOnce);
         container.__cpRenderedOnce = true;
         return;
       }
@@ -2836,7 +2841,7 @@
       }
       CommunityPlans._playPendingVoteFx(stream);
       CommunityPlans.bindLazyScroll();
-      CommunityPlans.toggleCollapse(false, !container.__cpRenderedOnce);
+      CommunityPlans.toggleCollapse(Boolean(state.userCollapsed), !container.__cpRenderedOnce);
       CommunityPlans._syncControlsBar(true, true);
       CommunityPlans._layoutTreeLines();
       CommunityPlans._scheduleTreeLayout();
