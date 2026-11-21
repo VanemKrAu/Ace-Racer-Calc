@@ -198,14 +198,15 @@
 }
 
 .ds-c .cp-btn-undo {
-  background-color: var(--warn-soft);
-  border: 1px solid color-mix(in oklab, var(--warn) 60%, transparent);
-  color: var(--warn);
+  background-color: color-mix(in oklab, var(--acc) 10%, var(--surface));
+  border: 1px solid color-mix(in oklab, var(--acc) 45%, transparent);
+  color: var(--acc);
 }
 
 .ds-c .cp-btn-undo:hover {
-  background-color: var(--warn);
-  color: #fff;
+  background-color: color-mix(in oklab, var(--acc) 22%, var(--surface));
+  border-color: var(--acc);
+  color: var(--ink);
   transform: translateY(-1px);
 }
 
