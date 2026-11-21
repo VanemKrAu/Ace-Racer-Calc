@@ -2438,11 +2438,35 @@
     _syncHeaderActions: function (showSave) {
       var bar = document.querySelector('#communityPlansContainer .cp-actions-bar');
       if (!bar) return;
+      var card = bar.closest('.cp-plans-card');
+      var isCollapsed = !!(card && card.classList.contains('pv-collapsed'));
+      var barWasHidden = bar.style.display === 'none';
       var saveBtn = bar.querySelector('.cp-btn-save');
+      var saveWasHidden = !!(saveBtn && saveBtn.style.display === 'none');
       var undoBtn = document.getElementById('cpBtnUndo');
       if (saveBtn) saveBtn.style.display = showSave ? '' : 'none';
       var hasUndo = Boolean(undoBtn && undoBtn.style.display !== 'none');
-      bar.style.display = (showSave || hasUndo) ? '' : 'none';
+      var barWillShow = Boolean(showSave || hasUndo);
+      bar.style.display = barWillShow ? '' : 'none';
+      if (!isCollapsed && cpMotionOK()) {
+        if (barWasHidden && barWillShow && typeof bar.animate === 'function') {
+          bar.animate(
+            [
+              { opacity: 0, transform: 'translateX(6px) scale(0.96)' },
+              { opacity: 1, transform: 'translateX(0) scale(1)' }
+            ],
+            { duration: 220, easing: 'cubic-bezier(0.22, 1, 0.36, 1)' }
+          );
+        } else if (!barWasHidden && saveWasHidden && showSave && saveBtn && typeof saveBtn.animate === 'function') {
+          saveBtn.animate(
+            [
+              { opacity: 0, transform: 'translateX(6px) scale(0.96)' },
+              { opacity: 1, transform: 'translateX(0) scale(1)' }
+            ],
+            { duration: 220, easing: 'cubic-bezier(0.22, 1, 0.36, 1)' }
+          );
+        }
+      }
     },
 
     _syncControlsBar: function (showControls, animate) {
@@ -2452,7 +2476,20 @@
         var wasVisible = bar.style.display !== 'none';
         bar.style.display = showControls ? '' : 'none';
         if (!showControls) return;
-        if (!wasVisible) animate = false;
+        if (!wasVisible) {
+          animate = false;
+          var card = bar.closest('.cp-plans-card');
+          var isCollapsed = !!(card && card.classList.contains('pv-collapsed'));
+          if (!isCollapsed && cpMotionOK() && typeof bar.animate === 'function') {
+            bar.animate(
+              [
+                { opacity: 0, transform: 'translateY(-6px)' },
+                { opacity: 1, transform: 'translateY(0)' }
+              ],
+              { duration: 220, easing: 'cubic-bezier(0.22, 1, 0.36, 1)' }
+            );
+          }
+        }
       } else if (bar.style.display === 'none') {
         return;
       }
@@ -5464,7 +5501,7 @@
         });
     },
 
-    // 测量每个 .cp-section 内图标底边与方案卡左侧坐标，单图层绘制连续弧线树干
+    // 测量每个 .cp-section 内图标底边与方案卡左侧坐标，单图层绘制连续弧线树干（先统一读、后统一写，避免强制同步布局抖动）
     _layoutTreeLines: function () {
       var stream = document.getElementById('cpSectionsStream');
       if (!stream || stream.offsetWidth === 0) return;
@@ -5482,6 +5519,10 @@
       };
 
       var secs = stream.querySelectorAll('.cp-section');
+      var removals = [];
+      var drawJobs = [];
+
+      // 阶段 1：统一读取布局坐标，严禁在此循环中写入 DOM
       for (var i = 0; i < secs.length; i++) {
         var sec = secs[i];
         var iconEl = sec.querySelector('.cp-sec-header > .cp-sec-icon-box, .cp-sec-header > .cp-sec-pro-icon');
@@ -5489,7 +5530,7 @@
         var svg = sec.querySelector(':scope > .cp-tree-svg');
 
         if (!iconEl || !listEl || listEl.offsetHeight === 0) {
-          if (svg) svg.remove();
+          if (svg) removals.push(svg);
           continue;
         }
 
@@ -5502,7 +5543,7 @@
         }
 
         if (!anchors.length) {
-          if (svg) svg.remove();
+          if (svg) removals.push(svg);
           continue;
         }
 
@@ -5512,42 +5553,63 @@
         var dx = Math.max(8, anchors[0].x - cx);
         var baseR = Math.min(10, Math.max(6, dx - 2));
 
+        drawJobs.push({
+          sec: sec,
+          svg: svg,
+          cx: cx,
+          topY: topY,
+          baseR: baseR,
+          anchors: anchors
+        });
+      }
+
+      // 阶段 2：统一写入 SVG DOM，无变动时跳过 setAttribute 避免重复绘制
+      for (var r = 0; r < removals.length; r++) {
+        removals[r].remove();
+      }
+
+      var svgNs = 'http://www.w3.org/2000/svg';
+      for (var k = 0; k < drawJobs.length; k++) {
+        var job = drawJobs[k];
         var dParts = [];
-        var last = anchors[anchors.length - 1];
-        var lastR = Math.min(baseR, Math.max(4, last.y - topY));
-        var lastBendY = Math.max(topY, last.y - lastR);
+        var last = job.anchors[job.anchors.length - 1];
+        var lastR = Math.min(job.baseR, Math.max(4, last.y - job.topY));
+        var lastBendY = Math.max(job.topY, last.y - lastR);
 
         // 主干竖线与末项圆角 L 型分支整合为一笔连续路径，彻底避免接缝与断点
         dParts.push(
-          'M ' + cx + ' ' + topY +
-          ' L ' + cx + ' ' + lastBendY +
-          ' A ' + lastR + ' ' + lastR + ' 0 0 0 ' + (cx + lastR) + ' ' + last.y +
+          'M ' + job.cx + ' ' + job.topY +
+          ' L ' + job.cx + ' ' + lastBendY +
+          ' A ' + lastR + ' ' + lastR + ' 0 0 0 ' + (job.cx + lastR) + ' ' + last.y +
           ' L ' + last.x + ' ' + last.y
         );
 
         // 非末项均由主干切线顺滑弯出同款圆弧连入卡片
-        for (var j = 0; j < anchors.length - 1; j++) {
-          var pt = anchors[j];
-          var br = Math.min(baseR, Math.max(4, pt.y - topY));
+        for (var j = 0; j < job.anchors.length - 1; j++) {
+          var pt = job.anchors[j];
+          var br = Math.min(job.baseR, Math.max(4, pt.y - job.topY));
           dParts.push(
-            'M ' + cx + ' ' + (pt.y - br) +
-            ' A ' + br + ' ' + br + ' 0 0 0 ' + (cx + br) + ' ' + pt.y +
+            'M ' + job.cx + ' ' + (pt.y - br) +
+            ' A ' + br + ' ' + br + ' 0 0 0 ' + (job.cx + br) + ' ' + pt.y +
             ' L ' + pt.x + ' ' + pt.y
           );
         }
 
-        var svgNs = 'http://www.w3.org/2000/svg';
-        if (!svg) {
-          svg = document.createElementNS(svgNs, 'svg');
-          svg.setAttribute('class', 'cp-tree-svg');
-          svg.setAttribute('aria-hidden', 'true');
-          svg.setAttribute('shape-rendering', 'geometricPrecision');
+        var dStr = dParts.join(' ');
+        var targetSvg = job.svg;
+        if (!targetSvg) {
+          targetSvg = document.createElementNS(svgNs, 'svg');
+          targetSvg.setAttribute('class', 'cp-tree-svg');
+          targetSvg.setAttribute('aria-hidden', 'true');
+          targetSvg.setAttribute('shape-rendering', 'geometricPrecision');
           var pathEl = document.createElementNS(svgNs, 'path');
-          svg.appendChild(pathEl);
-          sec.insertBefore(svg, sec.firstChild);
+          targetSvg.appendChild(pathEl);
+          job.sec.insertBefore(targetSvg, job.sec.firstChild);
         }
-        var p = svg.querySelector('path');
-        if (p) p.setAttribute('d', dParts.join(' '));
+        var p = targetSvg.querySelector('path');
+        if (p && p.getAttribute('d') !== dStr) {
+          p.setAttribute('d', dStr);
+        }
       }
     },
 
@@ -5572,7 +5634,7 @@
           CommunityPlans._scheduleTreeLayout();
         });
         state._treeRo.observe(viewport);
-        var secs = viewport.querySelectorAll('.cp-section, .cp-card-item');
+        var secs = viewport.querySelectorAll('.cp-section');
         for (var i = 0; i < secs.length; i++) {
           state._treeRo.observe(secs[i]);
         }

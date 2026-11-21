@@ -2734,7 +2734,6 @@ html.lt-no-trans *::after {
 .profile-dialog .cp-setting-switch-row.profile-stack { flex-direction: column; align-items: stretch; gap: 10px; }
 .profile-dialog .profile-actions { display: flex; flex-wrap: wrap; gap: 8px; }
 .profile-dialog .profile-actions .cp-btn { flex: 1 1 130px; justify-content: center; }
-.profile-dialog .profile-code { display: block; overflow-wrap: anywhere; word-break: break-all; font: 12px/1.5 ui-monospace, SFMono-Regular, Consolas, monospace; font-variant-numeric: tabular-nums; user-select: all; margin: 0; }
 .profile-dialog .profile-status { color: var(--warn); }
 .profile-dialog .profile-warn { display: flex; align-items: flex-start; gap: 8px; color: var(--ink); background: var(--fail-soft); border-color: color-mix(in oklab, var(--fail) 45%, var(--surface-edge)); line-height: 1.55; }
 .profile-dialog .profile-warn .ico { width: 18px; height: 18px; flex: none; margin-top: 1px; color: var(--fail); }

@@ -383,6 +383,7 @@ body[data-calc-mode="support"] #communityPlansContainer {
   border-radius: 0;
   background: transparent;
   box-shadow: none;
+  animation: cpRiseIn .24s cubic-bezier(0.22, 1, 0.36, 1) both;
 }
 
 .ds-c .cp-section-pro {
@@ -758,7 +759,7 @@ body[data-calc-mode="support"] #communityPlansContainer {
   gap: 7px;
   min-width: 0;
   width: 100%;
-  contain: style;
+  contain: layout style;
   transition: border-color .18s ease, box-shadow .18s ease, transform .18s ease, background-color .18s ease, opacity .18s ease;
 }
 
@@ -1892,6 +1893,7 @@ body[data-calc-mode="support"] #communityPlansContainer {
   flex-direction: column;
   align-items: center;
   gap: 10px;
+  animation: cpRiseIn .24s cubic-bezier(0.22, 1, 0.36, 1) both;
 }
 
 .ds-c .cp-empty-icon {
@@ -2121,7 +2123,7 @@ body.cp-modal-locked {
   display: flex;
   flex-direction: column;
   gap: 14px;
-  animation: cpFadeIn .2s ease-out;
+  animation: cpSlideDownFade .2s ease-out;
 }
 
 /* 国服顶尖申请与双截图凭证卡片 */
@@ -2134,11 +2136,16 @@ body.cp-modal-locked {
   background: color-mix(in oklab, #ffd700 4%, var(--surface));
   border: 1px solid color-mix(in oklab, #ffd700 30%, var(--surface-edge));
   box-shadow: inset 0 1px 0 var(--surface-rim);
-  animation: cpFadeIn .22s ease-out;
+  animation: cpSlideDownFade .22s ease-out;
 }
 
-@keyframes cpFadeIn {
+@keyframes cpSlideDownFade {
   from { opacity: 0; transform: translateY(-4px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes cpRiseIn {
+  from { opacity: 0; transform: translateY(6px); }
   to { opacity: 1; transform: translateY(0); }
 }
 
@@ -2744,7 +2751,11 @@ body.ds-c.performance-mode .cp-vote-roll-old,
 body.ds-c.performance-mode .cp-vote-roll-new,
 body.ds-c.performance-mode .cp-player-id,
 body.ds-c.performance-mode .cp-copy-icon .ico,
-body.ds-c.performance-mode .cp-btn-save.is-success .cp-save-ok-ico .ico {
+body.ds-c.performance-mode .cp-btn-save.is-success .cp-save-ok-ico .ico,
+body.ds-c.performance-mode .cp-section,
+body.ds-c.performance-mode .cp-empty-box,
+body.ds-c.performance-mode .cp-community-section,
+body.ds-c.performance-mode .cp-pro-apply-box {
   animation: none !important;
   transition: none !important;
 }
@@ -2757,7 +2768,11 @@ body.ds-c.performance-mode .cp-btn-save.is-success .cp-save-ok-ico .ico {
   .ds-c .cp-vote-roll-new,
   .ds-c .cp-player-id,
   .ds-c .cp-copy-icon .ico,
-  .ds-c .cp-btn-save.is-success .cp-save-ok-ico .ico {
+  .ds-c .cp-btn-save.is-success .cp-save-ok-ico .ico,
+  .ds-c .cp-section,
+  .ds-c .cp-empty-box,
+  .ds-c .cp-community-section,
+  .ds-c .cp-pro-apply-box {
     animation: none !important;
     transition: none !important;
   }
