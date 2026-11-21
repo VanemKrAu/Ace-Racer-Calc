@@ -2852,10 +2852,17 @@
         if (nextViewport) nextViewport.scrollTop = savedScrollTop;
       }
       CommunityPlans._playPendingVoteFx(stream);
+      var isInitialCarLoading = (
+        (state.isFetchingRemote || state.isFetchingOfficial) &&
+        totalPlans === 0 &&
+        !hasOfficialData &&
+        state.filterMode === 'all' &&
+        state.allCarTotal === 0
+      );
       CommunityPlans.bindLazyScroll();
-      CommunityPlans._syncHeaderActions(true);
+      CommunityPlans._syncHeaderActions(!isInitialCarLoading);
       CommunityPlans.toggleCollapse(Boolean(state.userCollapsed), !container.__cpRenderedOnce);
-      CommunityPlans._syncControlsBar(true, true);
+      CommunityPlans._syncControlsBar(!isInitialCarLoading, !isInitialCarLoading);
       CommunityPlans._layoutTreeLines();
       CommunityPlans._scheduleTreeLayout();
       CommunityPlans._bindTreeResizeObserver();
