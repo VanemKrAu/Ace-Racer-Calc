@@ -2339,11 +2339,11 @@
         '    <span id="cpCurrentCarBadge" class="cp-car-badge"><span class="zh">未选赛车</span><span class="lang-en">No Car Selected</span></span>',
         '  </div>',
         '  <div class="cp-actions-bar">',
-        '    <button type="button" id="cpBtnUndo" class="nav-btn cp-btn cp-btn-undo" style="display:none;">',
-        '      ' + Icons.undo + '<span class="zh">撤销套用</span><span class="lang-en">Undo</span>',
+        '    <button type="button" id="cpBtnUndo" class="nav-btn cp-btn cp-btn-undo" style="display:none;" title="撤销套用 / Undo" aria-label="撤销套用 / Undo">',
+        '      ' + Icons.undo + '<span class="cp-btn-label"><span class="zh">撤销套用</span><span class="lang-en">Undo</span></span>',
         '    </button>',
-        '    <button type="button" class="nav-btn cp-btn cp-btn-save">',
-        '      ' + Icons.save + '<span class="zh">保存当前配装</span><span class="lang-en">Save Setup</span>',
+        '    <button type="button" class="nav-btn cp-btn cp-btn-save" title="保存当前配装 / Save Setup" aria-label="保存当前配装 / Save Setup">',
+        '      ' + Icons.save + '<span class="cp-btn-label"><span class="zh">保存当前配装</span><span class="lang-en">Save Setup</span></span>',
         '    </button>',
         '  </div>',
         '  <button type="button" class="nav-btn select-btn cp-icon-btn cp-fold-btn" title="折叠/展开方案库">',
@@ -2435,6 +2435,16 @@
       }
     },
 
+    _syncHeaderActions: function (showSave) {
+      var bar = document.querySelector('#communityPlansContainer .cp-actions-bar');
+      if (!bar) return;
+      var saveBtn = bar.querySelector('.cp-btn-save');
+      var undoBtn = document.getElementById('cpBtnUndo');
+      if (saveBtn) saveBtn.style.display = showSave ? '' : 'none';
+      var hasUndo = Boolean(undoBtn && undoBtn.style.display !== 'none');
+      bar.style.display = (showSave || hasUndo) ? '' : 'none';
+    },
+
     _syncControlsBar: function (showControls, animate) {
       var bar = document.getElementById('cpControlsBarSlot');
       if (!bar) return;
@@ -2518,6 +2528,7 @@
           bannerSlotEmpty.innerHTML = '';
         }
         CommunityPlans._syncControlsBar(false, false);
+        CommunityPlans._syncHeaderActions(false);
         if (badge) {
           badge.innerHTML = '<span class="zh">未选赛车</span><span class="lang-en">No Car Selected</span>';
         }
@@ -2592,6 +2603,7 @@
           bannerSlotNone.innerHTML = '';
         }
         CommunityPlans._syncControlsBar(false, false);
+        CommunityPlans._syncHeaderActions(false);
         if (badge) {
           badge.innerHTML = '<span class="zh">' + Utils.escapeHtml(carName) + ' · 暂无方案</span><span class="lang-en">' + Utils.escapeHtml(carName) + ' · No Setups</span>';
         }
@@ -2599,7 +2611,7 @@
           '<div class="cp-empty-box">',
           '  ' + Icons.emptyBox,
           '  <div class="cp-empty-title"><span class="zh">该赛车暂无任何芯片配装</span><span class="lang-en">No Setups Found</span></div>',
-          '  <div class="cp-empty-desc"><span class="zh">在上方配好先机、汇能与芯片参数后，点击右上角【保存当前配装】即可收藏您的专属方案！</span><span class="lang-en">Tune your chips and click Save Setup to create one!</span></div>',
+          '  <div class="cp-empty-desc"><span class="zh">在上方配好先机、汇能与芯片参数后，点击下方【立即保存当前配装】即可收藏您的专属方案！</span><span class="lang-en">Tune your chips above and click Save Setup Now to create one!</span></div>',
           '  <button type="button" class="nav-btn cp-btn cp-btn-save">' + Icons.save + '<span class="zh">立即保存当前配装</span><span class="lang-en">Save Setup Now</span></button>',
           '</div>'
         ].join('');
@@ -2841,6 +2853,7 @@
       }
       CommunityPlans._playPendingVoteFx(stream);
       CommunityPlans.bindLazyScroll();
+      CommunityPlans._syncHeaderActions(true);
       CommunityPlans.toggleCollapse(Boolean(state.userCollapsed), !container.__cpRenderedOnce);
       CommunityPlans._syncControlsBar(true, true);
       CommunityPlans._layoutTreeLines();
