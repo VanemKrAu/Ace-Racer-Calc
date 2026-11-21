@@ -139,14 +139,16 @@
   height: 15px;
 }
 
-.ds-c .cp-btn-save {
+.ds-c .cp-btn-save,
+.ds-c .cp-btn-undo {
   background-color: color-mix(in oklab, var(--acc) 22%, var(--surface));
   border: 1px solid color-mix(in oklab, var(--acc) 60%, transparent);
   color: var(--ink);
   box-shadow: inset 0 1px 0 var(--surface-rim), 0 2px 8px color-mix(in oklab, var(--acc) 25%, transparent);
 }
 
-.ds-c .cp-btn-save:hover {
+.ds-c .cp-btn-save:hover,
+.ds-c .cp-btn-undo:hover {
   background-color: color-mix(in oklab, var(--acc) 30%, var(--surface));
   border-color: var(--acc);
   transform: translateY(-1px);
@@ -195,19 +197,6 @@
 
 .ds-c .cp-btn-save.is-success .cp-save-ok-ico .ico {
   animation: cpCheckPop .32s cubic-bezier(.34, 1.56, .64, 1);
-}
-
-.ds-c .cp-btn-undo {
-  background-color: color-mix(in oklab, var(--acc) 10%, var(--surface));
-  border: 1px solid color-mix(in oklab, var(--acc) 45%, transparent);
-  color: var(--acc);
-}
-
-.ds-c .cp-btn-undo:hover {
-  background-color: color-mix(in oklab, var(--acc) 22%, var(--surface));
-  border-color: var(--acc);
-  color: var(--ink);
-  transform: translateY(-1px);
 }
 
 .ds-c .cp-icon-btn {
