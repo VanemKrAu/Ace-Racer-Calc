@@ -1,7 +1,7 @@
 /* ============ base.css：三套设计共用的「功能性」样式 ============
    只放 JS 依赖的显隐 / 展开 / 语言切换机制，不放任何视觉风格。 */
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
-html { -webkit-text-size-adjust: 100%; }
+html { -webkit-text-size-adjust: 100%; scrollbar-gutter: stable; }
 body { min-height: 100vh; }
 img { max-width: 100%; }
 button { font: inherit; color: inherit; }

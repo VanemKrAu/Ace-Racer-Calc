@@ -1403,7 +1403,14 @@
         state._isRestoringDraft = true;
         window.isRestoringConfig = true;
         try {
-          if (typeof window.setCalcMode === 'function' && draft.params.calc_mode && (draft.params.calc_mode === 'solo' || draft.params.calc_mode === 'team')) {
+          var hasSavedMode = false;
+          try {
+            var sm = localStorage.getItem('calcMode');
+            hasSavedMode = (sm === 'solo' || sm === 'team' || sm === 'support');
+          } catch (e) {}
+          var hasUrlMode = false;
+          try { hasUrlMode = new URLSearchParams(window.location.search).has('mode'); } catch (e) {}
+          if (!hasSavedMode && !hasUrlMode && typeof window.setCalcMode === 'function' && draft.params.calc_mode && (draft.params.calc_mode === 'solo' || draft.params.calc_mode === 'team')) {
             window.setCalcMode(draft.params.calc_mode, true, true);
           }
           if (typeof window.pickCar === 'function') {
