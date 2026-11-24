@@ -915,7 +915,8 @@ input, select, textarea, button { touch-action: manipulation; }
 .ds-c #carQualityBar { display: none; }
 .ds-c #carImage { max-height: 200px; filter: drop-shadow(0 16px 14px rgba(0,0,0,.22)); }
 .ds-c #carPreviewPlaceholder { position: absolute; bottom: 24px; font-size: 14px; color: var(--ink-3); }
-.ds-c .car-meta { padding: 12px 18px 18px; display: flex; flex-direction: column; align-items: center; gap: 10px; text-align: center; }
+.ds-c .car-meta { padding: 12px 18px 18px; display: flex; flex-direction: column; align-items: center; gap: 0; text-align: center; }
+.ds-c .car-meta > :not(:first-child) { margin-top: 10px; }
 .ds-c #carPreviewName { font-size: 20px; font-weight: 800; }
 .ds-c #carPreviewTags { gap: 6px; justify-content: center; }
 .ds-c #carPreviewTags > span { border-radius: 999px !important; padding: 4px 12px !important; font-size: 12.5px !important; font-weight: 600 !important; border: 0 !important; }
